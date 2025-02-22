@@ -700,7 +700,7 @@
                         toastReference.fire();
                         // alert('All Information got saved successfully');
                         //location.reload();
-                        //$A.get('e.force:refreshView').fire(); //Taj commented
+                        $A.get('e.force:refreshView').fire(); //Taj commented
                     }
                     
                     
