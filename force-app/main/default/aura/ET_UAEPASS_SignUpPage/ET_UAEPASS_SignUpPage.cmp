@@ -1,0 +1,112 @@
+<aura:component controller="customerPortalCtrl"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+    access="global">
+    <aura:attribute name="userInfo" type="customerPortalCtrl.SSOUserData" />
+    <aura:attribute name="showQues" type="boolean" default="false" />
+    <aura:attribute name="showLoginForm" type="boolean" default="false" />
+    <aura:attribute name="showSignupForm" type="boolean" default="false" />
+    <aura:attribute name="showProcessingPage" type="boolean" default="true" />
+    <aura:attribute name="showSpinner" type="boolean" default="false" />
+    <aura:attribute name="showErrMsg" type="boolean" default="false" />
+    <aura:attribute name="ErrCode" type="string" />
+    <aura:attribute name="showLoginError" type="boolean" default="false" />
+    <aura:attribute name="loginErrMsg" type="string" />
+    <aura:handler event="aura:waiting" action="{!c.showSpinnerHandler}" />
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinnerHandler}" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <div class="outer-div">
+        <aura:if isTrue="{!v.showSpinner}">
+            <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+        </aura:if>
+        <aura:if isTrue="{!v.showErrMsg}">
+            <!--div class="errorred">
+                Error
+            </div-->
+            <aura:if
+                isTrue="{!or(or(or(v.ErrCode == 'Remote_Error',v.ErrCode == 'Invalid_Request'),v.ErrCode == 'NO_ACCESS'),v.ErrCode == 'No_Oauth_State')}">
+                <div class="errMsg">
+                    <p> User cancelled the login </p>
+                    <!--p>   قام المستخدم بإلغاء تسجيل الدخول </p-->
+                </div>
+                <aura:set attribute="else">
+                    <div class="errMsg">
+                        <p>Unalbe to process your request right now, please contact Emirates Transport.</p>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!v.showProcessingPage}">
+            <div class="requesttext">
+                <p>Your request is in process.... </p>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.showQues}">
+            <div class="notediv">
+                <p class="passtext"><strong>UAE PASS - Emirates Transport Profile Linking</strong></p>
+                <div class="accounttext">
+                    <p>Do you have an online account with Emirates Transport? </p>
+                </div>
+                <div class="btnouter">
+                    <lightning:button label="Yes *" class="active" variant="brand" onclick="{!c.handleYesClick }" />
+                    <lightning:button label="No **" variant="brand" onclick="{!c.createUserHandler }" />
+                </div>
+                <p class="font14 mt60">*Your UAE PASS account will be linked to your exisiting Emirates Transport
+                    profile</p>
+                <p class="font14">**Your Emirates Transport profile will be established based on UAE PASS account</p>
+                <p class="font14 mt10"><b>Note:</b> This is a one time process, your future login's through UAE PASS
+                    will be seamless.</p>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.showLoginForm}">
+            <p class="font16"><strong>UAE PASS - Emirates Transport Profile Linking</strong></p>
+            <p class="font14 textcenter">(Login with your Emirates Transport credentails)</p><br />
+            <aura:if isTrue="{!v.showLoginError}">
+                <div id="error" class="errortext">
+                    <ui:outputRichText value="{!v.loginErrMsg}" />
+                </div>
+            </aura:if>
+            <div id="sfdc_username_container" class="sfdc">
+                <span id="sfdc_user" class="login-icon" data-icon="a"></span>
+                <ui:inputText class="inputTxt" value="" aura:id="username" placeholder="Username" keyup="{!c.onKeyUp}"
+                    label="User name" labelClass="assistiveText" />
+            </div>
+            <div id="sfdc_password_container" class="sfdc">
+                <span id="sfdc_lock" class="login-icon sfdc" data-icon="c"></span>
+                <ui:inputSecret class="inputTxt" value="" aura:id="password" placeholder="Password" keyup="{!c.onKeyUp}"
+                    label="Password" labelClass="assistiveText" />
+            </div><br />
+            <div class="sfdc textcenter">
+                <lightning:button variant="brand" aura:id="submitButton" label="link above account with UAE PASS"
+                    onclick="{!c.linkWithUPassHandler}" class="sfdc_button" />
+            </div>
+            <div id="sfdc_forgot" class="anchorTag">
+                <span class="white"><a href="/customer/s/login/ForgotPassword?language=en_US">Forgot Password
+                        ?</a></span>
+            </div>
+            <div class="anchorTag newanchor">
+                <p>Don't have an account? &nbsp;<a href="/customer/s/login/SelfRegister?language=en_US">Register now</a>
+                </p>
+            </div>
+            <p class="notetext"><b>Note:</b> This is a one time process, your future login's through UAE PASS will be
+                seamless.</p>
+        </aura:if>
+        <!--<aura:if isTrue="{!v.showSignupForm}">
+            <div >
+                <lightning:input class="inputTxtnew" type="text" label="First Name" value="{!v.userInfo.firstName}"  disabled="true" />
+                <lightning:input class="inputTxtnew" type="text" label="Last Name" value="{!v.userInfo.lastName}"  disabled="true" />
+                <lightning:input class="inputTxtnew" type="text" label="Email" value="{!v.userInfo.email}"  disabled="true" />
+                <lightning:input class="inputTxtnew" type="text" label="Mobile" value="{!v.userInfo.mobile}"  disabled="true" />
+                <lightning:input class="inputTxtnew" type="text" label="Gender" value="{!v.userInfo.gender}"  disabled="true" />
+                <br/>
+                <div class="textcenter">
+                    <lightning:button variant="brand" aura:id="createAcc" label="Sign Up" onclick="{!c.createUserHandler}" class="sfdc_button"/>
+                </div>
+            </div>
+        </aura:if>-->
+        <!--aura:if isTrue="{!!v.showLoginForm}">
+            <div class="backBtn">
+                <p><a href="/customer/s" class="logintext">Go to Login Page</a></p>
+            </div>
+        </aura:if-->
+    </div>
+</aura:component>

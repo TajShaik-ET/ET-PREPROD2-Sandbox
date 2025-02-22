@@ -1,0 +1,775 @@
+/*Range slider css start*/
+.THIS .range {
+    width: 25%;
+    display: inline-block;
+    float: none;
+    padding: .5rem 1rem!important;
+    margin-bottom: 0;
+    position: relative;
+}
+.THIS .range p.rangeDisplay {
+    display: block;
+    position: relative;
+    color: #000;
+    font-size: 14px;
+    line-height: 1;
+    text-align: right;
+    font-weight: bold;
+}
+.THIS .range__slider {
+    width: 45%;
+}
+.THIS .range__slider [type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 13px;
+    border-radius: 6px;
+    background: #f1f1f1;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* custom thumb */
+.THIS .range__slider [type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #354b9a;
+    border: #ccc 5px solid;
+    cursor: pointer;
+    -webkit-transition: background .15s ease-in-out;
+    transition: background .15s ease-in-out;
+}
+
+.THIS .range__slider [type="range"]::-webkit-slider-thumb:hover {
+    background: #f0932b;
+}
+
+.THIS .range__slider [type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    background: #f0932b;
+    border: #f9ca24 5px solid; cursor: pointer;
+    -webkit-transition: background .15s ease-in-out;
+    transition: background .15s ease-in-out;
+}
+
+.THIS .range__slider [type="range"]::-moz-range-thumb:hover {
+    background: #f9ca24;
+}
+/*Range slider css End*/
+
+.THIS.bgimage{
+    background-image: url(/resource/homepagebg_img2);
+    background-size: cover;
+    background-position: revert;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: Calc(100vh - 0px);
+    overflow: auto;
+}
+.THIS .details_second span.slds-slider__value{
+    position: absolute;
+    right: -33px;
+    top: -7px;
+    color:#797979;
+}
+.THIS canvas{
+    /*cursor: crosshair;*/
+    cursor: url(/resource/ET_pencil1),default;
+}
+.THIS.outer_div {
+    position: relative;
+    background: transparent;
+    border:none;
+    margin-top: -2rem;
+}
+
+.THIS .spinner2 {
+    position: fixed;
+}
+
+.THIS .rangeCls .rangeDisplay{
+    color:black;
+    display: inline-block;
+}
+.THIS button.slds-button.slds-button_neutral.btnback lightning-primitive-icon {
+    line-height: 1;
+}
+.THIS button.slds-button.slds-button_neutral.btnback {
+    background: transparent;
+    color: #fff;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    margin-bottom: 1rem;
+    margin-top: 0rem;
+    font-weight: bold;
+}
+.THIS button.slds-button.slds-button_neutral.btnbackbottom {
+    background: transparent;
+    color: #fff;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    margin-top: 2rem;
+    margin-left: 0rem;
+    font-weight: bold;
+}
+.THIS .slds-form lightning-input-field ,
+.THIS .slds-form lightning-output-field ,
+.THIS lightning-slider.slds-form-element{
+    width: 25%;
+    display: inline-block;
+    float: none;
+    padding: .5rem 1rem!important;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 0;
+    position:relative;
+}
+.THIS .details_second lightning-slider.slds-form-element{
+    border-bottom: 0px solid #ddd;
+}
+.THIS lightning-slider.slds-form-element .slds-slider.slds-size_x-small{
+    width: 98%;
+}
+.THIS  .slds-has-error .slds-form-element__help {
+    display: block;
+    float: left;
+}
+.THIS.outer_div span.slds-form-element__label ,
+.THIS.outer_div label.slds-form-element__label.slds-no-flex ,
+.THIS.outer_div label.slds-form-element__label {
+    width: 100%;
+    display: contents;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #222f5d;
+}
+.THIS.outer_div .slds-form-element__control {
+    display: block;
+    float: left;
+    width: 100%;
+    padding: 0px!important;
+    clear: both;
+    height: 38px;
+}
+.THIS .details_first{
+    position: relative;
+    display: flow-root;
+    background: #fff;
+    width: 100%;
+    height: auto;
+    padding: 1rem 0 0rem;
+}
+.THIS .details_first span.slds-form-element__label ,
+.THIS .details_first label.slds-form-element__label.slds-no-flex{
+    color: #222F5D;
+    text-transform: uppercase;
+}
+.THIS lightning-formatted-text.slds-form-element__static {
+    color: #222F5D;
+    font-weight: bold;
+}
+.THIS .details_second{
+    position: relative;
+    display: flow-root;
+    background: transparent;
+    width: 100%;
+    height: auto;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1.5rem
+}
+.THIS .slds-form .details_second lightning-input-field, 
+.THIS .slds-form .details_second lightning-output-field{
+    border-bottom: 0px solid #ddd!important;
+}
+
+.THIS .details_third{
+    display: block;
+    position: relative;
+    clear: both;
+    padding: 0rem;
+}
+.THIS .details_third .left_imagediv{
+    position: relative;
+    display: block;
+    width: 100%;
+    float: left;
+    background: #fff;
+    padding: 1%;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+}
+.THIS .details_third .right_checkboxdiv{
+    background: #fbfbfb;
+    width: 100%;
+    margin-top: 2%;
+    float: left;
+    display: block;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+}
+.THIS .slds-form .details_third .right_checkboxdiv lightning-input-field, 
+.THIS .slds-form .details_third .right_checkboxdiv lightning-output-field {
+    width: 25%;
+    display: inline-block;
+    float: left;
+    padding: .5rem!important;
+    border-bottom: 0px solid #ddd;
+    margin-bottom: 0;
+}
+.THIS .slds-form .details_third .right_checkboxdiv .slds-form-element__control.slds-grow{
+    display: inline-block;
+    float: left;
+    width: auto;
+    height: auto;
+}
+.THIS .details_third button.slds-button.slds-button_neutral.clearbtn {
+    position: absolute;
+    right: 10px;
+    background: #ebebeb;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: #364c9b;
+}
+.THIS .detail_Inspector{
+    display: block;
+    position: relative;
+    clear: both;
+    width:100%;
+    float: left;
+    margin-top: 1rem;
+}
+.THIS .slds-form .detail_Inspector lightning-input-field, 
+.THIS .slds-form .detail_Inspector lightning-output-field{
+    border-bottom: 0px solid #ddd;
+    margin-bottom: 0;
+}
+.THIS .detail_signature{
+    display: block;
+    position: relative;
+    clear: both;
+    padding: 1rem;
+    width:100%;
+    float: left;
+    margin-top: 0rem;
+    
+}
+.THIS .detail_signature .leftdiv_signature {
+    display: inline-block;
+    width: 100%;
+    float: left;
+    background: #fff;
+    position:relative;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+    border-radius: 5px;
+    overflow: auto;
+}
+.THIS .detail_signature .leftdiv_signature button.slds-button.slds-button_neutral.clearbtnsign {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 0px;
+    text-align: center;
+    padding: 0 10px;
+    background: #ebebeb;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+.THIS .detail_signature .leftdiv_signature button.slds-button.slds-button_neutral.clearbtnsign svg.slds-button__icon.slds-button__icon_left {
+    margin: 0;
+    fill: #818181;
+}
+.THIS .detail_signature .txtsign{
+    position: relative;
+    display: block;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding-bottom: 3px;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.THIS .detail_signature .right_allbtn {
+    display: inline-block;
+    width: 50%;
+    float: left;
+    height: 100px;
+    padding: 2rem 0rem 0rem;
+    text-align: right;
+}
+
+.THIS .detail_signature .right_allbtn .appbtn{
+    background: #FE864D;
+    border: 1px solid #FE864D;
+    outline: none;
+    box-shadow: none;
+    margin: 0px;
+    margin-left: .5rem;
+}
+.THIS .detail_signature .right_allbtn .rejbtn{
+    background: #364C9B;
+    border: 1px solid #364C9B;
+    margin: 0px;
+    color: #fff;
+    font-weight: bold;
+    outline: none;
+    box-shadow: none;
+}
+.THIS .uploadimgs_div{
+    display: block;
+    width: 100%;
+    clear: both;
+    padding: 1rem 0 0;
+    position: relative;
+    overflow: auto;
+}
+.THIS .uploadimgs_div ul{
+    display: block;
+    overflow-y: hidden;
+    margin: auto;
+    height: auto;
+    overflow-x: auto;
+    width: max-content;
+    min-height: 0px;
+    max-height: 76px;
+}
+.THIS .uploadimgs_div li{
+    color: black;
+    position: relative;
+    display: inline-block;
+    list-style-type: none;
+    margin: 5px;
+    float: left;
+}
+.THIS .uploadimgs_div li img{
+    width:100px;
+    height: auto;
+    min-height: 60px;
+    max-height: 70px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.THIS .uploadimgs_div li a{
+    position: absolute;
+    top: 3px;
+    right: 5px;
+}
+.THIS .uploadimgs_div li a button.slds-button.slds-button_neutral.deletebtn {
+    font-size: 0;
+    padding: 5px;
+    line-height: 1;
+    background: #fff;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+.THIS .uploadimgs_div li a button.slds-button.slds-button_neutral.deletebtn svg.slds-button__icon.slds-button__icon_left {
+    margin: 0;
+    fill: red;
+}
+.THIS .slds-input {
+    /*box-shadow: 0 3px 6px rgb(0 0 0 / 16%);*/
+    height: 38px;
+    color: #797979;
+    font-size: 14px;
+}
+.THIS .image-upload{
+    position:relative;
+}
+.THIS .image-upload .imgupload
+{
+    display: block;
+    position: absolute;
+    top: -50px;
+    right: 5px;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+}
+
+.THIS .image-upload img
+{
+    position: absolute;
+    top: -49px;
+    right: 5px;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    font-size: 0px;
+}
+.THIS .image-upload span.slds-file-selector__button.slds-button.slds-button_neutral {
+    background: transparent;
+    border: none;
+    height: 42px;
+    width: 42px;
+    font-size: 0px;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    right: 0px;
+    position: absolute;
+    top: 1px;
+}
+.THIS .image-upload lightning-primitive-file-droppable-zone.slds-file-selector__dropzone {
+    border: none;
+    font-size: 0px;
+}
+.THIS .image-upload lightning-primitive-icon{
+    visibility: hidden;
+}
+.THIS .btnprint{
+    display: inline-block;
+    float: right;
+    margin-bottom: 1rem;
+    margin-top: 0rem;
+    color: #fe864d;
+    border: 1px solid #fe864d;
+    box-shadow: none;
+    transition: all .4s;
+    background:#fff;
+}
+.THIS .btnprint:hover{
+    color: #fff;
+    border: 1px solid #eb4026;
+    background:#fe864d;
+}
+.THIS .detail_Inspector lightning-input-field{
+    width:100%;
+}
+.THIS .detail_Inspector lightning-input-field label.slds-form-element__label.slds-no-flex{
+    color:#fff;
+}
+.THIS .detail_Inspector .comments_sec{
+    width:100%;
+}
+.THIS .detail_Inspector label.slds-form-element__label{
+    color:#fff;
+}
+.THIS .detail_Inspector .comments_sec textarea {
+    resize: none;
+}
+.THIS .detail_Inspector .comments_sec .slds-has-error .slds-form-element__help {
+    float: left;
+    padding-top: 30px;
+}
+.THIS.outer_div .slds-card__body .slds-var-m-around_medium {
+    margin: 0;
+}
+.THIS li.slds-accordion__list-item {
+    display: block;
+    width: 100%;
+    border: none;
+}
+.THIS section.slds-accordion__section {
+    padding: 0;
+    width: 99%;
+    margin: auto;
+    margin-bottom: 1rem;
+    background: transparent;
+    position: relative;
+}
+.THIS section.slds-accordion__section .slds-accordion__summary {
+    margin: 0;
+    width: 100%;
+    padding: 0rem;
+    color: #fff;
+    background: #364c9b;
+    border-radius: .25rem;
+}
+.THIS section.slds-accordion__section {
+    color: #fff;
+    padding: 0rem;
+    font-size: 16px;
+    position: relative;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+    text-decoration: none;
+    border-radius: .25rem;
+    margin: auto;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.THIS section.slds-accordion__section button.slds-button.slds-button_reset.slds-accordion__summary-action {
+    color: #fff;
+    text-decoration: none;
+}
+.THIS section.slds-accordion__section svg.slds-accordion__summary-action-icon.slds-button__icon.slds-button__icon_left.slds-icon.slds-icon-text-default.slds-icon_x-small {
+    fill: #fff;
+}
+.THIS section.slds-accordion__section h3.slds-accordion__summary-heading {
+    padding: 1rem;
+}
+.THIS .slds-is-open>.slds-accordion__content{
+    background: #fff;
+}
+.THIS .uploadimages_div{
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: auto;
+}
+.THIS .uploadimages_div .MS-controls {
+    padding: 0px!important;
+    position: absolute!important;
+    width: 500px;
+    margin: -4.7% 29.5%;
+}
+.THIS .uploadimages_div .MS-controls lightning-icon.slds-icon-utility-chevronright.slds-icon_container {
+    position: absolute;
+    float: right;
+    right: 0;
+    padding: 3px 8px!important;
+    border: 1px solid #ccc;
+}
+.THIS .uploadimages_div .MS-controls lightning-icon.slds-icon-utility-chevronleft.slds-icon_container {
+    position: absolute;
+    float: left;
+    left: 0;
+    padding: 3px 8px!important;
+    border: 1px solid #ccc;
+}
+.THIS .inspector_info{
+    position: relative;
+    display: inline-block;
+    width: 50%;
+    float: left;
+}
+.THIS .backbtn_div{
+    position: relative;
+    width: 50%;
+    display: inline-block;
+    float: left;
+}
+@media only screen and (max-width: 992px) {
+    .THIS .details_third {
+        display: block;
+    }
+    .THIS .details_third .left_imagediv {
+        width: 100%;
+    }  
+    .THIS .details_third .right_checkboxdiv {
+        width: 100%;
+        margin-left: 0%;
+        display: block;
+        margin-top: 1rem;
+        margin-bottom: 1%;
+    }
+    .THIS .slds-form .details_third .right_checkboxdiv lightning-input-field,
+    .THIS .slds-form .details_third .right_checkboxdiv lightning-output-field {
+        width: 50%;
+    }
+    .THIS .uploadimages_div .MS-controls {
+        margin: -8% 8.5%;
+        width: 82%;
+    }
+    .THIS .slds-form lightning-input-field, .THIS .slds-form lightning-output-field ,
+    .THIS lightning-slider.slds-form-element{
+        width:100%;
+    }
+    .THIS .range {
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .slds-form lightning-input-field, .THIS .slds-form lightning-output-field ,
+    .THIS lightning-slider.slds-form-element{
+        width: 100%;
+    }
+    .THIS .details_third .left_imagediv {
+        width: 100%;
+        overflow: auto;
+    }
+    .THIS .details_third button.slds-button.slds-button_neutral.clearbtn {
+        top: 10px;
+    }
+    .THIS .uploadimages_div .MS-controls {
+        margin: -9% 8.5%;
+        width: 82%;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .slds-card__body .slds-var-m-around_medium{
+        margin:0px;  
+    }
+    .THIS .slds-form lightning-input-field, .THIS .slds-form lightning-output-field
+    {
+        width: 100%;
+        display: flex;
+        position: relative;
+    }
+    .THIS .slds-form .details_second lightning-input-field, 
+    .THIS .slds-form .details_second lightning-output-field ,
+    .THIS lightning-slider.slds-form-element{
+        border-bottom: 0 solid #ddd!important;
+        padding: .5rem 0rem 0rem!important;
+    }
+    .THIS .details_third {
+        padding: 0rem;
+    }
+    .THIS .detail_Inspector {
+        margin-top: 1rem;
+        padding: 1rem 1rem 2rem;
+        background: #fbfbfb;
+        border-radius: 5px;
+    }
+    .THIS .detail_Inspector lightning-input-field label.slds-form-element__label.slds-no-flex ,
+    .THIS .detail_Inspector label.slds-form-element__label{
+        color: #364C9B;
+        font-size: 13px;
+        text-transform: capitalize;
+    }
+    .THIS .slds-input {
+        font-size: 13px;
+    }
+    .THIS .detail_signature .txtsign {
+        text-transform: capitalize;
+        color: #364c9b;
+        font-size: 13px;
+    }
+    .THIS .slds-form .detail_Inspector lightning-input-field, 
+    .THIS .slds-form .detail_Inspector lightning-output-field {
+        border-bottom: 0 solid #ddd;
+        margin-bottom: 0;
+        padding: .5rem 0rem!important;
+    }
+    .THIS .detail_signature .leftdiv_signature{
+        width: 100%;
+        overflow:auto;
+    }
+    .THIS .detail_signature {
+        padding: 1rem 0rem;
+    }
+    
+    .THIS .detail_signature .right_allbtn {
+        width: 100%;
+        height: auto;
+        padding: 1rem 0 0;
+    }
+    .THIS .slds-form .details_third .right_checkboxdiv lightning-input-field,
+    .THIS .slds-form .details_third .right_checkboxdiv lightning-output-field {
+        width: 50%!important;
+        padding-left: 0px!important;
+    }
+    .THIS .slds-form .details_third span.slds-form-element__label {
+        font-size: 13px;
+        text-transform: capitalize!important;
+    }
+    .THIS .uploadimgs_div li img {
+        width: 80px;
+    }
+    .THIS .uploadimages_div .MS-controls {
+        width: 100%;
+        margin: -19% 2%;
+    }
+    .THIS .uploadimages_div .MS-controls lightning-icon.slds-icon-utility-chevronleft.slds-icon_container {
+        left: -1rem;
+        top: -1.5rem;
+    }
+    .THIS .uploadimages_div .MS-controls lightning-icon.slds-icon-utility-chevronright.slds-icon_container {
+        right: 0rem;
+        top: -1.5rem;
+    }
+    .THIS button.slds-button.slds-button_neutral.btnbackbottom {
+        margin-left: 0rem;
+    }
+    .THIS .details_second{
+        padding: 1rem;
+    }
+    .THIS .slds-var-m-around_medium.form_details {
+        margin: 0% 2%!important;
+        margin-top: -1rem!important;
+        width: 96%;
+    }
+    .THIS .form_details .recEditForm form .slds-accordion {
+        margin-top: 0rem!important;
+        margin-bottom: 1rem;
+    }
+    .THIS .form_details .recEditForm form .slds-accordion  .slds-truncate {
+        font-size: 13px;
+    }
+    .THIS section.slds-accordion__section svg.slds-accordion__summary-action-icon.slds-button__icon.slds-button__icon_left.slds-icon.slds-icon-text-default.slds-icon_x-small {
+        fill: #fff;
+        width: 13px;
+    }
+    .THIS section.slds-accordion__section .slds-accordion__summary {    
+        background: #FE864D;
+    }
+    .THIS .detail_signature .right_allbtn .rejbtn {
+        width: 48%;
+        margin-left: 0%;
+        margin-right: 1%;
+        display: inline-block;
+        float: left;
+    }
+    .THIS .detail_signature .right_allbtn .appbtn {
+        width: 48%;
+        display: inline-block;
+    }
+    .THIS button.slds-button.slds-button_neutral.btnbackbottom {
+        width: 96%;
+        margin-left: 2%!important;
+        border: 1px solid #fff;
+        margin-top: 0rem;
+        display:none;
+    }
+    .THIS .details_first span.slds-form-element__label, .THIS .details_first label.slds-form-element__label.slds-no-flex, 
+    .THIS .details_first label.slds-form-element__label {
+        text-transform: capitalize;
+        font-size: 13px;
+        width: 50%;
+        float: left;
+        display: inline-block;
+        font-weight: normal;
+    }
+    .THIS .details_first .slds-form-element__control {
+        display: inline-block;
+        float: left;
+        width: 50%;
+        padding: 0!important;
+        text-align: right;
+        height: auto;
+    }
+    .THIS .details_second span.slds-form-element__label ,
+    .THIS .details_second label.slds-form-element__label{
+        width: 100%;
+    }
+    .THIS .details_second .slds-form-element__control.slds-grow ,
+    .THIS .details_second .slds-form-element__control{
+        width: 100%;
+    }
+    .THIS .details_second [lightning-picklist_picklist-host] {
+        display: contents;
+    }
+    .THIS .details_second span.slds-form-element__label, 
+    .THIS .details_second label.slds-form-element__label.slds-no-flex, 
+    .THIS .details_second label.slds-form-element__label {    
+        text-transform: capitalize;
+        font-size: 13px;
+    }
+    .THIS .details_first .slds-form-element_stacked:not([class*="slds-size"]){
+        display: flex;
+    }
+    .THIS .inspector_info {
+        width: 100%;
+    }
+    .THIS .range {
+        width: 100%;
+        padding: .5rem 0rem!important;
+    }
+}

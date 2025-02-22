@@ -1,0 +1,233 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" 
+                controller="ETVIN_ShowVehicleInsuranceCtrl">
+    
+     <aura:attribute name="fileName" type="String" default="No File Selected.." />
+     <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
+    <aura:attribute name="recordId" type="string" />
+    <aura:attribute name="vehicleInsList" type="List" />
+    <aura:attribute name="detailPage" type="boolean" default="false" />
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="vehicleClaims" type="Correction_Cancel_Request__c" />
+    
+    <aura:attribute name="selectedDocumentId" type="string"/>
+    <aura:attribute name="lstContentDoc" type="List"/>
+    <aura:attribute name="hasModalOpen" type="boolean" default="false"/>
+   
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="FilteredData" type="object"/>
+    <aura:method name="callingFromParentCmp" action="{!c.getData}"
+                 access="public">
+       <aura:attribute name="searchKeyWord" type="string"/>
+    </aura:method>
+    
+    <div class="noRecord">
+    <aura:if isTrue="{!v.detailPage}" >
+        <lightning:card >
+            <div class="headerTop">
+                <!-- <lightning:button variant="brand-outline" label="Back" title="Brand action" onclick="{! c.handleback }" />
+                &#x2190; -->
+                <div class="backBtn">
+                    <lightning:buttonicon iconName="utility:back" variant="brand" onclick="{! c.handleback }" />
+                </div>
+                <h3>Correction Details</h3>
+            </div>
+            <div class="slds-p-around_large">
+                <!--lightning:recordForm aura:id="recordLoader"
+                                      recordId="{!v.recordId}" columns="2"
+                                      objectApiName="ETVIN_Vehicle_Insurance__c"
+                                      layoutType="Full" fields="Name"
+                      targetFields="{!v.Vehiclepolicy}"
+                      /-->
+                
+                <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Correction_Cancel_Request__c" >
+                    <lightning:messages />
+                    
+                    <lightning:layout multipleRows="true">
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:inputField fieldName="Name" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Vehicle_Master__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Vehicle_Insurance_Policy__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Insurance_Company__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Correction_for__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Request_Status__c" />
+                        </lightning:layoutItem> 
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Description__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Comments__c" />
+                        </lightning:layoutItem>
+                                            
+                        
+                       
+                    </lightning:layout>
+                </lightning:recordEditForm>
+            </div>
+            <aura:if isTrue="{!not(empty(v.lstContentDoc))}"> 
+                <!-- Custom DataTable to Display List Of Available ContentDocuments Start-->  
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Title">Uploaded Documents</div>
+                            </th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.lstContentDoc}" var="CD">
+                            <tr>
+                                <th scope="row">
+                                    <div class="slds-truncate" title="{!CD.Title}">
+                                        <!--store contentDocument Id in data-Id attribute-->
+                                        <a onclick="{!c.getSelected}" data-Id="{!CD.Id}">{!CD.Title}</a>
+                                    </div>
+                                </th>
+                                
+                            </tr>  
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </aura:if>
+            <div class="footerBtns">
+                <lightning:button variant="brand" label="Approve" title="Approved" onclick="{! c.handleApproved }" />
+                <lightning:button variant="destructive" label="Reject" title="Reject" onclick="{! c.handlereject }"/>
+            </div>   
+        </lightning:card>
+        <aura:set attribute="else">
+             <aura:if isTrue="{!not(empty(v.FilteredData))}"> 
+                  <h3 class="Headingcontent">Correction Request</h3>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" >Correction Ref Number</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" >Correction for</div>
+                        </th>
+                         <th class="" scope="col">
+                            <div class="slds-truncate" >Vehicle Internal Number</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" >Comments</div>
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.FilteredData}" var="vehicle" indexVar="index">
+                        <tr class="slds-hint-parent">
+                            <td data-label="Opportunity Name" scope="row">
+                                <div class="slds-truncate" title="Vehicle Insurance Name">
+                                    <a data-value="{!index}" data-record="{!vehicle.Id}" onclick="{!c.openRecord}">{!vehicle.Name}</a>
+                                </div>
+                            </td>
+                            <td>
+                             <div class="slds-truncate" title="">{!vehicle.Correction_for__c}</div>
+                            </td>
+                             <td>
+                             <div class="slds-truncate" title="">{!vehicle.Vehicle_Interanal_Number__c}</div>
+                            </td>
+                             <td>
+                             <div class="slds-truncate" title="">{!vehicle.Comments__c}</div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+                 <aura:set attribute="else"> 
+                     No Records To Display
+                 </aura:set>
+            </aura:if>
+        </aura:set>
+    </aura:if>
+    </div>
+    
+    <aura:if isTrue="{!v.isModalOpen}">
+        
+        <aura:if isTrue="{!v.showLoadingSpinner}">
+            <div class="slds-text-body_small slds-text-color_error">Uploading... 
+                <img src="/auraFW/resources/aura/images/spinner.gif" class="spinner-img" alt="Loading"/>'
+            </div>
+        </aura:if>
+        <!-- Modal/Popup Box starts here-->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box Header Starts here-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Correction Request</h2>
+                </header>
+                <!--Modal/Popup Box Body Starts here-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>
+                        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Correction_Cancel_Request__c" aura:id="accForm" onsubmit="{!c.onRecordSubmit}"  >
+                            <lightning:messages aura:id="CorrMessage" />
+                            <lightning:inputField fieldName="ETVIN_Rejection_Reason__c" aura:id="rejectReason1" class="slds-hide"/>
+                            <lightning:textarea value="" label="Reason for Rejection" aura:id="rejectReason"/>
+                            
+                            
+                           <div class="cancelSaveBtnn">
+                                <lightning:button variant="neutral"
+                                                  label="Cancel"
+                                                  title="Cancel"
+                                                  onclick="{! c.closeModel }"/>
+                                <lightning:button variant="brand"
+                                                  label="Save"
+                                                  title="Save"
+                                                  onclick="" type="submit"/>
+                           </div>
+                            
+                        </lightning:recordEditForm>
+                    </p>
+                </div>
+                <!--Modal/Popup Box Footer Starts here-->
+                <!--footer class="slds-modal__footer">
+                    <lightning:button variant="neutral"
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    <lightning:button variant="brand"
+                                      label="Save"
+                                      title="Save"
+                                      onclick="{!c.submitDetails}"/>
+                </footer-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+     <aura:if isTrue="{!v.hasModalOpen}">
+        <section onclick="{!c.closeFileModel}"
+                 role="dialog"
+                 aria-modal="true"
+                 class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__content slds-p-around_medium slds-text-align_center"
+                     style="background: transparent;">
+                    <div style="width: 50%; margin: 0 auto; text-align: left">
+                        <!--<lightning:fileCard> to preview file using content document Id -->
+                        <lightning:fileCard fileId="{!v.selectedDocumentId}"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

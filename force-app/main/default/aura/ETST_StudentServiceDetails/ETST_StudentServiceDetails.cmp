@@ -1,0 +1,229 @@
+<aura:component extends="c:ETST_BilingualCommunity" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="disableCheckbox" type="boolean" default="true" />
+    <aura:attribute name="serviceTypes" type="List"/>
+    <aura:attribute name="isDropoff" type="boolean" default="false"/>
+    <aura:attribute name="searchKey" type="string" default=""/>
+    <aura:attribute name="status" type="string" /> 
+    <aura:attribute name="placeholder" type="string" default="Search address" />
+    <aura:attribute name="AddressList" type="String[]"/>
+    <aura:attribute name="transportTypes" type="List"/> 
+    <aura:attribute name="disableUpdate" type="boolean" default="true"/>
+    <aura:attribute name="showService" type="boolean" default="true"/>
+    <aura:attribute name="priceList" type="Object"/> 
+    <aura:attribute name="currentYearlyAmt" type="decimal" />
+    <aura:attribute name="ETST_Location__Latitude__c" type="decimal" />
+    <aura:attribute name="ETST_Location__Longitude__c" type="decimal" />
+    <aura:attribute name="currentTransportType" type="string"/>
+    <aura:attribute name="currentPickup" type="decimal"/>
+    <aura:attribute name="currentDropoff" type="decimal"/>
+    <aura:attribute name="newTransportType" type="string"/>
+    <aura:attribute name="newFare" type="decimal" default="0"/>
+    <aura:attribute name="currentFare" type="decimal"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:attribute name="servicedetailsLabel" type="string"/>
+    <aura:attribute name="serviceTypeLabel" type="string" />
+    <aura:attribute name="backLabel" type="string" />
+    <aura:attribute name="updateServiceLabel" type="string" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="loaded" type="Boolean" default="false" /> 
+    <aura:attribute name="mapLoaded" type="Boolean" default="true" /> 
+    <aura:attribute name="searchText" type="String" />
+    <aura:attribute name="lat" type="String"/>
+    <aura:attribute name="lon" type="String"/>
+    <aura:attribute name="vfUrl" type="String" />
+    <aura:attribute name="openpickupMap" type="boolean" default="false"/>
+    <aura:attribute name="openDropoffMap" type="boolean" default="false"/>
+    <aura:attribute name="acadamicStart" type="Date" />
+    <aura:attribute name="serviceRecord" type="ET_Service_Request__c"  
+                    default="{'sObjectType':'ET_Service_Request__c', 'RecordTypeId':'','ETST_Activation_Effective_Date__c':'','ETST_Area_Zone__c':'','ETST_Building_Number__c':'','ETST_Cancellation_Effective_Date__c':'','ETST_Cancellation_End_Date__c':'','ETST_Cancellation_Reason_Comments__c':'','ETST_Coordinator_Comments__c':'','ETST_Country__c':'','ETST_Drop_Off_To__c':'','ETST_Drop_of_Time__c':'','ETST_Dropoff_Emirate__c':'','ETST_Dropoff_Location__Latitude__s':'','ETST_Dropoff_Location__Longitude__s':'','ETST_Dropoff_Location__c':'','ETST_Dropoff_State__c':'','ETST_Dropoff_Street__c':'','ETST_Emirates__c':'','ETST_Fare_Charges__c':'','ETST_Is_Active__c':'','ETST_Is_Renewal_Opened__c':'','ETST_Location__Latitude__s':'','ETST_Location__Longitude__s':'','ETST_Location__c':'','ETST_Name__c':'','ETST_Pick_Up_End_Date__c':'','ETST_Pick_Up_From__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Pick_Up_Time__c':'','ETST_Pickup_Location__c':'','ETST_Pickup_Point__c':'','ETST_Reason_for_Cancellation__c':'','ETST_Renewal_End_Date__c':'','ETST_Renewal_Start_Date__c':'','ETST_Renewal_Status__c':'','ETST_Service_End_Date__c':'','ETST_Service_Start_Date__c':'','ETST_Service_Type__c':'','ETST_Stage__c':'','ETST_State_or_Province__c':'','ETST_Status__c':'','ETST_Street_Name__c':'','ETST_Street_Number__c':'','ETST_Student__c':'','ETST_Tenure__c':'','ETST_Transport_Type__c':'','ETST_Coordinator__c':'','ETST_Parent__c':'','ETST_Payee__c':'','ETST_Academic_Year_End_Date__c':'','ET_Account__c':'','ET_Customer_Location__c':'','ET_Location__c':'','ETST_Area__c':'','ETST_Cancellation_Reason__c':'','ET_Sales_Agreement__c':'','ETST_Refund_Amount__c':'','ETST_Land_Mark__c':'','ETST_User__c':'','ETST_Price_List__c':'','ETST_Refund_Amount__c':''}" />
+    
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    
+    <div class="updateservice">
+        <div class="mainupdatesection animated slideInUp">
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.clUpdateService}</h2>
+            <div class="slds-modal__bodyrtl slds-modal__body" aura:id='mainDiv'>
+                <aura:if isTrue="{! v.loaded }">
+                    <fieldset class="slds-form-element slds-form-element_compound">
+                        <div class="slds-form-element__row">
+                            
+                            <div class="slds-col">
+                                <div class="slds-form-element">
+                                    <lightning:select aura:id="ETST_Transport_Type__c" name="Transport Type" label="{!v.clTransportType}" onchange="{!c.updateLocations}"
+                                                      required="true" value="{!v.newTransportType}">
+                                        <option value="">{!v.clchooseone}</option>
+                                        <aura:iteration items="{!v.transportTypes}" var="val">
+                                            <aura:if isTrue="{!v.clLang=='ar'}">
+                                                <option value="{!val.en_Label__c}" selected="{!val==v.serviceRecord.ETST_Transport_Type__c}" > {!val.ar_Label__c}</option>
+                                                <aura:set attribute="else">
+                                                    <option value="{!val.en_Label__c}" selected="{!val==v.serviceRecord.ETST_Transport_Type__c}" > {!val.en_Label__c}</option>
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="slds-form-element__row"> 
+                            <div class="slds-col">
+                                <div class="slds-form-element">
+                                    <aura:if isTrue="{!or(v.serviceRecord.ETST_Transport_Type__c=='Pick up only',
+                                                     v.serviceRecord.ETST_Transport_Type__c=='Two Way')}" > 
+                                        <div class="pickupdatails">
+                                            <lightning:input type="text" autocomplete="off" name="Pickup Location" label="{!v.clPickupLocation}" 
+                                                             aura:id="ETST_Pick_Up_From__c" required="true" 
+                                                             value="{!v.serviceRecord.ETST_Pick_Up_From__c}" id="pick-uplocation" />
+                                            <p aura:id="invalidpickup" style="color:red" class="slds-hide">{!v.clInvalidAddress}</p>
+                                            <lightning:button variant="brand"  label="{!v.clUseCurrentLocation}" onclick="{!c.getCurrentLocation}" class="{!v.clLang =='ar' ? 'spacebottom_AR' : 'spacebottom'}" />
+                                            <span onclick="{!c.openpickupMapController}">Get location</span>
+                                            <lightning:icon iconName="utility:checkin" alternativeText="Pickup Location" title="Pickup Location" 
+                                                            onclick="{!c.openpickupMapController}" class="{!v.clLang =='ar' ? 'picklocatioblink_AR' : 'picklocatioblink'}"/>
+                                        </div>
+                                        <aura:if  isTrue="{!v.openpickupMap}" >  
+                                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" 
+                                                     aria-modal="true" aria-describedby="modal-content-id-1" 
+                                                     class="slds-modal slds-fade-in-open slds-modal_small">
+                                                <div class="slds-modal__container">
+                                                    <!--header class="slds-modal__header">
+                                                    <lightning:buttonIcon iconName="utility:close"
+                                                                          onclick="{!c.closePickupModel}"
+                                                                          alternativeText="close"
+                                                                          variant="bare-inverse"
+                                                                          class="slds-modal__close"/>
+                                                    <h1 class="slds-text-heading-medium">{!$Label.c.ETST_Confirmation}</h1>
+                                                </header-->
+                                                    <div class="slds-modal__content slds-p-around--medium" style="height:410px">
+                                                        <div class="searchlocationdiv">
+                                                            <lightning:input type="text" autocomplete="off" placeholder="{!v.clSearchLocation}" 
+                                                                             label="" 
+                                                                             aura:id="searchText" required="true" onkeyup="{!c.getSearchResultbyEnter}"
+                                                                             value="{!v.searchText}" id="searchText" />
+                                                            <p aura:id="invalidLoc" style="color:rgb(194, 57, 52);padding-top:5px;" class="slds-hide">Could not find the location!</p>
+                                                            <lightning:button variant="brand"  label="{!v.clSearch}" onclick="{!c.getSearchResult}" class="{!v.clLang == 'ar' ? 'btn_table_AR' : 'btn_table'}" />
+                                                        </div>
+                                                        <aura:if isTrue="{! v.mapLoaded }">
+                                                            <iframe aura:id="vfFrame" src="{!v.vfUrl}" 
+                                                                    width="100%" frameBorder="0" height="330px" />
+                                                            <aura:set attribute="else">
+                                                                <lightning:spinner alternativeText="Loading" />
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </div>
+                                                    <footer class="slds-modal__footer">
+                                                        <lightning:button variant="brand" 
+                                                                          label="{!v.clSelectLocation}"
+                                                                          title="Select Location"
+                                                                          onclick="{!c.getLocationDetails}" class="btn_table"/>
+                                                        <lightning:button variant="brand" 
+                                                                          label="{!v.clClose}"
+                                                                          title="Enter Address Manually"
+                                                                          onclick="{!c.closePickupModel}" class="cancel_btn"/>
+                                                        
+                                                    </footer>
+                                                    
+                                                </div>
+                                            </section>
+                                            <div class="slds-backdrop slds-backdrop_open"></div> 
+                                        </aura:if> 
+                                        
+                                    </aura:if>
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="slds-form-element__row">  
+                            <div class="slds-col">
+                                <div class="slds-form-element">
+                                    <aura:if isTrue="{!or(v.serviceRecord.ETST_Transport_Type__c=='Drop off only',
+                                                     v.serviceRecord.ETST_Transport_Type__c=='Two Way')}" >
+                                        <div class="dropdatails">
+                                            <lightning:input type="text" autocomplete="off" name="Drop Off Location" label="{!v.clDropOffLocation}" disabled="false" 
+                                                             aura:id="ETST_Drop_Off_To__c"  
+                                                             required="true" value="{!v.serviceRecord.ETST_Drop_Off_To__c}" id="drop-offlocation"/>
+                                            <p aura:id="invalidDrop" style="color:red" class="slds-hide">{!v.clInvalidAddress}</p>
+                                            <lightning:button variant="brand"  label="{!v.clUseCurrentLocation}" onclick="{!c.getCurrentDropLocation}" class="{!v.clLang =='ar' ? 'spacebottom_AR' : 'spacebottom'}"/>                                                                             
+                                            <span onclick="{!c.openpickupMapController}">Get location</span>
+                                            
+                                            <lightning:icon iconName="utility:checkin" alternativeText="Drop Location" title="Drop Location" 
+                                                            onclick="{!c.openDropoffMapController}" class="{!v.clLang =='ar' ? 'picklocatioblink_AR' : 'picklocatioblink'}" />   
+                                        </div>
+                                        <aura:if  isTrue="{!v.openDropoffMap}" > 
+                                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" 
+                                                     aria-modal="true" aria-describedby="modal-content-id-1" 
+                                                     class="slds-modal slds-fade-in-open slds-modal_small">
+                                                <div class="slds-modal__container">
+                                                    <!--header class="slds-modal__header">
+                                                    <lightning:buttonIcon iconName="utility:close"
+                                                                          onclick="{!c.closePickupModel}"
+                                                                          alternativeText="close"
+                                                                          variant="bare-inverse"
+                                                                          class="slds-modal__close"/>
+                                                    <h1 class="slds-text-heading-medium">{!$Label.c.ETST_Confirmation}</h1>
+                                                </header-->
+                                                    <div class="slds-modal__content slds-p-around--medium" style="height:410px">
+                                                        <div class="searchlocationdiv">
+                                                            <lightning:input type="text" autocomplete="off" placeholder="{!v.clSearchLocation}" 
+                                                                             label="" 
+                                                                             aura:id="searchText" required="true" onkeyup="{!c.getSearchResultbyEnter}"
+                                                                             value="{!v.searchText}" id="searchText" />
+                                                            <p aura:id="invalidLoc" style="color:rgb(194, 57, 52);padding-top:5px;" class="slds-hide">Could not find the location!</p>
+                                                            <lightning:button variant="brand"  label="{!v.clSearch}" onclick="{!c.getSearchResult}" class="{!v.clLang == 'ar' ? 'btn_table_AR' : 'btn_table'}" />
+                                                        </div>
+                                                        <aura:if isTrue="{! v.mapLoaded }">
+                                                            <iframe aura:id="vfFrame" src="{!v.vfUrl}" 
+                                                                    width="100%" frameBorder="0" height="330px" />
+                                                            <aura:set attribute="else">
+                                                                <lightning:spinner alternativeText="Loading" />
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </div>
+                                                    <footer class="slds-modal__footer">
+                                                        <lightning:button variant="brand" 
+                                                                          label="{!v.clSelectLocation}"
+                                                                          title="Select Location"
+                                                                          onclick="{!c.getDropLocationDetails}" class="btn_table"/>
+                                                        <lightning:button variant="brand" 
+                                                                          label="{!v.clClose}"
+                                                                          title="Enter Address Manually"
+                                                                          onclick="{!c.closeDropoffModel}" class="cancel_btn"/>
+                                                        
+                                                    </footer>
+                                                    
+                                                </div>
+                                            </section>
+                                            <div class="slds-backdrop slds-backdrop_open"></div> 
+                                            
+                                        </aura:if>  
+                                        
+                                    </aura:if>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </fieldset>  
+                    <aura:set attribute="else">
+                        <lightning:spinner alternativeText="Loading" />
+                    </aura:set>
+                </aura:if>
+            </div>
+            <div class="slds-float--right btndiv">
+                
+                <aura:if isTrue="{!v.newFare>0}">                        
+                    <div class="faremaindiv">
+                        Fare: {!v.serviceRecord.ETST_Fare_Charges__c}
+                    </div>                           
+                </aura:if>
+                <aura:if isTrue="{!lessthan(v.newFare,0)}">                        
+                    <div class="faremaindiv">
+                        Refund: {!v.serviceRecord.ETST_Refund_Amount__c}
+                    </div>                           
+                </aura:if>
+                <lightning:button variant="brand" name="Back" label="{!v.clBack}" onclick="{!c.cancelSave}" class="cancel_btn" />
+                <lightning:button variant="brand" name="Edit" label="{!v.clUpdateService}"
+                                  onclick="{!c.updateService}" class="btn_table" />
+            </div>
+        </div>
+    </div>  
+    
+</aura:component>

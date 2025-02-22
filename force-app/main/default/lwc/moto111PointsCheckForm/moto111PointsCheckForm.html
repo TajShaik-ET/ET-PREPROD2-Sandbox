@@ -1,0 +1,1717 @@
+<template>
+    <div class="pointCheckForm">
+    <div class="container slds-box">
+        <div style="text-align: center; ">
+            <h3 class="slds-theme_shade">
+                <span style="font-size: 1.5em;">111 PointsCheck Form</span>
+            </h3>
+        </div>
+        <Div class="slds-grid slds-wrap slds-p-around_x-small">
+			<div class="slds-col slds-size_1-of-3">
+				<p>{oppRecord.Account.Name}}<span class="fieldHeader">Customer Name </span></p>
+				<p>{oppRecord.Account.PersonMobilePhone}}<span class="fieldHeader">Mobile Number </span></p>				
+			</div>
+			<div class="slds-col slds-size_1-of-3">
+                <p>{oppRecord.Account.PersonEmail}}<span class="fieldHeader">Email </span></p>
+                <p>{oppRecord.Vehicle_Brand__r.Name}}<span class="fieldHeader">Vehicle Brand </span></p>
+			</div>
+            <div class="slds-col slds-size_1-of-3">
+                <p>{oppRecord.Vehicle_Model__r.Name}}<span class="fieldHeader">Vehicle Model </span></p>
+				<p>{oppRecord.Vehicle_Model_Year__c}}<span class="fieldHeader">Vehicle Model Year </span></p>
+			</div>
+          
+        </Div>
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+             Vehcle Documentation
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small slds-box dataSection">
+        <div class="slds-col slds-size_1-of-4">
+            <label>Registration documents</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+            selected={Registration_documents__c} data-id="Registration_documents__c"
+                name="Registration_documents__c" onclick={handleclose}> </lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+            selected={PointsCheckRec.Registration_documents__c} data-id="Registration_documents__c"
+                name="Registration_documents__c" onclick={handlecheck}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>On board equipment:Tool Kit, Tire Repair Kit, High Voltage, Spare wheel </label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+            selected={On_board_equipment__c} data-id="On_board_equipment__c" name="On_board_equipment__c"
+                onclick={handleclose}> </lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+            selected={PointsCheckRec.On_board_equipment__c} data-id="On_board_equipment__c"
+                name="On_board_equipment__c" onclick={handlecheck}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Safety equipment:First aid kit, rim anti-theft protection, warning triangle, safety vest</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+            selected={Safety_equipment__c} data-id="Safety_equipment__c" name="Safety_equipment__c"
+                onclick={handleclose}> </lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+            selected={PointsCheckRec.Safety_equipment__c} data-id="Safety_equipment__c" name="Safety_equipment__c"
+                onclick={handlecheck}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Warranty booklet</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+            selected={Warranty_booklet__c} data-id="Warranty_booklet__c" name="Warranty_booklet__c"
+                onclick={handleclose}> </lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+            selected={PointsCheckRec.Warranty_booklet__c} data-id="Warranty_booklet__c" name="Warranty_booklet__c"
+                onclick={handlecheck}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Maintenance booklet</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+            selected={Maintenance_booklet__c}  data-id="Maintenance_booklet__c" name="Maintenance_booklet__c"
+                onclick={handleclose}> </lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+            selected={PointsCheckRec.Maintenance_booklet__c} data-id="Maintenance_booklet__c"
+                name="Maintenance_booklet__c" onclick={handlecheck}></lightning-button-icon-stateful>
+        </div>
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            Vehcle Diagnostic Check
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small slds-box dataSection">
+        <div class="slds-col slds-size_1-of-4">
+            <label>OBD Fault Memory check</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="OBD_Fault_Memory_check__c" name="OBD_Fault_Memory_check__c" onclick={handleUrgent}>
+            </lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="OBD_Fault_Memory_check__c"
+                name="OBD_Fault_Memory_check__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="OBD_Fault_Memory_check__c" name="OBD_Fault_Memory_check__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Tire Pressure Monitoring TPM</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Tire_Pressure_Monitoring_TPM__c" name="Tire_Pressure_Monitoring_TPM__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Tire_Pressure_Monitoring_TPM__c"
+                name="Tire_Pressure_Monitoring_TPM__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Tire_Pressure_Monitoring_TPM__c" name="Tire_Pressure_Monitoring_TPM__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Front RH LH</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Front_RH_LH__c" name="Front_RH_LH__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Front_RH_LH__c" name="Front_RH_LH__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Front_RH_LH__c" name="Front_RH_LH__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Rear RH LH</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Rear_RH_LH__c" name="Rear_RH_LH__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Rear_RH_LH__c" name="Rear_RH_LH__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Rear_RH_LH__c" name="Rear_RH_LH__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+             Interior (Function and Condition)
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small slds-box dataSection">
+        <div class="slds-col slds-size_1-of-4">
+            <label>Door locking system</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Door_locking_system__c" name="Door_locking_system__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Door_locking_system__c" name="Door_locking_system__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Door_locking_system__c" name="Door_locking_system__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Remote controls</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Remote_controls__c" name="Remote_controls__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Remote_controls__c" name="Remote_controls__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Remote_controls__c" name="Remote_controls__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Alarm system and immobillzer</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Alarm_system_and_immobillzer__c" name="Alarm_system_and_immobillzer__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Alarm_system_and_immobillzer__c"
+                name="Alarm_system_and_immobillzer__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Alarm_system_and_immobillzer__c" name="Alarm_system_and_immobillzer__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Ignition ignition switch</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Ignition_ignition_switch__c" name="Ignition_ignition_switch__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Ignition_ignition_switch__c"
+                name="Ignition_ignition_switch__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Ignition_ignition_switch__c" name="Ignition_ignition_switch__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Steering wheel lock</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Steering_wheel_lock__c" name="Steering_wheel_lock__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Steering_wheel_lock__c" name="Steering_wheel_lock__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Steering_wheel_lock__c" name="Steering_wheel_lock__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Interior lighting</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Interior_lighting__c" name="Interior_lighting__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Interior_lighting__c" name="Interior_lighting__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Interior_lighting__c" name="Interior_lighting__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Horn</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Horn__c" name="Horn__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Horn__c" name="Horn__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Horn__c" name="Horn__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Wipers front rear</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Wipers_front_rear__c" name="Wipers_front_rear__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Wipers_front_rear__c" name="Wipers_front_rear__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Wipers_front_rear__c" name="Wipers_front_rear__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Windscreen washer and headlight system</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Windscreen_washer_and_headlight_system__c" name="Windscreen_washer_and_headlight_system__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Windscreen_washer_and_headlight_system__c"
+                name="Windscreen_washer_and_headlight_system__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Windscreen_washer_and_headlight_system__c" name="Windscreen_washer_and_headlight_system__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Exterior mirror rear view mirror</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Exterior_mirror_rear_view_mirror__c" name="Exterior_mirror_rear_view_mirror__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Exterior_mirror_rear_view_mirror__c"
+                name="Exterior_mirror_rear_view_mirror__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Exterior_mirror_rear_view_mirror__c" name="Exterior_mirror_rear_view_mirror__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Instrument panel</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Instrument_panel__c" name="Instrument_panel__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Instrument_panel__c" name="Instrument_panel__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Instrument_panel__c" name="Instrument_panel__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Multi function steering wheel</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Multi_function_steering_wheel__c" name="Multi_function_steering_wheel__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Multi_function_steering_wheel__c"
+                name="Multi_function_steering_wheel__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Multi_function_steering_wheel__c" name="Multi_function_steering_wheel__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Steering column adjustment</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Steering_column_adjustment__c" name="Steering_column_adjustment__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Steering_column_adjustment__c"
+                name="Steering_column_adjustment__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Steering_column_adjustment__c" name="Steering_column_adjustment__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>On board clock</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="On_board_clock__c" name="On_board_clock__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="On_board_clock__c" name="On_board_clock__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="On_board_clock__c" name="On_board_clock__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Warning lights and sounds</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Warning_lights_and_sounds__c" name="Warning_lights_and_sounds__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Warning_lights_and_sounds__c"
+                name="Warning_lights_and_sounds__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Warning_lights_and_sounds__c" name="Warning_lights_and_sounds__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Airbag system</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Airbag_system__c" name="Airbag_system__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Airbag_system__c" name="Airbag_system__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Airbag_system__c" name="Airbag_system__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Sun visors</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Sun_visors__c" name="Sun_visors__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Sun_visors__c" name="Sun_visors__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Sun_visors__c" name="Sun_visors__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Windscreen rear window and mirror</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Windscreen_rear_window_and_mirror__c" name="Windscreen_rear_window_and_mirror__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Windscreen_rear_window_and_mirror__c"
+                name="Windscreen_rear_window_and_mirror__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Windscreen_rear_window_and_mirror__c" name="Windscreen_rear_window_and_mirror__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Audio Radio telephone CD auto changer</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Audio_Radio_telephone_CD_auto_changer__c" name="Audio_Radio_telephone_CD_auto_changer__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Audio_Radio_telephone_CD_auto_changer__c"
+                name="Audio_Radio_telephone_CD_auto_changer__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Audio_Radio_telephone_CD_auto_changer__c" name="Audio_Radio_telephone_CD_auto_changer__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Audio system radio CD DVD</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Audio_system_radio_CD_DVD__c" name="Audio_system_radio_CD_DVD__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Audio_system_radio_CD_DVD__c"
+                name="Audio_system_radio_CD_DVD__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Audio_system_radio_CD_DVD__c" name="Audio_system_radio_CD_DVD__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Seat heating</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Seat_heating__c" name="Seat_heating__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Seat_heating__c" name="Seat_heating__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Seat_heating__c" name="Seat_heating__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Seat ventilation</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Seat_ventilation__c" name="Seat_ventilation__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Seat_ventilation__c" name="Seat_ventilation__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Seat_ventilation__c" name="Seat_ventilation__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Power windows incl anti pinch</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Power_windows_incl_anti_pinch__c" name="Power_windows_incl_anti_pinch__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Power_windows_incl_anti_pinch__c"
+                name="Power_windows_incl_anti_pinch__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Power_windows_incl_anti_pinch__c" name="Power_windows_incl_anti_pinch__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Steering wheel heating</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Steering_wheel_heating__c" name="Steering_wheel_heating__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Steering_wheel_heating__c"
+                name="Steering_wheel_heating__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Steering_wheel_heating__c" name="Steering_wheel_heating__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Auxiliary heating</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Auxiliary_heating__c" name="Auxiliary_heating__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Auxiliary_heating__c" name="Auxiliary_heating__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Auxiliary_heating__c" name="Auxiliary_heating__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Seat adjustment seat position memory</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Seat_adjustment_seat_position_memory__c" name="Seat_adjustment_seat_position_memory__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Seat_adjustment_seat_position_memory__c"
+                name="Seat_adjustment_seat_position_memory__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Seat_adjustment_seat_position_memory__c" name="Seat_adjustment_seat_position_memory__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Cup holders</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Cup_holders__c" name="Cup_holders__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Cup_holders__c" name="Cup_holders__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Cup_holders__c" name="Cup_holders__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Glove compartment lid</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Glove_compartment_lid__c" name="Glove_compartment_lid__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Glove_compartment_lid__c"
+                name="Glove_compartment_lid__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Glove_compartment_lid__c" name="Glove_compartment_lid__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Cigarette lighter sockets</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Cigarette_lighter_sockets__c" name="Cigarette_lighter_sockets__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Cigarette_lighter_sockets__c"
+                name="Cigarette_lighter_sockets__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Cigarette_lighter_sockets__c" name="Cigarette_lighter_sockets__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Ashtrays</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Ashtrays__c" name="Ashtrays__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Ashtrays__c" name="Ashtrays__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Ashtrays__c" name="Ashtrays__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Seat belts and seat belt height</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Seat_belts_and_seat_belt_height__c" name="Seat_belts_and_seat_belt_height__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Seat_belts_and_seat_belt_height__c"
+                name="Seat_belts_and_seat_belt_height__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Seat_belts_and_seat_belt_height__c" name="Seat_belts_and_seat_belt_height__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Seat and had restraint upholstery</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Seat_and_had_restraint_upholstery__c" name="Seat_and_had_restraint_upholstery__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Seat_and_had_restraint_upholstery__c"
+                name="Seat_and_had_restraint_upholstery__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Seat_and_had_restraint_upholstery__c" name="Seat_and_had_restraint_upholstery__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Roof sliding sunroof</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Roof_sliding_sunroof__c" name="Roof_sliding_sunroof__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Roof_sliding_sunroof__c"
+                name="Roof_sliding_sunroof__c" onclick={handleOk}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Roof_sliding_sunroof__c" name="Roof_sliding_sunroof__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Roof lining</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Roof_lining__c" name="Roof_lining__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Roof_lining__c" name="Roof_lining__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Roof_lining__c" name="Roof_lining__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Cabriolet wind deflector</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Cabriolet_wind_deflector__c" name="Cabriolet_wind_deflector__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Cabriolet_wind_deflector__c"
+                name="Cabriolet_wind_deflector__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Cabriolet_wind_deflector__c" name="Cabriolet_wind_deflector__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Floor mats and carpet</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Floor_mats_and_carpet__c" name="Floor_mats_and_carpet__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Floor_mats_and_carpet__c"
+                name="Floor_mats_and_carpet__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Floor_mats_and_carpet__c" name="Floor_mats_and_carpet__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Interior trim luggage compartment</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Interior_trim_luggage_compartment__c" name="Interior_trim_luggage_compartment__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Interior_trim_luggage_compartment__c"
+                name="Interior_trim_luggage_compartment__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Interior_trim_luggage_compartment__c" name="Interior_trim_luggage_compartment__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Unlocking mechanism for all lids</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Unlocking_mechanism_for_all_lids__cUnlocking_mechanism_for_all_lids__c"
+                name="Unlocking_mechanism_for_all_lids__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Unlocking_mechanism_for_all_lids__c"
+                name="Unlocking_mechanism_for_all_lids__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Unlocking_mechanism_for_all_lids__c" name="Unlocking_mechanism_for_all_lids__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Equipment Exclusive equipmentt</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Equipment_Exclusive_equipment__c" name="Equipment_Exclusive_equipment__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Equipment_Exclusive_equipment__c"
+                name="Equipment_Exclusive_equipment__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Equipment_Exclusive_equipment__c" name="Equipment_Exclusive_equipment__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            Wheels/Tyres
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small slds-box dataSection">
+        <div class="slds-col slds-size_1-of-4">
+            <label>Tread depth</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Tread_depth__c" name="Tread_depth__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Tread_depth__c" name="Tread_depth__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Tread_depth__c" name="Tread_depth__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Frt LH RH RR RH RR LH</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Frt_LH_RH_RR_RH_RR_LH__c" name="Frt_LH_RH_RR_RH_RR_LH__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Frt_LH_RH_RR_RH_RR_LH__c"
+                name="Frt_LH_RH_RR_RH_RR_LH__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Frt_LH_RH_RR_RH_RR_LH__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Tyre Size F R</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Tyre_Size_F_R__c" name="Tyre_Size_F_R__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Tyre_Size_F_R__c" name="Tyre_Size_F_R__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Tyre_Size_F_R__c" name="Tyre_Size_F_R__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Tyre manufacturer</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Tyre_manufacturer__c " name="Tyre_manufacturer__c "
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Tyre_manufacturer__c " name="Tyre_manufacturer__c "
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Tyre_manufacturer__c " name="Tyre_manufacturer__c "
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>No safety related damage on wheels tyres</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="No_safety_related_damage_on_wheels_tyres__c" name="No_safety_related_damage_on_wheels_tyres__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="No_safety_related_damage_on_wheels_tyres__c"
+                name="No_safety_related_damage_on_wheels_tyres__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="No_safety_related_damage_on_wheels_tyres__c" name="No_safety_related_damage_on_wheels_tyres__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Tyre pressure FRT RR</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Tyre_pressure_FRT_RR__c" name="Tyre_pressure_FRT_RR__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Tyre_pressure_FRT_RR__c"
+                name="Tyre_pressure_FRT_RR__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Tyre_pressure_FRT_RR__c" name="Tyre_pressure_FRT_RR__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            Drive System/UNderbody (Function and Condition- No visible Defects,fluids loss,leaks)
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small slds-box dataSection">
+        <div class="slds-col slds-size_1-of-4">
+            <label>Underbody cover</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Underbody_cover__c" name="Underbody_cover__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Underbody_cover__c" name="Underbody_cover__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Underbody_cover__c" name="Underbody_cover__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Exhaust system</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Exhaust_system__c" name="Exhaust_system__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Exhaust_system__c" name="Exhaust_system__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Exhaust_system__c" name="Exhaust_system__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Chassis wheel suspension shock absorber</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Chassis_wheel_suspension_shock_absorber__c" name="Chassis_wheel_suspension_shock_absorber__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Chassis_wheel_suspension_shock_absorber__c"
+                name="Chassis_wheel_suspension_shock_absorber__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Chassis_wheel_suspension_shock_absorber__c" name="Chassis_wheel_suspension_shock_absorber__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Stabilizer bearings</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Stabilizer_bearings__c" name="Stabilizer_bearings__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Stabilizer_bearings__c" name="Stabilizer_bearings__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Stabilizer_bearings__c" name="Stabilizer_bearings__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Axie joints</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Axie_joints__c" name="Axie_joints__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Axie_joints__c" name="Axie_joints__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Axie_joints__c" name="Axie_joints__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Drive axies</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Drive_axies__c" name="Drive_axies__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Drive_axies__c" name="Drive_axies__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Drive_axies__c" name="Drive_axies__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Transfer case</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Transfer_case__c" name="Transfer_case__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Transfer_case__c" name="Transfer_case__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Transfer_case__c" name="Transfer_case__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Steering gear</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Steering_gear__c" name="Steering_gear__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Steering_gear__c" name="Steering_gear__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Steering_gear__c" name="Steering_gear__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Transmission</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Transmission__c" name="Transmission__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Transmission__c" name="Transmission__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Transmission__c" name="Transmission__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Fuel system</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Fuel_system__c" name="Fuel_system__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Fuel_system__c" name="Fuel_system__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Fuel_system__c" name="Fuel_system__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Radiators coolers fans</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Radiators_coolers_fans__c" name="Radiators_coolers_fans__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Radiators_coolers_fans__c"
+                name="Radiators_coolers_fans__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Radiators_coolers_fans__c" name="Radiators_coolers_fans__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Coolant hoses and connections</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Coolant_hoses_and_connections__c" name="Coolant_hoses_and_connections__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Coolant_hoses_and_connections__c"
+                name="Coolant_hoses_and_connections__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Coolant_hoses_and_connections__c" name="Coolant_hoses_and_connections__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Brake lines and hoses</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Brake_lines_and_hoses__c" name="Brake_lines_and_hoses__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Brake_lines_and_hoses__c"
+                name="Brake_lines_and_hoses__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Brake_lines_and_hoses__c" name="Brake_lines_and_hoses__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Brake Pads</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Brake_Pads__c" name="Brake_Pads__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Brake_Pads__c" name="Brake_Pads__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Brake_Pads__c" name="Brake_Pads__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Brake discs within wear limits</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Brake_discs_within_wear_limits__c" name="Brake_discs_within_wear_limits__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Brake_discs_within_wear_limits__c"
+                name="Brake_discs_within_wear_limits__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Brake_discs_within_wear_limits__c" name="Brake_discs_within_wear_limits__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Brake calipers air ducts cover plates</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Brake_calipers_air_ducts_cover_plates__c" name="Brake_calipers_air_ducts_cover_plates__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Brake_calipers_air_ducts_cover_plates__c"
+                name="Brake_calipers_air_ducts_cover_plates__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Brake_calipers_air_ducts_cover_plates__c" name="Brake_calipers_air_ducts_cover_plates__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            Vehicle Exterior (Function and Condition)
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small slds-box dataSection">
+        <div class="slds-col slds-size_1-of-4">
+            <label>Body</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Body__c" name="Body__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Body__c" name="Body__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Body__c" name="Body__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Interior trim luggage compartment</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Interior_trim_luggage_compartment__c" name="Interior_trim_luggage_compartment__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Interior_trim_luggage_compartment__c"
+                name="Interior_trim_luggage_compartment__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Interior_trim_luggage_compartment__c" name="Interior_trim_luggage_compartment__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Convertible top</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Convertible_top__c" name="Convertible_top__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Convertible_top__c" name="Convertible_top__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Convertible_top__c" name="Convertible_top__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Paintwork</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Paintwork__c" name="Paintwork__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Paintwork__c" name="Paintwork__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Paintwork__c" name="Paintwork__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Doors and lids</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Doors_and_lids__c" name="Doors_and_lids__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Doors_and_lids__c" name="Doors_and_lids__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Doors_and_lids__c" name="Doors_and_lids__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Exterior lights</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Exterior_lights__c" name="Exterior_lights__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Exterior_lights__c" name="Exterior_lights__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Exterior_lights__c" name="Exterior_lights__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Headlight adjustment</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Headlight_adjustment__c" name="Headlight_adjustment__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Headlight_adjustment__c"
+                name="Headlight_adjustment__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Headlight_adjustment__c" name="Headlight_adjustment__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Rims</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Rims__c+" name="Rims__c+" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Rims__c+" name="Rims__c+"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Rims__c+" name="Rims__c+" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Glazing</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Glazing__c" name="Glazing__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Glazing__c" name="Glazing__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Glazing__c" name="Glazing__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Spoiler</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Spoiler__c" name="Spoiler__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Spoiler__c" name="Spoiler__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Spoiler__c" name="Spoiler__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Water drains and air guides</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Water_drains_and_air_guides__c" name="Water_drains_and_air_guides__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Water_drains_and_air_guides__c"
+                name="Water_drains_and_air_guides__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Water_drains_and_air_guides__c" name="Water_drains_and_air_guides__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Equipment Exclusive equipmentt</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Equipment_Exclusive_equipmentt__c" name="Equipment_Exclusive_equipmentt__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Equipment_Exclusive_equipmentt__c"
+                name="Equipment_Exclusive_equipmentt__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Equipment_Exclusive_equipmentt__c" name="Equipment_Exclusive_equipmentt__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Trailer coupling</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Trailer_coupling__c" name="Trailer_coupling__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Trailer_coupling__c" name="Trailer_coupling__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Trailer_coupling__c" name="Trailer_coupling__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Taking two photos as shown documentation</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Taking_two_photos_as_shown_documentation__c" name="Taking_two_photos_as_shown_documentation__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Taking_two_photos_as_shown_documentation__c"
+                name="Taking_two_photos_as_shown_documentation__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Taking_two_photos_as_shown_documentation__c" name="Taking_two_photos_as_shown_documentation__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+             Engine Compartment (Function and Condition - No visible Defects,fluid loss, leaks)
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small slds-box dataSection">
+        <div class="slds-col slds-size_1-of-4">
+            <label>Engine idling</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Engine_idling__c" name="Engine_idling__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Engine_idling__c" name="Engine_idling__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Engine_idling__c" name="Engine_idling__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Air conditioning compressor</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Air_conditioning_compressor__c" name="Air_conditioning_compressor__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Air_conditioning_compressor__c"
+                name="Air_conditioning_compressor__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Air_conditioning_compressor__c" name="Air_conditioning_compressor__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Belts generator air conditioning fans</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Belts_generator_air_conditioning_fans__c" name="Belts_generator_air_conditioning_fans__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Belts_generator_air_conditioning_fans__c"
+                name="Belts_generator_air_conditioning_fans__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Belts_generator_air_conditioning_fans__c" name="Belts_generator_air_conditioning_fans__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Engine</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Engine__c" name="Engine__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Engine__c" name="Engine__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Engine__c" name="Engine__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Generator Alternator</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Generator_Alternator__c" name="Generator_Alternator__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Generator_Alternator__c"
+                name="Generator_Alternator__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Generator_Alternator__c" name="Generator_Alternator__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Battery test attach battery check sheet</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Battery_test_attach_battery_check_sheet__c" name="Battery_test_attach_battery_check_sheet__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Battery_test_attach_battery_check_sheet__c"
+                name="Battery_test_attach_battery_check_sheet__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Battery_test_attach_battery_check_sheet__c" name="Battery_test_attach_battery_check_sheet__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            Fluids(Fill levels)
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small slds-box dataSection">
+
+        <div class="slds-col slds-size_1-of-4">
+            <label>Engine oil</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Engine_oil__c" name="Engine_oil__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Engine_oil__c" name="Engine_oil__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Engine_oil__c" name="Engine_oil__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Coolant</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Coolant__c" name="Coolant__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Coolant__c" name="Coolant__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Coolant__c" name="Coolant__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Power steering hydraulic oil</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Power_steering_hydraulic_oil__c" name="Power_steering_hydraulic_oil__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Power_steering_hydraulic_oil__c"
+                name="Power_steering_hydraulic_oil__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Power_steering_hydraulic_oil__c" name="Power_steering_hydraulic_oil__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Brake clutch fluid</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Brake_clutch_fluid__c" name="Brake_clutch_fluid__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Brake_clutch_fluid__c" name="Brake_clutch_fluid__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Brake_clutch_fluid__c" name="Brake_clutch_fluid__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Windscreen and headlight washer fluid</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Windscreen_and_headlight_washer_fluid__c" name="Windscreen_and_headlight_washer_fluid__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Windscreen_and_headlight_washer_fluid__c"
+                name="Windscreen_and_headlight_washer_fluid__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Windscreen_and_headlight_washer_fluid__c" name="Windscreen_and_headlight_washer_fluid__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Transmission Fluid</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Transmission_Fluid__c" name="Transmission_Fluid__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Transmission_Fluid__c" name="Transmission_Fluid__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Transmission_Fluid__c" name="Transmission_Fluid__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            Test Drive (Function)
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small slds-box dataSection">
+
+        <div class="slds-col slds-size_1-of-4">
+            <label>Staring and idle speed behaviour</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Staring_and_idle_speed_behaviour__c" name="Staring_and_idle_speed_behaviour__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Staring_and_idle_speed_behaviour__c"
+                name="Staring_and_idle_speed_behaviour__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Staring_and_idle_speed_behaviour__c" name="Staring_and_idle_speed_behaviour__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Braking effect foot brake and parking</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Braking_effect_foot_brake_and_parking__c" name="Braking_effect_foot_brake_and_parking__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Braking_effect_foot_brake_and_parking__c"
+                name="Braking_effect_foot_brake_and_parking__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Braking_effect_foot_brake_and_parking__c" name="Braking_effect_foot_brake_and_parking__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>ABS</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="ABS__c" name="ABS__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="ABS__c" name="ABS__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="ABS__c" name="ABS__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Suspension system Strut Type Air</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Suspension_system_Strut_Type_Air__c" name="Suspension_system_Strut_Type_Air__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Suspension_system_Strut_Type_Air__c"
+                name="Suspension_system_Strut_Type_Air__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Suspension_system_Strut_Type_Air__c" name="Suspension_system_Strut_Type_Air__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Power steering</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Power_steering__c" name="Power_steering__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Power_steering__c" name="Power_steering__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Power_steering__c" name="Power_steering__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Steering wheel centered</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Steering_wheel_centered__c" name="Steering_wheel_centered__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Steering_wheel_centered__c"
+                name="Steering_wheel_centered__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Steering_wheel_centered__c" name="Steering_wheel_centered__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Directional stability</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Directional_stability__c" name="Directional_stability__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Directional_stability__c"
+                name="Directional_stability__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Directional_stability__c" name="Directional_stability__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Auto Braking</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Auto_Braking__c" name="Auto_Braking__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Auto_Braking__c" name="Auto_Braking__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Auto_Braking__c" name="Auto_Braking__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+
+        <div class="slds-col slds-size_1-of-4">
+            <label>Vehicle performance</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Vehicle_performance__c" name="Vehicle_performance__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Vehicle_performance__c" name="Vehicle_performance__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Vehicle_performance__c" name="Vehicle_performance__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Gear Shift operation</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Gear_Shift_operation__c" name="Gear_Shift_operation__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Gear_Shift_operation__c"
+                name="Gear_Shift_operation__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Gear_Shift_operation__c" name="Gear_Shift_operation__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Auto Stop start stop</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Auto_Stop_start_stop__c" name="Auto_Stop_start_stop__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Auto_Stop_start_stop__c"
+                name="Auto_Stop_start_stop__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Auto_Stop_start_stop__c" name="Auto_Stop_start_stop__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Heating ventilation system air</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Heating_ventilation_system_air__c" name="Heating_ventilation_system_air__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Heating_ventilation_system_air__c"
+                name="Heating_ventilation_system_air__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Heating_ventilation_system_air__c" name="Heating_ventilation_system_air__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>ParkAssist reversing camera</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="ParkAssist_reversing_camera__c" name="ParkAssist_reversing_camera__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="ParkAssist_reversing_camera__c"
+                name="ParkAssist_reversing_camera__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="ParkAssist_reversing_camera__c" name="ParkAssist_reversing_camera__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>navigation system</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="navigation_system__c" name="navigation_system__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="navigation_system__c" name="navigation_system__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="navigation_system__c" name="navigation_system__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Cruise control all functions</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Cruise_control_all_functions__c" name="Cruise_control_all_functions__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Cruise_control_all_functions__c"
+                name="Cruise_control_all_functions__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Cruise_control_all_functions__c" name="Cruise_control_all_functions__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Instrument panel while vehicle motion</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Instrument_panel_while_vehicle_motion__c" name="Instrument_panel_while_vehicle_motion__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Instrument_panel_while_vehicle_motion__c"
+                name="Instrument_panel_while_vehicle_motion__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Instrument_panel_while_vehicle_motion__c" name="Instrument_panel_while_vehicle_motion__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Hill Hold Control</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Hill_Hold_Control__c" name="Hill_Hold_Control__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Hill_Hold_Control__c" name="Hill_Hold_Control__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Hill_Hold_Control__c" name="Hill_Hold_Control__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+
+        <div class="slds-col slds-size_1-of-4">
+            <label>Lane departure warning LDW</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Lane_departure_warning_LDW__c" name="Lane_departure_warning_LDW__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Lane_departure_warning_LDW__c"
+                name="Lane_departure_warning_LDW__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Lane_departure_warning_LDW__c" name="Lane_departure_warning_LDW__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>Lane Change Assist LCA</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Lane_Change_Assist_LCA__c" name="Lane_Change_Assist_LCA__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Lane_Change_Assist_LCA__c"
+                name="Lane_Change_Assist_LCA__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Lane_Change_Assist_LCA__c" name="Lane_Change_Assist_LCA__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+
+        <div class="slds-col slds-size_1-of-4">
+            <label>Distance control system</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Distance_control_system__c" name="Distance_control_system__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Distance_control_system__c"
+                name="Distance_control_system__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Distance_control_system__c" name="Distance_control_system__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <label>No unusual noises vibrations</label>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="No_unusual_noises_vibrations__c" name="No_unusual_noises_vibrations__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="No_unusual_noises_vibrations__c"
+                name="No_unusual_noises_vibrations__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="No_unusual_noises_vibrations__c" name="No_unusual_noises_vibrations__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+               
+        </div>
+        <div class="slds-col slds-size_4-of-4">
+            <label>Comments</label>
+        </div>
+        <div class="slds-col slds-size_4-of-4">
+            <lightning-textarea class="slds-p-around_xx-small" data-id="Comments" value={PointsCheckRec.Comments__c}
+                placeholder="type here..."></lightning-textarea>
+        </div>
+    </div>
+
+
+
+    <div class="c-container slds-p-around_small container slds-box inspectionSummary" data-id="canvasV">
+        <div style="text-align: center; ">
+            <p class="slds-m-bottom_small">
+                <canvas name="canvasItem" style="border:2px solid rgb(136, 135, 135);" width="500" height="400"
+                    data-id="canvasDia"></canvas>
+            </p>
+            <div>
+                <lightning-button data-id="undoBtn" icon-name="utility:undo" icon-position="left"
+                    class="slds-m-left_x-small"></lightning-button>
+                <lightning-button data-id="redoBtn" icon-name="utility:redo" icon-position="right"
+                    class="slds-m-left_x-small"></lightning-button>
+                <lightning-button icon-name="utility:clear" onclick={clearDrawing}
+                    class="slds-m-left_x-small"></lightning-button>
+            </div>
+           
+        </div>
+    </div>
+
+    <div class="slds-p-around_x-small" style="text-align: center; ">
+        <lightning-button class="slds-p-around_xx-small" variant="brand" label="Save" title="Save" onclick={handleSubmit}></lightning-button>
+        <lightning-button class="slds-p-around_xx-small" label="Back" title="Back" onclick={backbButtonHanlder}></lightning-button>
+    </div>
+
+</div>
+
+
+    <template if:true={loaded}>
+        <lightning-spinner variant="brand" class="SpinnerHolder"></lightning-spinner>
+    </template>
+   
+</template>

@@ -1,0 +1,34 @@
+.THIS .slds-card__header {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 10px;
+    background: #00c19e;
+    color: #fff;
+        margin-bottom: 0px;
+}
+.THIS .slds-card__body {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.THIS .addressmap{
+    height: 710px;
+    box-shadow: 0 8px 6px -6px #9e9e9e;
+}
+
+
+@media only screen and (max-width: 1024px){
+    .THIS .addressmap {
+        height: 834px;
+        box-shadow: 0 8px 6px -6px #9e9e9e;
+    }
+}
+@media only screen and (max-width: 768px){
+    .THIS .addressmap {
+        height: auto;
+    }
+}
+@media only screen and (max-width: 767px){
+    .THIS .slds-card__body {
+        width: 100%;
+        overflow: auto;
+    }
+}

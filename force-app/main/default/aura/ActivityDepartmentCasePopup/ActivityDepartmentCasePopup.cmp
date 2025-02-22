@@ -1,0 +1,619 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,force:lightningQuickAction"
+                controller="ET_BusinessCommunityController" access="global" extends="c:ET_MOE_BilingualCommunity">  
+    <aura:attribute name="showSpinner" type="Boolean" default="false" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!--request attributite-->
+    <aura:attribute name="GlobalEventRequest" type="boolean" />  
+    <!-- LOOKUP ATTRRIBUTE-->
+    <aura:attribute name="objectName" 	type="string" default="Account" required="true" />
+    <aura:attribute name="fieldName" 	type="string" default="ETST_Name_AR__c" required="true" />
+    <aura:attribute name="value" 		type="String" default="" description="To pre-populate a value" />
+    <aura:attribute name="recordCount" 	type="string" default="5" description="Records visible at once"/>
+    <aura:attribute name="iconName" 	type="string" default="standard:employee_contact" description="complete icon name eg. standard:account" />
+    <aura:attribute name="label" 		type="string" default="اسم المدرسة" description="Label will be displayed above input Box" />
+    <aura:attribute name="placeholder" 	type="string" default="Search..." description="placeholder for input Box"/>
+    
+    <!-- Internal Use Attributes -->
+    
+    <aura:attribute name="searchString"   type="string" access="private" default="" description="String to search"/>
+    <aura:attribute name="selectedRecord" type="Object" access="private" default="" description="selected Record Details" />
+    <aura:attribute name="recordsList" 	  type="List"   access="private" description="List of Records having data" />
+    <aura:attribute name="message" 		  type="String" access="private" default="" />
+
+    <!--New-->
+    <aura:attribute name="loadEdirForm" type="Boolean" default="false" />
+    <aura:attribute name="RecordTypeId" type="String" />
+    <aura:attribute name="newCase" type="boolean" />
+    <aura:attribute name="userParentProfileWrap" type="ET_BusinessCommunityController.ResultWrapper" />
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:attribute name="AccountId" type="String" />
+    <aura:attribute name="AccountName" type="String" />
+    <aura:attribute name="contactId" type="String" />
+    <aura:attribute name="code" type="boolean" default='false' />
+    
+    <aura:attribute name="stdcount" type="boolean" default='false' />
+    <aura:attribute name="cycle" type="boolean" default='false' />
+    <aura:attribute name="specialcount" type="boolean" default='false' />
+    <aura:attribute name="supervisorcount" type="boolean" default='false' />
+    <aura:attribute name="arrivalcount" type="Datetime" />
+    <aura:attribute name="tripname" type="boolean" default='false' />
+    <aura:attribute name="schoolname" type="boolean" default='false' />
+    <aura:attribute name="CountOfStudent" type="boolean" default='false' />
+    <aura:attribute name="CoordinatorPhone" type="boolean" default='false' />
+    <aura:attribute name="schid" type="String"/>
+    <aura:attribute name="schcode" type="String"/>
+    <aura:attribute name="typeOfCase" type="String"/>
+    <aura:attribute name="TripDate" type="Datetime" />
+       
+    <aura:handler event="force:refreshView" action="{!c.refresh}" />
+    <aura:attribute name="openMap" type="boolean" />
+    <aura:attribute name="searchText" type="String" />
+    
+    <aura:attribute name="mapLoaded" type="Boolean" default="true" />
+    
+    <aura:attribute name="vfUrl" type="String" />
+    <aura:attribute name="lat" type="String" />
+    <aura:attribute name="lon" type="String" />
+    
+    <aura:registerEvent name="Actionname" type="c:ETST_sendDataEvent" />
+    <aura:attribute name="isDisabled" type="boolean" default="false" />
+    <!--old-->
+    
+    <aura:attribute name="CaseId" type="String" />
+    <aura:attribute name="dynamicRowsList" type="List" description="List of Rows that are created dynamically" />
+    
+    <aura:attribute name="newCaseId" type="Id" />
+    
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods" />
+    
+    <lightning:notificationsLibrary aura:id="notifLib" />
+    <lightning:overlayLibrary aura:id="cmp1" />
+    <aura:attribute name="existingCase" type="case" />
+    <aura:attribute name="msg" type="string" default="" />
+    <lightning:messages aura:id="OppMessage" />
+    <aura:attribute name="currentLocIndex" type="String" />
+    <aura:attribute name="currentDestClick" type="String" />
+    <aura:attribute name="requestLineList" type="List" default="[]" />
+    <aura:attribute name="selectedLookUpRecord" type="sObject" default="{}"/>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+        <div class="slds-modal__container" aura:id="mainDiv">
+            
+            
+            <!-- MODAL BOX HEADER Start-->
+            <header class="slds-modal__header">
+                <lightning:buttonIcon iconName="utility:close" onclick="{!c.closeModel}" alternativeText="close"
+                                      variant="bare-inverse" class="slds-modal__close" />
+                <h1 class="slds-text-heading--medium">{!v.clHowcanwehelpyou}</h1>
+            </header>
+            
+            <lightning:select name="mySelect" label="{!v.clSelectRequestType}" aura:id="mySelect" onchange="{!c.toggle}"
+                              class="{!v.clLang =='ar' ? 'selectsearchrtl' : 'selectsearch'}" >
+                <option>{!v.clNone}</option>
+                <option>{!v.clGlobalEventRequest}</option>
+            </lightning:select>
+            
+            <lightning:messages />
+            <aura:if isTrue="{!v.loadEdirForm}">
+                <aura:if isTrue="{!v.showSpinner}">
+                    <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+                </aura:if>
+                <!--____________________________________this popup only open when lang is arbic____________________________-->              
+                <aura:if  isTrue="{!v.clLang =='ar'}"> 
+                    <div style="padding:0px" class="{!v.clLang =='ar'}">
+                        
+                        <lightning:recordEditForm objectApiName="Case" recordTypeId="{!v.RecordTypeId}" aura:id="caseForm" onsuccess="{!c.caseHandleOnSuccessAR}" onerror="{!c.handleOnErrorCase}">
+                            <lightning:inputField fieldName="Subject" value="Global Event" class="slds-hide"/>
+                            <lightning:inputField fieldName="AccountId" value="{!v.AccountId}"  class="slds-hide"/>
+                            <lightning:inputField fieldName="Status" value="In Progress" class="slds-hide"/>
+                            <lightning:inputField fieldName="Status_Category__c" value="Pending with ET" class="slds-hide"/>
+                            <lightning:inputField fieldName="Origin" value="CRM Portal" class="slds-hide"/>
+                            <div style ="direction: rtl; background:#fff; padding:0 15px;">
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class="align">   <label for="cityid"><span class="reqspan">*</span>نوع الطلب</label></div>
+                                        <lightning:inputField fieldName="Type_Of_Case_AR__c" value="{!v.typeOfCase}" variant="label-hidden" required="true"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning:recordEditForm>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <div class="formdiv_ar " >
+                                <table class="slds-table  slds-table_col-bordered  outerTable" width="100%">
+                                    <tbody>
+                                       <aura:iteration items="{!v.requestLineList}" var="eseObject" indexVar="index">
+                                                <tr>
+                                                    <td>
+                                                        <lightning:buttonIcon alternativeText="add" variant="container" class="successClass"
+                                                                              iconName="utility:add" onclick="{!c.addRowArabic}" />
+                                                        <aura:if isTrue="{!index >0}">
+                                                            <a onclick="{!c.removeRow}" data-record="{!index}">
+                                                                <lightning:buttonIcon iconName="utility:delete" class="errorClass" alternativeText="Delete"/>
+                                                                <span class="slds-assistive-text">Delete</span>
+                                                            </a>
+                                                        </aura:if>
+                                                    </td> 
+                                                    <td style ="direction: rtl;">
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                 <label for="cityid">اسم المدرسة<span class="reqspan">*</span></label>
+                                                               <!-- <c:ESE_Lookup_Controller_Component  indexNumber="{!index}" objectAPIName="Account" fieldAPIName="Name" IconName="custom:custom104" 
+                                                                                                   selectedRecordChanged="{!c.handleSchoolChange}"  label=""/>-->
+                                                                 <c:ESE_Lookup_Controller_Component  indexNumber="{!index}" objectAPIName="Account" fieldAPIName="Name" IconName="custom:custom104" 
+                                                                                               selectedRecordChanged="{!c.handleSchoolChange}"  label=""/>
+                                                            </td>
+                                                          
+                                                            <td>
+                                                                <label for="cityid">تاريخ الرحلة<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="date"  maxlength="50" label=""   value="{!eseObject.Trip_Date__c}" />
+                                                            </td>
+                                                            <td>
+                                                                  <label for="cityid">وجهة الرحلة من<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="text"  maxlength="50" label=""   value="{!eseObject.Trip_Destination_From__c}" />
+                                                            </td>
+                                                            <td>
+                                                                 <label for="cityid">وجهة الرحلة إلى<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="text"  maxlength="50" label=""   value="{!eseObject.Trip_Destination_To__c}" />
+                                                            </td>
+                                                            <td>
+                                                                 <label for="cityid">اسم منسق الرحلة<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="text"  maxlength="50" label=""   value="{!eseObject.Trip_Coordinator_Name__c}" />
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        <tr>
+                                                            
+                                                            <td>
+                                                                 <label for="cityid">بريد إلكتروني<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="text"  maxlength="50" label=""   value="{!eseObject.Email__c}" />
+                                                            </td>
+                                                            <td>
+                                                                  <label for="cityid">الحلقة<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="text"  maxlength="50" label=""  value="{!eseObject.Cycle__c}"  pattern="[0-9]*"  message-when-pattern-mismatch="Please enter a valid number"  />
+                                                            </td>
+                                                            <td><label for="cityid">عدد الطلاب<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="number"  maxlength="50" label=""  pattern="[0-9]*"  message-when-pattern-mismatch="Please enter a valid number"   value="{!eseObject.Count_Of_Students__c}" />
+                                                            </td>
+                                                            <td>
+                                                                  <label for="cityid">عدد الطلاب ذوي الاحتياجات الخاصة<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="number"  maxlength="50" label=""   pattern="[0-9]*"  message-when-pattern-mismatch="Please enter a valid number"  value="{!eseObject.Special_Need_Students_Count__c}" />
+                                                            </td>
+                                                            <td>
+                                                                  <label for="cityid">عدد المشرفين من المدرسة<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="number"  maxlength="50" label=""  pattern="[0-9]*"  message-when-pattern-mismatch="Please enter a valid number"  value="{!eseObject.Supervisors_Count_From_School__c}" />
+                                                            </td>
+                                                            <td>
+                                                                 <label for="cityid">توقيت الوصول إلى الموقع<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="time"  maxlength="50" label=""  value="{!eseObject.Arrival_Time_To_Activity__c}" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                 <label for="cityid">هاتف المنسق<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="number"  maxlength="50" label=""   pattern="[0-9]*"  message-when-pattern-mismatch="Please enter a valid number"   value="{!eseObject.Coordinator_Phone__c}" />
+                                                            </td>
+                                                            <td>
+                                                                 <label for="cityid">نقطة التجمع<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="text"  maxlength="50" label=""   value="{!eseObject.Assembly_Point__c}" />
+                                                            </td>
+                                                            <td>
+                                                                  <label for="cityid">أسم موقع الوجهة إلى<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="text"  maxlength="50" label=""  value="{!eseObject.Landmark_Trip_To__c}" />
+                                                            </td>
+                                                            <td>
+                                                                  <label for="cityid"> أسم موقع الوجهة من<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="text"  maxlength="50" label=""   value="{!eseObject.Landmark_Trip_From__c}" />
+                                                            </td>
+                                                            <td>
+                                                                 <label for="cityid">فئة الطلبة<span class="reqspan">*</span></label>
+                                                                <lightning:select name="gender" label=""  value="{!eseObject.Gender_AR__c}">
+                                                                    <option value="">--None--</option>
+                                                                    <option value="مختلط">مختلط</option>
+                                                                    <option value="أنثى">أنثى</option>
+                                                                  
+                                                                     <option value="مذكر">مذكر</option>
+                                                                </lightning:select>
+                                                            </td>
+                                                            <td>
+                                                                 <label for="cityid">توقيت المغادرة من الموقع<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="time"  maxlength="50" label=""   value="{!eseObject.Leaving_time_from_Location__c}" />
+                                                            </td>
+                                                            <td>
+                                                                <label for="cityid">أخرى<span class="reqspan">*</span></label>
+                                                                <lightning:input name="" type="text"  maxlength="50" label=""   value="{!eseObject.Other__c}" />
+                                                            </td>
+                                                        </tr>    
+                                                    </td>        
+                                                    <td> 
+                                                        {!index + 1}
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration>
+                                        
+                                    </tbody>
+                                    
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--map window-->
+                    <aura:if  isTrue="{!v.openMap}" >  
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" 
+                                 aria-modal="true" aria-describedby="modal-content-id-1" 
+                                 class="slds-modal slds-fade-in-open slds-modal_small">
+                            <div class="slds-modal__container" id="location_search">
+                                <div class="slds-modal__content slds-p-around--medium" style="height:410px;padding:1rem;">
+                                    <div class="searchlocationdiv"> 
+                                        <lightning:input type="text" autocomplete="off" placeholder="{!v.clSearchLocation}" 
+                                                         label="" 
+                                                         aura:id="searchText" required="false" onkeyup="{!c.getSearchResultbyEnter}"
+                                                         value="{!v.searchText}" id="searchText" />
+                                        <p aura:id="invalidLoc" style="color:rgb(194, 57, 52);padding-top:5px;" class="slds-hide">{!v.clCouldnotfindthelocation}</p>
+                                        <lightning:button variant="brand"  label="{!v.clSearch}" onclick="{!c.getSearchResult}" class="btn_table" />
+                                    </div> 
+                                    <aura:if isTrue="{! v.mapLoaded }">
+                                        <iframe aura:id="vfFrame" src="{!v.vfUrl}" 
+                                                width="100%" frameBorder="0" height="330px" />
+                                        <aura:set attribute="else">
+                                            <lightning:spinner alternativeText="Loading"/>
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                                <footer class="slds-modal__footer">
+                                    <lightning:button variant="brand" 
+                                                      label="{!v.clSelectLocation}"
+                                                      title="{!v.clSelectLocation}"
+                                                      onclick="{!c.getLocationDetails}" class="btnsave"/>
+                                    <lightning:button variant="brand" 
+                                                      label="{!v.clClose}"
+                                                      title="{!v.clEnterAddressManually}"
+                                                      onclick="{!c.closeMapModel}" class="btnsave"/>
+                                    
+                                </footer>
+                            </div>
+                        </section>
+                        <!--<div class="slds-backdrop slds-backdrop_open"></div> -->
+                    </aura:if>
+                    
+                    <footer class="slds-modal__footer">
+                        <div class="slds-float_left">
+                            <lightning:button variant="brand" label="إرسال" type="submit" onclick="{!c.saveArabic}" class="btnsave" />
+                            <lightning:button class="btnsave"  variant="brand" label="{!v.clCancel}" title="{!v.clCancel}"
+                                              onclick="{!c.closeModel}"  />
+                        </div>
+                        
+                    </footer>
+                    
+                    
+                    <!--________________________________This set  used to   for popup English  Language only__________________________-->    
+                    <aura:set attribute="else" >
+                        
+                       
+                        <!--This input field is being used in the backend and for case creation and is the default value -->
+                        <lightning:recordEditForm objectApiName="Case" recordTypeId="{!v.RecordTypeId}" aura:id="caseForm" onsuccess="{!c.caseHandleOnSuccess}" onerror="{!c.handleOnError}">
+                            <lightning:inputField fieldName="Subject" value="Global Event" class="slds-hide"/>
+                            <lightning:inputField fieldName="AccountId" value="{!v.AccountId}"  class="slds-hide"/>
+                            <lightning:inputField fieldName="Status" value="In Progress" class="slds-hide"/>
+                            <lightning:inputField fieldName="Status_Category__c" value="Pending with ET " class="slds-hide"/>
+                            <lightning:inputField fieldName="Origin" value="CRM Portal" class="slds-hide"/>
+                            <div class="slds-grid" style="background:#fff;padding: 0 15px;">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="cityid"><span class="reqspan">*</span>Request Type</label>
+                                    <lightning:inputField fieldName="Type_Of_Case__c" value="{!v.typeOfCase}" variant="label-hidden" required="true"/>
+                                </div>
+                                
+                            </div>
+                            
+                        </lightning:recordEditForm>
+                        
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <div class="formdiv">
+                                <table  class="slds-table  slds-table_col-bordered  outerTable" width="100%">
+                                    <tbody>
+                                        <aura:iteration items="{!v.dynamicRowsList}" var="eachRow" indexVar="index">
+                                            <lightning:recordEditForm objectApiName="ESE_Request_Line__c" aura:id="caseFormMOE" onload="{!c.handleOnLoad}" onsubmit="{!c.handleOnSubmit}" onsuccess="{!c.handleOnSuccess}" onerror="{!c.handleOnError}">
+                                                <tr>
+                                                    <td>
+                                                        <th>{!index + 1}</th>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>School Name</label>
+                                                                    <!--<lightning:inputField  aura:id="assResId" required="true" onchange="{!c.getschooldet}" 
+                                                                                          fieldName="School_Names__c" variant="label-hidden"  value="{!v.schid}"/>-->
+                                                                      <lightning:inputField  aura:id="assResId" required="true" onchange="{!c.getschooldet}" 
+                                                                                              fieldName="School_Names__c" variant="label-hidden" />
+                                                                </div>
+                                                                
+                                                                
+                                                            </td>
+                                                            <!-- <td>
+                                                                
+                                                                <div class="slds-form-element__control">
+                                                                    
+                                                                   <label for="cityid"><span class="reqspan">*</span>School Code</label>
+                                                                    <lightning:inputField  aura:id="assResId" required="true"
+                                                                                          fieldName="School_code__c" variant="label-hidden"  value="{!v.schcode}" />
+                                                                </div>
+                                                                
+                                                                
+                                                            </td>-->
+                                                            <td>
+                                                                
+                                                                <div class="slds-form-element__control">
+                                                                    
+                                                                    <label for="cityid"><span class="reqspan">*</span>Trip Date</label>
+                                                                    <lightning:inputField aura:id="assResId" required="true"
+                                                                                          fieldName="Trip_Date__c" variant="label-hidden"  />
+                                                                </div>
+                                                                
+                                                            </td>
+                                                            
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    
+                                                                    <label for="cityid"><span class="reqspan">*</span>Trip Destination From</label>
+                                                                    <lightning:inputField aura:id="tripDestFrm" iconName="utility:checkin"   value="" fieldName="Trip_Destination_From__c" class="" variant="label-hidden"/>
+                                                                    
+                                                                    <span ></span>
+                                                                    <a href="javascript:void(0);" data-index="{!index}" data-filename="DestFrom" onclick="{!c.openMapController}">
+                                                                        <lightning:icon iconName="utility:checkin" alternativeText="Trip Destination" title="Get Location" 
+                                                                                        onclick="" class="{!v.clLang =='ar' ? 'picklocatioblink_AR' : 'picklocatioblink'}"/>
+                                                                    </a>
+                                                                    
+                                                                </div>
+                                                                
+                                                            </td>
+                                                            
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    
+                                                                    <label for="cityid"><span class="reqspan">*</span>Trip Destination To</label>
+                                                                    <lightning:inputField aura:id="tripDestTo"  value="" fieldName="Trip_Destination_To__c" class="" variant="label-hidden"/>  
+                                                                    
+                                                                    <span ></span>
+                                                                    <a href="javascript:void(0);" data-index="{!index}" data-filename="DestTo" onclick="{!c.openMapController}">
+                                                                        <lightning:icon iconName="utility:checkin" alternativeText="Trip Destination" title="" 
+                                                                                        onclick="" class="{!v.clLang =='ar' ? 'picklocatioblink_AR' : 'picklocatioblink'}"/>
+                                                                    </a>
+                                                                </div>
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Trip Coordinator Name </label>
+                                                                    <lightning:inputField   aura:id="assResId" required="true"
+                                                                                          fieldName="Trip_Coordinator_Name__c" variant="label-hidden"  />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span> Coordinator Phone</label>
+                                                                    <lightning:inputField  aura:id="assResId" required="true"
+                                                                                          fieldName="Coordinator_Phone__c" variant="label-hidden"/>
+                                                                </div>
+                                                                
+                                                            </td>
+                                                            
+                                                            
+                                                            
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan"></span>Email</label>
+                                                                    <lightning:inputField aura:id="assResId" 
+                                                                                          fieldName="Email__c" variant="label-hidden"/>
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Cycle</label>
+                                                                    <lightning:inputField  aura:id="assResId" required="true"
+                                                                                          fieldName="Cycle__c" variant="label-hidden"  />
+                                                                </div>
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Count Of Students</label>
+                                                                    <lightning:inputField  aura:id="assResId" required="true"
+                                                                                          fieldName="Count_Of_Students__c" variant="label-hidden"  />
+                                                                </div>
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                
+                                                                <label for="cityid"><span class="reqspan"></span>Special Need Student Count</label>
+                                                                <lightning:inputField  aura:id="assResId" 
+                                                                                      fieldName="Special_Need_Students_Count__c" variant="label-hidden"  />
+                                                                
+                                                            </td>
+                                                            
+                                                            
+                                                            <td>
+                                                                
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Supervisors Count From School</label>
+                                                                    <lightning:inputField  aura:id="assResId" required="true"
+                                                                                          fieldName="Supervisors_Count_From_School__c" variant="label-hidden"  />
+                                                                </div>
+                                                                
+                                                            </td>
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            <!--  <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Trip Time From</label>
+                                                                    <lightning:inputField aura:id="assResId" required="true"
+                                                                                          fieldName="Trip_Time_From__c" variant="label-hidden"  />
+                                                                </div>  
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Trip Time To</label>
+                                                                    <lightning:inputField aura:id="assResId" required="true"
+                                                                                          fieldName="Trip_Time_To__c" variant="label-hidden"/>
+                                                                </div>  
+                                                                
+                                                                
+                                                            </td>-->
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Arrival Time Activity</label>
+                                                                    <lightning:inputField aura:id="assResId" required="true"
+                                                                                          fieldName="Arrival_Time_To_Activity__c" variant="label-hidden"  />
+                                                                </div>                                            
+                                                            </td>
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    
+                                                                    <label for="cityid"><span class="reqspan">*</span>Assembly point</label>
+                                                                    <lightning:inputField aura:id="assemblypoint" iconName="utility:checkin"   value="" fieldName="Assembly_Point__c" class="" variant="label-hidden"/>
+                                                                    
+                                                                    <span ></span>
+                                                                    <a href="javascript:void(0);" data-index="{!index}" data-filename="AssemPoint" onclick="{!c.openMapController}">
+                                                                        <lightning:icon iconName="utility:checkin" alternativeText="Trip Destination" title="Get Location" 
+                                                                                        onclick="" class="{!v.clLang =='ar' ? 'picklocatioblink_AR' : 'picklocatioblink'}"/>
+                                                                    </a>
+                                                                    
+                                                                </div>
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Landmark Trip From</label>
+                                                                    <lightning:inputField aura:id="assResId" required="true"
+                                                                                          fieldName="Landmark_Trip_From__c" variant="label-hidden"  />
+                                                                </div>                                            
+                                                            </td>
+                                                            
+                                                            
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            
+                                                            
+                                                            
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Landmark Trip To</label>
+                                                                    <lightning:inputField aura:id="assResId" required="true"
+                                                                                          fieldName="Landmark_Trip_To__c" variant="label-hidden"  />
+                                                                </div>                                            
+                                                            </td>
+                                                            
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Gender</label>
+                                                                    <lightning:inputField aura:id="assResId" required="true"
+                                                                                          fieldName="Gender__c" variant="label-hidden"  />
+                                                                </div>                                            
+                                                            </td>
+                                                            
+                                                            
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Leaving time from Location</label>
+                                                                    <lightning:inputField aura:id="assResId" required="true"
+                                                                                          fieldName="Leaving_time_from_Location__c" variant="label-hidden"  />
+                                                                </div>                                            
+                                                            </td>
+                                                            
+                                                            <td>
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="cityid"><span class="reqspan">*</span>Other</label>
+                                                                    <lightning:inputField aura:id="assResId" required="true"
+                                                                                          fieldName="Other__c" variant="label-hidden"  />
+                                                                </div>                                            
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            
+                                                            <lightning:inputField  fieldName="Case__c" variant="label-hidden" value="{!v.CaseId}" class="slds-hide"/>
+                                                            
+                                                        </tr>
+                                                        
+                                                    </td>
+                                                    <td cass="slds-p-around_xx-small">
+                                                        <lightning:buttonIcon alternativeText="add" variant="container" class="successClass"
+                                                                              iconName="utility:add" onclick="{!c.addRow}" />
+                                                        <aura:if isTrue="{!eachRow.rowNumber > 1 }">
+                                                            <lightning:buttonIcon name="{!eachRow.rowNumber}" alternativeText="delete"
+                                                                                  variant="container" class="errorClass" iconName="utility:delete"
+                                                                                  onclick="{!c.deleteRow}"/>
+                                                        </aura:if>
+                                                    </td>
+                                                </tr>
+                                            </lightning:recordEditForm>
+                                        </aura:iteration>
+                                    </tbody>                                    
+                                </table>
+                            </div> 
+                        </div>
+                        
+                        <!--map window-->
+                        <aura:if  isTrue="{!v.openMap}" >  
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" 
+                                     aria-modal="true" aria-describedby="modal-content-id-1" 
+                                     class="slds-modal slds-fade-in-open slds-modal_small">
+                                <div class="slds-modal__container" id="location_search">
+                                    <div class="slds-modal__content slds-p-around--medium" style="height:410px;padding:1rem;">
+                                        <div class="searchlocationdiv"> 
+                                            <lightning:input type="text" autocomplete="off" placeholder="{!v.clSearchLocation}" 
+                                                             label="" 
+                                                             aura:id="searchText" required="false" onkeyup="{!c.getSearchResultbyEnter}"
+                                                             value="{!v.searchText}" id="searchText" />
+                                            <p aura:id="invalidLoc" style="color:rgb(194, 57, 52);padding-top:5px;" class="slds-hide">{!v.clCouldnotfindthelocation}</p>
+                                            <lightning:button variant="brand"  label="{!v.clSearch}" onclick="{!c.getSearchResult}" class="btn_table" />
+                                        </div> 
+                                        <aura:if isTrue="{! v.mapLoaded }">
+                                            <iframe aura:id="vfFrame" src="{!v.vfUrl}" 
+                                                    width="100%" frameBorder="0" height="330px" />
+                                            <aura:set attribute="else">
+                                                <lightning:spinner alternativeText="Loading"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>
+                                    <footer class="slds-modal__footer">
+                                        <lightning:button variant="brand" 
+                                                          label="{!v.clSelectLocation}"
+                                                          title="{!v.clSelectLocation}"
+                                                          onclick="{!c.getLocationDetails}" class="btnsave"/>
+                                        <lightning:button variant="brand" 
+                                                          label="{!v.clClose}"
+                                                          title="{!v.clEnterAddressManually}"
+                                                          onclick="{!c.closeMapModel}" class="btnsave"/>
+                                        
+                                    </footer>
+                                </div>
+                            </section>
+                            <!--<div class="slds-backdrop slds-backdrop_open"></div> -->
+                        </aura:if>
+                        <footer class="slds-modal__footer">
+                            
+                           <!-- <lightning:button class="btnsave" label="Submit" type="submit" onclick="{!c.save}" /> -->
+                            <lightning:button class="btnsave"  variant="brand" label="{!v.clCancel}" title="{!v.clCancel}"
+                                              onclick="{!c.closeModel}"  />
+                            
+                            
+                        </footer>
+                        
+                        
+                    </aura:set> 
+                </aura:if>
+            </aura:if>
+        </div>
+        
+    </section>
+    
+    
+</aura:component>

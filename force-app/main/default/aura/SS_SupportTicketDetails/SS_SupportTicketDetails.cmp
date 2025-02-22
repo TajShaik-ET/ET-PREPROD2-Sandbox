@@ -1,0 +1,168 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="status" type="String" /> 
+    <aura:attribute name="allTickets" type="list"/> 
+    <aura:attribute name="recordTypeName" type="String" />
+    <aura:attribute name="recordDetailId" type="String" />
+    <aura:attribute name="currentPageTickets" type="list"/>
+    <aura:attribute name="showRecordDetailModal" type="Boolean" default="false"/>
+    <aura:attribute name="totalRecords" type="Integer"/>
+    <aura:attribute name="RecordsCount" type="Integer"/>
+    <aura:attribute name="corousalSize" type="Integer" default="4"/>
+    <aura:attribute name="start" type="Integer" default="0"/>
+    <aura:attribute name="currentData" type="list"/>
+    <aura:attribute name="deliveryData" type="list"/>
+    <aura:attribute name="fileredData" type="list"/>
+    <aura:attribute name="searchText" type="string"/> 
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+    
+    <!-- Related Pages Attributes -->
+    <aura:attribute name="ticketId" type="String"/>
+    <aura:attribute name="isCancelModal" type="boolean"/>
+    <aura:attribute name="isReopenModal" type="boolean"/>
+    <aura:attribute name="isAddCommentModal" type="boolean"/>
+    <aura:attribute name="isViewCommentsModal" type="boolean"/>
+    
+    <c:SS_TicketingSystem_UtilityMethods aura:id="SS_TicketingSystem_UtilityMethods"/>
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{! v.loaded }">
+        <aura:if isTrue="{!v.currentPageTickets.length>0}"> 
+            <div class="tablemaindiv tableshow">
+                <table style="width:100%" >
+                    <tr> 
+                        <th width="140px">  Ticket No
+                            <lightning:buttonIcon iconName="utility:sort"
+                                                  onclick="{! c.sortData }"
+                                                  alternativeText=""
+                                                  value="ticketNo"
+                                                  class="btnsorticon"/>
+                        </th> 
+                        <th width="140px"> Raised Date
+                            <lightning:buttonIcon iconName="utility:sort"
+                                                  onclick="{! c.sortData }"
+                                                  alternativeText=""
+                                                  value="raisedDate"
+                                                  class="btnsorticon"/>
+                        </th> 
+                        <th width="140px"> Case Type</th> 
+                        <th width="170px"> Description</th> 
+                        
+                        <th width="140px"> Status</th>
+                        <th width="110px" align="center">Actions</th> 
+                    </tr>
+                    <aura:iteration items="{!v.currentPageTickets}" var="ticket">
+                        <tr> 
+                            <td><a data-caseid="{!ticket.ticketId}" id="{!ticket.ticketId}" onclick="{!c.naviteToCaseRecord}">
+                                <b>{!ticket.name}</b> </a></td> 
+                            <!-- <td><lightning:formattedDateTime value="{!ticket.createdDate}"  
+                                                             year="numeric" month="numeric" day="numeric"   hour="2-digit" minute="2-digit"
+                                                             timeZone="Asia/Dubai" hour12="true"/></td> -->
+                            <td><b>{!ticket.createdDate}</b></td>
+                            <td><b>{!ticket.CaseType}</b></td> 
+                            <td><b>{!ticket.Description}</b></td> 
+                            <td><b>{!ticket.status}</b></td> 
+                            <td align="center"> 
+                                <aura:if isTrue ="{!and(v.status != 'Closed' ,v.status!= 'Approval Pending')}">
+                                    <!-- Close Case-->
+                                    <lightning:buttonIcon iconName="utility:close"
+                                                          onclick="{! c.openCloseCaseModal }"
+                                                          value="{!ticket.ticketId}"
+                                                          alternativeText="Close Case"
+                                                          class="btnsaveicon"/>
+                                    
+                                    
+                                    <!-- Add Comments-->
+                                    <lightning:buttonIcon iconName="utility:chat"
+                                                          onclick="{! c.openAddCommentsModal }"
+                                                          value="{!ticket.ticketId}"
+                                                          alternativeText="Add Comments"
+                                                          class="btnsaveicon"/>
+                                </aura:if>
+                                <aura:if isTrue ="{!v.status =='Approval Pending'}">
+                                    <lightning:buttonIcon iconName="utility:preview"
+                                                          onclick="{! c.navigateToapprovalRecord }"
+                                                          value="{!ticket.ticketId}"
+                                                          alternativeText="Approval Action"
+                                                          class="btnsaveicon"/>
+                                    <!-- Add Comments-->
+                                    <lightning:buttonIcon iconName="utility:chat"
+                                                          onclick="{! c.openAddCommentsModal }"
+                                                          value="{!ticket.ticketId}"
+                                                          alternativeText="Add Comments"
+                                                          class="btnsaveicon"/>
+                                </aura:if>
+                                <!-- View Comments-->
+                                <lightning:buttonIcon iconName="utility:preview"
+                                                      onclick="{! c.openViewCommentsModal }"
+                                                      value="{!ticket.ticketId}"
+                                                      alternativeText="View Comments"
+                                                      class="btnsaveicon"/>
+                                
+                                <!-- Reopen Case only for closed Cases-->
+                                <aura:if isTrue ="{!and(v.status != 'Closed' ,v.status != 'Approval Pending')}">
+                                    <lightning:buttonIcon iconName="utility:contact_request"
+                                                          onclick="{! c.openReopenCaseModal }"
+                                                          value="{!ticket.ticketId}"
+                                                          alternativeText="Reopen Case"
+                                                          class="btnsaveicon"/>
+                                </aura:if>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </table>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.currentPageTickets.length==0}"> 
+            <div class="textcenter">
+                <!--<img src="{!$Resource.ETDM_NoDataFound}" class="noresultsimg" /> -->
+            </div>
+        </aura:if>
+        
+        <aura:set attribute="else">
+            <lightning:spinner alternativeText="Loading" />
+        </aura:set>
+    </aura:if>
+    
+    <!-- Pagination -->
+    
+    <div class="btnbotdiv">
+        <aura:if isTrue="{!v.start!=0}"> 
+            <!--lightning:button  variant="brand" label="Prev" onclick="{!c.getPreviousList}" class="btn_table"/-->                                          
+            <a  href="javascript:void(0);"   onclick="{!c.getPreviousList}" class="btnnext txtleft">&#10094;&#10094; Prev</a> 
+        </aura:if>
+        <aura:if isTrue="{!lessthan(v.start+v.corousalSize,v.totalRecords)}">
+            <a  href="javascript:void(0);"  onclick="{!c.getNextList}" class="btnnext txtright">Next&#10095;&#10095;</a> 
+        </aura:if>
+    </div>
+    <!-- TicketClose Page -->
+    <aura:if  isTrue="{!v.isCancelModal}" > 
+        <c:ticketClosePage ticketId="{!v.ticketId}" isCancelModal="{!v.isCancelModal}" aura:id="feedbackPage" />
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+    <!-- Ticket Reopen Page -->
+    <!-- <aura:if  isTrue="{!v.isReopenModal}" > 
+        <c:ticketReopenPage ticketId="{!v.ticketId}" isReopenModal="{!v.isReopenModal}" aura:id="feedbackPage" />
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>-->
+    
+    <!-- Ticket Add Comment Page -->
+    <aura:if  isTrue="{!v.isAddCommentModal}" > 
+        <c:ticketAddCommentPage ticketId="{!v.ticketId}" isAddCommentModal="{!v.isAddCommentModal}" aura:id="feedbackPage" />
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+    <!-- View Comments Page -->
+    <aura:if  isTrue="{!v.isViewCommentsModal}" > 
+        <c:ticketViewCommentsPage ticketId="{!v.ticketId}" isViewCommentsModal="{!v.isViewCommentsModal}" aura:id="feedbackPage" />
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <aura:if isTrue="{!v.showRecordDetailModal}">
+        <div>
+            <c:BusinessCommunityRecordDetailPopup showIFrame="{!v.showRecordDetailModal}"
+                                                  recordDetailId="{!v.recordDetailId}"
+                                                  recordTypeName="{!v.recordTypeName}"/>
+        </div>
+    </aura:if>
+</aura:component>

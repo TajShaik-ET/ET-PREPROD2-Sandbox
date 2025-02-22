@@ -1,0 +1,51 @@
+<template>
+ 
+    <!-- <template if:true={showHomePage}>
+    <lightning-button label="36 Points Form" onclick={handleBtnClick36Points} class="slds-m-left_x-small"></lightning-button>
+    <lightning-button label="111 Points Form" onclick={handleBtnClic111Points} class="slds-m-left_x-small"></lightning-button>
+    </template> -->
+    <template if:true={showSearchPage}>
+		<div class="inspectionTab">
+		<lightning-combobox label="Type" value={selectedType} options={typeOptions}
+			onchange={handleTypeChange}></lightning-combobox>
+		<lightning-input type="tel" value={mobileNumber} label="Work Order No." name="Mobile"
+			onchange={handleMobileChange}></lightning-input>
+		<br />
+		<lightning-button label="Search" onclick={searchBtnHandeler} class="slds-m-left_x-small"></lightning-button>
+		</div>
+		<!-- <lightning-button label="Back" onclick={goToHomeHandeler} class="slds-m-left_x-small"></lightning-button> -->
+		<div class="">
+			<template if:true={oppListRT}>
+				<div class="opp_list">
+				<template for:each={oppList} for:item="opp">
+					<div key={opp.Id}  class="box_opp"
+							data-recordid={opp.Id} onclick={onOppClick}>
+					
+						<!--a href="" onclick={onOppClick}  data-recordid={opp.Id}-->
+						
+							<div>
+								<p>Customer Name : {opp.Account.Name}</p>
+								<p>Mobile Number : {opp.Account.PersonMobilePhone}</p>
+								<p>        Email : {opp.Account.PersonEmail}</p>
+							</div>
+						
+					</div>
+				</template>
+			</div>
+			</template>
+			<template if:true={oppListRF}>
+				<div class="slds-p-around_xx-small">
+					No records found
+				  </div>
+			</template>
+		</div>
+	</template>
+    <template if:true={show36InspectionForm}>
+		<c-moto36-point-check-form onbackbuttonclick={backButtonClickHandler}
+			opp-record={selectedOpp}></c-moto36-point-check-form>
+	</template>
+	<template if:true={show111POintsCheck}>
+		<c-moto111-points-check-form onbackbuttonclick={backButtonClickHandler}
+			opp-record={selectedOpp}></c-moto111-points-check-form>
+	</template>
+</template>

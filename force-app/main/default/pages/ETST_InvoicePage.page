@@ -1,0 +1,271 @@
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf"
+standardStylesheets="false" applyHtmlTag="false" controller="ETST_InvoiceController">
+	
+   <apex:stylesheet value="{!URLFOR($Resource.ETST_Invoice,'css/invoice.css')}"/>
+    <apex:pageBlock rendered="{!NOT($ObjectType.Invoice__c.accessible) }" >
+        <style>        
+        .container {
+            background: #fff;
+            padding: 1%;
+            width: 97.94%;
+            margin: auto;
+        }
+        .col-sm-6 {
+        width: 50%;
+        display: inline-block;
+        float: left;
+        }
+        .text-right{
+        text-align: right;
+        }
+        .log_div{
+        padding-top: 15px;
+        }
+        .log_div p{
+        margin: 0px;margin-bottom: 5px;
+        }
+        .address , .bill_to , .table-responsive{
+        display: block;
+        clear: both;
+        position: relative;padding-top: 15px;
+        }
+        .logo_img{
+        height: 100px;
+        }
+        .log_div h1{
+        margin: 0px;
+        }
+        .log_div #invoice_no{
+        color:#9E9E9E;
+        }
+        .log_div #balance_due{
+        font-size: 12px;font-weight: bold;
+        }
+        .log_div #amount{
+        font-weight: bold;font-size: 18px;
+        }
+        .address h4{
+        margin-bottom: 5px;
+        color: #333;
+        font-weight: bold;
+        }
+        .address p{
+        color: #9E9E9E;
+        margin-bottom: 5px;
+        font-size: 14px;
+        margin-top: 0px;
+        }
+        .bill_to h5{
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin: 0px;
+        }
+        .bill_to p{
+        color: #9E9E9E;
+        margin-bottom: 4px;
+        font-size: 14px;margin-top: 0px;
+        }
+        .date_div div{
+        color: #9E9E9E;
+        /*font-weight: bold;*/
+        width: 50%;
+        display: inline-block;
+        float: left;
+        }
+        .table-responsive table{
+        margin-bottom: 10px;border-collapse: collapse;
+        }
+        .table-responsive table {
+        margin-bottom: 10px;
+        width: 100%;
+        }
+        table thead{
+        background: #555;
+        color: #fff;
+        }
+        table thead th{
+        padding: 10px 5px;
+        border: none;
+        font-size: 14px;    text-align: left;
+        }
+        table tbody{
+        border-bottom: 2px solid #dadada;
+        }
+        table tbody td{
+        padding: 10px 5px;
+        border: none;
+        font-size: 14px;
+        }
+        .total_div{
+        width: 50%;float: left;display: inline-block;
+        }
+        .final_div div{
+        color: #9E9E9E;
+        font-weight: bold;
+        margin: 5px auto;width: 50%;
+        float: left;
+        }
+        .total div{ 
+        color: #000;
+        }
+        .final{
+        background: #f2f2f2;
+        color: #000;
+        }
+        .final div{
+        background: #f2f2f2;
+        color: #000;padding: 10px 0px;
+        }
+        .bottom_pad{
+        padding-bottom: 40px;
+        }
+        .final_in_word{
+        color: #333;
+        }
+        .thanks_div p{
+        margin-bottom: 1px;
+        }
+        .term_cond , .note{
+        color: #9E9E9E;
+        font-weight: bold;
+        font-size: 16px;
+        }
+        </style>
+      <p> You dont have access to this record. Please contact Administrator </p>
+    </apex:pageBlock>
+
+    <div class="container bottom_pad">
+        <div class="row log_div">
+        <div class="col-sm-6 col-xs-12">
+            <apex:image style="height: 100px;"
+                 url="{!URLFOR($Resource.ETST_Invoice, 'images/logo.png')}"/>
+          
+        </div>
+        <div class="col-sm-6 col-xs-12 text-right">
+          <h1>Invoice</h1>
+          <p id="invoice_no">{!invoiceList[0].Name}</p>
+          <p id="balance_due">Balance Due</p>
+          <p id="amount">{!invoiceList[0].Total_Inv_Amount__c}</p> 
+        </div> 
+      </div>
+      <div class="row address">
+        <div class="col-sm-12 col-xs-12 text-left">
+          <h4>{!$Organization.Name}
+          </h4>
+          <p>{!$Organization.Street}
+          </p>
+          <p>{!$Organization.City}
+          </p>
+          <p>{!$Organization.State}
+          </p>
+          <p>{!$Organization.Country}
+          </p>
+          <p>{!$Organization.Phone}
+          </p>
+        </div>
+      </div>
+      <br/>
+      <div class="row bill_to">
+        <div class="col-sm-6 col-xs-12">
+          <p>Bill To</p>
+          <h5>{!invoiceList[0].Service_Request__r.ETST_Paid_By__c}</h5>
+            <apex:outputPanel rendered="{!invoiceList[0].Service_Request__r.ETST_Paid_By__c == 'Employer'}">
+                <apex:outputLabel value="{!SUBSTITUTE(JSENCODE(employerAddress), '\\n', '<br/>')}" escape="false"/>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!invoiceList[0].Service_Request__r.ETST_Paid_By__c == 'Self'}">
+                <apex:outputLabel value="{!SUBSTITUTE(JSENCODE(selfAddress), '\\n', '<br/>')}" escape="false"/>
+            </apex:outputPanel>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+          <div class="row date_div">
+            <div class="col-sm-8 col-xs-6 text-right">Invoice Date :</div>
+              <apex:outputText value="{0,date,MM/dd/yy}">
+                  <apex:param value="{!invoiceList[0].CreatedDate}"/> 
+              </apex:outputText>
+          </div>
+          <div class="row date_div">
+            <div class="col-sm-8 col-xs-6 text-right">Due Date :</div>
+              <apex:outputText value="{0,date,MM/dd/yy}">
+                  <apex:param value="{!invoiceList[0].CreatedDate}"/> 
+              </apex:outputText>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row"> 
+        <div class="col-sm-12">    
+          <div class="table-responsive">          
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Service Type</th>
+                <th>Transport Type</th>
+                <th>Pickup Location</th>
+                <th>Drop off Location</th>
+                <th>Pickup Start Date</th>
+                <th>Pickup End Date</th>
+                <th>Fare</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>{!invoiceList[0].Service_Request__r.ETST_Service_Type__c}</td>
+                <td>{!invoiceList[0].Service_Request__r.ETST_Transport_Type__c}</td>
+                <td>{!invoiceList[0].Service_Request__r.ETST_Pick_Up_From__c}</td>
+                <td>{!invoiceList[0].Service_Request__r.ETST_Drop_Off_To__c}</td>
+                <td><apex:outputText value="{0,date,MM/dd/yy}">
+                  <apex:param value="{!invoiceList[0].Service_Request__r.ETST_Pick_Up_Start_Date__c}"/> 
+              </apex:outputText>
+              </td>
+                <td><apex:outputText value="{0,date,MM/dd/yy}">
+                  <apex:param value="{!invoiceList[0].Service_Request__r.ETST_Pick_Up_End_Date__c}"/> 
+              </apex:outputText></td>
+                <td>{!invoiceList[0].Total_Inv_Amount__c}</td>
+              </tr>
+            </tbody> 
+          </table>
+          </div>
+        </div>
+      </div>
+      <div class="row bill_to">
+        <div class="col-sm-6 col-xs-12 total_div">
+          &nbsp;
+        </div>
+        <div class="col-sm-6 col-xs-12 total_div">
+          <div class="row final_div">
+            <div class="col-sm-8 col-xs-6 text-right">Discount % </div>
+            <div class="col-sm-4 col-xs-6 text-right"> </div>
+          </div>
+          <div class="row final_div total">
+            <div class="col-sm-8 col-xs-6 text-right">Total </div>
+            <div class="col-sm-4 col-xs-6 text-right">{!invoiceList[0].Total_Inv_Amount__c}</div>
+          </div>
+          <!--div class="row final_div final" >
+            <div class="col-sm-8 col-xs-6 text-right">Balance Due </div>
+            <div class="col-sm-4 col-xs-6 text-right">{!invoiceList[0].Total_Inv_Amount__c}</div>
+          </div>
+          <div class="row final_div" >
+            <div class="col-sm-8 col-xs-6 text-right">Total in word : </div>
+            <div class="col-sm-4 col-xs-6 text-left "> <em><strong class="final_in_word"> Dollars forty</strong></em></div>
+          </div-->
+        </div>
+      </div>
+      <br/>
+      <br/> 
+      <br/><br/><br/><br/><br/><br/> 
+      <!--div class="row">
+           
+          <p class="note">Notes</p>
+          <p>Thanks for using our services.</p>
+          <br/>
+          <p class="note">Payment Option </p>
+          <br/>
+          <p class="term_cond">Terms And Condition</p>
+          <p>Failure to make payment in anather 2 days will result in late fee.</p>
+      </div-->
+    </div>
+       
+</apex:page>

@@ -1,0 +1,52 @@
+.THIS.menu_div .menulogo {
+    width: 80%;
+    margin: 10%;
+    display: block;
+}
+.THIS.menu_div ul{
+    margin: 2rem 0;
+}
+.THIS.menu_div ul li a {
+    padding: 1rem 0.5rem 1rem 1rem;
+    display: block;
+    width: 100%;
+    color: #000;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+}
+.THIS.menu_div ul li a img{
+    margin-right:.75rem;
+}
+.THIS.menu_div ul li.active, .THIS.menu_div ul li:hover {
+    background: rgb(56 59 68 / 5%);
+    border-right: 5px solid #EB4026;
+    border-radius: 0px;
+}
+
+.THIS.menu_div ul li.active a img{
+    margin-right:.75rem;
+    filter: invert(1);
+}
+.THIS a.logoutbtn {
+    background: transparent linear-gradient(0deg, #EB4026 0%, #F75064 100%) 0% 0% no-repeat padding-box;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #eb4026;
+    box-shadow: none;
+    position: absolute;
+    width: 80%;
+    margin: 0 9%;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px 5px;
+    bottom: 1rem;
+    text-decoration: none;
+}
+.THIS a.logoutbtn img{
+    margin-right:.75rem;
+}
+.THIS.changeStyle:hover {
+  background-color: yellow;
+}

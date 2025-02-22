@@ -1,0 +1,55 @@
+<!-- sldsValidatorIgnore -->
+<!-- sldsValidatorIgnore -->
+<template>
+    <lightning-quick-action-panel header="Account Plan">
+    <template if:true={showLoadingSpinner}>
+        <div style="z-index: 10000 !important;">
+            <lightning-spinner alternative-text="Uploading......" size="medium" style="z-index: 10000 !important;"></lightning-spinner>
+        </div>
+    </template>
+
+
+     <lightning-card title="Upload CSV File"  icon-name="doctype:csv">
+
+
+        <div style="margin-left:4%; margin:0px auto; width: 300px;">
+            <div>
+                <lightning-input label="" name="file uploader" onchange   ={handleFilesChange} type="file" multiple></lightning-input>
+            </div><br/>
+            <div class="slds-text-body_small slds-text-color_error">{fileName}
+
+
+            </div><br/>
+            
+            <div>
+                <lightning-button class="slds-m-top--medium" label={UploadFile} onclick={handleSave} variant="brand" disabled={isTrue}></lightning-button>
+                <lightning-button variant="brand" label="Close" title="Successful action" onclick={handleClose} 
+            class="slds-m-left_x-small"></lightning-button>
+						</div>
+            <!--
+            <div  style="padding-left: 200px; ">
+                <lightning-button variant="brand" label="Close" title="Successful action" onclick={handleClose}
+            class="slds-m-left_x-small"></lightning-button>
+                </div>-->
+        </div><br/><br/>
+
+
+    </lightning-card>
+    
+
+
+    <lightning-card title="AccountPlan" icon-name="standard:account">
+        <div style="width: auto;">
+            <template if:true={data}>
+                    <lightning-datatable
+                            data={data}
+                            columns={columns}
+                            key-field="id">
+                    </lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>
+
+
+</lightning-quick-action-panel>
+</template>

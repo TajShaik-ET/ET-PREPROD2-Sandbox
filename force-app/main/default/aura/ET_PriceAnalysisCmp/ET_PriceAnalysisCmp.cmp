@@ -1,0 +1,1751 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,lightning:isUrlAddressable" controller='ET_ProfitCalculationScreensController'>
+    <aura:handler value="{!this}" name="init" action="{!c.doinit}" />
+    <aura:attribute name="quoteId" type="Id"/>
+    <aura:attribute name="pricesAnalysisCalculationObj" type="Object"/>
+
+
+    <table class="slds-table  slds-table_bordered" style="width:100%">
+
+
+
+        <tbody>
+         <!--  <tr class="slds-hint-parent red-color-class"> 
+                
+                 
+                <td data-label="1" class="customClass">
+                    <div  title="Price Type">Price TYpe</div>
+                </td>
+                <td data-label="2" class="customClass">
+                        <div  title="2">Pricing Policy</div>
+                </td>
+                <td data-label="3" class="customClass">
+                        <div  title="3">Proposed Discount</div>
+                </td>
+                <td data-label="4" class="customClass"> 
+                    <div  title="4">Break Even Point</div>
+                </td>
+                <td data-label="5" class="customClass">
+                    <div  title="5">Target Prices "if requested"</div>
+                </td>
+                <td data-label="5" class="customClass">
+                    <div  title="6">Historical Prices</div>
+                </td>
+                <td data-label="7" class="customClass">
+                    <div  title="7">Market Prices</div>
+                </td>
+             
+            </tr>
+
+                --> 
+            
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.combinationPriceAnnualWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.combinationPriceAnnualWiseLst}" var="annualCombination">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class"><b>Per Unit - Annually Price - {!annualCombination.combinationUniqueKey} (Lump Sum)</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!annualCombination.combinationPriceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.combinationCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.combinationPriceMonthWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.combinationPriceMonthWiseLst}" var="monthlyCombination">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Monthly Price - {!monthlyCombination.combinationUniqueKey}(Lump Sum)</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!monthlyCombination.combinationPriceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.combinationCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.annuallyLumsumCostYearWiseLst))}" >
+               
+                <table class="slds-table  slds-table_bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="9">
+                                <div  class="slds-align--absolute-center red-color-class" ><b>Comprehensive Price per Quotation - Lump Sum Price Annually</b></div> 
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent red-color-class"> 
+                
+                
+                            <td data-label="1" class="customClass">
+                                <div  title="Price Type">Price TYpe</div>
+                            </td>
+                            <td data-label="2" class="customClass">
+                                    <div  title="2">Pricing Policy</div>
+                            </td>
+                            <td data-label="3" class="customClass">
+                                    <div  title="3">Proposed Discount</div>
+                            </td>
+                            <td data-label="4" class="customClass"> 
+                                <div  title="4">Break Even Point</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="5">Target Prices "if requested"</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="6">Historical Prices</div>
+                            </td>
+                            <td data-label="7" class="customClass">
+                                <div  title="7">Market Prices</div>
+                            </td>
+                        
+                        </tr>
+                        
+                        <aura:iteration items="{!v.pricesAnalysisCalculationObj.annuallyLumsumCostYearWiseLst}" var="lumpsumAnnually" indexVar="index">
+                            <tr>
+                                <td>
+                                    <div>Year {!index + 1}</div>
+                                </td>
+                                <td class="customClass">
+                                    <div  >{!lumpsumAnnually.lumsumCost}</div> 
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+                <br/>
+                <br/>
+                
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.monthlyLumsumCostYearWiseLst))}" >
+               
+                <table class="slds-table  slds-table_bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="9">
+                                <div  class="slds-align--absolute-center red-color-class" ><b>Comprehensive Price per Quotation - Lump Sum Price Monthly</b></div> 
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent red-color-class"> 
+                
+                
+                            <td data-label="1" class="customClass">
+                                <div  title="Price Type">Price TYpe</div>
+                            </td>
+                            <td data-label="2" class="customClass">
+                                    <div  title="2">Pricing Policy</div>
+                            </td>
+                            <td data-label="3" class="customClass">
+                                    <div  title="3">Proposed Discount</div>
+                            </td>
+                            <td data-label="4" class="customClass"> 
+                                <div  title="4">Break Even Point</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="5">Target Prices "if requested"</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="6">Historical Prices</div>
+                            </td>
+                            <td data-label="7" class="customClass">
+                                <div  title="7">Market Prices</div>
+                            </td>
+                        
+                        </tr>
+                        
+                        <aura:iteration items="{!v.pricesAnalysisCalculationObj.monthlyLumsumCostYearWiseLst}" var="lumpsumMonthly" indexVar="index">
+                            <tr>
+                                <td>
+                                    <div>Year {!index + 1}</div>
+                                </td>
+                                <td class="customClass">
+                                    <div  >{!lumpsumMonthly.lumsumCost}</div> 
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+                <br/>
+                <br/>
+                
+            </aura:if>
+
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.perStudentLumsumCostYearWiseLst))}" >
+               
+                <table class="slds-table  slds-table_bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="9">
+                                <div   class="slds-align--absolute-center red-color-class"><b>Comprehensive Price per Quotation - Lump Sum Price Per Student</b></div> 
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent red-color-class"> 
+                
+                
+                            <td data-label="1" class="customClass">
+                                <div  title="Price Type">Price TYpe</div>
+                            </td>
+                            <td data-label="2" class="customClass">
+                                    <div  title="2">Pricing Policy</div>
+                            </td>
+                            <td data-label="3" class="customClass">
+                                    <div  title="3">Proposed Discount</div>
+                            </td>
+                            <td data-label="4" class="customClass"> 
+                                <div  title="4">Break Even Point</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="5">Target Prices "if requested"</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="6">Historical Prices</div>
+                            </td>
+                            <td data-label="7" class="customClass">
+                                <div  title="7">Market Prices</div>
+                            </td>
+                        
+                        </tr>
+                        
+                        <aura:iteration items="{!v.pricesAnalysisCalculationObj.perStudentLumsumCostYearWiseLst}" var="lumpsumPerStudent" indexVar="index">
+                            <tr>
+                                <td>
+                                    <div>Year {!index + 1}</div>
+                                </td>
+                                <td class="customClass">
+                                    <div  >{!lumpsumPerStudent.lumsumCost}</div> 
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+                <br/>
+                <br/>
+        
+            </aura:if>
+
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.perRouteLumsumCostYearWiseLst))}" >
+               
+                <table class="slds-table  slds-table_bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="9">
+                                <div   class="slds-align--absolute-center red-color-class"><b>Comprehensive Price per Quotation - Lump Sum Price Per Route</b></div> 
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent red-color-class"> 
+                
+                
+                            <td data-label="1" class="customClass">
+                                <div  title="Price Type">Price TYpe</div>
+                            </td>
+                            <td data-label="2" class="customClass">
+                                    <div  title="2">Pricing Policy</div>
+                            </td>
+                            <td data-label="3" class="customClass">
+                                    <div  title="3">Proposed Discount</div>
+                            </td>
+                            <td data-label="4" class="customClass"> 
+                                <div  title="4">Break Even Point</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="5">Target Prices "if requested"</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="6">Historical Prices</div>
+                            </td>
+                            <td data-label="7" class="customClass">
+                                <div  title="7">Market Prices</div>
+                            </td>
+                        
+                        </tr>
+                        
+                        <aura:iteration items="{!v.pricesAnalysisCalculationObj.perRouteLumsumCostYearWiseLst}" var="lumpsumPerRoute" indexVar="index">
+                            <tr>
+                                <td>
+                                    <div>Year {!index + 1}</div>
+                                </td>
+                                <td class="customClass">
+                                    <div  >{!lumpsumPerRoute.lumsumCost}</div> 
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+                <br/>
+                <br/>
+                
+            </aura:if>
+
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.perKmLumsumCostYearWiseLst))}" >
+               
+                <table class="slds-table  slds-table_bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="9">
+                                <div  class="slds-align--absolute-center red-color-class" ><b>Comprehensive Price per Quotation - Lump Sum Price Per KM</b></div> 
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent red-color-class"> 
+                
+                
+                            <td data-label="1" class="customClass">
+                                <div  title="Price Type">Price TYpe</div>
+                            </td>
+                            <td data-label="2" class="customClass">
+                                    <div  title="2">Pricing Policy</div>
+                            </td>
+                            <td data-label="3" class="customClass">
+                                    <div  title="3">Proposed Discount</div>
+                            </td>
+                            <td data-label="4" class="customClass"> 
+                                <div  title="4">Break Even Point</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="5">Target Prices "if requested"</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="6">Historical Prices</div>
+                            </td>
+                            <td data-label="7" class="customClass">
+                                <div  title="7">Market Prices</div>
+                            </td>
+                        
+                        </tr>
+                        
+                        <aura:iteration items="{!v.pricesAnalysisCalculationObj.perKmLumsumCostYearWiseLst}" var="lumpsumPerKm" indexVar="index">
+                            <tr>
+                                <td>
+                                    <div>Year {!index + 1}</div>
+                                </td>
+                                <td class="customClass">
+                                    <div  >{!lumpsumPerKm.lumsumCost}</div> 
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+                <br/>
+                <br/>
+                
+            </aura:if>
+
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.perTonLumsumCostYearWiseLst))}" >
+               
+                <table class="slds-table  slds-table_bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="9">
+                                <div   class="slds-align--absolute-center red-color-class"><b>Comprehensive Price per Quotation - Lump Sum Price Per Ton</b></div> 
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent red-color-class"> 
+                
+                
+                            <td data-label="1" class="customClass">
+                                <div  title="Price Type">Price TYpe</div>
+                            </td>
+                            <td data-label="2" class="customClass">
+                                    <div  title="2">Pricing Policy</div>
+                            </td>
+                            <td data-label="3" class="customClass">
+                                    <div  title="3">Proposed Discount</div>
+                            </td>
+                            <td data-label="4" class="customClass"> 
+                                <div  title="4">Break Even Point</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="5">Target Prices "if requested"</div>
+                            </td>
+                            <td data-label="5" class="customClass">
+                                <div  title="6">Historical Prices</div>
+                            </td>
+                            <td data-label="7" class="customClass">
+                                <div  title="7">Market Prices</div>
+                            </td>
+                        
+                        </tr>
+                        
+                        <aura:iteration items="{!v.pricesAnalysisCalculationObj.perTonLumsumCostYearWiseLst}" var="lumpsumPerTon" indexVar="index">
+                            <tr>
+                                <td>
+                                    <div>Year {!index + 1}</div>
+                                </td>
+                                <td class="customClass">
+                                    <div  >{!lumpsumPerTon.lumsumCost}</div> 
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+                <br/>
+                <br/>
+                
+            </aura:if>
+
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.vehicleAnnualWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.vehicleAnnualWiseLst}" var="annualVehicle">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Per Unit - Annually Price - {!annualVehicle.vehicleUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!annualVehicle.vehicleLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.vehicleCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.vehicleAnnualWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.vehicleAnnualWiseLst}" var="annualVehicleFuel">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Per Unit - Annually Price - {!annualVehicleFuel.vehicleUniqueKey}(Fuel)</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!annualVehicleFuel.vehicleLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.fuelCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.driverAnnualWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.driverAnnualWiseLst}" var="annualDriver">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Per Unit - Annually Price - {!annualDriver.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!annualDriver.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.nannyAnnualWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.nannyAnnualWiseLst}" var="annualNanny">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Per Unit - Annually Price - {!annualNanny.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!annualNanny.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.supervisorAnnualWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.supervisorAnnualWiseLst}" var="annualSupervisor">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Per Unit - Annually Price - {!annualSupervisor.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!annualSupervisor.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.coordinatorAnnualWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.coordinatorAnnualWiseLst}" var="annualCoordinator">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Per Unit - Annually Price - {!annualCoordinator.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!annualCoordinator.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.accountantAnnualWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.accountantAnnualWiseLst}" var="annualAccountant">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Annually Price - {!annualAccountant.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!annualAccountant.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.otherEmpAnnualWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.otherEmpAnnualWiseLst}" var="annualOtherEmp">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Annually Price - {!annualOtherEmp.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!annualOtherEmp.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.vehicleMonthWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.vehicleMonthWiseLst}" var="monthlyVehicle">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Monthly Price - {!monthlyVehicle.vehicleUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!monthlyVehicle.vehicleLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.vehicleCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.vehicleMonthWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.vehicleMonthWiseLst}" var="monthlyVehicleFuel">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Monthly Price - {!monthlyVehicleFuel.vehicleUniqueKey}(Fuel)</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!monthlyVehicleFuel.vehicleLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.fuelCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.driverMonthWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.driverMonthWiseLst}" var="monthlyDriver">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Monthly Price - {!monthlyDriver.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!monthlyDriver.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.nannyMonthWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.nannyMonthWiseLst}" var="monthlyNanny">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Monthly Price - {!monthlyNanny.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!monthlyNanny.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.supervisorMonthWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.supervisorMonthWiseLst}" var="monthlySupervisor">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Monthly Price - {!monthlySupervisor.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!monthlySupervisor.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.coordinatorMonthWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.coordinatorMonthWiseLst}" var="monthlyCoordinator">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Monthly Price - {!monthlyCoordinator.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!monthlyCoordinator.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.accountantMonthWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.accountantMonthWiseLst}" var="monthlyAccountant">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Monthly Price - {!monthlyAccountant.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!monthlyAccountant.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.otherEmpMonthWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.otherEmpMonthWiseLst}" var="monthlyOtherEmp">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Per Unit - Monthly Price - {!monthlyOtherEmp.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!monthlyOtherEmp.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.vehiclePriceUtilizationWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.vehiclePriceUtilizationWiseLst}" var="vehiclePerQuotation">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Comprehensive Price per Quotation  - {!vehiclePerQuotation.vehicleUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!vehiclePerQuotation.vehicleLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.vehicleCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.vehiclePriceUtilizationWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.vehiclePriceUtilizationWiseLst}" var="vehicleFuelPerQuotation">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Comprehensive Price per Quotation  - {!vehicleFuelPerQuotation.vehicleUniqueKey}(Fuel)</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!vehicleFuelPerQuotation.vehicleLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.fuelCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.driverPriceUtilizationWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.driverPriceUtilizationWiseLst}" var="driverPerQuotation">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div   class="slds-align--absolute-center red-color-class"><b>Comprehensive Price per Quotation  - {!driverPerQuotation.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!driverPerQuotation.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.nannyPriceUtilizationWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.nannyPriceUtilizationWiseLst}" var="nannyPerQuotation">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Comprehensive Price per Quotation  - {!nannyPerQuotation.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!nannyPerQuotation.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.supervisorPriceUtilizationWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.supervisorPriceUtilizationWiseLst}" var="supervisorPerQuotation">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Comprehensive Price per Quotation  - {!supervisorPerQuotation.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!supervisorPerQuotation.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.coordinatorPriceUtilizationWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.coordinatorPriceUtilizationWiseLst}" var="coordinatorPerQuotation">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Comprehensive Price per Quotation  - {!coordinatorPerQuotation.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!coordinatorPerQuotation.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.accountantPriceUtilizationWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.accountantPriceUtilizationWiseLst}" var="accountantPerQuotation">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Comprehensive Price per Quotation  - {!accountantPerQuotation.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!accountantPerQuotation.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+
+            <aura:if isTrue="{!not(empty(v.pricesAnalysisCalculationObj.otherEmpPriceUtilizationWiseLst))}" >
+                <aura:iteration items="{!v.pricesAnalysisCalculationObj.otherEmpPriceUtilizationWiseLst}" var="otherEmpPerQuotation">
+                    <table class="slds-table  slds-table_bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div  class="slds-align--absolute-center red-color-class" ><b>Comprehensive Price per Quotation  - {!otherEmpPerQuotation.workforceUniqueKey}</b></div> 
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent red-color-class"> 
+                    
+                    
+                                <td data-label="1" class="customClass">
+                                    <div  title="Price Type">Price TYpe</div>
+                                </td>
+                                <td data-label="2" class="customClass">
+                                        <div  title="2">Pricing Policy</div>
+                                </td>
+                                <td data-label="3" class="customClass">
+                                        <div  title="3">Proposed Discount</div>
+                                </td>
+                                <td data-label="4" class="customClass"> 
+                                    <div  title="4">Break Even Point</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="5">Target Prices "if requested"</div>
+                                </td>
+                                <td data-label="5" class="customClass">
+                                    <div  title="6">Historical Prices</div>
+                                </td>
+                                <td data-label="7" class="customClass">
+                                    <div  title="7">Market Prices</div>
+                                </td>
+                            
+                            </tr>
+                            
+                            <aura:iteration items="{!otherEmpPerQuotation.workforceLstYearWise}" var="innerlist" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div>Year {!index + 1}</div>
+                                    </td>
+                                    <td class="customClass">
+                                        <div  >{!innerlist.workforceCost}</div> 
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </aura:iteration>
+            </aura:if>
+        </tbody>
+    </table>
+          
+</aura:component>

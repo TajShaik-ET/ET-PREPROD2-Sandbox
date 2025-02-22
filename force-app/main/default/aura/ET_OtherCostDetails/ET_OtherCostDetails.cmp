@@ -1,0 +1,52 @@
+<aura:component >
+    <!-- Aura Attributes -->
+    <aura:attribute name="isDisabled" type="boolean" default="false"/>
+    <!-- <aura:attribute name="labelName" type="String" />
+<aura:attribute name="costValue" type="Integer" /> -->
+    <aura:attribute name="lineNumber" type="Integer"  />
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    <aura:attribute name="otherCostRecord" type="ET_Other_Cost_Request__c" default="{'sObjectType':'ET_Other_Cost_Request__c'}"/>
+    <aura:attribute name="costTypeValue" type="List"/>
+    <aura:attribute name="costTypeOptions" type="List" default="[{label: 'One time Cost',value : 'One_time_Cost'},{label : 'Annual Cost', value: 'Annual_Cost'}]"/>
+    <aura:attribute name="existingLineData" type="ET_Other_Cost_Request__c"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Alter Rate Start >
+    <aura:attribute name="showAlterRates" type="Boolean" default="false" />
+    <aura:attribute name="alterRatesObj" type="Object" />
+    <aura:method name="alterRatesMethod" action="{!c.doAlterRates}" access="public">
+        <aura:attribute name="alterRatesObj1" type="Object" />
+	</aura:method>
+    <aura:if isTrue="{!v.showAlterRates}">
+        <c:ET_AlterQuoteRates aura:id ="alterRates" showAlterRates="{!v.showAlterRates}" alterRatesObj="{!v.alterRatesObj}" serviceName="Vehicle" Line="{!v.lineNumber}"/>
+    </aura:if>
+    < ALter Rate End -->
+    
+    <c:ET_CollapsibleSection aura:id ="collapsibleCmp" title="{! 'Other Cost ' + v.lineNumber }"
+                             lineItemNumber="{!v.lineNumber}"
+                             isPricingTeam = "{!v.isPricingTeam}">
+        <div class="slds-grid slds-wrap slds-grid--pull-padded">
+            <div class="slds-col--padded slds-size--2-of-12">
+                <lightning:checkboxGroup name="Cost Type"
+                                         label="Cost Type:"
+                                         aura:id="CostType_CheckboxGrp"
+                                         options="{!v.costTypeOptions}"
+                                         value="{!v.costTypeValue}"
+                                         required="true"
+                                         disabled="{!v.isPricingTeam}"/>
+                
+            </div>
+            
+            <div class="slds-col--padded slds-size--5-of-12">
+                <lightning:input type="text" name="Cost Label" label="Cost Label" disabled="{!v.isPricingTeam}"
+                                 required="true" aura:id="otherCostLabel"
+                                 value="{!v.otherCostRecord.Name}"/>
+            </div>
+            
+            <div class="slds-col--padded slds-size--5-of-12">
+                <lightning:input type="number" name="Cost" label="Cost" disabled="{! v.isPricingTeam}" required="true" aura:id="otherCostValue"
+                                 value="{!v.otherCostRecord.ET_Cost_Value__c}" min="1" messageWhenRangeUnderflow="please enter a positive value"/>
+            </div>     
+        </div>    
+    </c:ET_CollapsibleSection>
+</aura:component>

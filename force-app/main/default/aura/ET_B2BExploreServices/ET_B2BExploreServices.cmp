@@ -1,0 +1,147 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" controller='ET_B2BController'>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="isOpenModel" type="Boolean"  /> 
+    <aura:attribute name="serviceTypes" type="List"  /> 
+    <aura:attribute name="types" type="List"  /> 
+    <aura:attribute type="List" name="selectedCheckBoxes" default="[]" />
+    <aura:attribute name="type" type="string"  /> 
+    <aura:attribute name="opp" type="Opportunity"  default="{'sObjectType':'Opportunity','Description':'','RecordTypeId':'','No_of_Resources__c':'','No_of_Vehicles__c':'','CloseDate':'','Customer_PO__c':'','AccountId':''}" />
+    <aura:attribute name="errorMsg" type="Boolean"/>
+    <!--Using this attributes for preferred location-->
+    <aura:attribute name="preferredLocation" type="list"/>
+    <aura:attribute name="selectedPreferredLocation" type="String"/>
+    
+    <div class="casesupmaindiv">
+        <div class="menumaindiv"><div class="menudiv">
+            <c:MenuItemsList />
+            </div>
+        </div>
+        <div class="serviceheading"><!--span class="headingcolor">Emirates Transport</span--> <strong>Poineer in </strong><br></br>Transportation and Logistics Services</div>
+        <!-- <a href="https://et.ae/en/" class="learnmore">Learn More&nbsp; &#10140;</a>-->
+        <div class="services_mainsec">
+            <div class="leftsection">
+                <p class="servicehead">Services</p>
+                <div class="allcheckboxdiv">
+                    <aura:iteration var="a" items="{!v.types}" indexVar="indx">
+                        <ui:inputCheckbox aura:id="checkbox" 
+                                          text="{!a}" 
+                                          name="{!indx}" 
+                                          label="{!a}" 
+                                          value="true"
+                                          change="{!c.selectoptionvalue}"/>
+                    </aura:iteration>
+                </div>
+                
+            </div>
+            <div class="servicemainsection">
+                <!--<h2 class="serviceheading">Explore Services</h2>-->
+                <a href="https://emiratesmoto.ae/">
+                    <div class="serviceitem">
+                        <div class="imagediv">
+                            <img src="{!$Resource.ET_Explore_LuxuryVehicle}"/>                             
+                            <div class="text_services">
+                                <h3>Luxury vehicle maintenance</h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="http://rsa.et.gov.ae/etrecoveryweb">
+                    <div class="serviceitem">
+                        <div class="imagediv">
+                            <img src="{!$Resource.ET_Explore_RoadSideAssistance}"/>
+                            <div class="text_services">
+                                <h3>Road side Assistance</h3>
+                            </div> 
+                        </div>
+                    </div>
+                </a>
+                <a href="https://www.alwataneya.ae/">
+                    <div class="serviceitem">
+                        <div class="imagediv">
+                            <img src="{!$Resource.ET_Explore_Auction}"/> 
+                            <div class="text_services">
+                                <h3>Auction Center</h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <aura:iteration var="a" items="{!v.serviceTypes}" indexVar="indx">
+                    <a href="">
+                        <div class="serviceitem">
+                            <div class="imagediv">
+                                <!-- <img src="{!$Resource.ETST_SchoolBG}"/>  -->
+                                <img src="{!a.Image_URL__c}"/>
+                                <div class="text_services">
+                                    <h3>{!a.Service__c}</h3>                                    
+                                </div>
+                                <lightning:button variant="brand" 
+                                                  aura:id="reqService"
+                                                  label="Request Service"
+                                                  value="{!a.Service__c}"
+                                                  onclick="{!c.openTransportModel}" class="reqbtn"/>
+                            </div>
+                            
+                        </div>
+                    </a>
+                </aura:iteration>
+                
+            </div>
+        </div>
+    </div>
+    <div class="footer_section">
+        <div class="social_links">
+            <a href="https://www.instagram.com/emiratestrans/" target="_blank"><img src="{!$Resource.ET_instagramimg}"  class=""/></a>
+            <a href="https://twitter.com/emiratestrans" target="_blank"><img src="{!$Resource.ET_twitterimg}" class=""/></a>
+            <a href="https://www.facebook.com/EmiratesTrans/" target="_blank"><img src="{!$Resource.ET_facebookimg}" class=""/></a>
+            <a href="https://www.linkedin.com/in/emirates-transport-9b0673103" target="_blank"><img src="{!$Resource.ET_linkedinimg}"  class=""/></a>
+        </div>
+        <div class="copytext">© 2021 Emirates Transport and Powered by Smaartt</div>
+    </div>
+    <aura:if isTrue="{!v.isOpenModel}">        
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="">Request New Service from ET</h2>
+                    
+                    <lightning:buttonIcon aura:id="form3" iconName="utility:close"
+                                          onclick="{!c.closeModel}"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    
+                </header>
+                <div class="slds-modal__content slds-p-around--medium">
+                    
+                    
+                    <lightning:select label="Preferred Location" aura:id="LocationId" value="{!v.selectedPreferredLocation}" required="true">
+                        <option value="">-- None --</option>
+                        <aura:iteration items="{!v.preferredLocation}" var="location">
+                            <option value="{!location.label}" >{!location.label}</option> 
+                        </aura:iteration>
+                    </lightning:select>
+                    
+                    
+                    <lightning:textarea label="Description" 
+                                        placeholder="Description"
+                                        aura:id="DescriptionId"
+                                        name="Description" value="{!v.opp.Description}" id="commentssec" required="true">
+                    </lightning:textarea >
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" 
+                                      label="Close"
+                                      onclick="{!c.closeModel}" class="btn_close"/>
+                    
+                    <lightning:button variant="brand" 
+                                      label="Proceed"
+                                      onclick="{!c.saveOpp}" class="btn_save"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>    
+    </aura:if>
+</aura:component>

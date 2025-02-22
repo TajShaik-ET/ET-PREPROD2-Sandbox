@@ -1,0 +1,168 @@
+<aura:component implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="serviceRecord" type="ET_Service_Request__c"/>  
+    <aura:attribute name="currentStep" type="String"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:attribute name="vfUrl" type="String" />
+    <aura:attribute name="vfHost" type="String" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="paymentOptions" type="List" default="[
+    {'label': 'Credit Card', 'value': '1'},
+    {'label': 'Cheque', 'value': '2'}
+    ]"/>
+    <aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="zoomLevel" type="Integer" />
+
+    <aura:attribute name="paymentType" type="String"/>
+    <force:recordData aura:id="recordLoader"
+    recordId="{!v.recordId}"
+    layoutType="FULL"
+    fields="ETST_Status__c"
+    targetFields="{!v.serviceRecord}"
+    targetError="{!v.recordLoadError}"
+    recordUpdated="{!c.recordUpdate}"
+    />
+   
+ 
+    <lightning:progressIndicator aura:id='progressIndicator' currentStep="{!v.currentStep}" type="path" variant="base">
+        <!--lightning:progressStep label="Pending with Coordinator" value="Pending with Coordinator" /-->
+        <!--lightning:progressStep label="Coordinator Confirmed" value="Coordinator Confirmed"/--> 
+        <lightning:progressStep label="Renewed" value="Renewed"/>
+        <lightning:progressStep label="Payment" value="Payment Pending"/>
+        <lightning:progressStep label="Payment Confirmed" value="Payment success"/>
+        <lightning:progressStep label="Renewal Completed" value="Renewal completed"/>
+    </lightning:progressIndicator>
+    <br/><br/>
+   
+   
+     
+     <aura:if  isTrue="{!v.currentStep=='Renewed'}" > 
+        <lightning:card variant="Narrow" title="Service Renewal Details" iconName="standard:account"> 
+            <lightning:recordViewForm  recordId="{!v.recordId}"  
+              objectApiName="ETST_Transport_Request__c">
+              <lightning:messages />
+              <div class="slds-grid slds-gutters">
+              <div class="slds-col slds-size_1-of-3">
+              <lightning:outputField fieldName="ETST_Service_Type__c" /> 
+              </div>   
+              <div class="slds-col slds-size_1-of-3"> 
+              <lightning:outputField fieldName="ETST_Transport_Type__c" />
+              </div>
+              <div class="slds-col slds-size_1-of-3"> 
+              <lightning:outputField fieldName="ETST_Pick_Up_Start_Date__c" />
+              </div>
+              </div>
+              <div class="slds-grid slds-gutters">
+              <div class="slds-col slds-size_1-of-3">
+              <lightning:outputField fieldName="ETST_Pick_Up_End_Date__c" />
+              </div>
+              <div class="slds-col slds-size_1-of-3"> 
+              <lightning:outputField fieldName="ETST_Pick_Up_From__c" />
+              </div>
+              <div class="slds-col slds-size_1-of-3"> 
+              <lightning:outputField fieldName="ETST_Pick_Up_Time__c" />
+              </div>
+              </div>
+              <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_1-of-3">
+                
+                  <lightning:inputField fieldName="ETST_Drop_Off_To__c" />
+                  </div>
+                <div class="slds-col slds-size_1-of-3">
+                
+                <lightning:inputField fieldName="ETST_Drop_of_Time__c" />
+                </div>
+              
+              <div class="slds-col slds-size_1-of-3">
+              
+              <lightning:inputField fieldName="ETST_Fare_Charges__c" />
+              </div>
+              </div>
+              <div class="slds-m-top_medium slds-float--right ">
+                  <lightning:button variant="brand" name="Back" label="Back" onclick="{!c.cancelSave}" />
+                  <lightning:button class="slds-float--right"  variant="brand" type="submit" name="Proceed to Pay" label="Proceed to Pay" onclick="{!c.proceedToPay}"/>
+              </div>
+              </lightning:recordViewForm>
+            </lightning:card>
+        </aura:if>
+        
+        <aura:if  isTrue="{!v.currentStep=='Payment success'}" > 
+        <lightning:card variant="Narrow" title="Payment Details" iconName="standard:account"> 
+            <lightning:recordViewForm  recordId="a0R7E000008MussUAC"  
+              objectApiName="ETST_Payment__c">
+              <lightning:messages />
+              <div class="slds-grid slds-gutters">
+              <div class="slds-col slds-size_1-of-2"> 
+              <lightning:outputField fieldName="Name" /> 
+              </div>   
+              <div class="slds-col slds-size_1-of-2"> 
+              <lightning:outputField fieldName="ETST_Cardholder_Name__c" />
+              </div>
+              </div>
+              <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_1-of-2"> 
+                  <lightning:outputField fieldName="ETST_Amount__c" />
+                  </div>
+              <div class="slds-col slds-size_1-of-2"> 
+              <lightning:outputField fieldName="ETST_Payment_State__c" />
+              </div>
+              </div>
+              <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_1-of-2"> 
+                  <lightning:outputField fieldName="ETS_Payment_Mode" />
+                  </div>
+              
+              </div>
+              <div class="slds-m-top_medium slds-float--right ">
+                  <lightning:button variant="brand" name="Back" label="Back" onclick="{!c.cancelSave}" />
+                  <lightning:button class="slds-float--right"  variant="brand" type="submit" name="View Booking Details" label="View Booking Details" onclick="{!c.viewBookingDetails}"/>
+              </div>
+              </lightning:recordViewForm>
+            </lightning:card>
+        </aura:if>
+        
+
+<aura:if  isTrue="{!v.currentStep=='Payment Pending'}" >  
+  <lightning:radioGroup name="radioGroup"
+                          label="Radio Group"
+                          options="{! v.paymentOptions }"
+                          value="{! v.paymentType }"
+                          type="radio"/>
+  <aura:if  isTrue="{!v.paymentType=='1'}" >  
+  <iframe aura:id="vfFrame" src="{!v.vfUrl}" width="100%" height="600px;" frameBorder="0" />
+  </aura:if> 
+  <aura:if  isTrue="{!v.paymentType=='2'}" >  
+    <div class="slds-m-vertical_medium">
+      <h1 class="slds-text-heading_small">Please pay at our office to use tranport service</h1>
+      <p class="slds-text-body_regular">Note: We only accept Cheque or Credit card for Payment</p>
+  </div> 
+  <lightning:formattedAddress
+      street="Marrakech Street"
+      city="Umm Ramool"
+      country="Dubai"
+  />
+
+  <br/>
+  <div class="slds-m-top_medium slds-float--right ">
+    <lightning:button variant="brand" name="Back" label="Back" onclick="{!c.cancelSave}" />
+    <lightning:button class="slds-float--right"  variant="brand" type="submit" name="Proceed" label="Proceed" onclick="{}"/>
+  </div>
+  <!--lightning:map 
+        mapMarkers="{! v.mapMarkers }" 
+        zoomLevel="{!v.zoomLevel}" /-->
+  </aura:if> 
+</aura:if>
+
+<aura:if  isTrue="{!v.currentStep=='Renewal completed'}" >  
+  <lightning:card>
+     
+    <p class="slds-p-horizontal_small">
+        Renewal Completed Successfully.
+    </p>
+    <div class="slds-m-top_medium slds-float--right ">
+    <lightning:button variant="brand" name="Close" label="Close" onclick="{!c.cancelSave}" />
+    </div>
+</lightning:card>
+</aura:if>
+</aura:component>

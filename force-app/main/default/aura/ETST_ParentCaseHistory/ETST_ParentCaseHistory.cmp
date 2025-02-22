@@ -1,0 +1,47 @@
+<aura:component extends="c:ETST_BilingualCommunity" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="selectedTabId" type="String"/>
+    <aura:attribute name="backgroundImageURL" type="String" default=""/>
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:attribute name="caseList" type="List"/>    
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <!--Aura Attributes END--> 
+    
+    <div aura:id="transportService" class="casesection" >
+        
+        <aura:iteration items="{!v.caseList}" var="item">
+            <div class="slds-box">
+                <div class="creatdate">
+                    <strong>{!$Label.c.ETST_Case_Number}&nbsp;{!item.CaseNumber}</strong>
+                </div>
+                <div>
+                    <strong class="strongtext">Case Type</strong>&nbsp;<span class="detailscol">: {!item.Case_Types__c}</span>
+                </div>
+                <div>
+                    <strong class="strongtext">Issue Category</strong>&nbsp;<span class="detailscol">: {!item.ET_Issue_Category__c}</span>
+                </div>
+                <div>
+                    <strong class="strongtext">Issue Type</strong>&nbsp;<span class="detailscol">: {!item.ET_Issue_Type_New__c}</span>
+                </div>
+                <div>
+                    <strong class="strongtext">{!$Label.c.ETST_Status}</strong>&nbsp;<span class="detailscol">: {!item.Status}</span>
+                </div>
+                <div>
+                    <strong class="strongtext">{!$Label.c.ETST_Description}</strong>&nbsp;<span class="detailscol">: {!item.Description}</span> 
+                </div>
+               <div>
+                    <strong class="strongtext">{!$Label.c.ETST_Created_Date}</strong>&nbsp;<span class="detailscol">: <lightning:formattedDateTime value="{!item.CreatedDate}"  
+                                                                                                                                                   year="numeric" month="numeric" day="numeric"  
+                                                                                                                                                   timeZone="Asia/Dubai" hour12="false"/> </span>
+                </div>
+                
+            </div>
+        </aura:iteration>
+    </div> 
+    
+    <div>
+    <a href="" class="cancel_btn" onclick="{!c.cancelSave}">{!v.clBack}</a>
+    </div>
+    
+</aura:component>

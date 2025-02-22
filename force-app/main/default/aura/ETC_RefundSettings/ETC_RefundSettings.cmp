@@ -1,0 +1,80 @@
+<aura:component controller="ETC_AdminSettingsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    
+    <aura:attribute name="RefundSettingsData" type="Object" />
+    <aura:attribute name="RefundSettingsColumns" type="List" />
+    <aura:attribute name="RefundSettingsRecord" type="Object"/>
+    <aura:attribute name="EditRefundSettings" type="boolean" default=""/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="selectedTabId" type="string"/>
+    
+    <div id="mainDiv" >
+        
+        <lightning:tabset selectedTabId="{!v.selectedTabId}" variant="scoped">
+            
+            <lightning:tab label="Refund Policies" id="refundPolicies" class="SearchDetails">
+                <div class="slds-button-group slds-float_right" style="">
+                    <button class="slds-button slds-button_neutral btn_table btn_table btn_table" style="margin-right:10px;margin-top:5px" onclick="{!c.newRefundSetting}">New</button>
+                </div> <br/> <br/><br/>
+                
+                <lightning:datatable data="{!v.RefundSettingsData}" 
+                                     keyField="refunds" 
+                                     columns="{!v.RefundSettingsColumns }" 
+                                     onrowaction="{!c.handleRefundRowAction}"  
+                                     hideCheckboxColumn="true" 
+                                     style="" />
+                
+                <!-- Plans Master new popup window -->
+                <div class="ccSetting slds-hide" aura:id="RefundSettingsRecordPopUp" style="height: 340px; ">
+                    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick="{!c.handleCancelRefundSetting }" title="Close">
+                                    <lightning:icon iconName="utility:close" alternativeText="Approved" />
+                                </button>
+                                <h2 class="slds-text-heading_medium slds-hyphenate">New Refund Policy</h2>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium">
+                                
+                                
+                                <div class="slds-grid slds-gutters">
+                                    
+                                    <div class="slds-col slds-size_1-of-3">
+                                        <span onkeydown="{!c.stopSpecialChar}">
+                                            <lightning:input name="ETC_From__c" label="From" value="{!v.RefundSettingsRecord.ETC_From__c}"  required="true" pattern="[0-9]*" type="number"/>
+                                        </span>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-3">
+                                        <span onkeydown="{!c.stopSpecialChar}">
+                                            <lightning:input name="ETC_To__c" label="To" value="{!v.RefundSettingsRecord.ETC_To__c}"  required="true" pattern="[0-9]*" type="number"/>
+                                        </span>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-3">
+                                        <span > <!-- onkeydown="{!c.stopSpecialChar}" -->
+                                            <lightning:input name="ETC_Percentage__c" label="Percentage" value="{!v.RefundSettingsRecord.ETC_Percentage__c}" type="number"  required="true" formatter="percent" step="0.01"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <lightning:button class="btn_back" label="Cancel" title="Cancel" onclick="{! c.handleCancelRefundSetting }"/>
+                                <aura:if isTrue="{!!v.EditRefundSettings}">
+                                    <lightning:button  class="btn_table" variant="brand" label="Save" title="Save" onclick="{! c.handleSaveRefundSetting}" />
+                                </aura:if> 
+                                <aura:if isTrue="{!v.EditRefundSettings}">
+                                    <lightning:button  class="btn_table" variant="brand" label="Update" title="Update" onclick="{! c.handleEditRefundSetting}" />
+                                </aura:if>    
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                </div>
+                
+                
+            </lightning:tab>
+        </lightning:tabset>
+    </div>
+    
+</aura:component>

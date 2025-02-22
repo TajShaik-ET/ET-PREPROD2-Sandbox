@@ -1,0 +1,337 @@
+<apex:page id="communitiesSelfRegPage" showHeader="false" controller="CommunitiesSelfRegController" title="{!$Label.site.user_registration}" docType="html-5.0">
+    <apex:define name="body"> 
+        
+        <!--style>
+body {
+background: #f2f2f2;
+}
+.regstmaindiv{
+width: 950px;
+max-width: 950px;
+background-image:url("{!URLFOR($Resource.ETS_RegistrationPage)}");
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+border-radius: 10px;
+margin: 0 auto;
+box-shadow: 0 0 35px rgba(0, 0, 0, 0.1);
+text-align: center;
+border-radius: 10px;
+align-items: center;
+justify-content: center;
+}
+.regstmaindiv .leftcontentdiv{
+width: 65%;
+position: relative;
+display: inline-block;
+float: left;
+}
+.regstmaindiv .rightcontentdiv{
+width: 35%;
+position: relative;
+display: inline-block;
+float: left;background:#fff;
+text-align: left;
+border-top-right-radius: 10px;
+border-bottom-right-radius: 10px;
+}
+.rightcontentdiv form{
+width: 100%;
+margin: 10% auto;
+}
+.rightcontentdiv form table{
+width: 80%;
+margin:auto;
+}
+.rightcontentdiv form .message table{
+width: 100%!important;
+margin:auto;
+}
+.messageText , .msgIcon{
+display:none;
+}
+input[type=text] , input[type=password]{
+padding: 3%;
+font-size: 12px;
+outline: none;
+width: 94%;
+background: rgba(23, 23, 23, 0.72);
+color: #616161;
+border-radius: 5px;
+font-weight: 500;
+border: 1px solid #f2f2f2;
+background: #fff;
+margin-bottom: 10px;
+box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+}
+.rightcontentdiv table label{
+font-size: 12px;
+/* font-weight: bold; */
+letter-spacing: 1px;
+color: #696868;
+padding-bottom: 5px;
+display: block;
+}
+input[type=submit]{
+color: #FFF;
+background: #7f78d2;
+padding: 10px!important;
+width: 100%;
+font-size: 15px;
+font-weight: normal;
+border: 1px solid #7f78d2!important;
+border-radius: 5px;
+position: relative;
+}
+.formheading {
+font-size: 42px;
+font-weight: bolder;
+color: #ffffff;
+text-transform: uppercase;
+padding: 24px 36px;
+letter-spacing: 6px;
+line-height: 46px;
+margin: 30px;
+text-align: center;
+font-style: italic;
+background-color: #795548;
+-webkit-background-clip: text;
+-moz-background-clip: text;
+background-clip: text;
+color: transparent;
+text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;
+}
+</style>
+<style>
+.required:before {
+content:"*";
+font-size: 1.2em;
+color: red;
+}
+</style--> 
+        <style>
+            @font-face {
+            font-family: 'Cronos';
+            src: url(/resource/ETST_Cronos); 
+            }
+            .registrationdiv{
+            position: relative;
+            width: 98%;
+            margin: 1%;
+            box-shadow: 1px 13px 31px -6px #9e9e9e;
+            }
+            .paymentdetaimaindiv {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+            background: #fff;    
+            }
+            .colnew {
+            flex: 1;
+            padding:50px;
+            }
+            .leftimgdiv{
+            background: #00a957;
+            background-image: url(/resource/ETST_servicebg);
+            background-size: cover;
+            background-position: right;
+            position: relative;
+            overflow:hidden;
+            flex-grow: 8;
+            z-index: 1;
+            animation: signupbgimg 10s infinite alternate;
+            }
+            /* .leftimgdiv:before{
+            background-color: rgba(0, 0, 0, 0.3);
+            content: '';
+            left: 0;
+            top: 0;
+            display: block;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            }*/
+            .rightcontentdiv{
+            background: #fff;
+            flex-grow: 4;
+            }
+            .invoicecontentdiv{
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            color: #fff;
+            font-size: 3rem;
+            font-family: 'Cronos';
+            letter-spacing: 0px;
+            text-shadow: 1px 1px 2px #f2f2f2;
+            transform: translate(-50%, -50%);
+            display: block;
+            line-height: 1;
+            width: 100%;
+            text-align: center;
+            }
+            .leftimgdiv img{
+            position: absolute;
+            width: 200px;
+            top: 0%;
+            left: 0%;
+            text-align: center;
+            /* padding: 10px; */
+            /* filter: brightness(0) invert(1); */
+            /* transform: translate(-50%, -50%); */
+            padding: 20px;
+            }
+            input[type=text], input[type=password], input[type=tel] , input[type=email] , select{
+            padding-top: 0;
+            height: 38px;
+            margin: 0;
+            padding: 0 .5rem 0 .5rem;
+            vertical-align: middle;
+            background: transparent!important;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            font-family: 'Cronos';
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 40px;
+            color: #888;
+            border-radius: 4px;
+            box-shadow: none!important;
+            transition: all .3s;
+            width: 95%;
+            outline: none;
+            }
+            select{
+            padding: 0 .25rem;
+            width:100%;
+            }
+            table{
+            width: 100%;
+            }
+            table tr td{
+            padding:0px;
+            }
+            body {
+            background-color: #fff;
+            }
+            .signuptext{
+            font-size: 2rem;
+            font-family: 'Cronos';
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            }
+            
+            .submitbtn{
+            font-size: 14px!important;
+            margin-top: 15px!important;
+            border: 0px solid #00c19e!important;
+            color: #fff!important;
+            padding: 0 10px!important;
+            min-width: 100px!important;
+            height: 40px!important;
+            background-image:none!important;
+            background-color: #ff4b5a!important;
+            border-radius: 5px!important;
+            line-height: 1.2!important;
+            width: 100%;
+            font-weight: 500!important;
+            letter-spacing: 1px;
+            outline: none;
+            -webkit-transition: all 0.4s;
+            -o-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            transition: all 0.4s;
+            box-shadow: 0 4px 10px 0px rgba(255, 75, 90, 0.5);
+            -moz-box-shadow: 0 4px 10px 0px rgba(255, 75, 90, 0.5);
+            -webkit-box-shadow: 0 4px 10px 0px rgba(255, 75, 90, 0.5);
+            -o-box-shadow: 0 4px 10px 0px rgba(255, 75, 90, 0.5);
+            -ms-box-shadow: 0 4px 10px 0px rgba(255, 75, 90, 0.5);
+            }
+            .submitbtn:hover{
+            background-color: #333333!important;
+            box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+            -moz-box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+            -webkit-box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+            -o-box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+            -ms-box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+            }
+            .message {
+            margin: 0px;
+            }
+            .errorM3 .msgIcon, .errorMedium {
+            display: none;
+            }
+            
+            ul{
+            padding-left: 0px!important;
+            }
+            .errorM3{
+            border-color: #ddd;
+            background-color: #f1f1f1;
+            }
+            @keyframes signupbgimg {
+            0% {
+            background:url(/resource/ETST_servicebg);
+            background-size:cover;
+            background-position: right;
+            }
+            50% {
+            background:url(/resource/banner1);
+            background-size:cover;
+            background-position: right;
+            }
+            100% {
+            background:url(/resource/banner2);
+            background-size:cover;
+            background-position: right;
+            }
+            }
+        </style>
+        <div class="registrationdiv">
+            <div class="paymentdetaimaindiv">
+                <div class="colnew leftimgdiv">
+                    <img class="companyimg" src="{!$Resource.ETLogo}" />
+                    <!--<div class="invoicecontentdiv">Emirates Transport</div>-->
+                </div>
+                <div class="colnew rightcontentdiv">
+                    <div class="signuptext">Sign Up</div>
+                    <div class="">
+                        <apex:form id="theForm" forceSSL="true">
+                            <apex:pageMessages id="error"/>
+                            <apex:panelGrid columns="1" >
+                                <apex:inputText required="true" id="firstName" value="{!firstName}" label="First Name" html-placeholder="First Name" html-autocomplete="off" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)" />
+                                <apex:inputText required="true" id="lastName" value="{!lastName}" label="Last Name" html-placeholder="Last Name" html-autocomplete="off" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)" />
+                                <!--apex:outputLabel value="{!$Label.site.community_nickname}" for="communityNickname"/>
+<apex:inputText required="true" id="communityNickname" value="{!communityNickname}" label="{!$Label.site.community_nickname}"/-->
+                                <apex:inputText required="true" id="emiratesId" value="{!emiratesId}" label="{!$Label.Emirates_ID_Passport_No}" html-placeholder="Emirates ID Passport No" html-autocomplete="off"/>
+                                <apex:inputText required="true" id="MobilePhone" value="{!MobilePhone}" label="{!$Label.ETST_Phone}" html-placeholder="Mobile / Phone" html-autocomplete="off" />
+                                <apex:inputText required="true" id="email" value="{!email}" label="{!$Label.site.email}" html-placeholder="Email" html-autocomplete="off"/>                        
+                                <apex:inputText required="true" id="street" value="{!street}" label="{!$Label.Street}" html-placeholder="Street" html-autocomplete="off"/>
+                                <apex:inputText required="true" id="city" value="{!city}" label="Locality" html-placeholder="Locality" html-autocomplete="off"/>
+                                <!-- <apex:inputText required="true" id="country" value="{!country}" label="{!$Label.Country}" html-placeholder="Counry" /> -->                      
+                                <apex:outputPanel id="vendor2">
+                                    <apex:selectList label="Emirate" value="{!Emirate}" required="true" multiselect="false" size="1">
+                                        <apex:selectOptions value="{!Nationality}"/>
+                                    </apex:selectList>
+                                </apex:outputPanel> 
+                                <apex:inputSecret id="password" value="{!password}" html-placeholder="Password"/>
+                                <apex:inputSecret id="confirmPassword" value="{!confirmPassword}" html-placeholder="Confirm Password" />
+                                <apex:outputText value=""/>
+                                <apex:commandButton action="{!registerUser}" value="{!$Label.site.submit}" id="submit" styleClass="submitbtn"/>
+                            </apex:panelGrid>   
+                        </apex:form> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </apex:define> 
+    
+</apex:page>

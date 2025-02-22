@@ -1,0 +1,89 @@
+.THIS .custometable{
+    margin-top: 0;
+}
+.THIS .slds-table th{
+    margin: 1rem 0;
+}
+.THIS .slds-table th span{
+    color: #000;
+    display: contents;
+}
+
+
+.THIS.cart_icon span {
+    left: 0;
+}
+
+.THIS.cart_icon button{
+    width: auto !important;
+}
+
+
+.THIS.cart_icon{
+    position: fixed;
+    z-index: 11;
+    position: fixed;
+    top: 14px;
+    right: 90px;
+    min-width: 50px;
+    padding: 4px;
+    display: inline-flex;
+}
+.THIS .tableData .slds-button span {
+    left: 0;
+}
+
+.THIS .tableData .slds-button{
+       width: auto;
+}
+
+.THIS .tableData .slds-icon_container_circle{
+    width: 35px;
+    height: 35px;
+}
+
+.THIS .tableData .slds-icon_container_circle svg{
+    position: absolute;
+    left: 8px;
+    top: 5px;
+    width: 18px;
+}
+.THIS .tableData td{
+    padding: 1rem .5rem !IMPORTANT;
+}
+.THIS .tableData td span{
+    left: 10px;
+    top: 10px;
+}
+
+
+.THIS .btn_back, .THIS .btn_table{
+    font-size: 14px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: auto!important;
+    height: 30px;
+    background-color: #ff4b5a !important;
+    border-radius: 0;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+    width: auto !important;
+}
+.THIS .btn_back:hover, .THIS .btn_table:hover{
+    background-color: #333333 !important;
+        border: transparent;
+}
+.THIS .pagination button{
+    background: #ff4b5a;
+    cursor: pointer;
+    color: #fff;
+    margin-right: .5rem;
+    border: 1px solid #ff4b5a;
+}
+.THIS .pagination button:hover{
+    background-color: #333333;
+    border: transparent;
+}

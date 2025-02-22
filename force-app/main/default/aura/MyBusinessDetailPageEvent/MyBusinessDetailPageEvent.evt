@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION">
+    <aura:attribute name="showIFrame" type="Boolean"/>
+    <aura:attribute name="selectedRecordId" type="String"/>
+    <aura:attribute name="selectedRecordType" type="String"/>
+</aura:event>

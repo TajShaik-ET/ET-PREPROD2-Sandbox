@@ -1,0 +1,12 @@
+.THIS.slds-card{
+    height: 530px;
+    border: 1px solid #e2e2e2;
+    overflow:auto;
+}
+.THIS.slds-card h2 {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    margin-bottom: 5px;
+    color: #737373;
+}

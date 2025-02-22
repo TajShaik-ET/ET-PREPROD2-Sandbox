@@ -1,0 +1,36 @@
+<aura:component access="global">
+    <aura:attribute name="message" description="Message content, can be HTML"  type="String" default="Message from MessageComponent.cmp"/>
+    <aura:attribute name="type"  description="Message type, can be error/warning/info/success" type="String" default="info"/>
+    <aura:if isTrue="{!v.type=='error'}">
+        <div class="{!'slds-box slds-theme–alert-texture slds-theme–' + v.type}" style="color: #fff; background-color: #c23934;">
+            <!--lightning:icon iconName="{! 'utility:'+ v.type }" size="medium" alternativeText="{!v.type}" Class="iconContainer"/-->
+            <span class="slds-text-body–regular">
+                <aura:unescapedHtml value="{!v.message}"/>
+            </span>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.type=='warning'}">
+        <div class="{!'slds-box slds-theme–alert-texture slds-theme–' + v.type}" style="color: #9F6000; background-color: #FEEFB3;">
+            <!--lightning:icon iconName="{! 'utility:'+ v.type }" size="medium" alternativeText="{!v.type}" Class="iconContainer"/-->
+            <span class="slds-text-body–regular">
+                <aura:unescapedHtml value="{!v.message}"/>
+            </span>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.type=='info'}">
+        <div class="{!'slds-box slds-theme–alert-texture slds-theme–' + v.type}" style="color: #00529B; background-color: #BDE5F8;">
+            <!--lightning:icon iconName="{! 'utility:'+ v.type }" size="medium" alternativeText="{!v.type}" Class="iconContainer"/-->
+            <span class="slds-text-body–regular">
+                <aura:unescapedHtml value="{!v.message}"/>
+            </span>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.type=='success'}">
+        <div class="{!'slds-box slds-theme–alert-texture slds-theme–' + v.type}" style="color: #4F8A10; background-color: #DFF2BF;">
+            <!--lightning:icon iconName="{! 'utility:'+ v.type }" size="medium" alternativeText="{!v.type}" Class="iconContainer"/-->
+            <span class="slds-text-body–regular">
+                <aura:unescapedHtml value="{!v.message}"/>
+            </span>
+        </div>
+    </aura:if>
+</aura:component>

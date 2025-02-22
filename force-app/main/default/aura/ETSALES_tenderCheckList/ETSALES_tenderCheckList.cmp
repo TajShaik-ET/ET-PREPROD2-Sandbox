@@ -1,0 +1,144 @@
+<aura:component controller="ETSALES_TenderCheckListController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+    
+    <aura:attribute name="checkList" type="List" />
+    <aura:attribute name="statusList" type="String[]" default="None,Available,Unavailable"/>
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:attribute name="userID" type="String"/>
+    <aura:attribute name ="size" type="Integer"/>
+    <aura:attribute name="checkListId" type="String"/>
+    <aura:attribute name="optionstatus" type="boolean" default ="true"/>
+    <aura:attribute name="required" type="boolean"/>
+    <aura:attribute name="isDisabled" type="boolean" default ="false"/>
+    <aura:attribute name="checkListLine" type= "ETSALES_Check_List_Lines__c"/>
+    <aura:attribute name="checklistData" type="tenderHandler"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!--
+    <ltng:require styles="{!$Resource.modalWidth}"/>
+ -->
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0!important;
+        }
+        .slds-modal__content{
+        padding: 0!important;
+        }
+        .slds-modal__header {
+        position: sticky;
+        top: 0px;
+        z-index: 10;
+        }
+        .slds-modal__footer{
+        position: fixed;
+        bottom: 40px;
+        width:100%;
+        z-index: 10;
+        }
+        .slds-modal__container {
+        max-width: 90%!important;
+        min-width: 90%!important;
+        }
+        .slds-modal__header--empty+.slds-modal__content{
+        margin-bottom: 50px;
+        }
+    </aura:html>
+    <div class="slds-col modal-header slds-modal__header">
+        <h2 class="title slds-text-heading--medium">Quick Action</h2>
+    </div>
+    <div class="slds-m-left_x-small tableBox">
+        
+        <lightning:recordEditForm 
+                                  aura:id="clinelist" 
+                                  objectApiName="ETSALES_Check_List_Lines__c" 
+                                  onsubmit="{!c.onRecordSubmit}" 
+                                  onerror="{!c.handleOnError}" class="formbottom"
+                                  >
+            <lightning:messages/>
+            <lightning:inputField name="tender" aura:id = "tender" fieldName="ETSALES_Tender__c" value = "{!v.recordId}" disabled = "true"/>
+            <table class="tableBox slds-table slds-table--bordered slds-table--cell-buffer slds-max-medium-table--stacked-horizontal" style="border:none;">
+                <thead>
+                    <tr class="slds-text-title_caps">
+                        <th scope="col">
+                            <div class="slds-truncate" title="S.No">S.No</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Add">Add To List</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="CheckList">Check List</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Status">Status</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Assigned">Assigned To</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.checklistData.checklist}" var="item" indexVar = "index">
+                        
+                        <tr style="width:100%;">
+                            <td>
+                                <div class="around-small">
+                                    {!index +1}
+                                </div>
+                                
+                            </td>
+                            
+                            <td>
+                                <div class="around-small">
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-checkbox">
+                                                <ui:inputCheckbox text=" Add Check List" 
+                                                                  value="{!item.ETSALES_AddChecklist__c}"
+                                                                  />
+                                                <span class="slds-checkbox_faux"></span>
+                                                <span class="slds-form-element__label text"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <div class="around-small">
+                                    <lightning:outputField name="checkList" variant="label-hidden" aura:id = "checkList" fieldName="ETSALES_Checklist__c" value = "{!item.Id}" disabled = "true"/>
+                                    <lightning:formattedText value="{!item.Name}"/>
+                                </div>
+                                
+                            </td>
+                            <td>
+                                <div class="around-small">
+                                    <lightning:inputField name="status" variant="label-hidden" aura:id = "option" fieldName="ETSALES_Status__c" value ="{!item.ETSALES_Status__c}"/>
+                                </div>
+                                
+                            </td>
+                            <td>
+                                <div class="around-small">
+                                    <lightning:inputField name="user" variant="label-hidden" aura:id = "userId" fieldName="ETSALES_Assign_To__c" value ="{!item.ETSALES_Assign_To__c}" />
+                                </div>
+                                
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                    
+                </tbody>
+            </table>
+        </lightning:recordEditForm>
+        
+        
+        <!--
+    <lightning:button class="slds-m-top_small" variant="inverse" type="submit" name="update" label="Add" />
+    -->
+        
+        
+    </div>
+    
+    <footer class="slds-modal__footer slds-align_absolute-center">
+        <lightning:button aura:id="submit" variant="brand" label="Save" title="Submit" onclick="{!c.handleSubmit }" />
+        <lightning:button  label="Cancel" title="Cancel" onclick="{! c.handleCancel }"/>
+    </footer>
+    
+</aura:component>

@@ -1,0 +1,139 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_VehicleController" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes">
+    
+    <aura:attribute name="paymentHistList" type="List"/>
+    <aura:attribute name="serviceid" type="id"/>
+    <aura:attribute name="bookingList" type="List"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="startDate" type="Date"/>
+    <aura:attribute name="endDate" type="Date"/>
+    <aura:attribute name="maxDate" type="Date"/>
+    <aura:attribute name="selectedEmirate" type="String" />
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <div class="textright" style="color: rgb(201, 199, 197);font-weight: bold;">
+        <aura:if isTrue="{!v.selectedEmirate != 'Sharjah'}">
+            <span class="infoDetail">*{!v.Service_availability}</span>
+            <aura:set attribute="else">
+                <span class="infoDetail">{!v.Service_availability_Sharjah}*</span>
+            </aura:set>
+        </aura:if>
+    </div>
+    <lightning:layout class="sortdiv" >
+        <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+            <div class="custom-box">
+                <!--lightning:input aura:id="StartDateField" label="Start Date" type="date" name="sDate" dateStyle="short" value="{!v.startDate}"  autocomplete="off" />< max="{!v.maxDate}" -->
+                <ui:inputDate aura:id="StartDateField" label="{!v.Start_Date}" value="{!v.startDate}" displayDatePicker="true" format="dd/MM/yyyy"/>
+            </div> 
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+            <div class="custom-box">
+                <!--lightning:input aura:id="EndDateField" label="End Date"  type="date" name="eDate" dateStyle="short" value="{!v.endDate}" autocomplete="off" /> <min="{!v.startDate}" max="{!v.maxDate}" --> 
+                <ui:inputDate aura:id="EndDateField" label="{!v.End_Date}" value="{!v.endDate}" displayDatePicker="true" format="dd/MM/yyyy"/>                
+            </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem  padding="horizontal-medium" size="4" flexibility="auto" class="btnsubmitdiv">
+            <div class="custom-box">
+                <lightning:button class="SizeBtn blackBtn btnserach btn_table" label="{!v.Submit}" onclick="{!c.getPaymentHistory}"/>
+                <lightning:button variant="brand" name="Back" label="{!v.Back}" onclick="{!c.cancelSave}" class="btn_back"/>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>     
+    
+    <div aura:id="Vehicleservice" class="Vehicleservice">
+        <aura:if isTrue="{!!empty(v.paymentHistList)}">
+            <aura:iteration items="{!v.paymentHistList}" var="item" >
+                <div class="divpayment desktopview" onclick="{!c.openBookingAndVehicleDetails}" data-id="{!item.ET_Service_Request__c}">
+                    <div class="successdiv">
+                        <strong class="headingChassis">{!item.Name}</strong>
+                        <aura:if isTrue="{!item.ETST_Payment_State__c=='CAPTURED'}">	
+                            <span class="successpay"><img src="{!$Resource.ETST_payment}" />	</span>
+                            <aura:set attribute="else">	
+                                <span class="successpay"><img src="{!$Resource.ETST_Payment_Failed}" />	</span>
+                            </aura:set>	
+                        </aura:if>
+                    </div> 
+                     <div class="datailsdiv">{!v.Service_No}&nbsp;<strong>{!item.ET_Service_Request__r.Name}</strong></div>
+                    <!-- <div class="datailsdiv">Chassis No <strong>{!item.Chassis_No__c}</strong></div>-->
+                    <div class="datailsdiv align_right">{!v.Payment_Status}
+                        <strong>{!item.ETST_Payment_State__c}</strong></div>
+                    
+                    
+                    <div class="datailsdiv">{!v.Account_Name}
+                        <strong>{!item.ET_Service_Request__r.ET_Account__r.Name}</strong></div>
+                    
+                    <div class="datailsdiv align_right">{!v.Payment_Mode} 
+                        <strong>{!item.ETST_Payment_Mode__c}</strong></div>
+                    
+                    
+                    <div class="datailsdiv">{!v.Transaction_Date}
+                        <strong><ui:outputDate format="dd/MM/yyyy" value="{!item.CreatedDate}"  /><!--lightning:formattedDateTime value="{!item.CreatedDate}"  
+                                                                                                       year="numeric" month="numeric" day="numeric"  
+                                                                                                       timeZone="Asia/Dubai" hour12="false"/--></strong></div>
+                    <div class="paymentamount align_right">AED &nbsp;{!item.ETST_Amount__c} </div>
+                </div> 
+                <div class="divpayment mobileview" onclick="{!c.openBookingAndVehicleDetails}" data-id="{!item.ET_Service_Request__c}">
+                    <div class="leftdiv">
+                        <div class="successdiv">{!v.Transaction_Id}&nbsp;<strong class="headingChassis">{!item.Name}</strong></div>
+                        <div class="datailsdiv">{!v.Payment_Status}&nbsp;<strong>{!item.ETST_Payment_State__c}</strong></div>
+                        
+                        <div class="datailsdiv">{!v.Payment_Mode}&nbsp;<strong>{!item.ETST_Payment_Mode__c}</strong></div>
+                        <div class="datailsdiv">{!v.Account_Name}&nbsp;<strong>{!item.ET_Service_Request__r.ET_Account__r.Name}</strong></div>
+                    </div>
+                    <div class="rightdiv">
+                        <div class="paydate">
+                            <strong><ui:outputDate format="dd/MM/yyyy" value="{!item.CreatedDate}"  />
+                            </strong>
+                        </div>
+                        <img class="successpay" src="{!$Resource.ETST_payment}" />
+                        <div class="paymentamount">AED &nbsp;{!item.ETST_Amount__c} </div>
+                    </div>
+                </div> 
+                
+            </aura:iteration>
+            <aura:set attribute="else">
+                <br></br> <br></br>
+                <lightning:layout class="sortdiv" >
+                    <br></br><br></br><br></br>
+                    <div class="slds-notify slds-notify_alert slds-float_none" role="alert" >
+                        <h2 style="text-align:right;font-size: 18px;font-family: 'Cronos';">{!v.No_Records_Message}</h2>
+                    </div>
+                </lightning:layout>
+                <br></br><br></br>
+            </aura:set>
+        </aura:if>
+    </div>
+    
+    <aura:if isTrue="{!v.isOpen}">
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">  
+                <header class="slds-modal__header modalHeader">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="{!v.Close}"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.Vehicle_Details}</h2>
+                </header>
+                <!--###### MODAL BOX BODY  Start######-->
+                <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                    <div class="slds-grid slds-wrap slds-text-align_center custom-container ">
+                        <aura:iteration items="{!v.bookingList}" var="item" >
+                            <div class="innerDiv slds-size_2-of-2 slds-max-small-size_1-of-1">
+                                <div class="bookingDetails">
+                                    <span>{!v.Booking_Name} &nbsp;: <strong> {!item.Name} </strong></span>
+                                    <span>{!v.Vehicle_Name} &nbsp;: <strong>{!item.Customer_Vehicle__r.Name} </strong></span>
+                                </div>
+                            </div>
+                        </aura:iteration>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+    </aura:if>
+</aura:component>

@@ -1,0 +1,395 @@
+<aura:component access="global" extends="c:ETST_BilingualCommunity" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" > 
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:attribute name="lang" type="String" />
+    <aura:attribute name="currentValue" type="string"/>
+    <aura:attribute name="schoolList" type="list" />
+    <aura:attribute name="divisionList" type="list" />
+    <aura:attribute name="bloodGroupList" type="list" />
+    <aura:attribute name="gradeList" type="list" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="disableAddSerice" type="boolean" default="true"/>
+    <aura:attribute name="addStudentModal" type="boolean" default="false"/>
+    <aura:attribute name="isfeebackModal" type="boolean" default="false"/>
+    <aura:attribute name="isSchoolPopup" type="boolean" default="false"/>
+    <aura:attribute name="parentId" type="Id" />
+    <aura:attribute name="profileData" type="Account" />
+    <aura:attribute name="studentId" type="Id" />
+    <aura:attribute name="documentId" type="Id" />
+    <!--aura:attribute name="imageId" type="Id" /-->
+    <aura:attribute name="prefixURL" type="String" default="/sfc/servlet.shepherd/version/download/"/>
+    <aura:attribute name="imageURL" type="String" />
+    <aura:attribute name="eid1" type="String" />
+    <aura:attribute name="eid2" type="String" />
+    <aura:attribute name="eid3" type="String" />
+    <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
+    <aura:attribute name="fileName" type="String" default="No File Selected.." />
+    <aura:attribute name="schoolName" type="String" />
+    <aura:attribute name="nationalityList" type="list" />
+    <aura:attribute name="nationalityListAR" type="list" />
+    <aura:attribute name="genderList" type="list" />
+    <aura:attribute name="genderListAR" type="list" />
+    <aura:attribute name="EID" type="string" />
+    <aura:attribute name="Phone" type="string" />
+    <aura:attribute name="studentType" type="String"/>
+    <aura:attribute name="studentTypeAR" type="String"/>
+    <aura:attribute name="studentTypeSelected" type="String"/> <!-- Added by Sreelakshmi SK 24/5/23 -->
+    <aura:attribute name="fileuploaded" type="boolean" default="false" /> <!-- Added by Sreelakshmi SK 24/5/23 -->
+    <aura:attribute name="studentTypes" type="List" default="[
+                                                             {'label': 'Private School', 'value': 'Private School'},
+                                                             {'label': 'Government School', 'value': 'Government School'},
+                                                             {'label': 'University', 'value': 'University'},
+                                                             {'label': 'Nursery', 'value': 'Nursery'},
+                                                             {'label': 'Chartered School', 'value': 'Chartered School'},
+                                                             {'label': 'Ajyal School', 'value': 'Ajyal School'}                                                             
+                                                             ]"/>
+    <aura:attribute name="studentTypesAR" type="List" default="[
+                                                               {'label': 'مدرسة خاصة', 'value': 'مدرسة خاصة'},
+                                                               {'label': 'مدرسة حكومية', 'value': 'مدرسة حكومية'},
+                                                               {'label': 'جامعة', 'value': 'جامعة'},
+                                                               {'label': 'حضانة', 'value': 'حضانة'},
+                                                               {'label': 'مدارس الشراكة', 'value': 'Chartered School'},
+                                                               {'label': 'مدارس أجيال', 'value': 'Ajyal School'}
+                                                       
+                                                               ]"/>
+    <!--
+    <aura:attribute name="genderOptions" type="List" default="[
+                                                              {'label': 'Male', 'value': 'Male'},
+                                                              {'label': 'Female', 'value': 'Female'}
+                                                              ]"/>
+    <aura:attribute name="genderOptionsAR" type="List" default="[
+                                                              {'label': 'الذكر', 'value': 'الذكر'},
+                                                              {'label': 'أنثى', 'value': 'أنثى'}
+                                                              ]"/>
+ -->   
+    <aura:attribute name="newCase" type="object"
+                    default="{ 'sobjectType': 'Case',  'Subject': '', 'Origin': '', 'Status': '', 'Contact': ''}"/>
+    <aura:attribute name="perosanalmandatoryFields" type="List" default="ETST_Student_Id__c,ETST_First_Name__c,Name,ETST_Gender__c,eid1,eid2,eid3,ETST_Phone__c,ETST_Nationality__c"/>
+    <aura:attribute name="othermandatoryFields" type="List" default="ETST_Date_of_Birth__c,ETST_Division__c,ETST_Grade__c"/>
+    <aura:attribute name="disableSave" type="Boolean" default="false" />
+    <aura:attribute name="studentRecord" type="ETST_Student__c"  
+                    default="{'sObjectType':'ETST_Student__c', 'Name':'','ETST_First_Name__c':'','ETST_Middle_Name__c':'','ETST_Student_Id__c':'','ETST_Phone__c':'','ETST_Emirates_Id__c':'','ETST_Email__c':'','ETST_Date_of_Birth__c':'','ETST_Image_Document_Id__c':'','ETST_Division__c':'','ETST_Grade__c':'','ETST_Blood__c':'','ETST_Gender__c':'','ETST_ESIS_No__c':'','ETST_Secondary_Mobile_Number__c':''}" />
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    <aura:registerEvent name="Actionname" type="c:ETST_sendDataEvent"/> 
+    <aura:attribute name="selectedRecord" type="sobject" />
+    <aura:attribute name="schoolWarnings" type="string" />
+    <aura:attribute access="private" type="List" name="selection" default="[]"/>
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <div class="slds-modal__content slds-p-around_medium bgImageDiv margtopcontent animated slideInLeft"  id="modal-content-id-1"> 
+        
+        <div class="mainDiv slds-modal__bodyrtl slds-modal__body" aura:id="mainDiv"> 
+            <lightning:buttonIcon iconName="utility:close"
+                                  onclick="{! c.closeModel }"
+                                  alternativeText="close"
+                                  variant="bare-inverse"
+                                  class="slds-modal__close"/>
+            <div class="leftdivlink desktop_display">
+                <ul>
+                    <!--<li class="information"><a aura:id="schooltab" href="#school"  class="activetab"><lightning:icon iconName="utility:breadcrumbs" /><span> {!$Label.c.ETST_Personal_Details}</span></a></li>
+                <li class="information"><a aura:id="personaltab" href=""   class=""><lightning:icon iconName="utility:breadcrumbs"  /><span> {!$Label.c.ETST_Other_Details}</span></a></li>
+                <li class="information"><a aura:id="imgtab" href=""  class=""><lightning:icon iconName="utility:breadcrumbs" /><span> {!$Label.c.ETST_Upload_Image}</span></a></li>-->
+                    <li class="information"><a aura:id="schooltab" href="#school"  class="activetab"><lightning:icon iconName="utility:record" /><span>{!v.clPersonal}</span></a></li>
+                    <li class="information"><a aura:id="personaltab" href=""   class=""><lightning:icon iconName="utility:record"  /><span>{!v.clOther}</span></a></li>
+                    <li class="information"><a aura:id="imgtab" href=""  class=""><lightning:icon iconName="utility:record" /><span>{!v.clUpload}</span></a></li>
+                </ul>
+            </div>
+            <div class="leftdivlink mobile_display">
+                <ul>
+                    <!--<li class="information"><a aura:id="schooltab" href="#school"  class="activetab"><lightning:icon iconName="utility:breadcrumbs" /><span> {!$Label.c.ETST_Personal_Details}</span></a></li>
+                <li class="information"><a aura:id="personaltab" href=""   class=""><lightning:icon iconName="utility:breadcrumbs"  /><span> {!$Label.c.ETST_Other_Details}</span></a></li>
+                <li class="information"><a aura:id="imgtab" href=""  class=""><lightning:icon iconName="utility:breadcrumbs" /><span> {!$Label.c.ETST_Upload_Image}</span></a></li>-->
+                    <li class="information"><a aura:id="schooltab1" href="#school"  class="activetab"><span>1</span></a><span class="info_name">{!v.clPersonal}</span></li>
+                    <li class="information"><img src="{!$Resource.backarrow_img}" /></li>
+                    <li class="information"><a aura:id="personaltab1" href=""   class=""><span>2</span></a><span class="info_name">{!v.clOther}</span></li>
+                    <li class="information"><img src="{!$Resource.backarrow_img}" /></li>
+                    <li class="information"><a aura:id="imgtab1" href=""  class=""><span>3</span></a><span class="info_name">{!v.clUpload}</span></li>
+                </ul>
+            </div>
+            <!--  <div class="slds-modal__bodyrtl slds-modal__body" aura:id="mainDiv">  -->
+            <!--<img class="bgimgcont" src="{!$Resource.ETST_AddStudentImage}" />-->
+            <div class="rightdivlink">
+                <!--div class="custom_label custom_label_AR" aura:Id="labelDiv" --> 
+                <header class="slds-modal__header ">
+                    
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.clAddChild}</h2>
+                </header>
+                <!--<h4 class="personallabel">Personal</h4>-->
+                <div aura:id="school" id="school" class="radiobuttonmob animated slideInLeft">
+                    <div class="slds-col slds-size_1-of-1 radio_group">
+                        <!--<label class="{!v.clLang == 'ar' ? 'typesofschool_AR' : 'typesofschool'}">{!v.clSchoolType}</label>--> 
+                        <aura:if isTrue="{!v.clLang=='ar'}">
+                            <lightning:radioGroup name="radioGroup"
+                                                  label=""
+                                                  options="{!v.studentTypesAR}"
+                                                  value="{! v.studentTypeAR }" onchange="{!c.doInit}"
+                                                  type="radio" class="radiodiv"/>
+                            <aura:set attribute="else">
+                                <lightning:radioGroup name="radioGroup"
+                                                      label=""
+                                                      options="{!v.studentTypes}"
+                                                      value="{! v.studentType }" onchange="{!c.doInit}"
+                                                      type="radio" class="radiodiv"/>
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clSchoolName}</label>
+                            <div aura:id="lookupField" class="slds-show searchsection" onchange="{!c.onchangeSchool}">
+                                <c:ET_Lookup currentValue="{!v.currentValue}" studentType="{!v.clLang=='ar'? v.studentTypeAR: v.studentType}" selectedRecord="{!v.selectedRecord}" objectAPIName="ETST_School__c" label=""/>  
+                                <span class="noTxt">{!v.selectedRecord.ETST_School_Code__c}</span>
+                            </div> 
+                            <p aura:id="schoolname" class="slds-hide errormessage">{!v.clSchoolisMandatory}</p>
+                        </div> 
+                        
+                        <div class="slds-col slds-size_1-of-2">
+                            <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clFirstName}</label>
+                            <lightning:input type="text" name="First Name" label="" disabled="false"   pattern="[a-zA-Z\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*" 
+                                             messageWhenPatternMismatch="{!v.clPleaseuseonlyletters}" messageWhenValueMissing="{!v.clFirstNameisMandatory}" minlength="2"
+                                             aura:id="ETST_First_Name__c" placeholder="{!v.clFirstName}" required="true" value="{!v.studentRecord.ETST_First_Name__c}" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_1-of-2"> 
+                            <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clMiddleName}</label>
+                            <lightning:input type="text" name="Middle Name" label="" disabled="false"   pattern="[a-zA-Z\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                             messageWhenPatternMismatch="{!v.clPleaseuseonlyletters}" 
+                                             aura:id="ETST_Middle_Name__c" placeholder="{!v.clMiddleName}" value="{!v.studentRecord.ETST_Middle_Name__c}" autocomplete="off"/>
+                        </div> 
+                        <div class="slds-col slds-size_1-of-2">
+                            <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clLastName}</label>
+                            <lightning:input type="text" name="Last Name" label="" disabled="false"  pattern="[a-zA-Z\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"  minlength="2"
+                                             messageWhenPatternMismatch="{!v.clPleaseuseonlyletters}" messageWhenValueMissing="{!v.clLastNameisMandatory}"
+                                             aura:id="Name" placeholder="{!v.clLastName}" required="true" value="{!v.studentRecord.Name}" autocomplete="off"/>
+                        </div>
+                    </div> 
+                    <div class="slds-grid slds-gutters"> 
+                        <div class="slds-col slds-size_1-of-2">
+                            <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clStudentId}</label>
+                            <lightning:input type="text" name="Student Id" label="" disabled="false" 
+                                             placeholder="{!v.clStudentId}" pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                             messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}" messageWhenValueMissing="{!v.clStudentIdisMandatory}"
+                                             aura:id="ETST_Student_Id__c" required="true" value="{!v.studentRecord.ETST_Student_Id__c}" autocomplete="off"/>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clEmail}</label>
+                            
+                            <!-- Aura if added by Sreelakshmi SK 24/5/23 -->
+                            <aura:if isTrue="{!v.studentTypeSelected=='Government School'}">
+                            <lightning:input type="text" name="Email" label="" disabled="false"   
+                                             aura:id="ETST_Email__c" placeholder="{!v.clEmail}" required="true"
+                                             value="{!v.studentRecord.ETST_Email__c}" autocomplete="off"/>
+                            <!--lightning:input type="text" name="School ID /ESIS no" label="" disabled="false" 
+                                         placeholder="{!$Label.c.ETST_School_ID_ESIS_no}" pattern="[a-zA-Z0-9]*" 
+                                         messageWhenPatternMismatch="Please use only letters or digits" messageWhenValueMissing="School ID /ESIS no is Mandatory" 
+                                         aura:id="ETST_ESIS_No__c" required="true" value="{!v.studentRecord.ETST_ESIS_No__c}" autocomplete="off"/-->
+                            
+                            
+                            <aura:set attribute="else">
+                                <lightning:input type="text" name="Email" label="" disabled="false"   
+                                             aura:id="ETST_Email__c" placeholder="{!v.clEmail}" required="false"
+                                             value="{!v.studentRecord.ETST_Email__c}" autocomplete="off"/>
+                            </aura:set>
+                            
+                            </aura:if>
+                            
+                            </div> 
+                    </div>
+                    <div class="slds-grid slds-gutters"> 
+                        <div class="slds-col slds-size_1-of-2">
+                            <aura:if isTrue="{!v.clLang=='ar'}">
+                                <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clNationality}</label>
+                                <lightning:select aura:id="ETST_Nationality__c" name="Nationality" label="" 
+                                                  value="{!v.studentRecord.ETST_Nationality_AR__c}" messageWhenValueMissing="{!v.clCompletethisfield}" required="true" >
+                                    <option value="">{!v.clNationality}</option>
+                                    <aura:iteration items="{!v.nationalityListAR}" var="val">
+                                        <option value="{!val}" selected="{!val==v.studentRecord.ETST_Nationality__AR__c}"> {!val}</option>
+                                    </aura:iteration>
+                                </lightning:select>  
+                                <aura:set attribute="else">
+                                    <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clNationality}</label>
+                                    <lightning:select aura:id="ETST_Nationality__c" name="Nationality" label="" 
+                                                      value="{!v.studentRecord.ETST_Nationality__c}" messageWhenValueMissing="{!v.clCompletethisfield}" required="true" >
+                                        <option value="">{!v.clNationality}</option>
+                                        <aura:iteration items="{!v.nationalityList}" var="val">
+                                            <option value="{!val}" selected="{!val==v.studentRecord.ETST_Nationality__c}"> {!val}</option>
+                                        </aura:iteration>
+                                    </lightning:select>  
+                                </aura:set>
+                            </aura:if>
+                        </div> 
+                        <div class="slds-col slds-size_1-of-2">
+                            <aura:if isTrue="{!v.clLang=='ar'}">
+                                <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clGender}</label>
+                                <lightning:select aura:id="ETST_Gender__c" name="gender" label="" 
+                                                  value="{!v.studentRecord.ETST_Gender_AR__c}" messageWhenValueMissing="{!v.clCompletethisfield}" required="true">
+                                    <option value="" >{!v.clGender}</option>    
+                                    <aura:iteration items="{!v.genderListAR}" var="item">
+                                        <option value="{!item}" selected="{!item==v.studentRecord.ETST_Gender_AR__c}"> {!item}</option>
+                                    </aura:iteration> 
+                                </lightning:select>
+                                <aura:set attribute="else">
+                                    <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clGender}</label>
+                                    <lightning:select aura:id="ETST_Gender__c" name="gender" label="" 
+                                                      value="{!v.studentRecord.ETST_Gender__c}" messageWhenValueMissing="{!v.clCompletethisfield}" required="true">
+                                        <option value="">{!v.clGender}</option>
+                                        <aura:iteration items="{!v.genderList}" var="item">
+                                            <option value="{!item}" selected="{!item==v.studentRecord.ETST_Gender__c}"> {!item}</option>
+                                        </aura:iteration> 
+                                    </lightning:select>
+                                </aura:set>
+                            </aura:if>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters"> 
+                        <div class="slds-col slds-size_1-of-2 teltextno teltextno_AR" aura:id="eidDiv">
+                            <!-- pattern="(^784-\d{4}-\d{7}-\d{1})" -->
+                            <label class="{!v.clLang =='ar' ? 'custom_label_AR' : 'custom_label'}">({!v.EID}) 784</label>
+                            <!--<lightning:formattedText value="(EID) 784 " class="teltextuae textboxwidth"/>
+                            <lightning:formattedText value="-"  class="dashicon"/>-->
+                            <lightning:input class="{!v.clLang =='ar' ? 'textboxwidth_AR' : 'textboxwidth'}" aura:id="eid1" required="true" pattern="[0-9]*" messageWhenValueMissing="{!v.clCompletethispart}"
+                                             messageWhenPatternMismatch="{!v.clEnteronlydigits}" type="text" name="Emirates Id" value="{!v.eid1}" minlength="4" maxlength="4" onkeyup="{!c.changeFocus1}"  autocomplete="off"/>
+                            <lightning:formattedText value="-" class="{!v.clLang =='ar' ? 'dashicon_AR' : 'dashicon'}"/>
+                            <lightning:input class="{!v.clLang =='ar' ? 'textboxwidth_AR' : 'textboxwidth'}" aura:id="eid2" required="true" type="text" name="Emirates Id" pattern="[0-9]*" messageWhenValueMissing="{!v.clCompletethispart}"
+                                             messageWhenPatternMismatch="{!v.clEnteronlydigits}" value="{!v.eid2}" minlength="7" maxlength="7" onkeyup="{!c.changeFocus2}" autocomplete="off"/>
+                            <lightning:formattedText value="-" class="{!v.clLang =='ar' ? 'dashicon_AR' : 'dashicon'}"/>
+                            <lightning:input class="{!v.clLang =='ar' ? 'lasttextno_AR' : 'lasttextno'}" aura:id="eid3" required="true" type="text" pattern="[0-9]*" messageWhenValueMissing="{!v.clCompletethispart}"
+                                             messageWhenPatternMismatch="{!v.clEnteronlydigits}" name="Emirates Id" value="{!v.eid3}" maxlength="1" autocomplete="off" updateOn="keyup" onkeyup="{!c.eidMasking}"/>
+                            <!--lightning:input type="text" name="Emirates Id" label="" disabled="false" updateOn="keyup" onkeyup="{!c.eidMasking}" pattern="^(|((784))-\d{4}-\d{7}-\d{1})" maxlength="18" placeholder="EID (784-XXXX-XXXXXXX-X)" messageWhenPatternMismatch="Please enter Emirates Id in correct format (784-XXXX-XXXXXXX-X)"
+                                         aura:id="ETST_Emirates_Id__c" messageWhenValueMissing="Emirates Id is Mandatory" required="true" value="{!v.studentRecord.ETST_Emirates_Id__c}" autocomplete="off"/-->
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 phonetextno">
+                            <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">({!v.Phone}) +971</label>
+                            <!--<lightning:formattedText value="(Phone) +971" class="teltextuae phonetextwidth"/>
+                            <lightning:formattedText value="-"  class="dashicon"/>-->
+                            <lightning:input type="tel" name="Phone" class="{!v.clLang=='ar' ? 'phonetextwidthno_AR': 'phonetextwidthno'}" label="" disabled="false" minlength="9" maxlength="9" pattern="[0-9]*" placeholder="{!v.Phone}"  messageWhenPatternMismatch="{!v.clPleaseentercorrectmobilenumber}"
+                                             aura:id="ETST_Phone__c" messageWhenValueMissing="{!v.clPhoneisMandatory}" required="true" value="{!v.studentRecord.ETST_Phone__c}" autocomplete="off"/>
+                        </div>
+                    </div> 
+                </div>
+                
+                <div aura:id="personal" id="personal" class="slds-hide animated slideInLeft">
+                    <aura:if isTrue="{! v.loaded }">
+                        <div class="slds-grid slds-gutters">  
+                            <div class="slds-col slds-size_1-of-2"> 
+                                <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clGrade}</label>
+                                <lightning:input type="text" name="Grade" label="" disabled="false" 
+                                                 placeholder="{!v.clGrade}" pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                 messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}" messageWhenValueMissing="{!v.clGradeisMandatory}" 
+                                                 aura:id="ETST_Grade__c" required="true" value="{!v.studentRecord.ETST_Grade__c}" autocomplete="off"/>
+                                
+                            </div>
+                            <div class="slds-col slds-size_1-of-2"> 
+                                <!--  <lightning:select aura:id="ETST_Division__c" name="Section" label="" 
+                                          value="{!v.studentRecord.ETST_Division__c}" required="true"  >
+                            <option value="">{!$Label.c.ETST_Section}</option>
+                            <aura:iteration items="{!v.divisionList}" var="val">
+                                <option value="{!val}"> {!val}</option>
+                            </aura:iteration>
+                        </lightning:select>  -->
+                                <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clSection}</label>
+                                <lightning:input type="text" name="Section" label="" disabled="false" 
+                                                 placeholder="{!v.clSection}" pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*" 
+                                                 messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}" messageWhenValueMissing="{!v.clSectionisMandatory}" 
+                                                 aura:id="ETST_Division__c" required="true" value="{!v.studentRecord.ETST_Division__c}" autocomplete="off"/>
+                                
+                                
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="slds-grid slds-gutters"> 
+                            <div class="{!v.clLang=='ar' ? 'slds-col slds-size_1-of-2 dobdiv_AR': 'slds-col slds-size_1-of-2 dobdiv'}">
+                                <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clDateofBirth}</label> 
+                                <lightning:input type="Date" name="Date of Birth" label="" disabled="false" format="YYYY-MM-DD" 
+                                                 aura:id="ETST_Date_of_Birth__c" required="true" placeholder="{!v.clDateofBirth}" value="{!v.studentRecord.ETST_Date_of_Birth__c}"
+                                                 onchange="{!c.validateDOB}" autocomplete="off" class="{!v.clLang=='ar' ? 'slds-input__icon--left' : 'slds-input__icon--right'}" messageWhenValueMissing="{!v.clCompletethisfield}"/>
+                                <p aura:id="invaliddob" style="color:red" class="slds-hide">{!v.clPleaseselectCorrectdate}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 phonetextno">
+                                <!--<lightning:formattedText value="(Phone) +971" class="teltextuae phonetextwidth"/>
+                                <lightning:formattedText value="-"  class="dashicon"/>-->
+                                <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">({!v.Phone}) +971</label>
+                                <lightning:input type="tel" name="SecondaryPhone" class="{!v.clLang=='ar' ? 'phonetextwidthno_AR': 'phonetextwidthno'}" label="" disabled="false" minlength="9" maxlength="9" pattern="[0-9]*" placeholder="{!v.clSecondaryPhone}"  messageWhenPatternMismatch="{!v.clPleaseentercorrectmobilenumber}"
+                                                 aura:id="ETST_Secondary_Mobile_Number__c" value="{!v.studentRecord.ETST_Secondary_Mobile_Number__c}" autocomplete="off"/>
+                            </div>
+                            <!-- <div class="slds-col slds-size_1-of-2"> 
+                                <lightning:select aura:id="ETST_Blood__c" name="{!v.clBloodGroup}" label="" 
+                                                  value="{!v.studentRecord.ETST_Blood__c}" messageWhenValueMissing="{!v.clCompletethisfield}" required="true" >
+                                    <option value="">{!v.clBloodGroup}</option>
+                                    <aura:iteration items="{!v.bloodGroupList}" var="val">
+                                        <option value="{!val}"> {!val}</option>
+                                    </aura:iteration>
+                                </lightning:select>    
+                            </div> -->
+                        </div> 
+                        <div class="slds-grid slds-gutters">  
+                            <div class="slds-col slds-size_1-of-2"> 
+                                <label class="{!v.clLang=='ar' ? 'custom_label_AR': 'custom_label'}">{!v.clMedicalCondition}</label>
+                                <lightning:textarea rows="3" id="medcondition" pattern="[a-zA-Z\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                    messageWhenPatternMismatch="{!v.clPleaseuseonlyletters}"
+                                                    name="Medical Condition / Allergy / Disability (if any)" label="" disabled="false" format="YYYY-MM-DD" 
+                                                    aura:id="ETST_Medical_Condition__c" placeholder="{!v.clMedicalCondition}" value="{!v.studentRecord.ETST_Medical_Condition__c}" autocomplete="off"/>
+                            </div> 
+                        </div> 
+                        <aura:set attribute="else">
+                            <lightning:spinner alternativeText="Loading" />
+                        </aura:set>
+                        <div class="slds-show" onchange="{!c.onchangeCheckbox}">
+                            <c:ETST_TermsandConditions aura:id="termsandconditions" studentType = "{!v.studentType}" studentTypeAR= "{!v.studentTypeAR}" language="{!v.clLang}" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <p aura:id="TC" class="slds-hide" style="color: rgb(194, 57, 52);">{!v.clTermsandConditionsvalidationMsg}</p>
+                        </div>
+                    </aura:if>
+                </div>   
+                
+                <div aura:id="uploadImage" id="uploadImage" class="slds-hide animated slideInLeft" style="height: 300px;text-align: center;">
+                    <p class="uploadimg">{!v.clUploadPhoto}</p>
+                    <lightning:fileUpload label=""
+                                          name="fileUploader"
+                                          multiple="false"
+                                          disabled="false"
+                                          accept=".png,.jpg,.jpeg"
+                                          recordId="{!v.studentId}"
+                                          onuploadfinished="{!c.handleUploadFinished}" class="uploadbtn"/>
+                    <div aura:id="showImage" class="slds-hide">
+                        <div class="profilediv">
+                            <img src="{!v.imageURL}" class="profileimg"/>
+                        </div>
+                        <!-- <img src="{!v.imageURL}" width="100" height="100"/>-->
+                        
+                    </div>
+                </div>
+                <footer class="{!v.clLang=='ar' ? 'footerdivcont_AR': 'footerdivcont'}">
+                    <lightning:button variant="neutral" 
+                                      label="{!v.clPrevious}"
+                                      title="Previous"
+                                      aura:id="previousDiv"
+                                      onclick="{!c.gotoPreviousDiv }" class="btnsave slds-hide"/>
+                    <lightning:button variant="neutral" 
+                                      label="{!v.clSubmit}"
+                                      title="Submit"
+                                      aura:id="closeModelRefresh" class="btnsave slds-hide"
+                                      onclick="{!c.closeModelwithRefresh}"/>
+                    <lightning:button variant="neutral" 
+                                      label="{!v.clNext}"
+                                      title="Next"
+                                      aura:id="nextDiv"  
+                                      onclick="{!c.gotoNextDiv}" class="btnsave" />
+                    <lightning:button variant="brand" 
+                                      label="{!v.clSaveChild}"
+                                      title="Save"
+                                      aura:id="newStudentButton"  
+                                      onclick="{!c.createNewStudent}" class="btnsave slds-hide"/>
+                    
+                </footer>
+                <!--/div> -->
+                <!--/div-->                
+            </div>             
+        </div>        
+    </div>
+    <!-- <div class="showmobilefooter">
+        <c:ET_MobileFooter />
+    </div>-->
+</aura:component>

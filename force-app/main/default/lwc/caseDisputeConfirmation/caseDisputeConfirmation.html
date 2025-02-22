@@ -1,0 +1,15 @@
+<template>
+    <lightning-card title="Update Dispute Confirmation" class="slds-var-m-around_medium">
+        <div class="slds-align_absolute-center">
+            <lightning-button label="Update Dispute Confirmation" onclick={handleUpdateConfirmation}></lightning-button>
+        </div>
+    </lightning-card>
+
+    <template if:true={showSuccessMessage}>
+        <lightning-toast message={successMessage} variant="success"></lightning-toast>
+    </template>
+
+    <template if:true={showErrorMessage}>
+        <lightning-toast message={errorMessage} variant="error"></lightning-toast>
+    </template>
+</template>

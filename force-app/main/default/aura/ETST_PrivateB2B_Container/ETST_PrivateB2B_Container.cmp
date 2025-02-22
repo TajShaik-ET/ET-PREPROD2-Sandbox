@@ -1,0 +1,709 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"
+                access="global" controller="ET_SchoolB2BController">
+    
+    <aura:attribute name="imagelink" type="String" default="https://drec--drecpoc--c.visualforce.com/resource/1588142494000/DREC_livingRoom"/>
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+    <aura:attribute name="govtSchool" type="Boolean" default="false" />
+    <aura:attribute name="loadedDashboard" type="Boolean" default="false" />
+    <aura:attribute name="selectedItem" type="String" /> 
+    <aura:attribute name="accountRec" type="Object" /> 
+    <aura:attribute name="activeSalesAgreements" type="Integer" default="0" />
+    <aura:attribute name="activeVehicles" type="Integer" default="0" />
+    <aura:attribute name="activeResources" type="Integer" default="0" />
+    <aura:attribute name="activeInvoices" type="Integer" default="0" />
+    <!-- aditional school business attributes-->
+    <aura:attribute name="activeSchools" type="Integer" default="0" />
+    <aura:attribute name="activeStudents" type="Integer" default="0" />
+    
+      <lightning:overlayLibrary aura:id="overlayLib"/>
+    
+     <aura:attribute name="showRecordDetailModal" type="Boolean" default="false"/>
+    <aura:attribute name="recordDetailId" type="String" />
+    <aura:attribute name="recordTypeName" type="String" />
+    
+    <aura:attribute name="isSA" type="Boolean" default="false" />
+    <aura:attribute name="isSchool" type="Boolean" default="false" />
+    <aura:attribute name="isVehicle" type="Boolean" default="false" />
+    <aura:attribute name="isResource" type="Boolean" default="false" />
+    <aura:attribute name="isStudent" type="Boolean" default="false" />
+    <aura:attribute name="isInvoice" type="Boolean" default="false" />
+    <aura:attribute name="searchText" type="String" access="public"/>
+    
+    <aura:attribute name="SAList" type="list" />
+    <aura:attribute name="currentSAList" type="list"/>
+    <aura:attribute name="schoolsList" type="list"/>
+    <aura:attribute name="currentSchoolsList" type="list"/>
+    <aura:attribute name="vehicleList" type="list" />
+    <aura:attribute name="currentVehicleList" type="list" />
+    <aura:attribute name="resourceList" type="list" />
+    <aura:attribute name="currentResourceList" type="list" />
+    <aura:attribute name="studentsList" type="list" />
+    <aura:attribute name="currentStudentsList" type="list" />
+    <aura:attribute name="invoiceList" type="list" />
+    <aura:attribute name="currentInvoiceList" type="list" />
+    
+    <aura:attribute name="dashBoardView" type="Boolean" default="true"  /> 
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <div class="btobgovtdiv">
+        <div class="menudiv">
+            <div class="listmenusdiv" ><c:MenuItemsList /></div>
+        </div>
+        <!--aura:if isTrue="{! and(v.accountRec.RecordType.DeveloperName=='Business_School',
+                     v.accountRec.ETST_Account_Type__c=='Private School')}"-->
+        <lightning:verticalNavigation
+                                      selectedItem="{! v.selectedItem }"
+                                      onselect="{! c.handleSelectedMenu }" class="sidemenudiv">
+            <lightning:verticalNavigationSection  label="MY BUSINESS" class="listviewdiv">
+                <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Schools" name="Schools" /> </B>
+                <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Sales Agreement" name="Sales_Agreement" /> </B>
+                <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Assigned Vehicles" name="Assign_Vehicles" /> </B>
+                <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Assigned Resources" name="Assign_Resources" /></B>
+                <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Students" name="students" /></B>
+                <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Invoices" name="Invoices" /></B>
+                
+            </lightning:verticalNavigationSection>
+        </lightning:verticalNavigation>        
+        
+        <!--aura:if isTrue="{! and(v.accountRec.RecordType.DeveloperName=='Business_School',
+                     v.accountRec.ETST_Account_Type__c=='Government School')}">
+   <lightning:verticalNavigation
+                                  selectedItem="{! v.selectedItem }"
+                                  onselect="{! c.handleSelectedMenu }">
+        <lightning:verticalNavigationSection  label="MY BUSINESS" class="listviewdiv">
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Students" name="students" /></B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Assigned Vehicles" name="Assign_Vehicles" /> </B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Assigned Resources" name="Assign_Resources" /></B>
+         </lightning:verticalNavigationSection>
+    </lightning:verticalNavigation>        
+    </aura:if-->
+        <!--aura:if isTrue="{!v.dashBoardView}"-->
+        <aura:if isTrue="{!v.loadedDashboard}">
+            <div class="mybussinessdiv">
+                <article class="slds-card">
+                    <a href="" onclick="{!c.handleSchoolsDashboard}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="leftsectiondiv activeSchoolbgimg">
+                                    
+                                </div>
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        {!v.activeSchools}
+                                    </div>
+                                    <h3 class="form-title">Active Schools</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="" onclick="{!c.handleStudentsDashboard}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="leftsectiondiv activeStudentbgimg">
+                                    
+                                </div>
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        {!v.activeStudents}
+                                    </div>
+                                    <h3 class="form-title">Active Students</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="" onclick="{!c.handleSADashboard}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="leftsectiondiv agreementbgimg">
+                                    
+                                </div>
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        {!v.activeSalesAgreements}
+                                    </div>
+                                    <h3 class="form-title">Active Sales Agreements</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="" onclick="{!c.handleResourceDashboard}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="leftsectiondiv resourcesbgimg">
+                                    
+                                </div>
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        {!v.activeResources}
+                                    </div>
+                                    <h3 class="form-title">Active Assigned Resources</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="" onclick="{!c.handleVehiclesDashboard}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="leftsectiondiv activevehiclebgimg">
+                                    
+                                </div>
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        {!v.activeVehicles}
+                                    </div>
+                                    <h3 class="form-title">Active Assigned Vehicles</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="" onclick="{!c.handleInvoicesDashboard}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="leftsectiondiv invoicebgimg">
+                                    
+                                </div>
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        {!v.activeInvoices}
+                                    </div>
+                                    <h3 class="form-title">Active Invoices</h3> 
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                </article>
+            </div>
+            <aura:set attribute="else">
+                <lightning:spinner alternativeText="Loading"/>
+            </aura:set>
+        </aura:if>
+        <!--/aura:if-->
+        <aura:if isTrue="{!v.isSA}">
+            <aura:if isTrue="{!v.loaded}"> 
+                <div class="slds-grid slds-gutters ">
+                    <div class="slds-col maincantentdiv" style="padding-top:0px">
+                        <h3 class="Headingcontent">Active Sales Agreements</h3>
+                        <div class="serchboxtab">
+                            <lightning:input type="search"
+                                             name="searchKey" value="{!v.searchText}" autocomplete="off"
+                                             aura:id="searchKey"  onkeyup="{!c.searchRequest}" placeholder="Search by Name, Status or Acccount Name" />
+                        </div> 
+                        <br />
+                        <div class="tableClass">
+                            <table class="slds-table slds-table_bordered " width="100%">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Sr. No.">Sr. No.</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Sales Agreement Name">Name
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Status">Status
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Account Name">Account Name</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Contract Start Date">Contract Start Date</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Contract End Date">Contract End Date</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Contract End Date">Raise Complaint</div>
+                                        </th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.currentSAList}" var="salesAgreement"
+                                                    indexVar="index">
+                                          <tr class="slds-hint-parent">
+                                                
+                                                <td style="word-wrap: break-word;">
+                                                    {!index + 1}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!salesAgreement.Id}" href=""
+                                                       onclick="{!c.handleSalesAgreementClick}">
+                                                        {!salesAgreement.Name}
+                                                    </a>
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!salesAgreement.Contract_Status__c}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!salesAgreement.Salesforce_Customer__r.Name}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!salesAgreement.Contract_Start_Date__c}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!salesAgreement.Contract_End_Date__c}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <lightning:button class="emmergencyButton" label="Raise Complaint" title="Raise Complaint"
+                                                                      onclick="{!c.showCaseModal}" name="{!salesAgreement.Id}" aura:id="{!salesAgreement.Id}"/>
+                                                </td>
+                                            </tr>
+                                           
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <aura:set attribute="else">
+                    <lightning:spinner alternativeText="Loading"/>
+                </aura:set>
+            </aura:if>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.isResource}">
+            <aura:if isTrue="{!v.loaded}"> 
+                <div class="documentmain animated slideInDown">
+                    <div class="slds-grid slds-gutters ">
+                        <div class="slds-col maincantentdiv" style="padding-top:0px">
+                            <h3 class="Headingcontent">Active Assigned Resources</h3>
+                            <div class="serchboxtab">
+                                <lightning:input type="search"
+                                                 name="searchKey" value="{!v.searchText}" autocomplete="off"
+                                                 aura:id="searchKey"  onkeyup="{!c.searchResources}" placeholder="Search by Name, Status or Acccount Name" />
+                            </div> 
+                            <br />
+                            <div class="tableClass">
+                                <table class="slds-table slds-table_bordered " width="100%">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Sr. No.">Sr. No.</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Assigened Resource Name">Name
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Sales Agreement Name">Sales Agreement Name
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Assign Start Date">Assign Start Date</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Assign End Date">Assign End Date</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Contract End Date">Raise Complaint</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.currentResourceList}"
+                                                        var="assignedResource" indexVar="index">
+                                            <tr class="slds-hint-parent">
+                                                    
+                                                    <td style="word-wrap: break-word;">
+                                                        {!index + 1}
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        <a id="{!assignedResource.Id}" href=""
+                                                           onclick="{!c.handleAssignedResourcesClick}">
+                                                            {!assignedResource.Name}
+                                                        </a>
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        <a id="{!assignedResource.Sales_Agreement__c}" href=""
+                                                           onclick="{!c.handleSalesAgreementClick}">
+                                                            {!assignedResource.Sales_Agreement__r.Name}
+                                                        </a>
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        {!assignedResource.Assign_Start_Date__c}
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        {!assignedResource.Assign_End_Date__c}
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        <lightning:button class="emmergencyButton" label="Raise Complaint" title="Raise Complaint"
+                                                                          onclick="{!c.showCaseModal}" name="{!assignedResource.Id}" aura:id="{!assignedResource.Id}"/>
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                            
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <aura:set attribute="else">
+                    <lightning:spinner alternativeText="Loading"/>
+                </aura:set>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!v.isVehicle}">
+            <aura:if isTrue="{!v.loaded}"> 
+                <div class="documentmain animated slideInDown">
+                    <div class="slds-grid slds-gutters ">
+                        <div class="slds-col maincantentdiv" style="padding-top:0px">
+                            <h3 class="Headingcontent">Active Assigned Vehicles</h3>
+                            <div class="serchboxtab">
+                                <lightning:input type="search"
+                                                 name="searchKey" value="{!v.searchText}" autocomplete="off"
+                                                 aura:id="searchKey"  onkeyup="{!c.searchVehicles}" placeholder="Search by Name, Vehicle No, description or sales agreement"/>
+                            </div> 
+                            <br/>
+                            <div class="tableClass">
+                                <table class="slds-table slds-table_bordered " width="100%">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Sr. No.">Sr. No.</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Name">Name
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Vehicle Number">Vehicle Number
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Vehicle Description">Vehicle Description
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Sales Agreement Name">Sales Agreement Name
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Assign Start Date">Assign Start Date
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Assign End Date">Assign End Date
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Contract End Date">Raise Complaint</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.currentVehicleList}" var="assignedVehicle"
+                                                        indexVar="index">
+                                            
+                                             <tr class="slds-hint-parent">
+                                                    
+                                                    <td style="word-wrap: break-word;">
+                                                        {!index + 1}
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        <a id="{!assignedVehicle.Id}" href=""
+                                                           onclick="{!c.handleAssignedVehiclesClick}">
+                                                            {!assignedVehicle.Name}
+                                                        </a>
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        {!assignedVehicle.Vehicle_Number__c}
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        {!assignedVehicle.Vehicle_Description__c}
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        <a id="{!assignedVehicle.Sales_Agreement__c}" href=""
+                                                           onclick="{!c.handleSalesAgreementClick}">
+                                                            {!assignedVehicle.Sales_Agreement__r.Name}
+                                                        </a>
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        {!assignedVehicle.Assign_Start_Date__c}
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        {!assignedVehicle.Assign_End_Date__c}
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        <lightning:button class="emmergencyButton" label="Raise Complaint" title="Raise Complaint"
+                                                                          onclick="{!c.showCaseModal}" name="{!assignedVehicle.Id}" aura:id="{!assignedVehicle.Id}"/>
+                                                    </td>
+                                                </tr>
+                                                
+                                               
+                                            
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <aura:set attribute="else">
+                    <lightning:spinner alternativeText="Loading"/>
+                </aura:set>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!not(v.govtSchool)}">
+            <aura:if isTrue="{!v.invoices}">
+                <aura:if isTrue="{!v.loaded}">
+                    <div class="documentmain animated slideInDown">
+                        <div class="slds-grid slds-gutters ">
+                            <div class="slds-col maincantentdiv" style="padding-top:0px">
+                                <aura:if isTrue="{!v.invoicesClick}">
+                                    <h3 class="Headingcontent">Active Invoices</h3>
+                                    <div class="serchboxtab">
+                                    <lightning:input type="search"
+                                                     name="searchKey" value="{!v.searchText}" autocomplete="off"
+                                                     aura:id="searchKey"  onkeyup="{!c.searchInvoices}" placeholder="Search by Name, Vehicle No, description or sales agreement" />
+                                </div> 
+                                </aura:if>
+                                
+                                <br />
+                                <div class="tableClass">
+                                    <table class="slds-table slds-table_bordered " width="100%">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Sr. No.">Sr. No.</div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Invoice Number"> Invoice Number
+                                                    </div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Total Invoice Amount"> Total Invoice Amount
+                                                    </div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Invoice Description"> Invoice Description
+                                                    </div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Sales Agreement Name">Sales Agreement Name
+                                                    </div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Contract End Date">Raise Complaint</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.currentInvoicesList}" var="invoice"
+                                                            indexVar="index">
+                                                
+                                                <tr class="slds-hint-parent">
+                                                            
+                                                            <td style="word-wrap: break-word;">
+                                                                {!index + 1}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                <a id="{!invoice.Id}" href="" onclick="{!c.handleinvoicesClick}">
+                                                                    {!invoice.Name}
+                                                                </a>
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                {!invoice.Total_Inv_Amount__c}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                {!invoice.Description__c}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                <a id="{!invoice.Sales_Agreement__c}" href=""
+                                                                   onclick="{!c.handleinvoicesClick}">
+                                                                    {!invoice.Sales_Agreement__r.Name}
+                                                                </a>
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                <lightning:button class="emmergencyButton" label="Raise Complaint" title="Raise Complaint"
+                                                                                  onclick="{!c.showCaseModal}" name="{!invoice.Id}" aura:id="{!invoice.Id}"/>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                            </aura:iteration>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <aura:set attribute="else">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:set>
+                </aura:if>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!v.isStudent}">
+            <aura:if isTrue="{!v.loaded}">
+                <div class="documentmain animated slideInDown">
+                    <div class="slds-grid slds-gutters ">
+                        <div class="slds-col maincantentdiv" style="padding-top:0px">
+                            <h3 class="Headingcontent">Active Students</h3>
+                            <div class="serchboxtab">
+                                <lightning:input type="search"
+                                                 name="searchKey" value="{!v.searchText}"  autocomplete="off"
+                                                 aura:id="searchKey"  onkeyup="{!c.searchStudents}" placeholder="Search by Name, Vehicle No, description or sales agreement" />
+                            </div> 
+                            <br />
+                            <div class="tableClass">
+                                <table class="slds-table slds-table_bordered " width="100%">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Sr. No.">Sr. No.</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Invoice Number"> Student Id
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Total Invoice Amount"> Student Name
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Invoice Description"> Parent Name
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Sales Agreement Name">Emirates Id
+                                                </div>
+                                            </th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.currentStudentsList}" var="std"
+                                                        indexVar="index">
+                                            
+                                            <tr class="slds-hint-parent">
+                                                
+                                                <td style="word-wrap: break-word;">
+                                                    {!index + 1}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!std.Id}" href="" onclick="{!c.handleStudentClick}">
+                                                        {!std.ETST_Student_Id__c}
+                                                    </a>
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!std.Name}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!std.ETST_Account_Name__r.Name}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!std.ETST_Emirates_Id__c}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <lightning:button class="emmergencyButton" label="Raise Complaint" title="Raise Complaint"
+                                                                      onclick="{!c.showCaseModal}" name="{!std.Id}" aura:id="{!std.Id}"/>
+                                                </td>
+                                            </tr>
+                                            
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <aura:set attribute="else">
+                    <lightning:spinner alternativeText="Loading"/>
+                </aura:set>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!v.isSchool}">
+            <aura:if isTrue="{!v.loaded}">
+                <div class="documentmain animated slideInDown">
+                    <div class="slds-grid slds-gutters ">
+                        <div class="slds-col maincantentdiv" style="padding-top:0px">
+                            <h3 class="Headingcontent">Schools</h3>
+                            <div class="serchboxtab">
+                                <lightning:input type="search"
+                                                 name="searchKey" value="{!v.searchText}" autocomplete="off"
+                                                 aura:id="searchKey"  onkeyup="{!c.searchSchools}" placeholder="Search by Name, Vehicle No, description or sales agreement" />
+                            </div> 
+                            <br />
+                            <div class="tableClass">
+                                <table class="slds-table slds-table_bordered " width="100%">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Sr. No.">Sr. No.</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Invoice Number"> Account Name
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Total Invoice Amount"> Account Number
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Invoice Description"> Type
+                                                </div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Sales Agreement Name">School Id
+                                                </div>
+                                            </th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.currentSchoolsList}" var="std"
+                                                        indexVar="index">
+                                            
+                                            <tr class="slds-hint-parent">
+                                                
+                                                <td style="word-wrap: break-word;">
+                                                    {!index + 1}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!std.Id}" href="" onclick="{!c.handleSchoolClick}">
+                                                        {!std.Name}
+                                                    </a>
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!std.AccountNumber}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!std.ETST_Account_Type__c}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!std.ETST_SchoolRefID__c}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <lightning:button class="emmergencyButton" label="Raise Complaint" title="Raise Complaint"
+                                                                      onclick="{!c.showCaseModal}" name="{!std.Id}" aura:id="{!std.Id}"/>
+                                                </td>
+                                            </tr>
+                                            
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <aura:set attribute="else">
+                    <lightning:spinner alternativeText="Loading"/>
+                </aura:set>
+            </aura:if>
+        </aura:if>
+       <aura:if isTrue="{!v.showRecordDetailModal}">
+            <c:BusinessCommunityRecordDetailPopup showIFrame="{!v.showRecordDetailModal}"
+                                                  recordDetailId="{!v.recordDetailId}"
+                                                  recordTypeName="{!v.recordTypeName}"/>
+        </aura:if>
+    </div>
+</aura:component>

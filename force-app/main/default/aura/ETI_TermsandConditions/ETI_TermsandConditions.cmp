@@ -1,0 +1,58 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_TermAndConditions_Ctrl" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    <!--use boolean attribute for Store true/false value,
+    make default to "false" so modal box are not display on the load of component. 
+    --> 
+    <aura:attribute name="isOpen" type="boolean" default="false"/> 
+    <aura:attribute name="isCheckbox" type="boolean" default="false" /> 
+    <aura:attribute name="termsConditions" type="Object[]"/>
+    <aura:attribute name="placeOfVisibility" type="String"/>
+    <aura:method name="doCheck" action="{!c.doCheck}" access="PUBLIC" >
+        <aura:attribute name="isCheckbox" type="boolean" default="false" />
+    </aura:method>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    
+    <!--Use "slds-m-around_xx-large" class to add standard X-Large padding to the component--> 
+    <div class="slds-m-around_xx-small">
+        <lightning:input type="checkbox" label="{!v.Agree_the_Terms_and_Conditions}" aura:id="checkboxField" checked="{!v.isCheckbox}" onchange="{!c.openModel}" required="true"/>
+        <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+        <aura:if isTrue="{!v.isOpen}">
+            <!--###### MODAL BOX Start######--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium">{!v.ET_POLICIES}</h2>
+                    </header>
+                    <!--###### MODAL BOX BODY Part Start######-->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <p><b>{!v.Transport_policies_and_regulations}</b></p> 
+                        <ul class="slds-list--dotted">
+                            <aura:iteration items="{!v.termsConditions}" var="term" >
+                                <li class="slds-list--dotted">{!term.ET_Condition__c}</li>
+                            </aura:iteration>
+                            <br/>
+                        </ul>
+                    </div>
+                    <!--###### MODAL BOX FOOTER Part Start ######-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="brand" 
+                                          label="{!v.Accept}"
+                                          title="Accept"
+                                          onclick="{! c.likenClose }" class="btn_table"/>
+                        <lightning:button variant="neutral" 
+                                          label="{!v.Decline}"
+                                          title="Decline"
+                                          onclick="{! c.closeModel }" class="btn_back"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--###### MODAL BOX Part END Here ######-->            
+        </aura:if>
+    </div>
+</aura:component>

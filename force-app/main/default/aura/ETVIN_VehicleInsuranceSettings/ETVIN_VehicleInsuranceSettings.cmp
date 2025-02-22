@@ -1,0 +1,182 @@
+<aura:component controller="ETVIN_VehicleInsuranceSettingsCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+     <aura:attribute name="DocMasterdata" type="Object" />
+    <aura:attribute name="DocMasterColumns" type="List" />
+    <aura:attribute name="ClaimRecord" type="Object"/>
+    <aura:attribute name="EditClaimRecord" type="boolean" default=""/>
+     <aura:attribute name="emailConfigList" type="List" />
+    <aura:attribute name="salik" type="string"/>
+    <aura:attribute name="fine" type="string"/>
+    <aura:attribute name="fuel" type="string"/>
+    <aura:attribute name="pro" type="string"/>
+     <aura:attribute name="disableVal" type="boolean" default="true"/>
+     <aura:attribute name="EmailMasterColumns" type="List" />
+    <aura:attribute name="emailRecord" type="Object"/>
+     <aura:attribute name="selectedTabId" type="string"/>
+     <aura:attribute name="selectedSerachFilterValue" type="String" access="PUBLIC"/>
+    <aura:attribute name="PartnerList" type="List" access="PUBLIC"/>
+    <aura:attribute name="selectedValue" type="String" access="PUBLIC"/>
+    <aura:attribute name="FieldVisibility" type="boolean" default="true"/>
+    <aura:attribute name="InsPartnerBtnVisiblilty" type="boolean" default="false"/>
+    <aura:attribute name="InsPartnerList" type="List" />
+    
+     <div id="mainDiv" >
+         <lightning:tabset selectedTabId="{!v.selectedTabId}" variant="scoped">
+             
+              <lightning:tab label="Claim Documents Master" id="one" class="SearchDetails topHeading">
+              
+                   <div class="slds-button-group slds-float_right" style="">
+                      <button class="slds-button slds-button_neutral btn_table" style="margin-right:10px;margin-top:5px" onclick="{!c.newClaimDoc}">New</button>
+                      
+                      
+                  </div> <br/> <br/><br/>
+                  
+                   <div style="">
+                  <lightning:datatable data="{!v.DocMasterdata}" keyField="id" columns="{!v.DocMasterColumns }"  onrowaction="{! c.handleRowAction }" hideCheckboxColumn="true" style="" ></lightning:datatable>
+                  </div>
+                  
+                    <!-- calim new popup window -->
+                   <div class="ccSetting slds-hide" aura:id="recordClaimPopup" style="height: 340px; ">
+                      <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                          <div class="slds-modal__container">
+                              <header class="slds-modal__header">
+                                  <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick="{!c.handleCancelNewClaim }" title="Close">
+                                      <lightning:icon iconName="utility:close" alternativeText="Approved" />
+                                  </button>
+                                  <h2 class="slds-text-heading_medium slds-hyphenate">New Claim Document</h2>
+                              </header>
+                              <div class="slds-modal__content slds-p-around_medium">
+                                  
+                                  
+                                  <div class="slds-grid">
+                                      <div class="slds-col slds-size_1-of-2">
+                                          <span onkeydown="{!c.stopSpecialChar}">
+                                          <lightning:input name="DocumentLabel" label="Document Label" value="{!v.ClaimRecord.Label__c}" required="true"/>
+                                          </span>
+                                      </div>
+                                      <div class="slds-col slds-size_1-of-2">
+                                          <span onkeydown="{!c.stopSpecialChar1}">
+                                          <label class="slds-form-element__label" style="margin-right: 0.5rem;">Accepted Formats</label>
+                                                <!--lightning help text for input field-->
+                                                <lightning:helptext content="Please enter comma separted values (.jpg,.pdf)" class="customIcon"/> 
+                                          <lightning:input name="format" label="Accepted Format" value="{!v.ClaimRecord.Accepted_Format__c}" variant="label-hidden"/>
+                                     
+                                          </span>
+                                      </div>
+                                  </div>
+                                  <div class="slds-grid">
+                                      <div class="slds-col slds-size_1-of-2">
+                                          <label class="slds-form-element__label " style="margin-right: 0.5rem;">Visibility</label>
+                                          <lightning:input name="Visibility" type="checkbox" label="Visibility" checked="{!v.ClaimRecord.Visibility__c}" value="{!v.ClaimRecord.Visibility__c}" variant="label-hidden"/>
+                                      </div>
+                                     
+                                  </div>
+                              </div>
+                              <footer class="slds-modal__footer">
+                                  <lightning:button class="btn_back" label="Cancel" title="Cancel" onclick="{! c.handleCancelNewClaim }"/>
+                                  <aura:if isTrue="{!!v.EditClaimRecord}">
+                                  <lightning:button class="btn_table" variant="brand" label="Save" title="Save" onclick="{! c.handleSaveClaim}" />
+                                  </aura:if> 
+                                  <aura:if isTrue="{!v.EditClaimRecord}">
+                                  <lightning:button class="btn_table" variant="brand" label="Update" title="Update" onclick="{! c.handleEditClaim}" />
+                                  </aura:if>    
+                              </footer>
+                          </div>
+                      </section>
+                      <div class="slds-backdrop slds-backdrop_open"></div>
+                  </div>
+                <!-- calim new popup window end --> 
+             </lightning:tab>
+             
+               <lightning:tab label="Email Config" id="two" class="SearchDetails topHeading">
+                  
+                   <lightning:datatable data="{!v.emailConfigList}" keyField="id" columns="{!v.EmailMasterColumns }"  onrowaction="{! c.handleEmailRowActions }" hideCheckboxColumn="true" style="" ></lightning:datatable>
+                  <!-- Email config update popup -->
+                   <div class="ccSetting slds-hide" aura:id="recordEmailPopup" style="height: 340px; ">
+                      <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                          <div class="slds-modal__container">
+                              <header class="slds-modal__header">
+                                  <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick="{!c.handleCancelEmail }" title="Close">
+                                      <lightning:icon iconName="utility:close" alternativeText="Approved" />
+                                  </button>
+                                  <h2 class="slds-text-heading_medium slds-hyphenate">Email Update</h2>
+                              </header>
+                              <div class="slds-modal__content slds-p-around_medium">
+                                   <div class="slds-grid">
+                                      <div class="slds-col slds-size_1-of-2">
+                                         
+                                          <lightning:input name="Name" label="Document Label" value="{!v.emailRecord.Label__c}" disabled="true"/>
+                                          
+                                      </div>
+                                      <div class="slds-col slds-size_1-of-2">
+                                         
+                                         
+                                          <lightning:input name="Email" label="Email" value="{!v.emailRecord.Email__c}" />
+                                     
+                                         
+                                      </div>
+                                  </div> 
+                              </div>
+                              <footer class="slds-modal__footer">
+                                  <lightning:button class="btn_table" variant="brand" label="Update" title="Update" onclick="{! c.handleUpdateEmail}" />
+
+                              </footer>
+                          </div>
+                       </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                   </div>
+                  
+                   
+               </lightning:tab>
+              <lightning:tab label="Other Settings" id="three" class="SearchDetails topHeading">
+                  
+                  <fieldset class="slds-form-element slds-form-element_compound padbot" >
+                    <div class="slds-form-element__control" style="margin: 42px;"> 
+                       
+                  <div class="slds-form-element__row" style="">
+                      <div class="slds-col slds-size_1-of-4">
+                          <div class="slds-form-element" style="margin-top: 18px">
+                              <P><b>Default Insurance Partner</b></P>
+                          </div>
+                      </div>
+                      <div class="slds-col slds-size_1-of-4">
+                          <div class="slds-form-element">
+                             
+                              <lightning:select name="partnerId2" label="Insurance Partner" disabled="{!v.FieldVisibility}" variant="label-hidden" aura:id="partnerId" value="{!v.selectedSerachFilterValue}">
+                                  <option text="--None--" value="" />
+                                  <aura:iteration items="{!v.PartnerList}" var="option">
+                                      
+                                      <option text="{!option.Name}" value="{!option.Id}" selected="{!option.selected}"/>
+                                  </aura:iteration>
+                              </lightning:select>
+                          </div>
+                      </div>
+                      
+                  </div>
+                   <div class="slds-form-element__row ">
+                            <div class="slds-col slds-size_1-of-4"></div>
+                        	<div class="slds-col slds-size_1-of-4">
+                                <div class="slds-form-element" style="margin-top: 20px;">
+                                    <aura:if isTrue="{!!v.InsPartnerBtnVisiblilty}">
+                                        <lightning:button class="btn_table" variant="brand" label="Edit" title="Edit" onclick="{! c.handleEditInsPartner }" />
+                                    </aura:if>   
+                                    <aura:if isTrue="{!v.InsPartnerBtnVisiblilty}">
+                                        <lightning:button class="btn_table" variant="brand" label="Save" title="Save" onclick="{! c.handleSaveInsPartner }" />
+                                        <lightning:button class="btn_back" variant="brand" label="Cancel" title="Cancel" onclick="{! c.handleCancelInsPartner}" />
+                                    </aura:if>    
+                                </div>
+                            </div>
+                        </div>     
+                        
+                        
+                        
+                        
+                      </div></fieldset>
+             </lightning:tab>
+             
+         </lightning:tabset>
+    </div>
+    
+</aura:component>

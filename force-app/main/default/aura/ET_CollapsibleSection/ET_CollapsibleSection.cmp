@@ -1,0 +1,57 @@
+<aura:component >
+    <aura:attribute name="title" type="String" />
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    <aura:attribute name="lineItemNumber" type="Integer"/>
+    <aura:method name="collapseAll" action="{!c.collaspseAll}" 
+                 description="collapse all sections except current one"> 
+    </aura:method>
+    <aura:registerEvent name="notifyRequirementTab" type="c:ET_NotifyRequirementTabCmpOnDelete"/>
+    <aura:method name="expand" action="{!c.expandSection}"/>
+    <div class="slds-section slds-is-open "
+         aura:id="collapsibleSectionContainer" >
+        <h3 class="slds-section__title  " >
+            <!-- button state defaults to false so state 
+                 represents "is collapsed"
+            -->
+            <lightning:buttonStateful aura:id="collapsibleBttn" labelWhenOff="{! v.title }"
+                                      labelWhenOn="{!v.title}"
+                                      iconNameWhenOff="utility:chevrondown"
+                                      iconNameWhenOn="utility:chevronright"
+                                      onclick="{! c.handleSectionHeaderClick }"
+                                      class="slds-section__title-action slds-button__icon_left"
+                                      />
+            <aura:if isTrue ="{! !v.isPricingTeam}">
+                &nbsp;&nbsp;&nbsp;
+                <div style="margin-bottom: 6px;">
+                    <a name="{!index}" onclick="{!c.handleRemove}">
+                        <lightning:icon class="icn" size="small" iconName="utility:delete" alternativeText="delete"/>
+                    </a>
+                </div>
+            </aura:if>
+            
+            
+        </h3>
+        <div class="slds-section__content" >
+            {! v.body }
+        </div>
+    </div>
+     <!-- Confirm Dialog for removing vehicle details-->
+    <div class="slds-hide" aura:id="ConfirmDialog1" style="height:24rem">
+        <section role="alertdialog" tabindex="0" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-theme--warning slds-theme_alert-texture">
+                    
+                    <h2 class="slds-text-heading_medium" id="prompt-heading-id">Are you sure ?</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+                    <p>Do you want to remove this line Item ? Make sure to hit "save" button after you press "yes", in order to save the changes.</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" label="Yes" title="Yes" onclick="{!c.handleYes}" />&nbsp;&nbsp;
+                    <lightning:button  variant="brand" label="No" title="No" onclick="{!c.handleNo}" />   
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</aura:component>

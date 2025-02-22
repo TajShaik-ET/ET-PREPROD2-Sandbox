@@ -1,0 +1,35 @@
+.THIS div#mainVehicleTabDivId{
+    background-color: var(--backgroundColor);
+}
+.THIS .alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+  }
+  
+ .THIS .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+.THIS .closebtn:hover {
+    color: black;
+  }
+.THIS .serviceReqHeader{
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 1rem;
+    background: none;
+    margin-bottom: 1rem;
+	border-bottom:1px solid #ccc;
+}
+.THIS .serviceReqHeader b{
+    font-size: 13px;
+    color: #00C299;
+}

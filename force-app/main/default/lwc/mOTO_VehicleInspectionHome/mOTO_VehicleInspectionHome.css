@@ -1,0 +1,139 @@
+.vehicleReceivingForm{
+    background: #fff;
+    width: 80%;
+    margin: 0 auto;
+}
+.button {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    padding: 4px 6px;
+    background-color: #0070d2;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #005fb2;
+  }
+  
+  .button:active {
+    background-color: #004b8e;
+  }
+
+  .row-container {
+    display: flex;
+    align-items: flex-end;
+  }
+  
+  .input-container {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+  }
+  
+  .remove-icon-container {
+    flex-shrink: 0;
+  }
+  .input-labels {
+    display: flex;
+    align-items: flex-start;
+  }
+.checkbox{
+  padding-top: 15px;
+  padding-left: 40px;
+}
+.main_section{
+  position: relative;
+  display: flex;
+  gap:1rem;
+
+}
+.opp_list{
+  position: relative;
+  display: flex;
+  gap:1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.main_section div{
+  position: relative;
+  width: 25%;
+  display: inline-block;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  padding: 3rem 1rem;
+  text-align: center;
+  background-image: linear-gradient(to right,#ebf9ff,#ffffff);
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.opp_list .box_opp{
+  position: relative;
+  width: 32%;
+  display: inline-block;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  padding: 1rem;
+  text-align: center;
+  background-image: linear-gradient(to right,rgb(220 69 46 / 9%),#ffffff);
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width:992px){
+  .vehicleReceivingForm{
+    width: 95%;
+}
+.main_section, .opp_list{
+  display: block;
+}
+
+.main_section div, .opp_list .box_opp{
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+}
+}
+:host {
+  --slds-c-button-brand-color-background: #dc452e;
+--slds-c-button-brand-color-background-active: #dc452e;
+--slds-c-button-brand-color-border: #dc452e;
+--slds-c-button-brand-text-color: #fff;
+--slds-c-button-brand-color-background-hover: #eb4026; 
+--slds-c-button-brand-color-border-hover: #eb4026;
+--sds-c-button-radius-border: 20px;
+
+--slds-c-button-neutral-color-background: #dc452e;
+--slds-c-button-neutral-color-background-active: #dc452e;
+--slds-c-button-neutral-color-border: #dc452e;
+--slds-c-button-neutral-text-color: #fff;
+--slds-c-button-neutral-color-background-hover: #eb4026; 
+--slds-c-button-neutral-color-border-hover: #eb4026;
+--slds-c-button-text-color: #fff;
+--slds-c-button-text-color-hover: #fff;
+}
+
+
+@media only screen and (max-width:480px){
+
+.vehicleReceivingForm{
+    width: 100%;
+    padding: 0.5rem;  
+}
+.vehicleReceivingForm .slds-m-left_x-small{
+  margin-left: 0.25rem;
+}
+.vehicleReceivingForm .slds-m-left_x-small button.slds-button.slds-button_neutral{
+  padding: 0 0.5rem !important;
+}
+.vehicleReceivingForm .slds-wrap .slds-col.slds-large-size_3-of-12 {
+    width: 50%;
+    text-align: center;
+}
+
+}

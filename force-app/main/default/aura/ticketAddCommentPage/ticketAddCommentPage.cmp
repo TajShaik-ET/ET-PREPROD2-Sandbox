@@ -1,0 +1,38 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <aura:attribute name="isAddCommentModal" type="boolean"/>
+    <aura:attribute name="ticketId" type="String"/>
+    <aura:attribute name="comments" type="String"/>
+    <aura:attribute name="mandatoryFields" type="List" default="comments"/>
+    
+    <c:SS_TicketingSystem_UtilityMethods aura:id="SS_TicketingSystem_UtilityMethods"/>
+    
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" 
+             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" >
+        <div class="slds-modal__container" >
+            <!-- ###### MODAL BOX HEADER Start ######-->
+            <header class="slds-modal__header">
+                <lightning:buttonIcon iconName="utility:close"
+                                      onclick="{! c.closeModel }"
+                                      alternativeText="close"
+                                      variant="bare-inverse"
+                                      class="slds-modal__close"/>
+                <h2 id="modal-heading-01" class="slds-text-heading_large slds-hyphenate">Add Comment</h2>
+                
+            </header>
+            <!--###### MODAL BOX BODY Part Start######-->
+            <div class="slds-modal__content slds-p-around_large" id="modal-content-id-1">
+               <lightning:textarea aura:id="comments" name="Comments" label="Comments" value="{!v.comments}" required="true" messageWhenValueMissing = "Please Enter Comments"/>
+            </div>
+            <footer class="slds-modal__footer">
+                <div class="slds-form-element slds-float_right" > 
+                    <lightning:button variant="brand" 
+                                      label="Add Comments"
+                                      title="Add Comments"
+                                      onclick="{!c.addComment}" class="btn_table"/>
+                </div>
+                
+            </footer>
+        </div>
+    </section>
+</aura:component>

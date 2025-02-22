@@ -1,0 +1,19 @@
+.THIS .icn svg{
+    fill: rgb(101 101 101);
+    width: 17px;
+}
+.THIS .slds-button_neutral {
+    border-radius: 5px;
+    background: #DDDDDD; 
+    padding:5px 15px;
+    color:#000;
+}
+.THIS .slds-section__title  .slds-button_neutral { 
+    justify-content : left !important;
+    background: #DDDDDD;
+    padding:5px 30px;
+    border-radius: 5px;
+    font-size:13px;
+    color:#3D3D3D;
+	font-weight: 700;
+}

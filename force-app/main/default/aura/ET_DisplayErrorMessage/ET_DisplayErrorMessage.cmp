@@ -1,0 +1,10 @@
+<aura:component>
+    <aura:attribute name="message" type="String" required="true"/>
+    <aura:attribute name="type" type="String" required="true"/>
+
+    <div class="alert" style=" padding: 20px;background-color: #f44336;color: white;">
+        <span class="closebtn" onclick="{!c.hideErrorMessage}" style="margin-left: 15px;color: white;font-weight: bold;float: right;font-size: 22px;line-height: 20px;cursor: pointer;transition: 0.3s;">&times;</span> 
+        <strong>{!v.type}!</strong>
+        &nbsp;{!v.message}
+    </div>
+</aura:component>

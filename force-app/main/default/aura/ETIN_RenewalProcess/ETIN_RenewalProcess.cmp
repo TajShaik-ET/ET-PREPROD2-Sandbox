@@ -1,0 +1,152 @@
+<aura:component controller="ETIN_RenewalProcessCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="selectedRowsDetails" type="Object" />
+    <aura:attribute name="selectedRowsList" type="List" />
+    <aura:attribute name="maxRowSelection" type="Integer" default="100"/>
+    <aura:attribute name="selectedRows" type="List" />
+    <aura:attribute name="enableInfiniteLoading" type="Boolean" default="true"/>
+    <aura:attribute name="initialRows" type="Integer" default="10"/>
+    <aura:attribute name="rowsToLoad" type="Integer" default="10"/>
+    <aura:attribute name="totalNumberOfRows" type="Integer" default="10"/>
+    <aura:attribute name="loadMoreStatus" type="String" default="Please scroll down to load more data"/>
+    <aura:attribute name="showRowNumberColumn" type="Boolean" default="false"/>
+    <aura:attribute name="rowNumberOffset" type="Integer" default="0"/>
+    <aura:attribute name="rowsToAdd" type="Integer" default="10"/>
+    <aura:attribute name="currentCount" type="Integer" default="10"/>
+    <aura:attribute name="sortedBy" type="String"/>
+    <aura:attribute name="sortedDirection" type="String"/>
+    <aura:attribute name="defaultSortDirection" type="String"/>
+    <aura:attribute name="draftValues" type="Object" default="[]"/>
+    <aura:attribute name="errList" type="List" />
+    <aura:attribute name="CustomLabel" type="String" default=""/>
+    <aura:attribute name="showSpinner" type="boolean" default="false" /> 
+    <aura:attribute name="showEmpPopup" type="boolean" default="false" />
+    <aura:attribute name="empId" type="String" />
+    <aura:attribute name="showFamilyPopup" type="boolean" default="false" />
+     <aura:attribute name="familyId" type="String" />
+    
+    
+    <aura:attribute name="visaLocation" type="String"/>
+    <div class="outer-div">
+    <aura:if isTrue="{!v.showSpinner}">
+            <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2 spins" alternativeText="Loading" />
+        </aura:if>
+   
+    <div class="slds-col" style="margin-right:10px;">
+        <div class="slds-form-element">
+            <lightning:button label="{!v.CustomLabel}" class="slds-button_brand btnright btn_table" onclick="{!c.bulkRenewProcess}" ></lightning:button>
+        </div>
+    </div><br/><br/>
+    
+    <div class="" style="height: 390px">
+        
+        
+        <lightning:datatable columns="{!v.columns}"
+                             data="{!v.data}"
+                             keyField="Id"
+                             showRowNumberColumn="true"
+                             rowNumberOffset="0"
+                             onrowaction="{!c.handleRowAction}"
+                             selectedRows="{!v.selectedRows}"
+                             maxRowSelection="{!v.maxRowSelection}"
+                             onrowselection="{!c.handleSelectedRow}"
+                             enableInfiniteLoading="true"
+                             loadMoreOffset="10"
+                             sortedBy="{!v.sortedBy}"
+                             sortedDirection="{!v.sortedDirection}"
+                             defaultSortDirection="{!v.defaultSortDirection }"
+                             onsort="{!c.handleColumnSorting}"
+                             onloadmore="{!c.handleLoadMoreRecords}"
+                             draftValues="{!v.draftValues }"
+                             onsave="{!c.handleSaveEdition}"/>
+                         
+        <br/>
+        <div class="slds-float_left">
+            <strong>Total Rows : {!v.totalNumberOfRows}</strong>
+            &nbsp;&nbsp;
+            <strong>Selected Rows: {!v.selectedRowsCount }</strong>
+        </div>
+        <div class="slds-float_right">
+            <strong>{!v.loadMoreStatus}</strong>
+        </div>
+        <br/>
+        <br/>
+    </div>
+     </div>
+    
+   <aura:if isTrue="{!v.showEmpPopup}">
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeEmpPopup}"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Employee Data</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            
+                             <lightning:recordEditForm
+                                                              onload=""
+                                                              recordId="{!v.empId}"
+                                                              onsubmit="{!c.handleSubmitEmp}"
+                                                              onsuccess="{!c.handleSuccessEmp}"
+                                                              objectApiName="Account" aura:id="CorrForm" onerror="" class="recEditForm">
+                                        <lightning:messages />
+                                  <lightning:inputField fieldName="ETIN_Marital_Status__c" />
+                                  <lightning:inputField fieldName="ET_Emirates_Id__c" />
+                                  
+                                 
+                                 <div class="slds-m-top_medium slds-float--right">
+                                    
+                                    <lightning:button disabled="" variant="brand" name="Save" type="submit" label="Save"/>
+                                </div>
+                            </lightning:recordEditForm>
+                            
+                        </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+   </aura:if>
+      <aura:if isTrue="{!v.showFamilyPopup}">
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeFamPopup}"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Employee Family Data</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            
+                             <lightning:recordEditForm
+                                                              onload=""
+                                                              recordId="{!v.familyId}"
+                                                              onsubmit="{!c.handleSubmitFam}"
+                                                              onsuccess="{!c.handleSuccessFam}"
+                                                              objectApiName="ETIN_Employee_Family__c" aura:id="CorrForm" onerror="" class="recEditForm">
+                                        <lightning:messages />
+                                 
+                                  <lightning:inputField fieldName="Emirates_ID__c" />
+                                  
+                                 
+                                 <div class="slds-m-top_medium slds-float--right">
+                                    
+                                    <lightning:button disabled="" variant="brand" name="Save" type="submit" label="Save"/>
+                                </div>
+                            </lightning:recordEditForm>
+                            
+                        </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+   </aura:if>
+</aura:component>

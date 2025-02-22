@@ -1,0 +1,100 @@
+<aura:component implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" controller="ETI_LaneDetailsController" access="global" >
+    
+    <aura:html tag="style">
+        .cuf-content { padding: 0 0rem !important; } .slds-p-around--medium {
+        padding: 0rem !important; } .slds-modal__content{
+        <!--overflow-y:hidden !important;-->
+        height:unset !important; max-height:unset !important; }
+    </aura:html>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="lanStatusMap" type="Map"/>   
+    <aura:attribute name="lstBookings" type="List"/> 
+    <aura:attribute name="isDateValid" type="Boolean" default="false" />     
+    <aura:attribute name="bookingsCount" type="Integer" default="0" /> 
+    <aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+
+    <aura:attribute name="laneDetails" type="ETI_Lane_Details__c" default="{ 'sobjectType': 'ETI_Lane_Details__c',
+                                                                           'Lane_Status__c':'',
+                                                                           'From_Date__c':'',
+                                                                           'To_Date__c':''}" />
+
+    
+    <div class="modal-header slds-modal__header">
+        <h4 class="title slds-text-heading--medium">Update Lane Status</h4>
+    </div>
+    
+    <div class="slds-modal__content">
+        
+        <div class="slds-box">
+            <table>
+                <tr>
+                    <th>Lane Status:</th>
+                    <td>
+                        <lightning:select aura:id="lanStatus" value="{!v.laneDetails.Lane_Status__c}" name="lanStatus" required="true">
+                            <option value="">--None--</option>
+                            <aura:iteration items="{!v.lanStatusMap}" var="ind" indexVar="key">
+                                <option text="{!ind.value}" value="{!ind.key}" selected="{!ind.key==v.laneDetails.Lane_Status__c}" />
+                            </aura:iteration>
+                        </lightning:select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>From Date:</th>
+                    <td>
+                        <lightning:input aura:id="leadFromDate" type="date" name="leadTradeLicenseExpDate" 
+                                         value="{!v.laneDetails.From_Date__c}" required="true" onchange="{!c.validateDate}"
+                                         />
+                    </td>
+                </tr>
+                <tr>
+                    <th>To Date:</th>
+                    <td>
+                        <lightning:input aura:id="leadToDate" type="date" name="leadTradeLicenseExpDate" 
+                                         value="{!v.laneDetails.To_Date__c}" required="false" onchange="{!c.validateDate}"
+                                         />
+                    </td>
+                </tr>
+            </table>
+            
+            
+            
+        </div>
+    </div>
+    
+    <aura:if isTrue="{!v.showConfirmDialog}">
+            <!--Modal Box Start-->
+            <div role="dialog" class="slds-modal slds-fade-in-open ">
+                <div class="slds-modal__container">
+                    <!--Modal Box Header Start-->
+                    <header class="slds-modal__header">
+                        <h1 class="slds-text-heading--medium">Confirmation</h1>
+                    </header>
+                    <!--Modal Box Header End-->
+                     
+                    <!--Modal Box Content Start-->
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <center><b style="font-size:16px;padding:12px;">Total {!v.bookingsCount} bookings are available. Are you sure you want to continue?</b></center>
+                    </div>
+                    <!--Modal Box Content End-->
+                     
+                    <!--Modal Box Button Start-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button name='No' label='No' onclick='{!c.handleConfirmDialogNo}'/>
+                        <lightning:button variant="brand" name='Yes' label='Yes' onclick='{!c.handleConfirmDialogYes}'/>
+                    </footer>
+                    <!--Modal Box Button End-->
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>            
+        </aura:if>
+    <div class="modal-footer slds-modal__footer">
+        <div class="slds-no-flex">
+            <lightning:buttonGroup>
+                <lightning:button class="" variant="brand" label="Save" onclick="{!c.Save}" iconName="action:add_file" disabled="{!v.Recordsave ==false}" aura:id="save" />
+                <lightning:button variant="neutral" label="Cancel" onclick="{!c.Cancel}" iconName="action:remove"/>
+                
+            </lightning:buttonGroup>
+        </div>
+    </div>
+    
+</aura:component>

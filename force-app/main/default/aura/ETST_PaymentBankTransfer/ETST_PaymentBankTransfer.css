@@ -1,0 +1,220 @@
+/*@font-face {
+font-family: 'Cronos';
+src: url(/resource/ETST_Cronos); 
+} */
+.THIS .slds-form-element__legend {
+    font-size: 18px;
+    color: #2a2a2a;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    padding-top: 0px;
+}
+.THIS .onpremisepay1{
+    width: 102%;
+    margin: -0.75rem;
+    /* margin-top: 0; */
+    position: relative;
+    padding: 20px;
+    background: #f9f9f9;
+}
+.THIS .custom_label{
+    font-size: 1.2rem;
+    line-height: 1.25;
+    /*font-family: 'Cronos'; */
+    letter-spacing: .5px;
+    margin-bottom: 5px;
+}
+.THIS .slds-form-element__label {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    /*font-family: 'Cronos'; */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.THIS input[type=text], .THIS input[type=password], .THIS textarea, .THIS textarea.form-control, .THIS select,
+.THIS input[type=tel], .THIS input[type=email], .THIS .slds-input{
+    height: 30px;
+    margin: 0;
+    vertical-align: middle;
+    background: transparent!important;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    /*font-family: 'Cronos'; */
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none!important;
+    transition: all .3s;
+}
+.THIS .slds-form-element_stacked:not(.slds-is-editing){
+    padding:0px;
+}
+.THIS .slds-form-element {
+    margin-bottom: .5rem;
+}
+.THIS .slds-select_container:before {
+    display:none;
+}
+.THIS .slds-select {
+    line-height: initial;
+}
+.THIS .slds-select_container:after {
+    border-top: 5px solid rgb(6, 28, 63);
+    bottom: calc((1.75rem / 2) - 0px);
+}
+.THIS .btn_table{
+    font-size: 14px;
+    margin-top: 8px;
+    margin-left: 10px;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    background-color: #ff4b5a;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .btn_table:hover{
+    background-color: #333333;
+}
+.THIS .btn_back{
+    font-size: 14px;
+    margin-top: 8px;
+    margin-left: 10px;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    background-color: #b0b1af;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .btn_back:hover{
+    background-color: #333333;
+}
+.THIS .btn_right{
+    float: right;margin-top: 0px;
+}
+
+.THIS .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+.THIS .slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+
+
+@media only screen and (max-width: 1024px) {
+    .THIS .onpremisepay {
+        margin-left: 10%;width:40%;
+    }
+    .THIS .bgimgcont {
+        left: 15%;
+        top:65%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .onpremisepay {
+        width: 60%;    margin-left: 10%;
+    }
+    .THIS .bgimgcont {
+        left: 12%;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .THIS.radiodiv {
+        width: 90%;
+        padding: 25px;
+    }
+    .THIS .onpremisepay {
+        width: 70%;
+        padding: 25px;
+        margin: auto;
+    }
+    .THIS .bgimgcont {
+        display:none;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS.radiodiv {
+        width: 90%;
+        padding: 25px;
+    }
+    .THIS .onpremisepay {
+        width: 100%;
+        padding: 30px 15px;
+        display:block;    overflow: hidden;
+    }
+    .THIS .paymenttransfer {
+        padding: 0px!important; 
+    }
+    .THIS .paymenttransfer .onpremisepay1 {
+        width: 100%;
+        margin: 0px;
+        position: relative;
+        padding: 20px 5px;
+        background: transparent;
+        margin-top:80px;
+    }
+    .THIS .paymenttransfer .slds-m-around--small{
+        margin: 0px;
+    }
+    .THIS .paymenttransfer input[type=text], .THIS .paymenttransfer input[type=password],
+    .THIS .paymenttransfer textarea, .THIS .paymenttransfer textarea.form-control, 
+    .THIS .paymenttransfer select, .THIS .paymenttransfer input[type=tel], 
+    .THIS .paymenttransfer input[type=email], .THIS .paymenttransfer .slds-input{   
+        border-bottom: 1px solid #ccc;
+        border-radius: 0px;
+    }
+    .THIS .btn_back{
+        border-radius: 5px;
+        margin: auto;
+    }
+    .THIS .btn_table{
+        background: #eb4026;
+        border-radius: 5px;
+        margin: auto;
+        margin-left: 10px;
+    }
+}

@@ -1,0 +1,118 @@
+<apex:page renderAs="pdf"  standardController="CICO_Vehicle_Spec__c" extensions="CICO_InspectionPdfCtrl" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+    
+    <html>
+        <head>
+            <style>
+                table.detailList {
+                width: 100%;
+                position: relative;
+                border-top: .5px solid #000!important;
+                border-left: .5px solid #000!important;
+                border-collapse: collapse;
+                } 
+                table.detailList th.labelCol , table.detailList .empty , table.detailList td.dataCol{
+                width: 24.5%!important;
+                font-size: 12px;                
+                text-align: left;
+                white-space: nowrap;
+                padding: 5px;
+                border: .5px solid #000;
+                font-weight: 100;
+                font-family: sans-serif;
+                }
+                table.detailList td.dataCol , table.detailList .empty {
+                font-weight: bold;
+                }
+                h3{
+                margin: 0px;
+                padding: 50px 0px 15px;
+                font-weight: bold;
+                font-family: sans-serif;
+                font-size: 14px;
+                color: #000;
+                }
+                p{
+                margin: 0px;
+                font-weight: bold;
+                font-family: sans-serif;
+                font-size: 14px;
+                color: #000;
+                }
+                .signature{
+                margin-top: 30px;
+                margin-bottom:15px;
+                }
+                .diagram{
+                margin-top:250px;
+                margin-bottom:15px;
+                }
+            </style>
+        </head>
+        <body>
+            <apex:image style="height: 100px;margin-left: -5px;"  url="{!URLFOR($Resource.ETST_Invoice, 'images/logo.png')}"/>
+            <apex:pageBlock >
+                <apex:pageBlockSection title="Inspection Document">
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.name}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Current_Chassis_No__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Engine_No__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Manufacturer__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Make__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Family__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Family_Details__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Year_Model__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Fuel_Type__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.No_Of_Cylinders__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.No_Of_Doors__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.No_Of_Seats__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Vehicle_Color__c}"/>                    
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Receive_Km__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Shipped_Date__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Actual_Receive_Date__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Sup_Doc_Type__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Sup_Doc_Date__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Sup_Doc_No__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Penalty__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Fuel_Card__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Fuel_Card_Supplier__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Fuel_Card_Account__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Fuel_Card_Limit__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Salik_Card__c}"/>                    
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Salik_Account__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Floor_Mats__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Fuel_Cap_Key__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Radio__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Safety_Belts__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Wheel_Trims__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Clean_Interior__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Clean_Exterior__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Tool_Kit__c}"/>                    
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Inspector1__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Inspector2__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Inspector3__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Inspector4__c}"/>
+                    <apex:outputField value="{!CICO_Vehicle_Spec__c.Comment__c}"/>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            <br/>
+            <p class="diagram">Marking Diagram</p>
+            <div style= "display: {!If(markedDiagramId =='','none','') }">
+                <img aura:id="customImg" alt="no image" src="/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&versionId={!markedDiagramId}" width="500" height="400" style=""/>
+            </div>
+            <p class="signature">Signature</p>
+            <div style= "display: {!If(signId=='','none','') };">
+                <img aura:id="customImg2" alt="no image" src="/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&versionId={!signId}" width="500" height="100" style="border:1px solid #000;"/>
+            </div>
+             <div style= "display: {!If(signId2=='','none','') };">
+                <img aura:id="customImg2" alt="no image" src="/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&versionId={!signId2}" width="500" height="100" style="border:1px solid #000;"/>
+            </div>
+             <div style= "display: {!If(signId3=='','none','') };">
+                <img aura:id="customImg2" alt="no image" src="/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&versionId={!signId3}" width="500" height="100" style="border:1px solid #000;"/>
+            </div>
+             <div style= "display: {!If(signId4=='','none','') };">
+                <img aura:id="customImg2" alt="no image" src="/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&versionId={!signId4}" width="500" height="100" style="border:1px solid #000;"/>
+            </div>
+            
+            
+        </body>
+    </html>
+</apex:page>

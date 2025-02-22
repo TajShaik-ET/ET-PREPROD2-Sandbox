@@ -1,0 +1,150 @@
+<aura:component controller="customerPortalCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="showLoginForm" type="boolean" default="false"/>
+    <aura:attribute name="showError" type="boolean" default="false"/>
+    <aura:attribute name="showQues" type="boolean" default="false"/>
+    <aura:attribute name="errorMessage" type="string"/>
+    <aura:attribute name="showSignupForm" type="boolean" default="false"/>
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    <aura:attribute name="userInfo" type="Map" />
+    <aura:attribute name="cancelErrMsg" type="string"/>
+    <aura:attribute name="showErrMsg" type="boolean" default="false"/>
+    <aura:handler event="aura:waiting" action="{!c.showSpinnerHandler}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinnerHandler}"/>
+    <aura:attribute name="showProcessingPage" type="boolean" default="true"/>
+    <aura:attribute name="ErrCode" type="string"/>  
+    <aura:attribute name="showDefError" type="boolean" default="false"/>
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <div class="outer-div"> 
+        <aura:if isTrue="{!v.showSpinner}">
+            <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+        </aura:if>
+        <aura:if isTrue="{!v.showErrMsg}"> 
+            <div class="errorred">
+                Error
+            </div>
+            <aura:if isTrue="{!v.ErrCode == 'Remote_Error'}">
+                <div class="errMsg">
+                    <p> User cancelled the login </p>
+                    <p>   قام المستخدم بإلغاء تسجيل الدخول </p>
+                </div>
+            </aura:if>
+             <aura:if isTrue="{!v.ErrCode == 'No_Oauth_State'}">
+                <div class="errMsg">
+                    <p> User cancelled the login </p>
+                    <p>   قام المستخدم بإلغاء تسجيل الدخول </p>
+                </div>
+            </aura:if>
+            
+            
+            <aura:if isTrue="{!v.showDefError}">
+                <div class="errMsg">
+                    <p> Please check with Emirates Transport</p>
+                   
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.cancelErrMsg =='invalid_request'}">
+                <div class="errMsg">
+                    <p> User cancelled the login </p>
+                    <p>   قام المستخدم بإلغاء تسجيل الدخول </p>
+                </div>
+                <!--aura:set attribute="else">
+                         <div class="errMsg">
+                             <p>Unalbe to process your request right now, please contact Emirates Transport.</p>
+                        </div>
+                    </aura:set-->
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!v.showProcessingPage}">
+            <!--div style="text-align: center;font-size: 18px;color:#000;">
+                
+                <p>Your request is in process.... </p>
+                
+            </div-->
+        </aura:if>
+        
+        <aura:if isTrue="{!v.showQues}">
+            <div class="notediv">
+                <p style="color:#000;text-align: center;font-size: 16px;font-weight:600;margin-bottom:10px;">UAE PASS - Emirates Transport Profile Linking</p>
+                
+                <div style="text-align: center;ext-align: center;font-size: 14px;color:#000;">
+                    
+                    <p>Do you have an online account with Emirates Transport? </p>
+                    
+                </div>
+                <div style="text-align: center;margin-top: 45px;">
+                    <lightning:button label="Yes *" class="yesBtn" variant="brand" onclick="{! c.handleYesClick }"/>
+                    <lightning:button label="No **" class="noBtn"  onclick="{! c.handleNoClick }"/>
+                </div>
+                
+                <p style="color:red;font-weight: 500;text-align: left;font-size: 14px;margin-top: 60px">*Your UAE PASS account will be linked to your exisiting Emirates Transport profile</p>
+                <p style="color:red;font-weight:500;text-align: left;font-size: 14px;">**Your Emirates Transport profile will be established based on UAE PASS account</p>
+                
+                <p style="color: #000;text-align: left;font-size: 14px;margin-top: 10px"><b>Note:</b> This is a one time process, your future login's through UAE PASS will be seamless.</p>
+            </div>
+            
+        </aura:if>
+        <aura:if isTrue="{!v.showLoginForm}">
+            
+            
+            <p style="color:#000;text-align: center;font-size: 16px;font-weight:600;">UAE PASS - Emirates Transport Profile Linking</p>
+            <p style="color: #000;text-align: center;font-size: 14px;">(Login with your Emirates Transport credentails)</p><br/>
+            <aura:if isTrue="{!v.showError}">
+                <div id="error" style="color:#FF0000;padding:5px;">
+                    <ui:outputRichText value="{!v.errorMessage}"/>
+                </div>
+            </aura:if>
+            <div id="sfdc_username_container" class="sfdc">
+                <span id="sfdc_user" class="login-icon" data-icon="a"></span>
+                <ui:inputText class="inputTxt" value="" aura:id="username" placeholder="Username" keyup="{!c.onKeyUp}"  label="User name" labelClass="assistiveText"/>
+            </div>
+            
+            <div id="sfdc_password_container" class="sfdc">
+                <span id="sfdc_lock" class="login-icon sfdc" data-icon="c"></span>
+                <ui:inputSecret class="inputTxt" value="" aura:id="password" placeholder="Password" keyup="{!c.onKeyUp}"  label="Password" labelClass="assistiveText"/>
+            </div><br/>
+            <div class="sfdc" style="text-align:center">
+                <lightning:button variant="brand" aura:id="submitButton" label="link above account with UAE PASS" onclick="{!c.linkWithUPassHandler}" class="sfdc_button"/>
+            </div>
+            <div id="sfdc_forgot" class="anchorTag">
+                <span style="color: white;"><a href="/customer/s/login/ForgotPassword?language=en_US">Forgot Password ?</a></span>
+                
+                
+            </div> 
+            <div style="text-align:left;color: #000;margin-top: 10px" class="anchorTag">
+                <p>Don't have an account?  &nbsp;<a href="/customer/s/login/SelfRegister?language=en_US">Register now</a></p>
+                
+            </div>
+            
+            <p style="color: #000;text-align: left;font-size: 15px;margin-top: 10px"><b>Note:</b> This is a one time process, your future login's through UAE PASS will be seamless.</p>
+        </aura:if>
+        <aura:if isTrue="{!v.showSignupForm}">
+            
+            
+            <div >
+                <lightning:input class="inputTxtnew" type="text" label="First Name" value="{!v.userInfo.firstnameEN}"  disabled="true" />
+                <lightning:input class="inputTxtnew" type="text" label="Last Name" value="{!v.userInfo.lastnameEN}"  disabled="true" />
+                <lightning:input class="inputTxtnew" type="text" label="Email" value="{!v.userInfo.email}"  disabled="true" />
+                <lightning:input class="inputTxtnew" type="text" label="Mobile" value="{!v.userInfo.mobile}"  disabled="true" />
+                <lightning:input class="inputTxtnew" type="text" label="Gender" value="{!v.userInfo.gender}"  disabled="true" />
+                
+                <br/>
+                
+                <div style="text-align:center">
+                    <lightning:button variant="brand" aura:id="createAcc" label="Sign Up" onclick="{!c.createUserHandler}" class="sfdc_button"/>
+                </div>
+                
+            </div>
+            
+        </aura:if>
+        
+        
+        <aura:if isTrue="{!!v.showLoginForm}">
+            <div class="backBtn">
+                <p><a href="/customer/s" style="color: #000;font-weight:600;font-size:14px;text-decoration: underline">Go to Login Page</a></p>
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

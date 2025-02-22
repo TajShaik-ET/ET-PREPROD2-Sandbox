@@ -1,0 +1,27 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="isETSTHomePage" type="boolean" default="false"/>
+    <aura:attribute name="userId" type="String"/>
+    <aura:attribute name="profileUrl" type="String"/>
+    <div class="menudiv">
+       
+        <img class="companyimg" src="{!$Resource.ETLogo}" />
+        <div class="menudropdowndiv1">
+            <button class="dropmenubtn1"><img class="profileimg" src="{!$Resource.ETST_ProfileImage}" /></button>
+            <div class="dropdown-content1">
+                <ul>
+                    <li><a href="/employeeportal/s/">Home</a></li>
+                    <li><a href="{!v.profileUrl}">My Profile</a></li>
+                    <!--li><a href="#">My Settings</a></li>
+                    <li><a href="#">Messages</a></li>
+                    <li><a href="#">My Account</a></li>                
+                    <li><a href="#">Contact Support</a></li-->
+                  
+                    <li><a href="#" onclick="{!c.LogoutFunction}" >Logout</a></li><!-- /servlet/networks/switch?startURL=%2Fsecur%2Flogout.jsp-->
+                </ul>
+            </div>
+        </div>
+      
+    </div> 
+   
+</aura:component>

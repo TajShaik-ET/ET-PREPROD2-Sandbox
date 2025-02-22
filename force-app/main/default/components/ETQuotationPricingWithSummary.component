@@ -1,0 +1,4 @@
+<apex:component controller="ET_Quotation_PDF_Attachment_Controller" access="global">
+    <apex:attribute name="qId" description="Quote Record Id" assignTo="{!QuoteId}" type="Id" />
+    <apex:outputText value="{!PagePDFContentWithTotalSummary}" escape="false" />
+</apex:component>

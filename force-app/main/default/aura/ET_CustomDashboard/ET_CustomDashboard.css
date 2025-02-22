@@ -1,0 +1,14 @@
+.THIS.chart_details .slds-col canvas{
+    background:#fff;
+    width: 100%;
+    padding:1rem;
+}
+@media only screen and (max-width: 767px) {
+    .THIS.chart_details .slds-grid {
+        display: block;
+    }
+    .THIS.chart_details .slds-grid .slds-col{
+        display: block;width: 100%;
+        margin-bottom: 1rem;
+    }    
+}

@@ -1,0 +1,41 @@
+<template>
+	<lightning-record-edit-form object-api-name={contractSubLineObject} onsuccess={handleSuccess}>
+		<div class="slds-grid infoTabs condition_div">
+			<div class="slds-col slds-size_2-of-12">
+				<lightning-input-field field-name={contractSubLineFields.NAME} value={subCaluse.Name} disabled="true">
+				</lightning-input-field>
+			</div>
+			<div class="slds-col slds-size_2-of-12 checkbox_div">
+				<lightning-input-field field-name={contractSubLineFields.EDITABLE}
+					    disabled={subCaluse.isEditable} onchange={makeContractDescEditable}></lightning-input-field>
+
+				<lightning-input-field field-name={contractSubLineFields.DELETE}></lightning-input-field>
+			</div>
+			<div class="slds-col slds-size_8-of-12 ">
+				<lightning-input-field field-name={contractSubLineFields.DESCRIPTION} value={subCaluse.Description}
+					disabled={isDisabled}></lightning-input-field>
+			</div>
+			<template if:true={additionalArticle}>
+				<div class="slds-hide slds-col slds-size_8-of-12 ">
+					<lightning-input-field data-id="contractMasterId" field-name={contractSubLineFields.CONTRACT_MASTER} value={subCaluse.ContractMaster}
+						disabled={isDisabled}></lightning-input-field>
+				</div>
+			</template>
+			<!-- <div class="slds-col slds-p-right_small" style="padding-top: 25px;">
+                    <lightning-button variant="brand" class="slds-m-top_small" onclick={handleContractSubLineDelete} label="Remove" disabled={subCaluse.isEditable} ></lightning-button>
+            </div> -->
+
+			<div class="slds-hide">
+				<lightning-input-field field-name={contractSubLineFields.REF_ARTICLE} value={subCaluse.refArticleId}>
+				</lightning-input-field>
+				<template if:false={additionalArticle}>
+					<lightning-input-field data-id="contractMasterId" value={contractMasterId}
+					field-name={contractSubLineFields.CONTRACT_MASTER}></lightning-input-field>
+				</template>
+				<lightning-input-field field-name={contractSubLineFields.CONTRACT_SUB_LINE_NO}
+					value={subCaluse.SubClauseNo}></lightning-input-field>
+				<lightning-button variant="brand" type="submit" label="Save"> </lightning-button>
+			</div>
+		</div>
+	</lightning-record-edit-form>
+</template>

@@ -1,0 +1,306 @@
+<aura:component implements="force:appHostable,force:lightningQuickAction,force:hasRecordId,flexipage:availableForRecordHome"
+                controller="ET_BusinessCommunityController" access="global"  >
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:attribute name="recordTypeName" type="String"/>
+    <aura:attribute name="fields" type="String[]" default="['CaseNumber','OwnerId','AccountId',
+                                                           'Status_Category__c','Sub_Status__c','Status','Request_Type__c','City__c','Grade__c','ContactId','Disability_Type__c','Parent_Name_Student__c','Internal_Number_Of_Student__c','Student_Name__c','Phone_Number__c','Coordinator_Name__c','Sub_Request__c',
+                                                           'Trip_Type__c','No_of_Passengers__c','Gender','Preferred_Date__c','Preferred_End_Date__c',
+                                                           'Zone_Type__c','Reason__c','Student_Companion_Name__c','Companion_ID_Number__c',
+                                                           'Coordinator_Number__c','Trip_Destination__c','SIS_Number__c','Mobility_Ads__c','Delegated_Person_Names__c','Delegated_Person_Phone__c','CCM_Remarks__c','LastModifiedById','CreatedById',]" />
+    <aura:attribute name="growthRequest" type="String[]" default="['School_Code_Detail_Page__c','School_Area__c','School_City__c','AccountId','No_of_Students__c','Students_Gender__c','Zone_Type_Growth_Request__c','Type_OF_Fleet__c','No_of_Small_Buses__c','No_of_Medium_Buses__c','No_of_Large_Buses__c',
+                                                                  'Coordinator_Name__c','Phone_Number__c','Bus_Internal_Number__c','Service_Start_Date__c','Description','CreatedDate']"/>
+    <aura:attribute name="specialNeedsServices" type="String[]" default="['School_Code_Detail_Page__c','School_Area__c','School_City__c','AccountId','Student_Name__c','SIS_Number__c','Grade__c','Parent_Name_Student__c','Internal_Number_Of_Student__c',
+                                                                         'Disability_Type__c','Mobility_Ads__c','Sub_Request__c','ESE_free_text__c','LandMark__c','Bus_Internal_Number__c','Service_Start_Date__c','Vehicle_Type__c',
+                                                                         'Delegated_Person_Names__c','Delegated_Person_Phone__c','Coordinator_Name__c','Phone_Number__c','CCM_Remarks__c','Case_Created_Date__c','CreatedDate']"/>
+    
+    
+    <aura:attribute name="companian" type="String[]" default="['School_Code_Detail_Page__c','School_Area__c','School_City__c','AccountId','Student_Name__c','Grade__c','ID_number__c',
+                                                              'Student_Companion_Name__c','Companion_ID_Number__c','ETST_Student_Id__c','CreatedDate']"/>
+    <aura:attribute name="ActivitiesAndEventReq" type="String[]" default="['School_Code_Detail_Page__c','School_Area__c','School_City__c','AccountId','Trip_Type__c','ESE_free_text__c','Mode__c','No_of_Passengers__c','Students_Gender__c',
+                                                                          'Student_Division__c','Preferred_Date__c','Preferred_End_Date__c','Trip_Location__c',
+                                                                          'No_of_Disabled_Students__c','Escort_for_Disbaled_Students__c',
+                                                                          'Bus_Supervisor_Available__c','Coordinator_Name__c','Phone_Number__c','Service_Start_Date__c','Bus_Type__c','Case_Created_Date__c','CCM_Remarks__c','CreatedDate']"/>
+    <aura:attribute name="studentAwarenessSession" type="String[]" default="['School_Code_Detail_Page__c','School_Area__c','School_City__c','AccountId','No_of_Attendance__c','Preferred_Date__c','Preferred_End_Date__c','Coordinator_Name__c',
+                                                                            'Coordinator_Number__c','Awareness_Session_Location__c','LandMark__c','Program_Type__c','','CCM_Remarks__c','CreatedDate']"/>
+    <aura:attribute name="specialNeesdActivitiesEvent" type="String[]" default="['School_Code_Detail_Page__c','School_Area__c','School_City__c','AccountId','No_of_Attendance__c','Trip_Type__c','Trip_Location__c','Students_Gender__c','No_of_Passengers__c','Preferred_Date__c','Preferred_End_Date__c','Coordinator_Name__c',
+                                                                                'No_of_Disabled_Students__c','Student_Division__c','Coordinator_Number__c','Awareness_Session_Location__c','LandMark__c','Program_Type__c','CCM_Remarks__c','CreatedDate']"/>
+    <aura:attribute name="specialNeedsCompanionRequest" type="String[]" default="['School_Code_Detail_Page__c','School_Area__c','School_City__c','AccountId','No_of_Attendance__c','Coordinator_Name__c','ID_number__c','Grade__c','Student_Companion_Name__c','Companion_ID_Number__c','ETST_Student_Id__c',
+                                                                                 'CCM_Remarks__c','CreatedDate']"/>
+    <aura:attribute name="fleethGrowth" type="String[]" default="['School_Code_Detail_Page__c','School_Area__c','School_City__c','AccountId','No_of_Attendance__c','Preferred_Date__c','Preferred_End_Date__c','Coordinator_Name__c',
+                                                                 'Coordinator_Number__c','Awareness_Session_Location__c','LandMark__c','Program_Type__c','CCM_Remarks__c','CreatedDate']"/>
+    
+    <aura:attribute name="specialNeedsTransportationRequest" type="String[]" default="['School_Name__c','School_Code_Detail_Page__c','School_Area__c','School_City__c','Student_Name__c','SIS_Number__c','Grade__c','Parent_Name__c','LandMark__c','Disability_Type__c','Mobility_Ads__c','Sub_Request__c','Delegated_Person_Names__c','Delegated_Person_Phone__c','Coordinator_Name__c','Phone_Number__c','CCM_Remarks__c','CreatedDate']"/>
+     <aura:attribute name="userProfile" type="String" />
+    <aura:attribute name="MOE_Department_Of_School_Services" type="Boolean" default="false"/>
+    <aura:attribute name="P_MOE_Department_Of_School_Activities" type="Boolean" default="false"/>
+    <aura:attribute name="P_MOE_Inclusive_Education_Department_in_ESE" type="Boolean" default="false"/>
+    <aura:attribute name="MOE_Personnel_Management" type="Boolean" default="false"/>
+    <aura:attribute name="ESE_head_Office" type="Boolean" default="false"/>
+    <aura:attribute name="P_MOE_Extra_Curricular_Activities" type="Boolean" default="false"/>
+
+    
+     <!--<aura:handler name="init" value="{!this}" action="{!c.init}"/>-->
+    
+    <aura:attribute name="fields1" type="String[]" default="['Name']"/>
+    <aura:attribute name="recordName" type="String"/>
+    <aura:attribute name="ObjectName" type="String"/>
+    <aura:attribute name="objectApiName" type="String"/>
+    <aura:attribute name="objectApi" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="fieldApiName1" type="String"/>
+    <aura:attribute name="fieldApiName2" type="String"/>
+    <aura:attribute name="fieldApiName3" type="String"/>
+    <aura:attribute name="fieldApiName4" type="String"/>
+    <aura:attribute name="field1Label" type="String"/>
+    <aura:attribute name="field2Label" type="String"/>
+    <aura:attribute name="field3Label" type="String"/>
+    <aura:attribute name="field4Label" type="String"/>
+    <aura:attribute name="showDetailCmp" type="Boolean" />
+    <aura:attribute name="caseCommentslist" type="ET_Case_Comment__c[]" />
+    
+    <!-- added by SrihariKoyila -->   
+    <aura:attribute name="showDateField" type="Boolean" />
+    <aura:attribute name="show_FB_Tab" type="Boolean" />
+    
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+    
+    <aura:attribute name="columns" type="Integer" access="global" default="2" />
+    <aura:attribute name="StudentAwernesscolumns" type="Integer" access="global" default="1" />
+    <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>   -->
+    <aura:if isTrue="{!v.showDetailCmp}">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_large" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container" style="color: #000;">
+                  <header class="slds-modal__header">
+                          <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.handleClose }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                    <!--<h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{!v.recordLabel}</h2>-->
+                </header>
+                <div class="slds-modal__content   slds-p-around_medium" id="modal-content-id-1">
+                    <div class="oppHeaderDiv">
+                        <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="{!v.objectApiName}">
+                            <lightning:card>
+                                <aura:set attribute="title">
+                                    <lightning:icon class="iconClass" iconName="standard:account" size="medium"/>
+                                    <span class="approvalTextClass">{!v.ObjectName}</span>
+                                    <div class="subheading_div">
+                                        <lightning:outputField variant="label-hidden" fieldName="{!v.recordName}" /> 
+                                    </div>
+                                </aura:set>
+                                <aura:set attribute="footer">
+                                    <aura:if isTrue="{!or(v.ObjectName =='case',v.ObjectName =='Case')}">
+                                        <lightning:layout>     
+                                            <lightning:layoutItem flexibility="auto, no-grow" padding="horizontal-medium">
+                                                <label class="slds-form-element__label" for="text-input-id-1">
+                                                    {!v.field1Label}</label><br/>
+                                                <span class="dataDisplayClass">
+                                                    <lightning:outputField variant="label-hidden" fieldName="{!v.fieldApiName1}" />
+                                                </span>  
+                                            </lightning:layoutItem>
+                                            <lightning:layoutItem flexibility="auto, no-grow" padding="horizontal-medium">
+                                                <label class="slds-form-element__label" for="text-input-id-1">
+                                                    {!v.field2Label}</label><br/>
+                                                <span class="dataDisplayClass">
+                                                    <lightning:outputField variant="label-hidden" fieldName="{!v.fieldApiName2}" />
+                                                </span>  
+                                            </lightning:layoutItem>
+                                            <lightning:layoutItem flexibility="auto, no-grow" padding="horizontal-medium">
+                                                <label class="slds-form-element__label" for="text-input-id-1">
+                                                    {!v.field3Label}</label><br/>
+                                                <span class="dataDisplayClass">
+                                                    <lightning:outputField variant="label-hidden" fieldName="{!v.fieldApiName3}" />
+                                                </span>  
+                                            </lightning:layoutItem>
+                                            <lightning:layoutItem flexibility="auto, no-grow" padding="horizontal-medium">
+                                                <label class="slds-form-element__label" for="text-input-id-1">
+                                                    {!v.field4Label}</label><br/>
+                                                <span class="dataDisplayClass">
+                                                    <lightning:outputField variant="label-hidden" fieldName="{!v.fieldApiName4}" />
+                                                </span>  
+                                            </lightning:layoutItem>
+                                        </lightning:layout>
+                                    </aura:if>
+                                </aura:set>
+                            </lightning:card>
+                        </lightning:recordViewForm>
+                    </div>
+                    <div class="detailTabClass"> 
+                        <lightning:tabset selectedTabId="details">
+                            <lightning:tab label="Details" id="details">
+                                <div class="oppDetailDiv"> 
+                                    <div id="accDiv" style="col-2">
+                                        <aura:if isTrue="{!v.recordTypeName == 'Growth Requests for Vehicle,Nanny and Coordinator'}">
+                                            <lightning:recordForm
+                                                                  recordId="{!v.recordId}"
+                                                                  objectApiName="{!v.objectApiName}"
+                                                                  mode="readOnly"
+                                                                  columns="{!v.columns}"
+                                                                  fields="{!v.growthRequest}"/>
+                                            
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.recordTypeName == 'Special Needs Services Transport or Nanny Request'}">
+                                            <lightning:recordForm
+                                                                  recordId="{!v.recordId}"
+                                                                  objectApiName="{!v.objectApiName}"
+                                                                  mode="readOnly"
+                                                                  columns="{!v.columns}"
+                                                                  fields="{!v.specialNeedsServices}"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.recordTypeName == 'Companian - Handicap Transportation'}">
+                                            <lightning:recordForm
+                                                                  recordId="{!v.recordId}"
+                                                                  objectApiName="{!v.objectApiName}"
+                                                                  mode="readOnly"
+                                                                  columns="{!v.columns}"
+                                                                  fields="{!v.companian}"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.recordTypeName == 'Activities and Events Requests'}">
+                                            <lightning:recordForm
+                                                                  recordId="{!v.recordId}"
+                                                                  objectApiName="{!v.objectApiName}"
+                                                                  
+                                                                  mode="readOnly"
+                                                                  columns="{!v.columns}"
+                                                                  fields="{!v.ActivitiesAndEventReq}"/>
+                                            
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.recordTypeName == 'Students Awareness Session Request'}">
+                                            <lightning:recordForm
+                                                                  recordId="{!v.recordId}"
+                                                                  objectApiName="{!v.objectApiName}"
+                                                                  mode="readOnly"
+                                                                  columns="{!v.StudentAwernesscolumns}"
+                                                                  fields="{!v.studentAwarenessSession}"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.recordTypeName == 'Special Needs Activities and Events Request'}">
+                                            <lightning:recordForm
+                                                                  recordId="{!v.recordId}"
+                                                                  objectApiName="{!v.objectApiName}"                                                               
+                                                                  mode="readOnly"
+                                                                  columns="{!v.columns}"
+                                                                  fields="{!v.specialNeesdActivitiesEvent}"/>
+                                            
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.recordTypeName == 'Special Needs Companion Request'}">
+                                            <lightning:recordForm
+                                                                  recordId="{!v.recordId}"
+                                                                  objectApiName="{!v.objectApiName}" 
+                                                                  mode="readOnly"
+                                                                  columns="{!v.columns}"
+                                                                  fields="{!v.specialNeedsCompanionRequest}"/>
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.recordTypeName == 'Fleet Growth Request'}">
+                                            <lightning:recordForm
+                                                                  recordId="{!v.recordId}"
+                                                                  objectApiName="{!v.objectApiName}"
+                                                                  mode="readOnly"
+                                                                  columns="{!v.columns}"
+                                                                  fields="{!v.fleethGrowth}"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.recordTypeName == 'Special Needs Transportation Request'}">
+                                            <lightning:recordForm
+                                                                  recordId="{!v.recordId}"
+                                                                  objectApiName="{!v.objectApiName}"
+                                                                  mode="readOnly"
+                                                                  columns="{!v.columns}"
+                                                                  fields="{!v.specialNeedsTransportationRequest}"/>
+                                        </aura:if>
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </lightning:tab>                           
+                            <lightning:tab label="Case Comments" id="comments">
+                                <div class="slds">
+                                    <div class="slds-scrollable_y">
+                                        <aura:if isTrue="{!v.caseCommentslist != null}">
+                                            <table class="slds-table slds-table_bordered THIS">
+                                                <thead class="slds-theme_shade">
+                                                    <tr>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Number">SR,NO</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Number">Number</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Comments">Comments</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Created By">Created By</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Created By and Time">Created Date and Time</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <aura:iteration items="{!v.caseCommentslist}" var="con" indexVar="index">
+                                                        <tr class="slds-hint-parent">
+                                                            <td>
+                                                                {!index + 1}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                <a href="" style="color: #0070d2; text-decoration: underline;">{!con.Name}</a>
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                {!con.ET_Comments__c}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                {!con.CreatedBy.Name}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                 {!con.formattedTime} <!-- Use the formattedTime property here -->
+                                                            </td>
+                                                        </tr>
+                                                    </aura:iteration>
+                                                </tbody>
+                                            </table>
+                                            <aura:set attribute="else">
+                                                <!-- If caseCommentslist is empty -->
+                                                <div class="slds-m-vertical_medium">
+                                                    No comments are available.
+                                                </div>
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                            </lightning:tab>
+                            
+                            <!-- added by SrihariKoyila on 15-12-23 feedbackTab english -->
+                            <aura:if isTrue="{!not(v.MOE_Department_Of_School_Services || v.P_MOE_Department_Of_School_Activities || v.P_MOE_Inclusive_Education_Department_in_ESE || v.MOE_Personnel_Management || v.ESE_head_Office || v.P_MOE_Extra_Curricular_Activities)}">
+                                <aura:if isTrue="{!(v.recordTypeName == 'Activities and Events Requests' || v.recordTypeName == 'Special Needs Services Transport or Nanny Request' || v.recordTypeName == 'Growth Requests for Vehicle,Nanny and Coordinator')}">
+                                    <lightning:tab label="FeedBack">
+                                        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="{!v.objectApiName}" onload="{!c.recordLoaded}"> 
+                                            <lightning:messages />
+                                            <lightning:outputField label="Select an Option" fieldName="FeedBack_EN__c" />
+                                            <!-- Other input fields or buttons -->
+                                            <aura:if isTrue="{!v.showDateField}">
+                                                <lightning:outputField label="Date and Time" fieldName="Select_Date_and_Time__c"/>                                
+                                            </aura:if>
+                                        </lightning:recordEditForm>
+                                    </lightning:tab>
+                                </aura:if>
+                            </aura:if>
+                            <!-- //-->
+                            
+                            <!-- Show/hide the spinner based on 'isLoading' attribute -->
+                            <aura:if isTrue="{! v.isLoading }">
+                                <lightning:spinner variant="brand" size="medium" alternativeText="Loading" />
+                            </aura:if>
+                        </lightning:tabset>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button class="btn_close" variant="brand" name="Close" label="Close" onclick="{!c.handleClose}"/>
+                </footer>
+            </div>
+            
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

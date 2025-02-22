@@ -1,0 +1,29 @@
+<aura:component extends="c:ET_ParentTab">
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="lineNumber" type="Integer"  />
+    <aura:attribute name="numberOfLines" type="Integer" default="0"/>
+    <aura:attribute name="otherCostRecord" type="Map"/>
+    <aura:attribute name="existingOtherCostTabData" type="Object"/>
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    <aura:attribute name="quoteId" type="String"/>
+    <!--<aura:attribute name="existingOtherCostLineItems" type="List" />  -->
+    <aura:method name="getData" action="{!c.getData}" access="public">
+    </aura:method>
+    <aura:handler name="notifyRequirementTab" event="c:ET_NotifyRequirementTabCmpOnDelete" action="{!c.handleNotifyOtherCostTabEvent}"/>
+    <aura:html tag="style">
+        #mainOtherCostTabDivId {
+        --backgroundColor: {!v.backgroundColor};
+        }
+    </aura:html>
+    <div class=" " id="mainOtherCostTabDivId">
+        <!-- Body Content Here -->
+        <div aura:id="cmpBody">
+            {!v.body}
+        </div>           
+        
+        <!--<div class="slds-align_absolute-center">
+            <lightning:button  variant="brand" label="Add Other Cost" title="Add Other Cost" onclick="{! c.handleAddMore }"  />&nbsp;
+        </div> -->
+    </div>
+</aura:component>

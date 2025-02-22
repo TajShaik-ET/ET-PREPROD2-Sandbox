@@ -1,0 +1,263 @@
+<!--
+  @description       : 
+  @author            : Srihari.Koyila@Smaartt.com-SK
+  @group             : 
+  @last modified on  : 09-10-2024
+  @last modified by  : Srihari.Koyila@Smaartt.com-SK 
+  Modifications Log
+  Ver   Date         Author                          Modification
+  1.0   08-06-2024   Srihari.Koyila@Smaartt.com-SK   Initial Version
+-->
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf" standardStylesheets="false" applyHtmlTag="false" standardController="Contract_Pdf_Header__c" extensions="ET_ContractCoverMemoController">
+    <head>
+        <style>
+            @page{
+            padding:0px;
+            margin:3mm 5mm;
+            }
+            .cover-memo-heading {
+                font-family: 'Segoe UI', sans-serif;
+                font-weight: bold;
+                font-size: 16px;
+                padding-top: 30px;
+                text-align: center;
+            }
+            .padding-zero{
+            	padding:0px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse; /* Ensures borders are combined into a single border */
+                margin-bottom: 20px; /* Adds space below the table */
+            }
+            th, td {
+                border: 1px solid black; /* Adds a black border to table headers and cells */
+                padding: 8px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2; /* Light grey background for table headers */
+            }
+            /* Set column widths */
+            .col1 {
+                width: 100px; /* Adjust width as needed */
+                font-family: 'Segoe UI', sans-serif;
+                font-weight: bold;
+                font-size: 10px;
+                text-align: right;
+            }
+            .col2 {
+                width: 5px; /* Very small width */
+            }
+            .col3 {
+                width: auto; /* Very long width */
+                font-family: 'Segoe UI', sans-serif;
+                font-size: 10px;
+            }
+            .Row1Head1{
+                width: 150px; /* Very long width */
+                font-family: 'Segoe UI', sans-serif;
+                font-weight: bold;
+                font-size: 12px;
+                text-align: center;
+                background-color: #003366; /* Dark blue background */
+                color: #ffffff; /* White text */
+            }
+            .Row1Head2{
+                width: auto; /* Very long width */
+                font-family: 'Segoe UI', sans-serif;
+                font-weight: bold;
+                font-size: 14px;
+                text-align: center;
+                background-color: #003366; /* Dark blue background */
+                color: #ffffff; /* White text */
+            }
+            .col31 {
+                font-family: 'Segoe UI', sans-serif;
+                font-weight: bold;
+                font-size: 10px;
+                text-align: center;
+                background-color: #7fa3c8; /* Dark blue background */
+                color: #ffffff; /* White text */
+            }
+            .Row1Head1RS{
+                width: 150px; /* Very long width */
+                font-family: 'Segoe UI', sans-serif;
+                font-weight: bold;
+                font-size: 12px;
+                text-align: center;
+                background-color: #7fa3c8; /* Dark blue background */
+                color: #ffffff; /* White text */
+            }
+            .col32{
+                width: 250px; /* Increase width to match the header columns */
+                padding:10px 20px; /* Increase padding to allow space for signatures */
+            }
+            .col312{
+                font-family: 'Segoe UI', sans-serif;
+                font-weight: bold;
+                font-size: 10px;
+                text-align: center;
+                background-color: #7fa3c8; /* Dark blue background */
+                color: #ffffff; /* White text */
+                width: 150px; /* Increase width to match the header columns */
+                padding:10px 20px; /* Increase padding to allow space for signatures */
+            }
+        </style>
+    </head>
+    <div class="divHeader">
+        <apex:image style="height: 40px; float: right" url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/logo.png')}"/>
+    </div>
+    <body>
+        <div>
+            <p class="cover-memo-heading">Cover Memo to the CEO for Contracts/Addendums/Amendments/Agreements</p>
+        </div>
+
+        <table>
+            <tbody>
+                <tr>
+                    <td class="col1">From </td>
+                    <td class="col2">:</td>
+                    <td class="col3">{!FromasSender} </td>
+                </tr>
+                <tr>
+                    <td class="col1">To</td>
+                    <td class="col2">:</td>
+                    <td class="col3"> CEO </td>
+                </tr>
+                <tr>
+                    <td class="col1">Date </td>
+                    <td class="col2">:</td>
+                    <td class="col3">{!DateofSender} </td>
+                </tr>
+                <tr>
+                    <td class="col1">Subject </td>
+                    <td class="col2">:</td>
+                    <td class="col3"> {!AccountName} , {!ContractHeaderName}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <tbody>
+                <tr>
+                    <td class="Row1Head1">Requested Information</td>
+                    <td class="Row1Head2">Details</td>
+                </tr>
+                <tr>
+                    <td class="col1">Customer Name</td>
+                    <td class="col3">{!AccountName}</td>
+                </tr>
+                <tr>
+                    <td class="col1">Customer Number (TD)</td>
+                    <td class="col3">{!AccountNumber}</td>
+                </tr>
+                <tr>
+                    <td class="col1">Contract Type (Renew/Growth/New)</td>
+                    <td class="col3">{!ContractType}</td>
+                </tr>
+                <tr>
+                    <td class="col1">Service Type (Leasing/Transport/Maintenance)</td>
+                    <td class="col3">{!Servicetype}</td>
+                </tr>
+                <tr>
+                    <td class="col1">Contract Duration</td>
+                    <td class="col3">{!ContractDuration}</td>
+                </tr>
+                <tr>
+                    <td class="col1">Contractual Value (annual)</td>
+                    <td class="col3"><apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!AnnualContractValue}"/> </apex:outputtext></td>
+                </tr>
+                <tr>
+                    <td class="col1">Total Contractual Value</td>
+                    <td class="col3"><apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!TotalContractvalue}"/> </apex:outputtext></td>
+                </tr>
+                <tr>
+                    <td class="col1">Fuel Clause (if applicable)</td>
+                    <td class="col3">{!FuelCluseValue}</td>
+                </tr>
+                <tr>
+                    <td class="col1">Approved Pricing (as per DOA) Attachment</td>
+                    <td class="col3"><apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!DOAPricing}"/> </apex:outputtext></td>
+                </tr>
+                <tr>
+                    <td class="col1">Investments Amount</td>
+                    <td class="col3"><apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!QuoteTotalvalue}"/> </apex:outputtext></td>
+                </tr>
+                <tr>
+                    <td class="col1">Client’s Total Overdue Amount (Collection Team)-Existing Client</td>
+                    <td class="col3"><apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!TotalOverDueAmount}"/> </apex:outputtext></td>
+                </tr>
+                <tr>
+                    <td class="col1">Credit Assessment (New Client)</td>
+                    <td class="col3">{!CreditAssessmentValue}</td>
+                </tr>
+                <tr>
+                    <td class="col1">Manpower Quantity</td>
+                    <td class="col3">{!ManPowerQuanty}</td>
+                </tr>
+                <tr>
+                    <td class="col1">Vehicles Quantity</td>
+                    <td class="col3">{!VehicleQuanty}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <thead>
+                    <tr>
+                        <th class="Row1Head1RS" colspan="5">Requested Signatures</th>
+                    </tr>
+                </thead>
+            <tbody>   
+                <tr>
+                    <td class="col31">Titile</td>
+                    <td class="col31">Account Manager/Sales</td>
+                    <td class="col31">Team leader </td>
+                    <td class="col31">Contract Manager </td>
+                    <td class="col31">Accounts Management/Sales Director </td>
+                </tr>
+                <tr>
+                    <td class="col312">Name </td>
+                    <td class="col3"></td>
+                    <td class="col3"></td>
+                    <td class="col3"></td>
+                    <td class="col3"></td>
+                </tr>
+                <tr>
+                    <td class="col312">Signature </td>
+                    <td class="col3"></td>
+                    <td class="col3"></td>
+                    <td class="col3"></td>
+                    <td class="col3"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="col31">Collection Signature</td>
+                        <td class="col31">Credit Assessment Signature</td>
+                        <td class="col31">Legal Director Signature</td>
+                        <td class="col31">BU’s Chief Officer Signature</td>
+                    </tr>
+                    <tr>
+                        <td class="col3"> &nbsp; </td>
+                        <td class="col3"></td>
+                        <td class="col3"></td>
+                        <td class="col3"></td>
+                    </tr>
+                   
+                </tbody>
+            </table>
+       
+
+    <div class="divFooter">
+        <div>
+            <p class="cover-memo-heading padding-zero">Integrated transportaion and sustainable Growth</p>
+        </div>
+    </div>
+        
+    </body>
+</apex:page>

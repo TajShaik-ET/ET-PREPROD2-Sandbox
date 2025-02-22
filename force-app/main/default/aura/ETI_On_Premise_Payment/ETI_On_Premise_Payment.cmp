@@ -1,0 +1,75 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId"
+                access="global" controller="ETI_On_Premise_Payment_Ctrl">
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="bookingId" type="String" />
+    <aura:attribute name="amount" type="Decimal" />
+    <aura:attribute name="paymentMode" type="String" />
+    <aura:attribute name="transactionId" type="String" />
+    <aura:attribute name="paymentStatus" type="Boolean" default="false"/>
+    <aura:attribute name="isClosePopup" type="Boolean" />
+    <aura:attribute name="isWalkinRequest" type="boolean" default="false" />
+    <aura:attribute name="errorPaymentMode" type="boolean" default="false" />
+    <aura:attribute name="b2brecordtypeid" type="boolean" default="false" />
+    <aura:attribute name="b2crecordtypeid" type="boolean" default="false" />
+    <aura:attribute name="servicerecordtypeid" type="boolean" default="false" />
+    <aura:attribute name="options" type="List" default="[{'label': 'Cash', 'value': 'Cash'},{'label': 'Card', 'value': 'Card'}]"/>
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+     <aura:attribute name="isDisabledupate" type="boolean" default="false" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div aura:id="spinner" class="slds-hide">
+            <lightning:spinner variant="brand" alternativeText="Loading" size="medium" />
+        </div>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">On Premise Payment</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <aura:if isTrue="{!v.paymentStatus}">
+                    <div class="slds-form-element ">
+                        <div class="slds-select_container">
+                            <lightning:radioGroup aura:id="paymentMode" 
+												  name="radioGroupRequired"
+                                                  label="Payment Mode"
+                                                  options="{! v.options }"
+                                                  value="{! v.paymentMode }"
+                                                  type="radio"
+                                                  required="true" class="customRadioCls"/>
+                            <!--lightning:select aura:id="paymentMode" label="Payment Mode" value="{!v.paymentMode}" required="true"
+                                              class="{!v.errorPaymentMode?'slds-form-element slds-has-error':''}">
+                                <option value="">-None-</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Card">Card</option>
+                            </lightning:select-->
+                            <aura:if isTrue="{!v.errorPaymentMode}">
+                                <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">This field is required</div>
+                            </aura:if>    
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-1">
+                                <abbr class="slds-required" title="required">* </abbr>Amount</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" id="text-input-id-1"  required="" class="slds-input" value="{!v.amount}" disabled="true"/>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <lightning:input type="text" aura:id="transaction" label="Authorization Code" value="{!v.transactionId}" required="true" />
+                        </div>
+                        
+                    </div>
+                    <!--aura:set attribute="else">
+                        Your payment status is already initiated.
+                    </aura:set-->
+                </aura:if>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning:button label="Cancel" onclick="{!c.handleCancel}" class="slds-m-top_medium" />
+                <lightning:button label="Update" onclick="{!c.handleSaveContact}"
+                                  variant="brand" class="slds-m-top_medium"  disabled="{!v.isDisabledupate}" />
+            </footer>
+        </div>
+    </section>
+    
+</aura:component>

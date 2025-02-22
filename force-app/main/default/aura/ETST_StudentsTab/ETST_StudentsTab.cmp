@@ -1,0 +1,81 @@
+<aura:component controller="ETSTController" access="global" extends="c:ETST_BilingualCommunity" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" > 
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="lang" type="String" default="en"/>
+    <!-- <aura:attribute name="yourChildren" type="string" /> -->
+    <aura:attribute name="addStudentModal" type="boolean" default="false"/>
+    <aura:attribute name="isfeebackModal" type="boolean" default="false"/>
+    <aura:attribute name="clAddYourChild" type="string" default="" /> <!-- Add Your Child -->  
+    <aura:attribute name="clMyCases" type="string" default="" /> <!-- My Cases -->
+    <aura:attribute name="clSupport" type="string" default="" /> <!-- Support -->
+    <aura:attribute name="clMyServices" type="string" default="" /> <!-- My Services -->
+    <aura:attribute name="clHelp" type="string" default="" /> <!-- Help -->
+    <aura:attribute name="govParent" type="boolean" default="false"/> <!-- Added by Sreelakshmi SK 5/6/23 -->
+    
+    
+    <div class="bgimage"></div>
+    <a href="/customer/s" class="backarrow">
+        <!--<img src="{!$Resource.backarrow_img}" />-->
+        <span>&#10094;</span>
+    </a>
+    
+    <aura:if  isTrue="{!not(v.addStudentModal)}" >   
+        
+        <div class="slds-p-around_medium slds-align_absolute-center btnalignright desktopview">
+            <aura:if isTrue="{!!v.govParent}">
+                <a href="#modal-content-id-1" variant="bracmpBodynd" class="addbutton"
+                   onclick="{!c.openStudentModal}">{!v.clAddYourChild}</a>
+            </aura:if>
+            <aura:if isTrue="{!!v.govParent}">
+                <lightning:button variant="brand" class="addbutton"
+                                  label="{!v.clMyServices}" onclick="{!c.navigateToMyServices}"/>
+            </aura:if>
+            <aura:if isTrue="{!!v.govParent}">
+                <lightning:button variant="brand" class="addbutton"
+                                  label="{!v.clMyCases}" onclick="{!c.gotocaseHist}"/> 
+            </aura:if>
+            <aura:if isTrue="{!!v.govParent}">
+                <lightning:button variant="brand" class="addbutton"
+                                  label="{!v.clSupport}" onclick="{!c.openFeedbackModal}"/>
+            </aura:if>
+            <aura:if isTrue="{!!v.govParent}">
+                <a href="" variant="bracmpBodynd" class="addbutton"
+                   onclick="{!c.openHelpPage}">{!v.clHelp}</a>
+            </aura:if>
+            <!--lightning:button class="slds-button_outline-brand" 
+                        label="Add Service" onclick="{!c.addService}" disabled="{!v.disableAddSerice}"/-->               
+        </div>
+        <div class="mobileview animated slideInUp">
+            <!--<div class="logomaindiv">
+                <img class="" src="{!$Resource.ETLogo}" />
+            </div>-->
+            <div class="btngroupdiv">
+                <aura:if isTrue="{!!v.govParent}">
+                    <a href="#modal-content-id-1" variant="bracmpBodynd" class="toplinks btnborder"
+                       onclick="{!c.openStudentModal}"><img class="" src="{!$Resource.addchild}" />{!v.clAddYourChild}</a>
+                    <a href="#modal-content-id-1" variant="bracmpBodynd" class="toplinks btnborder"
+                       onclick="{!c.gotocaseHist}"><img class="" src="{!$Resource.casesimg}" />{!v.clMyCases}</a>
+                    <a href="#modal-content-id-1" variant="bracmpBodynd" class="toplinks btnborder"
+                       onclick="{!c.openFeedbackModal}"><img class="" src="{!$Resource.ET_Supportimg}" />{!v.clSupport}</a>
+                    <a href="#modal-content-id-1" variant="bracmpBodynd" class="toplinks" onclick="{!c.openHelpPage}">
+                        <img class="" src="{!$Resource.help_img}" />{!v.clHelp}</a>
+                </aura:if>
+                <!--<lightning:button variant="brand" class="toplinks btnborder"
+                                  label="{!v.clMyCases}" onclick="{!c.gotocaseHist}"/>
+                <lightning:button variant="brand" class="toplinks"
+                                  label="{!v.clSupport}" onclick="{!c.openFeedbackModal}"/> --> 
+            </div>
+        </div>
+        <!--div class="showmobilefooter">
+            <c:ET_MobileFooter />
+        </div-->
+        <div aura:id="cmpBody" id="studenttabID" style="clear: both;">
+            <c:ETST_StudentDetails aura:id="StudentDetailscmp"/> <!--{!v.body}-->
+        </div> 
+    </aura:if>
+    <aura:if  isTrue="{!v.isfeebackModal}" > 
+        <c:ETST_ParentFeedbackPage isfeebackModal="{!v.isfeebackModal}" aura:id="feedbackPage"  />
+    </aura:if>
+    <aura:if  isTrue="{!v.addStudentModal}" > 
+        <c:ETST_AddStudentCmp aura:id="addstudent" addStudentModal="{!v.addStudentModal}" />
+    </aura:if>
+</aura:component>

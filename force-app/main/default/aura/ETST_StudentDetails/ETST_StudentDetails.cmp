@@ -1,0 +1,892 @@
+<aura:component controller="ETSTController" extends="c:ETST_BilingualCommunity" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="filetype" type="List" default="['.png', '.jpg', '.jpeg','.pdf']" />
+    <aura:attribute name="fileNames" type="String" />
+    <aura:attribute name="documentId" type="String" />
+    <aura:attribute name="isCurrent" type="boolean" default="true"/>
+    <aura:attribute name="selectedRecord" type="sobject" />
+    <aura:attribute name="errorMsg" type="String" />
+    <aura:attribute name="selectedStudentId" type="String" />
+    <aura:attribute name="pickerrorMsg" type="String" />
+    <aura:attribute name="studentList" type="list" />
+    <aura:attribute name="studentCourosalList" type="list" />
+    <aura:attribute name="studentType" type="String"/>
+    <aura:attribute name="serviceList" type="list" />
+    <aura:attribute name="recordId" type="Id" /> 
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="schoolId" type="Id" /> 
+    <aura:attribute name="today" type="Date" />
+    <aura:attribute name="serviceTypes" type="List"/>
+    <aura:attribute name="transportTypes" type="List"/> 
+    <aura:attribute name="cancellationTypes" type="List"/> 
+    <aura:attribute name="cancellationReasons" type="List"/>
+    <aura:attribute name="bankNames" type="List"/>
+    <aura:attribute name="parentCancellationReasons" type="List"/>
+    <aura:attribute name="schoolAreas" type="List"/>
+    <aura:handler event="c:ETST_sendDataEvent" action="{!c.closeactionevt}"/>
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <aura:attribute name="noofStudents" type="Integer"/>
+    <aura:attribute name="corousalSize" type="Integer" default="3"/>
+    <aura:attribute name="start" type="Integer" default="0"/>
+    <aura:attribute name="currentService" type="String" default="Yearly"/>
+    <aura:attribute name="addServiceModal" type="boolean" default="false"/>
+    <aura:attribute name="deactivateServiceModal" type="boolean" default="false"/> 
+    <aura:attribute name="cancelServiceModal" type="boolean" default="false"/>
+    <aura:attribute name="renewServiceModal" type="boolean" default="false"/>
+    <aura:attribute name="changeSchoolModal" type="boolean" default="false"/>
+    <aura:attribute name="hasService" type="boolean" default="false"/>
+    <aura:attribute name="yearlyAmount" type="Integer" default="0"/>
+    <aura:attribute name="refundAmount" type="Integer" default="0"/> 
+    <aura:attribute name="refundPercentage" type="Integer" default="0"/> 
+    <aura:attribute name="noOfDaysOnhold" type="Integer" />
+    <aura:attribute name="onholdServiceModal" type="boolean" />
+    <aura:attribute name="noChildImageURL" type="String" default="" />
+    <aura:attribute name="refundRecord" type="ET_Refund__c"/>
+    <aura:attribute name="isRefund" type="boolean" default="false"/>
+    <aura:attribute name="mandatoryFields" type="List" default="ETST_Service_Type__c,ETST_Area_Zone__c,ETST_Transport_Type__c,ETST_Cancellation_Effective_Date__c"/>
+    <aura:attribute name="mandatoryRenewalFields" type="List" default="ETST_Service_Type__c,ETST_Transport_Type__c"/>
+    
+    <aura:attribute name="cancelMandFields" type="List" default="ETST_Reason_for_Cancellation__c,ETST_Cancellation_Reason__c,ETST_Cancellation_Effective_Date__c,ETST_Cancellation_Reason_Comments__c"/>
+    <aura:attribute name="onHoldMandFields" type="List" default="ETST_Cancellation_End_Date__c,ETST_Reason_for_Cancellation__c,ETST_Cancellation_Effective_Date__c,ETST_Cancellation_Reason_Comments__c"/>
+    <!--<aura:attribute name="refundMandFields" type="List" default="Beneficiary,BankName,AccountNo,IBAN,Branch,BankAddress,ETST_Reason_for_Cancellation__c,ETST_Cancellation_Effective_Date__c"/>-->
+    <aura:attribute name="refundMandFields" type="List"/>
+    <aura:attribute name="refundMandFieldsSchool" type="List" default="Beneficiary,BankName,AccountNo,IBAN,Branch,BankAddress"/>
+    
+    <aura:attribute name="serviceRecord" type="ET_Service_Request__c"  
+                    default="{'sObjectType':'ET_Service_Request__c', 'Name':'','ETST_Price_List__c':'','ETST_Area_Zone__c':'','ETST_Pick_Up_From__c':'','ETST_Service_Type__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Drop_Off_To__c':'','ETST_Drop_of_Time__c':'','ETST_Cancellation_Effective_Date__c':'','ETST_Reason_for_Cancellation__c':'',
+                             'ETST_Parent_Cancellation_Comments__c':'','ETST_Parent_Cancellation_Reason__c':'','ETST_Cancellation_Reason_Comments__c':'','ETST_Location__Latitude__s':'','ETST_Location__Longitude__s':'','ETST_Transport_Type__c':'','ETST_Student__c':'','ETST_Pick_Up_End_Date__c':'','ETST_Fare_Charges__c':''}" />
+    <aura:attribute name="newService" type="ET_Service_Request__c"  
+                    default="{'sObjectType':'ET_Service_Request__c', 'Name':'','ETST_Area_Zone__c':'','ETST_Pick_Up_From__c':'','ETST_Service_Type__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Drop_Off_To__c':'','ETST_Drop_of_Time__c':'','ETST_Cancellation_Effective_Date__c':'','ETST_Reason_for_Cancellation__c':'',
+                             'ETST_Parent_Cancellation_Comments__c':'','ETST_Parent_Cancellation_Reason__c':'','ETST_Cancellation_Reason_Comments__c':'','ETST_Location__Latitude__s':'','ETST_Location__Longitude__s':'','ETST_Transport_Type__c':'','ETST_Student__c':'','ETST_Pick_Up_End_Date__c':'','ETST_Fare_Charges__c':''}" />
+    <!--Santosh-->
+    <aura:attribute name="studentRecord" type="ETST_Student__c"  
+                    default="{'sObjectType':'ETST_Student__c', 'ETST_School_Name__c':'','ETST_SchoolName__c':'', 'ETST_Status__c':''}" />
+    
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+    <aura:attribute name="searchKey" type="string" default=""/>
+    <aura:attribute name="placeholder" type="string" default="Search address" />
+    <aura:attribute name="AddressList" type="String[]"/>
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="lang" type="String" />
+    <aura:attribute name="StDocumentId" type="String" />
+    <aura:attribute name="StFileNames" type="String" />
+    <aura:attribute name="StErrorMsg" type="String" />
+    
+    
+    <aura:attribute name="Beneficiary" type="string"/>
+    <aura:attribute name="BankName" type="string"/>
+    <aura:attribute name="AccountNo" type="string"/>
+    <aura:attribute name="IBAN" type="string"/>
+    <aura:attribute name="Branch" type="string"/>
+    <aura:attribute name="BankAddress" type="string"/>
+    <aura:attribute name="currentValue" type="string"/>
+    <aura:attribute name="govParent" type="boolean" default="false"/>
+    <aura:attribute name="isHidden" type="Boolean" default="true" />
+    <aura:attribute name="termsandConditionsFollow" type="List" />
+    <aura:attribute name="termsandConditionsNotFollow" type="List" />
+    <aura:attribute name="isOpen" type="boolean" default="false" />
+    <aura:attribute name="isCheckbox" type="boolean" default="false" />
+    <aura:attribute name="showError" type="Boolean" default="false" />
+    <aura:method name="doCheck" action="{!c.doCheck}" access="PUBLIC">
+        <aura:attribute name="isCheckbox" type="boolean" default="false" />
+    </aura:method>
+    
+    <aura:attribute name="balanceAmount" type="Decimal"/>
+    
+    <!--div class="bg_top"-->
+    <div class="btnswitch">
+        <aura:if isTrue="{!!v.govParent}">
+            <lightning:button    
+                              onclick="{! c.openCurrentSection }"
+                              label="{!v.clCurrent}"
+                              aura:id="current"
+                              class="btnsorticon1 btnsorticon_active"/>
+            
+            <lightning:button  aura:id="renew"  
+                              onclick="{! c.openRenewSection }"
+                              label="{!v.clRenewed}"                                  
+                              class="btnsorticon1"/> 
+            
+            <!-- Hide current button for gov -->
+            <aura:set attribute="else">
+                <lightning:button    
+                                  onclick="{! c.openCurrentSection }"
+                                  />
+            </aura:set>
+            
+        </aura:if>
+    </div>
+    <!--<div class="owl_carousel_section">
+        <c:ET_owl_carousel_custome_cmp />
+    </div-->
+    <aura:if isTrue="{! v.loaded }">
+        <aura:if  isTrue="{!not(v.addServiceModal)}" >
+            <div class="container bg_top">
+                
+                <div class="row main_student_div">
+                    <aura:if isTrue="{!v.noofStudents !=0}">
+                        <div class="main_div_content">       
+                            <div id="carousel" class="carousel slide" data-ride="carousel" data-type="multi" data-interval="500">
+                                <div class="carousel-inner">
+                                    
+                                    <aura:iteration items="{!v.studentCourosalList}" var="item">
+                                        <aura:if isTrue="{!or(and(item.ETST_Transport_Requests__r[0].ETST_Status__c!=null,
+                                                         v.isCurrent==false),v.isCurrent)}">
+                                            
+                                            <div class="item animated slideInLeft">
+                                                <div class="carousel-col">
+                                                    <div class="our-team">
+                                                        <!--div class="student_id">{!item.ETST_Student_SFID__c} </div-->
+                                                        <!--<a class="name" href="{!'/customer/s/student-details?recordId='+item.Id+'&amp;requestId='+item.ETST_Transport_Requests__r[0].Id+'&amp;docId='+item.ETST_Image_Document_Id__c+'&amp;lang='+v.clLang}" >-->
+                                                        <div class="picture">
+                                                            <aura:if isTrue="{!item.ETST_Image_Document_Id__c!=null}">
+                                                                <img class="img-fluid" src="{!item.ETST_Student_Image__c}"/> 
+                                                            </aura:if>
+                                                            <aura:if isTrue="{!item.ETST_Image_Document_Id__c==null}">
+                                                                <img class="img-fluid" src="{!$Resource.ETST_DefaultPhoto}"/>
+                                                                <!--img class="img-fluid" src="{!$Resource.ETSTStudentImage}"/-->
+                                                            </aura:if>
+                                                            <a href="{!'/customer/s/student-details?recordId='+item.Id+'&amp;requestId='+item.ETST_Transport_Requests__r[0].Id+'&amp;docId='+item.ETST_Image_Document_Id__c+'&amp;lang='+v.clLang}" >
+                                                                <lightning:icon iconName="utility:edit" alternativeText="Edit Profile" class="desktopedit" />
+                                                            </a>
+                                                            
+                                                            
+                                                        </div>
+                                                        <!--</a>-->
+                                                        
+                                                        <div class="team-content">
+                                                            <a href="{!'/customer/s/student-details?recordId='+item.Id+'&amp;requestId='+item.ETST_Transport_Requests__r[0].Id+'&amp;docId='+item.ETST_Image_Document_Id__c+'&amp;lang='+v.clLang}" >
+                                                                <h3 class="name">{!item.ETST_First_Name__c}&nbsp;{!item.Name} 
+                                                                    <lightning:icon iconName="utility:edit" alternativeText="Edit Profile" class="atagsideimg" />
+                                                                </h3>
+                                                            </a>
+                                                            
+                                                            <h4 class="studclass"><span class="clsection">{!v.clSection}&nbsp;{!item.ETST_Division__c}</span> <span class="clgrade">{!v.clGrade}&nbsp;{!item.ETST_Grade__c}</span></h4>
+                                                            <aura:if isTrue="{!v.clLang == 'ar'}">
+                                                                <aura:if isTrue="{!item.ETST_School_Name__r.ETST_Name_AR__c == null}">
+                                                                    <h4 class="studadd">{!item.ETST_School_Name__r.Name} 
+                                                                        <aura:if isTrue="{!v.isCurrent}">
+                                                                            <!-- Added condition to hide school edit button if gov parent -->
+                                                                            <aura:if isTrue="{!!v.govParent}">
+                                                                                <lightning:button label="" iconName="utility:edit" 
+                                                                                                  onclick="{! c.openChangeSchool }"
+                                                                                                  iconPosition="left"  
+                                                                                                  value="{!item}"/></aura:if>
+                                                                        </aura:if></h4>
+                                                                    <aura:set attribute="else">
+                                                                        <h4 class="studadd">{!item.ETST_School_Name__r.ETST_Name_AR__c} 
+                                                                            <aura:if isTrue="{!v.isCurrent}">
+                                                                                <!-- Added condition to hide school edit button if gov parent -->
+                                                                                <aura:if isTrue="{!!v.govParent}">
+                                                                                    <lightning:button label="" iconName="utility:edit" 
+                                                                                                      onclick="{! c.openChangeSchool }"
+                                                                                                      iconPosition="left"  
+                                                                                                      value="{!item}"/></aura:if>
+                                                                            </aura:if></h4>
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                                <aura:set attribute="else">
+                                                                    <h4 class="studadd">{!item.ETST_School_Name__r.Name}
+                                                                        <aura:if isTrue="{!v.isCurrent}">
+                                                                            <!-- Added condition to hide school edit button if gov parent -->
+                                                                            <aura:if isTrue="{!!v.govParent}">
+                                                                                <lightning:button label="" iconName="utility:edit" 
+                                                                                                  onclick="{! c.openChangeSchool }"
+                                                                                                  iconPosition="left"  
+                                                                                                  value="{!item}"/></aura:if>
+                                                                        </aura:if></h4>
+                                                                    
+                                                                    <!--lightning:icon iconName="utility:edit" alternativeText="Edit School" class="" value="{!item}" onclick="{!c.openChangeSchool}"/-->
+                                                                </aura:set>
+                                                                
+                                                            </aura:if>
+                                                            
+                                                            <aura:if isTrue="{!item.ETST_Transport_Requests__r[0].ETST_Status__c==null}">
+                                                                <h4 class="status">{!$Label.c.ETST_Not_Registered}</h4>
+                                                            </aura:if> 
+                                                            <aura:if isTrue="{!item.ETST_Transport_Requests__r[0].ETST_Status__c!=null}">
+                                                                <aura:if isTrue="{!!v.govParent}">
+                                                                    <h4 class="end_date">{!$Label.c.ETST_Valid_till}&nbsp; <lightning:formattedDateTime value="{!item.ETST_Transport_Requests__r[0].ETST_Pick_Up_End_Date__c}"  
+                                                                                                                                                        year="numeric" month="numeric" day="numeric"  
+                                                                                                                                                        timeZone="Asia/Dubai" hour12="false"/> </h4></aura:if>
+                                                                
+                                                                <aura:if isTrue="{!v.govParent}">
+                                                                    <aura:if isTrue="{!v.lang!='ar'}">
+                                                                        <h4 class="status">Request under process
+                                                                        </h4>
+                                                                        <!-- <aura:set attribute="else">
+                                                                        <h4 class="status">الطلب قيد التنفيذ
+                                                                </h4>
+                                                                        </aura:set>-->
+                                                                    </aura:if>
+                                                                    
+                                                                    <aura:set attribute="else">
+                                                                        <h4 class="status">{!item.ETST_Transport_Requests__r[0].ETST_Status__c}
+                                                                        </h4>
+                                                                    </aura:set>
+                                                                    
+                                                                </aura:if>
+                                                                
+                                                            </aura:if> 
+                                                            
+                                                        </div>
+                                                        <ul class="btn_div">
+                                                            <li>
+                                                                
+                                                                
+                                                                <!--aura:if isTrue="{!and(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Service_Confirmed,item.ETST_Transport_Requests__r[0].Payment_Status__c!=$Label.c.Payment_success,
+                                                                                 and(item.ETST_Transport_Requests__r[0].ETST_Payee__c==$Label.c.ETST_Payee,
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Fare_Charges__c>0))}"-->
+                                                                <aura:if isTrue="{!and(and(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Service_Confirmed,
+                                                                                 item.ETST_Transport_Requests__r[0].Payment_Status__c!=$Label.c.Payment_success),
+                                                                                 and(item.ETST_Transport_Requests__r[0].ETST_Payee__c==$Label.c.ETST_Payee,
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Fare_Charges__c>0))}">
+                                                                    
+                                                                    <div class="bottombtndiv" onclick="{!c.gotoPaymentPage2}" data-value="{!item.ETST_Transport_Requests__r[0].Id}">
+                                                                        <img src="{!$Resource.paynowservice}"/>
+                                                                        <lightning:button 
+                                                                                          onclick="{! c.gotoPaymentPage }"
+                                                                                          label="{!v.clPayNow}"
+                                                                                          value="{!item}"
+                                                                                          class="btnsorticon"/>
+                                                                    </div>
+                                                                </aura:if> 
+                                                                <!--aura:if isTrue="{!or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_success,
+                                                                                     and(or(item.ETST_Transport_Requests__r[0].ETST_Payee__c=='School',                                                                             
+                                                                                     or(item.ETST_Transport_Requests__r[0].ETST_Fare_Charges__c==null,
+                                                                                     item.ETST_Transport_Requests__r[0].ETST_Fare_Charges__c==0)),
+                                                                                     item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Service_Confirmed))}">
+                                                                        <div class="bottombtndiv"  onclick="{!c.viewStudentService2}" data-value="{!item.ETST_Transport_Requests__r[0].Id}">
+                                                                            <img src="{!$Resource.updateservice}"   />
+                                                                            <lightning:button    
+                                                                                              onclick="{! c.viewStudentService }"
+                                                                                              label="{!v.clUpdate}"
+                                                                                              value="{!item}"
+                                                                                              class="btnsorticon"/>
+                                                                        </div>
+                                                                    </aura:if-->
+                                                                
+                                                                <aura:if isTrue="{!and(or( item.ETST_Transport_Requests__r[0].ETST_Status__c=='Payment Success-Confirmation in progress',
+                                                                                 or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_Success_In_Review,
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_success)),
+                                                                                 and(item.ETST_Transport_Requests__r[0].ETST_Is_Renewal_Opened__c==true, 
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Is_Renewed__c==false))}">
+                                                                    <a href="#Addservicediv" onclick="{! c.openRenewSerivceModal2 }" data-value="{!item.Id}">
+                                                                        <img class="" src="{!$Resource.renewservice}"/>
+                                                                        <lightning:button
+                                                                                          onclick="{! c.openRenewSerivceModal }"
+                                                                                          label="{!v.clRenew}"
+                                                                                          value="{!item}"
+                                                                                          class="btnsorticon"/>
+                                                                    </a>
+                                                                </aura:if>
+                                                                <aura:if isTrue="{!item.ETST_Transport_Requests__r[0].ETST_Student__c==null}">
+                                                                    <a href="#Addservicediv" onclick="{! c.openCreateSerivceModal2 }" data-value="{!item.Id}" data-imgid="{!item.ETST_Image_Document_Id__c}">
+                                                                        <img class="" src="{!$Resource.addservice}"/>                                                                   
+                                                                        <lightning:button onclick="{! c.openCreateSerivceModal }"
+                                                                                          label="Request for Transportation"
+                                                                                          value="{!item}"
+                                                                                          class="btnsorticon"/>
+                                                                        
+                                                                    </a> 
+                                                                    
+                                                                </aura:if>
+                                                                <aura:if isTrue="{!and(item.ETST_Transport_Requests__r[0].ETST_Payee__c=='Parent',                                                                             
+                                                                                 or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_success,
+                                                                                 or( item.ETST_Transport_Requests__r[0].ETST_Status__c=='Payment Success-Confirmation in progress',
+                                                                                 or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Service_Confirmed,
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_Success_In_Review))))}">
+                                                                    
+                                                                    <a href="#Addservicediv" >
+                                                                        <img src="{!$Resource.emailinvoice}" onclick="{!c.emailInvoice}"/>
+                                                                        <lightning:button onclick="{!c.emailInvoice}"
+                                                                                          label="{!v.clEmailInvoice}"
+                                                                                          value="{!item}"
+                                                                                          class="btnsorticon"/>
+                                                                        
+                                                                    </a> 
+                                                                    
+                                                                </aura:if>
+                                                                <!--aura:if isTrue="{! or(or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_success, 
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Status__c=='Payment Success-Confirmation in progress'),
+                                                                                 or(and(item.ETST_Transport_Requests__r[0].ETST_Payee__c=='School',
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Service_Confirmed),
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_Success_In_Review))}"-->
+                                                                <!-- added below condition by Janardhan-->
+                                                                <!--aura:if isTrue="{!or( or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_success,
+                                                                                 and(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Service_Confirmed,item.ETST_School_Name__r.ETST_Account_Type__c=='Government School')),
+                                                                                 or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_Success_In_Review,
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Status__c=='Payment Success-Confirmation in progress')
+                                                                                 )}"-->
+                                                                <aura:if isTrue="{!or( or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_success,
+                                                                                 and(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Service_Confirmed,
+                                                                                 or(item.ETST_School_Name__r.ETST_Account_Type__c=='Government School',
+                                                                                 or(item.ETST_School_Name__r.ETST_Account_Type__c=='Chartered School',
+                                                                                 item.ETST_School_Name__r.ETST_Account_Type__c=='Ajyal School')))),
+                                                                                 or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Payment_Success_In_Review,
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Status__c=='Payment Success-In Review')
+                                                                                 )}">
+                                                                    <aura:if isTrue="{!!v.govParent}"> 
+                                                                        <div class="bottombtndiv" >
+                                                                            <img src="{!$Resource.cancelservice}" />
+                                                                            <lightning:button onclick="{! c.openDeactivateServiceModal }"
+                                                                                              label="{!v.clonHoldButton}"
+                                                                                              value="{!item}"
+                                                                                              class="btnsorticon"/>
+                                                                        </div></aura:if>
+                                                                </aura:if>
+                                                                <aura:if isTrue="{! or(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Reject_Status,item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Under_Review,
+                                                                                 and(item.ETST_Transport_Requests__r[0].ETST_Payee__c=='Parent',
+                                                                                 item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_Service_Confirmed))}">
+                                                                    <div class="bottombtndiv" onclick="{! c.openCancelServiceModal2 }" data-value="{!item.Id}">
+                                                                        <img src="{!$Resource.cancelservice}"/>
+                                                                        <lightning:button onclick="{! c.openCancelServiceModal }"
+                                                                                          label="{!v.clCancelService}"
+                                                                                          value="{!item}"
+                                                                                          class="btnsorticon"/>
+                                                                    </div>
+                                                                </aura:if> 
+                                                                <aura:if isTrue="{!(item.ETST_Transport_Requests__r[0].ETST_Status__c==$Label.c.ETST_On_Hold_Status)}">
+                                                                    <div class="bottombtndiv" >
+                                                                        <img src="{!$Resource.onhold}"/>
+                                                                        <lightning:button 
+                                                                                          onclick="{!c.openonholdServiceModal}"
+                                                                                          label="{!v.clActivate}"
+                                                                                          value="{!item}"
+                                                                                          class="btnsorticon"/>
+                                                                    </div>
+                                                                </aura:if> 
+                                                                
+                                                                
+                                                                
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </aura:if>
+                                    </aura:iteration>  
+                                </div>
+                            </div>
+                            <!-- Controls -->
+                            <div class="MS-controls ">
+                                <aura:if isTrue="{!v.start!=0}">                                           
+                                    <a href="" class="btnperv btn_left"  title="pre" onclick="{!c.getPreviousList}"><lightning:icon iconName="utility:chevronleft" alternativeText="Previous" title="Previous" /></a>
+                                </aura:if>
+                                <aura:if isTrue="{!lessthan(v.start+v.corousalSize,v.noofStudents)}">  
+                                    <!--<a  href="" class="btnnext btn_right"  title="next" onclick="{!c.getNextList}">{!$Label.c.ETST_Next} &#62;&#62;</a>-->
+                                    <a  href="" class="btnnext btn_right"  title="next" onclick="{!c.getNextList}"><lightning:icon iconName="utility:chevronright" alternativeText="Next" title="Next" /></a>
+                                </aura:if>
+                            </div>
+                        </div>
+                        <aura:set attribute="else">
+                            <div style="{!'position: relative;text-align: center; background-position: center;'}">
+                                <div class="nochilddiv"> {!$Label.c.ETST_Add_your_children} </div>
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+        </aura:if>
+        <aura:set attribute="else">
+            <lightning:spinner alternativeText="Loading" />
+        </aura:set>
+    </aura:if>
+    <!--/div-->
+    <aura:if  isTrue="{!v.addServiceModal}" >
+        <c:ETST_AddStudentService serviceRecord="{!v.serviceRecord}" studentRecord="{!v.studentRecord}"
+                                  renewServiceModal='false' addServiceModal="{!v.addServiceModal}" aura:id="addStudentService" />
+        
+    </aura:if>
+    <aura:if  isTrue="{!v.renewServiceModal}" > 
+        <c:ETST_AddStudentService serviceRecord="{!v.serviceRecord}" studentRecord="{!v.studentRecord}"
+                                  renewServiceModal="{!v.renewServiceModal}" addServiceModal="{!v.addServiceModal}" aura:id="renewStudentService" />
+        
+    </aura:if>
+    
+    <aura:if  isTrue="{!v.deactivateServiceModal}" > 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container animated slideInUp popup_mobileview">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium popup_outer" id="modal-content-id-1">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <!--  <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.clDeactivateService}</h2>-->
+                        
+                    </header>
+                    <div class="slds-modal__body" aura:id='mainDiv'>
+                        <div class="image_section">
+                            <img src="{!$Resource.carImg}" alt=""/>
+                            <h1 id="modal-heading-01">{!v.clDeactivateService}</h1>
+                        </div>
+                        <div class="form_section"> 
+                            <div class="form_row">
+                                <!--<div class="half_part">-->
+                                <div class="{!v.isHidden ? 'half_part hide' : 'half_part'}">
+                                    <lightning:select aura:id="ETST_Reason_for_Cancellation__c" 
+                                                      name="Reason for Cancellation" 
+                                                      label="{!v.clType}"     
+                                                      required="true" 
+                                                      value="{!v.serviceRecord.ETST_Reason_for_Cancellation__c}"
+                                                      >
+                                        <!--<option value="Permanent Cancellation">{!v.clCancellationType}</option>-->
+                                        
+                                        <aura:iteration items="{!v.cancellationTypes}" var="val">
+                                            <aura:if isTrue="{!v.clLang=='ar'}">
+                                                <option value="{!val.en_Label__c}"> {!val.ar_Label__c}</option>
+                                                <aura:set attribute="else">
+                                                    <option value="{!val.en_Label__c}" > {!val.en_Label__c}</option>
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:iteration>
+                                    </lightning:select>  
+                                </div>
+                                <div class="half_part">
+                                    <div class="{!v.clLang=='ar' ? 'dobdiv_AR': 'dobdiv'}">
+                                        <lightning:input type="Date" name="Cancellation Effective Date" label="{!v.clCancellationEffectiveDate}" disabled="false" 
+                                                         aura:id="ETST_Cancellation_Effective_Date__c" required="true"
+                                                         placeholder="{!v.clCancellationEffectiveDate}"  
+                                                         value="{!v.serviceRecord.ETST_Cancellation_Effective_Date__c}"
+                                                         onchange="{!c.getRefundAmountController}" autocomplete="off"
+                                                         min="{!v.today}"/> 
+                                        <p style="color:red" >{!v.pickerrorMsg}</p>
+                                    </div>
+                                </div>
+                                <div class="half_part">
+                                    
+                                    <aura:if isTrue="{!(v.serviceRecord.ETST_Reason_for_Cancellation__c == $Label.c.ETST_On_Hold_Status)}" >
+                                        <div class="{!v.clLang=='ar' ? 'dobdiv_AR': 'dobdiv'}"> 
+                                            <lightning:input type="Date" name="Cancellation End Date" label="{!v.clCancellationEndDate}" disabled="false" 
+                                                             aura:id="ETST_Cancellation_End_Date__c" required="true"
+                                                             placeholder="{!v.clCancellationEndDate}"  
+                                                             value="{!v.serviceRecord.ETST_Cancellation_End_Date__c}"
+                                                             autocomplete="off" min="{!v.serviceRecord.ETST_Cancellation_Effective_Date__c}"/>
+                                            
+                                            
+                                        </div>
+                                    </aura:if>
+                                </div>
+                                
+                                <div class="half_part">
+                                    <div class="{!v.clLang=='ar' ? 'dobdiv_AR': 'dobdiv'}">
+                                        <lightning:input type="number" name="Refund Amount" label="{!v.clRefundAmount}" disabled="true" 
+                                                         aura:id="ET_Refund_Amount__c" required="true"
+                                                         placeholder="{!v.clRefundAmount}"  
+                                                         value="{!v.serviceRecord.ET_Refund_Amount__c}"
+                                                         autocomplete="off"/>
+                                    </div>
+                                </div>
+                                <!--  <div class="half_part">
+                                    <lightning:textarea label="{!v.clComments}" 
+                                                        placeholder="{!v.clComments}" required="true"
+                                                        aura:id="ETST_Cancellation_Reason_Comments__c"
+                                                        name="Comments" value="{!v.serviceRecord.ETST_Cancellation_Reason_Comments__c}" id="commentssec">
+                                    </lightning:textarea > 
+                                </div> -->
+                            </div>
+                            
+                            <aura:if isTrue="{!(v.serviceRecord.ETST_Reason_for_Cancellation__c == $Label.c.ETST_Permanent_Cancellation)}" >
+                                <!-- <div class="form_row">
+                                    <div class="half_part">
+                                         
+                                        <lightning:select aura:id="ETST_Cancellation_Reason__c" name="Cancellation Reason" 
+                                                          label="{!v.clCancellationReason}"      
+                                                          required="true" value="{!v.serviceRecord.ETST_Cancellation_Reason__c}" 
+                                                          >
+                                            <option value="">{!v.clCancellationType}</option>
+                                            <aura:iteration items="{!v.cancellationReasons}" var="val">
+                                                <aura:if isTrue="{!v.clLang=='ar'}">
+                                                    <option value="{!val.en_Label__c}"> {!val.ar_Label__c}</option>
+                                                    <aura:set attribute="else">
+                                                        <option value="{!val.en_Label__c}" > {!val.en_Label__c}</option>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:iteration>
+                                        </lightning:select> 
+                                    </div> 
+                                </div> -->
+                                <!--<aura:if isTrue="{!(v.serviceRecord.ETST_Payee__c == 'Parent')}" >
+                                    <label class="slds-checkbox_toggle slds-grid">
+                                        <span class="slds-form-element__label slds-m-bottom_none">{!v.clWouldyoulikearefund} </span>
+                                        <ui:inputCheckbox aura:id="taskCheckBox" change="{!c.selectChange}"/>
+                                        <span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+                                            <span class="slds-checkbox_faux"></span>
+                                            <span class="slds-checkbox_on">{!v.clShow}</span>
+                                            <span class="slds-checkbox_off">{!v.clHide}</span>
+                                        </span>
+                                    </label> 
+                                </aura:if>-->
+                                
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!and(v.isRefund,v.serviceRecord.ETST_Reason_for_Cancellation__c == $Label.c.ETST_Permanent_Cancellation)}" >
+                                <aura:if isTrue="{!(v.serviceRecord.ET_Refund_Amount__c != 0)}">
+                                    <h2>{!v.clEnterBankDetails}</h2>
+                                </aura:if>
+                                <div class="form_row">
+                                    
+                                    <aura:if isTrue="{!(v.serviceRecord.ET_Refund_Amount__c != 0)}">
+                                        <div class="half_part">
+                                            <lightning:input type="text" autocomplete="off" name="Beneficiary" 
+                                                             label="{!v.clBeneficiary}" disabled="false" 
+                                                             aura:id="Beneficiary" required="true" 
+                                                             value="{!v.Beneficiary}"   pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                             messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}"
+                                                             onchange="{!c.trimben}"
+                                                             id="Beneficiary" />
+                                        </div>
+                                        
+                                       <lightning:select aura:id="BankName" 
+                                                          name="Bank Name" 
+                                                          label="{!v.clBankName}"     
+                                                          required="true" 
+                                                          disabled="false"
+                                                          value="{!v.BankName}" class="half_part">
+                                           <option value="" disabled="true" selected="true">-- Select a Bank --</option>
+                                            <aura:iteration items="{!v.bankNames}" var="val">
+                                                <aura:if isTrue="{!v.clLang=='ar'}">
+                                                    <option value="{!val.en_Label__c}"> {!val.ar_Label__c}</option>
+                                                    <aura:set attribute="else">
+                                                        <option value="{!val.en_Label__c}" > {!val.en_Label__c}</option>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                        
+                                        <!--<div class="half_part">
+                                            <lightning:input type="text" autocomplete="off" name="Bank Name" 
+                                                             label="{!v.clBankName}" disabled="false" 
+                                                             aura:id="BankName" required="true" 
+                                                             onchange="{!c.trimbank}"
+                                                             messageWhenValueMissing="{!v.clPleaseentercorrectBankName}"
+                                                             value="{!v.BankName}"   pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                             messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}"
+                                                             id="BankName" />
+                                        </div>-->
+                                        <div class="half_part">
+                                            <lightning:input type="text" autocomplete="off" name="Account No" 
+                                                             label="{!v.clAccountNo}" disabled="false" 
+                                                             aura:id="AccountNo" required="true" 
+                                                             messageWhenValueMissing="{!v.clPleaseentercorrectAccountNo}"
+                                                             value="{!v.AccountNo}" pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                             messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}"
+                                                             id="AccountNo" onchange="{!c.trimAccNo}"/>
+                                        </div>
+                                        
+                                        <div class="half_part">
+                                            <lightning:input type="text" autocomplete="off" name="IBAN Code" 
+                                                             label="{!v.clIBANCode}" disabled="false" 
+                                                             aura:id="IBAN" required="true" 
+                                                             messageWhenValueMissing="{!v.clPleaseentercorrectIBAN}"
+                                                             value="{!v.IBAN}"  pattern="^AE[0-9A-Za-z]{21}$"
+                                                             messageWhenPatternMismatch="{!v.clIBANcodemuststartwithAE}"
+                                                             id="IBAN" onchange="{!c.trimIBAN}"/><!-- value="{!v.IBAN}"  pattern="^AE\d{2} \d{4} \d{4} \d{4} \d{4} \d{3}$"-->
+                                        </div>
+                                        
+                                        <div class="half_part">
+                                            <lightning:input type="text" autocomplete="off" name="Branch Name" 
+                                                             label="{!v.clBranchName}" disabled="false" 
+                                                             aura:id="Branch" required="true" 
+                                                             messageWhenValueMissing="{!v.clPleaseentercorrectBranchName}"
+                                                             value="{!v.Branch}"  pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                             messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}"
+                                                             id="Branch" onchange="{!c.trimBranch}"/>
+                                        </div>
+                                        <div class="half_part">
+                                            <lightning:input type="text" autocomplete="off" name="Bank Address" 
+                                                             label="{!v.clBankAddress}" disabled="false" 
+                                                             messageWhenValueMissing="{!v.clPleaseentercorrectBankAddress}"
+                                                             aura:id="BankAddress" required="true" 
+                                                             value="{!v.BankAddress}" 
+                                                             id="BankAddress" onchange="{!c.trimBankAddress}"/>
+                                        </div>
+                                    <!--</aura:if>-->
+                                    <div class="half_part">
+                                        <lightning:fileUpload label="{!v.clUploadEmiratesId}"
+                                                              aura:id="fileUploader"
+                                                              name="fileUploader"
+                                                              multiple="true"
+                                                              accept="{!v.filetype}"
+                                                              recordId="{!v.serviceRecord.Id}"
+                                                              required="true"
+                                                              onuploadfinished="{!c.handleUploadFinished}" />
+                                        <aura:if  isTrue="{!and(notequals(v.fileNames,null),notequals(v.fileNames,''))}" > 
+                                            {!v.fileNames} <a href="" onclick="{!c.deleteFile}">&nbsp;{!v.clDelete}</a>
+                                        </aura:if>
+                                        <p style="color:red" >{!v.errorMsg}</p>
+                                    </div> 
+                                    <div class="half_part">
+                                        <lightning:fileUpload label="{!v.clUploadStudentEmiratesId}"
+                                                              aura:id="fileUploader"
+                                                              name="fileUploader"
+                                                              multiple="true"
+                                                              accept="{!v.filetype}"
+                                                              recordId="{!v.serviceRecord.Id}"
+                                                              required="true"
+                                                              onuploadfinished="{!c.handleStUploadFinished}" />
+                                        <aura:if  isTrue="{!and(notequals(v.StFileNames,null),notequals(v.StFileNames,''))}" > 
+                                            {!v.StFileNames} <a href="" onclick="{!c.deleteFile}">&nbsp;{!v.clDelete}</a>
+                                        </aura:if>
+                                        <p style="color:red" >{!v.errorMsg}</p>
+                                    </div> 
+                                    </aura:if>
+                                </div>
+                                <div class="slds-m-around_xx-small termandcondition">
+                                    <c:ETST_TermsandConditions aura:id="termsandconditions"/>
+                                    <!--<div class="{!v.showError ? 'slds-text-color_error' : 'hidden'}">
+                                        {!v.clTermsandConditionsvalidationMsg}
+                                    </div>-->
+                                </div>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!(v.serviceRecord.ETST_Reason_for_Cancellation__c ==$Label.c.ETST_On_Hold_Status)}" > 
+                                
+                                <div class="note_text">{!v.clOnholdNote}</div>
+                                
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!and((v.serviceRecord.ETST_Reason_for_Cancellation__c ==$Label.c.ETST_Permanent_Cancellation), v.serviceRecord.ETST_Payee__c == 'Parent')}" > 
+                                
+                             <!--   <div class="note_text"><b>Note:</b> {!$Label.c.ETST_Permanent_Cancellation_Note}</div>-->
+                                
+                            </aura:if>
+                            
+                            <footer class="slds-modal__footer">
+                                <lightning:button variant="neutral" 
+                                                  label="{!v.clCancel}"
+                                                  title="Cancel"
+                                                  onclick="{! c.closeModel }" class="btncancel"/>
+                                <lightning:button variant="brand" 
+                                                  label="{!v.clDeactivate}"
+                                                  title="Deactivate"
+                                                  onclick="{!c.deactivateStudentController}" class="btnsave"/>
+                            </footer>
+                            
+                        </div>
+                    </div>
+                    <!--###### MODAL BOX FOOTER Part Start ######-->
+                    
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+    
+    <aura:if  isTrue="{!v.changeSchoolModal}" > 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container animated slideInUp">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.clChangeSchool}</h2>
+                    
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="slds-modal__body" aura:id='mainDiv'> 
+                        <div class="search_schooldiv">
+                            <label class="custom_label">{!v.clSchoolName}</label>
+                            <div aura:id="lookupField" class="slds-show searchsection">
+                                <c:ET_Lookup currentValue="{!v.currentValue}" studentType="{!v.studentType}" selectedRecord="{!v.selectedRecord}" objectAPIName="ETST_School__c" label=""/>  
+                            </div> 
+                            <p aura:id="schoolname" class="slds-hide errormessage">{!v.clSchoolisMandatory}</p>
+                        </div>    
+                        <aura:if isTrue="{!v.hasService}" >
+                            <div class="bank_detailsdiv">
+                                <h2>{!v.clEnterBankDetails}</h2>                              
+                                <div class="half_part">
+                                    <lightning:input type="text" autocomplete="off" name="Beneficiary" 
+                                                     label="{!v.clBeneficiary}" disabled="false" 
+                                                     aura:id="Beneficiary" required="true" 
+                                                     value="{!v.Beneficiary}"   pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                     messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}"
+                                                     onchange="{!c.trimben}"
+                                                     id="Beneficiary" />
+                                </div>
+                                <div class="half_part">
+                                    <lightning:input type="text" autocomplete="off" name="Bank Name" 
+                                                     label="{!v.clBankName}" disabled="false" 
+                                                     aura:id="BankName" required="true" 
+                                                     onchange="{!c.trimbank}"
+                                                     messageWhenValueMissing="{!v.clPleaseentercorrectBankName}"
+                                                     value="{!v.BankName}"   pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                     messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}"
+                                                     id="BankName" />
+                                </div>
+                                <div class="half_part">
+                                    <lightning:input type="text" autocomplete="off" name="Account No" 
+                                                     label="{!v.clAccountNo}" disabled="false" 
+                                                     aura:id="AccountNo" required="true" 
+                                                     messageWhenValueMissing="{!v.clPleaseentercorrectAccountNo}"
+                                                     value="{!v.AccountNo}" pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                     messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}"
+                                                     id="AccountNo" onchange="{!c.trimAccNo}"/>
+                                </div>                                    
+                                <div class="half_part">
+                                    <lightning:input type="text" autocomplete="off" name="IBAN Code" 
+                                                     label="{!v.clIBANCode}" disabled="false" 
+                                                     aura:id="IBAN" required="true" 
+                                                     messageWhenValueMissing="{!v.clPleaseentercorrectIBAN}"
+                                                     value="{!v.IBAN}"  pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                     messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}"
+                                                     id="IBAN" onchange="{!c.trimIBAN}"/>
+                                </div>                                    
+                                <div class="half_part">
+                                    <lightning:input type="text" autocomplete="off" name="Branch Name" 
+                                                     label="{!v.clBranchName}" disabled="false" 
+                                                     aura:id="Branch" required="true" 
+                                                     messageWhenValueMissing="{!v.clPleaseentercorrectBranchName}"
+                                                     value="{!v.Branch}"  pattern="[a-zA-Z0-9\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]*"
+                                                     messageWhenPatternMismatch="{!v.clPleaseuseonlylettersorDigits}"
+                                                     id="Branch" onchange="{!c.trimBranch}"/>
+                                </div>
+                                <div class="half_part">
+                                    <lightning:input type="text" autocomplete="off" name="Bank Address" 
+                                                     label="{!v.clBankAddress}" disabled="false" 
+                                                     messageWhenValueMissing="{!v.clPleaseentercorrectBankAddress}"
+                                                     aura:id="BankAddress" required="true" 
+                                                     value="{!v.BankAddress}" 
+                                                     id="BankAddress" onchange="{!c.trimBankAddress}"/>
+                                </div>
+                                <div class="half_part">
+                                    <lightning:fileUpload label="{!v.clUploadEmiratesId}"
+                                                          aura:id="fileUploader"
+                                                          name="fileUploader"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          recordId="{!v.serviceRecord.Id}"
+                                                          required="true"
+                                                          onuploadfinished="{!c.handleUploadFinished}" />
+                                    <aura:if  isTrue="{!and(notequals(v.fileNames,null),notequals(v.fileNames,''))}" > 
+                                        {!v.fileNames} <a href="" onclick="{!c.deleteFile}">&nbsp;{!v.clDelete}</a>
+                                    </aura:if>
+                                    <p style="color:red" >{!v.errorMsg}</p>
+                                </div>
+                                <div class="changeschool_note"> <strong>{!v.clNote}</strong> {!v.clChangeofschoolwillleadtocancellingthecurrentrequestandremaining}</div>
+                            </div>
+                            <aura:set attribute="else">
+                                <div class="changeschool_note"> <strong>{!v.clNote}</strong> {!v.clChangeofschoolwillleadtocancellingthecurrentrequestifany}</div>
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="{!v.clClose}"
+                                      title="Close"
+                                      onclick="{! c.closeModel }" class="btncancel"/>
+                    <lightning:button variant="brand" 
+                                      label="{!v.clChangeSchool}"
+                                      title="Change School"
+                                      onclick="{!c.changeSchool}" class="btnsave"/>
+                </footer>
+            </div>  
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+    <aura:if  isTrue="{!v.cancelServiceModal}" > 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container animated slideInUp">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.clCancelService}</h2>
+                    
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="slds-modal__body slds-modal__bodyrtl" aura:id='mainDiv'> 
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning:select aura:id="cancelFields" 
+                                                  name="Reason for Cancellation" 
+                                                  label="Reason for Cancellation"      
+                                                  required="true" 
+                                                  messageWhenValueMissing="{!v.clCompletethisfield}"
+                                                  value="{!v.serviceRecord.ETST_Parent_Cancellation_Reason__c}" 
+                                                  >
+                                    <option value="">{!v.clCancellationReason}</option>
+                                    <aura:iteration items="{!v.parentCancellationReasons}" var="val">
+                                        <aura:if isTrue="{!v.clLang=='ar'}">
+                                            <option value="{!val.en_Label__c}"> {!val.ar_Label__c}</option>
+                                            <aura:set attribute="else">
+                                                <option value="{!val.en_Label__c}" > {!val.en_Label__c}</option>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:iteration>
+                                </lightning:select> 
+                                
+                                
+                                
+                                <lightning:textarea label="Comments" 
+                                                    placeholder="{!v.clComments}"
+                                                    aura:id="cancelFields" required="true" messageWhenValueMissing="{!v.clCompletethisfield}"
+                                                    name="Comments" value="{!v.serviceRecord.ETST_Parent_Cancellation_Comments__c}" id="commentssec">
+                                </lightning:textarea >
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!--###### MODAL BOX FOOTER Part Start ######-->
+                    <footer class="{!v.clLang=='ar' ? 'slds-modal__footer_AR' : 'slds-modal__footer'}">
+                        <lightning:button variant="neutral" 
+                                          label="{!v.clClose}"
+                                          title="Close"
+                                          onclick="{! c.closeModel }" class="btncancel"/>
+                        <lightning:button variant="brand" 
+                                          label="{!v.clCancelService}"
+                                          title="Cancel"
+                                          onclick="{!c.cancelService}" class="btnsave"/>
+                    </footer>
+                </div> 
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <aura:if isTrue="{!v.onholdServiceModal}">        
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container animated slideInUp">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{!c.closeModel}"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h1 class="slds-text-heading--medium">{!$Label.c.ETST_Confirmation}</h1>
+                </header>
+                <div class="slds-modal__content slds-p-around--medium">
+                    <center><b>{!$Label.c.ETST_Are_you_sure_you_want_to_activate}</b></center>
+                </div> 
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" 
+                                      label="{!$Label.c.ETST_Activate}"
+                                      title="Activate"
+                                      value="{!item}"
+                                      onclick="{!c.activateOnholdService}" class="btnsave"/>
+                    
+                    
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>    
+    </aura:if>
+</aura:component>

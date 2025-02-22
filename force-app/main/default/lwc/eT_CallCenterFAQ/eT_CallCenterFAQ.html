@@ -1,0 +1,60 @@
+<!--
+  @description       : 
+  @author            : Srihari.Koyila@Smaartt.com
+  @group             : 
+  @last modified on  : 03-15-2024
+  @last modified by  : Srihari.Koyila@Smaartt.com
+-->
+<template>
+	<lightning-card title="Call Center FAQ" icon-name="standard:data_mapping">
+		<lightning-input type="search" label="Search Activities" onchange={handleSearch}></lightning-input>
+		<lightning-button label="Search" onclick={handleSearchButtonClick}></lightning-button>
+		<lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle}
+			active-section-name={activeSections}>
+			<!--<div>
+				<p>Open a section by clicking on it, or: </p>
+				<lightning-button onclick={handleOpenAll} label="Open All" title="openAll"></lightning-button>
+				<lightning-button onclick={handleCollapseAll} label="Collapse All" title="collapseAll">
+				</lightning-button>
+				<p>Active sections = {activeSections}</p>
+				<p>Open sections = {openSectionList}</p>
+			</div>-->
+			<template for:each={departmentMap} for:item="departmentEntry">
+				<lightning-accordion-section name={departmentEntry.key} key={departmentEntry.key} label={departmentEntry.key}>
+					<lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle}
+					active-section-name={serviceEntryactiveSections}>
+						<template for:each={departmentEntry.value} for:item="serviceEntry">
+							<lightning-accordion-section name={serviceEntry.key} key={serviceEntry.key} label={serviceEntry.key}>
+								<template for:each={serviceEntry.value} for:item="activity">
+									<div key={activity.Activities_En__c} class="slds-text-longform">
+										<ul key={activity.Activities_En__c}>
+											<li>{activity.Activities_En__c} </li>
+											<li>{activity.Activities_Ar__c}</li>
+										</ul>
+									</div>
+								</template>
+							</lightning-accordion-section>
+						</template>
+					</lightning-accordion>
+				</lightning-accordion-section>
+			</template>
+		</lightning-accordion>
+		<!--<lightning-accordion allow-multiple-sections-open>
+			<template for:each={departmentMap} for:item="departmentEntry">
+				<lightning-accordion-section key={departmentEntry.key} label={departmentEntry.key}>
+					<template for:each={departmentEntry.value} for:item="serviceEntry">
+						<div key={serviceEntry.key}>
+							<p slot="summary">{serviceEntry.key}</p>
+							<template for:each={serviceEntry.value} for:item="activity">
+								<lightning-accordion-section key={activity.Activities_En__c}
+									label={activity.Activities_En__c} active-section-name={activity.Activities_En__c}>
+									<p>{activity.Activities_En__c}</p>
+								</lightning-accordion-section>
+							</template>
+						</div>
+					</template>
+				</lightning-accordion-section>
+			</template>
+		</lightning-accordion>-->
+	</lightning-card>
+</template>

@@ -1,0 +1,199 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="ETCAR_Car_Services_Controller">
+    
+    <div class="imgBackground"></div> 
+    <aura:attribute name="cars" type="Object[]"/>
+    <aura:attribute name="selectedCar" type="Object"/>
+    <aura:attribute name="selectedFeaturesList" type="Object[]"/>
+    <aura:attribute name="selectedFeatureIds" type="String"/>
+    <aura:attribute name="selectedCarId" type="String"/>
+    <aura:attribute name="billingTotal" type="Integer" default="0"/>
+    <aura:attribute name="quantity" type="Integer" default="1"/>
+    <aura:attribute name="openFeatures" type="Boolean" default="false"/>
+    <aura:attribute name="chooseCarPage" type="Boolean" default="true"/>
+    <aura:attribute name="bReqId" type="String"/> <!-- Request Id from Community URL-->
+    <aura:attribute name="reqType" type="String"/> <!-- Request Type from Community URL-->
+    <aura:attribute name="servType" type="String" default="one way"/> <!-- Request Type from Community URL-->
+    <aura:attribute name="serReqId" type="String"/> <!-- Service Request Id -->
+    <aura:attribute name="datesDiff" type="String"/>
+    <aura:attribute name="editDetails" type="Boolean" default="false" />
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:attribute name="selTabId" type="String" default="oneWay" />
+    <aura:attribute name="profileName" type="String"/>
+    <aura:attribute name="userInfo" type="user"/>
+    <aura:attribute name="reqInfo" type="ET_Service_Request__c"/>
+    <aura:attribute name="carInventoryType" type="String"/>
+    <aura:attribute name="vfUrl" type="String" />
+    
+    <!-- Search component attributes -->
+    <aura:attribute name="pageSize" type="integer" default="3"/>
+    <aura:attribute name="page" type="integer" default="1"/>
+    <aura:attribute name="pages" type="integer"/>
+    <aura:attribute name="total" type="integer"/>
+    <aura:attribute name="selectedCarModels" type="String"/>
+    <aura:attribute name="selectedCarTypes" type="String"/>
+    <aura:attribute name="selectedCarSegment" type="String"/>
+    
+    <aura:handler event="c:ETCAR_RangeChangeEvent" action="{!c.onRangeChange}"/> 
+    <aura:handler name="carFiltersEvent" event="c:ETC_handleFiltersEvent" action="{!c.handlecarModelsEvent}"/> 
+    
+    <aura:attribute name="carModels" type="List" default="['']"/>
+    
+    <aura:attribute name="serviceRecord" type="ET_Service_Request__c"  
+                    default="{'sObjectType':'ET_Service_Request__c', 'Name':'','ETST_Country__c':'','ETST_Emirates__c':'','ETST_Dropoff_Street__c':'','ETST_Dropoff_Location__Latitude__s':'','ETST_Dropoff_Emirate__c':'','ETST_Dropoff_Location__Longitude__s':'','ETST_Location__Longitude__s':'','ETST_State_or_Province__c':'','ETST_Street_Number__c':'','ETST_Area_Zone__c':'','ETST_Pick_Up_From__c':'','ETST_Service_Type__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Drop_Off_To__c':'',
+                             'ETST_Location__Latitude__s':'','ETST_Location__Longitude__s':'', 'ETCAR_Pick_UP_Date_Time__c': '', 'ETCAR_Return_Date_Time__c': '' , 'ETCAR_Age__c':''}" />
+    
+    <aura:attribute name="serRequest" type="Object[]"/>
+    <aura:attribute name="pageReference" type="Object"/>
+    
+    <lightning:navigation aura:id="navService"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <c:ETCAR_UtillityMethods aura:id="ETCAR_UtillityMethods"/>
+    
+    <aura:attribute name="prefixURL" type="String" default="https://etsales--etpdev.my.salesforce.com/sfc/servlet.shepherd/version/download/"/>
+    
+    
+    <!-- get Service Request details -->
+    <force:recordData aura:id="recordEditor"
+                      layoutType="FULL"
+                      recordId="{!v.serReqId}"
+                      targetFields="{!v.serviceRecord}"
+                       />
+    <div class="searchmaindiv">
+        
+        <!-- div class="searchleftdiv slideInLeft animated">
+            Itenary Details 
+            
+            <aura:if isTrue="{!v.bReqId != null }">
+              <c:ETC_ItineryDetails aura:id="ETC_ItineryDetails" vehicleBookingRecId="{!v.bReqId}" serviceType="{!v.servType}"/>
+            </aura:if>
+        </div -->
+        <div class="searchrightdiv">
+            <!-- Car Search Component -->
+            <aura:if isTrue= "{!v.carModels.length > 0}">
+                <aura:if isTrue ="{!v.chooseCarPage}">
+                    <c:carSearchComponent />
+                </aura:if>
+            </aura:if>
+            <!--Choose Car Page -->
+            <aura:if isTrue="{!v.loaded }">
+                <div class="container">
+                <div class="slds-grid slds-wrap searchitems">
+                    <aura:iteration items="{!v.cars}" var="car">
+                        <div class="slds-col c-container slds-size_1-of-2 ">
+                            <div>
+                                <lightning:layout multipleRows="true">
+                                    <lightning:layoutItem size ="12">
+                                        <lightning:layout >
+                                            <lightning:layoutItem size ="12" class="imgmaindiv">
+                                                <img src="{!car.carLink}"/>
+                                            </lightning:layoutItem>
+                                        </lightning:layout>                                        
+                                    </lightning:layoutItem>
+                                    <div class="contentdetails">
+                                        <lightning:layoutItem class="paddingtopbottomnone slds-size_12-of-12">
+                                            <div class="carnamediv"> {!car.Car.Name} </div>
+                                             </lightning:layoutItem>  
+                                            <!--div class="cartypediv">{!car.Car.ETCAR_Car_Segment__c}-{!car.Car.ETCAR_Car_Type__c} </div>
+                                            <div class="cartypediv">Passengers: {!car.Car.ETCAR_People__c}- Bags: {!car.Car.ETCAR_Suitcase__c} </div -->
+                                            <div class="cartypediv selected_box"><span>{!car.Car.ETCAR_Car_Segment__c}</span>
+                                                <span>{!car.Car.ETCAR_Car_Type__c}</span>
+                                            </div>
+                                            <div class="cartypediv">
+                                                <span>Passengers: {!car.Car.ETCAR_People__c}</span> 
+                                                <span>Bags: {!car.Car.ETCAR_Suitcase__c}</span> 
+                                            </div>
+                                       
+                                        <div class="cartypediv">
+                                            <!-- Car Calculated Price -->
+                                            <div class="priceperday">
+                                                AED {!car.carPrice}
+                                            </div>
+                                            <lightning:button aura:id="{!car.Car.Id}" variant="brand" class="slds-align_absolute-center btneditcar" label="Select Car" title="Select Car" name="{!car.Car.Id}" onclick="{! c.onCarSelect}" />
+                                        </div>                                    
+
+                                    </div>
+                                </lightning:layout>
+                            </div>
+                        </div>
+                    </aura:iteration>
+                </div>
+                <div class="paginator">
+                    <c:ETCAR_propertyPaginator page="{!v.page}" pages="{!v.pages}" total="{!v.total}"
+                                               pagePrevious="{!c.onPagePrevious}" pageNext="{!c.onPageNext}"/>
+                   
+                </div>
+                <!-- div  class="homePrev">
+                    <button class="slds-button slds-p-around_medium slds-button_brand btneditcar slds-align_absolute-center home" onclick="{!c.handleHome}">Home</button>
+                    <button class="slds-button slds-p-around_medium slds-button_brand btneditcar slds-align_absolute-center prev" onclick="{!c.handlePrevious}">Previous Page</button>
+                </div -->
+                </div>
+                <!-- Model to select Features -->
+                <aura:if isTrue="{!v.openFeatures}">
+                    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header">
+                                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Select Add-Ons</h2>
+                            </header>
+                            <div class="slds-modal__content" id="modal-content-id-1">
+                                <table style="width:100%" > 
+                                    <tr > 
+                                        <th> 
+                                        </th>
+                                        <th > Name
+                                            
+                                        </th>
+                                        <th > Item
+                                            
+                                        </th>
+                                        <th > Description
+                                            
+                                        </th>
+                                        <th> Quantity
+                                            
+                                        </th>
+                                        <th > Price
+                                            
+                                        </th>
+                                    </tr>
+                                    <aura:iteration items="{!v.cars}" var="car">
+                                        <aura:if isTrue="{!v.selectedCarId == car.Car.Id}">
+                                            <aura:iteration items="{!car.features}" var="rec">
+                                                <tr>
+                                                    <td><lightning:input type="checkbox" id="{!rec.name+'-'+rec.carFeatureId+'-'+rec.quantity}" name="{!rec.quantity *rec.price}" onchange="{!c.onFeatureSelect}"/></td>
+                                                    <td>{!rec.name}</td>
+                                                    <td><img src="{!rec.imageId}" class="profileimg" /></td>
+                                                    <td>{!rec.description}</td>
+                                                    <aura:if isTrue ="{!rec.price ==0}">
+                                                        <td> <lightning:input type="number" name="quantity" width="20px" value="{!rec.quantity}" disabled="true" /></td>
+                                                        <aura:set attribute="else">
+                                                            <td> <lightning:input type="number" id="{!rec.name}" name="quantity" width="20px" value="{!rec.quantity}" onchange="{!c.onQuantityUpdate}"/></td>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                    <td>{! rec.quantity *rec.price == 0 ? 'FREE': rec.quantity *rec.price }</td>
+                                                </tr>
+                                            </aura:iteration>
+                                            
+                                        </aura:if>
+                                        
+                                    </aura:iteration>
+                                    
+                                </table>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <button class="slds-button slds-button_neutral cancel_btn" onclick="{!c.onCancel}">Cancel</button>
+                                <button class="slds-button slds-button_brand btneditcar" onclick="{!c.navigateForBooking}">Book Car</button>
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                </aura:if>
+                <aura:set attribute="else">
+                    <lightning:spinner alternativeText="Loading" variant="brand" />
+                </aura:set>
+            </aura:if>
+            
+        </div>
+    </div>
+    
+</aura:component>

@@ -1,0 +1,907 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="ETVIN_VehicleInsurancePageController" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    
+    <aura:attribute name="policyNumber" type="string"/>
+    <!-- <aura:attribute name="vehicleInternalNumber" type="string"/>  -->
+    <aura:attribute name="plateNumber" type="string"/>
+    <aura:attribute name="chassisNumber" type="string"/>
+    <aura:attribute name="engineNumber" type="string"/>
+    <aura:attribute name="vehicleModel" type="string"/>
+   
+    <aura:attribute name="selectedTabId" type="String" />
+    <aura:attribute name="PartnerList" type="List" access="PUBLIC"/>
+    <aura:attribute name="selectedValue" type="String" access="PUBLIC"/>
+    <aura:attribute name="selectedSerachFilterValue" type="String" access="PUBLIC"/>
+    
+    
+      <!-- Data table attributes -->
+    <aura:attribute name="Insurancedata" type="Object" />
+    <aura:attribute name="InsuranceColumns" type="List" />
+    
+    <!-- Pagination attributes -->
+    <aura:attribute name="paginationList" type="Object"/>
+    <aura:attribute name="pageSize" type="Integer" default="4"/>
+    <aura:attribute name="totalSize" type="Integer"/>
+    <aura:attribute name="start" type="Integer" default="0" />
+
+    <!-- single renewal process attribute -->
+    <aura:attribute name="singleInsuranceRenewalPopup" type="boolean" default="false"/> 
+    <aura:attribute name="selectedRenewRecId" type="string" />
+    
+     <!-- Bulk renewal process attributes -->
+    <aura:attribute name="bulkRenewVehiclePopup" type="boolean" default="false"/> 
+     <aura:attribute name="options" type="List" default="[
+    {'label': 'Renew with existing insurnace partner', 'value': 'existing'},
+    {'label': 'Renew with new insurance partner', 'value': 'new'}
+    ]"/>
+    <aura:attribute name="RenewValue" type="String" default="existing"/>
+     <aura:attribute name="cnfrmBtn" type="boolean"/>
+     <aura:attribute name="RenewPrcBar" type="boolean"/>
+    <aura:attribute name="progress" type="Integer" default="0"/>
+    <aura:attribute name="apexJob" type="AsyncApexJob"/>
+    <!-- Correction Popup -->
+   
+    <aura:attribute name="CorrectionPopup" type="boolean" default="false"/>
+    <aura:attribute name="caseInsurId" type="string" />
+    <aura:attribute name="CorrRecordTypeID" type="string" />
+    <aura:attribute name="CorrRecId" type="string" /> 
+    <aura:attribute name="CaseCorrStep1" type="boolean" default="true"/>
+    <aura:attribute name="CaseCorrStep2" type="boolean" default="false"/>
+    <aura:attribute name="CaseCorrStep3" type="boolean" default="false"/>
+    <aura:attribute name="Caseattachments" type="List" />
+    <aura:attribute name="CorrPickList" type="List" />
+     <aura:attribute name="VehicleID" type="string" /> 
+     <aura:attribute name="VehicleInsRecID" type="string" /> 
+     <aura:attribute name="SelectedCorrForVal" type="string" />
+       
+    
+    <!-- Claim Attributes -->
+     <aura:attribute name="claimPopup" type="boolean" default="false" />
+     <aura:attribute name="claimStepOne" type="boolean" default="false"/>
+    <aura:attribute name="claimStepTwo" type="boolean" default="false"/>
+    <aura:attribute name="claimStepThree" type="boolean" default="false"/>
+     <aura:attribute name="CliamRecId" type="string" />
+    <aura:attribute name="rowVehicleId" type="string" />
+    <aura:attribute name="ClaimDocList" type="List" access="PUBLIC"/>
+    <aura:attribute name="ClaimAttachements" type="List" access="PUBLIC"/>
+    <aura:attribute name="ClaimInsRecType" type="string" />
+    <aura:attribute name="ClaimPickVal" type="string" />
+    
+    <!-- Cancellation attributes-->
+     <aura:attribute name="cancelPopup" type="boolean" default="false"/> 
+    <aura:attribute name="CancelRecordTypeID" type="string" />
+    <aura:attribute name="CaseCancStep1" type="boolean" default="false"/>
+    <aura:attribute name="CaseCanRecID" type="string" />
+    
+     <aura:attribute name="hideCliamBtn" type="boolean"/>  
+     <aura:attribute name="workShopButtons" type="boolean"/>
+   
+    <aura:attribute name="rowInsCmpny" type="string" /> 
+     <aura:attribute name="ShowSpinner" type="boolean" default="false"/>
+    
+    <!-- vehicle theft process attributes -->
+     <aura:attribute name="theftPopup" type="boolean" default="false"/>
+     <aura:attribute name="theftStep1" type="boolean" />
+    <aura:attribute name="theftRecordTypeID" type="string" />
+    
+    
+     <aura:attribute name="mulkiyaPopup" type="boolean" />
+     <aura:attribute name="mulkiyaRecordTypeId" type="string" />
+    
+      
+    <div id="mainDiv">
+    <lightning:tabset selectedTabId="{!v.selectedTabId}" variant="scoped">
+        
+        <lightning:tab label="Vehicle Insurance Search" id="search" class="SearchDetails">
+            <div>
+                
+                <div class="" style="padding:21px;">
+                   <fieldset class="slds-form-element slds-form-element_compound" style="padding: 5px;padding-bottom: 10px;">
+                        <div class="slds-form-element__control slds-border_bottom">
+                            <div class="slds-form-element__row">
+                               
+                                <aura:if isTrue="false"> 
+                                <div class="slds-col slds-size_1-of-4">
+                                    <p style="padding-left: 10px;">Please click on Renewal Process to renew all the Insurance Policies</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <div class="slds-form-element">
+                                        <lightning:button label="Bulk Renewal Process" class="slds-button_brand btnright btn_table" onclick="{!c.OpenbulkRenewPrcss}" ></lightning:button>
+                                    </div>
+                                </div>
+                               </aura:if> 
+                                
+                            </div> 
+                                <br/>
+                        </div>
+                    </fieldset>
+                 
+                    
+                    <label class="slds-form-element__label" style="font-size: 17px;margin-bottom: 16px;">Search Criteria</label>
+                    
+                    <fieldset class="slds-form-element slds-form-element_compound padbot">
+                        
+                        <div class="slds-form-element__control">
+                            <div class="slds-form-element__row">
+                                <div class="slds-col slds-size_1-of-4">
+                                    <div class="slds-form-element">
+                                        <lightning:input aura:id="policyNumber" value="{!v.policyNumber}" placeholder="" label="Policy Number" />
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <div class="slds-form-element">
+                                        <lightning:input aura:id="plateNumber" value="{!v.plateNumber}" placeholder="" label="Plate Number" />
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <div class="slds-form-element">
+                                        <lightning:input aura:id="chassisNumber" value="{!v.chassisNumber}" placeholder="" label="Chassis Number" />
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <div class="slds-form-element">
+                                        <lightning:input aura:id="vehicleModel" value="{!v.vehicleModel}" placeholder="" label="Vehicle Internal No." />
+                                    </div>
+                                </div>
+                                <!--div class="slds-col slds-size_1-of-4">
+                                    <div class="slds-form-element">
+                                        
+                                        <lightning:input aura:id="engineNumber" value="{!v.engineNumber}" placeholder="" label="Engine Number" />
+                                    </div>
+                                </div-->
+                            </div>
+                            <div class="slds-form-element__row">
+                                
+                                <div class="slds-col slds-size_1-of-4">
+                                    <div class="slds-form-element">
+                                        <lightning:select name="partnerId" label="Insurance Partner" aura:id="partnerId" value="{!v.selectedSerachFilterValue}">
+                                            <option text="All" value="" />
+                                            <aura:iteration items="{!v.PartnerList}" var="option">
+                                                <option text="{!option.Name}" value="{!option.Id}" selected="{!option.selected}"/>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </div>
+                                </div>
+                                
+                               
+                                
+                            </div>
+                        </div>
+                        <div class="slds-form-element__row slds-align_absolute-center" style="margin-top: 20px;"> 
+                            <button class="slds-button slds-button_neutral btn_back" onclick="{!c.clearSearch}">Clear</button>
+                            
+                            <button class="slds-button slds-button_brand btn_table btn_table" onclick="{!c.filterSearch}">Search</button>
+                        </div>
+                    </fieldset>
+                    <br/>
+                    <div class="bordertab">
+                        <lightning:datatable data="{!v.paginationList}" keyField="id" columns="{!v.InsuranceColumns }" onrowaction="{! c.handleRowAction }" ></lightning:datatable>
+                    </div>
+                     <br/>
+                    <div class="slds-form-element__row slds-align_absolute-center">
+                        <lightning:button class="btn_back" label="First" disabled="{!v.start == 0}"  onclick="{!c.first}" />
+                        <lightning:button class="btn_back" label="Previous" disabled="{!v.start == 0}"  onclick="{!c.previous}" />
+                        <lightning:button class="btn_table" label="Next" disabled="{!or(v.start == v.totalSize-v.pageSize,v.pageSize> v.totalSize-v.start)}" onclick="{!c.next}" />
+                        <lightning:button class="btn_table" label="Last" disabled="{!or(v.start == v.totalSize-v.pageSize,v.pageSize> v.totalSize-v.start)}" onclick="{!c.last}" /> 
+                    </div> 
+                    
+                </div> 
+            </div>
+         
+         
+            
+            <!-- Single renewal process  -->
+            <aura:if isTrue="{!v.singleInsuranceRenewalPopup}"> 
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <!-- ###### MODAL BOX HEADER Start ######-->
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeSingleRenwPrcss }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Renew Request</h2>
+                        </header>
+                        <!--###### MODAL BOX BODY Part Start######-->
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <p class="slds-align_absolute-center" style="margin-top:2%;margin-bottom:5%;font-weight: 300;
+                                                                         font-size: 17px;">Please click on Confirm button to renew.
+                                
+                            </p>
+                            
+                        </div>
+                        <!--###### MODAL BOX FOOTER Part Start ######-->
+                        <footer class="slds-modal__footer">
+                            <lightning:button class="btn_back" variant="neutral" 
+                                              label="Cancel"
+                                              title="Cancel"
+                                              onclick="{!c.closeSingleRenwPrcss}"/>
+                            <lightning:button class="btn_table" variant="brand" 
+                                              label="Confirm"
+                                              title="Confirm"
+                                              onclick="{!c.confirmSingleProcss}"/>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                <!--###### MODAL BOX Part END Here ######-->
+            </aura:if>
+            
+            <!-- Bulk renewal process  -->
+            <aura:if isTrue="{!v.bulkRenewVehiclePopup}"> 
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container ">
+                        
+                        <!-- ###### MODAL BOX HEADER Start ######-->
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeBulkRenwPrcss }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Bulk Renew Vehicle Insurance Process</h2>
+                        </header>
+                        <!--###### MODAL BOX BODY Part Start######-->
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <!--p class="slds-align_absolute-center" style="margin-top:2%;margin-bottom:5%;font-weight: 300;
+                                                                         font-size: 17px;">Please click on Confirm button to renew all the health request.
+                                
+                            </p -->
+                            <div class="outer-div">  
+                                
+                                <aura:if isTrue="{!v.cnfrmBtn}">
+                                    <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+                                </aura:if>
+                                <div id="radioGrp" class="slds-align_absolute-center">
+                                    <lightning:radioGroup name="radioGroup"
+                                                          label="Choose Process"
+                                                          options="{! v.options }"
+                                                          value="{! v.RenewValue }"
+                                                          type="radio"/>
+                                </div>
+                                <div id="partnerList" class="slds-align_absolute-center partnerList">
+                                    <aura:if isTrue="{!v.RenewValue =='new'}">
+                                        <lightning:select name="partnerId" label="Choose Partner:" aura:id="partnerId" value="{!v.selectedValue}">
+                                            <aura:iteration items="{!v.PartnerList}" var="option">
+                                                <option text="{!option.Name}" value="{!option.Id}" selected="{!option.selected}"/>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </aura:if>
+                                </div>
+                                
+                                
+                            </div>  
+                            <aura:if isTrue="{!v.RenewPrcBar}">  
+                                <aura:if isTrue="{!v.apexJob != null}"> 
+                                    <aura:if isTrue="{!v.apexJob.JobItemsProcessed != v.apexJob.TotalJobItems}">
+                                        Processing {!v.apexJob.JobItemsProcessed} of {!v.apexJob.TotalJobItems}
+                                    </aura:if>
+                                    <aura:if isTrue="{!v.apexJob.Status == 'Completed'}">
+                                        Completed with {!v.apexJob.NumberOfErrors} errors.
+                                    </aura:if>
+                                    
+                                    <lightning:progressBar value="{!v.progress}" size="large" variant="circular"/>
+                                </aura:if>  
+                            </aura:if>    
+                        </div>
+                        <!--###### MODAL BOX FOOTER Part Start ######-->
+                        <footer class="slds-modal__footer">
+                            <lightning:button class="btn_back" variant="neutral" 
+                                              label="Cancel"
+                                              title="Cancel"
+                                              onclick="{!c.closeBulkRenwPrcss}"/>
+                            <lightning:button class="btn_table" variant="brand" 
+                                              aura:id="cnfrmBtn"
+                                              label="Confirm"
+                                              title="Confirm"
+                                              disabled="{!v.cnfrmBtn}"
+                                              onclick="{!c.confirmBulkProcss}"/>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                <!--###### MODAL BOX Part END Here ######-->
+            </aura:if>
+            <!-- Bulk Renew Proces ending -->
+            
+             <!-- Single renewal process  -->
+            <aura:if isTrue="{!v.singleInsuranceRenewalPopup}"> 
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <!-- ###### MODAL BOX HEADER Start ######-->
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeSingleRenwPrcss }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Renew Health Request</h2>
+                        </header>
+                        <!--###### MODAL BOX BODY Part Start######-->
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <!--p class="slds-align_absolute-center" style="margin-top:2%;margin-bottom:5%;font-weight: 300;
+                                                                         font-size: 17px;">Please click on Confirm button to renew the Vehicle Insurance request.
+                                
+                            </p-->
+                             <div class="outer-div">  
+                                
+                                <!--aura:if isTrue="{!v.cnfrmBtn}">
+                                    <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+                                </aura:if -->
+                                <div id="radioGrp" class="slds-align_absolute-center">
+                                    <lightning:radioGroup name="radioGroup"
+                                                          label="Choose Process"
+                                                          options="{! v.options }"
+                                                          value="{! v.RenewValue }"
+                                                          type="radio"/>
+                                </div>
+                                <div id="partnerList" class="slds-align_absolute-center partnerList">
+                                    <aura:if isTrue="{!v.RenewValue =='new'}">
+                                        <lightning:select name="partnerId" label="Choose Partner:" aura:id="partnerId" value="{!v.selectedValue}">
+                                            <aura:iteration items="{!v.PartnerList}" var="option">
+                                                <option text="{!option.Name}" value="{!option.Id}" selected="{!option.selected}"/>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </aura:if>
+                                </div>
+                                
+                                
+                            </div> 
+                            
+                        </div>
+                        <!--###### MODAL BOX FOOTER Part Start ######-->
+                        <footer class="slds-modal__footer">
+                            <lightning:button class="btn_back" variant="neutral" 
+                                              label="Cancel"
+                                              title="Cancel"
+                                              onclick="{!c.closeSingleRenwPrcss}"/>
+                            <lightning:button class="btn_table" variant="brand" 
+                                              label="Confirm"
+                                              title="Confirm"
+                                              onclick="{!c.confirmSingleProcss}"/>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                <!--###### MODAL BOX Part END Here ######-->
+            </aura:if>
+          <!-- End - Single Renew Process -->
+            
+            <!-- Correction Request Popup window -->
+            <aura:if isTrue="{!v.CorrectionPopup}">
+                <!--###### MODAL BOX Start######--> 
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeModelCorrectionPopup }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Correction Request</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            
+                            <aura:if isTrue="{!v.CaseCorrStep1}">  
+                                <div style="padding-left: 11px;margin-top: 10px;" class="slds-border_bottom">
+                                    <lightning:recordEditForm
+                                                              onload=""
+                                                              recordId=""
+                                                              onsubmit="{!c.handleSubmitCorrReq}"
+                                                              onsuccess="{!c.handleSuccessCorrReq}"
+                                                              objectApiName="Correction_Cancel_Request__c" aura:id="CorrForm" onerror="{!c.handleErrorCorrReq}" recordTypeId="{!v.CorrRecordTypeID}" class="recEditForm">
+                                        <!--lightning:messages /-->
+                                       <div class="slds-grid">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning:inputField fieldName="Vehicle_Master__c" value="{!v.VehicleID}" required="true" disabled="true"/>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning:inputField fieldName="Vehicle_Insurance_Policy__c" value="{!v.VehicleInsRecID}" required="true" disabled="true"/>  
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid">
+                                            <div class="slds-col slds-size_1-of-1">
+                                                 <lightning:inputField fieldName="Correction_for__c" value="" required="true"/>
+                                                <!--lightning:inputField fieldName="Subject" value="Vehicle Insurance Correction" required="true"/-->
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                               
+                                                <!--lightning:select aura:id="CorrPickVal" name="select1" label="Correction For" required="true" onchange="{!c.CorrForOnchange}">
+                                                    <option value="">None</option>
+                                                    <aura:iteration items="{!v.CorrPickList}" var="option">
+                                                        <option text="{!option}" value="{!option}" selected="{!option.selected}"/>
+                                                    </aura:iteration>
+                                                </lightning:select-->
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning:inputField fieldName="Description__c" />
+                                                
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <!--lightning:inputField fieldName="Description"/-->
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="slds-m-top_medium slds-float--right">
+                                            
+                                            <lightning:button class="btn_table" disabled="" variant="brand" type="submit" name="save" label="Submit"/>
+                                        </div>
+                                    </lightning:recordEditForm>
+                                </div>
+                            </aura:if>
+                            <!-- Second Step -->
+                              <aura:if isTrue="{!v.CaseCorrStep2}">
+                                <div>
+                                    <lightning:fileUpload label="Correction Support Documents" accept="" recordId="{!v.CorrRecId}" aura:id="multifileUpload" onuploadfinished="{!c.handleUploadCaseCorr}"/>
+                                    <div aura:id="dataTab" style="margin-top:4%" class="slds-border_bottom">  
+                                        <aura:iteration aura:id="DocList" items="{!v.Caseattachments}" var="files" indexVar="index">
+                                            <table>
+                                                <tr>
+                                                    <lightning:pill class="slds-m-bottom_small attchPills" label="{!files.name}" name="{!files.documentId}" 
+                                                                    onremove = "{! c.clearCaseAttachment }" onclick="" title="{!index}">
+                                                        <aura:set attribute="media">
+                                                            <lightning:icon iconName="doctype:gdoc" size="large" alternativeText="icon"/>           
+                                                        </aura:set>
+                                                    </lightning:pill>
+                                                </tr>
+                                            </table> 
+                                            
+                                        </aura:iteration>
+                                    </div>
+                                    
+                                    <div class="slds-m-top_medium slds-float--right">
+                                        <lightning:button class="btn_back" disabled="" variant="neutral" label="Previous" onclick="{!c.caseCorrPrevbtn}"/>
+                                        <lightning:button class="btn_table" disabled="" variant="brand" label="Save" onclick="{!c.caseCorrNextbtn}"/>
+                                    </div>
+                                </div>
+                                
+                            </aura:if>
+                             <aura:if isTrue="{!v.CaseCorrStep3}">
+                                <div class="slds-border_bottom">  
+                                    <div class="slds-align_absolute-center" style="margin-top:10%">
+                                        <lightning:icon iconName="action:approval" size="large" alternativeText="success"/>
+                                    </div>
+                                    <div class="slds-align_absolute-center" style="margin-top:2%;margin-bottom:8%;font-weight: 300;
+                                                                                   font-size: 17px;">Correction request has been created.</div>
+                                    <div class="slds-align_absolute-center" style="margin-bottom: 4%;margin-top: -6%;font-weight: 600;font-size: 12px;"><a href="javascript:void(0);" onclick="{!c.openNewCorrDetailPage}">Click here for Review</a>
+                                    </div>
+                                </div> 
+                                <div class="slds-m-top_medium slds-float--right">
+                                    
+                                    <lightning:button disabled="" variant="brand" name="Close" onclick="{!c.closeModelCorrectionPopup}" label="Close"/>
+                                </div>
+                                
+                            </aura:if>
+                            
+                            
+                        </div>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+            <!-- End - Correction Popup window -->
+            
+             <!-- Claim Request Start -->
+             <aura:if isTrue="{!v.claimPopup}">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeClaimModel }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Claim Request</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <div style="padding-left: 11px;margin-top: 10px;" class="slds-border_bottom">
+                                <aura:if isTrue="{!v.claimStepOne}">  
+                                <lightning:recordEditForm
+                                                          onload=""
+                                                          recordId="{!v.CliamRecId}"
+                                                          onsubmit="{!c.handleSubmitClaimReq}"
+                                                          onsuccess="{!c.handleSuccessClaimReq}"
+                                                          objectApiName="ETIN_Claim__c" recordTypeId="{!v.ClaimInsRecType}" onerror="{!c.handleErrorClaimReq}"  class="recEditForm">
+                                    <lightning:messages />
+                                    
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <lightning:inputField fieldName="ETIN_Insurance_Partner__c" value="{!v.rowInsCmpny}" required="true" disabled="true"/>
+                                            
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2">
+                                            
+                                            <lightning:inputField fieldName="Vehicle_Master__c" value="{!v.rowVehicleId}" required="true" disabled="true"/>
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <lightning:inputField fieldName="ETVIN_Vehicle_Insurance__c" value="{!v.VehicleInsRecID}" required="true" disabled="true" />    
+                                            
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <lightning:inputField fieldName="Claim_for__c" value="{!v.ClaimPickVal}" required="true" onchange="{!c.getClaimForVal}"/>    
+                                            
+                                        </div>
+                                    </div >
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <lightning:inputField fieldName="Accident_Date__c" value="" required="false" />    
+                                            
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2">
+                                             <lightning:inputField fieldName="Accident_By__c" value="" required="false" />    
+                                            
+                                        </div>
+                                    </div >
+                                     <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <lightning:inputField fieldName="Estimated_by__c" value="" required="false" />    
+                                            
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2">
+                                             <lightning:inputField fieldName="Estimate_Number__c" value="" required="false" />    
+                                            
+                                        </div>
+                                    </div >
+                                    <br/>
+                                    
+                                    <div class="slds-m-top_medium slds-float--right">
+                                        
+                                        <lightning:button class="btn_table" disabled="" variant="brand" type="submit" name="save" label="Next"/>
+                                    </div>
+                                </lightning:recordEditForm>
+                              </aura:if> 
+                              <aura:if isTrue="{!v.claimStepTwo}" > 
+                                
+                                   <lightning:layout multipleRows="true">
+                                         <aura:iteration aura:id="ClaimDocList" items="{!v.ClaimDocList}" var="files" >
+                                            <lightning:layoutItem flexibility="auto" size="6" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="6">
+                                                 <lightning:fileUpload label="{!files.Label__c}" accept="{!files.Accepted_Format__c}" recordId="{!v.CliamRecId}" aura:id="multifileUpload" onuploadfinished="{!c.handleUploadClaim}" />
+                                                
+                                            </lightning:layoutItem>
+                                       </aura:iteration>
+                                    </lightning:layout>
+                                  <br/>
+                                  <div aura:id="dataTab" style="margin-top:4%" class="slds-border_bottom">  
+                                        
+                                        <aura:iteration aura:id="ClaimDocList" items="{!v.ClaimAttachements}" var="files" >
+                                            <table>
+                                                <tr>
+                                                    <lightning:pill class="slds-m-bottom_small attchPills" label="{!files.name}" name="{!files.documentId}" 
+                                                                    onremove = "{! c.clearClaimAttach}" onclick="" title="{!index}">
+                                                        <aura:set attribute="media">
+                                                            <lightning:icon iconName="doctype:gdoc" size="large" alternativeText="icon"/>           
+                                                        </aura:set>
+                                                    </lightning:pill>
+                                                </tr>
+                                            </table> 
+                                            
+                                        </aura:iteration>
+                                    </div>
+                                  
+                                  <div class="slds-m-top_medium slds-float--right">
+                                        
+                                       <lightning:button disabled="" variant="brand" onclick="{!c.prevScrClaim}"  name="prev" label="Previous"/>
+                                        <lightning:button disabled="" variant="brand" onclick="{!c.submitClaim}" name="save" label="Submit"/>
+                                    </div>
+                                  
+                              </aura:if>
+                               <aura:if isTrue="{!v.claimStepThree}">
+                                <div class="slds-border_bottom">  
+                                    <div class="slds-align_absolute-center" style="margin-top:10%">
+                                        <lightning:icon iconName="action:approval" size="large" alternativeText="sucess"/>
+                                    </div>
+                                    <div class="slds-align_absolute-center" style="margin-top:2%;margin-bottom:8%;font-weight: 300;
+                                                                                   font-size: 17px;"> New Claim request has been created.</div>
+                                    <div class="slds-align_absolute-center" style="margin-bottom: 4%;margin-top: -6%;font-weight: 600;font-size: 12px;"><a href="javascript:void(0);" onclick="{!c.openNewClaimPage}">Click here for Review</a>
+                                    </div>
+                                </div> 
+                                <div class="slds-m-top_medium slds-float--right">
+                                    
+                                    <lightning:button disabled="" variant="brand" name="Close" onclick="{!c.closeClaimModel}" label="Close"/>
+                                </div>
+                                
+                            </aura:if>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+            <!-- End -Claim Request --> 
+            
+            <!-- Start -Cancellation Request --> 
+              <aura:if isTrue="{!v.cancelPopup}">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeCaneclModel }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Cancellation Request</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" >
+                            <div style="padding-left: 11px;margin-top: 20px;" class="slds-border_bottom">
+                            <aura:if isTrue="{!v.CaseCancStep1}">     
+                                <lightning:recordEditForm
+                                                          onload=""
+                                                          recordId=""  
+                                                          onsubmit="{!c.handleSubmitCancelReq}"
+                                                          onsuccess="{!c.handleSuccessCancelReq}"
+                                                          objectApiName="Correction_Cancel_Request__c" onerror="{!c.handleErrorCancelReq}" recordTypeId="{!v.CancelRecordTypeID}" class="recEditForm">
+                                    <!--lightning:messages /-->
+                                    
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <lightning:inputField fieldName="Vehicle_Master__c" value="{!v.rowVehicleId}" required="true" disabled="true"/>
+                                            
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2">
+                                            
+                                            <lightning:inputField fieldName="Insurance_Company__c" value="{!v.rowInsCmpny}" required="true" disabled="true"/>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                             <lightning:inputField fieldName="Reason_for_Cancellation__c" required="true"/>
+                                            
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2">
+                                             <lightning:inputField fieldName="Vehicle_Insurance_Policy__c" value="{!v.VehicleInsRecID}" required="true" disabled="true"/> 
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                               <lightning:inputField fieldName="Insured_Value__c" required="true" maxlength="3" messageWhenTooLong="Value not be more than 7 characters."/>
+                                        </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                           
+                                                <lightning:inputField fieldName="Refund_Amount__c" required="true"/>
+                                            </div>
+                                        
+                                    </div>
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                               <lightning:inputField fieldName="Refund_VAT__c" required="true"/>
+                                        </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                           
+                                                <lightning:inputField fieldName="Total_Refund__c" required="true"/>
+                                            </div>
+                                        
+                                    </div>
+                                    
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                          
+                                            <lightning:inputField fieldName="Comments__c" />
+                                               
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-m-top_medium slds-float--right">
+                                        
+                                        <lightning:button class="btn_table" disabled="" variant="brand" type="submit" name="save" label="Submit"/>
+                                    </div>
+                                </lightning:recordEditForm>
+                                </aura:if>
+                               <!-- step 2 cancellation Docs--> 
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+            
+            <!-- End -Cancellation Request --> 
+            
+            <!-- Start -Vehicle Theft Request --> 
+              <aura:if isTrue="{!v.theftPopup}">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeTheftModel }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Theft Process Request</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" >
+                            <div style="padding-left: 11px;margin-top: 20px;" class="slds-border_bottom">
+                            <aura:if isTrue="{!v.theftStep1}">     
+                                <lightning:recordEditForm
+                                                          onload=""
+                                                          recordId=""  
+                                                          onsubmit="{!c.handleSubmitTheftReq}"
+                                                          onsuccess="{!c.handleSuccessTheftReq}"
+                                                          objectApiName="Correction_Cancel_Request__c" onerror="{!c.handleErrorCancelReq}" recordTypeId="{!v.theftRecordTypeID}" class="recEditForm">
+                                    <!--lightning:messages /-->
+                                    
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <lightning:inputField fieldName="Vehicle_Master__c" value="{!v.rowVehicleId}" required="true" disabled="true" />
+                                            
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2">
+                                            
+                                            <lightning:inputField fieldName="Insurance_Company__c" value="{!v.rowInsCmpny}" required="true" disabled="true"/>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                            
+                                           
+                                            <lightning:inputField fieldName="Theft_Location__c" required="true"/>
+                                            
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2">
+                                             <lightning:inputField fieldName="Vehicle_Insurance_Policy__c" value="{!v.VehicleInsRecID}" required="true" disabled="true"/> 
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                               <lightning:inputField fieldName="Reason_for_Cancellation__c" required="true"/>
+                                        </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                            
+                                                <lightning:inputField fieldName="Vehicle_Theft_Date__c" required="true"/>
+                                            </div>
+                                        
+                                    </div>
+                                    
+                                    <div class="slds-grid">
+                                        <div class="slds-col slds-size_1-of-2">
+                                          
+                                            <lightning:inputField fieldName="Comments__c" />
+                                               
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-m-top_medium slds-float--right">
+                                        
+                                        <lightning:button class="btn_table" disabled="" variant="brand" type="submit" name="save" label="Submit"/>
+                                    </div>
+                                </lightning:recordEditForm>
+                                </aura:if>
+                               <!-- step 2 cancellation Docs--> 
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+            
+            <!-- End -Vehicle theft Request --> 
+            
+            <!--start -Mulkiya request -->
+            <aura:if isTrue="{!v.mulkiyaPopup}">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeMulkiyaModel }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Insurance available for Mulkiya request</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" >
+                            <div style="padding-left: 11px;margin-top: 20px;" class="slds-border_bottom">
+                                <lightning:recordEditForm
+                                                          onload=""
+                                                          recordId=""  
+                                                          onsubmit="{!c.handleSubmitMulkiyaReq}"
+                                                          onsuccess="{!c.handleSuccessMulikyaReq}"
+                                                          objectApiName="Correction_Cancel_Request__c" onerror="" recordTypeId="{!v.mulkiyaRecordTypeId}" class="recEditForm">
+                                     <lightning:messages />
+                                   
+                                    <lightning:inputField fieldName="Request_Status__c" value="Insurance Pending" class="slds-hide" />
+                                    <lightning:inputField fieldName="Vehicle_Master__c" value="{!v.rowVehicleId}" disabled="true" />
+                                    <lightning:inputField fieldName="Insurance_Company__c" value="{!v.rowInsCmpny}" required="true" disabled="true"/>
+                                    <lightning:inputField fieldName="Vehicle_Insurance_Policy__c" value="{!v.VehicleInsRecID}" class="slds-hide"/> 
+                         
+                                     <lightning:inputField fieldName="Effective_Date__c" required="true" />
+                                     <lightning:inputField fieldName="TC_No__c" required="true" />
+                                    
+                                    <lightning:inputField fieldName="Comments__c" required="false" />
+                                    <div class="slds-m-top_medium slds-float--right">
+                                        
+                                        <lightning:button class="btn_table" disabled="" variant="brand" type="submit" name="save" label="Submit"/>
+                                    </div>
+                                </lightning:recordEditForm>
+                            </div>
+                        </div>
+                </div>
+            </section>
+             <div class="slds-backdrop slds-backdrop_open"></div>   
+           </aura:if>
+             <!--End -Mulkiya request -->
+            
+            
+        </lightning:tab> 
+       <aura:if istrue="{!!v.workShopButtons}">
+        <lightning:tab label="Data Upload" id="data" class="SearchDetails">
+          <div class="outer-div" id="dataUpload" style="padding-bottom:50%">
+              
+              <aura:if isTrue="{!v.ShowSpinner}">
+                <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+            </aura:if>
+              
+            <aura:if isTrue="true"> 
+                <div class="slds-form-element__row" style="padding: 10px;"> 
+                    <!--div class="slds-col slds-size_1-of-2">
+                        <p>Please click on Bulk cancel request upload button to upload new cancellation requests.</p>
+                    </div><br/-->
+                  
+                    <lightning:layout>
+                        <lightning:layoutItem size="3">
+                            <input type="file" accept=".csv" class="file" aura:id="file" onchange=""/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="3">
+                            <lightning:button label="Bulk Cancel Request Upload" onclick="{!c.bulkUploadCancel}" class="slds-button slds-button--brand btn_table"/>
+                            
+                        </lightning:layoutItem>
+                    </lightning:layout> <br/>
+                    <div style="margin-bottom:5px;">
+                        <b>Note:</b> Please use the standard template to upload data. <a onclick="{!c.DownloadTemplate}">Click here</a> to download the template.
+                    </div>  
+                 </div>                 
+                
+            </aura:if> 
+              <aura:if isTrue="true"> 
+                  <div class="slds-form-element__row" style="padding: 10px;"> 
+                                         
+                      <lightning:layout>
+                          <lightning:layoutItem size="3">
+                              <input type="file" accept=".csv" class="file" aura:id="file1" onchange=""/>
+                          </lightning:layoutItem>
+                          <lightning:layoutItem size="3">
+                              <lightning:button label="Bulk Renewal Request Upload" onclick="{!c.bulkUploadRenewal}" class="slds-button slds-button--brand btn_table"/>
+                              
+                          </lightning:layoutItem>
+                      </lightning:layout> <br/>
+                      <div style="margin-bottom:5px;">
+                          <b>Note:</b> Please use the standard template to upload data. <a onclick="{!c.DownloadTemplateRenewal}">Click here</a> to download the template.
+                      </div>  
+                  </div>                 
+                  
+              </aura:if>
+        </div>
+            
+            
+        </lightning:tab>
+       </aura:if>
+        
+        
+    </lightning:tabset>
+    </div>
+    
+</aura:component>

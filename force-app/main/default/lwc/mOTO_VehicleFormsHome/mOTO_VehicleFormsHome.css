@@ -1,0 +1,37 @@
+.inspectionTab{
+	background: #fff;
+	padding: .5rem;
+}
+.opp_list{
+	position: relative;
+	display: flex;
+	gap:1rem;
+	flex-wrap: wrap;
+	margin-top: 1rem;
+  }
+  .opp_list .box_opp{
+	position: relative;
+	width: 32%;
+	display: inline-block;
+	border: 1px solid #ddd;
+	cursor: pointer;
+	padding: 1rem;
+	text-align: center;
+	background-image: linear-gradient(to right,rgb(255 255 255 / 90%),#ffffff);
+	font-size: 14px;
+	font-weight: bold;
+	border-radius: 5px;
+  }
+
+@media only screen and (max-width:992px){
+.main_section, .opp_list{
+	display: block;
+  }
+  
+  .main_section div, .opp_list .box_opp{
+	width: 100%;
+	padding: 1rem;
+	margin-bottom: 1rem;
+  
+  }
+}

@@ -1,0 +1,131 @@
+.SpinnerHolder{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: -3332px;
+    left: 0;
+}
+lightning-button.darkBtn {
+    --slds-c-button-brand-color-background: #dc452e;
+    --slds-c-button-brand-color-background-active: #dc452e;
+    --slds-c-button-brand-color-border: #dc452e;
+    --slds-c-button-brand-text-color: #fff;
+    --slds-c-button-brand-color-background-hover: #eb4026;
+    --slds-c-button-brand-color-border-hover: #eb4026;
+    
+}
+.header-text {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: -13px;
+    background-color: white;
+}
+.pointCheckForm{
+    background: #fff;
+    width: 80%;
+    margin: 0 auto;
+}
+.fieldHeader{
+    display: block;
+    font-size: 10px;
+    color: #5b6dad;
+    font-weight: 600;
+}
+.pointCheckForm p{
+    font-size: 12px;
+    font-weight: 600;
+}
+.pointCheckForm{
+    border-bottom:2px solid #f0f0f0 ;
+    padding: 0.75rem;
+}
+.pointCheckForm .slds-box{
+    border: none;
+    border-bottom: 2px solid #f0f0f0;
+    border-radius: 0;
+}
+.dataSection label{
+        width: 145px;
+    display: inline-block; 
+    vertical-align: top;
+}
+.dataSection div{
+    display: inline-block;
+    padding: 0;
+}
+h3.formHeader{
+    font-size: 1.5rem;;
+}
+.greenIcon button.slds-button.slds-button_icon.slds-button_icon-border.slds-is-selected {
+    background: #21873e !important;
+}
+.sldsicons.picUpload{
+    position: relative;
+}
+.sldsicons.picUpload .uploadImg{
+    width: 48px;
+    position: absolute;
+    top: 48px;
+    left: 46%;
+    cursor: pointer;
+}
+.gallery {
+width: 100%;
+position: relative;
+display: flex;
+gap: 1rem;
+overflow: auto;
+scroll-snap-type: x mandatory;
+margin-bottom: 1rem;
+}
+
+.gallery1 div {
+width: 100%;
+position: relative;
+flex-shrink: 0;
+object-fit: cover;
+scroll-snap-align: start;
+}
+.gallery1 {
+width: 100%;
+position: relative;
+display: flex !important;
+gap: 1rem;
+overflow: auto;
+scroll-snap-type: x mandatory;
+margin-bottom: 1rem;
+}
+
+.gallery div {
+width: 33.33%;
+position: relative;
+flex-shrink: 0;
+object-fit: cover;
+scroll-snap-align: start;
+}
+
+@media only screen and (max-width:992px){
+
+.dataSection label{
+    width: 115px;
+}
+.inspectionSummary canvas{
+    width: 100%;
+    }
+    .pointCheckForm{
+    width: 95%;
+}
+}
+
+@media only screen and (max-width:480px){
+.pointCheckForm{
+width: 100%;
+padding: 0.5rem !important;  
+}
+
+.dataSection div{
+    padding: 0;
+    width: 50%;
+    margin-bottom: 0.5rem;
+}
+}

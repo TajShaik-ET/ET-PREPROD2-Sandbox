@@ -1,0 +1,21 @@
+<aura:component access="global" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" > 
+    <aura:attribute name="lang" type="String" default="en" />
+    <aura:attribute name="url" type="String" />
+    <aura:attribute name="mainLogo" type="string" default="{!$Resource.ETST_EngLogo}" />
+    <aura:attribute name="language" type="string" default="" />
+    <aura:attribute name="english" type="string" default="English" />
+    <aura:attribute name="arabic" type="string" default="العربية" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:registerEvent name="Actionname" type="c:ET_LanguageSelectionEvt" />
+    <div class="countryselectdiv">
+        <div class="menudropdowndiv2">
+            <button class="dropmenubtn2"><img class="" src="{!v.mainLogo}" />  {!v.language} <img class="langdrop" src="{!$Resource.languagearrow}" /></button>
+            <div class="dropdown-content2">
+                <ul>
+                    <li><a href="{!v.url}" onclick="{!c.selectenLanguage}"><img class="" src="{!$Resource.ETST_EngLogo}" />{!v.english}</a></li>
+                    <li><a href="{!v.url}" onclick="{!c.selectarLanguage}"><img class="" src="{!$Resource.ETST_arabicLogo}"/>{!v.arabic}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</aura:component>

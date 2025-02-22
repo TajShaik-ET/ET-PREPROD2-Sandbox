@@ -1,0 +1,223 @@
+.report_main {
+    position: relative;
+    padding: 1rem;
+    max-width: 1024px;
+    margin: auto;
+    background: #f2f2f2;
+    min-height: calc(100vh - 146px);
+}
+
+/*.logoimg{
+        height: 50px;
+}*/
+.report_main h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    padding: .25rem 0;
+}
+
+.flex_div {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0rem 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.flex_div lightning-input,
+.flex_div lightning-textarea,
+.flex_div .uploaddiv,
+.flex_div lightning-combobox {
+    position: relative;
+    min-width: calc(50% - .5rem) !important;
+    max-width: calc(50% - .5rem) !important;
+    padding: 0;
+    margin-bottom: .5rem;
+}
+
+.uploaddiv,
+.stepdiv {
+    padding: .25rem 0;
+}
+
+.uploadedfile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .5rem;
+    padding: .5rem .5rem;
+    width: calc(50% - .5rem);
+    background: #ddd;
+    border-radius: 5px;
+    color: #000;
+}
+
+.uploadedfile .filename {
+    width: calc(100% - 40px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stepdiv p {
+    color: #000;
+}
+
+.stepdiv .redColour {
+    color: red;
+}
+
+.upload_div {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: .5rem;
+}
+
+.upload_file_inner_div,
+.file_name_uploaded {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.uploaded_file_section {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+div.btndiv {
+    text-align: center;
+}
+
+.newcasebtn {
+    color: #fff !important;
+    background: #0176d3;
+    padding: .5rem 1rem;
+    border: 1px solid #0176d3;
+    border-radius: 5px;
+    font-weight: 500;
+    text-transform: capitalize !important;
+    margin-left: .5rem;
+    text-decoration: none !important;
+}
+
+.search_div {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: .5rem;
+}
+
+.info_dynamic {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    padding: 1rem;
+    background: #fff;
+    margin-top: 1rem;
+    border-radius: 5px;
+}
+
+.info_dynamic .readonlydiv .valuetext {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.readonlydiv {
+    padding-bottom: .5rem;
+    border-bottom: 1px dotted #f2f2f2;
+}
+
+.logosdiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.logosdiv img.logoimg {
+    height: 60px;
+}
+
+.middiv {
+    background: #000;
+    height: 60px;
+    width: 1px;
+}
+.differentRowTxt{
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+}
+.differentRowTxt div{
+    width: 50%;
+}
+.differentRowTxt lightning-combobox,
+.differentRowTxt lightning-input,
+.differentRowTxt lightning-textarea,
+.differentRowTxt .uploaddiv,
+.differentRowTxt lightning-combobox {
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+.differentRowTxt lightning-textarea textarea{
+    min-height: 185px;
+}
+:host {
+   --sds-c-textarea-sizing-min-height: 185px;
+}
+@media only screen and (max-width:992px) {
+    .uploadedfile {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width:767px) {
+
+    .flex_div lightning-input,
+    .flex_div lightning-textarea,
+    .flex_div .uploaddiv,
+    .flex_div lightning-combobox {
+        position: relative;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        padding: 0;
+    }
+    .differentRowTxt{
+        display: block;
+    }
+     .differentRowTxt div{
+        width: 100%;
+    }
+}
+
+.file_upload_note {
+    font-size: 0.85rem;
+    color: #6c757d;
+    /* Gray color */
+    margin-top: 5px;
+}
+
+@media only screen and (max-width:767px) {
+
+    .logosdiv img.logoimg,
+    .middiv {
+        height: 40px;
+    }
+
+    .FullDescription {
+        height: 200px; /* Increase height */
+        resize: vertical; /* Allow resizing */
+    }
+    
+}

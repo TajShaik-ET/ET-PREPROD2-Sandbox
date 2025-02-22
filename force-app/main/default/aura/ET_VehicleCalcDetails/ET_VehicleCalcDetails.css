@@ -1,0 +1,50 @@
+.THIS.bgColor {
+    background-color:#00C299;
+    color: white;
+    padding: 10px;
+    border-radius:5px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid #00C299;
+    border-bottom: none;
+    width: 100%;
+    margin: auto;
+    text-align:left !important;
+    margin-bottom:15px;
+}
+ .THIS .vehicleCaclTable{
+    border:0; 
+}
+
+ .THIS .vehicleCaclTable th{
+    background-color:#00C299;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 0;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid #00C299;
+    border-bottom: none;
+}
+.THIS .innerTableHeader{
+    background-color: #EFEFEF;
+    color:#3D3D3D;
+    font-weight:700;
+}
+.THIS .innerTableHeader td div{
+    color: #000;
+    font-size: 13px;
+}
+.THIS .totalCost, .THIS .totalCost td, .THIS .totalCost:hover>td{
+    background-color: #BDBDBD !important;
+}
+.THIS .totalCost td div{
+    font-size: 13px;
+    color: #000;
+}
+.THIS .slds-table td{
+    padding: 12px;
+}
+.THIS.table-responsive{
+    overflow: auto;
+}

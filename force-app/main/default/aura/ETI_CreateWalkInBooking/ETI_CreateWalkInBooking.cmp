@@ -1,0 +1,733 @@
+<aura:component controller="ETI_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="searchKeyword" type="String" description="use for store user search input"/>
+    <aura:attribute name="isVehicleAvailable" type="Boolean" default="true" />
+    <aura:attribute name="isRegistrationDisabled" type="Boolean" default="true" />
+    <aura:attribute name="isOpen" type="Boolean" default="false" />
+    <aura:attribute name="showReg" type="Boolean" default="false" />
+    <aura:attribute name="isCreateService" type="Boolean" default="false" />
+    <aura:attribute name="vehicleId" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="PlateType" type="list"/>
+    <aura:attribute name="Platesource" type="list"/>
+    <aura:attribute name="Platecolor" type="list"/> 
+    <aura:attribute name="isVehicleCreated" type="Boolean" default="false" />
+    <aura:attribute name="VehicleInfoData" type="List" />
+    <aura:attribute name="wrapperObj" type="Object" />
+    <aura:attribute name="customerVehicle" type="ET_Customer_Vehicle__c" default="{'sObjectType':'ET_Customer_Vehicle__c','Name': '',}"/>
+    <aura:attribute name="booking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'','ETI_Pick_Up_Location__c':''}]"/>
+    <aura:attribute name="serviceLineItem" type="ETI_Service_Line_Item__c" default="{'sObjectType':'ETI_Service_Line_Item__c'}"/>
+    <aura:attribute name="isDataValidated" type="boolean" default="false" />
+    <aura:attribute name="isvehicleNotFound" type="boolean" default="false" />
+    <aura:attribute name="bookingHistory" type="ETI_Booking__c[]" />
+    <aura:attribute name="serviceType" type="list"/>
+    <aura:attribute name="testPurposeType" type="list"/>
+    <aura:attribute name="registrationTypeList" type="list" default="['Registered','Un-Registered']" />
+    <aura:attribute name="adfcaPermitOptions" type="list" default="['Abu dhabi Permit Vehicle','Non Abu dhabi Permit Vehicle']" />
+    <aura:attribute name="certificateServices" type="list"/>
+    <aura:attribute name="selectedCertificateServices" type="list"/>
+    <aura:attribute name="newColorList" type="String[]" />
+    <aura:attribute name="vehColorList" type="String[]" />
+    <aura:attribute name="newVehicleTypeList" type="String[]"/>
+    <aura:attribute name="isColorChange" type="boolean" default="false" />
+    <aura:attribute name="isFullPaint" type="boolean" default="false" />
+    <aura:attribute name="isVehicleTypeChange" type="boolean" default="false" />
+    <aura:attribute name="isVehicleType" type="boolean" default="false" />
+    <aura:attribute name="servicesMap" type="String[]"/>
+    <aura:attribute name="locationMap" type="String[]"/>
+    <aura:attribute name="servicesList1" type="List" />
+    <aura:attribute name="isAdfcaVehicle" type="boolean" default="false" />
+    <aura:attribute name="minDate" type="Date"  />
+    <aura:attribute name="todayDate" type="Date"  />
+    <aura:attribute name="tradeMinDate" type="Date"  />
+    <aura:attribute name="errorType" type="String" />
+    <aura:attribute name="errorMessage" type="String" />
+    <aura:attribute name="isMessgeExist" type="Boolean" default="false" />
+    <aura:attribute name="isShowFeeDetails" type="boolean" default="false" />
+    <aura:attribute name="errorService" type="boolean" default="false" />
+    <aura:attribute name="errorCertificateServices" type="boolean" default="false" />
+    <aura:attribute name="isBookingCreated" type="boolean" default="false" />
+    <aura:attribute name="isChassisExist" type="boolean" default="false" />
+    <aura:attribute name="isOnPremisePayment" type="boolean" default="false" />
+    <aura:attribute name="selectedTabId" type="String" />
+    <aura:attribute name="startDate" type="Date"/>
+    <aura:attribute name="endDate" type="Date"/>
+    <aura:attribute name="maxDateErrmsg" type="Date"  />
+    <aura:attribute name="IsSpinner" type="Boolean" default="false" />
+    <aura:attribute name="isVerifyEnabled" type="boolean" default="false" />
+    <aura:attribute name="isClearEnabled" type="boolean" default="false" />
+    <aura:attribute name="isSaveEnabled" type="boolean" default="false" />
+    <aura:attribute name="isFeeExist" type="boolean" default="false" />
+    <aura:attribute name="vehicleServiceTypeValues" type="List"  />
+    <aura:attribute name="emirate" type="String" />
+    <aura:attribute name="selectedLocation" type="String" />
+    <aura:attribute name="selectedService" type="String" />
+    <aura:attribute name="laneTypes" type="List" />
+    <aura:attribute name="laneType" type="String" />
+    <aura:attribute name="errorVechileType" type="boolean" default="false" />
+    <aura:attribute name="errorPermissionIssuePlace" type="boolean" default="false" />
+    <aura:attribute name="errorPermissionIssuePlaceMsg" type="String" />
+	<aura:attribute name="permissionIssuePlaces" type="list"/> 
+    <aura:attribute name="isShowRemarks" type="boolean" default="false" />
+    <aura:attribute name="isCertificatesChanged" type="boolean" default="false"/>
+    <aura:attribute name="isShowVehicleDetails" type="boolean" default="false" />
+    <aura:attribute name="isSearchedVehicles" type="boolean" default="false" />
+	<aura:attribute name="permitPurposeList" type="List" />
+    <aura:attribute name="Servicepremise" type="List" default="['Visit ET Premises','WalkIn']" />
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:if isTrue="{!v.IsSpinner}">
+        <div class="slds-spinner_container">
+            <lightning:spinner variant="brand"  size="large" />
+        </div>
+    </aura:if>   
+    <div class="slds-page-header" style="border-bottom: 1px solid #dddbda; box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);">
+        <div class="slds-media">
+            <div class="slds-media__figure">
+                <lightning:icon iconName="standard:search" size="normal" alternativeText="Search icon"/>
+            </div>
+            <div class="slds-media__body">
+                <h1 class="slds-page-header__title slds-truncate slds-align-middle">Inspection Creation App</h1>
+                <p class="slds-text-body_small slds-line-height_reset">Search Vehicle by Chassis No or Plate No</p>
+            </div>
+        </div>
+    </div>
+    <lightning:card title="">
+        <div class="c-container" style="width: 100%" aura:id="sectionidblock">
+            <lightning:layout class="slds-button-group-row slds-p-horizontal_small" >
+                <lightning:layoutItem size="2" padding="around-xx-small" alignmentBump="left">
+                    <lightning:input value="{!v.searchKeyword}" required="false" placeholder="Search By Chassis or Plate No..."
+                                     variant="label-hidden" aura:id="searchField" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="" padding="around-xx-small" >
+                    <lightning:button onclick="{!c.doSearch}" variant="brand" label="Search" iconName="utility:search" /> 
+                </lightning:layoutItem>
+            </lightning:layout>
+            <div class="slds-card slds-has-bottom-magnet" >
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col errorSave" style="max-width: 100%">
+                        <aura:if isTrue="{!v.isMessgeExist}" >
+                            <c:ETI_MessageComponent message="{!v.errorMessage}" type="{!v.errorType}" />
+                            <!--c:ETI_MessageComponent message="There is no Vehicle found with searched details, please create a new vehicle." type="info" /-->
+                        </aura:if>
+                    </div>
+                </div>
+            </div>
+            <lightning:layout>
+                <lightning:layoutItem class="leftSectn" flexibility="auto" padding="around-small" >
+                    <lightning:tabset selectedTabId="{!v.selectedTabId}" variant="scoped">
+                        <div class="custom-box" style="width: 100%">
+                            <div class="slds-card slds-has-bottom-magnet" >
+                                <lightning:tab label="Vehicle Details" id="Vehicle" class="vehicleDetails">
+                                    <div style="float: right;">
+                                        <lightning:button variant="brand" type="submit" name="get" label="Verify" onclick="{!c.getVerifiedData}" disabled="{!!and(v.isVerifyEnabled,v.wrapperObj.customerVehicle.Registration_Type__c!='Un-Registered')}" />
+                                        <lightning:button variant="brand" type="clear" name="clear" label="Clear" onclick="{!c.clearVerifiedData}" disabled="{!!v.isClearEnabled}" />
+                                    </div><br/><br/>
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="Registration_Type">
+                                            <lightning:select aura:id='fieldId' label="Registration Type" name="Registration Type" value="{!v.wrapperObj.customerVehicle.Registration_Type__c}" onchange="{!c.regTypeChange}" 
+                                                              disabled="{!and(v.wrapperObj.customerVehicle.Registration_Type__c!='',v.customerVehicle.Registration_Type__c!=null)}" required="true" >     
+                                                <option value="">--Select--</option>
+                                                <aura:iteration items="{!v.registrationTypeList}" var="type">
+                                                    <option value="{!type}">{!type}</option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="Chassis_No">
+                                            <lightning:input aura:id='fieldId' Name="Chassis No" label ="Chassis No" value="{!v.wrapperObj.customerVehicle.Chassis_No__c}" onblur="{!c.getVerifiedDataByChassis}" required="true" onchange="{!c.convertToUpperCase}"
+                                                             disabled="{!or(and(v.wrapperObj.customerVehicle.Chassis_No__c!=null,v.isChassisExist),v.wrapperObj.customerVehicle.Registration_Type__c=='')}" />
+                                        </div>
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="ET_Vehicle_type">
+                                            <lightning:select label="Vehicle Service Type" aura:id="fieldId" name="Vehicle Service Type" onchange="{!c.handleOnETIServiceType}"
+                                                              value="{!v.wrapperObj.customerVehicle.ET_Vehicle_type__c}" required="true" >      
+                                                <option value="">--None--</option>
+                                                <aura:iteration items="{!v.vehicleServiceTypeValues}" var="ser">
+                                                    <option value="{!ser}" name="{!ser}">{!ser}</option>  
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <aura:if isTrue="{!v.wrapperObj.customerVehicle.Registration_Type__c=='Registered'}">
+                                            <div class="slds-col--padded slds-size--4-of-12" aura:Id="Plate_No">
+                                                <lightning:input aura:id='fieldId' value="{!v.wrapperObj.customerVehicle.Plate_No__c}" Name="Plate No" label ="Plate No" onblur="{!c.handleOnPlatCombinationChange}" disabled="{!or(v.wrapperObj.customerVehicle.Registration_Type__c=='Un-Registered',v.wrapperObj.customerVehicle.Registration_Type__c=='')}"/>
+                                            </div>
+                                            <div class="slds-col--padded slds-size--4-of-12" aura:Id="Plate_Source">
+                                                <lightning:select label="Plate Source" aura:id="fieldId" name="Plate Source" value="{!v.wrapperObj.customerVehicle.Plate_Source__c}"
+                                                                  onchange="{!c.handleOnPlatCombinationChange}" disabled="{!or(v.wrapperObj.customerVehicle.Registration_Type__c=='Un-Registered',v.wrapperObj.customerVehicle.Registration_Type__c=='')}" >      
+                                                    <option value="">--None--</option>
+                                                    <aura:iteration items="{!v.Platesource}" var="Psource">
+                                                        <option value="{!Psource.value}"  name="{!Psource.value}">{!Psource.value}</option>
+                                                    </aura:iteration>
+                                                </lightning:select>
+                                            </div>
+                                            <div class="slds-col--padded slds-size--4-of-12" aura:Id="Plate_Type">
+                                                <lightning:select label="Plate Type" aura:id="fieldId" name="Plate Type" value="{!v.wrapperObj.customerVehicle.Plate_Type__c}" 
+                                                                  onchange="{!c.handleOnPlatCombinationChange}" disabled="{!or(v.wrapperObj.customerVehicle.Registration_Type__c=='Un-Registered',v.wrapperObj.customerVehicle.Registration_Type__c=='')}" >      
+                                                    <option value="">--None--</option>
+                                                    <aura:iteration items="{!v.PlateType}" var="PType">
+                                                        <option value="{!PType.value}" name="{!PType.value}" >{!PType.value}</option>
+                                                    </aura:iteration>
+                                                </lightning:select>
+                                            </div>
+                                            <div class="slds-col--padded slds-size--4-of-12" aura:Id="Plate_Color">
+                                                <lightning:select label="Plate Color" aura:id="fieldId" name="Plate Color" value="{!v.wrapperObj.customerVehicle.Plate_Color__c}" 
+                                                                  onchange="{!c.handleOnPlatCombinationChange}" disabled="{!or(v.wrapperObj.customerVehicle.Registration_Type__c=='Un-Registered',v.wrapperObj.customerVehicle.Registration_Type__c=='')}" >      
+                                                    <option value="">--None--</option>
+                                                    <aura:iteration items="{!v.Platecolor}" var="Pcolor">
+                                                        <option value="{!Pcolor.value}" name="{!Pcolor.value}">{!Pcolor.value}</option>  
+                                                    </aura:iteration>
+                                                </lightning:select>
+                                            </div>
+                                            <div class="slds-col--padded slds-size--4-of-12" aura:Id="Vehicle_Make">
+                                                <lightning:input aura:id='fieldId' value="{!v.wrapperObj.customerVehicle.Vehicle_Make__c}" Name="Vehicle Make" label ="Vehicle Make" disabled="{!or(v.wrapperObj.customerVehicle.Registration_Type__c=='Un-Registered',v.wrapperObj.customerVehicle.Registration_Type__c=='')}"/>
+                                            </div>
+                                            <div class="slds-col--padded slds-size--4-of-12" aura:Id="Vehicle_Model">
+                                                <lightning:input aura:id='fieldId' value="{!v.wrapperObj.customerVehicle.Vehicle_Model__c}" Name="Vehicle Model" label ="Vehicle Model" disabled="{!or(v.wrapperObj.customerVehicle.Registration_Type__c=='Un-Registered',v.wrapperObj.customerVehicle.Registration_Type__c=='')}"/>
+                                            </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.wrapperObj.customerVehicle.Registration_Type__c eq 'Un-Registered'}">
+                                            <div class="{!v.wrapperObj.customerVehicle.Registration_Type__c!='Un-Registered'? 'slds-col--padded slds-size--4-of-12 slds-hide': 'slds-col--padded slds-size--4-of-12'}" aura:Id="Engine_No">
+                                                <lightning:input aura:id='fieldId' value="{!v.wrapperObj.customerVehicle.Engine_No__c}" Name="Engine No" 
+                                                                 label ="Engine No" required="true"/>
+                                            </div>
+                                            <div class="{!v.wrapperObj.customerVehicle.Registration_Type__c!='Un-Registered'? 'slds-col--padded slds-size--4-of-12 slds-hide': 'slds-col--padded slds-size--4-of-12'}" aura:Id="Vehicle_Year">
+                                                <lightning:input aura:id='vehicleYear' value="{!v.wrapperObj.customerVehicle.Vehicle_Year__c}" Name="Model Year" maxlength="4" minlength="4" pattern="[0-9]*"
+                                                                 label ="Model Year" onblur="{!c.validateModelYear}" required="true"/>
+                                            </div>
+                                            <div class="{!v.wrapperObj.customerVehicle.Registration_Type__c!='Un-Registered'? 'slds-col--padded slds-size--4-of-12 slds-hide': 'slds-col--padded slds-size--4-of-12'}" aura:Id="Custom_Number">
+                                                <lightning:input aura:id='fieldId' value="{!v.wrapperObj.customerVehicle.Custom_Number__c}" Name="Custom Number" 
+                                                                 label ="Custom Number" required="true"/>
+                                            </div>                                        
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.wrapperObj.customerVehicle.Registration_Type__c=='Registered'}">
+                                            <div class="slds-col--padded slds-size--4-of-12" aura:Id="Custom_Number">
+                                                <lightning:input aura:id='fieldId' type="date" value="{!v.wrapperObj.customerVehicle.Registration_Expiry_Date__c}" Name="Registration Expiry Date" 
+                                                                 label ="Registration Expiry Date" disabled="{!v.isRegistrationDisabled}"/>
+                                            </div>
+                                        </aura:if>
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="ETI_Vehicle_Type">
+                                            <c:ETI_Lookup objectAPIName="ETI_Vehicle_Type__c" label="Vehicle Type" returnFields="['Name']" selectedId="{!v.wrapperObj.customerVehicle.Vehicle_Type_Code__c}"
+                                                          queryFields="['Name']" selectedName="{!v.wrapperObj.customerVehicle.Vehicle_Type__c}" filter="CreatedDate > 2001-01-01T00:00:01Z"/>
+                                            <aura:if isTrue="{!and(v.errorVechileType,v.wrapperObj.customerVehicle.Vehicle_Type__c=='')}">
+                                                <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">This field is required</div>
+                                            </aura:if> 
+                                        </div>
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="Vehicle_Color_Code1">
+                                            <lightning:select aura:id="fieldId"  label="Vehicle Color1" name="Vehicle Color1" 
+                                                              value="{!v.wrapperObj.customerVehicle.Vehicle_Color_Code1__c}" >      
+                                                <option value="">Select Color</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code2__c,color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code3__c),color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code4__c)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <aura:if isTrue="{!v.wrapperObj.customerVehicle.Registration_Type__c!='Registered'}">
+                                            <div class="slds-col--padded slds-size--4-of-12" aura:Id="Vehicle_Color_Code2">
+                                                <lightning:select aura:id="fieldId"  label="Vehicle Color2" name="Vehicle Color2" 
+                                                                  value="{!v.wrapperObj.customerVehicle.Vehicle_Color_Code2__c}" >      
+                                                    <option value="">Select Color</option>
+                                                    <aura:iteration items="{!v.newColorList}" var="color">
+                                                        <aura:if isTrue="{!and(and(color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code1__c,color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code3__c),color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code4__c)}">
+                                                            <option value="{!color.id}">{!color.name}</option>
+                                                        </aura:if>
+                                                    </aura:iteration>
+                                                </lightning:select>
+                                            </div>
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.wrapperObj.customerVehicle.Registration_Type__c=='Registered'}">
+                                            <div class="slds-col--padded slds-size--4-of-12" aura:Id="Vehicle_Color_Code2">
+                                                <lightning:select aura:id="fieldId"  label="Vehicle Color2" name="Vehicle Color2" 
+                                                                  value="{!v.wrapperObj.customerVehicle.Vehicle_Color_Code2__c}" >      
+                                                    <option value="">Select Color</option>
+                                                    <aura:iteration items="{!v.newColorList}" var="color">
+                                                        <aura:if isTrue="{!and(and(color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code1__c,color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code3__c),color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code4__c)}">
+                                                            <option value="{!color.id}">{!color.name}</option>
+                                                        </aura:if>
+                                                    </aura:iteration>
+                                                </lightning:select>
+                                            </div>
+                                        </aura:if>
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="Vehicle_Color_Code3">
+                                            <lightning:select aura:id="fieldId"  label="Vehicle Color3" name="Vehicle Color3" 
+                                                              value="{!v.wrapperObj.customerVehicle.Vehicle_Color_Code3__c}" >      
+                                                <option value="">Select Color</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code1__c,color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code2__c),color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code4__c)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="Vehicle_Color_Code4">
+                                            <lightning:select aura:id="fieldId"  label="Vehicle Color4" name="Vehicle Color4" 
+                                                              value="{!v.wrapperObj.customerVehicle.Vehicle_Color_Code4__c}" >      
+                                                <option value="">Select Color</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code1__c,color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code2__c),color.id!=v.wrapperObj.customerVehicle.Vehicle_Color_Code3__c)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </div>
+                                </lightning:tab>
+                                
+                                <lightning:tab label="Booking History" id="bookingHistory" class="bookingHistory">
+                                    <article class="slds-card custometable">            
+                                        <table class="slds-table slds-max-medium-table--stacked-horizontal">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"><span class="slds-truncate">Name</span></th>
+                                                    <th scope="col"><span class="slds-truncate">Service Type</span></th>
+                                                    <th scope="col"><span class="slds-truncate">Location</span></th>
+                                                    <th scope="col"><span class="slds-truncate">Status</span></th>
+                                                    <th scope="col"><span class="slds-truncate">Test Result</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <aura:iteration items="{!v.bookingHistory}" var="bkng" indexVar="index">
+                                                    <tr>
+                                                        <td>
+                                                            <lightning:formattedUrl value="{!'/one/one.app#/sObject/'+bkng.Id+'/view'}" title="{!bkng.Id}" label="{!bkng.Name}" target="_blank" />
+                                                        </td>
+                                                        <td>{!bkng.Service_Type__c}</td>
+                                                        <td>{!bkng.ET_Location__r.Name}</td>
+                                                        <td>{!bkng.Booking_Status__c}</td>
+                                                        <td>{!bkng.Test_Result__c}</td>
+                                                    </tr>
+                                                </aura:iteration>
+                                            </tbody>     
+                                        </table>
+                                        <aura:if isTrue="{!empty(v.bookingHistory)}">
+                                            <br></br><br></br>
+                                            <div class="slds-notify slds-notify_alert slds-theme_warning slds-float_none" role="alert" >
+                                                <h2 style="text-align:right">There are no records to display.</h2>
+                                            </div>
+                                            <br></br><br></br>
+                                        </aura:if>
+                                    </article>
+                                </lightning:tab>
+                            </div>
+                        </div>
+                    </lightning:tabset>
+                </lightning:layoutItem>
+                <lightning:layoutItem class="rightSectn" flexibility="auto" padding="around-small" >
+                    <div class="custom-box" style="width: 100%">
+                        <fieldset class="slds-box slds-theme--default slds-container--large" style="margin-top:-30px;">
+                            <legend id="newaccountform" class="slds-text-heading--small slds-p-vertical--large"><b>Customer Details</b></legend>
+                            <div class="slds-card slds-has-bottom-magnet" style="margin-top:-30px;">
+                                <div class="slds-col">
+                                    <lightning:input aura:id='fieldId' Name="Customer Name" label ="Customer Name" value="{!v.wrapperObj.customerVehicle.Customer_Name__c}" required="true" maxlength="50" />
+                                </div>
+                                <div class="slds-col">
+                                    <lightning:select aura:id='fieldId' label="Preferred Language" name="Preferred Language" value="{!v.wrapperObj.customerVehicle.Preferred_Language__c}" required="true" >
+                                        <option value="English">English</option>
+                                        <option value="Arabic">Arabic</option>
+                                    </lightning:select>
+                                </div>
+                                <div class="slds-col" >
+                                    <lightning:input aura:id='customerPhone' type="text" value="{!v.wrapperObj.booking.Mobile_No__c}" Name="Phone/Mobile" label ="Phone/Mobile" placeholder="971XX XXX XXXX" onblur="{!c.onMobileChange}"
+                                                     maxlength="12" required="true" />
+                                </div>
+                                <div class="slds-col" >
+                                    <lightning:input  type="email" aura:id='fieldId' value="{!v.wrapperObj.customerVehicle.Customer_Email__c}" Name="Email" label ="Email" placeholder="customer@domain.com" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout >
+                <lightning:layoutItem class="leftSectn" flexibility="auto" padding="around-small" >
+                    <div class="custom-box" style="width: 100%">
+                        <fieldset class="slds-box slds-theme--default slds-container--large" style="margin-top:-30px;">
+                            <legend id="newaccountform" class="slds-text-heading--small slds-p-vertical--large"><b>Inspection Request</b></legend>
+                            <div class="slds-card slds-has-bottom-magnet" style="margin-top:-30px;">
+                                <aura:if isTrue="{!v.wrapperObj.booking.Service_Type__c=='Certificate'}" >
+                                    <div style="float: right;">
+                                        <lightning:button variant="brand" type="remark" name="remark" label="Remark" onclick="{!c.showRemarks}" disabled="{!or(v.wrapperObj.booking.Selected_Services_Code__c=='',v.wrapperObj.booking.Selected_Services_Code__c==null)}" />
+                                    </div><br/><br/>
+                                </aura:if>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col--padded slds-size--4-of-12" aura:Id="ET_Location">
+                                        <lightning:select aura:id="fieldId"  label="Location" name="Location" value="{!v.wrapperObj.booking.ET_Location__c}" required="true" 
+                                                          onchange="{!c.locationChange}" ><!-- onchange="{!c.getLaneDetails}"-->
+                                            <option value="">--Select--</option>
+                                            <aura:iteration items="{!v.locationMap}" var="loc">
+                                                <option value="{!loc.id}" selected="{!loc.id==v.wrapperObj.booking.ET_Location__c}">{!loc.name}</option>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </div>
+                                    <div class="slds-col--padded slds-size--4-of-12" aura:Id="Service_Type">
+                                        <lightning:select aura:id='fieldId' label="Service Type" name="Service Type" value="{!v.wrapperObj.booking.Service_Type__c}"  
+                                                          onchange="{!c.serviceTypeChange}" disabled="{!or(v.wrapperObj.booking.ET_Location__c=='',v.wrapperObj.booking.ET_Location__c==null)}" required="true" >      
+                                            <option value="">--Select--</option>
+                                            <aura:if isTrue="{!v.emirate!='Fujairah'}">
+                                                <aura:iteration items="{!v.serviceType}" var="status">
+                                                    <option value="{!status}">{!status}</option>
+                                                </aura:iteration>
+                                                <option value="ADFCA">ADFCA</option>
+                                                <aura:set attribute="else">
+                                                    <option value="Police Inspection">Police Inspection</option>
+                                                </aura:set>
+                                            </aura:if>
+                                        </lightning:select>
+                                    </div>
+                                    <div class="slds-col--padded slds-size--4-of-12" aura:Id="Selected_Services_Code">
+                                        <aura:if isTrue="{!v.wrapperObj.booking.Service_Type__c=='Certificate'}" >
+                                            <div class="selectserv">
+                                                <label>Select Service</label>
+                                                <c:ETI_MultiSelect servicesList="{!v.certificateServices}" selectedServices="{!v.wrapperObj.booking.Selected_Services_Code__c}" isCertificatesChanged="{!v.isCertificatesChanged}" wrapperObj="{!v.wrapperObj}" isWalkinBooking="true" 
+                                                                   isColorChangeSelected="{!v.isColorChange}" isFullPaintSelected="{!v.isFullPaint}" isVehicleTypeChangeSelected="{!v.isVehicleTypeChange}" errorCertificateService="{!v.errorCertificateServices}" />
+                                                <aura:if isTrue="{!v.errorCertificateServices}">
+                                                    <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">This field is required</div>
+                                                </aura:if> 
+                                            </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.wrapperObj.booking.Service_Type__c=='Police Inspection'}" >
+                                            <lightning:select aura:id="fieldId" label="Select Service" name="Select Service" value="{!v.wrapperObj.booking.Selected_Services_Code__c}" 
+                                                              onblur="{!c.getLaneDetails}" required="true" disabled="{!or(or(v.wrapperObj.booking.Service_Type__c=='',v.wrapperObj.booking.Service_Type__c==null),v.isAdfcaVehicle)}" >
+                                                <aura:if isTrue="{!or(v.wrapperObj.booking.Selected_Services_Code__c==null,v.wrapperObj.booking.Selected_Services_Code__c=='')}">
+                                                    <option value="">--Select--</option>
+                                                </aura:if>
+                                                <aura:iteration items="{!v.servicesMap}" var="service">
+                                                    <option value="{!service.Id}" selected="{!service.Id==v.wrapperObj.booking.Selected_Services_Code__c}">{!service.Name}</option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </aura:if>
+                                        <aura:if isTrue="{!or(or(v.wrapperObj.booking.Service_Type__c==null,v.wrapperObj.booking.Service_Type__c==''),v.wrapperObj.booking.Service_Type__c=='ADFCA')}" >
+                                            <lightning:select aura:id="fieldId" label="Select Service" name="Select Service" disabled="true" value="" >      
+                                                <option value="">--Select--</option>
+                                            </lightning:select>
+                                        </aura:if>
+                                    </div>
+                                    <div class="slds-col--padded slds-size--4-of-12" aura:Id="Purpose_Type">
+                                        <lightning:select aura:id='fieldId' label="Purpose Type" name="Purpose Type" value="{!v.wrapperObj.booking.Purpose_Type__c}" 
+                                                          disabled="{!or(v.wrapperObj.booking.Service_Type__c==null,v.wrapperObj.booking.Service_Type__c=='')}" required="true" >    
+                                            <option value="">--Select--</option>
+                                            <aura:iteration items="{!v.testPurposeType}" var="purpose">
+                                                <option value="{!purpose.id}" selected="{!purpose.id==v.wrapperObj.booking.Purpose_Type__c}">{!purpose.name}</option>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </div>
+                                    <div class="slds-col--padded slds-size--4-of-12" aura:Id="Booking_Date">
+                                        <lightning:input aura:id="fieldId" label="Booking Date" name="Booking Date" type="date" format="YYYY-MM-DD" min="{!v.minDate}" 
+                                                         value="{!v.wrapperObj.booking.Booking_Date__c}" messageWhenRangeOverflow="{!'Value must be ' + v.maxDateErrmsg}" required="true" />
+                                    </div>
+                                    <aura:if isTrue="{!!empty(v.laneTypes)}">
+                                        <div class="{!empty(v.laneTypes)? 'slds-col--padded slds-size--4-of-12 slds-hide': 'slds-col--padded slds-size--4-of-12'}" aura:Id="Allocated_Lane">
+                                            <lightning:select aura:id='fieldId' label="Lane Type"  name="Lane Type" disabled="{!or(or(v.wrapperObj.booking.Selected_Services_Code__c==null,v.wrapperObj.booking.Selected_Services_Code__c==''),empty(v.laneTypes))}"
+                                                              value="{!v.wrapperObj.booking.Allocated_Lane__c}" onchange="{!c.getFeeDetails}" required="true" >      
+                                                <option value="">--Select--</option>   
+                                                <aura:iteration items="{!v.laneTypes}" var="type">
+                                                    <option value="{!type.id}">{!type.name}</option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!v.isAdfcaVehicle}">
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="Trade_License_Number">
+                                            <lightning:input type="text" name="Trade License Number" label="Trade License Number" placeholder="" disabled="{!!v.isAdfcaVehicle}"
+                                                             aura:id="tradeLicenseNumber" value="{!v.wrapperObj.customerVehicle.Trade_License_Number__c}" required="true"/>
+                                        </div>
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="Trade_License_Expiry_Date">
+                                            <lightning:input type="date" name="Trade License Expiry Date" label="Trade License Expiry Date" format="YYYY-MM-DD" disabled="{!!v.isAdfcaVehicle}"
+                                                             aura:id="tradeLicenseDate" value="{!v.wrapperObj.customerVehicle.Trade_License_Expiry_Date__c}" min="{!v.tradeMinDate}" onchange="{!c.tradeLicenseValidation}" required="true"/>
+                                        </div>
+                                        <div class="slds-col--padded slds-size--4-of-12" aura:Id="Permission_Issue_Place">
+                                            <lightning:select aura:id='permissionIssuePlace' label="Permission Issue Place"  name="Permission Issue Place" disabled="{!!v.wrapperObj.isPermissionIssuePlaceMissing}"
+                                                              value="{!v.wrapperObj.customerVehicle.Permission_Issue_Place__c}" class="{!v.errorPermissionIssuePlace?'slds-form-element slds-has-error':''}" onchange="{!c.getFeeDetails}">      
+                                                <option value="">--Select--</option>
+                                                <aura:iteration items="{!v.permissionIssuePlaces}" var="option">
+                                                    <option text="{!option.label}" value="{!option.label}" selected="{!option.selected}"/>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                            <aura:if isTrue="{!and(v.errorPermissionIssuePlace,v.wrapperObj.customerVehicle.Permission_Issue_Place__c=='')}">
+                                                <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.errorPermissionIssuePlaceMsg}</div>
+                                            </aura:if> 
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!or(and(v.wrapperObj.customerVehicle.Registration_Type__c=='Un-Registered',v.isFullPaint),v.isColorChange)}">
+                                        <div class="slds-col--padded slds-size--4-of-12" >
+                                            <lightning:select aura:id="fieldId"  label="New Color1" name="New Color1" disabled="{!!or(v.isColorChange,v.isFullPaint)}"
+                                                              value="{!v.wrapperObj.newColor}" required="true" >      
+                                                <option value="">Select Color</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=v.wrapperObj.newColor2,color.id!=v.wrapperObj.newColor3),color.id!=v.wrapperObj.newColor4)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <div class="slds-col--padded slds-size--4-of-12" >
+                                            <lightning:select aura:id="fieldId"  label="New Color2" name="New Color2" 
+                                                              value="{!v.wrapperObj.newColor2}" disabled="{!!or(v.isColorChange,v.isFullPaint)}" >      
+                                                <option value="">Select Color</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=v.wrapperObj.newColor,color.id!=v.wrapperObj.newColor3),color.id!=v.wrapperObj.newColor4)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <div class="slds-col--padded slds-size--4-of-12" >
+                                            <lightning:select aura:id="fieldId" label="New Color3" name="New Color3" 
+                                                              value="{!v.wrapperObj.newColor3}" disabled="{!!or(v.isColorChange,v.isFullPaint)}" >      
+                                                <option value="">Select Color</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=v.wrapperObj.newColor2,color.id!=v.wrapperObj.newColor),color.id!=v.wrapperObj.newColor4)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!or(and(v.wrapperObj.customerVehicle.Registration_Type__c=='Un-Registered',v.isFullPaint),v.isColorChange)}">
+                                        <div class="slds-col--padded slds-size--4-of-12" >
+                                            <lightning:select aura:id="fieldId"  label="New Color4" name="New Color4" 
+                                                              value="{!v.wrapperObj.newColor4}" disabled="{!!or(v.isColorChange,v.isFullPaint)}" >      
+                                                <option value="">Select Color</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=v.wrapperObj.newColor2,color.id!=v.wrapperObj.newColor3),color.id!=v.wrapperObj.newColor)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </aura:if>
+                                    <div class="{!v.isVehicleTypeChange? 'slds-col--padded slds-size--4-of-12': 'slds-col--padded slds-size--4-of-12 slds-hide'}" >
+                                        <c:ETI_Lookup objectAPIName="ETI_Vehicle_Type__c" label="New Vehicle Type" returnFields="['Name', 'Type_Code__c']" selectedId="{!v.wrapperObj.newVehicleType}" isDiffrentIndex="true"
+                                                      queryFields="['Name', 'Type_Code__c']"  filter="CreatedDate > 2001-01-01T00:00:01Z"/>
+                                        <aura:if isTrue="{!and(v.errorVechileType,v.wrapperObj.customerVehicle.Vehicle_Type__c=='')}">
+                                            <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">This field is required</div>
+                                        </aura:if> 
+                                    </div>
+                                    <aura:if isTrue="{!v.isAdfcaVehicle}">
+                                        <div class="slds-col--padded slds-size--4-of-12" >
+                                            <lightning:select aura:id='fieldId' label="Permit Purpose"  name="Permit Purpose" disabled="{!or(v.wrapperObj.customerVehicle.Permission_Issue_Place__c==null,v.wrapperObj.customerVehicle.Permission_Issue_Place__c=='')}"
+                                                              value="{!v.wrapperObj.customerVehicle.Permit_Purpose_Code__c}" onchange="{!c.onPermitPurposeChange}" required="true" >      
+                                                <option value="">--Select--</option>
+                                                <aura:iteration items="{!v.wrapperObj.PermitPurposeList}" var="purpose">
+                                                    <option value="{!purpose.value}">{!purpose.label}</option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <div class="slds-col--padded slds-size--4-of-12" >
+                                            <lightning:input aura:id='fieldId' value="{!v.wrapperObj.customerVehicle.Items_Transported__c}" Name="Items Transported" label ="Items Transported" required="true" disabled="{!or(v.wrapperObj.customerVehicle.Permission_Issue_Place__c==null,v.wrapperObj.customerVehicle.Permission_Issue_Place__c=='')}" />
+                                        </div>
+                                    </aura:if>
+                                    <div class="slds-col--padded slds-size--4-of-12" >
+                                        <lightning:input aura:id='fieldId' value="{!v.wrapperObj.booking.KM_Reading__c}" Name="KM Reading" label ="KM Reading" required="true" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem class="rightSectn" flexibility="auto" padding="around-small" >
+                    <div class="custom-box" style="width: 100%">
+                        <fieldset class="slds-box slds-theme--default slds-container--large" style="margin-top:-30px;">
+                            <legend id="newaccountform" class="slds-text-heading--small slds-p-vertical--large"><b>Fee Details</b></legend>
+                            <div class="slds-card slds-has-bottom-magnet" style="margin-top:-30px;">
+                                <div style="float: right;">
+                                    <lightning:button variant="brand" type="Get Fee" name="Get Fee" label="Get Fee" onclick="{!c.getFeeDetails}" />
+                                </div><br/><br/>
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col">
+                                        <aura:if isTrue="{!!v.isCertificatesChanged}">
+                                        	<lightning:input class="feeInputwIcon" aura:id='totalFee' Name="Total Fee" label ="Total Fee" value="{!v.wrapperObj.totalFee}" disabled="true"/>
+                                        	<aura:set attribute="else">
+                                                <lightning:input class="feeInputwIcon" aura:id='totalFee' Name="Total Fee" label ="Total Fee" disabled="true"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>
+                                    <div class="slds-col feeDetailIcon">
+                                        <aura:if isTrue="{!!empty(v.wrapperObj.serviceLineItems)}">
+                                            <lightning:buttonIcon iconName="utility:new" onclick="{! c.showFeeDetails }"
+                                                                  alternativeText="Show Fees" value="{!inv}" class="showFeeBtn"/>
+                                        </aura:if>
+                                    </div> 
+                                </div>                                
+                                <div class="slds-col" >
+                                    <aura:if isTrue="{!!v.isCertificatesChanged}">
+                                    	<lightning:input class="feeInput" value="{!v.wrapperObj.totalTax}" Name="Total Tax" label ="Total Tax" disabled="true"/>
+                                		<aura:set attribute="else">
+                                            <lightning:input class="feeInput" Name="Total Tax" label ="Total Tax" disabled="true"/>
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                                <div class="slds-col" >
+                                    <aura:if isTrue="{!!v.isCertificatesChanged}">
+                                    	<lightning:input class="feeInput" value="{!v.wrapperObj.totalAmount}" Name="Total Amount" label ="Total Amount" disabled="true"/>
+                                		<aura:set attribute="else">
+                                    		<lightning:input class="feeInput" Name="Total Amount" label ="Total Amount" disabled="true"/>
+                               			</aura:set>
+                                    </aura:if>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout class="slds-button-group-row slds-p-horizontal_small" >
+                <lightning:layoutItem size="" padding="around-xx-small" alignmentBump="left">
+                    <lightning:button variant="brand" type="submit" name="save" label="Save" onclick="{!c.saveVehicleDetails}" 
+                                      disabled="{!v.isBookingCreated}" />
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+    </lightning:card>
+    <aura:if isTrue="{!v.isShowFeeDetails}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header modalHeader">
+                    <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeFeeDetails}"
+                                          alternativeText="close" variant="bare-inverse"
+                                          class="slds-modal__close feeDetailsModal"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Fee Details</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                    <table class="slds-table" style="display: inline-block; width: 100%; overflow: auto;">
+                        <thead >
+                            <tr class="tableHead">
+                                <th scope="col" ><span class="slds-truncate">Service Name</span></th>
+                                <th scope="col" ><span class="slds-truncate">Fee Amount</span></th>
+                                <th scope="col" ><span class="slds-truncate">Tax Amount</span></th>
+                                <th scope="col" ><span class="slds-truncate">Total Amount</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>            
+                            <aura:iteration items="{!v.wrapperObj.serviceLineItems}" var="service" indexVar="ivar">
+                                <tr >
+                                    <td >{!service.serviceItem.Service_Name__c}</td>
+                                    <td >{!service.serviceItem.Total_Fee__c}</td>
+                                    <td >{!service.serviceItem.Tax_Amount__c}</td>
+                                    <td >{!service.serviceItem.Fee_Amount__c}</td>
+                                </tr>
+                            </aura:iteration>
+                            <tr>
+                                <td ></td>
+                                <td ></td>
+                                <td ><b>Total Amount</b></td>
+                                <td >{!v.wrapperObj.totalAmount}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <footer class="slds-modal__footer modalFooter modalFooter">
+                    <lightning:button variant="brand" label="Cancel" title="Cancel" 
+                                      onclick="{! c.closeFeeDetails }" class="btnsave"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <aura:if isTrue="{!v.isShowVehicleDetails}"> 
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container selectVechiclePopup">
+                <header class="slds-modal__header modalHeader">
+                    <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeShowVehicles}"
+                                          alternativeText="close" variant="bare-inverse"
+                                          class="slds-modal__close feeDetailsModal"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Select Vehicle</h2>
+                </header> 
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                    <div class="slds-form-element" >
+                    <table class="slds-table slds-max-medium-table stacked-horizontal">
+                        <thead>
+                            <tr>
+                                <th scope="col paddingfirst">Select</th>
+                                <th scope="col"><span class="slds-truncate">Vehicle Number</span></th>
+                                <th scope="col"><span class="slds-truncate">Customer Name</span></th>
+                                <th scope="col"><span class="slds-truncate">Mobile No</span></th>
+                                <th scope="col"><span class="slds-truncate">Chassis No</span></th>
+                                <th scope="col"><span class="slds-truncate">Plate No</span></th>
+                                <th scope="col"><span class="slds-truncate">Plate Source</span></th>
+                                <th scope="col"><span class="slds-truncate">Plate Type</span></th>
+                                <th scope="col"><span class="slds-truncate">Plate Color</span></th>
+                                <th scope="col"><span class="slds-truncate">Type</span></th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.wrapperObj.customerVehicles}" var="veh" indexVar="index">
+                                <tr>
+                                    <td class="paddingfirst">
+                                        <label class="checkboxcontainer">
+                                            <lightning:input type="checkbox" label="" value="{!veh.vehicle.Id}" checked="{!veh.isSelected}" onchange="{!c.getSelectedVehicle}"/>
+                                        </label>
+                                    </td> 
+                                    <td>
+                                        <lightning:formattedUrl value="{!'/one/one.app#/sObject/'+veh.vehicle.Id+'/view'}" title="{!veh.vehicle.Id}" label="{!veh.vehicle.Name}" target="_blank" />
+                                    </td>
+                                    <td>{!veh.customerName}</td>
+                                    <td>{!veh.customerPhone}</td>
+                                    <td>{!veh.vehicle.Chassis_No__c}</td>
+                                    <td>{!veh.vehicle.Plate_No__c}</td>
+                                    <td>{!veh.vehicle.Plate_Source__c}</td>
+                                    <td>{!veh.vehicle.Plate_Type__c}</td>
+                                    <td>{!veh.vehicle.Plate_Color__c}</td>
+                                    <td>{!veh.vehicle.Registration_Type__c}</td>                             
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer modalFooter modalFooter">
+                    <lightning:button variant="brand" label="Close" title="Close" 
+                                      onclick="{! c.closeShowVehicles }" class="btnsave"/>
+                    <lightning:button variant="brand" label="Proceed" title="Proceed" 
+                                      onclick="{! c.proceedwithSelectedVehicle }" class="btnsave"/>
+                </footer>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->            
+    </aura:if> 
+    <aura:if isTrue="{!v.isShowRemarks}"> 
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header modalHeader">
+                    <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeRemarks}"
+                                          alternativeText="close" variant="bare-inverse"
+                                          class="slds-modal__close feeDetailsModal"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Remarks</h2>
+                </header> 
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                    <div class="slds-form-element" >
+                    <aura:iteration items="{!v.wrapperObj.serviceLineItems}" var="service" indexVar="ivar">
+                        <!--h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"><b>{!service.Service_Name__c}</b></h2-->
+                        <!--div class="slds-section__title"><b>{!service.serviceItem.Service_Name__c}</b></div-->
+                        <table style="overflow: auto;">
+                            <tr >
+                                <td >
+                                    <lightning:textarea class="textarea" label="{!service.serviceItem.Service_Name__c}" aura:id="Remark1" value="{!service.remarks}" />
+                                </td>
+                            </tr>
+                        </table>
+                    </aura:iteration>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer modalFooter modalFooter">
+                    <lightning:button variant="brand" label="Close" title="Close" 
+                                      onclick="{! c.closeRemarks }" class="btnsave"/>
+                </footer>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->            
+    </aura:if> 
+    <aura:if isTrue="{!v.isOnPremisePayment}">
+        <c:ETI_On_Premise_Payment recordId="{!v.recordId}" isClosePopup="{!v.isOnPremisePayment}" bookingId="{!v.wrapperObj.booking.Id}" isWalkinRequest="true"/>
+    </aura:if>
+    <br></br><br></br><br></br><br></br>
+</aura:component>

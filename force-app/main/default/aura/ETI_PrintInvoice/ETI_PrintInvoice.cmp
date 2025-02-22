@@ -1,0 +1,11 @@
+<aura:component controller="ETI_InvoiceCtrl" implements="force:hasRecordId,force:hasRecordId,force:lightningQuickAction" access="global">
+	<aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>  
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+
+    <aura:if isTrue="{!v.IsSpinner}">
+        <div class="slds-spinner_container">
+            <lightning:spinner variant="brand"  size="large" />
+        </div>
+    </aura:if>
+</aura:component>

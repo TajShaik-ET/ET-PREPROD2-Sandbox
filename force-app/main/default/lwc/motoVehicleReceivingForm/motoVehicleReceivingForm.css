@@ -1,0 +1,140 @@
+.lgc-bg {
+    background-color: rgb(242 242 242);
+
+    }
+    .SpinnerHolder{
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: -1245px;
+        left: 0;
+    }
+    .sldsCardStyile{
+        width: 218px;
+        
+    }
+    .img {
+    max-width: 100px;
+    height: 100px;
+    }
+    .header-text {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: -13px;
+    background-color: white;
+    }
+
+    .fieldHeader{
+    display: block;
+    font-size: 10px;
+    color: #5b6dad;
+    font-weight: 600;
+    }
+    .vehReceiveForm{
+    border-bottom:2px solid #f0f0f0 ;
+    }
+    .vehReceiveForm p{
+    font-size: 12px;
+    font-weight: 600;
+    }
+    .dataSection label{
+        width: 145px;
+    display: inline-block; 
+    vertical-align: top;
+    }
+    .dataSection div{
+    display: inline-block;
+    }
+    h3.formHeader{
+    font-size: 1.5rem;;
+    }
+    .greenIcon button.slds-button.slds-button_icon.slds-button_icon-border.slds-is-selected {
+    background: #21873e !important;
+    }
+    .sldsicons.picUpload{
+    position: relative;
+    }
+    .sldsicons.picUpload .uploadImg{
+    width: 48px;
+    position: absolute;
+    top: 48px;
+    left: 46%;
+    cursor: pointer;
+    }
+    .gallery {
+    width: 100%;
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    margin-bottom: 1rem;
+    }
+
+    .gallery1 div {
+    width: 100%;
+    position: relative;
+    flex-shrink: 0;
+    object-fit: cover;
+    scroll-snap-align: start;
+    }
+    .gallery1 {
+    width: 100%;
+    position: relative;
+    display: flex !important;
+    gap: 1rem;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    margin-bottom: 1rem;
+    }
+
+    .gallery div,  .gallery1 div  {
+    width: 110px;
+    position: relative;
+    flex-shrink: 0;
+    object-fit: cover;
+    scroll-snap-align: start;
+    }
+    .gallery div img,  .gallery1 div img{
+        object-fit: cover;
+        height: 100px;
+    }
+  
+.signature{
+    position: relative;
+    max-width:495px;
+    margin: auto;
+}
+.signature h2{
+    font-size: 16px;
+    text-align: center;
+}
+.signature p canvas{
+    border: 2px solid rgb(136, 135, 135);
+    border-radius: 10px;
+}
+.signature p lightning-button{
+    position: absolute;
+    right: 10px;
+    top: 32px;
+}
+
+    @media only screen and (max-width:992px){
+    .dataSection label {
+    width: 135px;
+    }
+   /*.inspectionSummary canvas{
+    width: 100%;
+    }*/
+    
+    }
+    
+    @media only screen and (max-width:480px){
+        .dataSection {
+    width: 100% !important;
+    }
+    
+    .dataSection label {
+    width: 140px;
+    }
+    }

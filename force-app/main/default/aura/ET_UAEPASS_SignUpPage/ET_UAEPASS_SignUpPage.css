@@ -1,0 +1,178 @@
+.THIS  #error {
+    text-align: center;
+    color:#FF0000;
+}
+.THIS .outer-div {
+    position: relative;
+}
+
+.THIS .spinner2 {
+    background-color: rgb(255 255 255 / 40%);
+    position: fixed;
+}
+
+.THIS .backBtn{
+    padding: 0.5rem;
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 5px;
+    top: 100%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.THIS .inputTxt{
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.THIS .inputTxtnew input{
+    padding: 5px 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.THIS .inputTxtnew label{
+    color: #000;
+}
+.THIS .sfdc_button{
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    width: 100%;
+    color:#fff !important; 
+    background-color:#000 !important;
+    margin-bottom: 1rem;
+    
+}
+.THIS .errorred{
+    color: red;
+    /*background: rgb(255 255 255 / 70%);*/
+    font-size: 24px;
+    padding: 1rem;
+    border-radius: 5px 5px 0 0;
+    padding-bottom: 0rem;
+    text-align:center;
+    width:100%;
+    display:block;
+}
+.THIS .errMsg{
+    color: #000;
+    /*background: rgb(255 255 255 / 70%);*/
+    font-size: 16px;
+    padding: 1rem;
+    border-radius: 0 0 5px 5px;
+    margin-top: 7rem;
+    margin-bottom: 5rem;
+    text-align: center;
+}
+.THIS .anchorTag a {    
+    color:#000;
+    font-weight:600;
+}
+.THIS .slds-button_brand{
+    background-color: #fff;
+    color: #826226;
+    border: 1px solid #826226;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: .5px;
+}
+.THIS .yesBtn{
+    color:#826226;
+    background-color: #fff; 
+    border: 1px solid #826226;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: .5px;
+}
+.THIS .noBtn{
+    background-color: #fff;
+    color: #826226;
+    border: 1px solid #826226;
+}
+.THIS .passtext{
+    color:#000;
+    text-align: center;
+    font-size: 16px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+.THIS .accounttext{
+    text-align: center;
+    font-size: 14px;color:#000;
+}
+.THIS .btnouter{
+    text-align: center;
+    margin-top: 45px;
+    display:flex;
+    justify-content: center;
+    gap: 10px;
+}
+.THIS .font14{
+    color:#000;
+    font-weight: 500;
+    text-align: left;
+    font-size: 14px;
+}
+.THIS .textcenter{
+    text-align:center;
+}
+.THIS .mt10{
+    margin-top: 10px
+}
+.THIS .mt60{
+    margin-top: 60px
+}
+.THIS .font16{
+    color:#000;
+    text-align: center;
+    font-size: 16px;
+    font-weight:600;
+}
+.THIS .errortext{
+    color:#FF0000;
+    padding:5px;
+}
+.THIS .white{
+    color:#fff;
+}
+.THIS .newanchor{
+    text-align:left;
+    color: #000;
+    margin-top: 10px
+}
+.THIS .notetext{
+    color: #000;
+    text-align: left;
+    font-size: 15px;
+    margin-top: 10px
+}
+.THIS .logintext{
+    color: #000;
+    font-weight:600;
+    font-size:14px;
+    text-decoration: underline;
+}
+.THIS .textcenter{
+    text-align:center;
+}
+.THIS .requesttext{
+    text-align: center;
+    font-size: 18px;
+    color:#000;
+}
+/*.THIS .notediv{
+background: rgb(255 255 255 / 90%);
+font-size: 20px;
+padding: 2rem;
+border-radius: 5px; 
+}*/
+@media(max-width:480px){
+    .THIS.outer-div { 
+        max-width: 300px;
+    }
+}

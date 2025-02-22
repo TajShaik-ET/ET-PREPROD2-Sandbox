@@ -1,0 +1,154 @@
+<aura:component extends="c:ETI_BilingualCommunity" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" controller="ETI_B2B_VehicleController" access="global" >
+    <aura:attribute name="VehicleList" type="List" />
+    <aura:attribute name="VehicleColumns" type="List"/>
+    <aura:attribute name="selectedRowsList" type="List" />
+    <aura:attribute name="vehId" type="String" />
+    <aura:attribute name="startDate" type="Date"/>
+    <aura:attribute name="endDate" type="Date"/>
+    <aura:attribute name="maxDate" type="Date"/>
+    
+    <!--Pagination-->
+    <aura:attribute name="allBookingData" type="List"/>
+    <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="12"/>
+    <aura:attribute name="totalPages" type="Integer" default="0"/>
+    <aura:attribute name="pageList" type="List"/>
+    <aura:attribute name="totalRecords" type="integer" default="0"/>
+    <aura:attribute name="recordStart" type="integer" default="0"/>
+    <aura:attribute name="recordEnd" type="integer" default="0"/>    
+    
+    <aura:registerEvent name="DataEvent" type="c:ETI_DataEvent"/>
+    <c:ETI_B2B_UtilityMethod aura:id="ETI_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{!v.IsSpinner}">
+        <lightning:spinner variant="brand"  size="large" />
+    </aura:if>
+    <lightning:layout class="sortdiv" >
+        <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+            <div class="custom-box">
+                <ui:inputDate aura:id="StartDateField" label="{!v.Start_Date}" value="{!v.startDate}" displayDatePicker="true" format="dd/MM/yyyy"/>          
+            </div> 
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+            <div class="custom-box">
+                <ui:inputDate aura:id="EndDateField" label="{!v.End_Date}" value="{!v.endDate}" displayDatePicker="true" format="dd/MM/yyyy"/>                               
+            </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem  padding="horizontal-medium" size="4" flexibility="auto" class="btnsubmitdiv">
+            <div class="custom-box btnposition" >
+                <lightning:button class=" SizeBtn blackBtn btnserach btn_table" label="{!v.Submit}" onclick="{!c.getBookingHistory}"/>
+                <lightning:button variant="brand" name="Back" label="{!v.Back}" onclick="{!c.cancelSave1}" class="btn_back"/>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout> 
+    <div aura:id="inspectionService" class="casesection" >
+        <aura:if isTrue="{!not(empty(v.VehicleList))}"> 
+            <aura:set attribute="else">
+                <br></br> <br></br>
+                <lightning:layout class="sortdiv" >
+                    <br></br><br></br><br></br>
+                    <div class="slds-notify slds-notify_alert slds-float_none" role="alert" >
+                        <h2 style="text-align:right;font-size: 18px;font-family: 'Cronos';">{!v.No_Records_Message}</h2>
+                    </div>
+                </lightning:layout>
+                <br></br><br></br>
+            </aura:set>
+            <div class="Vehiclebooking">
+                <aura:iteration items="{!v.VehicleList}" var="item">
+                    <div class="divpayment">
+                        <div class="successdiv">{!v.Chassis_No}/{!v.Plate_Combination}&nbsp;
+                            <aura:if isTrue="{!item.booking.Customer_Vehicle__r.Registration_Type__c != 'Registered'}">
+                                <strong class="headingChassis">{!item.booking.Chassis_No__c}</strong>
+                                <aura:set attribute="else">
+                                    <strong class="headingChassis"> {!item.booking.Customer_Vehicle__r.Plate_Color__c}-{!item.booking.Customer_Vehicle__r.Plate_No__c}</strong>  
+                                </aura:set>
+                            </aura:if>
+                        </div>
+                        <!--<img class="successpay" src="{!$Resource.ETST_payment}" />
+                        <div class="datailsdiv">Chassis No&nbsp;<strong>{!item.Chassis_No__c}</strong></div>-->
+                        <div class="historyBookingDetls">
+                            <div class="datailsdiv">{!v.Booking_Date}&nbsp;<strong>
+                                <ui:outputDate format="dd/MM/yyyy" value="{!item.booking.Booking_Date__c}"  /></strong>
+                            </div>
+                            <div class="datailsdiv">{!v.Booking_Id}&nbsp;<strong>{!item.booking.Name}</strong></div>
+                            <div class="datailsdiv">{!v.Service_Type}&nbsp;<strong>{!item.booking.Service_Type__c}</strong></div>
+                            <div class="datailsdiv mylocationctext">{!v.Location}&nbsp;<strong>{!item.booking.ET_Location__r.Name}</strong></div>
+                        </div>
+                        <div class="datailsdiv">{!v.Booking_Status}&nbsp;<strong>{!item.booking.Booking_Status__c}</strong>
+                        </div>
+                        <div class="datailsdiv">{!v.Test_Result}&nbsp;<strong>{!item.booking.Test_Result__c}</strong>
+                        </div>
+                        <aura:if isTrue="{!item.booking.Booking_Status__c ne 'Cancelled'}">
+                            <div class="datailsdiv" ><strong><lightning:formattedUrl value="{!'/apex/ETI_VehicleTestResult?Id='+item.booking.Encrypted_Id__c}" label="{!v.Test_Result}" target="_blank" /></strong>
+                                <span data-value="{!item.booking.Id}" onclick="{!c.openInvoicePdf}" class="spaninvoice">
+                                    <img class="slds-button"  title="Invoice" src="{!$Resource.ETI_Invoice}" />
+                                </span>
+                            </div>
+                            
+                        </aura:if>
+                        
+                        <!--aura:if isTrue="{!and(item.booking.Service_Type__c eq 'SPEA Inspection', item.downloadUrlk ne null)}">
+                        <div class="datailsdiv linkpad" ><strong><lightning:formattedUrl value="{!item.downloadUrlk}" label="{!v.Download}"  /></strong></div>
+                    </aura:if-->
+                    </div>
+                </aura:iteration>
+            </div>
+            <!-- Pagination Start Here -->
+            <aura:if isTrue="{!v.totalPages>1}">
+                <div class="pagination">
+                    <div class="slds-clearfix">
+                        <div class="slds-page-header" role="banner">
+                            <div class="slds-float_right">            
+                                <lightning:button label="{!v.First}" iconName="utility:left" iconPosition="left"
+                                                  onclick="{!c.onFirst}" disabled="{! v.currentPageNumber == 1}"/>
+                                <lightning:button iconName="utility:chevronleft" iconPosition="left"
+                                                  onclick="{!c.onPrev}" disabled="{! v.currentPageNumber == 1}"/>
+                                <span class="slds-p-horizontal_x-small">
+                                    <a onclick="{!c.processMe}" name="1" 
+                                       class="{! (v.currentPageNumber == 1) ? 'selected' : ''}">1</a>
+                                </span>
+                                <aura:if isTrue="{!and(v.totalPages>5,v.pageList[0]!=2)}">
+                                    <span class="slds-p-horizontal_xxx-small">
+                                        <a>...</a>
+                                    </span>
+                                </aura:if>
+                                <aura:iteration items="{!v.pageList}" var="item">
+                                    <span class="slds-p-horizontal_x-small">
+                                        <a onclick="{!c.processMe}" name="{!item}"
+                                           class="{! (v.currentPageNumber == item) ? 'selected' : ''}">{!item}</a>
+                                    </span>
+                                </aura:iteration>
+                                <aura:if isTrue="{!and(v.totalPages>5,v.totalPages-1!=v.pageList[4])}">
+                                    <span class="slds-p-horizontal_xxx-small">
+                                        <a>...</a>
+                                    </span>
+                                </aura:if>
+                                <aura:if isTrue="{!v.totalPages!=1}">
+                                    <span class="slds-p-horizontal_x-small">
+                                        <a onclick="{!c.processMe}" name="{!v.totalPages}"
+                                           class="{! (v.currentPageNumber == v.totalPages) ? 'selected' : ''}">{!v.totalPages}</a>
+                                    </span>
+                                </aura:if>
+                                <lightning:button iconName="utility:chevronright" iconPosition="right" 
+                                                  disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onNext}"/>
+                                <lightning:button label="{!v.Last}" iconName="utility:right" iconPosition="right" 
+                                                  disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onLast}"/>
+                            </div>
+                            <aura:if isTrue="{!v.v.clLang=='en'}">
+                                <p class="slds-page-header__title" style="color:#23527c;">{!v.recordStart}-{!v.recordEnd} {!v.of} {!v.totalRecords} | {!v.Page} {!v.currentPageNumber} {!v.of} {!v.totalPages}</p>
+                                <aura:set attribute="else">
+                                    <p class="slds-page-header__title" style="color:#23527c;">{!v.recordStart}-{!v.recordEnd} &nbsp; {!v.of} &nbsp; {!v.totalRecords} | {!v.Page} {!v.currentPageNumber} &nbsp; {!v.of} &nbsp; {!v.totalPages} </p>
+                                </aura:set>
+                            </aura:if>    
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            <!-- Pagination End Here -->
+        </aura:if>  
+        <!--div style="text-align:right">
+            <lightning:button variant="brand" name="Back" label="Back" onclick="{!c.cancelSave}" class="btn_back"/>
+        </div-->
+    </div>
+</aura:component>

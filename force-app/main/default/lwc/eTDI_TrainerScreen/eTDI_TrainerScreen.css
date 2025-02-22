@@ -1,0 +1,23 @@
+:host {
+    --slds-c-button-brand-color-background: #dc452e;
+  --slds-c-button-brand-color-background-active: #dc452e;
+  --slds-c-button-brand-color-border: #dc452e;
+  --slds-c-button-brand-text-color: #fff;
+  --slds-c-button-brand-color-background-hover: #eb4026; 
+  --slds-c-button-brand-color-border-hover: #eb4026;
+  --sds-c-button-radius-border: 20px;
+}
+
+.my-datatable .slds-checkbox--faux {
+  border: 1px solid #ccc !important;
+  border-color: blue !important;
+}
+.trainerData .dt-outer-container{
+  height: auto !important;
+  width: auto !important;
+}
+.slds-modal__container {
+  width: 80%;
+  min-width: 80%;
+  max-width: 80%;
+}

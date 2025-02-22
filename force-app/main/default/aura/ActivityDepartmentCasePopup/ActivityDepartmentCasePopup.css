@@ -1,0 +1,721 @@
+.THIS #location_search.slds-modal__container {
+    margin: 0 auto;
+    width: 100%!important;
+    max-width: 100%!important;
+    min-width: 100%!important;
+}
+
+.THIS #location_search.slds-modal__footer {
+    padding:1rem 1rem 1.2rem!important;
+}
+.THIS .slds-modal__footer{
+    border-radius: 0px 0px 10px 10px;
+}
+/*.THIS .documentmain .slds-grid {
+display:block;
+}*/
+.THIS .slds-modal__close {
+    outline: none;
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: .8rem;
+    right: .5rem;
+    box-shadow: none;
+    border: none;
+}
+/*
+.THIS .slds-has-error .slds-form-element__help {
+color: rgb(194, 57, 52);
+position: relative;
+float: left;
+display: none;
+} */
+.THIS .slds-modal__close .slds-button_icon-inverse{
+    color: rgb(0 0 0);
+}
+.THIS.selectsearch{
+    padding-bottom: .50rem;
+    width:250px;
+}
+.THIS .slds-checkbox .slds-checkbox_faux, .THIS .slds-checkbox .slds-checkbox--faux {   
+    border: 1px solid rgb(201, 199, 197);
+}
+.THIS .btbupdate{
+    background: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    color:#fff;
+    border-radius: 0px;
+    box-shadow: none;
+    font-size: 14px;
+    transition: .4s;
+    line-height: 18px;
+    padding: 5px 10px;    
+}
+.THIS .btbupdate:hover{
+    background: #fff;
+    border: 1px solid rgb(98 204 140);
+    color:rgb(98 204 140);
+}
+.THIS.more_action_popup .btn_close , .THIS .btn_close{
+    background: #fff;
+    border: 1px solid rgb(98 204 140);
+    color:rgb(98 204 140);
+    border-radius: 0px;
+    box-shadow: none;
+    text-transform: uppercase;
+    transition: all 0.4s;
+}
+.THIS.more_action_popup .btn_close:hover , .THIS .btn_close:hover{
+    background: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    color:#fff;
+}
+.THIS .slds-form-element_stacked:not(.slds-is-editing){
+    padding: 0rem;
+}
+.THIS .btbupdate:hover{
+    background: #fff;
+    border: 1px solid rgb(98 204 140);
+    color: rgb(98 204 140);
+}
+.THIS .actionButton {
+    background-color: #624500;
+    color: white;
+    border: 1px solid #624500;
+    box-shadow: none;
+    font-size: 14px;
+    transition:0.4s;
+    line-height: 18px;
+    padding: 5px 10px;
+}
+.THIS .actionButton:hover {
+    background-color: #fff;
+    color: #624500;
+    border: 1px solid #624500;
+    box-shadow: none;
+    transition:0.4s;
+}
+
+.THIS .emmergencyButton {
+    background-color: Red;
+    color: white;
+    border: 1px solid Red;
+    box-shadow: none;
+    font-size: 14px;
+    transition:0.4s;
+    line-height: 18px;
+    padding: 5px 10px;
+}
+.THIS .emmergencyButton:hover {
+    background-color: #fff;
+    color: Red;
+    border: 1px solid Red;
+    box-shadow: none;
+    transition:0.4s;
+}
+.THIS .maincantentdiv{
+    padding: 15px;
+    overflow: auto;
+}
+.THIS .Headingcontent{
+    font-size: 28px;
+    color: rgb(60 60 60);
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+.THIS .subheading{
+    font-size: 14px;
+    font-weight: 600;
+}
+.THIS .slds-gutters .slds-col {
+    padding-right: .75rem;
+    padding-left: .75rem;
+    width: 50%;
+    padding-bottom: .50rem;
+    display: inline-block;
+}
+.THIS .slds-gutters .slds-colrtl {
+    padding-right: .75rem;
+    padding-left: .75rem;
+    width: 50%;padding-bottom: .50rem;
+    display: inline-block;
+    direction:rtl;
+}
+.THIS .slds-gutters .slds-colrtl .slds-input__icon-group_right ,
+.THIS .slds-gutters .slds-colrtl  lightning-button-icon.slds-input__icon.slds-input__icon_right{
+    left: 2rem;
+    top: 50%;
+}
+.THIS .slds-gutters .slds-colrtl lightning-button-icon.slds-input__icon.slds-input__icon_right {
+    right: 85%;
+}
+.THIS .slds-gutters .slds-colrtl .slds-input__icon-group_right lightning-icon.slds-input__icon.slds-input__icon_right.slds-icon-utility-clock.slds-icon_container{
+    right: 100%!important;
+}
+/*.THIS .slds-form-element {
+margin-bottom: .5rem;
+}*/
+.THIS .selectsearch{
+    padding: 1rem;
+    background: #fff;
+    margin-bottom: 0rem;
+}
+.THIS .selectsearchrtl{
+    padding: 1rem;
+    background: #fff;
+    margin-bottom: 0rem;
+    direction:rtl;
+}
+.THIS label{
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 5px;
+    font-weight: normal;
+}
+.THIS .slds-table td{
+    padding:5px;
+}
+.THIS .textColor {
+    color:  #624500;font-size: 14px; /* #8a1538; */
+}
+/*.THIS table {
+width: 100%;
+border: 1px solid #ddd;
+}
+.THIS table tr th {
+text-align: center;
+padding: 10px;
+border-bottom: 1px solid #ddd;font-size: 14px;
+font-weight: 600;    text-transform: uppercase;
+background:#f1f1f6;
+}
+.THIS table tr td {
+text-align: center;
+padding: 10px;
+border-bottom: 1px solid #ddd;font-size: 14px;
+}*/
+.THIS input[type=text], .THIS input[type=password], .THIS textarea.form-control, .THIS select, .THIS input[type=tel], .THIS input[type=email] , .THIS .uiInput--default input ,
+.THIS .slds-faux-input{
+    margin: 0;
+    padding: 0 15px;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+
+.THIS textarea{
+    margin: 0;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+.THIS .slds-form-element__label {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    position:relative;
+    bottom:0px;
+    margin-bottom: 5px;font-weight: normal;
+    white-space: nowrap;
+}
+.THIS.documenttable , .THIS.documentmain{
+    padding: 30px;
+    background: #fafafa;
+    border:4px solid #fff;
+    direction:rtl;
+}
+.THIS.documenttable table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.THIS.documenttable table tr th {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+    font-weight: 600;    text-transform: uppercase;
+    background:#f1f1f6;
+}
+.THIS .documenttable table tr td {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+}
+.THIS.uiInput--default .form-element__label , .THIS .form-element__label{
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 5px;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.6);
+}
+.THIS.uiInput--datetime .form-element , .THIS .uiInput--default input{
+    position: relative;
+    margin-top: 5px!important;
+}
+.THIS .uiInput--datetime .datePicker-openIcon {
+    bottom: 14px!important;
+}
+.THIS.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.THIS .animated.delay-1s {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+@-webkit-keyframes zoomInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+        transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+        transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    }
+}
+
+@keyframes zoomInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+        transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+        transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    }
+}
+
+.THIS.zoomInUp {
+    -webkit-animation-name: zoomInUp;
+    animation-name: zoomInUp;
+}
+@-webkit-keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -15%, 0);
+        transform: translate3d(0, -15%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -15%, 0);
+        transform: translate3d(0, -15%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS.slideInDown {
+    -webkit-animation-name: slideInDown;
+    animation-name: slideInDown;
+}
+
+/* css for custom dashboard component*/
+.THIS .form-box-row2{
+    padding: 1.5rem 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    position: relative;
+    background-color: #ffffff;
+    background: #f2f2f2;
+    opacity: 1;
+    border: 1px solid rgb(220, 220, 220);
+    
+    /* -webkit-box-shadow: 5px 5px 10px 0px rgb(218, 218, 218);
+    -moz-box-shadow: 5px 5px 10px 0px rgb(218, 218, 218);
+    box-shadow: 5px 5px 10px 0px rgb(218, 218, 218); */
+    transition:.4s all;
+}
+.THIS .form-box-row2:hover{
+    transform:scale(1.05);
+    transition:.4s all;
+    background: #fff;
+}
+.THIS .searchlocationdiv{
+    position:relative;
+    margin-bottom: 10px;
+}
+.THIS .searchlocationdiv .slds-form-element__label{
+    display:none;
+}
+.THIS .searchlocationdiv .slds-form-element__control{
+    margin: 0px;
+    display: block;
+}
+.THIS .searchlocationdiv .slds-form-element__control input[type=text]{
+    border: 1px solid #ddd;
+    border-radius: 20px!important;
+}
+.THIS .searchlocationdiv .slds-form-element{
+    padding:0px; 
+}
+.THIS .searchlocationdiv .btn_table{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 0;
+    height: 38px;
+    border-radius: 0px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    min-width: auto;
+    background: #00c19e;
+    border: 1px solid #00c19e;
+}
+.THIS .picklocatioblink {
+    position: absolute;
+    top: 25px;
+    right: 5px;
+    cursor: pointer;
+}
+.THIS .dateFormat{
+    visibility:hidden;
+}
+.THIS .slds-gutters .slds-col .slds-datepicker {
+    right : 0px !important;
+}
+.THIS .picklocatioblink .slds-icon-text-default {
+    fill: #555;
+    width: 24px;
+    height: 42px;
+    text-align: center;
+    margin: auto;
+    padding-left: 5px;
+}
+.THIS .picklocatioblink_AR {
+    position: absolute;
+    top: 25px;
+    left: 5px;
+    cursor: pointer;    
+}
+.THIS .picklocatioblink_AR .slds-icon-text-default {
+    fill: #555;
+    width: 24px;
+    height: 42px;
+    text-align: center;
+    margin: auto;
+    padding-right: 5px;
+    direction:rtl;
+}
+.THIS .searchlocationdiv .btn_table_AR{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 0;
+    height: 37px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    min-width: auto;
+}
+.THIS .form-title{
+    color: #555;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-size: 14px;
+    height: 46px;
+}
+.THIS .pickupdatails , .THIS .dropdatails {
+    position:relative;
+}
+.THIS .pickupdatails span , .THIS .dropdatails span{
+    position: absolute;
+    top: 27px;
+    right: 0px;
+    color: #0000ff;
+    cursor: pointer;
+    height: 37px;
+    line-height: 37px;
+    padding: 0 27px 0 5px;
+    text-decoration: underline;
+    background: #ddd;
+}
+
+
+
+
+
+.THIS .slds-card {
+    background:transparent;
+    border: 0px solid #E0E0E0;
+}
+.THIS .slds-card .slds-col{
+    width: 47%;
+    display: inline-block;
+    margin: 1% 2% 2% 1%;
+}
+.THIS .slds-card .slds-col2{
+    width: 30%;
+    display: inline-block;
+    margin: 1% 2% 2% 1%;
+}
+.THIS .slds-modal__header{
+    border-bottom: 1px solid rgb(98 204 140);
+    border-radius: 10px 10px 0px 0px;
+}
+.THIS .slds-modal__header h1{
+    color: rgb(98 204 140)!important;
+    font-size:16px;
+}
+.THIS .modal-header .title {
+    color: #000!important;
+}
+.THIS .sessiondata .slds-form-element__group .slds-form-element__label{
+    display:none;
+}
+.THIS .slds-form-element__label , .THIS label{
+    color:#000; 
+}
+.THIS .btnsave{
+    background-color: rgb(98 204 140);
+    color: white;
+    border: 1px solid rgb(98 204 140);
+    box-shadow: none;
+    font-size: 12px;
+    transition:0.4s;
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 0px;
+    text-transform: uppercase;
+}
+.THIS .btnsave:hover{
+    background-color: #fff;
+    color: #00c19e;
+    border: 1px solid #00c19e;
+    box-shadow: none;
+    transition: .4s;
+    box-shadow: none;
+    outline: none;
+}
+.THIS .slds-form-element_horizontal .slds-form-element__control{
+    padding-left: 0%!important;
+    clear: both;
+    display: block;
+    float: left;
+    width: 100%;
+}
+.THIS .slds-p-around--medium {
+    padding: 0rem 1rem;
+}
+.THIS .slds-form-element_horizontal:not(.slds-form-element_readonly){
+    margin-bottom: 0rem;
+}
+.THIS .reqspan{
+    color: rgb(194, 57, 52);
+    margin: 0 .125rem;
+    
+}
+.THIS .slds-has-error .slds-form-element__help {
+    color: rgb(194, 57, 52);
+    position: relative;
+    float: left;
+}
+.THIS .fullwidth{
+    width:100px;
+}
+.THIS .slds-spinner_container{
+        top: 0;
+    left: 0;
+    position: fixed;
+    background: rgb(0 0 0 / 10%);
+    right: 0;
+    bottom: 0;
+}
+.THIS .formdiv, .THIS .formdiv_ar {
+    min-height: 318px; max-height: 318px;
+    overflow:auto;
+}
+.THIS .formdiv_ar .slds-input__icon-group_right {
+    left: 26px;
+    top: 50%;
+    right: auto;
+}
+.THIS .formdiv_ar lightning-icon.slds-icon_container.slds-combobox__input-entity-icon.slds-icon-custom-custom21 {
+    right: 5px;
+}
+.THIS .formdiv input[aria-readonly="true"][lightning-baseCombobox_baseCombobox],
+.THIS .formdiv_ar input[aria-readonly="true"][lightning-baseCombobox_baseCombobox]{
+    padding: 0 2rem!important;
+}
+.THIS .formdiv_ar lightning-button-icon.slds-input__icon.slds-input__icon_right {
+    left: 10px;
+    right: auto;
+}
+.THIS .slds-dropdown-trigger_click.slds-is-open .slds-dropdown{
+    padding:0px!important;
+    box-shadow: none;
+}
+@media only screen and (max-width: 480px) {
+    .THIS .slds-grid {
+        display: block;
+    }
+    .THIS .slds-gutters .slds-col {
+        width: 100%;
+        padding-bottom: 0.5rem;
+    }
+    .THIS .slds-pill_container{
+        border: 1px solid #ececec;
+    }
+}
+.THIS .leftPaddingClass {
+    padding-left: 2rem;
+}
+
+.THIS .pillSize{
+    width:100%;
+}
+
+
+
+
+
+.THIS .successClass {
+    color: white !important;
+    background-color: green;
+    border: 1px solid #fff;
+}
+.THIS .errorClass {
+    
+    color: white !important;
+    background-color: #e45651;
+    border: 1px solid #fff;
+}
+.THIS .slds-p-around_xx-small{
+    text-align: center;
+}
+.THIS .tableClass{
+    min-height:50px;
+    overflow:auto;
+    width: 100%;
+    position: relative;
+    max-height: 320px;
+}
+
+.THIS .serchboxtab_AR{
+    
+    float: right;   
+    
+}
+
+
+.THIS .slds-modal__container {
+    min-width: 95%;
+    max-width: 95%;
+    margin:auto;
+}
+.THIS .align {
+    text-align: right;
+    
+}
+.THIS .slds-input-has-icon_right .slds-input_faux{
+    border-color:#ccc;
+    min-height: 38px;
+}
+.THIS .slds-table th{
+    padding:0px;
+}
+
+
+.THIS .verticalAlign {
+	cursor: pointer;
+	margin: 6px 0px 0px 6px!important;
+}
+.THIS .fullWidth {
+	width: 100% !important;
+}
+.THIS .recordListBox {
+	margin-top:0px !important;
+	overflow-y: scroll;
+}
+.THIS .inputBox input {
+	padding-left: 30px;
+}
+.THIS .eachItem:hover {
+    background-color: #EEE;
+    cursor: pointer;
+}
+.THIS .inputIcon {
+	z-index: 99;
+    padding: 2px 0;
+}
+
+/* For Scrolling */
+.THIS ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.THIS ::-webkit-scrollbar-track {
+   display: none !important;
+}
+.THIS ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.4);
+}
+.THIS.exampleHolder{
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+    width: 55px;
+    vertical-align: middle;
+    white-space: nowrap;
+}

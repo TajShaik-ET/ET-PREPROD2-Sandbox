@@ -1,0 +1,588 @@
+/*@font-face {
+font-family: 'Cronos';
+src: url(/resource/ETI_Cronos); 
+}
+.THIS {
+font-family: 'Cronos';
+letter-spacing: .5px;
+}*/
+.THIS .btn_table {
+    font-size: 14px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: auto!important;
+    height: 30px;
+    background-color: #ff4b5a;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+    white-space: nowrap;
+}
+.THIS .btn_table:hover {
+    background-color: #333333;
+}
+.THIS .slds-card{
+    border: none;
+}
+.THIS.tableviewvehichel {
+    margin-top: 0px;
+}
+.THIS .custometable{
+    border: none;
+    padding: 0rem;
+}
+
+.THIS .slds-button_icon-bare{
+    display: none;
+}
+.THIS .slds-table:not(.slds-no-row-hover) tbody tr:hover>td{
+    background-color: rgba(242, 242, 242, 0.27);
+}
+.THIS .slds-checkbox_faux{
+    width: 1.3rem;
+    height: 1.3rem;
+    border: 1px solid #ddd;
+}
+.THIS .slds-form-element__control {
+    margin-bottom: 0px;
+}
+.THIS .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.THIS .pulse {
+    -webkit-animation-name: pulse;
+    animation-name: pulse;
+}
+.THIS .infinite {
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+}
+
+.THIS .nochilddiv{
+    position: relative;
+    font-size: 28px;
+    /*font-family: 'Cronos';
+    font-weight: 600; */
+    letter-spacing: 0px;
+    text-align: center;
+    display:inline-block;
+    color:#000;
+}
+
+.THIS .actionBtns button{
+    font-size: 12px;
+    margin-top: 0px;
+    background: #337ab7 !important;
+    border: 1px solid #337ab7 !Important;
+    padding: 0px 10px;
+    color: #ffffff !Important;
+}
+.THIS .actionBtns button:hover{
+    background: #4277a5 !Important;
+    border: 1px solid #4277a5 !Important;
+    padding: 0px 10px;
+    color: #fff;
+}
+.THIS .datailsdiv{
+    width: 100%;
+    text-align: left;    
+    padding: 5px 0px 0px;
+    font-size: 14px;
+    color:#000;
+}
+.THIS .item{
+    width: 24%;
+    padding: 0%;
+    margin: 1% .5% 0%;
+    /*border: 1px solid rgba(231,236,239,1)!important;*/
+    display: inline-block;
+    position: relative;
+    border-radius: 0;    
+    height: 290px;
+    transition: .4s;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.95);
+    box-shadow: 0 8px 6px -6px #9c9c9c;
+}
+/*.THIS .item:hover{
+-webkit-transition: .4s;
+transition: .4s;
+border-radius: 0px;
+}*?
+/*.THIS .item:hover img{
+transform:scale(1.2);
+-webkit-transition: .4s;
+transition: .4s;
+}*/
+.THIS .item .picture{
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+.THIS .item .picture img{
+    /* width: 100%;
+    height: 100%;
+    -webkit-transition: .4s;
+    transition: .4s;
+    object-fit: contain;*/
+    width: 100%;
+    transition: .4s;
+    -webkit-transition: .4s;
+    object-fit: cover;
+    max-width: 100%;
+    height: 100%;
+    object-position: bottom;
+}
+
+.THIS .item .team-content{
+    /*Padding-left:20px;
+    padding-right:20px;
+    margin-top: 5px;
+    text-align: left;
+    min-height: 140px;
+    max-height: 170px;
+    overflow: auto;
+    height: auto;*/
+    padding: 0rem;
+    margin-top: 0px;
+    text-align: left;
+    clear: both;
+}
+.THIS .item .btn_div{
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+    padding: 0px;
+}
+.THIS .btn_div li{
+    display: inline-block;
+    float:none;
+}
+.THIS .item .team-content .name{
+    font-size: 18px;
+    text-decoration: none;
+    display: block;
+    color: #00c19e;
+    position: relative;
+    line-height: 26px !important;
+    letter-spacing: 0px;
+    /*font-family: 'Cronos';*/
+    border-bottom: 1px solid rgb(221 221 221 / 0.2);
+    padding-bottom: 5px;
+}
+.THIS .item .team-content .name:hover{
+    color: #00c19e;
+}
+.THIS .item .team-content .name:after{
+    content:'';
+    position:abslute;
+}
+.THIS .item .team-content .studclass{
+    color: #000;
+    font-size: 12px;
+    /* border-bottom: 1px solid rgb(221 221 221 / 0.8); */
+    padding: 0px 0;
+}
+.THIS .item .team-content .studadd{
+    min-height: 24px;
+    /*font-family: 'Cronos';*/
+    font-size: 13px;
+}
+.THIS .item .team-content .status{
+    font-size: 12px;
+    background: #00904a;
+    padding: 3px 5px;
+    border-radius: 5px;
+    text-align: center;
+    color: #fff;
+    /*font-family: 'Cronos';*/
+    margin-bottom: 5px;
+    margin: auto;
+    letter-spacing: 1px;
+    display: inline;
+    padding: 5px 15px;
+}
+.THIS .item .team-content .end_date{
+    font-size: 12px;
+    padding: 3px 5px;
+    min-height: 24px;
+    line-height: 30px;
+    color: #555;
+    min-height: 24px;
+    /*font-family: 'Cronos';*/
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+.THIS .item .team-content .studadd{
+    padding-bottom: 3px;
+}
+.THIS .item .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox_faux {
+    background: transparent;
+}
+.THIS .our-team .student_id{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 90px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    background: #ff4b5a;
+    padding: 5px;
+    z-index: 1;
+    font-size: 12px;
+    border-radius: 0px;
+}
+.THIS .slds-checkbox [type=checkbox]:checked+.slds-checkbox__label .slds-checkbox_faux:after{
+    border-bottom: 2px solid #00c19e;
+    border-left: 2px solid #00c19e;
+}
+.THIS .slds-checkbox [type="checkbox"] + .slds-checkbox__label .slds-checkbox_faux {
+    cursor: pointer;
+}
+.THIS [lightning-input_input-host] {
+    display: inline-block;
+}
+.THIS .slds-button_neutral{
+    color:#fff;
+    background: #000;
+    border:0px solid #000;
+}
+.THIS .slds-button_neutral:hover{
+    background:#000;
+    color:#fff;
+    border:0px solid #000;
+}
+.THIS .name a{
+    text-decoration: none;
+}
+.THIS .name a:hover{
+    text-decoration: none;
+}
+.THIS .plateclass{
+    /*position: absolute;
+    top: 56%;
+    left: 50%;
+    transform: translate(-50%, -50%);*/
+    position: relative;
+    font-size: 28px;
+    color: #777777;
+    padding: 1rem;
+    padding-left: 3.2rem;
+    min-height: 74px;
+}
+.THIS .listviewvehichel{
+    height: auto!important;
+    position: relative;
+}
+.THIS.listviewvehichel{
+    height: auto!important;
+    position: relative;
+    margin-top: 10px;
+}
+.THIS.listviewvehichel .custometable {
+    border: none;
+    padding: 0px;
+}
+.THIS.listviewvehichel .custometable table thead th {
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
+    color:#000;
+    padding: .8rem .5rem;
+    background: #d5d5d5;
+    /*font-family: 'Cronos';*/
+}
+.THIS.listviewvehichel .custometable table tbody td {
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    padding: .5rem;
+    color:#000;
+    /*font-family: 'Cronos';*/
+}
+.THIS .pagination {
+    font-family: sans-serif!important;
+}
+.THIS.listviewvehichel .custometable table tbody td a{
+    color: rgb(0, 73, 137)!important;
+}
+.THIS.listviewvehichel .custometable table tbody td:last-child {
+    padding: .1rem;
+}
+.THIS.gridandlistsec{
+    position:relative;
+}
+.THIS.gridandlistsec .slds-button_icon-brand {
+    background-color: rgb(213 213 213);
+    border-color: rgb(213 213 213);
+    color: #000;
+}
+.THIS .paddingfirst span , .THIS .paddingfirst a{
+    padding-left: 10px!important;
+}
+.THIS .slds-table {
+    background-color: #fff;
+    font-size: inherit;
+}
+.THIS .textblack{
+    color:#666;
+}
+.THIS .textgold{
+    color:#826228;
+}
+.THIS .carimg{
+    width: 32px!important;height: 32px!important;position: absolute;top: 21px;left: 16px;
+}
+.THIS .name_new{
+    padding: 0;
+    text-align: right;
+    display: inline-block;
+}
+.THIS .name_new a{
+    color: #000!important;
+    padding: 5px 0px;
+    position: relative;
+    font-size: 16px;
+    font-weight: bold;
+}
+.THIS .mobileview{
+    display:none;
+}
+.THIS .actionbtn{
+    position: relative;
+    padding: .5rem 1rem;
+    clear: both;
+    display: flex;
+}
+.THIS .actionbtn .leftsectiondiv{
+    display: inline-block;
+    width: 50%;
+    float: left;
+}
+.THIS .actionbtn .leftsectiondiv img{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+.THIS .actionbtn .rightsectiondiv{
+    display: inline-block;
+    width: 50%;
+    float: left;
+    text-align: right;
+}
+.THIS .actionbtn .rightsectiondiv svg.slds-icon.slds-icon-text-default{
+    padding: 5px;
+    fill: #000;
+    cursor: pointer;
+}
+.THIS .typeofvehicle{
+    display: inline-block;
+    float: right;
+    border: none;
+    font-size: 12px;
+    background: #ff3a3b;
+    color: #fff;
+    padding: 1px 5px;
+}
+.THIS .innerdiv{
+    position: relative;
+    clear:both;
+    width:100%;
+    display:block;
+}
+.THIS .innerdiv .leftsectiondiv{
+    display: inline-block;
+    width: 50%;
+    float: left;
+    padding: .5rem 1rem;
+}
+.THIS .innerdiv .rightsectiondiv{
+    display: inline-block;
+    width: 50%;
+    float: left;
+    text-align: right;
+    padding: .5rem 1rem;
+}
+.THIS .Chassis_num{
+    background: #f2f2f2;
+    padding: .5rem 1rem;
+}
+.THIS .studclass a {
+    color: #62cc8c;
+}
+.THIS .deleteicon svg.slds-button__icon {
+    fill: #000;
+    width: 24px;
+    height: 20px;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .custometable {
+        border: 1px solid #ccc!important;
+        padding: 0rem;
+        overflow: auto;
+        position: relative;
+        display: block;
+    }
+    .THIS .item {
+        width: 32.33%;
+        padding: 0% 0% 8%;
+    }
+    .THIS .custometable {
+        border: 0px solid #ccc!important;
+    }
+    .THIS .mobileview{
+        display:none;
+    }
+}
+@media only screen and (max-width: 990px){
+    .THIS .name_new a{
+        font-size: 14px;
+    }
+}
+@media only screen and (max-width: 768px){
+    .THIS .slds-max-medium-table--stacked-horizontal tr {
+        display: inline-block;
+        border-top: 2px solid rgb(212, 212, 212);
+        width: 48%;
+        margin: 1%;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+    .THIS .item {
+        width: 49%;
+        padding: 0% 0% 5%;
+    }
+    .THIS .custometable {
+        border: 0px solid #ccc!important;
+    }
+    .THIS .name_new a {
+        font-size: 16px;
+    }
+}
+@media only screen and (max-width: 767px){
+    .THIS .item {
+        width: 49%;
+        padding: 0% 0% 0%;
+    }
+    .THIS .custometable {
+        border: 0px solid #ccc!important;
+    }
+    .THIS .hidedatamobile{
+        display:block;
+    }
+    .THIS .item .team-content {
+        min-height: 120px;
+        max-height: 170px;
+    }
+    .THIS .plateclass {
+        top: 77%;
+    }
+    
+    .THIS.gridandlistsec{
+        display: none;
+    }
+}
+@media only screen and (max-width: 600px){
+    .THIS .item {
+        width: 48%;
+        padding: 0% 0% 0%;
+        margin: 1%;
+        height: 330px;
+    }
+}
+@media only screen and (max-width: 480px){
+    .THIS .slds-max-medium-table--stacked-horizontal tr {
+        display: inline-block;
+        border-top: 2px solid rgb(212, 212, 212);
+        width: 98%;
+        margin: 1%;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+    .THIS .item {
+        width: 100%;
+        padding:0px;
+        margin: 0% 0% 3%;
+        height: auto;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 8px 6px -6px #9c9c9c;
+    }
+    .THIS.listviewvehichel .custometable table thead th {
+        font-size: 13px;
+    }
+    .THIS.listviewvehichel .custometable table tbody td {
+        font-size: 13px;
+    }
+    .THIS .deskstopview{
+        display:none;
+    }
+    .THIS .mobileview{
+        display:block;
+        margin: 0px;
+    }
+    .THIS .mobileview .cvnumber{
+        color: rgb(98 204 140)!important;
+        font-size: 16px;
+        font-weight: bold;
+        float: left;
+    }
+    .THIS .mobileview .platenum{
+        color: rgb(98 204 140)!important;
+        font-size: 14;
+        font-weight: bold;
+        float: right;
+    }
+    .THIS .mobileview .subheading{
+        display: block;
+        clear: both;
+        position: relative;
+        padding: .5rem 0rem;
+        float: left;
+    }
+    .THIS .mobileview .subheading a{
+        color: #62cc8c;
+    }
+    .THIS .mobileview .subheading h4.studclass {
+        display: inline-block;
+        width: 100%;
+        position: relative;
+        float: left;
+        color: #000;
+    }
+    .THIS .mobileview ul{
+        position: relative;
+        display: block;
+        text-align: center;
+        clear: both;
+    }
+    .THIS .mobileview ul li .slds-button_neutral {
+        color: #62cc8c;
+        background: #ffffff;
+        border: 1px solid #62cc8c;
+        border-radius: 0px;
+    }
+    .THIS .slds-table {
+        background-color: #ffffff;
+    }
+    .THIS .nochilddiv{
+        color:#000;
+        font-size:20px;
+    }
+}
+@media only screen and (max-width: 320px){
+    .THIS .mobileview .subheading h4.studclass {
+        width: 100%;
+    }
+}

@@ -1,0 +1,354 @@
+.THIS html {
+    scroll-behavior: smooth;
+}
+.THIS table tr th {
+    text-align: left;
+    padding: 10px 5px;
+    border-bottom: 1px solid rgb(98 204 140);
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #fff!important;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    border-top: 1px solid #f1f1f1;
+    white-space: nowrap;
+}
+.THIS table tr td {
+    text-align: left;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    color:black;
+    white-space: nowrap;
+}
+.THIS.tableshow {
+    position: relative;
+    clear: both;
+    padding: 0rem;
+    margin: 0rem;
+    background: #fff;
+    border-radius: 10px;
+}
+.THIS .inprogress{
+    
+    font-style: italic;
+    font-weight:700;
+}
+.THIS .slds-form-element .slds-form-element__label:empty{
+    display:none;
+}
+.THIS .slds-input{
+    width:420px;
+    margin-bottom:10px;    
+    float: right;
+    background-color:#f2f2f2;
+}
+.THIS .slds-input-has-icon{
+    float: right;
+}
+.THIS .slds-input-has-icon lightning-primitive-icon{
+    float: right;
+    position: absolute;
+    top: 16px;
+    right: 34px;
+}
+.THIS .btn_table{
+    font-size: 14px;
+    margin-top: 3px;
+    background: #f2f2f2;
+    border: 1px solid #00c19e;
+    padding: 2px 15px;
+    color: #00c19e;
+    white-space: nowrap;
+}
+.THIS .btn_table:hover{
+    background: #00c19e;
+    border: 1px solid #00c19e;
+    padding: 2px 15px;
+    color: #fff;
+}
+.THIS .pickupLabel{
+    min-height: 65px;
+    width: 100%;
+    position: relative;
+    display: block;
+    padding: 12px 10px;
+    border-left: 1px dashed #a2a2a2;
+}
+.THIS .pickupLabel::before { 
+    content: "From";
+    color: #a2a2a2;
+    position: absolute;
+    font-weight: bold;
+    top:-5px;
+    left:10px;
+}
+.THIS .deliveryLabel{
+    width: 100%;
+    position: relative;
+    display: block;
+    padding: 2px 10px 0px 10px;
+}
+.THIS .deliveryLabel::before { 
+    content: "To";
+    color: #a2a2a2;
+    position: absolute;
+    font-weight: bold;
+    top:-14px;
+    left:10px;
+}
+.THIS .pickupdot{
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    background: #a2a2a2;
+    border-radius: 50%;
+    left: -4px;
+    top: -1px;
+}
+.THIS .deliverydot{
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    background: #a2a2a2;
+    border-radius: 50%;
+    left: -3px;
+    top: -8px;
+}
+.THIS .slds-theme_warning, .THIS .slds-theme--warning {
+    background-color: #2c8fbc;
+    color: #fff;
+    font-weight: 300;
+    font-size: 1.25rem;
+    line-height: 1.25;
+}
+.THIS .slds-modal_prompt .slds-modal__content, .THIS .slds-modal--prompt .slds-modal__content {
+    padding: 0rem;
+}
+.THIS .slds-modal_prompt .slds-modal__content{
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+.THIS .popupviewbtn1{
+    position: absolute!important;
+    left: 0px!important;
+    top: 0px!important;
+    width: 400px!important;
+    background: #fff!important;
+    border: 7px solid #ccc!important;
+}
+.THIS .btnsorticon{
+    border: none;
+    display: inline-block;
+    text-align: right;
+    font-size: 10px;
+    width: auto;
+    position: absolute;
+    top: 5px;
+    right: 6px;
+}
+.THIS .btnsorticon:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.THIS .btnsorticon lightning-primitive-icon{
+    color: #555!important;
+}
+.THIS .slds-input__icon-group {
+    display: none;
+}
+.THIS .btnsaveicon {
+    color: #eb4026;
+    border-radius: 50%;
+    border: 0px solid #00c19e;
+}
+.THIS .btnsaveicon:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.THIS .btnsaveicon:hover {
+    background: transparent;
+    color: #eb4026;
+    border-radius: 50%;
+    border: 0px solid #eb4026;
+}
+.THIS .btnnext{
+    font-size: 14px;
+    color: rgb(98 204 140);
+    margin-top: 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.THIS .btnviewlist{
+    font-size: 14px;
+    color: #00c19e;
+    background: transparent;
+    border: none;
+    text-decoration: underline;
+    padding: 0px;
+}
+.THIS .btnviewlist:focus{
+    box-shadow: none;
+}
+.THIS .txtleft{
+    float:left;  
+}
+.THIS .txtright{
+    float:right;  
+}
+.THIS.btnbotdiv{
+    width: 100%;
+    position: relative;
+    display: block;
+    background: #fff;
+    clear: both;
+    /*height: 40px;*/
+}
+.THIS .tablemaindiv{
+    width: 100%;
+    overflow: auto;
+    -webkit-transform: translateZ( 0 );
+    transform: translateZ( 0 );
+    -webkit-transition: -webkit-transform 0.6s ease-in-out;
+    transition: transform 0.6s ease-in-out;
+    scroll-behavior: smooth;
+}
+.THIS#viewlistdiv{
+    position: fixed;
+    right: 35%;
+    top: 35%;
+    width: 400px;
+    background: #fff;
+    border: 7px solid #ccc;
+}
+.THIS.textcenter{
+    text-align:center;
+}
+.THIS .noresultsimg{
+    max-width:50%;
+}
+
+.THIS .noresult{
+    position: absolute;
+    top: 60%;
+    left: 40%;
+    font-size: 38px;
+    /*transform: translate(-50%,-50%)*/
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0.2em 0.2em 0.2em rgba(0,0,0,0.2);
+}
+.THIS .viewlisttd{
+    position:relative;
+}
+
+.THIS .slds-modal__close {
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    z-index: 1;
+    background: transparent;
+    border-radius: 50%;
+    color: #fff;
+    border:1px solid transparent;
+}
+.THIS .slds-modal__close .slds-button_icon-inverse{
+    color:#000;
+}
+.THIS .slds-button:focus {
+    box-shadow: none;
+}
+.THIS .slds-modal__container .slds-modal__header{
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid rgb(98 204 140);
+}
+.THIS .slds-modal__container .slds-p-around_large{
+    padding: 1rem;
+}
+.THIS .slds-modal__container .slds-modal__footer{
+    border-radius: 0 0 10px 10px ;
+    border: 1px solid #f1f1f1;
+}
+.THIS .slds-modal__container .slds-modal__header h2{
+    font-size: 16px;
+    color:rgb(98 204 140);
+}
+.THIS .btn_table {
+    background: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    color: #fff;    
+    border-radius: 0;
+    box-shadow: none;
+    text-transform: uppercase;
+    transition: all .4s;
+}
+.THIS .btn_table:hover {
+    background: #fff;
+    border: 1px solid rgb(98 204 140);
+    color: rgb(98 204 140);
+}
+@media only screen and (max-width: 1024px) {
+    .cSS_SupportTicketDetails th {
+        padding:5px 2px;
+        font-size: 13px;
+    }
+    .THIS .btn_table {
+        padding: 0px 5px;
+    }
+    .THIS .btnsorticon {
+        text-align: center;
+        font-size: 10px;
+        width: auto;
+        position: relative;
+        top: 0;
+        right: 0;
+    }
+    .THIS .btnsaveicon {
+        display: inline-block;
+        margin: auto;
+        margin-bottom: 5px;
+    }
+    .THIS.tablemaindiv {
+        width: 100%;
+        overflow: auto;
+    }
+    .THIS#viewlistdiv {
+        position: fixed!important;
+        left: 30%;
+        top: 40%;
+        width: 400px;
+        background: #fff;
+        border: 7px solid #ccc;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS#viewlistdiv {
+        position: fixed!important;
+        left: 24%;
+        top: 40%;
+        width: 400px;
+        background: #fff;
+        border: 7px solid #ccc;
+    }
+    .THIS .noresultsimg {
+        max-width: 88%;
+    }    
+}
+@media only screen and (max-width: 767px) {
+    .THIS#viewlistdiv {
+        left: 50%;
+        top: 50%;
+        width: 300px;
+        background: #fff;
+        border: 7px solid #ccc;
+        transform: translate(-50%, -50%);
+    }
+    .THIS .noresultsimg {
+        max-width: 100%;
+    }
+    .THIS .noresult {
+        font-size: 20px;
+    }
+}

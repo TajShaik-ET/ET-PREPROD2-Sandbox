@@ -1,0 +1,421 @@
+body {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0px;
+    font-family: 'Overpass', sans-serif;
+    background: #fff !important;
+    font-size: 12px;
+    color: #000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.mainouter {
+    background: #fff;
+    color: #000;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1140px;
+    padding: 15px;
+}
+
+table tr td {
+    padding: 0;
+    font-size: 16px;
+    line-height: normal;
+}
+
+p {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0px;
+    color: #000;
+}
+
+hr {
+    margin: 0px;
+    border-color: #000;
+}
+
+.text-center,
+.text-center td {
+    text-align: center;
+}
+
+.lasttable {
+    margin-top: 10px;
+}
+
+.lasttable tr td {
+    border-color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 0.25rem;
+}
+
+.lasttable tr td input {
+    border: 0px;
+    width: 100%;
+    font-weight: normal;
+    border-radius: 0px;
+}
+
+.lasttable tr td input:focus {
+    border: 0px;
+    outline: none;
+}
+
+.paddingright {
+    /*  padding-right:10% !important; */
+}
+
+.font30 {
+    font-size: 30px;
+    line-height: normal;
+}
+
+.font26 {
+    font-size: 26px;
+}
+
+.receipt {
+    font-size: 20px;
+    margin: 0px;
+    font-weight: bold;
+    border: 0px;
+    border-radius: 0px;
+    width: 320px;
+    margin-right: 4rem;
+    text-align: center;
+    color: #000;
+    background: transparent;
+}
+
+.receipt::placeholder {
+    color: #bdbdbd;
+}
+
+.receipt:focus {
+    outline: none;
+}
+
+.receipttable {
+    /*
+    background:#efefef; 
+    border:1px solid #000; */
+}
+
+.btndiv {
+    width: 100%;
+    text-align: center;
+}
+
+.btndiv a {
+    padding: 5px 10px;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    font-size: 12px;
+    margin: 5px;
+    border: 0px;
+    display: inline-block;
+}
+
+table tr td.receipt_outer {
+    border-bottom: 1px solid #000;
+    padding: 8px 0px;
+}
+
+.receipt_outer table {
+    padding: 8px 0;
+}
+
+.twoDataSeperate span:first-child {
+    display: inline-block;
+    margin-right: 2rem;
+}
+
+.dataTable td {
+    padding: .25rem !important;
+}
+
+.bottomData {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.bottomData .lasttable {
+    border: 0px;
+    width: 100%;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+}
+
+.bottomData .extraDiv {
+    width: 50%;
+    display: inline-flex;
+    border: 1px solid #000 !important;
+}
+
+.bottomData .c-container {
+    width: 100%;
+}
+
+.save_code {
+    white-space: break-spaces;
+    word-wrap: break-word;
+}
+
+.tableData {
+    position: relative;
+}
+
+.enterCodeBtn {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.tableData lightning-button {
+    margin-top: 2rem;
+    display: block;
+}
+
+.tableData h6,
+.tableData .lasttable {
+    margin: 0.5rem;
+}
+
+.tableData .lasttable {
+    width: 95%;
+}
+.info_details_main_popup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;    
+    font-size: 12px;
+}
+.qualifiedTxt p, info_details_main_popup p {
+    display: inline-block;
+    width: 68%;
+    margin-bottom: 0rem!important;
+    padding:0 !important;
+    color: #6a6a6a;
+}
+
+.qualifiedTxt lightning-combobox, .info_details_main_popup lightning-combobox{
+    display: inline-block;
+    width: 28%;
+    vertical-align: top;
+}
+
+.inspectionCode {
+    display: inline-block !important;
+}
+
+.inspectionCode .custom-box {
+    width: 185px !important;
+    display: inline-block;
+}
+
+.inspectionCode .custom-box input {
+    text-align: center;
+}
+
+.remarks {
+    margin: 1rem 0;
+}
+
+.remarks label {
+    vertical-align: top;
+    width: 16%;
+    display: inline-block;
+    font-weight: 600;
+    padding-top: 3rem;
+}
+
+.remarks textarea {
+    margin: 1rem;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.innterTabData {
+    min-height: 200px;
+}
+
+.uploadfile_div {
+    position: relative;
+    display: block;
+    padding: 1rem 0;
+}
+
+.uploaded_file_section {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.uploaded_file_section .upload_file_inner_div {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 1rem;
+    width: 32%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+}
+
+.uploaded_file_section .upload_file_inner_div .filename {
+    width: calc(100% - 115px);
+}
+
+.uploaded_file_section .upload_file_inner_div .filename p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.uploaded_file_section .upload_file_inner_div .inner_div_btn {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: flex-end;
+}
+
+.inner_div_btn lightning-icon {
+    cursor: pointer;
+}
+.fullInput{
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+@media screen and (max-width:1090px) {
+    .font30 {
+        font-size: 22px;
+    }
+
+    .font26 {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width:1024px) {
+    .paddingright {
+        padding-right: 0% !important;
+    }
+
+    .receipttable {
+        width: 100%;
+    }
+
+    table tr td.receipt_outer {
+        padding: 8px 0px;
+    }
+
+    table tr td.receipt_outer td {
+        padding: 5px 0;
+    }
+
+    .threetable table {
+        width: 45% !important;
+        margin-bottom: 10px !important;
+    }
+
+    .threetable table:last-child {
+        width: 91% !important;
+        margin-bottom: 0px !important;
+    }
+
+    .font30 {
+        font-size: 20px;
+    }
+
+    .font26 {
+        font-size: 18px;
+    }
+
+    p,
+    .lasttable tr td {
+        font-size: 14px;
+    }
+
+
+    .bottomData {
+        display: block !important;
+    }
+
+    .bottomData .lasttable {
+        /*  margin-right: 4%  !important;
+    width:48% !important; */
+    }
+
+    .bottomData .extraDiv {
+        /*  width:48%  !important; */
+        border: 1px solid #000 !important;
+    }
+
+
+}
+
+@media only screen and (max-width:992px) {
+    lightning-input.receipt.slds-form-element {
+        width: auto;
+        margin: 0;
+    }
+
+    table.receipttable tr td {
+        width: 33.33%;
+    }
+
+    table.receipt_div tr td:first-child {
+        width: 70%;
+    }
+
+    .uploaded_file_section .upload_file_inner_div {
+        width: 48%;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .bottomData .extraDiv {
+        display: inline-block !important;
+        position: absolute !important;
+        width: 46% !important;
+    }
+
+    .tableData .lasttable {
+        display: contents;
+        margin: 1rem !important;
+    }
+
+    .tableData .lasttable tr {
+        margin: 1rem !important;
+        display: initial;
+    }
+
+    .docCollectedPopup {
+        width: 85% !important;
+    }
+
+    .inspectionCode .custom-box {
+        width: 175px !important;
+    }
+
+}
+
+@media only screen and (max-width:480px) {
+    .uploaded_file_section .upload_file_inner_div {
+        width: 100%;
+    }
+}

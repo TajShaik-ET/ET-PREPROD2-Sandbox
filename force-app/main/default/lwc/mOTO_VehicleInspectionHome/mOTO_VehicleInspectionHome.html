@@ -1,0 +1,557 @@
+<template>
+
+	<Div class="slds-p-around_small vehicleReceivingForm">
+
+		<!-- SearchPage -->
+		
+		<template if:true={showHomePage}> <!--showHomePage-->
+			<div class="main_section">
+
+                <div onclick={handleBtnClickWalkIn}>Walk-In</div>
+
+                <div onclick={handleBtnClickAppointment}>Appointment</div>
+
+                <div onclick={handleBtnClickInsurance}>Insurance</div>              
+
+                <!--<div onclick={handleBtnClickInternalCheckIn}>Internal</div>handleBtnClickInternal-->
+				
+				
+            </div>
+			<div class="slds-p-around_x-small " style="text-align: center;">
+				<lightning-button label="Back" onclick={BacktoCheckInHome} class="slds-var-m-around_xx-small"> </lightning-button>
+			</div>
+			
+			
+		</template>
+
+		<template if:true={ExtRet}>
+			<lightning-input value={chassisNum} label="Chassis Number" name="Chassis"
+					onchange={handleChassisChange}></lightning-input>
+				<br />
+	
+				<lightning-button label="Search" variant="brand" onclick={searchChassisBtnHandeler} class="slds-m-left_x-small"></lightning-button>
+				<lightning-button label="Back" variant="brand" onclick={BacktoHome} class="slds-m-left_x-small"></lightning-button>
+				
+				<div>
+					<!-- OnClick Vehicle -->
+					<template if:true={vehListRT}>
+						<div class="opp_list">
+						<template for:each={vehList} for:item="veh">
+							<div key={veh.Id}  class="box_opp"
+								data-recordid={veh.Id} onclick={onvehClick}>
+								
+								
+									<div>
+										<p>Internal Number : {veh.Name}</p>
+										<p>Mobile Number : {accPhone}</p>
+										<p>Email : {accEmail}</p>
+									</div>
+									<!-- <div>
+										<lightning-button label="Convert" variant="brand" class="slds-m-left_x-small"></lightning-button>
+									</div> -->
+							</div>
+						</template>
+						</div>
+					</template>
+					<template if:true={vehListRF}>
+						<div class="slds-p-around_xx-small">
+							No records found
+							<lightning-button label="New Customer" variant="brand" onclick={newCustomerHandler} class="slds-m-left_x-small"></lightning-button>
+						</div>
+					</template>
+				</div>
+
+				
+				
+		</template>
+
+		<template if:true={showTabHome}> <!--showInternalPage-->
+			<div class="main_section slds-align_absolute-center">
+
+                <div onclick={handleCheckInBtn}>Check In</div> 
+
+                <div onclick={handleBtnClickInternalCheckOut}>Check Out</div>
+				<!-- dependentMultiselectLWC.html -->
+
+				
+
+            </div>
+			
+		</template>
+
+		<template if:true={lastCheckIn}>
+			<lightning-card title="Recent Check In Table" icon-name="custom:custom14">
+				<div class="slds-m-around_medium">
+					<lightning-datatable
+						key-field="Id"
+						data={opportunityData}
+						columns={columns}
+						onrowselection={handleRowSelection}
+						hide-checkbox-column
+					></lightning-datatable>
+				</div>
+			</lightning-card>
+			<div class="slds-p-around_x-small " style="text-align: center;">
+				<lightning-button label="Back" onclick={handleBackBtnTable} class="slds-var-m-around_xx-small"> </lightning-button>
+			</div>
+		</template>
+
+		<template if:true={checkInHome}> 
+			<div class="main_section slds-align_absolute-center">
+
+                <div onclick={handleReturnBtn}>Returning Customer</div> 
+                <div onclick={handleNewBtn}>New Customer</div>
+				<div onclick={handleBtnLastCheckIn}>Recent Check In</div>
+				
+
+            </div>
+			<div class="slds-p-around_x-small " style="text-align: center;">
+				<lightning-button label="Back" variant="brand" onclick={backHome} class="slds-m-left_x-small"></lightning-button>
+			</div>
+		</template>
+		<template if:true={returnTab}> 
+			<div class="main_section slds-align_absolute-center">
+
+                <div onclick={handleBtnClickInternalCheckIn}>Internal Customer</div>
+				
+                <div onclick={handleExtrlBtn}>External Customer</div> 
+				
+            </div>
+			<div class="slds-p-around_x-small " style="text-align: center;">
+				<lightning-button label="Back" variant="brand" onclick={goToHomeCustomer} class="slds-m-left_x-small"></lightning-button>
+			</div>
+		</template>
+
+		<!-- SearchPage -->
+		<template if:true={showSearchPage}>
+			<lightning-input value={leadEmail} label="Email" name="Mobile"
+				onchange={handleMobileChange}></lightning-input>
+			<br />
+
+			<lightning-button label="Search" variant="brand" onclick={searchleadHandeler} class="slds-m-left_x-small"></lightning-button>
+			<lightning-button label="Back" variant="brand" onclick={goToHomeHandeler} class="slds-m-left_x-small"></lightning-button>
+			
+			<div>
+				<!-- OnClick Opportunity -->
+				<template if:true={oppListRT}>
+					<div class="opp_list">
+					<template for:each={oppList} for:item="opp">
+						<div key={opp.Id}  class="box_opp"
+							data-recordid={opp.Id} onclick={onOppClick}>
+							<!--a href="" onclick={onOppClick}  data-recordid={opp.Id}-->
+							
+								<div>
+									<p>Customer Name : {opp.Name}</p>
+									<p>Mobile Number : {opp.MobilePhone}</p>
+									<p>Email : {opp.Email}</p>
+								</div>
+								<!-- <div>
+									<lightning-button label="Convert" variant="brand" class="slds-m-left_x-small"></lightning-button>
+								</div> -->
+						</div>
+					</template>
+					</div>
+				</template>
+				<template if:true={oppListRF}>
+					<div class="slds-p-around_xx-small">
+						No records found
+					</div>
+				</template>
+			</div>
+		</template>
+		<!-- till-OnClick Opportunity -->
+
+
+		<!-- Page3-options -->
+		<template if:true={showPage3}>
+			<!-- dev buttons -->
+			<div class="slds-m-bottom_medium">
+				<div  class="slds-text-heading_large slds-align_absolute-center">Please select the type of service.</div>
+			</div>
+			<div class="main_section">
+
+                <div onclick={handleClickAccidentRepair}>Accident Repair</div>
+
+                <div onclick={handleClickServiceContract}>Service Contract</div>
+
+                <div onclick={NextvehicleformHandelerServiceonDemand}>Service on Demand</div>              
+
+                <div onclick={NextvehicleformHandelerCampaign}>Campaign</div>
+
+            </div>
+		
+
+			
+		</template>
+		<!-- onclick- 3 options -->
+		<template if:true={AccidentRepair}>
+			<lightning-input type="checkbox" checked={selectedOpp.Insurance__c} label="Do you have Insurance?"
+				name="Insurance__c" required="true" onclick={handleFormInputChange}></lightning-input>
+			<template if:true={InsuranceCompanyTF}>
+				<lightning-combobox label="Insurance Company" name="Insurance_Company__c"
+					onchange={handleFormInputChange} value={selectedOpp.Insurance_Company__c}
+					options={InsuranceCompanyOptions}></lightning-combobox>
+			</template>
+			<div class="slds-p-around_x-small">
+				<lightning-button label="Home" varaint="brand" onclick={goToHomeHandeler}
+					class="slds-m-left_x-small "></lightning-button>
+				<lightning-button label="Back" varaint="brand" onclick={BackHandelerAccidentRepair}
+					class="slds-m-left_x-small"></lightning-button>
+				<lightning-button label="Next" varaint="brand" onclick={NextvehicleformHandelerAccidentRepair}
+					class="slds-m-left_x-small">
+				</lightning-button>
+			</div>
+		</template>
+		<template if:true={ServiceonDemand}>
+			<lightning-dual-listbox label="List of Required Services" name="List_of_Required_Services__c"
+				source-label="Available" selected-label="Selected" options={VehlistOfRequiredServicesOptions}
+				value={listOfRequiredServices} required="true" onchange={handleFormInputChange}>
+			</lightning-dual-listbox>
+			<div class="slds-p-around_x-small">
+				<lightning-button label="Home" varaint="brand" onclick={goToHomeHandeler}
+					class="slds-m-left_x-small"></lightning-button>
+				<lightning-button label="Back" varaint="brand" onclick={BackHandelerServiceonDemand}
+					class="slds-m-left_x-small"></lightning-button>
+				<lightning-button label="Next" varaint="brand" onclick={NextvehicleformHandelerServiceonDemand}
+					class="slds-m-left_x-small">
+				</lightning-button>
+			</div>
+		</template>
+		<template if:true={Campaign}>
+			<c-reusable-Custom-Lookup-Field label="Campaign" name="Campaign" required-input="true"
+				onselectedrecordevent={getCampaignRecordDetails} object-api-name="Campaign"
+				icon-name="custom:custom31" onchange={handleFormInputChange}></c-reusable-Custom-Lookup-Field>
+			<div class="slds-p-around_x-small">
+				<lightning-button label="Home" varaint="brand" onclick={goToHomeHandeler}
+					class="slds-m-left_x-small"></lightning-button>
+				<lightning-button label="Back" varaint="brand" onclick={BackHandelerCampaign}
+					class="slds-m-left_x-small"></lightning-button>
+				<lightning-button label="Next" varaint="brand" onclick={NextvehicleformHandelerCampaign}
+					class="slds-m-left_x-small">
+				</lightning-button>
+			</div>
+		</template>
+
+		<template if:true={accPage}>
+
+			<lightning-input label="First Name" name="FirstName" data-id="valid-input"
+				value={accFirstName} onchange={handleAccInputChangeFName}></lightning-input>
+			
+			<lightning-input label="Last Name" name="LastName" data-id="valid-input"
+				value={accLastName} onchange={handleAccInputChangeLName}></lightning-input>
+
+			<lightning-input label="Phone" name="PersonMobilePhone" data-id="valid-input"
+				value={accPhone} onchange={handleAccInputChangePhone}></lightning-input>		
+
+			<lightning-input label="Email" name="PersonEmail" data-id="valid-input"
+				value={accEmail} onchange={handleAccInputChangeEmail}></lightning-input>	
+				
+			<lightning-button label="Next" variant="brand" onclick={UpdateAccountHandler} class="slds-m-left_x-small"></lightning-button>
+			<lightning-button label="Back" variant="brand" onclick={BacktoHome} class="slds-m-left_x-small"></lightning-button>
+				
+
+		</template>
+
+
+		<template if:true={oppPage}>
+			<div class="slds-p-around_medium">
+				
+				<lightning-combobox label="Lead Source" name="LeadSource" value={leadSourceOpp} data-id="valid-input" required="true"
+					options={leadsourceoptions} onchange={handleRetOppChange}></lightning-combobox>
+				
+				<lightning-input label="Vehicle Mileage" name="Vehicle_Mileage_number__c" value={vehmileage} data-id="valid-input" required="true"
+				 onchange={handleRetOppChange}></lightning-input>
+
+				<lightning-combobox label="Type of customer" name="Type_of_Customer__c" value={typeCustomer} data-id="valid-input" required="true"
+					options={typecustomeroptions} onchange={handleRetOppChange}></lightning-combobox>
+	
+				<lightning-combobox label="Type of service" name="Type_of_Service__c" value={typeService} data-id="valid-input" required="true"
+					options={typeserviceoptions} onchange={handleRetOppChange}></lightning-combobox>
+				<c-reusable-Custom-Lookup-Field label="Campaign" name="Campaign" required-input={requiredCampain}
+					onselectedrecordevent={getCampaignRecordDetails} object-api-name="Campaign" filters="IsActive = true"
+					icon-name="custom:custom31"></c-reusable-Custom-Lookup-Field>
+				                    
+				 <c-reusable-Custom-Lookup-Field label="Workshop Location" name="WorkshopLocation" required-input="true"
+					onselectedrecordevent={getWorkshopRecordDetails} object-api-name="CICO_Workshop_Location__c"
+					icon-name="custom:custom31"></c-reusable-Custom-Lookup-Field>
+	
+				<lightning-input label="Description For Service Request" name="Description_for_Service_Request__c" value={descripton} data-id="valid-input" required="true"
+					onchange={handleRetOppChange}></lightning-input>
+	
+				<!--<lightning-dual-listbox label="List of Required Services" name="List_of_Required_Services__c"
+					source-label="Available" selected-label="Selected" options={VehlistOfRequiredServicesOptions}
+					required="true" onchange={handleListSerivce}>
+				</lightning-dual-listbox>-->
+	
+				<div class="slds-m-top_medium slds-text-align_center">
+					<lightning-button variant="brand" class="slds-m-top_medium" label="Next" onclick={ReturnOppHandler}></lightning-button>&nbsp;&nbsp;
+					<lightning-button variant="brand" label="Back" title="Back" onclick={backbtnOpp}></lightning-button>
+				</div>
+			</div>
+		</template>
+
+		<!-- Page4- Check Chass& ERP -->
+		<template if:true={showPage4}>
+			<Div class="slds-grid slds-wrap slds-p-around_x-small slds-box">
+				<div class="slds-col slds-size_1-of-3">
+					<p>Name :<span class="fieldHeader"> {selectedOpp.Account.Name}</span></p>
+					<p>Vehicle Brand :<span class="fieldHeader"> {selectedOpp.Vehicle_Brand__r.Name}</span></p>
+				</div>
+				<div class="slds-col slds-size_1-of-3">
+					<p>Mobile :<span class="fieldHeader"> {selectedOpp.Account.PersonMobilePhone}</span></p>
+					<p>Vehicle Model :<span class="fieldHeader"> {selectedOpp.Vehicle_Model__r.Name}</span></p>
+				</div>
+				<div class="slds-col slds-size_1-of-3">
+					<p>Email :<span class="fieldHeader"> {selectedOpp.Account.PersonEmail}</span></p>
+					<p>Vehicle Model Year :<span class="fieldHeader">{selectedOpp.Vehicle_Model_Year__c}</span></p>
+				</div>
+			</Div>
+			<div class="container">
+				<Div class="slds-p-around_medium">
+					<template if:false={leadforms}>
+						<lightning-input type="date" label="Appointment Date" name="Appointment_Date__c" disabled="true"
+							data-id="Appointment-input" value={selectedOpp.Appointment_Date__c}
+							onchange={handleFormInputChange}></lightning-input>
+					</template>
+
+					<lightning-input label="Chassis Number" name="Chassis_Number__c" data-id="valid-input"
+						value={selectedOpp.Chassis_Number__c} onchange={handleFormInputChange}></lightning-input>
+					<lightning-input label="Plate Number" name="Vehicle_Plate_Number__c" data-id="valid-input"
+						value={selectedOpp.Vehicle_Plate_Number__c} onchange={handleFormInputChange}></lightning-input>
+					<lightning-input label="Vehicle Mileage" name="Vehicle_Mileage_number__c" data-id="valid-input"
+						value={selectedOpp.Vehicle_Mileage_number__c}
+						onchange={handleFormInputChange}></lightning-input>
+						
+					<lightning-combobox label="Plate Color" name="Plate_Color_Master__c" data-id="valid-input"
+						value={selectedOpp.Plate_Color_Master__c} onchange={handleFormInputChange}
+						options={PlateColorOptions}></lightning-combobox>
+					<lightning-combobox label="Plate Type" name="Plate_Type_Master__c" data-id="valid-input"
+						value={selectedOpp.Plate_Type_Master__c} onchange={handleFormInputChange}
+						options={PlateTypeOptions}></lightning-combobox>
+					<lightning-combobox label="Plate Source" name="Plate_Source_Master__c" data-id="valid-input"
+						value={selectedOpp.Plate_Source_Master__c} onchange={handleFormInputChange}
+						options={PlateSourceOptions}></lightning-combobox>
+
+
+					<lightning-input type="checkBox" label="Account Available in ERP" checked={AccountNumberInERP}
+						data-id="Account-Available" disabled=true></lightning-input>
+					<lightning-input type="checkBox" label="Vehicle Available in ERP" checked={PrivateVehicle}
+						data-id="Vehicle-Available" disabled=true></lightning-input>
+
+					<template if:true={InsuranceCompanyField}>
+						<lightning-combobox label="Insurance Company" name="Insurance_Company__c" data-id=""
+							onchange={handleFormInputChange} value={selectedOpp.Insurance_Company__c}
+							options={InsuranceCompanyOptions}></lightning-combobox>
+					</template>
+
+					<!-- <lightning-input label="Plate Color Master" name="Plate_Color_Master__c" data-id="valid-input" 
+						value={selectedOpp.Plate_Color_Master__c} 
+						onchange={handleFormInputChange} required="true"></lightning-input>
+						<lightning-input label="Plate Type Master" name="Plate_Type_Master__c" data-id="valid-input" 
+							value={selectedOpp.Plate_Type_Master__c} 
+							onchange={handleFormInputChange} required="true"></lightning-input>
+					<lightning-input label="Plate Source Master" name="Plate_Source_Master__c" data-id="valid-input"
+						value={selectedOpp.Plate_Source_Master__c} 
+						onchange={handleFormInputChange} required="true"></lightning-input>
+					// vehicle milage
+					 -->
+				</Div>
+			</div>
+			<lightning-button label="Home" onclick={goToHomeHandeler} class="slds-var-m-around_xx-small"></lightning-button>
+			<lightning-button label="Back" onclick={BackButtonHandeler} class="slds-var-m-around_xx-small"> </lightning-button>
+			<lightning-button label="Next" onclick={NextButtonHandeler} class="slds-var-m-around_xx-small"> </lightning-button>
+
+
+			<lightning-button label="Get Customer/Vehicle Info" onclick={GetVehicleDetailsHandler}
+				disabled={GetCustomerandVehicleInfo} class="slds-var-m-around_xx-small">
+			</lightning-button>
+
+			<lightning-button label="Create Account in ERP" onclick={AccountERPHandler} disabled={CreateAccountinERP}
+				class="slds-var-m-around_xx-small">
+			</lightning-button>
+
+			<lightning-button label="Create Vehicle" onclick={CreateVehicleHandler} disabled={CreatePrivateVehicle}
+				class="slds-var-m-around_xx-small">
+			</lightning-button>
+			
+
+		</template>
+		<!-- till-Page4- Check Chass& ERP -->
+		
+
+		
+		<!-- Internal -->
+		<template if:true={InternalPage}>
+
+			<lightning-radio-group name="radioGroup" options={radioOptionsPlateNumber} value={selectedRadioButton}
+				onchange={handleChange}></lightning-radio-group>
+			<lightning-radio-group name="radioGroup" options={radioOptionsInternalNumber} value={selectedRadioButton}
+				onchange={handleChange}></lightning-radio-group>
+
+				
+			<template if:true={PlateNumberPage}>
+				<lightning-layout multiple-rows>
+					<lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="4"
+						padding="horizontal-small">
+						<div class="custom-box">
+							<lightning-combobox label="Plate Source" name="Plate_Source_Master__c" data-id=""
+								onchange={handleFormInputChange} options={PlateSurceInternal}>
+							</lightning-combobox>
+							<lightning-combobox label="Plate Color" name="Plate_Color_Master__c" data-id=""
+								onchange={handleFormInputChange} options={PlatecolorInternal}>
+							</lightning-combobox>
+						</div>
+					</lightning-layout-item>
+					<lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="4"
+						padding="horizontal-small">
+						<div class="custom-box">
+							<lightning-input label="Plate Number" name="Vehicle_Plate_Number__c" data-id=""
+								onchange={handleFormInputChange}></lightning-input>
+							<lightning-combobox label="Plate Type" name="Plate_Type_Master__c" data-id=""
+								onchange={handleFormInputChange} options={PlateTypeInternal}></lightning-combobox>
+						</div>
+					</lightning-layout-item>
+					<div class="slds-p-around_x-small">
+						<lightning-button label="Search" onclick={InternalNumberSearchBtnHandeler} class="slds-m-left_x-small"></lightning-button>
+					</div>
+				</lightning-layout>
+			</template>
+
+
+			
+
+			<!-- // vehicle master lookup -->
+			<template if:true={InternalNumberPage}>
+
+				<div class="slds-grid slds-gutters">
+					<div class="slds-col">
+						<c-reusable-Custom-Lookup-Field label="Internal Number" name="Internal_Number__c"
+						onselectedrecordevent={getvehicleMasterRecordDetails} object-api-name="Vehicle_Master__c"
+						icon-name="custom:custom31" onchange={handleFormInputChange}></c-reusable-Custom-Lookup-Field>
+					</div>
+					<template if:true={checkIn}>
+						<div class="slds-col">
+							<lightning-combobox label="Check In For" name="Check_In_For__c" data-id=""
+							onchange={handleCheckInHandler} value={checkFor} disabled="true" options={checkForInternal}></lightning-combobox>
+						</div>
+					</template>
+					<template if:true={checkOut}>
+						<div class="slds-col">
+							<lightning-combobox label="Check Out For" name="Check_Out_For__c" data-id=""
+							onchange={handleCheckInHandler} value={checkFor} disabled="true" options={checkForInternal}></lightning-combobox>
+						</div>
+					</template>
+					<div class="slds-col slds-m-top_large">
+						<lightning-button label="Get Service Number" onclick={InternalPageNextButtonHandeler} class="slds-m-left_x-small">
+						</lightning-button>
+					</div>
+				</div>
+				
+			</template>
+			<div class="slds-grid slds-wrap slds-p-around_xx-small ">
+				
+				<!-- OnClick InternalNumber -->
+				<template if:true={InternalNumberT}>
+					<table>
+						<tr>
+							<th> </th>
+							<th>Internal No.</th>
+							<th>Description</th>
+							
+						</tr>  
+						<template for:each={InternalNumberResult} for:item="item">
+							<tr data-id={item.Id} key={item.Id}>
+								<td><lightning-input type="checkbox" data-id="checkbox-Id" name={item.Name} onchange={getloopkupInternalNum}></lightning-input></td>
+								<td>{item.Name}</td>
+								<td>{item.Description__c}</td>
+							</tr>
+						</template>
+	
+					</table>
+				</template>
+				<template if:true={InternalNumberF}>
+					<div class="slds-p-around_xx-small">
+						No records found
+					</div>
+				</template>
+			</div>
+
+			<template if:false={showNext}>
+				<lightning-input label="Assign/Fleet Service/Ref No." disabled="true" name="Service_Doc_No__c" data-id=""
+								value={serviceDocNo}></lightning-input>
+				<template if:true={isLocation}>
+					<lightning-input label="Workshop Location" disabled="true" name="Workshop_Location__c" data-id=""
+						value={workshopName}></lightning-input>
+				</template>
+				<template if:false={isLocation}>
+					<c-reusable-Custom-Lookup-Field label="Workshop Location" value={theCheckIn.Workshop_Location__c} name="WorkshopLocation" required-input="true"
+									onselectedrecordevent={getWorkshopRecordDetails} object-api-name="CICO_Workshop_Location__c"
+									icon-name="custom:custom31"></c-reusable-Custom-Lookup-Field>	
+				</template>
+				<lightning-input label="Driver's Name" name="Driver_s_Name__c" value={theCheckIn.Driver_s_Name__c} required="true" data-id="valid-input"
+								
+								onchange={handleCheckInHandler}></lightning-input>
+
+				<lightning-input label="Driver's Mobile" name="Driver_s_Mobile__c" value={theCheckIn.Driver_s_Mobile__c} required="true" data-id="valid-input"
+								
+								onchange={handleCheckInHandler}></lightning-input>
+				
+				<lightning-input label="Vehicle Mileage" name="Vehicle_Mileage_number__c" value={theCheckIn.Vehicle_Mileage_number__c} required="true" data-id="valid-input"
+								
+								onchange={handleCheckInHandler}></lightning-input>
+				
+				</template>
+			<div class="slds-p-around_x-small">
+				<template if:false={checkoutback}>
+				<lightning-button label="Home" onclick={InternalPagegoToHomeHandeler}
+					class="slds-m-left_x-small"></lightning-button>
+				<lightning-button label="Back" onclick={InternalPageBackButtonHandeler} class="slds-m-left_x-small">
+				</lightning-button></template>
+				<template if:true={checkoutback}>
+				<lightning-button label="Back" onclick={BackCheckout} class="slds-m-left_x-small">
+				</lightning-button></template>
+				<template if:true={checkInNextBtn}>
+					<template if:true={InternalNextButton}>
+						<lightning-button label="Next" onclick={CreateOppforInternalCheckIn} disabled={showNext} class="slds-m-left_x-small">
+						</lightning-button>
+					</template>
+					<template if:true={PlateNextButton}>
+						<lightning-button label="Next" onclick={InternalPageNextButtonHandeler} disabled={ShowNextPlate} class="slds-m-left_x-small">
+						</lightning-button>
+					</template>
+			</template>
+			<template if:true={checkOutNextBtn}>
+				
+				<template if:true={InternalNextButton}>
+					<lightning-button label="Next" onclick={CheckoutforInternal} disabled={showNext} class="slds-m-left_x-small">
+					</lightning-button>
+				</template>
+
+				<template if:true={PlateNextButton}>
+					<lightning-button label="Next" onclick={InternalPageNextButtonHandeler} disabled={ShowNextPlate} class="slds-m-left_x-small">
+					</lightning-button>
+				</template>
+				
+			</template>
+			</div>
+		</template>
+
+
+
+		<template if:true={showVehReceivingForm}>
+			<c-moto-vehicle-receiving-form onbackbuttonclick={backButtonClickHandler}
+				oninspectionpage7hanlder={goToHomeHandeler} selected-form={selectedButton} opp-record={selectedOpp} check-in={checkInForm} check-out={checkOutForm} check-out-id={checkOutId}></c-moto-vehicle-receiving-form>
+		</template>
+
+		<template if:true={showVehLeadForm}>
+			<c-moto-Veh-Lead-form selected-form={selectedButton} onbackbuttonclickwalkin={backButtonClickHandlerwalkin}
+				oneventleadforms={eventHandlerLeadForms}></c-moto-Veh-Lead-form>
+		</template>
+		
+	</Div>
+	<template if:true={loaded}>
+		<lightning-spinner variant="brand" alternative-text="Loading" class="SpinnerHolder"></lightning-spinner>
+	</template>
+
+
+</template>

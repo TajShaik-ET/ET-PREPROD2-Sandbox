@@ -1,0 +1,127 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                controller='ET_B2BController' access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="orderCount" type="Integer" default="0" />
+    <aura:attribute name="openCases" type="Integer" default="0" />
+    <aura:attribute name="invCount" type="Integer" default="0" />
+    <aura:attribute name="activeInvoices" type="Integer" default="0" />
+    <aura:attribute name="profileName" type="String"/>
+     <aura:attribute name="userName" type="String" /> 
+    <div class="homecontainer">
+        <!--<div class="menumaindiv"><div class="menudiv">
+            <c:MenuItemsList />
+            </div>
+        </div>-->
+        <div class="top_links_section">
+            <img src="{!$Resource.ET_Topimg}" class="bg_newimg"/>
+            <div class="business_link_section">
+                <div class="business_link" onclick="{!c.myBusinessSelected}">
+                    <img src="{!$Resource.ET_My_Businessimg}" class="bg_newimg"/>
+                    <h4>My Business</h4>
+                </div>
+                <div class="business_link centerbox" onclick="{!c.customerCareSelected}">
+                    <img src="{!$Resource.ET_Customer_Careimg}" class="bg_newimg centerimg"/>
+                    <h4>Customer Care</h4>
+                </div>
+                <div class="business_link" onclick="{!c.gotoExplorePage}">
+                    <img src="{!$Resource.ET_Exploreimg}" class="bg_newimg"/>
+                    <h4>Explore</h4>
+                </div>
+             <!--   <aura:if isTrue="{!v.profileName =='P-Private School Partner User Login'}">
+                    <div class="business_link centerbox" onclick="{!c.specialRequestSelected}">
+                        <img src="{!$Resource.ET_special_requests}" class="bg_newimg "/>
+                        <h4>Special Requests</h4>
+                    </div>
+                </aura:if>-->
+            </div>
+        </div>
+        <div class="insight_section">
+           <!-- <p class="heading_new"><Strong>Hi,</Strong></p>-->
+            <img src="{!$Resource.ET_Insights_img}" class="Insights_img_new"/>
+            <div class="all_insights">
+                <div class="listbox_new pink" onclick="{!c.gotoBusinessPage}">
+                    <label class="lefttext">Purchase Order</label>
+                    <img src="{!$Resource.ET_purchase_orderimg}" class="casesimg"/>
+                    <label class="righttext">{!v.orderCount}</label>
+                </div>
+                <div class="listbox_new purpole" onclick="{!c.customerCareSelected}">
+                    <label class="lefttext">Open Cases</label>
+                    <img src="{!$Resource.ET_open_casesimg}" class="casesimg"/>
+                    <label class="righttext">{!v.openCases}</label>
+                </div>
+                <div class="listbox_new blue" onclick="{!c.gotoBusinessPage}">
+                    <label class="lefttext">Invoices</label>
+                    <img src="{!$Resource.ET_invoice_caseimg}" class="casesimg" />
+                    <label class="righttext">{!v.invCount}</label>
+                </div>
+                <!--<div class="listbox_new">
+                    <label class="righttext">15</label>
+                    <label class="lefttext">Open Cases</label>
+                </div>-->
+            </div>
+        </div>
+        
+        <div class="explore_service">
+            <div class="left_div">
+                <div class="subtext">As good as NEW</div> 
+                <a href="https://emiratesmoto.ae/" target="_blank" class="etmoto_btn">Emirates Moto</a>
+                <a href="">
+                    <img src="{!$Resource.ET_Our_serviceimg}"/>
+                </a>
+            </div>
+            <div class="right_div">
+                <div class="topheading">Our Services</div>
+                <img src="{!$Resource.ET_Insights_img}"/>
+                <div class="items" onclick="{!c.gotoExplorePage}"><img src="{!$Resource.ET_School_tranimg}"/><span >Student Transport</span></div>
+               <!-- <div class="items" onclick="{!c.gotoLimoServicesPage}"><img src="{!$Resource.ET_limoimg}" class="imginvers"/><span >Limo Services</span></div> -->
+                <div class="items" onclick="{!c.redirectToVehicleInspection}"><img src="{!$Resource.ET_Inspectionimg}" class="imginvers"/><span >Inspection Services</span></div>
+                <div class="items" onclick="{!c.gotoExplorePage}"><img src="{!$Resource.ET_Logisticimg}"/><span >Logistic Services</span></div>
+                <!--<a href="" onclick="{!c.handleCreateOrder}" >Create Order &#10140;</a>
+            <a href="">Metal Book &#10140;</a>
+            <a href="" onclick="{!c.downloadCases}">Download SOA &#10140;</a>-->
+            </div>
+        </div>
+        
+        
+        <div class="exploreservices_section">
+            <div class="allservices_new">
+                
+            </div>
+        </div>
+        <div class="emirates_transport_section">
+            <h1>@Emirates Transport</h1>
+            <div class="et_news">
+                <a href="https://et.ae/en/emirates-transport-boosts-its-logistics-and-transport-services-with-last-mile-solutions/" target="_blank">
+                    <div class="news_item">
+                        <img src="{!$Resource.ET_newsimg}" class="news_img"/>
+                        <div class="news_heading">Emirates Transport boosts its logistics and transport services with last mile solutions</div>
+                        <div class="news_date">June 17, 2021</div>
+                    </div>
+                </a>
+                <a href="https://et.ae/en/emirates-transports-call-centre-received-more-than-7000-calls-in-q1-of-2021/" target="_blank">
+                    <div class="news_item">
+                        <img src="{!$Resource.ET_newsimg1}" class="news_img"/>
+                        <div class="news_heading">Emirates Transport’s Call Centre received more than 7,000 calls in Q1 of 2021</div>
+                        <div class="news_date">June 1, 2021</div>
+                    </div>
+                </a> 
+                <a href="https://et.ae/en/emirates-moto-services-590-luxury-vehicles-in-q1-of-2021/" target="_blank">
+                    <div class="news_item">
+                        <img src="{!$Resource.ET_newsimg2}" class="news_img"/>
+                        <div class="news_heading">Emirates Moto services 590 luxury vehicles in Q1 of 2021</div>
+                        <div class="news_date">May 31, 2021</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="footer_section">
+            <div class="social_links">
+                <a href="https://www.instagram.com/emiratestrans/" target="_blank"><img src="{!$Resource.ET_instagramimg}"  class=""/></a>
+                <a href="https://twitter.com/emiratestrans" target="_blank"><img src="{!$Resource.ET_twitterimg}" class=""/></a>
+                <a href="https://www.facebook.com/EmiratesTrans/" target="_blank"><img src="{!$Resource.ET_facebookimg}" class=""/></a>
+                <a href="https://www.linkedin.com/in/emirates-transport-9b0673103" target="_blank"><img src="{!$Resource.ET_linkedinimg}"  class=""/></a>
+            </div>
+            <div class="copytext">© 2021 Emirates Transport and Powered by Smaartt</div>
+        </div>
+    </div>
+</aura:component>

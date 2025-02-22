@@ -1,0 +1,14 @@
+.THIS.scrollerSize {
+    height: 300px;
+}
+.THIS .toggle {
+    display: none;
+}
+.THIS .field{
+  padding: 5px;
+  border: 1px solid #dce4ec;
+  border-radius: 2px;
+}
+.THIS .answerStyle{
+  font-weight:600;
+}

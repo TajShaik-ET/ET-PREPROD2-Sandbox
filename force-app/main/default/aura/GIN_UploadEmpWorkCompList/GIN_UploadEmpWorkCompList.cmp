@@ -1,0 +1,47 @@
+<aura:component controller="GIN_InsuranceLinesInsertHandler" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="currentData" type="Object"/>
+    
+     <!-- Import attributes start  -->
+    <aura:attribute name="ShowModule" type="boolean" default="false"/>
+    <aura:attribute name="showcard" type="boolean" default="false"/>
+    <!-- Import attributes end  -->
+    
+    
+    <lightning:card> 
+        <div class="outer-div">
+            <aura:if isTrue="{!v.ShowModule}">
+                <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+            </aura:if>
+            
+            
+            <div style="margin-left:10px">
+                <input type="file" accept=".csv" class="file" aura:id="file" onchange="{!c.showfiledata}"/><br/><br/><br/>
+                <lightning:button label="Upload Bulk Employees" onclick="{!c.insertRecords}" class="slds-button slds-button--brand btn_table"/>
+                
+            </div><br/>
+            <div>
+                
+                <aura:if isTrue = "{!v.showcard}">
+                    <lightning:card>
+                        <ui:scrollerWrapper class="scrllCustom" >
+                            <div id="divCSV" class="slds-scrollable" style=""/>
+                            
+                        </ui:scrollerWrapper>
+                        
+                    </lightning:card>
+                </aura:if>
+            </div>
+        </div>
+        
+        <div style="margin-bottom:5px;margin-left:10px">
+            <b>Note:</b> Please use the standard template to upload data. <a onclick="{!c.DownloadTemplate}">Click here</a> to download the template.
+        </div>
+       <div class="slds-border_top">
+         <div style="margin-left:10px;margin-top: 10px;" >
+            <lightning:button label="Download Employee List" onclick="{!c.downloadRecords}" class="slds-button slds-button--brand btn_table"/>
+        </div>
+       </div>
+    </lightning:card>
+</aura:component>

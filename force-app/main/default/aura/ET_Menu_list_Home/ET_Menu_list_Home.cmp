@@ -1,0 +1,31 @@
+<aura:component >
+    <aura:registerEvent name="regAppEvent" type="c:ET_EmployeeTabNavigation"/>
+    
+    <div class="menu_div">
+        <img src="{!$Resource.ETLogo}" class="menulogo" alt="ET_Logo"/>
+        <ul >
+            <div onclick="{!c.homeHandler}">
+                <li class="active" aura:id="homeBtn"><a><img src="{!$Resource.img_home}" alt=""/>Home</a></li>  
+            </div>
+            <div onclick="{!c.taskHandler}">
+                <li class="" aura:id="taskBtn" ><a><img src="{!$Resource.img_task}" alt=""/>Task</a></li>
+            </div>
+            <!--div onclick="{!c.LeavesHandler}">
+                <li><a><img src="{!$Resource.img_leave}" alt=""/>Leaves</a></li>
+            </div>
+            <div onclick="{!c.salaryHandler}">
+                <li><a><img src="{!$Resource.img_salary}" alt=""/>Salary</a></li>
+            </div-->
+            <div onclick="{!c.insuranceHandler}">
+                <li aura:id="insBtn"><a><img src="{!$Resource.img_insurance}" alt=""/>Insurance</a></li>
+            </div>
+            <div onclick="{!c.supportHandler}">
+                <li aura:id="supBtn"><a><img src="{!$Resource.img_support}" alt=""/>Support</a></li>
+            </div>
+            
+        </ul>
+        <div onclick="{!c.handleLogout}">
+            <a class="logoutbtn"><img src="{!$Resource.img_logout}" alt=""/>Logout</a>
+        </div>
+    </div>
+</aura:component>

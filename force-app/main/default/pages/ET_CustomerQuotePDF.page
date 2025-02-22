@@ -1,0 +1,632 @@
+<apex:page applyBodyTag="false" standardController="Customer_Quote__c" renderAs="pdf" extensions="ET_QuotesPdfCtlr" showHeader="false" sidebar="false"  standardStylesheets="false" applyHtmlTag="false">
+    <head style="font-family:Arial;">
+        <style>
+            /*    @page:first {
+            @top-left {
+            content: normal;
+            } 
+            @page {
+            @top-center {
+            content: element(header,first-except);}
+            @bottom-left {content: element(footer);}
+            margin-top: 200px;
+            }
+            */
+            
+            
+            @page {
+            size: A4;
+            margin:60mm 0mm 14mm -1mm;
+            @bottom-left {
+            content: element(footer);
+            }
+            @top-left {
+            content: element(header);
+            }            
+            }
+            
+            
+            @page:first {            
+            margin:0mm 0mm 0mm 0mm;
+            padding: 0;
+            @bottom-left {
+            
+            }
+            @top-left {
+            }
+            } 
+            
+            div.divHeader {
+            margin:0px 0px;
+            display: block;
+            padding: 0px;
+            position: running(header);
+            }
+            div.divFooter {
+            display: block;
+            padding: 0px;
+            position: running(footer);
+            }
+            body{
+            margin: 0;
+            padding: 0;            
+            font-size: 11px;
+            }
+            .bottomMsg{
+            text-align: center;
+            font-size: 12px;
+            margin: 10px 0;
+            font-weight: 600;
+            font-style: italic;
+            }
+            table tr td{
+            padding: 0;
+            }
+            
+        </style>  
+        
+    </head>
+    <body style="font-family:Arial;">
+        <div class="divHeader" styleClass="center_section" style="width: 30%;display: inline-block;text-align:center; padding: 0;">
+            <table style="width: 100%">
+                <tr>
+                    <td>
+                        <div class="hideLOGO" style="margin: 0;">
+                            <apex:image style="height: 230px;z-index: 99;" url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/HeaderTransparentBackground.png')}"/>   
+                        </div>
+                    </td>
+                </tr>      
+            </table> 
+        </div>
+        <div class="divFooter" style="padding: 0;">
+            <table style="width: 100%">
+                <tr>
+                    <td><!--<p style="text-align: center;">
+<span> ET Head Office-Marrakech ST.UAE </span><span>800 6006</span><span>www.et.ae</span><span>@emiratestrans</span>
+</p> -->
+                        <p style="margin: 0;">
+                            <apex:image style="height: 33px; width: 100%; " url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/FooterTransparentbackground.png')}"/>   
+                        </p>
+                        <p style="background: #00904A; text-align: right;width: 100%; font-size: 10px; padding: 3px; font-weight: 600; margin: 0;">
+                            <span style="display: inline-block; padding: 0 15px; margin-right: 25px;" >TRN: 100073675900003</span>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div> 
+        <!-- <div styleClass="center_section" style="width: 30%;display: inline-block;text-align:center;">
+<apex:image style="height: 50px;" url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/logo.png')}"/>                
+</div>
+-->
+        
+        
+        
+        <div class="" styleClass="center_section" style="	">
+            <table style="width: 100%; page-break-before: avoide;">
+                <tr>
+                    <td>
+                        <apex:image style="width: 100%; height: 1120px;" url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/topPage.png')}"/>   
+                        
+                    </td>
+                </tr>       
+            </table> 
+        </div>
+        <div style="padding: 0 30px;">
+            
+            <div class="topData"  style="display: inline-block; width: 100%;">
+                <div style=""><p style="margin: 0 0px 10px 0; font-weight: 600; font-size: 16px; display: inline-block;"><strong>QUOTATION FOR {!Customer_Quote__c.RecordType__c} </strong></p>
+                    <p style="display: inline-block; float: right; font-size: 12px; min-width: 120px; margin-top: 3px;">Date:<apex:outputText value="{0, date, MMMM d','  yyyy}">
+<apex:param value="{!customerQuote.Customer_Quote_Date__c}"/></apex:outputText><br/>
+                    </p>
+                </div>
+                <div style="min-width: 250px;">
+                    <h5 style="margin: 0; font-weight: 300; border-bottom: 2px solid #000; font-size: 14px;">Quotation Ref: {!Customer_Quote__c.Opportunity_Name__r.ETSALES_Opportunity_Number__c}</h5>
+                </div>
+                
+            </div>
+            <h4 style="font-weight: 300; font-size: 16px; margin-bottom: 0;"><strong>{!Customer_Quote__c.Account_Name__r.Name}</strong></h4>
+            <h4 style="font-weight: 300; font-size: 16px; margin-top: 0;">To: {!Customer_Quote__c.CustomerName__c}, {!Customer_Quote__c.Contact_PersonTitle__c}</h4>
+            <p style="display: {!If(oppSector == 'School', '', 'none')}; font-size: 16px;">
+                Thank you for choosing Emirates Transport for your school transportation needs. Further to your inquiry
+                for vehicles we are pleased to offer you our best rates for the following
+            </p>
+            <p style="display: {!If(oppSector != 'School', '', 'none')}; font-size: 16px;">
+                Thank you for choosing Emirates Transport for your Transportation and Leasing needs. Further to your inquiry
+                for the service we are pleased to offer you our best rates for the following
+            </p>
+            <div style="position: relative;display:block;clear: both;width: 100%;">
+                <!-- Vehicles detail -->
+                <apex:pageBlock title="" rendered="{!linesDetail.size > 0}" >
+                    <h5 style="font-size:14px; padding-bottom: 5px; border-bottom: 2px solid #ccc; margin-bottom: 15px;  margin-top:16px;">
+                        Vehicle Details
+                    </h5>
+                    
+                    <apex:repeat var="line" value="{!linesDetail}">
+                        
+                        
+                        <table style="width:100%;border: trasprant;border-collapse: collapse;">
+                            
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">Sr. No</th>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_No_of_Months__c}">
+                                        <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!VehcileLabelDetail.Label_No_of_Months__c}</th>
+                                    </apex:outputPanel>
+                                    <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!VehcileLabelDetail.Label_Name__c}</th>
+                                    
+                                    <apex:outputPanel layout="none" rendered="{!If(oppSector == 'School', 'true', 'false')}">
+                                        <td style="border: .4px solid #000000;padding:8px; text-align: left;">Model</td>
+                                    </apex:outputPanel>
+                                    
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Number_of_Vehicles__c}">
+                                        <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left; font-weight:600; border-bottom: 1px solid #ccc;">{!VehcileLabelDetail.Label_No_of_Vehicles__c}</th>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Monthly_Price__c}">
+                                        <th style="background-color: #fff;padding:3px; padding-bottom: 15px; font-weight:600; border-bottom: 1px solid #ccc; text-align: left;">{!VehcileLabelDetail.Label_Vehicle_Monthly_Price__c}</th> 
+                                    </apex:outputPanel>
+                                    <!-- <th style="border: .4px solid #000000;center;font-weight:normal;text-align: center;">VAT per unit</th> -->
+                                    <!-- <th style="border: .4px solid #000000;center;font-weight:normal;text-align: center;">Monthly Rate (with VAT) / Per Unit</th> -->
+                                    
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Monthly_Rate_All_Unit_with_VAT__c}">
+                                        <th style="background-color: #fff; padding:3px; padding-bottom: 15px; font-weight:600; border-bottom: 1px solid #ccc; text-align: left;">{!VehcileLabelDetail.Label_Monthly_Rate_All_Unit_with_VAT__c}</th>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Total_Rate_All_Units__c}">
+                                        <th style="background-color: #fff; padding:3px; padding-bottom: 15px; font-weight:600; border-bottom: 1px solid #ccc; text-align: left;">{!VehcileLabelDetail.Label_Total_Rate_All_Units__c}</th>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_ET_Total_Annual_Mileage__c}">
+                                        <th style="background-color: #fff; padding:3px; padding-bottom: 15px; font-weight:600; border-bottom: 1px solid #ccc; text-align: left;">{!VehcileLabelDetail.Label_ET_Total_Annual_Mileage__c}</th>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Extra_Miles__c}">
+                                        <th style="background-color: #fff; padding:3px; padding-bottom: 15px;  font-weight:600; border-bottom: 1px solid #ccc; text-align: left;">{!VehcileLabelDetail.Label_Extra_Miles__c}</th>
+                                    </apex:outputPanel>
+                                    <!--<apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Delivery_Days__c}">
+                                        <th style="background-color: #fff; padding:3px; padding-bottom: 15px; font-weight:600; border-bottom: 1px solid #ccc; text-align: left;">{!VehcileLabelDetail.Label_Delivery_Days__c}</th>
+                                    </apex:outputPanel>-->
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Source__c}">
+                                        <th style="background-color: #fff; padding:3px; padding-bottom: 15px; font-weight:600; border-bottom: 1px solid #ccc; ;text-align: left;">{!VehcileLabelDetail.Label_Vehicle_Source__c}</th>
+                                    </apex:outputPanel>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <apex:variable var="rowNum" value="{!0}"/>
+                                <!-- Vehicle Lines -->
+                                <apex:repeat var="Veh" value="{!line.vehciledetails}">
+                                    
+                                    <tr style="background-color: {!IF(MOD(rowNum, 2) == 0, '#fff' , '#f4f4f4')}">
+                                        <apex:variable var="rowNum" value="{!rowNum + 1}" />
+                                        <td style=" padding:8px; text-align: center; font-weight: 600;">{!rowNum}</td>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!IF(ISNULL(Veh.No_of_Months__c), 'false', 'true')}">
+                                            <td style="padding:8px; text-align: center;">{!Veh.No_of_Months__c} Months</td>
+                                        </apex:outputPanel>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!IF(ISNULL(Veh.No_of_Years__c), 'false', 'true')}">
+                                            <td style="padding:8px; text-align: center;">{!Veh.No_of_Years__c} Years</td>
+                                        </apex:outputPanel>
+                                        
+                                        <td style="padding:8px; text-align: left;">{!Veh.Remarks__c}</td>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!If(oppSector == 'School', 'true', 'false')}">
+                                            <td style="padding:8px; text-align: left;">{!RIGHT(Veh.Name,4)}</td>
+                                        </apex:outputPanel>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Number_of_Vehicles__c}">
+                                            <td style=" padding:8px; text-align: center;">{!Veh.Number_of_Vehicles__c}</td>
+                                        </apex:outputPanel>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Monthly_Price__c}">
+                                            <td style=" padding:8px; text-align: center;">
+                                                <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                    <apex:param value="{!Veh.Vehicle_Monthly_Cost__c}" />
+                                                </apex:outputText>
+                                            </td>
+                                        </apex:outputPanel>
+                                        
+                                        <!-- <td style="border: .4px solid #000000;padding:8px; text-align: center;">
+<apex:outputText value="{0, number, ###,###,###,##0.00}">
+<apex:param value="{!Veh.Vat_Per_Unit__c}" />
+</apex:outputText>
+</td>
+<td style="border: .4px solid #000000;padding:8px; text-align: center;">
+<apex:outputText value="{0, number, ###,###,###,##0.00}">
+<apex:param value="{!Veh.Monthly_Rate_with_VAT__c}" />
+</apex:outputText>
+</td> -->
+                                        <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Monthly_Rate_All_Unit_with_VAT__c}">
+                                            <td style=" padding:8px; text-align: center;">
+                                                <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                    <apex:param value="{!Veh.Monthly_Rate_All_Unit_with_VAT__c}" />
+                                                </apex:outputText>
+                                            </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Total_Rate_All_Units__c}">
+                                            <td style=" padding:8px; text-align: center;">
+                                                <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                    <apex:param value="{!Veh.Total_Rate_All_Units__c}" />
+                                                </apex:outputText>
+                                            </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_ET_Total_Annual_Mileage__c}">
+                                            <td style=" padding:8px; text-align: center;">
+                                                <apex:outputText value="{0, number, ###,###,###,##0}">
+                                                    <apex:param value="{!Veh.ET_Total_Annual_Mileage__c}" />
+                                                </apex:outputText>
+                                            </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Extra_Miles__c}">
+                                            <td style=" padding:8px; text-align: center;">{!Veh.Extra_Miles__c}</td>
+                                        </apex:outputPanel>
+                                        <!--<apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Delivery_Days__c}">
+                                            <td style=" padding:8px; text-align: center;">{!Veh.Delivery_Days__c}</td>
+                                        </apex:outputPanel>-->
+                                        <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Source__c}">
+                                            <td style=" padding:8px; text-align: center;">{!Veh.Vehicle_Source__c}</td>
+                                        </apex:outputPanel>
+                                    </tr>
+                                </apex:repeat>
+                                
+                                <!-- For Total Line -->
+                                <tr style="display: {!If(line.isGroupByYear, '', 'none')};">
+                                    <td style="padding:8px; text-align: center;"></td>
+                                    <apex:outputPanel layout="none">
+                                        <td style="padding:8px; text-align: center;"></td>
+                                    </apex:outputPanel>
+                                    
+                                    <td style="background-color: #fff; padding:8px; text-align: left;"> <b>TOTAL </b></td>
+                                    <apex:outputPanel layout="none" rendered="{!If(oppSector == 'School', 'true', 'false')}">
+                                        <td style="padding:8px; text-align: left;"></td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Number_of_Vehicles__c}">
+                                        <td style="padding:8px; text-align: center;"><b>{!line.totalQty}</b></td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Monthly_Price__c}">
+                                        <td style="padding:8px; text-align: center;">
+                                            <b>
+                                                <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                    <apex:param value="{!line.monthlyCostPerVeh}" />
+                                                </apex:outputText>
+                                            </b>
+                                        </td>
+                                    </apex:outputPanel>
+                                    
+                                    <!-- <td style="border: .4px solid #000000;padding:8px; text-align: center;">
+<apex:outputText value="{0, number, ###,###,###,##0.00}">
+<apex:param value="{!Veh.Vat_Per_Unit__c}" />
+</apex:outputText>
+</td>
+<td style="border: .4px solid #000000;padding:8px; text-align: center;">
+<apex:outputText value="{0, number, ###,###,###,##0.00}">
+<apex:param value="{!Veh.Monthly_Rate_with_VAT__c}" />
+</apex:outputText>
+</td> -->
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Monthly_Rate_All_Unit_with_VAT__c}">
+                                        <td style="padding:8px; text-align: center;">
+                                            <b>
+                                                <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                    <apex:param value="{!line.monthlyRateAllUnit}" />
+                                                </apex:outputText>
+                                            </b>
+                                        </td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Total_Rate_All_Units__c}">
+                                        <td style="padding:8px; text-align: center;">
+                                            <b>
+                                                <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                    <apex:param value="{!line.totalRateAllUnit}" />
+                                                </apex:outputText>
+                                            </b>
+                                        </td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_ET_Total_Annual_Mileage__c}">
+                                        <td style="padding:8px; text-align: center;">
+                                        </td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Extra_Miles__c}">
+                                        <td style="padding:8px; text-align: center;"></td>
+                                    </apex:outputPanel>
+                                    <!--<apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Delivery_Days__c}">
+                                        <td style="padding:8px; text-align: center;"></td>
+                                    </apex:outputPanel>-->
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Source__c}">
+                                        <td style="padding:8px; text-align: center;"></td>
+                                    </apex:outputPanel>
+                                </tr>
+                                <br style="display: {!If(line.isGroupByYear, '', 'none')};" />
+                            </tbody>
+                            
+                        </table>
+                    </apex:repeat>
+                </apex:pageBlock>
+                
+                <!-- Man Power Detail -->
+                <apex:pageBlock title="" rendered="{!workforceDetails.size > 0}">
+                    <h5 style="font-size:14px; padding-bottom: 5px; border-bottom: 2px solid #ccc; margin-bottom: 15px; margin-top: 26px;">
+                        Manpower Details
+                    </h5>
+                    <table style="width:100%;border: trasprant;border-collapse: collapse;">
+                        <thead style="background:#f2f2f2;">
+                            <tr>
+                                <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">Sr. No</th>
+                                <!-- <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_No_of_Months__c}">
+<th style="border: .4px solid #000000;padding:3px;text-align: center;font-weight:normal;">{!workforceLabelDetail.Label_No_of_Months__c}</th>
+</apex:outputPanel> -->
+                                <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Remarks__c}">
+                                    <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!workforceLabelDetail.Label_Remarks__c}</th>
+                                </apex:outputPanel>
+                                <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Number_of_Workforce__c}">
+                                    <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!workforceLabelDetail.Label_Number_of_Workforce__c}</th> 
+                                </apex:outputPanel>
+                                <!-- <th style="border: .4px solid #000000;center;font-weight:normal;text-align: center;">VAT per unit</th> -->
+                                <!-- <th style="border: .4px solid #000000;center;font-weight:normal;text-align: center;">Monthly Rate (with VAT) / Per Unit</th> -->
+                                
+                                <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Workforce_Monthly_Price__c}">
+                                    <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!workforceLabelDetail.Label_Workforce_Monthly_Price__c}</th>
+                                </apex:outputPanel>
+                                <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Monthly_Rate_All_Unit_with_VAT__c}">
+                                    <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!workforceLabelDetail.Label_Monthly_Rate_All_Unit_with_VAT__c}</th>
+                                </apex:outputPanel>
+                                <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Total_Rate_All_Units__c}">
+                                    <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!workforceLabelDetail.Label_Total_Rate_All_Units__c}</th>
+                                </apex:outputPanel>
+                                <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Type__c}">
+                                    <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!workforceLabelDetail.Label_Type__c}</th>
+                                </apex:outputPanel>
+                                <!--<apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Delivery_Days__c}">
+                                    <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!workforceLabelDetail.Label_Delivery_Days__c}</th>
+                                </apex:outputPanel>-->
+                                
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                            <apex:variable var="rowNum" value="{!0}"/>
+                            <apex:repeat var="Veh" value="{!workforceDetails}"> 
+                                <tr style="background-color: {!IF(MOD(rowNum, 2) == 0, '#fff' , '#f4f4f4')}">
+                                    <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                    <td style="padding:8px; text-align: center; font-weight: 600;">{!rowNum}</td>
+                                    
+                                    <!-- <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_No_of_Months__c}">
+<td style="border: .4px solid #000000;padding:8px; text-align: center;">{!Veh.No_of_Months__c} Months</td>
+</apex:outputPanel> -->
+                                    <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Remarks__c}">
+                                        <td style="padding:8px; text-align: left;">{!Veh.Remarks__c}</td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Number_of_Workforce__c}">
+                                        <td style="padding:8px; text-align: center;">{!Veh.Number_of_Workforce__c}</td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Workforce_Monthly_Price__c}">
+                                        <td style="padding:8px; text-align: center;">
+                                            <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                <apex:param value="{!Veh.Workforce_Monthly_Cost__c}"></apex:param>
+                                            </apex:outputText>
+                                        </td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Monthly_Rate_All_Unit_with_VAT__c}">
+                                        <td style="padding:8px; text-align: center;">
+                                            <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                <apex:param value="{!Veh.Monthly_Rate_All_Unit_with_VAT__c}"></apex:param>
+                                            </apex:outputText>
+                                        </td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Total_Rate_All_Units__c}">
+                                        <td style="padding:8px; text-align: center;">
+                                            <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                <apex:param value="{!Veh.Total_Rate_All_Units__c}"></apex:param>
+                                            </apex:outputText>
+                                        </td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Type__c}">
+                                        <td style="padding:8px; text-align: center;">{!Veh.Type__c}</td>
+                                    </apex:outputPanel>
+                                    <!--<apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Delivery_Days__c}">
+                                        <td style="padding:8px; text-align: center;">{!Veh.Delivery_Days__c}</td>
+                                    </apex:outputPanel>-->
+                                    
+                                    
+                                </tr>
+                            </apex:repeat>
+                        </tbody>
+                        
+                        
+                        
+                    </table>
+                </apex:pageBlock>
+                
+            </div>
+            <h5 style="font-size:14px; padding-bottom: 5px; border-bottom: 2px solid #ccc; margin-top: 26px;">Terms and Conditions:</h5>
+            
+            <ul style= "display: {!If(quoteTerms =='','none','') }">
+                
+                <!-- Terms -->
+                <table style="width: 100%; border-collapse: collapse;">
+					<apex:variable var="rowNum" value="{!0}"/>
+                    <apex:repeat value="{!quoteTerms}" var="qu">
+                        <tr style="display: {!If(qu.Terms_Description__c != 'Additional Terms', '', 'none')}; background-color: {!IF(MOD(rowNum, 2) == 0, '#fff' , '#f4f4f4')}">
+						<apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                            <!-- Column 1: Terms Description -->
+                            <td style="padding:8px; text-align: left;width: 200px;">
+                                {!qu.Terms_Description__c}
+                            </td>
+                            <!-- Column 2: Rest of the values -->
+                            <td style="padding:8px; text-align: left;">
+                                {!qu.Charge_Value__c} {!qu.Charge_Type_Value__c} {!qu.Remarks__c} {!qu.Remarks_Value__c} {!qu.Remark_Type__c}
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+                <!-- Pre Mature Terms -->
+                <apex:outputPanel layout="block" rendered="{!isPreMatureTermAvailable}">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+                        <tr>
+                            <td colspan="2" style="font-weight: bold; padding: 5px;">
+                                Pre-mature penalty: In case of any decrease in lease duration, number of vehicles, or termination, whether partially or wholly due to any reason, an early termination fee shall be paid by the Lessee according to the following:
+                            </td>
+                        </tr>
+                        <apex:variable var="rowNum" value="{!0}"/>
+                        <apex:repeat value="{!quotePreMatureTerms}" var="qu">
+                            <tr style="background-color: {!IF(MOD(rowNum, 2) == 0, '#fff' , '#f4f4f4')}">
+                                <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                <!-- Charge Values -->
+                                <td style="padding: 5px;">
+                                    {!qu.Charge_Value__c} {!qu.Charge_Type_Value__c}
+                                </td>
+                                <!-- Remarks -->
+                                <td style="padding: 5px;">
+                                    {!qu.Remarks__c} {!qu.Remarks_Value__c} {!qu.Remark_Type__c}
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </apex:outputPanel>
+                
+                <!-- Early Termination Fee -->
+                <apex:outputPanel layout="block" rendered="{!isEarlyFeeTermAvailable}">
+				<!--<h5 style="font-size:14px; padding-bottom: 5px; border-bottom: 2px solid #ccc; margin-top: 26px;">Early Termination Fee:</h5>-->
+            
+                    <table style="width: 100%; border-collapse: collapse; font-size:11px;">
+						<apex:variable var="rowNum" value="{!1}"/>
+                        <td style="padding:8px; text-align: left;">
+                                    Early Termination Fee: 
+                                </td>
+                        <apex:repeat value="{!quoteEarlyFeeTerms}" var="qu">
+                            <tr style="background-color: {!IF(MOD(rowNum, 2) == 0, '#fff' , '#f4f4f4')}">
+							<apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                <!-- Charge Values -->
+                                <td style="padding:8px; text-align: left; width: 200px;">
+                                   <span style=" visibility: hidden;"> {!qu.Terms_Description__c}</span> 
+                                </td>
+                                <!-- Remarks -->
+                                <td style="padding:8px; text-align: left;">
+                                    {!qu.Charge_Value__c} {!qu.Charge_Type_Value__c} {!qu.Remarks__c} {!qu.Remarks_Value__c} {!qu.Remark_Type__c}
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </apex:outputPanel>
+                
+                <!-- Only for Transportation -->
+                <apex:outputPanel layout="block" rendered="{!isTransportation}">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+                        <tr>
+                            <td colspan="2" style="font-size: 12px; padding: 5px;">
+                                <b>Fuel price: </b>{!fuelPriceIncluded}.
+                            </td>
+                        </tr>
+                    </table>
+                </apex:outputPanel>
+                
+                <!-- Additional Terms -->
+                <apex:outputPanel layout="block" rendered="{!isAdditionalTermAvailable}">
+				<!--<h5 style="font-size:14px; padding-bottom: 5px; border-bottom: 2px solid #ccc; margin-top: 26px;">Early Termination Fee:</h5>-->
+            
+                    <table style="width: 100%; border-collapse: collapse; font-size:12px;">
+						<apex:variable var="rowNum" value="{!1}"/>
+                        <td style="padding:8px; text-align: left;">
+                                    Additional Terms: 
+                                </td>
+                        <apex:repeat value="{!quoteAddtionalTerms}" var="aTerm">
+                            <tr style="background-color: {!IF(MOD(rowNum, 2) == 0, '#fff' , '#f4f4f4')}">
+							<apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                <!-- Charge Values -->
+                                <td style="padding:8px; text-align: left; width: 200px;">
+                                   <span style=" visibility: hidden;"> Additional Terms: </span> 
+                                </td>
+                                <!-- Remarks -->
+                                <td style="padding:8px; text-align: left;">
+                                     {!aTerm.Additional_Term_Text__c}
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </apex:outputPanel>
+                
+                <!-- Terms 
+<apex:repeat value="{!quoteTerms}" var="qu">
+<li style="display: {!If(qu.Terms_Description__c != 'Additional Terms', '', 'none')}; font-size: 12px; margin-top:3px;"><strong>{!qu.Terms_Description__c}:</strong> {!qu.Charge_Value__c} {!qu.Charge_Type_Value__c} {!qu.Remarks__c} {!qu.Remarks_Value__c} {!qu.Remark_Type__c}</li>
+</apex:repeat>-->
+                
+                <!-- Pre Mature Terms 
+<li style=" display: {!If(isPreMatureTermAvailable,'', 'none') }; font-size: 12px; margin-top:3px; "><Strong>Pre mature penalty:</Strong> In case of any decrease in lease duration, no’s of vehicles, or termination, whether partially or wholly due to any reason, an early termination fee shall be paid by the Lessee according to the following:
+<ul style="list-style-type: circle;">
+<apex:repeat value="{!quotePreMatureTerms}" var="qu">
+<li style="font-size: 12px; margin-top:3px;">{!qu.Charge_Value__c} {!qu.Charge_Type_Value__c} {!qu.Remarks__c} {!qu.Remarks_Value__c} {!qu.Remark_Type__c}</li>
+</apex:repeat>
+</ul>
+</li>-->
+                <!-- Early Temination fee 
+<li style=" display: {!If(isEarlyFeeTermAvailable,'', 'none') }; font-size: 12px; margin-top:3px; "><Strong>Early Termination fee:</Strong>
+<ul style="list-style-type: circle;">
+<apex:repeat value="{!quoteEarlyFeeTerms}" var="qu">
+<li style="font-size: 12px; margin-top:3px;">{!qu.Charge_Value__c} {!qu.Charge_Type_Value__c} {!qu.Remarks__c} {!qu.Remarks_Value__c} {!qu.Remark_Type__c}</li>
+</apex:repeat>
+</ul>
+</li>-->
+                
+                <!-- Only for Tansportation 
+<li style="display: {!If(isTransportation,'', 'none') }; font-size: 12px; margin-top:3px;"><b>Fuel price: </b>{!fuelPriceIncluded}.</li>-->
+                
+                <!-- Additional Terms 
+<li style=" display: {!If(isAdditionalTermAvailable,'', 'none') }; font-size: 12px; margin-top:3px; "><b>Additional Terms: </b>
+<ul style="list-style-type: circle;">
+<apex:repeat value="{!quoteAddtionalTerms}" var="aTerm">
+<li style="font-size: 12px; margin-top:3px;">{!aTerm.Additional_Term_Text__c}</li>
+</apex:repeat>
+</ul>
+</li>-->
+            </ul>
+            <p style= "display: {!If(customerQuote.Additional_Notes__c =='','none','') }">
+                <strong>Note: </strong>{!customerQuote.Additional_Notes__c}
+            </p>
+            <div class="bottomMsg">
+                We hope that our offer meets your expectations and receives your acceptance. In case of any clarification, do not hesitate to contact me.
+            </div>
+            
+            
+            <!-- <div style="position: relative;display: block;clear: both;width: 100%; font-size:14px;
+font-family:Arial;">
+<div style="width: 40%;display: inline-block;float: left;">
+<div style="padding-right:9%;" >
+
+<strong>
+Thanks and Regards,<br/>                    
+
+<b style= "display: {!If(oppOwnerName =='','none','') }">
+{!oppOwnerName}
+</b><br/>
+<b style= "display: {!If(oppOwnerTitle =='','none','') }">
+{!oppOwnerTitle}
+</b><br />
+<b style= "display: {!If(oppOwnerContactNo =='','none','') }">
+{!oppOwnerContactNo}
+</b><br />
+<b style= "display: {!If(oppOwnerContactNo =='','none','') }">
+{!oppOwnerEmail}
+</b>
+</strong>
+
+</div>
+</div>        </div>
+-->        
+            <table style="width:80%;border: trasprant;border-collapse: collapse; margin: 80px auto 0;">
+                <tr>
+                    <td><input style="text-align: center;" type="text" placeholder="Signature" value="Signature"/>__________________________________________</td> </tr>
+                
+                <tr>
+                    <td style= "display: {!If(oppOwnerName =='','none','') }">
+                        {!oppOwnerName}
+					</td>
+                </tr>
+                <tr>
+                    <td style= "display: {!If(oppOwnerTitle =='','none','') }">
+                    {!oppOwnerTitle}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Emirates Transport</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+    
+</apex:page>

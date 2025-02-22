@@ -1,0 +1,828 @@
+<aura:component controller='ET_FinancialAnalysisScreenClass' implements="force:lightningQuickAction,force:hasRecordId,lightning:isUrlAddressable" >
+    <aura:attribute name="quoteId" type="Id"/>
+    <aura:attribute name="rentalPriceCalculationsData" type="List" />
+    <aura:attribute name="rentalPriceHeaderInfo" type="Object" />
+    <aura:attribute name="rentalPriceCalculations" type="List" />
+    <aura:attribute name="totalValueOfQuotations" type="List"/>
+    <aura:attribute name="financialAnalysis" type="List"/>
+    
+    <aura:attribute name="ProfitValueCalculations" type="List"/>
+    <aura:attribute name="ProfitRateCalculations" type="List"/>
+    <aura:attribute name="PaybackValueCalculations" type="List"/>
+    <aura:attribute name="PaybackAnalysisCalculations" type="List"/>
+    <aura:attribute name="header" type="string"/>
+    <aura:attribute name="pricingType" type="string" default ="Annual Price"/>
+    <aura:attribute name="pricePerTypeLabel" type="string"/>
+    <aura:attribute name="pricingMethod" type="string" default ="Per Unit"/>
+    <aura:attribute name="isTargerPriceRequired" type="boolean" default ="false"/>
+    <aura:attribute name="quoteType" type="String" />
+    
+    <aura:attribute name="page" type="integer"/>
+    <aura:attribute name="lineNo" type="integer" default="1"/>
+    <aura:attribute name="totalLines" type="integer"/>
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doinit}" />
+    
+    <aura:method name="handleLineNumberChange" action="{!c.getDataWithRespectToLine}" access="public">
+        <aura:attribute name="lineNo" type="integer" />
+    </aura:method>
+    
+    <aura:if isTrue="{! v.loaded }">
+        <aura:if isTrue="{!v.quoteType != 'Total Project Summary'}">
+            <div class="slds-box slds-box_xx-small slds-align--absolute-center bgColor">
+                <p >{!v.header}</p>
+            </div>
+        </aura:if>
+        
+        <table class="slds-table slds-table_cell-buffer  slds-table_bordered slds-table_striped">
+            <tbody>
+                <tr class="slds-hint-parent red-color-class">   
+                    <td data-label="Years">
+                        <div class="labelClass" title="Years"><b>Contract Period</b></div>
+                    </td>
+                    <aura:if isTrue="{!not(empty(v.rentalPriceCalculations))}">
+                        <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise" indexVar="index">
+                            <aura:if isTrue="{!not(empty(rentalPriceCalYearWise.contractYear))}">
+                                <td data-label="1">
+                                    <!--<div class="labelClass" title="1">Y{!index+1}</div>-->
+                                    <div class="labelClass" title="1">{!rentalPriceCalYearWise.contractYear}</div>
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </aura:if>
+                </tr>
+                
+                <aura:if isTrue="{!not(empty(v.rentalPriceCalculations))}">
+                    <tr >
+                        <td colspan="9"> 
+                            <div class="slds-align--absolute-center red-color-class"><b>Rental Price for each Unit</b></div>
+                        </td>								
+                        
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Annual Cost">Total Annual Cost</div>
+                        </td>
+                        <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                            <aura:if isTrue="{!not(empty(rentalPriceCalYearWise.totalAnnualCost))}">
+                                <td >
+                                    <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualCost}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.isTargerPriceRequired}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Total Annual Cost(Discounted)">Total Annual Cost(Discounted)</div>
+                            </td>
+                            <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                                <aura:if isTrue="{!not(empty(rentalPriceCalYearWise.totalAnnualCostDiscounted))}">
+                                    <td >
+                                        <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualCostDiscounted}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Total Annual Cost">Total Annual Cost(Target)</div>
+                            </td>
+                            <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                                <aura:if isTrue="{!not(empty(rentalPriceCalYearWise.totalAnnualCostTarget))}">
+                                    <td >
+                                        <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualCostTarget}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Annual Profit">Total Annual Profit</div>
+                        </td>
+                        <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                            <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.totalAnnualProfit)), rentalPriceCalYearWise.totalAnnualProfit != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualProfit}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.isTargerPriceRequired}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Total Annual Profit(Discounted)">Total Annual Profit(Discounted)</div>
+                            </td>
+                            <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                                <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.totalAnnualProfitDiscounted)), rentalPriceCalYearWise.totalAnnualProfitDiscounted != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualProfitDiscounted}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                        
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Total Annual Profit(Target)">Total Annual Profit(Target)</div>
+                            </td>
+                            <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                                <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.totalAnnualProfitTarget)), rentalPriceCalYearWise.totalAnnualProfitTarget != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualProfitTarget}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Annual Price excluding VAT">Total Annual Price excluding VAT</div>
+                        </td>
+                        <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                            <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.totalAnnualPriceExcludingVAT)), rentalPriceCalYearWise.totalAnnualPriceExcludingVAT != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualPriceExcludingVAT}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.isTargerPriceRequired}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Total Annual Price excluding VAT(Discounted)">Total Annual Price excluding VAT(Discounted)</div>
+                            </td>
+                            <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                                <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.totalAnnualPriceExcludingVATDiscounted)), rentalPriceCalYearWise.totalAnnualPriceExcludingVATDiscounted != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualPriceExcludingVATDiscounted}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                        
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Total Annual Price excluding VAT(Target)">Total Annual Price excluding VAT(Target)</div>
+                            </td>
+                            <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                                <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.totalAnnualPriceExcludingVATTarget)), rentalPriceCalYearWise.totalAnnualPriceExcludingVATTarget != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualPriceExcludingVATTarget}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                        
+                    </aura:if>
+                    <aura:if isTrue ="{!v.pricingType == 'Monthly Price'}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Price Per Month excluding VAT">Price Per Month excluding VAT</div>
+                            </td>
+                            <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                                <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.pricePerMonthExcludingVAT)), rentalPriceCalYearWise.pricePerMonthExcludingVAT != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="3" value="{!rentalPriceCalYearWise.pricePerMonthExcludingVAT}"/>
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                    
+                    
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="VAT Amount">VAT Amount</div>
+                        </td>
+                        <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                            <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.vATAmount)), rentalPriceCalYearWise.vATAmount != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!rentalPriceCalYearWise.vATAmount }</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Annual Price including VAT">Total Annual Price including VAT</div>
+                        </td>
+                        <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                            <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.totalAnnualPriceIncludingVAT)), rentalPriceCalYearWise.totalAnnualPriceIncludingVAT != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!rentalPriceCalYearWise.totalAnnualPriceIncludingVAT}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.pricingType == 'Monthly Price'}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Price Per Month including VAT">Price Per Month including VAT</div>
+                            </td>
+                            <aura:iteration items="{!v.rentalPriceCalculations}" var="rentalPriceCalYearWise">
+                                <aura:if isTrue="{!and(not(empty(rentalPriceCalYearWise.pricePerMonthIncludingVAT)), rentalPriceCalYearWise.pricePerMonthIncludingVAT != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="3" value="{!rentalPriceCalYearWise.pricePerMonthIncludingVAT}"/>
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                </aura:if>
+                <aura:if isTrue="{!not(empty(v.totalValueOfQuotations))}">
+                    <tr >
+                        <td colspan="9"> 
+                            <div class="slds-align--absolute-center red-color-class"><b>Total Value Of Quotation</b></div>
+                        </td>								
+                        
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Value of Rental">Total Value of Rental</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!and(not(empty(totalValue.totalValueofRental)), totalValue.totalValueofRental != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalValueofRental}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Investment">Total Investment</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!and(not(empty(totalValue.totalInvestment)), totalValue.totalInvestment != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalInvestment}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Depreciation">Total Depreciation</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!and(not(empty(totalValue.totalDepreciation)), totalValue.totalDepreciation != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalDepreciation}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Resale Value">Total Resale Value</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!and(not(empty(totalValue.totalResaleValue)), totalValue.totalResaleValue != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalResaleValue}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Vehicle Profits">Total Vehicle Profits</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!and(not(empty(totalValue.totalVehicleProfits)), totalValue.totalVehicleProfits != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalVehicleProfits}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Driver Profits">Total Driver Profits</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!not(empty(totalValue.totalDriverProfits))}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalDriverProfits}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Nanny Profits">Total Nanny Profits</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!not(empty(totalValue.totalNannyprofits))}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalNannyprofits}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Coordinator Profits">Total Coordinator Profits</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!not(empty(totalValue.totalCoordinatorprofits))}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalCoordinatorprofits}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Other Employee Profits">Total Other Employee Profits</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!not(empty(totalValue.totalOtherEmployeeprofits))}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalOtherEmployeeprofits}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Fuel Profits">Total Fuel Profits</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!not(empty(totalValue.totalFuelProfits))}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalFuelProfits}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Supervisor Profits">Total Supervisor Profits</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!not(empty(totalValue.totalSupervisorprofits))}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalSupervisorprofits}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Total Accountant Profits">Total Accountant Profits</div>
+                        </td>
+                        <aura:iteration items="{!v.totalValueOfQuotations}" var="totalValue">
+                            <aura:if isTrue="{!not(empty(totalValue.totalAccountantprofits))}">
+                                <td >
+                                    <div class="slds-truncate" >{!totalValue.totalAccountantprofits}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                </aura:if>
+                <aura:if isTrue="{!not(empty(v.financialAnalysis))}">
+                    <tr >
+                        <td colspan="9"> 
+                            <div class="slds-align--absolute-center red-color-class"><b>Financial Analysis</b></div>
+                        </td>								
+                        
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Payback 1">Payback 1</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.payback)), financial.payback != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!financial.payback}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Payback Ratio 1 %">Payback Ratio 1 %</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.paybackRatio)), financial.paybackRatio != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!financial.paybackRatio}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Payback 2">Payback 2</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.payback2)), financial.payback2 != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!financial.payback2}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Payback Ratio 2 %">Payback Ratio 2 %</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.paybackRatio2)), financial.paybackRatio2 != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!financial.paybackRatio2}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Annual share of Payback Ratio 2 %">Annual share of Payback Ratio 2 %</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.annualshareOfPaybackRatio2)), financial.annualshareOfPaybackRatio2 != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!financial.annualshareOfPaybackRatio2}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Payback 3">Payback 3</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.payback3)), financial.payback3 != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!financial.payback3}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Payback Ratio 3">Payback Ratio 3</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.paybackRatio3)), financial.paybackRatio3 != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >
+                                        <lightning:formattedNumber maximumFractionDigits="3" value="{!financial.paybackRatio3}" />
+                                    </div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Annual share of Payback Ratio 3 %">Annual share of Payback Ratio 3 %</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.annualshareOfPaybackRatio3)), financial.annualshareOfPaybackRatio3 != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >
+                                        <lightning:formattedNumber maximumFractionDigits="3" value="{!financial.annualshareOfPaybackRatio3}" />
+                                    </div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Free Cash Flow(Annual)">Free Cash Flow Annual</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.freeCashFlowAnnual)), financial.freeCashFlowAnnual != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!financial.freeCashFlowAnnual}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.isTargerPriceRequired}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Free Cash Flow Annual(Discounted)">Free Cash Flow Annual(Discounted)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.freeCashFlowAnnualDiscounted)), financial.freeCashFlowAnnualDiscounted != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >{!financial.freeCashFlowAnnualDiscounted}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                        
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Free Cash Flow Annual(Target)">Free Cash Flow Annual(Target)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.freeCashFlowAnnualTarget)), financial.freeCashFlowAnnualTarget != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >{!financial.freeCashFlowAnnualTarget}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Free Cash Flow Cumulative">Free Cash Flow Cumulative</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.freeCashFlowCumulative)), financial.freeCashFlowCumulative != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!financial.freeCashFlowCumulative}</div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.isTargerPriceRequired}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Free Cash Flow Cumulative(Discounted)">Free Cash Flow Cumulative(Discounted)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.freeCashFlowCumulativeDiscounted)), financial.freeCashFlowCumulativeDiscounted != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >{!financial.freeCashFlowCumulativeDiscounted}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Free Cash Flow Cumulative(Target)">Free Cash Flow Cumulative(Target)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.freeCashFlowCumulativeTarget)), financial.freeCashFlowCumulativeTarget != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >{!financial.freeCashFlowCumulativeTarget}</div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Net Present Value">Net Present Value</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.netPresentValue)), financial.netPresentValue != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >
+                                        <lightning:formattedNumber maximumFractionDigits="3" value="{!financial.netPresentValue}" />
+                                    </div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.isTargerPriceRequired}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Net Present Value(Discounted)">Net Present Value(Discounted)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.netPresentValueDiscounted)), financial.netPresentValueDiscounted != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="3" value="{!financial.netPresentValueDiscounted}" />
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Net Present Value(Target)">Net Present Value(Target)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.netPresentValueTarget)), financial.netPresentValueTarget != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="3" value="{!financial.netPresentValueTarget}" />
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Cost Of Capital Assumed (%)">Cost Of Capital Assumed (%)</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.costOfCapitalAssumed)), financial.costOfCapitalAssumed != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >{!financial.costOfCapitalAssumed}</div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Net Profit Margin (%)">Net Profit Margin (%)</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.netProfitMargin)), financial.netProfitMargin != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >
+                                        <lightning:formattedNumber maximumFractionDigits="3" value="{!financial.netProfitMargin}" />
+                                    </div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.isTargerPriceRequired}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Net Profit Margin %(Discounted)">Net Profit Margin %(Discounted)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.netProfitMarginDiscounted)), financial.netProfitMarginDiscounted != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="3" value="{!financial.netProfitMarginDiscounted}" />
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                                
+                            </aura:iteration>
+                        </tr>
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Net Profit Margin %(Target)">Net Profit Margin %(Target)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.netProfitMarginTarget)), financial.netProfitMarginTarget != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="3" value="{!financial.netProfitMarginTarget}" />
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                                
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Payback Period (Years)">Payback Period (Years)</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.paybackPeriodYears)), financial.paybackPeriodYears != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >
+                                        <lightning:formattedNumber maximumFractionDigits="2" value="{!financial.paybackPeriodYears}" />
+                                    </div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Internal Rate of Return (%)">Internal Rate of Return (%)</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.internalRateOfReturn)), financial.internalRateOfReturn != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >
+                                        <lightning:formattedNumber maximumFractionDigits="2" value="{!financial.internalRateOfReturn}" />
+                                    </div> 
+                                </td>
+                            </aura:if>
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.isTargerPriceRequired}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Internal Rate of Return %(Discounted)">Internal Rate of Return %(Discounted)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.internalRateOfReturnDiscounted)), financial.internalRateOfReturnDiscounted != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="2" value="{!financial.internalRateOfReturnDiscounted}" />
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Internal Rate of Return %(Target)">Internal Rate of Return %(Target)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.internalRateOfReturnTarget)), financial.internalRateOfReturnTarget != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="2" value="{!financial.internalRateOfReturnTarget}" />
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                    <tr>
+                        <td data-label="1">
+                            <div class="labelClass" title="Return on Investment (%)">Return on Investment (%)</div>
+                        </td>
+                        <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                            <aura:if isTrue="{!and(not(empty(financial.returnOnInvestment)), financial.returnOnInvestment != 0)}">
+                                <td >
+                                    <div class="slds-truncate" >
+                                        <lightning:formattedNumber maximumFractionDigits="2" value="{!financial.returnOnInvestment}"/>
+                                    </div> 
+                                </td>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue ="{!v.isTargerPriceRequired}">
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Return on Investment %(Discounted)">Return on Investment %(Discounted)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.returnOnInvestmentDiscounted)), financial.returnOnInvestmentDiscounted != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="2" value="{!financial.returnOnInvestmentDiscounted}"/>
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                                
+                            </aura:iteration>
+                        </tr>
+                        
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass" title="Return on Investment %(Target)">Return on Investment %(Target)</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.returnOnInvestmentTarget)), financial.returnOnInvestmentTarget != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="2" value="{!financial.returnOnInvestmentTarget}"/>
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                    <aura:if isTrue="{!v.pricingMethod == 'Comprehensive Price per Quotation'}">
+                        <tr >
+                            <td colspan="9"> 
+                                <div class="slds-align--absolute-center red-color-class"><b>Comprehensive Price</b></div>
+                            </td>								
+                            
+                        </tr>
+                        <tr>
+                            <td data-label="1">
+                                <div class="labelClass">{!v.pricePerTypeLabel}</div>
+                            </td>
+                            <aura:iteration items="{!v.financialAnalysis}" var="financial">
+                                <aura:if isTrue="{!and(not(empty(financial.pricePerPricingType)), financial.pricePerPricingType != 0)}">
+                                    <td >
+                                        <div class="slds-truncate" >
+                                            <lightning:formattedNumber maximumFractionDigits="2" value="{!financial.pricePerPricingType}"/>
+                                        </div> 
+                                    </td>
+                                </aura:if>
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                </aura:if>
+            </tbody>
+        </table>
+        <aura:set attribute="else">
+            <lightning:spinner alternativeText="Loading" variant="brand" />
+        </aura:set>
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,439 @@
+<apex:page standardStylesheets="false" applyBodyTag="false" showHeader="false" controller="ETI_InvoiceCtrl" renderAs="pdf">
+    
+    <head>
+        <style type="text/css">
+            
+            .invoice__boarder {
+            display: inline-block;
+            width: 100%;
+            margin: 2px 0 10px 0;
+            border-bottom: .5px solid black;
+            }
+            
+            .invoice__subHeader {
+            width: 100%;
+            margin: 2px 0 10px 0;
+            }
+            .invoice__headdertop {
+            display: block;
+            width: 100%;
+            margin: 0px 0 10px 0;
+            clear: both;
+            position: relative;
+            }
+            .invoice__headerbottom {
+            position:relative;
+            width:100%;
+            display:inline-block;
+            float:left;
+            clear:both;
+            font-size: 10px;
+            }
+            .invoice__No {
+            display: inline-block;
+            width: auto;
+            background: #ebebeb;
+            padding: 3px 15px;
+            }
+            .invoice__Date {
+            float: right;
+            width: 50%;
+            text-align: right;
+            }
+            
+            h1,
+            h2,
+            h3,
+            h4,
+            h5 {
+            margin: 5px;
+            }
+            
+            h1 {
+            font-size: 14px;
+            }
+            
+            h2 {
+            font-size: 12px;
+            }
+            
+            h3 {
+            font-size: 14px;
+            text-align: right;
+            }
+            
+            h4 {
+            font-size: 14px;
+            text-align: left;
+            }
+            
+            h5 {
+            font-size: 12.5px;
+            text-align: left;
+            }
+            
+            .invoice__title {
+            float: left;
+            width: 100%;
+            text-align: center;
+            }
+            
+            
+            
+            .invoice__number span {
+            display: block;
+            }
+            #div1{
+            height: 30px;
+            width: 50%;
+            float : left;
+            }
+            #div2{
+            height: 30px;
+            width: 50%;
+            float : left;
+            }
+            #div3{
+            height: 30px;
+            width: 35%;
+            float : left;
+            }            
+            .css-serial {
+            counter-reset: serial-number; 
+            }
+            .css-serial h4:first-child:after {
+            counter-increment: serial-number; 
+            content: counter(serial-number); 
+            }
+            
+            .css-serial1 {
+            counter-reset: serial-number;
+            }
+            .css-serial1 h5:first-child:after {
+            counter-increment: serial-number; 
+            content: counter(serial-number); 
+            }
+            
+            .invoice__amount {
+            display: block;
+            font-size: 16px;
+            text-align: right;
+            float: right;
+            }
+            
+            
+            
+            
+            
+            
+            .invoice__header {
+            display: inline-block;
+            width: 100%;
+            padding: 5px 0px;
+            border-bottom: .5px solid black;            
+            position:relative;
+            float:left;
+            clear:both;
+            }
+            .datediv{
+            margin:0px;
+            }
+            .datesubdiv{
+            width: 50px;
+            text-align: right;
+            position: relative;
+            display: inline-block;
+            font-weight:normal;
+            font-size:14px;
+            }
+            .datedatadiv{
+            width: 110px;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            font-weight:normal;
+            font-size:14px;
+            }
+            .textalignright{
+            text-align:left;
+            }
+            .invoice__title p{
+            font-size: 24px;
+            margin: 0px;
+            }
+            .invoice__number {
+            float: right;
+            width: 20%;
+            text-align: right;
+            position: absolute;
+            right: 5px;
+            }
+            .productdetaistab{
+            width:100%;border:
+            border-collapse: collapse;
+            }
+            .productdetaistab td{
+            border-collapse: collapse;
+            width:25%;
+            padding:10px 5px;
+            font-weight:normal;
+            font-size:14px;
+            position:relative;
+            }
+            .textalignleft{
+            text-align:left;font-weight:bold!important;
+            }
+            .colonspan{
+            text-align: right;
+            position: absolute;
+            right:0px;
+            }
+            .logosdiv{
+            position:relative;
+            width:100%;height:80px;            
+            display:inline-block;
+            float:left;
+            clear:both;
+            }
+            .divlogo{
+            position:relative;
+            width:33.33%;
+            display:inline-block;
+            float:left;
+            }
+            .page-break {
+            page-break-before:always;
+            }
+            .page-break:first-child {
+            page-break-before: avoid;
+            }
+            
+            @page {
+            size: A4;
+            @bottom-right {
+            content: "Page " counter(page) " of " counter(pages);
+            }
+            }
+        </style>
+        <!-- <style type="text/css">
+body { font-family: 'Arial Unicode MS'; }
+</style>  -->
+    </head>
+    <body> 
+        <apex:repeat value="{!wrapBookings}" var="wrap">
+         <apex:repeat value="{!wrap.serviceLineItemsList}" var="srvLineItem"> 
+             <div class="page-break" >
+        <apex:outputpanel rendered="{!wrap.location == 'Sharjah Spea Inspection Centre'}" >
+            <div class="invoice__headdertop logosdiv">   
+                <div class="divlogo">
+                    <h2 style="text-align:center;float:left;"> <apex:image url="{!$Resource.Invoice_Header_Logo11}"/></h2>
+                </div>
+                <div class="divlogo">
+                    <h2 style="text-align:center;float:center;"> <apex:image url="{!$Resource.Invoice_Header_Logo22}"/></h2>
+                </div>
+                <div class="divlogo">
+                    <h2 style="text-align:center;float:right;"> <apex:image url="{!$Resource.Invoice_Header_Logo33}"/></h2>
+                </div>
+            </div>
+        </apex:outputpanel>
+         <div class="invoice__headdertop" >  
+            <apex:outputpanel rendered="{!wrap.emirate == 'Abu Dhabi'}" >
+                <div class="invoice__headdertop">                   
+                    <div>
+                        <h2 style="text-align:center;float:left;"> <apex:image url="{!$Resource.Invoice_Header_Abu_Dhabi_Logo}"/> <br/> P.O.Box 253 <br/> Abu Dhabi - United Arab Emirates</h2>                   
+                    </div>
+                </div>
+            </apex:outputpanel>
+            <apex:outputpanel rendered="{!wrap.emirate == 'Fujairah'}" >
+                <div class="invoice__headdertop">                   
+                    <div>
+                        <h2 style="text-align:center;float:left;"> <apex:image url="{!$Resource.Invoice_Header_Logo33}"/> <br/> P.O.Box 5757 <br/> Dubai - United Arab Emirates</h2>                   
+                    </div>
+                </div>
+            </apex:outputpanel>
+            <apex:outputpanel rendered="{!wrap.location == 'Sharjah Spea Inspection Centre'}" >
+                <div>
+                    <h2 style="text-align:center;float:left;"> Emirates General Transport &amp; Services Company ,<br/> Marrakech St., Umm Ramool , P.O.Box 5757 ,<br/> Dubai - United Arab Emirates</h2>
+                </div>
+            </apex:outputpanel>
+            <div>
+                <h2 style="text-align:center;float:right">
+                    <!--apex:outputText value="Spea Inspection Center" rendered="{!wrap.location == 'Sharjah Spea Inspection Centre'}" Request from hadeel to hide this/-->
+                    <apex:outputText value="Heavy Vehicle Inspection Center" rendered="{!wrap.location != 'Sharjah Spea Inspection Centre'}"/><br/><br/> 
+                    <apex:outputpanel rendered="{!wrap.emirate == 'Sharjah' || wrap.emirate == 'Fujairah'}">
+                        <apex:image url="{!$Resource.Call_Center_Phone_Logo}"/> 
+                    </apex:outputpanel>
+                    <apex:outputpanel rendered="{!wrap.emirate == 'Abu Dhabi'}" >
+                        <apex:image url="{!$Resource.Invoice_Header_Abu_Dhabi_Police_Logo}"/>
+                    </apex:outputpanel>
+                </h2><br/>
+            </div>
+        </div>
+        <div class="invoice__headdertop" >
+            <div class="invoice__title">
+                <apex:outputpanel rendered="{!wrap.emirate != 'Sharjah'}" >
+                    <h1> {!wrap.location}</h1>
+                </apex:outputpanel>
+            </div> 
+            <br/>
+        </div> 
+        <div class="invoice__header" style="border-top:.5px solid ;">
+            <div class="invoice__title">
+                <p> TAX INVOICE </p>
+            </div>
+            <div class="invoice__number">
+                <apex:outputpanel rendered="{!wrap.emirate == 'Fujairah' || wrap.emirate == 'Sharjah'}" >
+                    <h3>TRN:100073675900003</h3>
+                </apex:outputpanel>
+                <apex:outputpanel rendered="{!wrap.emirate == 'Abu Dhabi'}" >
+                    <h3>TRN:100026365500003</h3>
+                </apex:outputpanel>
+            </div>  
+        </div>
+        <apex:form > 
+            <apex:pageBlock >
+                <div class="invoice__header" >
+                    <div class="invoice__No">
+                        <strong>Invoice No : {!invoiceList[0].Name} </strong>
+                    </div>
+                    <div class="invoice__Date">
+                        <p class="datediv"><span class="datesubdiv">Date : </span><span class="datedatadiv">{!wrap.invoiceDate}</span></p>
+                        <p class="datediv"><span class="datesubdiv">Time : </span><span class="datedatadiv">{!wrap.invoiceTime}</span></p>
+                    </div> 
+                </div>
+                <div class="invoice__header" >
+                    <div class="invoice__title" >
+                         <strong>SR No : {!serviceRequestName} </strong>
+                        <br/>
+                    </div>
+                </div>
+                <div class="css-serial">
+                   <!-- <apex:repeat value="{!wrapBookings}" var="wrap">
+                         <apex:repeat value="{!wrap.serviceLineItemsList}" var="srvLineItem"> -->
+                        <div class="invoice__header"> 
+                            <div class="invoice__title"> 
+                                <!--  <h4>Vehicle Information &nbsp;</h4> -->
+                              <!--  <table class="productdetaistab">
+                                    <tr>
+                                        <td class="textalignleft">Plate No<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_No__c}" /><span class="colonspan">:</span></td>
+                                        <td class="textalignleft">Plate Color<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_Color__c}" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="textalignleft">Plate Source<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_Source__c}" /><span class="colonspan">:</span></td>
+                                        <td class="textalignleft">Plate Type<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_Type__c}" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="textalignleft">Chassis No<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Chassis_No__c}" /><span class="colonspan">:</span></td>
+                                        <td class="textalignleft">Registration Expiry Date<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.regDate}" /></td>
+                                    </tr>
+                                </table> -->
+                               
+                               <table class="productdetaistab">
+                                    <tr>
+                                        <td class="textalignleft">Customer Name<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.User__r.Name}" /></td>
+                                        <!--apex:outputText rendered="{!inspectionLocation != 'Sharjah Spea Inspection Centre1'}">
+                                            <td class="textalignleft">Pay Type<span class="colonspan">:</span></td>
+                                            <td><apex:outputtext value="" /></td>
+                                        </apex:outputText -->
+                                        <td class="textalignleft">Plate No<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_No__c}" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="textalignleft">Lane Type<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Allocated_Lane__r.Lane_Type_AMAN__c}" /></td>
+                                        <td class="textalignleft">Plate Source<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_Source__c}" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="textalignleft">Service<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!srvLineItem.Service__r.Name}" /></td>
+                                        <td class="textalignleft">Plate Type<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_Type__c}" /></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="textalignleft">Test Purpose<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Purpose_Type__r.Name}" /></td>
+                                        <td class="textalignleft">Plate Color<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_Color__c}" /></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="textalignleft">Amount<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!srvLineItem.Fee_Amount__c}" /></td>
+                                        <td class="textalignleft">Chassis No<span class="colonspan">:</span></td>
+                                        <!--<apex:outputText rendered="{!wrap.booking.Customer_Vehicle__r.Plate_No__c==''}">-->
+                                        <td><apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Chassis_No__c}" /></td>
+                                        <!--</apex:outputText>-->
+                                        </tr>
+                                    <tr>
+                                        <td class="textalignleft">Vat@5%<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!srvLineItem.Tax_Amount__c}" /></td>
+                                        <td class="textalignleft">KM Reading<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="" /></td>
+                                    </tr>
+                                    <tr>
+                                      <td class="textalignleft">Total Amount (AED)<span class="colonspan">:</span></td>
+                                        <td><apex:outputtext value="{!srvLineItem.Total_Fee__c}" /></td>
+                                        
+                                    </tr>
+                                </table>
+                                <!--<div id="div1"> Plate No : &nbsp;<apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_No__c}" /></div>
+<div id="div1"> Plate Color : &nbsp; <apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_Color__c}" /></div>
+<div id="div1"> Plate Source : &nbsp; <apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_Source__c}" /> </div>
+<div id="div1"> Plate Type : &nbsp;<apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Plate_Type__c}" /></div>
+<div id="div2"> Chassis No : &nbsp; <apex:outputtext value="{!wrap.booking.Customer_Vehicle__r.Chassis_No__c}" /></div>
+<div id="div2"> Registration Expiry Date : &nbsp; <apex:outputtext value="{!wrap.regDate}" /> </div> 
+<br/>-->
+                              <!--  <div class="css-serial1">
+                                    <apex:repeat value="{!wrap.serviceLineItemsList}" var="srvLineItem"> 
+                                        <div class="invoice__subHeader"> 
+                                            <div class="invoice__title"> 
+                                                
+                                                <table class="productdetaistab">
+                                                    <tr>
+                                                        <td class="textalignleft">Service Name <span class="colonspan">:</span></td>
+                                                        <td><apex:outputtext value="{!srvLineItem.Service__r.Name}" /><span class="colonspan">:</span></td>
+                                                        <td class="textalignleft">Amount<span class="colonspan">:</span></td>
+                                                        <td><apex:outputtext value="{!srvLineItem.Fee_Amount__c}" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="textalignleft">Vat@5%<span class="colonspan">:</span></td>
+                                                        <td><apex:outputtext value="{!srvLineItem.Tax_Amount__c}" /><span class="colonspan">:</span></td>
+                                                        <td class="textalignleft">Total Amount<span class="colonspan">:</span></td>
+                                                        <td><apex:outputtext value="{!srvLineItem.Total_Fee__c}" /></td>
+                                                    </tr>
+                                                </table>
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                    </apex:repeat>  
+                                </div> -->
+                            </div>
+                        </div>                      
+                 <!--   </apex:repeat> 
+                    </apex:repeat> -->
+                </div>
+                <!--   <div class="invoice__amount">
+Amount : {!amount} <br/>
+Vat@5% : {!vat} <br/>
+Total Amount (AED) : {!totalAmount} <br/>
+</div> -->
+                <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+                <div class="invoice__headerbottom">
+                    <h2 style="text-align:center;float:center;" > The center will not be responsible for any loss of the items or any technical defects during the inspection </h2>
+                </div>     
+                <!-- <div style="page-break-after:always;"/> -->
+            </apex:pageBlock>
+        </apex:form>
+             </div>
+            </apex:repeat>
+        </apex:repeat>
+    </body>
+</apex:page>

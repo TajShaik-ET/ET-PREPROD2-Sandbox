@@ -1,0 +1,51 @@
+<template>
+    <div style="border-style: solid;border-width: 1px; margin-bottom:5px;margin-top:5px; border-radius: 25px; padding:20px;" class="--slds-c-button-radius-border">
+        <lightning-record-view-form object-api-name={inspectionLineObject}  record-id={inpsectionlineid}>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.ET_Vehicle_Master} class="inputCss"></lightning-output-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Requirement} class="inputCss"></lightning-output-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Description} class="inputCss"></lightning-output-field>
+                </div>                           
+            </div>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Severity} class="inputCss"></lightning-output-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Classification} class="inputCss"></lightning-output-field>
+                </div> 
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Target_Date} class="inputCss"></lightning-output-field>
+                </div>              
+            </div>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Proof} class="inputCss"></lightning-output-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Root_Cause} class="inputCss"></lightning-output-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Corrective_Action} class="inputCss"></lightning-output-field>
+                </div>
+            </div>
+            <div class ="slds-grid">
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Additional_Notes} class="inputCss"></lightning-output-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-output-field field-name={inspectionLineFields.Status} class="inputCss"></lightning-output-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-button  variant="brand" class="slds-m-top_small" onclick={handleMarkComplete} disabled={markedClosed} label="Mark Complete" >
+                    </lightning-button>
+                </div>
+            </div>
+        </lightning-record-view-form>
+    </div>
+</template>

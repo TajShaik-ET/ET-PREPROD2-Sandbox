@@ -1,0 +1,304 @@
+<!--
+Name: TransportationContractPreview
+Controller: ContractPreviewController
+Author: Sreelakshmi SK
+Created Date: 26 May 2023
+Description: VF page to preview the TransportationContractPreview PDF
+
+updated : 26 Sept 2023--Srihari Koyila
+-->
+
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf"  standardStylesheets="false" applyHtmlTag="false" standardController="Customer_Quote__c" extensions="ContractPreviewController">
+    
+    <head>
+        <style>
+            @page {
+            size: A4;
+            margin:25mm 10mm 10mm;
+            @bottom-left {
+            content: element(footer);
+            }
+            @top-left {
+            content: element(header);
+            }
+            @bottom-right {
+            content: "Page " counter(page) " of " counter(pages);
+            font-size: 12px;
+            }
+            }
+            
+            
+            div.divFooter {
+            display: block;
+            padding: 5px;
+            position: running(footer);
+            }
+            div.divHeader {
+            margin:20px 0px;
+            display: block;
+            padding: 5px;
+            position: running(header);
+            align:right;
+            }
+            body {
+            font-size:14px;
+            font-family: Calibri, sans-serif;
+            }
+            table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            }
+            ul li, ol li{
+            margin-bottom:10px;
+            text-align: justify;
+            }
+        </style>
+    </head>
+    
+    <div class="divHeader">
+        <apex:image style="height: 60px;float:right" url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/logo.png')}"/>
+    </div>
+    <!--div styleClass="center_section" style="width: 30%;display: inline-block;float: left;text-align:center;">
+<apex:image style="height: 50px;" url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/logo.png')}"/>                
+</div-->
+    
+    <body>
+        
+        <h4 style="padding: 40px;text-align: center; text-decoration: underline;">
+            TRANSPORTATION AGREEMENT {!AccountName}
+        </h4>
+        <p>This Transportation Agreement (the "Agreement") is entered into on <Strong style= "display: {!If(LA_AgreementDate =='undefined','none','') }">{!LA_AgreementDate}</Strong>.</p>
+        
+        <h5 style="text-decoration: underline;">By and Between the following Parties:</h5>
+        <ol type="1">
+            <li>(1)	Emirates Public Transport &amp; Services Company, a PJSC established under laws of UAE having its principal place of business at Marrakech Street, Umm Ramool Area, P.O. Box - 5757, Dubai, United Arab Emirates, represented by <Strong style= "display: {!If(ET_Solitation =='undefined','none','') }">{!ET_Solitation}</Strong><Strong style= "display: {!If(ET_ETRepresentative =='undefined','none','') }">{!ET_ETRepresentative}</Strong> as  <Strong style= "display: {!If(ET_Designation =='undefined','none','') }">{!ET_Designation}</Strong> ("Service Provider").</li>
+            <li>{!Customer_Quote__c.Name}, a company registered  in the United Arab Emirates, Commercial License number <Strong style= "display: {!If(Licensenumber =='undefined','none','') }">{!Licensenumber}</Strong>, P.O box <Strong style= "display: {!If(LA_PostOfBox =='undefined','none','') }">{!LA_PostOfBox}</Strong>, Dubai, United Arab Emirates whose principal place of  business at.<Strong style= "display: {!If(LA_POBusiness =='undefined','none','') }">{!LA_POBusiness}</Strong> Dubai, United Arab Emirates, represented by <Strong style= "display: {!If(LA_Solitation =='undefined','none','') }">{!LA_Solitation}</Strong> <Strong style= "display: {!If(LA_LARepresentative =='undefined','none','') }">{!LA_LARepresentative}</Strong> as ' <Strong style= "display: {!If(LA_Designation =='undefined','none','') }">{!LA_Designation}</Strong>' ("Company").
+                <p>Together the "Parties".</p></li>
+        </ol>
+        
+        
+        <h4 style="text-align: center; text-decoration: underline;" >RECITAL </h4>
+        <ol>
+            <li><b>Whereas,</b> the Service Provider is a Company and engaged in the business of  transport and leasing and  has a number of vehicles licensed in accordance with applicable laws and regulations of United Arab Emirates.</li>
+            <li><b>Whereas,</b> the Company requires transportation services and has agreed to appoint the Service Provider for the required services as defined under this Agreement subject to the terms and conditions of this Agreement.</li>
+            <li><b>Whereas,</b> the Service Provider has agreed to provide the services against the payment paid by the  Company on regular  basis as per Agreement between the parties.
+                <p>The above Recital is an integral part of this contract and shall be read together with this Agreement.</p>
+                <p>Now, therefore, for good and valuable consideration, the Parties agree as follows:</p></li>
+            <li><b>Whereas,</b>the Service Provider has agreed to provide the services against the payment received by the Company on regular  basis as per Agreement between the parties.
+                <p>Together the “Parties”.</p>
+            </li>            
+        </ol>
+        
+        
+        <p>The above Recital is an integral part of this Agreement and shall be read together with this Agreement.</p>
+        <p>Now therefore, for good and valuable consideration, the Parties agree as follows :-</p>
+        
+        <ol type="1">
+            <li><h5 style="text-decoration: underline;">SERVICE &amp; DOCUMENT REQUIREMENTS BY THE COMPANY.</h5>
+                <ol>
+                    <li>The Service Provider undertakes to provide transportation services (the “Services” as defined in Annexure -1) with all support and maintenance services to maintain continuity and efficient operation of this Agreement. Both Parties agree that Annexure 1 includes all applicable requirements and procedures for the Scope of the “Services” as requested by the Company.</li>
+                    <li>Company may introduce or add new Service requirements and the same shall be mutually agreed in writing before the Services are delivered by the Service Provider.</li>
+                    <li>By signing this Agreement, the Company shall provide the following documents: -
+                        <ol style="margin-top:10px">
+                            <li>Valid trade license/Decree of establishment.</li>
+                            <li>Valid POA for the authorized signatory.</li>
+                            <li>TRN certificate.</li>
+                            <li>Passport Copies of the owner/s and the authorised signatory.</li>
+                            <li>KYC documents and other required documents as per request of the Service Provider.</li>
+                        </ol>
+                    </li>
+                </ol>
+            </li>
+            
+            <li><h5 style="text-decoration: underline;">TERM</h5>
+                <ol>
+                    <li>Both Parties agree that the duration of this Agreement shall be for a period as stipulated in   Annexure 2 of this Agreement. Any  Services delivered under this Agreement shall complete a minimum its Term and the period shall start from the date of the start of each Services. This Agreement is not subject for any suspension from the  Company due to any reason whatsoever.</li>
+                    <li>Subject to mutual consent of the Parties, this Agreement may be further extended for the same terms or with modified terms, only upon mutual agreement in writing which shall be signed by the authorized representative of both Parties. Any request for renewal of this Agreement shall be done at least 60 days before the date of expiration of this Agreement.</li>
+                </ol>
+            </li>
+            <li><h5 style="text-decoration: underline;">VEHICLE MAINTANENCE AND REPAIRS</h5>
+                <ol>
+                    <li><b>The following maintenance and repairs shall be for the account of Service Provider: </b>
+                        <ol>
+                            <li>Service Provider shall be responsible for routine services/maintenances.</li>
+                            <li>Any preventative treatment checks or other work which Service Provider, in its absolute discretion, deems necessary.</li>
+                            <li>All repairs required as a result of wear and tear in the normal use of the vehicle as Service Provider, in its absolute discretion.</li>
+                            <li>The replacement of tires as and when required in order to comply with any applicable law. </li>
+                        </ol>
+                    </li>                    
+                </ol>
+            </li>
+            <li><h5 style="text-decoration: underline;">VEHICLE REPLACEMENT</h5>
+                <ol>
+                    <li>The Service Provider shall provide a replacement vehicle in case of breakdown or accidents. The Service Provider will provide the Company with a suitable replacement vehicle (a vehicle with same capacity / type with good running condition will be provided). </li>
+                </ol>
+            </li>
+            
+            <li><h5 style="text-decoration: underline;">SECURITY CHEQUE</h5>
+                <ol>
+                    <li>Company shall provide Service Provider with an open dated cheque amounting to six months rental value towards security deposit and the Service Provider has the right to keep security cheque till the validity of this Agreement and return back to the Company after clearing of all the dues from the Company for the Services availed under this Agreement. The Company acknowledges and agree that Service Provider has the full authority to fill the date on the cheques any time as they deem fit. The Service Provider reserves the right to submit the Security Cheques if the Company defaults in its payments to the Service Provider as per the agreed Payment schedule.</li>
+                </ol>
+            </li>
+            <li><h5 style="text-decoration: underline;">PAYMENT TERMS</h5>
+                <ol>
+                    <li>The pricing agreed for this Agreement is based on the term agreed under this Agreement. Any decrease in the duration of the Services or termination whether partially or fully due to any reason whatsoever shall result in payment of all dues as stipulated in clause 6.4. The Company agrees that no suspension shall be allowed during the term of his Agreement for any reason whatsoever.</li>
+                    <li>Payment terms for the Services shall be made as stipulated in Annexure 2 after invoice date irrespective of whether or not the Company has recovered payment from a third party or any of its customers. Fuel cost shall be paid as following:
+                        <p>Both parties agree and acknowledge that the quotation/pricing for the Agreement is based on the fuel cost on the date of preparation of the quotation. If the quotation is not provided to Client, then the base fuel cost will be considered as on the date of preparation of this Agreement. However, the pricing will be reviewed on monthly basis based on the fluctuations of pricing of fuel in the UAE for each month. The difference shall be settled between both the Parties as stipulated in Annexure – 2.</p></li>
+                    <li>In case the invoice details and value are correct, the Company is not entitled to request a reissue of the invoice for any reason including but not limited to splitting the bill or changing its dates. The Company shall raise its objection or dispute only within 7 days from the date of receipt of any invoice. In case no objection or remarks are raised within the stipulated period, then the Company is not entitled to dispute the invoices afterwards and the payment shall be made without any delay as per agreed schedule.
+                        <p>Where only part of an invoice is disputed, the undisputed amount shall be paid on the due date as agreed under this Agreement. All due payments pertaining to the Services shall be payable within 30 days irrespective of whether or not the Company has recovered payment from a third party or any of its customers. Any disputed amount shall be settled within 30 days from the date of notification of any dispute. In case the issue is not resolved in 30 days the same shall be raised to the higher management of the Parties.  In case the dispute is not resolved within 7 days of the involvement of the higher management, then the amount shall be determined by the Service Provider as per the proof furnished for the delivered services and the same shall be settled within 7 days from the date of receipt of the invoice.</p></li>
+                    <li>In case of any delay in payments or in case of Cheque return on the due date, the Service Provider holds the right to charge additional charges as stipulated in Annexure 2 which shall be paid by the Company. In case of non-payment beyond 60 days from the due payment date, the Service Provider shall serve a written notice to the Company by any means providing 7 days to clear the outstanding amount and make all payments, “to avoid any doubt partial payment shall be considered as non-payment for this clause.”     
+                        <p>In case of non-payment, the Service Provider shall serve a written notice to the Company and the Service Provider has full right to suspend or terminate the services on its sole discretion. In case of any suspension by the Service Provider due to non – payment of dues by the Company, then the Company shall be liable to pay all dues and charges during the suspension period without any deduction.
+                        </p><p>In case of such suspension or termination, the Company hereby waives off any right to claim for any loss, claims, damages or compensation resulting from the termination of the Agreement, including, but not limited to, compensation for damages, loss of profit and benefit.
+                        </p> In case of termination, the Company shall be liable to pay all pending amount, any charges, additional cost, fines incurred due to fault of the Company, Premature Termination Fee (as stipulated in clause 9), etc till the last date for the services availed until the effective termination date. The Company shall also pay for all the damages and losses incurred by the Service provider resulting from termination caused due to fault or non-payment of the Company.
+                    </li>
+                    <li>In case of any change in existing law or introduction of any new law relating to taxes, imposts, levies, duties, withholding taxes, charges or other assessments of this nature or any new guidelines or notifications which incurs additional cost including but not limited to increase in the Salik/toll cost, fuel cost or any other operational cost which impacts and/or is linked with annual inflation or other cost price indexes and comes into effect after the commencement of the Services  and during the term of this Agreement and increases Service Provider 's operational costs in performing its obligations under this Agreement, then the Service Provider shall be entitled to an equitable adjustment to the fees and the same shall be paid by the Company.</li>
+                    <li>Both Parties agree that the cost for all the Services or any incidental services including any additional requirements or introduction of new Services shall be agreed in writing before any such Service request is delivered. In case the cost is not agreed and the Services or any incidental services are delivered by the Service Provider, then the Service Provider shall charge a reasonable cost and the same shall be paid by the Company.</li>
+                </ol>
+            </li>
+            <li><h5 style="text-decoration: underline;">TAXES</h5>
+                <ol>
+                    <li>Company shall be responsible to pay to the Service Provider for all direct or indirect taxes whether levied presently or imposed in future by any government authority.</li>
+                    <li>For avoidance of any doubt, the current prices exclude VAT and other applicable taxes. In case of any increase or decrease in the applicable taxes the same reflected in the invoices.</li>
+                    <li>All the additional charges shall be paid by the Company.</li>                    
+                </ol>
+            </li>
+            <li><h5 style="text-decoration: underline;">INSURANCE</h5>
+                <ol>
+                    <li>Service Provider shall at its own expense provide comprehensive insurance for the vehicle to cover all damages for the vehicles resulting from accidents as per the insurance policy and UAE law.</li>
+                    <li>The Company agree and affirm the insurance policy is sufficient to cover any and all claims, losses and damages claimed by the Company for any negligence, breach or default incurred by the Service Provider during the Services to be provided under this Contract.</li>
+                </ol>
+            </li>
+            
+            <li><h5 style="text-decoration: underline;">PREMATURE TERMINATION FEE</h5>
+                <ol>
+                    <li>In case of any Premature termination whether partially or fully by the Company, the Company shall provide two (2) month period from the date of notice before any such termination and a Premature Termination Fee shall be applicable and paid as stipulated in Annexure 2.</li>
+                    <li>The Premature Termination Fee is not a penalty but rather a charge or fee to compensate the Service Provider for failure of the Company to satisfy the contractual commitment on which the prices were agreed for the Services to be provided under this Agreement.</li>
+                    <li>The Service Provider may by a termination notice with immediate effect terminate this Agreement in the following events: -
+                        <ol style="margin-top:10px;">
+                            <li>Failure of the Company to pay any charges due or failure to perform any of the terms and conditions under this Agreement and such failure continues for a period of 30 days after written notice from the Service Provider.</li>
+                            <li>The Company (i) becomes insolvent or bankrupt; (ii) is unable to pay its obligations as they mature; (iii) suffers dissolution or termination of its existence or the disposition of all or a substantial portion of its assets; (iv) makes an assignment for the benefit of creditors; (v) makes application for appointment of a receiver of the Company or of any of the Company's property; (vi) files, or has filed against it, a petition in any proceeding in bankruptcy or for reorganization, composition, arrangement or liquidation.</li>
+                        </ol>
+                    </li>                    
+                </ol>
+            </li>
+            
+            <li><h5 style="text-decoration: underline;">INDEMNITY FROM COMPANY</h5>
+                <ol>
+                    <li>The Company shall indemnify the Service Provider and keep Service Provider indemnified against all losses (including loss of profits), costs, expenses, claims, proceedings, damages and all other liabilities suffered or incurred by Service Provider’s directly or indirectly, as a result of:
+                        <ol style="margin-top:10px;">
+                            <li>A breach of or failure to comply with any of the Company’s duties under this Agreement or any other terms or conditions of this Agreement.</li>
+                            <li>The impounding or confiscation of the vehicle by any competent authority or for any other  reason within the Company’s control.</li>
+                        </ol>
+                    </li>
+                </ol>
+            </li>
+            
+            <li><h5 style="text-decoration: underline;">OWNERSHIP OF THE VEHICLE</h5>
+                <ol>
+                    <li>Title to and ownership of the vehicles shall at all times be and remain in the name of the Service Provider and the Company shall have no right of property therein, except the right to use the vehicles in accordance with the terms of this Agreement. </li>
+                    <li>Any requirements or request for any permits, passes, approvals for (driver &amp; vehicle) as per requirements for each Emirates shall be procured by the Service Provider but Service Provider bears no responsibility in case the same is not issued by any agency or authority for any reason beyond sole control of the Service Provider. In order to execute the work assigned by the Company, any fee to be paid to any agency or any authority shall be paid by the Company as stipulated in Annexure 2. </li>
+                </ol>
+            </li>
+            <li><h5 style="text-decoration: underline;">WAIVER OR VARIATION</h5>
+                <p>No waiver or variation of any of the terms or conditions of this Agreement shall be effective unless recorded in writing and signed by authorized representatives of both of the Parties.</p>
+            </li>
+            <li><h5 style="text-decoration: underline;">Force Majeure</h5>
+                <ol>
+                    <li>Neither party shall be liable for failure to perform its obligations caused by or resulting    from force majeure, i.e flood, landslide, earthquake, storm, lightning, fire, explosion, riots, war or military operations, acts of God, National or local emergency ("Force Majeure Events").An event shall be considered as Force Majeure only if the situation prevails for more than 3 months continuously and the same is notified by the suffering party in writing. The period of 3 months shall be considered from the date notice is received by the other party. All the invoices shall be paid during this period without any failure or deductions.</li>
+                    <li>All the invoices shall be paid during this period without any failure or deductions. If                        the Force Majeure Event continues for more than three (3) months continuously, either                       party may terminate the individual part of the scope affected by the Force Majeure                           Event without liability to the other party, except to pay for the liabilities incurred til the termination date.</li>
+                </ol>
+            </li>
+            <li><h5 style="text-decoration: underline;">DISPUTE AND JURISDICTION</h5>
+                <ol>
+                    <li>This Agreement shall be governed and construed in accordance with the laws of UAE. The  Parties irrevocably submit to the exclusive jurisdiction of the competetnt Court of Abu Dhabi in respect of any matter, claim or dispute arising under, out of or in connection with this Agreement (including as to its validity) or the legal relationships established by this Agreement.</li>
+                </ol>
+            </li>
+            <li><h5 style="text-decoration: underline;">CORRESPONDENCES &amp; COMMUNICATIONS</h5>
+                <ol>
+                    <li>All notices or correspondences arising from or relating to this contract must be in writing and be sent by email or delivered to the Parties on the following addresses :-
+                        <ol style="margin-top:10px;">
+                            <li>Emirates Public Transport &amp; Services Company, a company registered in the United Arab Emirates whose principal place of business is at PO Box 5757, Dubai, United Arab Emirates, Represented by <Strong style= "display: {!If(ET_Solitation =='undefined','none','') }">{!ET_Solitation}</Strong><Strong style= "display: {!If(ET_ETRepresentative =='undefined','none','') }">{!ET_ETRepresentative}</Strong> as <Strong style= "display: {!If(ET_Designation =='undefined','none','') }">{!ET_Designation}</Strong> ("Service Provider").</li>
+                            <li>b)	<Strong style= "display: {!If(AccountName =='undefined','none','') }">{!AccountName}</Strong> L.L.C -, a company registered  in the United Arab Emirates, Commercial License number <Strong style= "display: {!If(Licensenumber =='undefined','none','') }">{!Licensenumber}</Strong> , P.O box <Strong style= "display: {!If(LA_PostOfBox =='undefined','none','') }">{!LA_PostOfBox}</Strong>, Dubai, United Arab Emirates whose principal place of  business is at  <Strong style= "display: {!If(LA_POBusiness =='undefined','none','') }">{!LA_POBusiness}</Strong>, Represented by .<Strong style= "display: {!If(LA_Solitation =='undefined','none','') }">{!LA_Solitation}</Strong> <Strong style= "display: {!If(LA_LARepresentative =='undefined','none','') }">{!LA_LARepresentative}</Strong> as ("Company").</li>
+                        </ol>
+                    </li>
+                </ol>
+            </li>
+            
+            <li><h5 style="text-decoration: underline;">MISCELLANEOUS</h5>
+                <ol>
+                    <li>The Company shall provide data required for the services at least 21 days in advance to the Service Provider including the pick-up and drop location point. The Company should maintain the data and update to the Company for any changes on regular basis.</li>
+                    <li>The routes and pick up points shall be fixed for each year and shall be agreed between the Parties. The Company has full right to refuse any changes or add any new pick-up, drop off points or any new routes on its sole discretion.</li>
+                    <li>In case any new bus is required for operations, the new route, and the locations for pick up and drop off shall be discussed and mutually agreed between the Parties.</li>
+                    <li>If required, the Company shall provide parking space (on daily basis) within the Company premises for the buses required under this Agreement.</li>
+                    <li>In case of loss or damage to the vehicles or any assets, due to any fault or negligence of the Company or its employees due to / theft/ hi jacking or any other reason, this Agreement will remain in effect and the Company shall raise monthly invoices toward monthly charges until the Service provider receives final police report suitable for insurance claim. Any such loss or damages shall be paid by the Company within 7 days from receiving the invoice from any such claims.</li>
+                    <li>Any modification in the vehicle shall be mentioned before placing the order and is subject to getting approval from traffic authorities. The Service Provider shall charge from the Company an additional modification cost as stipulated in Annexure 2 and all other costs related to such approvals and permits. The Service Provider reserves the right to charge the reasonable cost, if any, to remove the modification to bring the vehicle back into its original shape.</li>
+                    <li>Only on receipt of a valid Purchase Order from the Company, the Service Provider will order the vehicle with the suppliers for the execution of this Agreement. The Service provider shall provide the vehicles within 60 days subject to availability and confirmation from the supplier from the date of acceptance of the Purchase Order or any agreed extension thereto. Once the Company has issued a Purchase Order on a vehicle to a supplier, any cancellation by the Company shall be considered as breach of this Agreement and the Company shall pay 12 months fee amount as damages for each cancelled/terminated vehicle. </li>
+                </ol>
+            </li>
+            
+        </ol>
+        
+        <p>The above terms and conditions have been understood and agreed by the Parties hereto, whose authorized representatives have signed below in acceptance.</p>
+        
+        <table style="width:100%;">
+            <tr>
+                <th style="text-align: left;padding:10px">For and On behalf of Emirates Transport</th>
+                <th style="text-align: left;padding:10px">For and On behalf of <Strong style= "display: {!If(AccountName =='undefined','none','') }">{!AccountName}</Strong></th>
+            </tr>
+            <tr>
+                <td style="text-align: left;padding:10px">Name:  <Strong style= "display: {!If(ET_Solitation =='undefined','none','') }">{!ET_Solitation}</Strong><Strong style= "display: {!If(ET_ETRepresentative =='undefined','none','') }">{!ET_ETRepresentative}</Strong></td>
+                <td style="text-align: left;padding:10px">Name:  <Strong style= "display: {!If(LA_Solitation =='undefined','none','') }">{!LA_Solitation}</Strong><Strong style= "display: {!If(LA_LARepresentative =='undefined','none','') }">{!LA_LARepresentative}</Strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;padding:10px">Position: <Strong style= "display: {!If(ET_Designation =='undefined','none','') }">{!ET_Designation}</Strong></td>
+                <td style="text-align: left;padding:10px">Position: <Strong style= "display: {!If(LA_Designation =='undefined','none','') }">{!LA_Designation}</Strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;padding:10px">Date: <Strong style= "display: {!If(LA_AgreementDate =='undefined','none','') }">{!LA_AgreementDate}</Strong></td>
+                <td style="text-align: left;padding:10px">Date: <Strong style= "display: {!If(LA_AgreementDate =='undefined','none','') }">{!LA_AgreementDate}</Strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;padding:10px;min-height:60px">Signature:</td>
+                <td style="text-align: left;padding:10px;min-height:60px">Signature:</td>
+            </tr>
+        </table>
+        
+        <h2 style="page-break-before:always">ANNEXURE – 1 (SERVICES)</h2>
+        <h2 style="page-break-before:always">Annexure -2</h2>
+        <ol>
+            <li><strong>Ref. Clause -- 2.1</strong>
+                <p>The duration of this Agreement – <Strong style= "display: {!If(LA_DOAgreement =='undefined','none','') }">{!LA_DOAgreement}</Strong></p>
+            </li>
+            <li><strong>Ref. Clause -- 6.2 </strong>
+                <p>Payment shall be made within 30 days from the invoice date</p>
+                <p><strong>Ref clause 6.2 –</strong></p>
+                <p>Fuel allowance: The Company shall issue fuel cards for the buses operating under this Agreement and the fuel value allocated for each bus shall be AED <Strong style= "display: {!If(LA_FAllowance =='undefined','none','') }">{!LA_FAllowance}</Strong> . (“Fuel Allowance”) i.e. AED  <Strong style= "display: {!If(LA_FAllowance =='undefined','none','') }">{!LA_FAllowance}</Strong> .</p>
+                <p>The semi-annual reconciliation will be prepared between the actual and the allocated fuel allowance value. If the actual value of fuel cost exceeds the allocated fuel allowance, the Company shall issue invoices for the additional amount payable by the Client to cover the additional fuel cost incurred by the Company and the same shall be paid within 30 days from the date of receipt of the invoice. The settlement for fuel prices between both Parties shall be carried out according to the following equation: 
+                    Fuel cost variance= Actual fuel cost for the specified period –(Minus) Fuel Allowance.     
+                </p>                
+            </li>
+            <li><strong>Ref. Clause -- 6.4</strong>
+                <p>Cheque Return charges – AED 500.</p>
+                <p>Delay Payment charges – 1% of the outstanding dues</p>
+            </li>
+            <li><strong>Ref. Clause --  9.1 </strong>
+                <p>Premature Termination Fee shall be applicable as follows: -</p>
+                <ol>
+                    <li>In case any vehicle is terminated in first year from the date of delivery of the vehicle, the Company shall pay a rental fee of 6 months as Premature Termination Fee.</li>
+                    <li>In case any vehicle is terminated in the second year or third year, the Company shall pay a rental fee of 3 months as Premature Termination Fee.</li>
+                    <li>In case any vehicle is terminated in the fourth or fifth year, the Company shall pay a rental fee of 2 months as Premature Termination Fee.</li>
+                </ol>                
+            </li>
+            <li><strong>Ref. Clause --  11.2</strong>
+                <p>Fee to procure any permit, pass or approval – Cost to be paid to the authority+ AED 50 </p>
+            </li>
+            <li><strong>Ref. Clause -- 16.6</strong>
+                <p>Modification cost –</p>
+                <p>Additional cost – </p>
+                <p>Removal for modification cost.</p>
+            </li>
+        </ol>
+    </body>
+    
+</apex:page>

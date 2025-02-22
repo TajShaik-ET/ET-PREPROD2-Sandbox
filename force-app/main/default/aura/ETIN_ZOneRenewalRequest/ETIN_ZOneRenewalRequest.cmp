@@ -1,0 +1,124 @@
+<aura:component controller="ETIN_ZoneRenewalReqCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+     <aura:attribute name="InsRecDetails" type="Object" />
+    <aura:attribute name="RecColumns" type="List" />
+     <aura:attribute name="InsAdminRecDetails" type="Object" />
+     <aura:attribute name="RecAdminColumns" type="List" />
+    
+     <aura:attribute name="selectedRowIdList" type="List" />
+    <aura:attribute name="selectedRowList" type="List" />
+     <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    <aura:attribute name="showSubmitBtn" type="boolean" default="false"/>
+    <aura:attribute name="InsZOneRecords" type="List" />
+    <aura:attribute name="InsHRRecords" type="List" />
+    
+    <aura:attribute name="userInfo" type="user"/>
+    
+     <div class="slds-page-header slds-page-header_record-home">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-opportunity">
+                            
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    
+                                    <span class="slds-page-header__title slds-truncate" title="">Renewal Requests</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-page-header__col-actions">
+                <div class="slds-page-header__controls">
+                    <div class="slds-page-header__control">
+                        <aura:if isTrue="{!v.showSubmitBtn}">
+                        <button class="slds-button slds-button_neutral btn_table" onclick="{!c.submitToZOneHr}">Submit for Approval</button>
+                        </aura:if>
+                        <aura:if isTrue="{!!v.showSubmitBtn}">
+                            <aura:if isTrue="{!v.userInfo.Profile.Name == $Label.c.INS_ZoneHRProfileName}">  <!-- Insurance HR Manager -->  
+                                <button class="slds-button slds-button_neutral btn_table" onclick="{!c.ApproveRenewalRequest}">Approve</button>
+                                <button class="slds-button slds-button_neutral btn_back" onclick="{!c.RejectRenewalRequest}">Reject</button>
+                            </aura:if>
+                            <aura:if isTrue="{!v.userInfo.Profile.Name == $Label.c.INS_AdminProfileName}">    
+                                <button class="slds-button slds-button_neutral btn_table" onclick="{!c.ApproveByAdmin}">Approve</button>
+                                <button class="slds-button slds-button_neutral btn_back" onclick="{!c.RejectByAdmin}">Reject</button>
+                            </aura:if>
+                            
+                        </aura:if>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="outer-div">
+        
+        <aura:if isTrue="{!v.showSpinner}">   
+            <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+        </aura:if>
+    
+       <!-- Zone Coordinator and HR Manager Datatable -->
+        <aura:if isTrue="{!v.userInfo.Profile.Name == $Label.c.INS_ZoneCordProfileName}">
+             <lightning:datatable
+                                 keyField="id"
+                                 data="{! v.InsZOneRecords }"
+                                 columns="{! v.RecColumns }"
+                                 onrowselection="{!c.getSelectedRec}" />
+            
+            <aura:if isTrue="{!!not(empty(v.InsZOneRecords))}">
+                <div id="no-records" style="margin-top: 3%;font-size: 13px;" class="slds-align_absolute-center"> No Records to display</div>
+            </aura:if>  
+            
+        </aura:if>
+        <aura:if isTrue="{!v.userInfo.Profile.Name == $Label.c.INS_ZoneHRProfileName}">
+             <lightning:datatable
+                                 keyField="id"
+                                 data="{! v.InsHRRecords }"
+                                 columns="{! v.RecColumns }"
+                                 onrowselection="{!c.getSelectedRec}" />
+            
+            <aura:if isTrue="{!!not(empty(v.InsHRRecords))}">
+                <div id="no-records" style="margin-top: 3%;font-size: 13px;" class="slds-align_absolute-center"> No Records to display</div>
+            </aura:if>  
+            
+        </aura:if>
+        
+        <!--aura:if isTrue="{!v.userInfo.UserRole.Name != 'Insurance Admin'}">   
+            <lightning:datatable
+                                 keyField="id"
+                                 data="{! v.InsRecDetails }"
+                                 columns="{! v.RecColumns }"
+                                 onrowselection="{!c.getSelectedRec}" />
+            
+            <aura:if isTrue="{!!not(empty(v.InsRecDetails))}">
+                <div id="no-records" style="margin-top: 3%;font-size: 13px;" class="slds-align_absolute-center"> No Records to display</div>
+            </aura:if>  
+        </aura:if-->
+        <!-- Insurance admin Datatable -->
+        <aura:if isTrue="{!v.userInfo.Profile.Name == $Label.c.INS_AdminProfileName}"> 
+            
+            <lightning:datatable
+                                 keyField="Adminid"
+                                 data="{! v.InsAdminRecDetails }"
+                                 columns="{! v.RecAdminColumns }"
+                                 onrowselection="{!c.getSelectedRec}" />
+            
+            <aura:if isTrue="{!!not(empty(v.InsAdminRecDetails))}">
+                <div id="no-records" style="margin-top: 3%;font-size: 13px;" class="slds-align_absolute-center"> No Records to display</div>
+            </aura:if>  
+            
+        </aura:if>    
+        
+    </div>
+    
+</aura:component>

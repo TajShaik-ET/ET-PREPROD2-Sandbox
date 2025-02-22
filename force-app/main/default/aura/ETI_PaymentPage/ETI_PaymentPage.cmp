@@ -1,0 +1,46 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <!--<div>Id: {!v.recordId}</div> -->
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="vfUrl" type="String" />
+    <aura:attribute name="vfHost" type="String" />
+    <aura:attribute name="paymentId" type="Id" />
+    <aura:attribute name="paymentType" type="boolean" default="false"/>
+    <aura:attribute name="paymentpremises" type="boolean" default="false"/>
+    <aura:attribute name="recordidurl" type="Id"/>
+    <aura:attribute name="booking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/>
+    <aura:attribute name="Cardtypes" type="String" />
+    <aura:attribute name="premisestypes" type="String" />
+    <aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="zoomLevel" type="Integer" />
+    <aura:attribute name="Emirate" type="String" />
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    
+    <aura:if isTrue="{!v.paymentType}">
+        <iframe aura:id="vfFrame" src="{!v.vfUrl}" width="100%" height="600px;" frameBorder="0" />
+    </aura:if>
+    <aura:if isTrue="{!v.paymentpremises}">
+        <img class="bgimgcont" src="{!$Resource.ETST_AddStudentImage}" />
+        <div class="onpremisepay animated slideInLeft">
+            <div class="slds-m-vertical_medium ">
+                <h1 class="slds-text-heading_small">{!v.Pay_at_our_office}</h1>
+                <p class="slds-text-body_regular">{!v.Note} {!v.We_accept_Cheque_or_Credit}</p>
+            </div>
+            <lightning:card iconName="action:map" class="mapsection">
+                <div class="addressdiv">            
+                    <lightning:formattedAddress
+                                                street="{!v.booking[0].Branch__c}"
+                                                city="{!v.booking[0].Location__c}"
+                                                country="UAE"/>
+                </div>
+            </lightning:card>
+            <lightning:map 
+                           mapMarkers="{! v.mapMarkers }" 
+                           zoomLevel="{!v.zoomLevel}" class="slds-m-top_medium mapdiv"/>
+            <div class="slds-m-top_medium ">
+                <lightning:button variant="brand" name="Back" label="{!v.Back}" onclick="{!c.cancelSave}" class="btn_table"/>
+                <!--lightning:button class=" btn_table"  variant="brand" type="submit" name="Proceed" label="View Invoice" onclick="{!c.generateInvoicenow}"/-->
+            </div> 
+        </div>
+    </aura:if>
+    
+</aura:component>

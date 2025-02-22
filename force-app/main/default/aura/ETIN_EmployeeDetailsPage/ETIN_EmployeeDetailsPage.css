@@ -1,0 +1,382 @@
+.THIS.insuranceBgImg{
+        background-image: url(/resource/insuranceBgImg);
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    overflow: auto;
+}
+.THIS .outer-div {
+    position: relative;
+    
+}
+
+.THIS .spinner2 {
+    position: absolute;
+    margin-top: 14%;
+    margin-bottom: 8%;
+}
+
+.THIS .slds-modal__close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 3rem;
+    height: 3rem;
+    font-size: .875rem;
+    font-weight: 300;
+    border-radius: 100%;
+    z-index: 4;
+    color: #fff;
+    line-height: 3rem;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    box-shadow: none;
+    
+}
+.THIS .slds-modal__close .slds-button_icon-inverse{
+    width: 13px;
+    height: 13px;
+    color: #000;
+}
+.THIS .slds-modal__header{
+    /*border-bottom: 1px solid rgb(212, 212, 212);*/
+    text-align: left; 
+}
+.THIS .slds-modal__header, .THIS .slds-modal__content{
+    padding: 0;
+}
+.THIS .slds-modal__header h2{
+    text-align: center;
+    border-bottom: 1px solid #62cc8c;
+    color: #000;
+    padding: 1rem;
+}
+.THIS #gridDiv .slds-grid{
+    padding: .5rem 1rem;
+}
+.THIS #gridDiv .slds-grid:nth-child(odd){
+    background: #f8fbf9;
+}
+.THIS .btn_table{
+    font-size: 14px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 7px;
+    min-width: 100px;
+    height: 30px;
+    background: #62cc8c;
+    border: 1px solid #62cc8c;
+    border-radius: 0;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+    text-decoration: none;
+}
+
+.THIS .btn_table:hover{
+    /*background-color: #333333!important; */
+}
+.THIS .slds-file-selector__button.slds-button_neutral {
+    color: #fff;
+    background: #c23934;
+}
+.THIS .slds-form-element__label {
+    font-size: 14px;
+    padding-top: 0rem;
+    color: #62cc8c;
+}
+.THIS input[type=text], .THIS input[type=password], .THIS textarea, .THIS textarea.form-control, .THIS select, .THIS input[type=tel], .THIS input[type=email], .THIS .slds-input  {
+    height: 44px;
+    margin: 0;
+    padding: 0 15px;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+.THIS .btn_right{
+    float: right;
+}
+.THIS .btn_left{
+    float: left;
+}
+.THIS .div_right{
+    text-align: right;
+}
+.THIS .headingdiv{
+    position: relative;
+    font-size: 14px;
+    line-height: 34px;
+    border: 0px solid #ccc;
+    clear: both;
+    width: 100%;
+    display: inline-block;
+    padding: 0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background: transparent;
+    color: #ffffff;
+    border-bottom: none;
+}
+.THIS.policymaintable{
+    min-height: 50px;
+    max-height: 700px;
+    overflow: auto;
+    padding: 0px;
+    border: 0 solid #ddd;
+    border-top: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background: transparent;
+}
+.THIS.policymaintable table{
+    background: transparent;
+}
+.THIS.policymaintable .slds-table th{
+    border-bottom: 0px solid #ccc;
+    font-size: 13px;
+    color: #fff;
+    text-transform: uppercase;
+    padding: .7rem .5rem;
+    background: #00c19e;
+    border-top: 0px;
+}
+.THIS.policymaintable tbody td {
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
+    padding: .5rem;
+}
+.THIS.policymaintable .slds-icon-action-edit , .THIS.policymaintable .slds-icon-action-preview , 
+.THIS.policymaintable .slds-icon-action-download{
+    background-color: #ff4b5a;
+    outline:none!important;
+    border:none!important;
+    margin: 0px 10px;
+}
+.THIS.policymaintable .slds-icon-action-edit:hover , .THIS.policymaintable .slds-icon-action-preview:hover , 
+.THIS.policymaintable .slds-icon-action-download:hover , .THIS.policymaintable .slds-icon-action-edit:focus , 
+.THIS.policymaintable .slds-icon-action-preview:focus , 
+.THIS.policymaintable .slds-icon-action-download:focus{
+    background-color: #333333!important;
+    outline:none;
+    border:none;
+}
+
+
+.THIS.policymaintable .slds-icon-action-edit:hover .slds-icon , .THIS.policymaintable .slds-icon-action-preview:hover .slds-icon , 
+.THIS.policymaintable .slds-icon-action-download:hover .slds-icon {
+    fill: rgb(255, 255, 255);
+}
+.THIS .fotterdivbot{
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.THIS .fotterdivbot1 {
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    float: right;
+    width: 100%;
+    clear: both;
+}
+.THIS #insurancepopup .slds-form-element__label{
+    font-weight:600;
+}
+.THIS #insurancepopup .slds-form-element__static {
+    padding: 5px 0px;
+    /*border-bottom: 1px solid #ddd; */
+}
+
+
+.THIS .divpayment {
+    margin: 1%;
+    background: #fff;
+    border: 0 solid #ddd;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+    overflow: auto;
+    height: 280px;
+    text-align: center;
+    transition: all .4s;
+    width: 23%;
+    display: inline-block;
+    cursor: default!important;
+    box-shadow: 0 8px 6px -6px #9c9c9c !IMPORTANT;
+    border-radius: 10px;
+}
+/*.THIS .divpayment:hover{
+    box-shadow: 0 8px 6px -6px #9e9e9e;
+    border-radius: 0;
+}*/
+.THIS .successdiv{
+    font-size: 12px;
+    line-height: 1.5rem;
+    margin-bottom: 10px;
+    color: #555;
+    background: #ddd;
+    font-weight: 800;
+    text-align: left;
+    padding: 3px 16px;
+}
+.THIS .divpayment .right{
+    float: right;
+    text-align: right;
+}
+.THIS .datailsdiv{
+    width: 100%;
+    text-align: left;    
+    padding: 5px 16px;
+    font-size: 16px;
+    letter-spacing: .5px;
+    color:#000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.THIS .bordernone{
+    border:none;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+
+.THIS .insurancediv{
+    position: relative;
+    display: block;
+    padding: 0.5rem 16px .5rem;
+    float: right;
+}
+.THIS .insurancediv .insurancebg{
+    position: absolute;
+    left: -16px;
+    top: -16px;
+    filter: invert(1);
+}
+.THIS .datailsdiv span{
+    width:90px;
+    position:relative;
+    display:inline-block;
+}
+.THIS .infodiv{
+    display: inline-block;
+}
+
+.THIS .insurancediv, .THIS .datailsdiv, .THIS .successdiv{
+    padding-left: 16px;
+    padding-right: 16px;
+}
+.THIS .effectiveDate, .THIS .expiryDate{
+    display: inline-block;
+    width: 50%;
+}
+.THIS .effectiveDate span, .THIS .expiryDate span{
+    font-size: 12px;
+    color: #ccc;
+}
+.THIS .expiryDate{
+    text-align: right;
+}
+.THIS .iconsBottom{
+    text-align: right;
+}
+.THIS .iconsBottom a:focus{
+    outline: none;
+}
+.THIS .iconsBottom a{
+    text-align: right;
+    float: right;
+    width: 10%;
+    margin-left: 15px;
+}
+.THIS .iconsBottom img{
+    margin-left: 8px;
+}
+.THIS .slds-grid{
+    padding: 1rem;
+}
+.THIS .addMemberPopup{
+    width: 80% !important;
+    max-width: 80% !important;
+}
+.THIS .addMemberPopup .slds-form-element__label{
+    color: #000;
+    padding: 10px;
+}
+.THIS .addMemberPopup abbr{
+    display: none;
+}
+.THIS .addMemberPopup .slds-has-error .slds-form-element__help{
+  	text-align: right;  
+    margin-right: 10%;
+}
+.THIS .addMemberPopup .fotterdivbot{
+    text-align: right;
+}
+.THIS .addMemberPopup .btn_right{
+    margin: 0 1rem;
+    float: none;
+}
+.THIS .addMemberPopup .slds-form-element__control{
+    padding-left: 25%;    
+    margin: 0 10%;
+}
+.THIS #uploadSection .slds-form-element__control{
+    display: inline-block;
+    padding-left: 2%;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .divpayment {
+        width: 32.33%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .divpayment {
+        width: 49%;
+    }
+    .THIS .datailsdiv span {
+        width: 125px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .divpayment {
+        width: 49%;
+    }
+    .THIS .datailsdiv span {
+        width: 100px;
+    }
+    .THIS .headingdiv {
+        line-height: 20px;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .THIS .divpayment {
+        width: 49%;
+    }
+    .THIS .datailsdiv span {
+        width: 90px;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .divpayment {
+        width: 99%;
+    }
+    .THIS .datailsdiv span {
+        width: 100px;
+    }
+}

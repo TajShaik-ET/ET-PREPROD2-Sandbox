@@ -1,0 +1,39 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+	<aura:attribute name="bReqId" type="String"/> <!-- Request Id from Community URL-->
+    <aura:attribute name="editDetails" type="Boolean" default="false" />
+    
+    <!-- Itenary Details -->
+    <div class="searchmaindiv">
+        <div class="searchleftdiv">
+            <aura:if isTrue="{!and(v.bReqId != null , v.editDetails ==false)}">
+                <lightning:recordViewForm  objectApiName="ET_Service_Request__c"  recordId="{!v.bReqId}">
+                    <div class="internaldiv">
+                        <h3 class="slds-section-title--divider" style="color:#2291af;"><b>Itinary Details</b></h3>
+                        <div class="">                            
+                            <div class="slds-col">
+                                <div class="infolabel">Pickup Address</div>
+                                <lightning:outputField fieldName="ETST_Pick_Up_From__c"  variant="label-hidden" class="infovalue"/>
+                            </div>
+                            <div class="slds-col">
+                                <div class="infolabel">Return Address</div>
+                                <lightning:outputField fieldName="ETST_Pick_Up_From__c"  variant="label-hidden" class="infovalue"/>
+                            </div>
+                            <div class="slds-col">
+                                <div class="infolabel">Pick-Up</div>
+                                <lightning:outputField fieldName="ETCAR_Pick_UP_Date_Time__c"  variant="label-hidden" class="infovalue"/>
+                            </div>
+                            <div class="slds-col">
+                                <div class="infolabel">Return</div>
+                                <lightning:outputField fieldName="ETCAR_Return_Date_Time__c" variant="label-hidden" class="infovalue"/>
+                            </div>
+                            <div class="slds-col">
+                                <lightning:button aura:id="submit" variant="brand" label="Edit" title="Edit" onclick="{! c.handleEdit }" class="btnedit"/>
+                            </div>                           
+                        </div>
+                    </div>
+                    
+                </lightning:recordViewForm >
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

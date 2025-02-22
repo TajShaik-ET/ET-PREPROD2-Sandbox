@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="set value false to ">
+    <aura:attribute name="isPopupClose" type="Boolean" default="false" />
+</aura:event>

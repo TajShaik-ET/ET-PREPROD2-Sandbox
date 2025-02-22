@@ -1,0 +1,40 @@
+<template>
+    <lightning-card title="Send SMS to Customer">
+        <!--loader-->
+        <div class="exampleHolder">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </template>
+        </div>    
+        <lightning-layout>
+            <lightning-layout-item size="1">&nbsp;</lightning-layout-item>
+            <lightning-layout-item size="10">
+                <lightning-combobox
+                        name="issue"
+                        label="Select Location "
+                        options={addressArr}
+                        placeholder="Select Location"
+                        onchange = {changeLocation}
+                        >
+                    </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item size="1">&nbsp;</lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout>
+            <lightning-layout-item size="1">&nbsp;</lightning-layout-item>
+            <lightning-layout-item size="10">
+                <lightning-textarea
+                    name="location"
+                    label="Locations"
+                    onchange={handleChange}
+                    value = {textval}
+                    ></lightning-textarea>
+            </lightning-layout-item>
+            <lightning-layout-item size="1">&nbsp;</lightning-layout-item>
+        </lightning-layout>
+        <footer class="slds-card__footer">
+            <button class="slds-button slds-button_neutral" onclick={cancel} disabled={isHide} >Cancel</button>
+            <button class="slds-button slds-button_brand" onclick={sendSMS} disabled={isHide} >Send SMS</button>
+        </footer>
+    </lightning-card>    
+</template>

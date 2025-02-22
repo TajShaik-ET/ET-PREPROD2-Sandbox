@@ -1,0 +1,127 @@
+<aura:component extends="c:ETI_BilingualCommunity" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="selectedTabId" type="String"/>
+    <aura:attribute name="backgroundImageURL" type="String" default=""/>
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:attribute name="caseList" type="List"/>
+    <aura:attribute name="startDate" type="Date"/>
+    <aura:attribute name="endDate" type="Date"/>
+    <aura:attribute name="maxDate" type="Date"/>
+    <aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <aura:attribute name="selectedEmirate" type="String" />
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{!v.IsSpinner}">
+        <div class="slds-spinner_container">
+            <lightning:spinner variant="brand"  size="large" />
+        </div>
+    </aura:if>
+    <!--Aura Attributes END--> 
+    <div class="textright" style="color: rgb(201, 199, 197);font-weight: bold;">
+        <aura:if isTrue="{!v.selectedEmirate != 'Sharjah'}">
+            <span class="infoDetail">*{!v.Service_availability}</span>
+            <aura:set attribute="else">
+                <span class="infoDetail">{!v.Service_availability_Sharjah}*</span>
+            </aura:set>
+        </aura:if>
+    </div>
+    <lightning:layout class="sortdiv" >
+        <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+            <div class="custom-box">
+                 <ui:inputDate aura:id="StartDateField" label="{!v.Start_Date}" value="{!v.startDate}" displayDatePicker="true" format="dd/MM/yyyy"/>
+            </div> 
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+            <div class="custom-box">
+                <ui:inputDate aura:id="EndDateField" label="{!v.End_Date}" value="{!v.endDate}" displayDatePicker="true" format="dd/MM/yyyy"/>
+            </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem  padding="horizontal-medium" size="4" flexibility="auto" class="btnsubmitdiv">
+            <div class="custom-box">
+                <lightning:button class=" SizeBtn blackBtn btnserach btn_table" label="{!v.Submit}" onclick="{!c.getCaseDetails}"/>
+                <lightning:button variant="brand" name="Back" label="{!v.Back}" onclick="{!c.cancelSave}" class="btn_back"/>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout> 
+    <div aura:id="inspectionService" class="casesection" >
+        <aura:if isTrue="{!!empty(v.caseList)}">
+            <aura:iteration items="{!v.caseList}" var="item">
+                <div class="divpayment">
+                    <div class="successdiv">{!v.Case_Number}&nbsp;<strong class="headingChassis">{!item.CaseNumber}</strong></div>
+                    <!--<img class="successpay" src="{!$Resource.ETST_payment}" />
+                        <div class="datailsdiv">Chassis No&nbsp;<strong>{!item.Chassis_No__c}</strong></div>-->
+                    <div class="datailsdiv mydisctext">{!v.Chassis_No}/{!v.Plate_Combination}&nbsp;
+                        <aura:if isTrue="{!item.ETI_Customer_Vehicle__c != null}">                         
+                            <strong>    
+                                <aura:if isTrue="{!item.ETI_Customer_Vehicle__r.Chassis_No__c != null}">
+                                    {!item.ETI_Customer_Vehicle__r.Chassis_No__c}
+                                    <aura:set attribute="else">
+                                        {!item.ETI_Customer_Vehicle__r.Plate_Color__c}-{!item.ETI_Customer_Vehicle__r.Plate_No__c}
+                                    </aura:set>
+                                </aura:if>
+                            </strong>                        
+                        </aura:if>
+                    </div>
+                    <div class="datailsdiv">{!v.Created_Date}&nbsp;<strong><ui:outputDate format="dd/MM/yyyy" value="{!item.CreatedDate}"  /><!--lightning:formattedDateTime value="{!item.CreatedDate}"  
+                                                                                                   year="numeric" month="numeric" day="numeric"  
+                                                                                                   timeZone="Asia/Dubai" hour12="false"/--></strong></div>
+                   <!-- <div class="datailsdiv">{!v.Priority}&nbsp;<strong>{!item.Priority}</strong></div> -->
+                    <div class="datailsdiv">{!v.Case_Type}&nbsp;<strong>{!item.Subject}</strong></div>
+                    <div class="datailsdiv">{!v.Status}&nbsp;<strong>{!item.Status}</strong></div>
+                    <div class="datailsdiv mydisctext" >{!v.Description}&nbsp;:&nbsp;<strong>{!item.Description}</strong></div>
+                </div>
+                <!--<div class="slds-box">
+                    <lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon firstrow">
+                            <span class="headtxt">Case Number</span>
+                            <span class="headtxtdyn">: {!item.CaseNumber} </span>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon">
+                            <span class="headtxt">Created Date</span>
+                            <span class="headtxtdyn">: <lightning:formattedDateTime value="{!item.CreatedDate}"  
+                                                                                    year="numeric" month="numeric" day="numeric"  
+                                                                                    timeZone="Asia/Dubai" hour12="false"/> </span>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem  size="4" padding="around-small" class="Padbottomnon">
+                            <span class="headtxt">Priority</span>
+                            <span class="headtxtdyn">: {!item.Priority} </span>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon">
+                            <span class="headtxt">Case Type</span>
+                            <span class="headtxtdyn">: {!item.Subject} </span>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon">
+                            <span class="headtxt">Status</span>
+                            <span class="headtxtdyn">: {!item.Status} </span>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem  size="4" padding="around-small" class="Padbottomnon desctxt">
+                            <span class="headtxt">Description</span>
+                            <span class="headtxtdyn">: {!item.Description} </span>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </div>-->
+            </aura:iteration>
+            <aura:set attribute="else">
+                <br></br> <br></br>
+                <lightning:layout class="sortdiv" >
+                    <br></br><br></br><br></br>
+                    <div class="slds-notify slds-notify_alert slds-float_none" role="alert" >
+                        <h2 style="text-align:right;font-size: 18px;font-family: 'Cronos';">{!v.No_Records_Message}</h2>
+                    </div>
+                </lightning:layout>
+                <br></br><br></br>
+            </aura:set>
+        </aura:if>
+    </div> 
+</aura:component>

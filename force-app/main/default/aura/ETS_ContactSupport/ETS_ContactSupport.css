@@ -1,0 +1,125 @@
+.THIS.contactsupportsdiv{
+    background: #f2f2f2; margin: -15px -15px;padding: 30px 10px;
+        position: relative;    overflow: hidden;
+}
+.THIS.contactsupportsdiv .bgimgcont{
+    position: absolute;
+    left: 50%;
+    height: 440px;
+    top: 50%;
+    transform: translate(13%, -50%);
+    opacity: 0.3;
+    z-index: 0;
+}
+.THIS .headingcont{
+    text-align: center;
+    font-size: 24px;
+}
+.THIS .subheadingcont{
+        text-align: center;
+    font-size: 16px;
+    padding-top: 5px;
+    margin-bottom: 30px;
+}
+.THIS .contentfield , .THIS .contentfieldlast {
+    width: 50%;
+    margin: auto;clear: both;
+}
+.THIS .contentfieldbutton{
+    width: 50%;
+    margin: auto;
+    text-align:center;clear: both;
+}
+.THIS .contentfieldbutton .btnsaveicon{
+    font-size: 14px;
+    margin-top: 0;
+    background: #f2f2f2;
+    border: 1px solid #00c19e;
+    padding: 2px 15px;
+    color: #00c19e;
+    margin-left: 5px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.THIS .contentfieldbutton .btnsaveicon:hover{
+    background: #00c19e;
+    color: #fff;
+}
+.THIS .contentfield [lightning-input_input-host]{
+    width: 48%;
+    margin: 1%;
+    float: left;
+    display: inline-block;
+}
+
+.THIS .contentfield .slds-input , .THIS .slds-select{
+       height:48px;
+}
+.THIS .dropdownfeild{
+    float: left;
+    display: inline-block;
+    width: 48%;
+    margin: 1%;
+}
+.THIS .contentfieldlast [lightning-textarea_textarea-host]{
+    width: 98%;
+    margin: 1%;
+    float: left;
+    display: inline-block;
+}
+.THIS .slds-form-element__label {
+    font-size: 14px;    padding-bottom: 5px;
+}
+.THIS .contentfieldlast .slds-textarea{
+    padding: 8px;height:100px;
+    resize:none;
+    height:100px;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS.contactsupportsdiv {
+        margin: -15px -12px;
+        clear: both;
+    }
+    .THIS.contactsupportsdiv .bgimgcont {
+        transform: translate(-10%, -50%);
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .contentfield, .THIS .contentfieldlast {
+        width: 85%;
+        clear: both;
+    }
+    .THIS.contactsupportsdiv .bgimgcont {
+        transform: translate(-27%, -50%);
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .headingcont {
+        font-size: 20px;
+    }
+    .THIS .subheadingcont {
+        font-size: 15px;
+    }
+    .THIS .contentfield, .THIS .contentfieldlast {
+        width: 85%;
+        clear: both;
+    }
+    .THIS.contactsupportsdiv .bgimgcont {
+        transform: translate(-32%, -50%);
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .headingcont {
+        font-size: 18px;
+    }
+    .THIS .subheadingcont {
+        font-size: 14px;
+    }
+    .THIS .contentfield, .THIS .contentfieldlast {
+        width: 95%;
+        clear: both;
+    }
+    .THIS.contactsupportsdiv .bgimgcont {
+        transform: translate(-32%, -50%);
+    }
+}

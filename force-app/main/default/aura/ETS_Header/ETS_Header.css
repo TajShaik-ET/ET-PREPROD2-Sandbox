@@ -1,0 +1,39 @@
+parentDivClass.THIS {
+    width:100%
+}
+
+emiratesLogo.THIS {
+    width:30%
+}
+requestFormHeaderClass.THIS {
+    width:40%
+}
+
+
+.THIS .ETBackground{
+   background-color: white;
+  
+}
+
+.THIS .ETLogoClass {
+    max-width: 35%;
+    height:101px;
+    float: right !important;
+margin-top:-10%;
+
+}
+.THIS .ETLogoClass1{
+    height: 100px;
+    margin-left: 157%;
+    margin-top: -34%;
+}
+
+
+.THIS div#UAELogo {
+    max-width: 30%;
+}
+.THIS .UAELogoClass{
+    height:90px;
+
+    float: left !important;
+}

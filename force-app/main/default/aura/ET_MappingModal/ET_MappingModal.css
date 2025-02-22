@@ -1,0 +1,14 @@
+.THIS header{
+    background: rgb(142, 107, 26);
+    color: #fff;
+    padding: 15px;
+    font-size: 28px;
+}
+.THIS header h2{
+    color: #ffffff;
+}
+
+.THIS header .slds-modal__close{
+    top: 10px;
+    right: 5px;
+}

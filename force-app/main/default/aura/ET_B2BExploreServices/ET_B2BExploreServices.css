@@ -1,0 +1,431 @@
+.THIS.casesupmaindiv{
+    /*min-height:86.2vh;*/
+    min-height:calc(100vh - 86px);
+    height:100%;
+}
+.THIS .leftsection .uiInputCheckbox input {
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+}
+.THIS .serviceitem{
+    position: relative;
+    width: 30.33%;
+    margin: 0% 1.5% 2%;
+    display: inline-block;
+    text-align: center;
+    overflow: hidden;
+}
+.THIS .serviceitem h3{
+    padding: 0;
+    color: #fff;
+    font-size: 14px;
+    /*height: 50px;*/
+    line-height: initial;
+}
+.THIS .serviceitem a{
+    color: #555;
+    padding: .5rem .5rem 1rem;
+    display: block;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: bold;
+    transition: .4s;
+}
+.THIS .serviceitem a:hover{
+    color: #0c32d8;
+    transition: .4s;
+}
+.THIS .imagediv{
+    overflow: hidden;
+    position: relative;
+    /*height: 165px;*/
+}
+.THIS .imagediv:before{
+    content: "";
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    bottom: 0%;
+    right: 0%;
+    background-color: rgba(0,0,0,0.2);
+}
+.THIS .imagediv img{
+    transition: .4s;
+    width:100%;
+    height:100%;
+}
+/*.THIS .serviceitem:hover img{
+transform: scale(1.1);
+transition: .4s;
+}
+.THIS .imagediv:hover img{
+transform: scale(1.1);
+transition: .4s;
+}*/
+
+/*------------------sub services---------------*/
+
+.THIS .serviceheading{
+    font-size: 30px;
+    text-align: center;
+    color: #000;
+    padding: 20px 10px;
+}
+.THIS.subservicesection .subserviceitem{
+    position: relative;
+    width: 32.33%;
+    margin: 1% .5%;
+    border: 1px solid rgba(231,236,239,1);
+    display: inline-block;
+    text-align: center;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 0px 0px 10px 10px;
+    height: 260px;
+}
+.THIS.subservicesection .subserviceitem h3{
+    padding: 1rem 1rem 0rem;
+    color: #fff;
+    position: absolute;
+    bottom: 40px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: normal;
+    z-index: 2;
+}
+.THIS.subservicesection .subserviceitem .requestbtn{
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    transition: .4s;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #00c19e;
+    color: white;
+    border: 1px solid #00c19e;
+    padding: 5px;
+    height: 30px;
+    width: 150px;
+    line-height: 20px;
+    font-weight: 800;
+    z-index: 2;
+}
+.THIS.subservicesection .subserviceitem .requestbtn:hover{
+    color: #fff;
+    transition: .4s;
+}
+.THIS.subservicesection .subserviceitem a{
+    color: #00c19e;
+    padding: 0rem 0rem 0rem 1rem;
+    display: block;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    transition: .4s;
+    position: absolute;
+    bottom: 20px;
+    z-index: 2;
+}
+.THIS.subservicesection .subserviceitem a:hover{
+    color: #fff;
+    transition: .4s;
+}
+.THIS.subservicesection .imagediv{
+    overflow: hidden;
+    position: relative;
+    width:100%;
+    height:100%;
+}
+.THIS.subservicesection .imagediv:before {
+    bottom: 0;
+    content: "";
+    display: block;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    background-image: linear-gradient(182deg, rgba(0,0,0,0) 37%,rgba(0,0,0,1) 76%);
+    opacity: 0.7;
+    height: 100%;
+}
+.THIS.subservicesection .imagediv img{
+    transition: .4s;
+    width:100%;
+    height:100%;
+}
+
+.THIS.subservicesection .subserviceitem:hover img{
+    transform: scale(1.2);
+    transition: .4s;
+}
+.THIS.subservicesection .imagediv:hover img{
+    transform: scale(1.2);
+    transition: .4s;
+}
+.THIS .serviceheading{
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+    font-size: 20px;
+    text-align: left;
+    padding: 1rem 5%;
+    color: rgb(113 86 22);
+    line-height: 1;
+}
+.THIS .serviceheading strong {
+    font-size: 62px;
+    line-height: 1;
+    color: #000;
+}
+.THIS .headingcolor{
+    color:rgb(98 204 140);
+    font-weight: 600;
+}
+.THIS .learnmore{
+    float: right;
+    margin: 0;
+    color: #eb4026;
+    text-decoration: none;
+    margin-right: 1rem;
+}
+.THIS .services_mainsec{
+    position: relative;
+    display: block;
+    clear: both;
+    padding: 3rem 5% 1rem;
+}
+.THIS .leftsection{
+    display: inline-block;
+    width: 20%;
+    float: left;
+    background: transparent;
+    border-radius: 10px;
+    /*box-shadow: 0 8px 6px -6px #9c9c9c;*/
+}
+.THIS .leftsection .allcheckboxdiv{
+    padding:.5rem 0rem;
+}
+.THIS .leftsection .allcheckboxdiv .checkboxdiv{
+    padding:.5rem 0rem;
+}
+.THIS .leftsection .allcheckboxdiv .checkboxdiv label{
+    color: #555;vertical-align: text-bottom;
+}
+.THIS .leftsection .servicehead{
+    padding: .5rem 0rem;
+    font-size: 16px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #6f581e;
+    color: #000;
+    font-weight: 600;
+    background: transparent;
+}
+.THIS .servicemainsection{
+    display: inline-block;
+    width: 78%;
+    margin-left: 2%;
+    /*background: rgb(255 255 255 / 0.5);*/
+    padding: 0rem;
+    border-radius: 10px;
+}
+.THIS .servicemainsection .reqbtn{
+    position: absolute;
+    z-index: 1;
+    top: 5%;
+    right: 3%;
+    background: #eb4026;
+    border: 1px solid #eb4026;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 0px 10px;
+    border-radius: 0px;
+}
+.THIS .slds-modal__header{
+    border-radius: 10px 10px 0px 0px;
+    border-bottom: 1px solid #edeae8;
+}
+.THIS .slds-modal__header .slds-modal__close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+.THIS .slds-modal__header .slds-modal__close .slds-button_icon-inverse{
+    fill: #000;
+}
+.THIS .slds-modal__footer{
+    border-radius: 0px 0px 10px 10px;
+    border-top: 1px solid #edeae8;
+}
+.THIS .slds-modal__header h2{
+    font-size: 16px;
+    color: rgb(98 204 140);
+}
+.THIS .slds-modal__content .slds-form-element__label{
+    color: rgb(0 0 0);
+    font-size: 14px;
+}
+.THIS .btn_save {
+    background: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    color: #fff;
+    border-radius: 0;
+    box-shadow: none;
+    text-transform: uppercase;
+    transition: all .4s;
+}
+.THIS .btn_save:hover {
+    background: #fff;
+    border: 1px solid rgb(98 204 140);
+    color: rgb(98 204 140);
+}
+.THIS .btn_close {
+    background: #fff;
+    border: 1px solid rgb(98 204 140);
+    color: rgb(98 204 140);
+    border-radius: 0;
+    box-shadow: none;
+    text-transform: uppercase;
+    transition: all .4s;
+}
+.THIS .btn_close:hover {
+    background: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    color: #fff;
+}
+.THIS .leftsection .uiInputCheckbox{
+    padding: .5rem 0rem;
+}
+.THIS .leftsection .uiInputCheckbox input{
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
+}
+/*footer css start*/
+.THIS.footer_section {
+    background: #000;
+    padding: 1rem 5%;
+    position: relative;
+    display: flow-root;
+}
+.THIS.footer_section .copytext {
+    font-size: 12px;
+    color: #fff;
+    float: right;
+    padding-top: 4px;
+}
+.THIS.footer_section .social_links {
+    position: relative;
+    width: 50%;
+    display: inline-block;
+}
+.THIS.footer_section .social_links a {
+    padding: 0 1rem;
+}
+.THIS.footer_section .social_links a img{
+    width: 20px;
+    height: 20px;
+}
+/*footer css end*/
+
+.THIS .text_services {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgb(113 86 22 / 90%);
+    padding: .5rem 1rem;
+    color: #fff;
+    border: 0px solid #fff;
+    width: 100%;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .serviceitem {
+        width: 46%;
+    }
+    .THIS .leftsection {
+        width: 30%;
+    }
+    .THIS .servicemainsection {
+        width: 68%;
+    }
+    .THIS .serviceitem h3 {
+        font-size: 14px;
+    }
+    .THIS .serviceitem a {
+        font-size: 10px;
+    }
+    .THIS.subservicesection .subserviceitem {
+        height: 220px;
+    }
+}
+@media only screen and (max-width: 768px){
+    .THIS.subservicesection .subserviceitem {
+        width: 49%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .serviceheading {
+        font-size: 16px;
+    }
+    .THIS .serviceitem {
+        width: 46%;
+    }
+    .THIS .serviceheading {
+        font-size: 16px;
+    }
+    .THIS.footer_section {
+        padding: 1rem 5%;
+    }
+    .THIS .serviceheading strong {
+        font-size: 42px;
+    }
+    .THIS .text_services {
+        top: 85%;
+        padding: .5rem;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .THIS .services_mainsec {
+        padding: 1rem 5%;
+    }
+    .THIS .leftsection {
+        width: 100%;
+    }
+    .THIS .servicemainsection {
+        width: 100%;
+        margin-left: 0px;
+        margin-top: 0px;
+        padding: 5% 0%;
+    }
+    .THIS .serviceitem {
+        width: 100%;    margin: 0 0 1rem;
+    }
+    .THIS .serviceitem h3{
+        height: auto;
+    }
+    .THIS.footer_section .social_links {
+        width: 100%;
+        text-align: center;
+    }
+    .THIS.footer_section .copytext {
+        float: none;
+        padding-top: 1rem;
+        text-align: center;
+    }
+    .THIS.footer_section {
+        padding: 1rem 5%;
+    }
+    .THIS .text_services {
+        top: 88%;
+        padding: 1rem;
+    }
+}

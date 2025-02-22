@@ -1,0 +1,8 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="ETDI_General_Services">
+   
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+     <!--<div>
+        <lightning:button variant="" label="Click to retrive" title="Click to retrive" onclick="{! c.handleClick }" />
+    </div> -->
+</aura:component>

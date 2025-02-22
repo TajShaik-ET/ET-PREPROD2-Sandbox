@@ -1,0 +1,71 @@
+<template>
+  <div class="slds-m-around_medium">
+    <lightning-card title="Refund Requests">
+      <template if:true={visibleRefundRecords}>
+        <lightning-layout horizontal-align="right" vertical-align="center">
+          <lightning-layout-item class="slds-m-top_medium" size="3">
+            <lightning-input
+              type="search"
+              onchange={handleKeyChange}
+              class="slds-m-bottom_small"
+              placeholder="Search Refunds"
+              value={searchKey}
+            ></lightning-input>
+          </lightning-layout-item>
+          &nbsp;&nbsp;
+          <lightning-layout-item class="slds-m-top_medium" size="3">
+            <lightning-button
+              variant="brand"
+              label="Download"
+              onclick={downloadRefundRecords}
+            ></lightning-button>
+          </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout-item>
+          <lightning-datatable
+            key-field="Id"
+            hide-checkbox-column="true"
+            columns={columns}
+            data={visibleRefundRecords}
+            sorted-by={sortedBy}
+            sorted-direction={sortedDirection}
+          >
+          </lightning-datatable>
+        </lightning-layout-item>
+        &nbsp;
+        <lightning-layout horizontal-align="center">
+          <lightning-layout-item flexibility="auto">
+            <lightning-button
+              label="Previous"
+              icon-name="utility:chevronleft"
+              onclick={previousHandler}
+              disabled={disablePreviousButtons}
+            >
+            </lightning-button>
+          </lightning-layout-item>
+          &nbsp;
+          <!-- lightning-layout-item flexibility="auto">
+            Page {page} of {totalPage}
+          </lightning-layout-item -->
+          &nbsp;
+          <lightning-layout-item flexibility="auto">
+            <lightning-button
+              label="Next"
+              icon-name="utility:chevronright"
+              icon-position="right"
+              onclick={nextHandler}
+              disabled={disableNextButtons}
+            ></lightning-button>
+          </lightning-layout-item>
+        </lightning-layout>
+        <!-- <div slot="footer" class="slds-m-horizontal_medium">
+          <c-etst-pagination
+            records={refundRecords}
+            onupdate={updateRefundsHandler}
+          ></c-etst-pagination>
+        </div>  -->
+      </template>
+      <template if:true={errors}> {errors} - test </template>
+    </lightning-card>
+  </div>
+</template>

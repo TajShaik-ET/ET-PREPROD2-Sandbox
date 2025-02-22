@@ -1,0 +1,55 @@
+<aura:component extends="c:ETST_BilingualCommunity" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes"  access="global">
+    <aura:attribute name="showForm" type="boolean" />
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="showSpinner" type="Boolean" default="False" />
+    <aura:attribute name="transportRequest" type="ET_Service_Request__c" />
+    <aura:attribute name="fileType" type="String" />
+    <aura:attribute name="fileContent" type="String" />
+    <aura:attribute name="fileName" type="String" default="" />
+    <aura:attribute name="disabled" type="boolean" />
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    <aura:attribute name="chequeOptions" type="String[]" default="Direct,Courier"/>
+    <aura:attribute name="selected" type="string" />
+    <aura:attribute name="paymentType" type="String" />
+    <aura:attribute name="courierName" type="string" />
+    <aura:attribute name="courierRefNumber" type="string" />
+    <aura:attribute name="chequeNumber" type="string" />
+    <aura:attribute name="bankName" type="string" />
+    <aura:attribute name="reciptNumber" type="string" />
+    <aura:attribute name="transactionDate" type="date" />
+    <aura:attribute name="amount" type="decimal" />
+    <aura:attribute name="iBAN" type="string" />
+    <aura:attribute name="bankAccountNumber" type="string" />
+    <aura:attribute name="addresstoCourier" type="string" />
+    <aura:attribute name="courierAddress" type="String"/> 
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner />
+    </aura:if> 
+    
+    <lightning:recordEditForm
+                              objectApiName="ETST_Payment__c"
+                              recordId="{!v.recordId}"
+                              
+                              onsuccess="{!c.handleSuccess}"
+                              onerror="{!c.handleError}">
+        <lightning:messages aura:id="displayErrorMessage" />
+        
+        <lightning:inputField fieldName="ETST_Bank_Transaction_Ref_Id__c" required="true"/>
+        <lightning:inputField fieldName="ETST_Fare_Charges__c" value="{!v.transportRequest.ETST_Fare_Charges__c}"/>
+        <lightning:inputField fieldName="ETST_Bank_Transaction_Date__c" required="true"/>
+        <lightning:inputField fieldName="ET_Service_Request__c" style="display:none;" value="{!v.transportRequest.Id}" />
+        <lightning:inputField fieldName="ETST_Payment_State__c" style="display:none;" value="CAPTURED" />
+        <lightning:inputField fieldName="ETST_Payment_Mode__c" style="display:none;" value="Bank Transfer" />
+        <div class="sub-entry slds-show" aura:id="DivID6" style="margin-bottom: 20px;">
+            <lightning:input aura:id="formFieldToValidate" accept='.pdf, .json, .pmg, .jpg, .jpeg' onchange="{!c.handleFilesChange}" type="file" name="file" label="Upload File" multiple="false"  required="true"/>
+            <div class="slds-text-body_small slds-text-color_error">{!v.fileName} </div>
+        </div> 
+        <div style="text-align: right;" aura:id="DivID7" class="slds-show ">
+            <lightning:button variant="brand" name="Back" label="Back" onclick="{!c.cancelSave}" class="btn_back"/>
+            <lightning:button type="submit" label="Save" class="slds-m-top_medium btn_table"/>
+        </div>
+        
+        
+        
+    </lightning:recordEditForm>
+</aura:component>

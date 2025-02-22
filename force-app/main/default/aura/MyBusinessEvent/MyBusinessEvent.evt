@@ -1,0 +1,19 @@
+<aura:event type="APPLICATION">
+    <aura:attribute name="salesAgreementDashboard" type="Boolean"/>
+    <aura:attribute name="salesAgreement" type="Boolean"/>
+    <aura:attribute name="assignResources" type="Boolean"/>
+    <aura:attribute name="assignVehicles" type="Boolean" />   
+    <aura:attribute name="invoices" type="Boolean" /> 
+    
+    <!--for school business-->
+    <aura:attribute name="schools" type="Boolean"/>
+    <aura:attribute name="students" type="Boolean"/>
+    <aura:attribute name="schoolsClick" type="Boolean"/>
+    <aura:attribute name="studentsClick" type="Boolean"/>
+    <aura:attribute name="govtSchool" type="Boolean"/>
+
+    <aura:attribute name="salesAgreementClick" type="Boolean"/>
+    <aura:attribute name="assignResourcesClick" type="Boolean"/>
+    <aura:attribute name="assignVehiclesClick" type="Boolean" />   
+    <aura:attribute name="invoicesClick" type="Boolean" />  
+</aura:event>

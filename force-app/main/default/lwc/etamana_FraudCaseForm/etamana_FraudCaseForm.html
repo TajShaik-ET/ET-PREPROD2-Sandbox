@@ -1,0 +1,193 @@
+<template>
+    <div class="report_main">
+        <!--img class="logoimg"
+            src="https://icrm--etdev.sandbox.my.salesforce.com/servlet/servlet.ImageServer?id=015UE000000UDMP&oid=00D8E000000HtV9&lastMod=1725542235000" /-->
+        <div class="logosdiv">
+            <img class="logoimg" src="https://icrm--etdev.sandbox.my.salesforce.com/servlet/servlet.ImageServer?id=015UE000001RYGL&oid=00D8E000000HtV9&lastMod=1737032950000"/>
+            <div class="middiv"></div>
+            <img class="logoimg" src="https://icrm--etdev.sandbox.my.salesforce.com/servlet/servlet.ImageServer?id=015UE000001UuPD&oid=00D8E000000HtV9&lastMod=1737373373000"/>
+        </div>
+        <!--img src={Logo} alt="Logo" />
+        <img src={ETLogo} alt="Logo" /-->
+        <lightning-tabset active-tab-value={activeTab} onclick={handleTabChange}>
+            <lightning-tab label="Search Case Status" title="Search Case Status" value="Search Case Status">
+                <div class="report_main">
+                    <div class="search_div">
+                        <lightning-input placeholder="Enter Unique Number" value={searchKey} onchange={handleKeyChange}>
+                        </lightning-input>
+                        <lightning-button label="Search" variant="brand" onclick={handleSearch}></lightning-button>
+                    </div>
+                    <template if:true={searchResult}>
+                        <div class="info_dynamic">
+                            <div class="readonlydiv">
+                                <label class="labeltext">Unique Number</label>
+                                <div class="valuetext">{searchResult.ETAmana_Unique_Number__c}</div>
+                            </div>
+                            <div class="readonlydiv">
+                                <label class="labeltext">Description</label>
+                                <div class="valuetext">{searchResult.ETAmana_Full_description__c}</div>
+                            </div>
+                            <div class="readonlydiv">
+                                <label class="labeltext">Status</label>
+                                <div class="valuetext">{searchResult.Status_of_the_Case__c}</div>
+                            </div>
+
+                            <div class="readonlydiv">
+                                <label class="labeltext">Solution</label>
+                                <div class="valuetext">{searchResult.ETAmana_Solution__c}</div>
+                            </div>
+
+                            <!--lightning-input type="text" label="Unique Number"
+                                value={searchResult.ETAmana_Unique_Number__c} read-only="true"></lightning-input>
+                            <lightning-input type="text" label="Description" value={searchResult.Description}
+                                read-only="true"></lightning-input>
+                            <lightning-input type="text" label="Status" value={searchResult.Status}
+                                read-only="true"></lightning-input>
+                            <lightning-input type="text" label="Solution" value={searchResult.Solution__c}
+                                read-only="true"></lightning-input-->
+                        </div>
+                    </template>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Report Fraud Case" value="Report Fraud Case">
+                <template if:false={isSubmitButtonClicked}>
+                    <h4>Please fill the below form</h4>
+                    <div>
+                        <template if:true={showSpinner}>
+                            <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                        </template>
+                        <template if:true={isModalOpen}>
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container docCollectedPopup">
+                                    <header class="slds-modal__header">
+                                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                                            Information!</h2>
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium qualifiedTxt"
+                                        id="modal-content-id-1">
+                                        {modalMessage}
+                                    </div>
+                                    <footer class="slds-modal__footer">
+                                        <lightning-button variant="brand" label="Ok" title="Ok" onclick={closeModal}
+                                            class="slds-m-left_x-small">
+                                        </lightning-button>
+                                    </footer>
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                        </template>
+                        <div class="flex_div">
+                            <lightning-combobox name="relationWithETId" label="Relation with Emirates Transport"
+                                value={caseRecord.ETAmana_Relation_with_Emirates_Transport__c}
+                                placeholder="Select Input" options={relationWithETOptions} onchange={handleInputChange}
+                                data-field="ETAmana_Relation_with_Emirates_Transport__c" required>
+                            </lightning-combobox>
+                            <lightning-combobox name="businessFunctionId"
+                                label="Business Function where the incident occurred"
+                                value={caseRecord.ETAmana_Business_function_incident__c} placeholder="Select Input"
+                                options={businessFunctionOptions} onchange={handleInputChange}
+                                data-field="ETAmana_Business_function_incident__c" required>
+                            </lightning-combobox>
+                            <lightning-combobox name="incidentLocationId" label="Incident Location"
+                                value={caseRecord.ETAmana_incident_location__c} placeholder="Select Input"
+                                options={incidentLocationOptions} onchange={handleInputChange}
+                                data-field="ETAmana_incident_location__c" required>
+                            </lightning-combobox>
+                            <lightning-input label="When did the incident occur" required="true" type="date"
+                                value={caseRecord.ETAmana_When_did_the_incident_occur__c} onchange={handleInputChange}
+                                data-field="ETAmana_When_did_the_incident_occur__c">
+                            </lightning-input>
+                            <div class="differentRowTxt">
+                            <div>
+                            <lightning-combobox name="violationId" label="Type of the violation"
+                                value={caseRecord.ETAmana_Type_of_the_violation__c} placeholder="Select Input"
+                                options={violationTypeOptions} onchange={handleInputChange}
+                                data-field="ETAmana_Type_of_the_violation__c" required>
+                            </lightning-combobox>
+                            <lightning-input label="Department" value={caseRecord.ETAmana_Department__c}
+                                onchange={handleInputChange} data-field="ETAmana_Department__c">
+                            </lightning-input>
+                            <lightning-input label="Summary Title" value={caseRecord.ETAmana_Summary_title__c}
+                                onchange={handleInputChange} data-field="ETAmana_Summary_title__c">
+                            </lightning-input>
+                            </div>
+                            <div>
+                            <lightning-textarea class="FullDescription" label="Full Description" value={caseRecord.ETAmana_Description__c}
+                                onchange={handleInputChange} data-field="ETAmana_Full_description__c">
+                            </lightning-textarea>
+                            </div>
+                            </div>
+                            <div class="stepdiv">
+                                <p class="redColour">If you wish to provide us with your contact information, please
+                                    provide your name,
+                                    email
+                                    address, and telephone number in the box below.</p>
+                                <p><strong>Step 2: Contact Details</strong></p>
+                            </div>
+                            <lightning-input label="Full Name" value={caseRecord.ETAmana_Full_Name__c}
+                                onchange={handleInputChange} data-field="ETAmana_Full_Name__c">
+                            </lightning-input>
+                            <lightning-input label="Email Address" value={caseRecord.ETAmana_Email_Address__c}
+                                onchange={handleInputChange} data-field="ETAmana_Email_Address__c" type="email"
+                                message-when-type-mismatch="Please enter a valid email address.">
+                            </lightning-input>
+                            <lightning-input label="Mobile Number" value={caseRecord.ETAmana_Mobile_Number__c}
+                                onchange={handleInputChange} data-field="ETAmana_Mobile_Number__c">
+                            </lightning-input>
+                            <div class="uploaddiv">
+                                <template if:false={uploadDisabled}>
+                                    <div class="uploadfile_div">
+                                        <lightning-input type="file" accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf"
+                                            label="Attachment" onchange={openfileUpload}>
+                                        </lightning-input>
+                                        <p class="file_upload_note">Maximum file size: 2 MB</p>
+                                    </div>
+
+                                    <template if:true={fileData}>
+                                        <p>{fileData.filename}</p>
+                                    </template>
+                                </template>
+                                <div class="uploaded_file_section">
+                                    <template if:true={filesList}>
+                                        <template for:each={filesList} for:item="file">
+                                            <div key={file.value} class="upload_file_inner_div">
+                                                <div class="file_name_uploaded">
+                                                    <div class="filename">
+                                                        <p>{file.label}</p>
+                                                    </div>
+                                                    <div class="inner_div_btn">
+                                                        <!--<lightning-icon data-id={file.url} onclick={downloadHandler}
+                                                        title="Download" size="x-small" icon-name="action:download">
+                                                    </lightning-icon>-->
+                                                        <lightning-icon data-id={file.value} onclick={deleteHandler}
+                                                            title="Delete" size="x-small" icon-name="action:delete">
+                                                        </lightning-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btndiv">
+                            <lightning-button class="slds-m-top_medium" variant="brand" label="Submit"
+                                onclick={handleSubmit}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={isSubmitButtonClicked}>
+                    Your case has been submitted successfully! with Unique Number: &nbsp;
+                    <strong>{uniqueNumber}</strong>&nbsp;&nbsp;
+                    Please Click here to create
+                    <a class="newcasebtn" href="https://icrm--etdev.sandbox.my.salesforce-sites.com/AmanaSupport">New
+                        Case</a>
+
+                </template>
+            </lightning-tab>
+
+        </lightning-tabset>
+    </div>
+</template>

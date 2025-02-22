@@ -1,0 +1,7 @@
+<aura:component implements="flexipage:availableForAllPageTypes">
+	<div class="blink_me">
+        <p>
+            <div>Please click on "Submit for Approval" button </div>
+        </p>
+    </div>
+</aura:component>

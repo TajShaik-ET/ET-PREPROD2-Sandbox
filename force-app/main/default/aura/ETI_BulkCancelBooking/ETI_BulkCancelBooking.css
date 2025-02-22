@@ -1,0 +1,56 @@
+.THIS .slds-modal__container {
+    margin: auto;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+}
+.THIS .searchbox{
+    width:30%;
+}
+.THIS .searchbox .slds-form-element__control{
+    padding-left: 18%;
+}
+.THIS .searchbox .slds-form-element__label{
+    padding-top: 8px;
+    font-weight: bold;
+}
+.THIS.slds-modal__close {
+    box-shadow: none;
+    outline: none;
+    display:none!important;
+}
+.THIS .cancelbox{
+    width: 50%;  
+}
+.THIS .cancelbox .slds-form-element__control{
+    display: inline-block;
+    width: 70%; 
+}
+.THIS .cancelbox .slds-form-element__label{
+    font-weight: bold;
+}
+.THIS .refunddiv{
+    width: 100%;
+    overflow: auto;
+    border: 1px solid #ddd;
+    border-radius: 0;
+}
+.THIS .refunddiv .slds-table th, .THIS .refunddiv .slds-table td {
+    white-space: pre-line;
+}
+.THIS .amountdiv{
+    display: inline-block;
+    float: left;
+    padding-top: 8px;
+}
+.THIS .slds-page-header{
+    padding: 1rem 1rem 1.5rem;
+    border-radius: 0px;
+    border-top: none;
+    box-shadow: none;
+}
+.THIS .slds-page-header__title{
+    color: #23527c;
+    font-size: 12px;
+    padding-top: 8px;
+}

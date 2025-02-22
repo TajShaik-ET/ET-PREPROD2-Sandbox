@@ -1,0 +1,191 @@
+.THIS table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.THIS table tr th {
+    text-align: center;
+    padding: 10px 5px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #fff!important;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    border-top: 1px solid #f1f1f1;
+    
+}
+.THIS .slds-datepicker thead > tr > th {
+    position: relative;
+    top: auto;
+}
+.THIS table tr td {
+    text-align: center;
+    padding: 10px 5px; 
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    color: black;
+}
+
+.THIS table tr td a{
+    color: #000;
+}
+.THIS.noRecord{
+    text-align: center;
+}
+.THIS span.green{
+    color: #62cc8c;
+}
+.THIS .slds-section__title span{
+    padding: 0;
+}
+.THIS .slds-modal__header{
+    border-bottom: 1px solid #62cc8c;
+}
+
+.THIS .slds-form-element__label{
+    font-weight: 900;
+}
+.THIS .slds-form-element__label, .THIS .slds-form-element__control{
+    width: 50%;
+    display: inline-block;
+}
+
+.THIS .slds-form-element__control .slds-file-selector, .THIS .slds-form-element__control .slds-file-selector__dropzone{
+    width: 100%;
+}
+
+.THIS .slds-section{
+    margin: 0 0rem 2rem;
+}
+.THIS .slds-section__content{
+    margin: 0 1rem;
+}
+
+.THIS lightning-input-field, .THIS lightning-input, .THIS .slds-form-element{
+    margin-bottom: 0.5rem;
+}
+.THIS .slds-button_neutral{
+    color: #62cc8c;
+    border: 1px solid #62cc8c;
+}
+.THIS .slds-button_brand{
+    background: #62cc8c;
+    border: 1px solid #62cc8c;
+}
+
+.THIS .slds-file-selector__button.slds-button_neutral{
+    color: #fff;
+    background: #c23934;
+}
+
+.THIS .slds-file-selector__button svg, .THIS .slds-file-selector__button.slds-button_neutral:hover svg{
+    fill: #fff;
+}
+.THIS .slds-modal__close{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.THIS .slds-modal__close svg{
+    color: #000;
+}
+
+.THIS lightning-datepicker lightning-button-icon svg{
+    color: #62cc8c;
+}
+.THIS .slds-modal__content .slds-form-element__label{
+    color: #62cc8c;
+    font-weight: 600;
+}
+.THIS .textarea-container{
+    width: 100%;
+} 
+.THIS .textarea-container .slds-textarea{
+    height: 100px;
+}
+.THIS .slds-modal__footer{
+    border: none;
+}
+
+.THIS .vehiclepolicy{
+    padding: 0;
+}
+.THIS .slds-card__body .slds-form-element__label{
+    color: #62cc8c;
+    font-weight: 600;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+}
+.THIS .slds-card__body .slds-form-element__control{
+    text-align: left;
+    width: 100%;
+    padding: 0;
+}
+.THIS .slds-card__body .slds-table .slds-truncate{
+    text-align: left;
+}
+.THIS .slds-table th .slds-truncate span{
+    font-weight: 900;
+}
+.THIS .slds-card__body table, .THIS .slds-card__body table th, .THIS .slds-card__body table tr:hover{
+    border: none;
+} 
+.THIS .slds-card__body table tr:hover th{
+    box-shadow: none !important;
+}
+.THIS .slds-card__body table th.slds-text-title_caps{
+    border-bottom: 1px solid #62cc8c;
+}
+.THIS .slds-card__body table tbody{
+    padding: 0 1rem;
+    display: block;
+}
+.THIS .slds-card__body table tbody a{
+    color: #62cc8c;
+    font-weight: 600;
+}
+.THIS .footerBtns{
+    text-align: right;
+    padding: 2rem 2rem 0;
+    border-top: .5px solid #62cc8c;
+    margin: 2rem 0 0;
+}
+.THIS .slds-card__header{
+    display: none;
+}
+.THIS .headerTop{
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid #62cc8c;
+    padding: 0 2rem 2rem;
+}
+.THIS .headerTop h3{
+    font-size: 1rem;
+    font-weight: 600;
+    display: inline-block;
+}
+.THIS .headerTop button{
+    background: #62cc8c;
+    border: 1px solid #62cc8c;
+}
+.THIS .headerTop .backBtn{
+    width: 42%;
+    display: inline-block;
+}
+.THIS .tableshow{
+    overflow: hidden;
+}
+
+.THIS .slds-form-element__control input{
+    border: none;
+}
+.THIS .slds-modal__content .slds-form-element__control input{
+    border: 1px solid #ddd;
+}
+.THIS .cancelSaveBtnn{
+    text-align: right;
+    margin: 2rem 0 0;
+}

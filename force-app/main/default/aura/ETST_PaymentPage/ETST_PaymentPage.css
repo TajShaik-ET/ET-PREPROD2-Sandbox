@@ -1,0 +1,360 @@
+/*@font-face {
+font-family: 'Cronos';
+src: url(/resource/ETST_Cronos); 
+}*/
+.THIS .onpremisepay{
+    padding: 20px;
+    min-height: 400px;
+    max-height: 400px;
+    overflow: auto;
+    background: #f9f9f9;
+}
+.THIS .slds-modal__body{
+    width: 100px;
+    height: auto;
+}
+.THIS .slds-modal__bodyrtl{
+    width: 100px;
+    height: auto;
+    direction:rtl;
+}
+.THIS .slds-text-heading_small, .THIS .slds-text-heading--small {
+    font-size: 1.2rem;
+    line-height: 1.25;
+    /*font-family: 'Cronos'; */
+    letter-spacing: 0.5px;
+    margin-bottom:5px;
+}
+.THIS .slds-text-body_regular, .THIS .slds-text-body--regular {
+    font-size: 14px;
+    /*font-family: 'Cronos'; */
+    letter-spacing: 0.5px;
+}
+.THIS .slds-m-vertical_medium, .THIS .slds-m-vertical--medium {
+    margin-top: 0rem;
+    margin-bottom: 1rem;
+}
+.THIS.onpremisepay .slds-truncate{
+    padding-right: 5px;
+    color: #555;
+    font-size: 14px;
+    word-break: break-word;
+    word-spacing: normal;
+    white-space: pre-wrap;
+    position: relative;
+    line-height: 26px;
+}
+.THIS .btn_table{
+    font-size: 14px;
+    margin-top: 8px;
+    margin-left: 10px;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    background-color: #ff4b5a;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .btn_table:hover{
+    background-color: #333333;
+}
+.THIS .btn_back{
+    font-size: 14px;
+    margin-top: 8px;
+    margin-left: 10px;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    background-color: #b0b1af;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .btn_back:hover{
+    background-color: #333333;
+}
+.THIS .btn_right{
+    float: right;margin-top: 20px;
+}
+.THIS .addressdiv {
+    display: inline-block;
+    position: relative;
+    padding-left: 55px;
+    margin-top: -55px;
+    font-size: 14px;
+    /*font-family: 'Cronos'; */
+}
+.THIS .mapsection {
+    padding: 15px;
+    border: 0 solid #ddd;
+    margin: auto;
+    margin-top: 0px;
+    text-align: left;
+}
+.THIS .mapsection .slds-card__header {
+    padding: 0;
+    margin: 0;
+}
+.THIS .mapdiv{
+    width: 400px;
+    margin: auto;
+}
+.THIS .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.THIS.paymentdetaimaindiv {
+    position: relative;
+    display: flex;
+    width: 100%;
+    background: #fff;    
+}
+.THIS .colnew {
+    flex: 1;
+    padding:50px;
+}
+.THIS .leftimgdiv{
+    background: #00a957;
+    background-image: url(/resource/ETST_servicebg);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow:hidden;
+    z-index: 1;
+}
+.THIS .leftimgdiv:before{
+    background-color: rgba(0, 0, 0, 0.6);
+    content: '';
+    left: 0;
+    top: 0;
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.THIS .rightcontentdiv{
+    background: #f1f1f1;
+}
+.THIS .invoicecontentdiv{
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    color: #fff;
+    font-size: 3.5rem;
+    /*font-family: 'Cronos'; */
+    letter-spacing: 0px;
+    text-shadow: 1px 1px 2px #f2f2f2;
+    transform: translate(-50%, -50%);
+    display: block;
+    line-height: 1;
+    width: 100%;
+    text-align: center;
+}
+.THIS .leftimgdiv img{
+    position: absolute;
+    width: 40%;
+    top: 34%;
+    left: 30%;
+    text-align: center;
+    padding: 10px;
+    filter: brightness(0) invert(1);
+}
+.THIS .paymentheading {
+    font-size: 1.6rem;
+    /*font-family: 'Cronos'; */
+    letter-spacing: 0px;
+    border-bottom: 1px solid #eaeaea;
+    position: relative;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.THIS .paymentheading:before {
+    position: absolute;
+    content: '';
+    width: 40px;
+    height: 3px;
+    left: 0;
+    top: -3px;
+    background: #00904a;
+}
+.THIS .slds-form-element__control .slds-radio{
+    display: inline-block;
+    padding-bottom: 15px;
+    /*font-family: 'Cronos'; */
+}
+.THIS .slds-radio .slds-radio_faux{
+    border: 1px solid rgb(208, 208, 208);
+    /*font-family: 'Cronos'; */
+}
+.THIS .slds-radio .slds-form-element__label {
+    font-size: 14px;
+}
+.THIS .slds-radio [type=radio]:checked+.slds-radio__label .slds-radio_faux:after{
+    background: #555;
+}
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+.THIS .slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+.THIS .viewinvoicelink{
+    font-size: 14px;
+    float: right;
+    display: inline-block;
+    margin-top: 15px;
+    /*font-family: 'Cronos'; */
+    letter-spacing: .5px;
+}
+.THIS.backarrow{
+        display:none;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS.onpremisepay {
+        margin-left: 10%;
+    }
+    .THIS.bgimgcont {
+        left: 15%;
+        top:85%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS.paymentdetaimaindiv {
+        display:block;
+    }
+    .THIS .leftimgdiv {
+        height: 360px;
+    }
+    .THIS .leftimgdiv img {
+        position: relative;
+        width: 40%;
+        top: 34px;
+        text-align: center;
+    }
+    .THIS .invoicecontentdiv {
+        font-size: 3rem;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .THIS.paymentdetaimaindiv {
+        display:block;
+    }
+    .THIS .leftimgdiv {
+        height: 300px;
+    }
+    .THIS .leftimgdiv img {
+        position: relative;
+        top: 10px;
+        text-align: center;
+    }
+    .THIS .invoicecontentdiv {
+        font-size: 3rem;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS.paymentdetaimaindiv {
+        display:block;
+    }
+    .THIS .leftimgdiv {
+        height: 300px;
+    }
+    .THIS .leftimgdiv img {
+        position: relative;
+        width: 55%;
+        left: 22%;
+        top: 45px;
+    }
+    .THIS .invoicecontentdiv {
+        font-size: 2rem;
+    }
+    .THIS .invoicecontentdiv {
+        top: 55%;
+    }
+    .THIS .colnew {
+        padding: 1rem;
+        background-image: url(/resource/addchildbg_img);
+        z-index: 1;
+        background-position: top;
+        background-size:cover;
+        height: calc(100vh - 47px)!important;
+        margin-top: -25px;
+    }
+    .THIS .onpremisepay {
+        padding: 20px 5px;
+        background: transparent!important;
+        margin-top:80px;
+    }
+    .THIS .radiodiv fieldset {
+        width: 100%!important;
+        background: #62cc8c;
+        padding: 1rem 1rem 0;
+        border-radius: 0px;
+        margin-bottom: 1rem;
+        box-shadow: 0 8px 6px -6px #9c9c9c;
+        position: fixed;
+        top: 48px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        z-index:1;
+    }
+    .THIS .slds-radio .slds-form-element__label {
+        color: #fff;
+    }
+    .THIS .pay_btn{
+        background: #eb4026;
+        border-radius: 5px;
+    }
+    .THIS .btn_back{
+        border-radius: 5px;
+    }
+    .THIS iframe{
+                height: 500px!important;
+        }
+    .THIS.backarrow{
+        display:block;
+        z-index: 2;
+        position: absolute;
+        top:1.2rem;
+        left: 1rem;
+    }
+    .THIS.backarrow img{
+        width: 20px;
+    }
+    .THIS .slds-form-element__control .slds-radio{
+        margin-right:15px;
+    }
+    .THIS .forceCommunityThemeHeaderCompact .themeHeaderInner{
+        background: #fff !important;
+    }
+    .THIS .colnew.rightcontentdiv{
+        padding-top:80px;
+    }
+}

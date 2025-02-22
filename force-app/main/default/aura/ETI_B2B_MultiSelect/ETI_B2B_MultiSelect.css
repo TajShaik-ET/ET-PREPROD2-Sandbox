@@ -1,0 +1,77 @@
+.THIS {
+}
+
+.THIS .ms-filter-input{
+    margin: 0px 5%;
+    width: 50%;
+    height: 30px;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: thin;
+    border-color: darkgray;
+    padding: 2px 5px;
+}
+
+.THIS .ms-input{
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(217, 219, 221);
+    border-radius: .25rem;
+    width: 100%;
+    transition: border .1s linear,background-color .1s linear;
+    display: inline-block;
+    padding: 0 1rem 0 .75rem;
+    line-height: 1.875rem;
+    min-height: calc(1.875rem + (1px * 2));
+}
+
+.THIS .ms-refresh-icon{
+    position: absolute;
+}
+
+.THIS .ms-clear-icon{
+    position: absolute;
+}
+
+.THIS .ms-dropdown{
+    max-height: 500px;
+    overflow-y: auto;
+}
+.THIS .slds-listbox{
+    max-height: 250px;
+    margin-top: 0px;
+    width: 100%;
+    padding: 2px;
+    background: #fff;
+    background-color: #fff;
+    position: absolute;
+    z-index: 10;
+}
+.THIS .slds-listbox .ms-filter-input{
+    width: 100%;
+    height: 34px;    padding-right: 60px;
+}
+.THIS .slds-listbox .slds-button_icon-border {
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #00c19e;
+    /* float: right; */
+    margin-top: 5px;
+    margin-right: 3px;
+    position: absolute;
+    right: 5px;
+}
+.THIS .refresh{
+    right: 35px!important;
+}
+.THIS .getlocationcss{
+    background: transparent;
+    color: #ff4b5a;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    outline: none;
+    position: absolute;
+    top: -38px;
+    right: -10px;
+}

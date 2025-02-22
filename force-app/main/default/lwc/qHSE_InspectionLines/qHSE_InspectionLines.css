@@ -1,0 +1,12 @@
+lightning-input-field.inputCss{
+    --slds-c-input-color-border:#312b2a; 
+}
+
+lightning-input.inputCss{
+    --slds-c-input-color-border:#312b2a;
+
+}
+
+lightning-textarea.inputCss{
+    --slds-c-input-color-border:#312b2a;        
+}

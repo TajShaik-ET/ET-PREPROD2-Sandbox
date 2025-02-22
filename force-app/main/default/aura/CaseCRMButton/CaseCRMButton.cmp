@@ -1,0 +1,482 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,force:lightningQuickAction"
+                controller="ET_BusinessCommunityController" access="global">
+        <aura:attribute name="recordtype" type="Boolean" default="false"/>
+
+    <aura:attribute name="Invoices" type="boolean" />
+    <aura:attribute name="AccountId" type="String" />
+    <aura:attribute name="recordTypeIdvar" type="String"/>
+    <aura:attribute name="asvehicleId" type="String" />
+    <aura:attribute name="recType" type="String" />
+    <aura:attribute name="salesAggId" type="String" />
+     <aura:attribute name="selectedRecordtype" type="String" default="ET Tyre"/>
+    <aura:attribute name="availableRecordTypes" type="List" />
+    <aura:attribute name="AssignedResource" type="boolean" />
+    <aura:attribute name="AssignedVehicle" type="boolean" />
+    <aura:attribute name="SalesAggrement" type="boolean" />
+    <aura:attribute name="AccountRec" type="boolean" />
+    <aura:attribute name="AssignedStud" type="boolean" />
+    <aura:attribute name="Others" type="boolean" />
+    <aura:attribute name="accountSiteId" type="string" />
+    <aura:attribute name="caseSource" type="string" default=""/>
+    <aura:attribute name="casebusinessType" type="string"/>
+    <aura:attribute name="CurrentUser" type="Object"/>
+    <force:recordData recordId="{!$SObjectType.CurrentUser.Id}"
+                      fields="Profile.Name"
+                      targetFields="{!v.CurrentUser}"/>
+    <aura:attribute name="currentUserprofile" type="string"/>
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    <lightning:overlayLibrary aura:id="cmp1" /> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .documentmain {
+        padding: 1rem;
+        }
+        .slds-modal__footer{
+        display:none;
+        }
+    </aura:html>
+    <lightning:recordEditForm objectApiName="Case" aura:id="caseForm" onload="{!c.handleOnLoad}"
+                              onsubmit="{!c.handleOnSubmit}" recordTypeId="{!v.recordTypeIdvar}" onsuccess="{!c.handleOnSuccess}" onerror="{!c.handleOnError}">
+        <div class="documentmain">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <!--<h3 class="Headingcontent">Create Complaint</h3>-->
+                    <div class="slds-tile__detail">
+                        <div class="slds-grid slds-gutters">
+                            
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    
+                                    <lightning:select name="mySelect" label="Complaint Against" aura:id="mySelect"
+                                                      onchange="{!c.toggle}" class="slds-hide"  variant="label-hidden" >
+                                        <option>None</option>
+                                        <option>Assigned Resource</option>
+                                        <option>Students</option>
+                                        <option>Assigned Vehicle</option>
+                                        <option>Invoice</option>
+                                        <option>Sales Agreement</option>
+                                        <option>Others</option>
+                                    </lightning:select>
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                   <lightning:inputField aura:id="caseSource" variant="label-hidden" class="slds-hide" fieldName="Case_Source__c"/> 
+                                </div>
+                            </div>
+                        </div>
+                       <!-- <div class="slds-grid slds-gutters">
+                            <div class="slds-col ">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <label for="value">Case Type</label> 
+                                        <lightning:inputField aura:id="value" variant="label-hidden" fieldName="Case_Record_Types__c" onchange="{!c.optionSelected}" />
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col ">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <lightning:inputField  aura:id="businesstyp" fieldName="Business_Type__c"  onchange="{!c.optionbtype}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        <aura:if isTrue="{!v.Invoices}">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col ">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <div class="slds-form-element__control">
+                                            <label for="value">Case Type</label> 
+                                            <lightning:inputField aura:id="value" variant="label-hidden" fieldName="Case_Record_Types__c" onchange="{!c.optionSelected}" />
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col ">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <div class="slds-form-element__control">
+                                            <lightning:inputField  aura:id="businesstyp" fieldName="Business_Type__c"  onchange="{!c.optionbtype}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col ">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <div class="slds-form-element__control">
+                                            <lightning:inputField fieldName="Origin" />
+                                            <lightning:inputField fieldName="Subject" /> 
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col ">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <div class="slds-form-element__control">
+                                            <lightning:inputField aura:id="SaleAggId" fieldName="Invoice__c" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="slds-grid slds-grid_horizontal">
+                                <div class="slds-col slds-size_12-of-12">
+                                    <lightning:inputField fieldName="Description" />
+                                    <lightning:inputField fieldName="Subject" />
+                                    <lightning:inputField fieldName="Product__c" />
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            <aura:set attribute="else">
+                                <aura:if isTrue="{!v.AssignedVehicle}">
+                                    
+                                    <div class="slds-grid slds-gutters">
+                                        <div class="slds-col ">
+                                            <div class="slds-form-element slds-is-editing">
+                                                <div class="slds-form-element__control">
+                                                    <lightning:inputField fieldName="Origin" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col ">
+                                            <div class="slds-form-element slds-is-editing">
+                                                <div class="slds-form-element__control">
+                                                    
+                                                    <lightning:inputField aura:id="assVehId" fieldName="Assigned_Vehicle__c" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid slds-gutters">
+                                        <div class="slds-col ">
+                                            <div class="slds-form-element slds-is-editing">
+                                                <div class="slds-form-element__control">
+                                                    <label for="value">Case Type</label> 
+                                                    <lightning:inputField aura:id="value" variant="label-hidden" fieldName="Case_Record_Types__c" onchange="{!c.optionSelected}" />
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col ">
+                                            <div class="slds-form-element slds-is-editing">
+                                                <div class="slds-form-element__control">
+                                                    <lightning:inputField  aura:id="businesstyp" fieldName="Business_Type__c"  onchange="{!c.optionbtype}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-grid slds-grid_horizontal">
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <lightning:inputField fieldName="Subject" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid slds-grid_horizontal">
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <lightning:inputField fieldName="Description" />
+                                        </div>
+                                    </div>
+                                    <aura:set attribute="else">
+                                        <aura:if isTrue="{!v.AssignedStud}">
+                                            
+                                            <div class="slds-grid slds-gutters">
+                                                <div class="slds-col ">
+                                                    <div class="slds-form-element slds-is-editing">
+                                                        <div class="slds-form-element__control">
+                                                            <lightning:inputField fieldName="Origin" />
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col ">
+                                                    <div class="slds-form-element slds-is-editing">
+                                                        <div class="slds-form-element__control">
+                                                            <lightning:inputField aura:id="assStudId" fieldName="ETST_Student__c" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-grid slds-gutters">
+                                                <div class="slds-col ">
+                                                    <div class="slds-form-element slds-is-editing">
+                                                        <div class="slds-form-element__control">
+                                                            <label for="value">Case Type</label> 
+                                                            <lightning:inputField aura:id="value" variant="label-hidden" fieldName="Case_Record_Types__c" onchange="{!c.optionSelected}" />
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col ">
+                                                    <div class="slds-form-element slds-is-editing">
+                                                        <div class="slds-form-element__control">
+                                                            <lightning:inputField  aura:id="businesstyp" fieldName="Business_Type__c"  onchange="{!c.optionbtype}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-grid slds-grid_horizontal">
+                                                <div class="slds-col slds-size_12-of-12">
+                                                    <lightning:inputField fieldName="Subject" />
+                                                </div>
+                                            </div>
+                                            <div class="slds-grid slds-grid_horizontal">
+                                                <div class="slds-col slds-size_12-of-12">
+                                                    <lightning:inputField fieldName="Description" />
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!v.AssignedResource}">
+                                                    
+                                                    <div class="slds-grid slds-gutters">
+                                                        <div class="slds-col ">
+                                                            <div class="slds-form-element slds-is-editing">
+                                                                <div class="slds-form-element__control">
+                                                                    <lightning:inputField fieldName="Origin" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col ">
+                                                            <div class="slds-form-element slds-is-editing">
+                                                                <div class="slds-form-element__control">
+                                                                    <lightning:inputField aura:id="assResId" fieldName="Assigned_Resource__c" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-grid slds-gutters">
+                                                        <div class="slds-col ">
+                                                            <div class="slds-form-element slds-is-editing">
+                                                                <div class="slds-form-element__control">
+                                                                    <label for="value">Case Type</label> 
+                                                                    <lightning:inputField aura:id="value" variant="label-hidden" fieldName="Case_Record_Types__c" onchange="{!c.optionSelected}" />
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col ">
+                                                            <div class="slds-form-element slds-is-editing">
+                                                                <div class="slds-form-element__control">
+                                                                    <lightning:inputField  aura:id="businesstyp" fieldName="Business_Type__c"  onchange="{!c.optionbtype}" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-grid slds-grid_horizontal">
+                                                        <div class="slds-col slds-size_12-of-12">
+                                                            <lightning:inputField fieldName="Subject" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-grid slds-grid_horizontal">
+                                                        <div class="slds-col slds-size_12-of-12">
+                                                            <lightning:inputField fieldName="Description" />
+                                                        </div>
+                                                    </div>
+                                                    <aura:set attribute="else">
+                                                        <aura:if isTrue="{!v.SalesAggrement}">
+                                                            <div class="slds-grid slds-gutters">
+                                                                <div class="slds-col ">
+                                                                    <div class="slds-form-element slds-is-editing">
+                                                                        <div class="slds-form-element__control">
+                                                                            <lightning:inputField fieldName="Origin" />
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="slds-col ">
+                                                                    <div class="slds-form-element slds-is-editing">
+                                                                        <div class="slds-form-element__control">
+                                                                            <lightning:inputField aura:id="SaleAggId" fieldName="Sales_Agreement__c" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-grid slds-gutters">
+                                                                <div class="slds-col ">
+                                                                    <div class="slds-form-element slds-is-editing">
+                                                                        <div class="slds-form-element__control">
+                                                                            <label for="value">Case Type</label> 
+                                                                            <lightning:inputField aura:id="value" variant="label-hidden" fieldName="Case_Record_Types__c" onchange="{!c.optionSelected}" />
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="slds-col ">
+                                                                    <div class="slds-form-element slds-is-editing">
+                                                                        <div class="slds-form-element__control">
+                                                                            <lightning:inputField  aura:id="businesstyp" fieldName="Business_Type__c"  onchange="{!c.optionbtype}" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-grid slds-grid_horizontal">
+                                                                <div class="slds-col slds-size_12-of-12">
+                                                                    <lightning:inputField fieldName="Description" />
+                                                                </div>
+                                                            </div>
+                                                            <aura:set attribute="else">
+                                                                <aura:if isTrue="{!v.AccountRec}">
+                                                                    <div class="slds-grid slds-gutters">
+                                                                        <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                     <lightning:inputField fieldName="Origin" required="true" />
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                    <lightning:inputField aura:id="AccId" fieldName="AccountId" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="slds-grid slds-gutters">
+                                                                        <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                    <label for="value">Case Type</label> 
+                                                                                    <lightning:inputField aura:id="value" variant="label-hidden" fieldName="Case_Record_Types__c" onchange="{!c.optionSelected}" required="true" />
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                   <lightning:inputField  aura:id="businesstyp" fieldName="Business_Type__c"  onchange="{!c.optionbtype}" required="true" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="slds-grid slds-gutters">
+                                                                        <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                    <lightning:inputField fieldName="Subject" required="true"/>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                    <lightning:inputField fieldName="Description"/>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                      <!-- if businees type is traffic -->
+                                                                   
+                                                                        <aura:if isTrue="{!(v.casebusinessType == 'Traffic Fine' || v.casebusinessType == 'Claim')}">
+                                                                        
+                                                                        <div class="slds-grid slds-gutters">
+                                                                            <div class="slds-col ">
+                                                                                <div class="slds-form-element slds-is-editing">
+                                                                                    <div class="slds-form-element__control">
+                                                                                        <lightning:inputField fieldName="Tyre_Serial_Number__c" required="true" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <aura:if isTrue="{!v.currentUserprofile== 'ETT_Sales Team' }">
+                                                                                <div class="slds-col ">
+                                                                                    <div class="slds-form-element slds-is-editing">
+                                                                                        <div class="slds-form-element__control">
+                                                                                            <lightning:inputField fieldName="Recommendation__c" required="true" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </aura:if>
+                                                                            
+                                                                        </div>
+                                                                   
+                                                                         <div class="slds-grid slds-gutters">
+                                                                             <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                    <lightning:inputField aura:id="TrafficDateId" fieldName="Traffic_Fine_Date__c" required="true"  />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                           <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                    <lightning:inputField fieldName="Traffic_Fine_Receipt_Number__c" required="true" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        </div>
+                                                                         <div class="slds-grid slds-gutters">
+                                                                               <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                    <lightning:inputField aura:id="TrafficFineTotalId" fieldName="Traffic_Fine_Total_Amount__c"  required="true" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                           <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                    <lightning:inputField aura:id="TyreFineId" fieldName="Tyre_Fine_Amount__c"  required="true" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        </div>
+                                                                         
+                                                                    </aura:if>
+                                                                    
+                                                                   
+                                                                      <!-- end if businees type is traffic -->
+                                                                    
+                                                                </aura:if>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:set>
+                        </aura:if>
+                        
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control slds-align_absolute-center">
+                                        <lightning:button class="slds-m-top_small btbupdate" variant="brand" type="Cancel" name="Cancel" label="Cancel" onclick="{!c.cancelPage}"/>
+                                        
+                                        <lightning:button class="slds-m-top_small btbupdate" variant="brand" type="submit" name="Create Case" label="Create Case"/>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning:recordEditForm>
+</aura:component>

@@ -1,0 +1,45 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="isETSTHomePage" type="boolean" default="false"/>
+    <aura:attribute name="userId" type="String"/>
+    <aura:attribute name="profileUrl" type="String"/>
+    <div class="menudiv">
+        <div class="menudropdowndiv">
+            <button class="dropmenubtn"><img class="menuimg" src="{!$Resource.ETST_menu}" /></button>
+            <div class="dropdown-content">
+                <ul>
+                    <li><a href="/s/">Home</a></li>
+                    <li><a href="/s/etst-home-page">School Transport</a></li>
+                    <li><a href="/s/eti-homepage">Vehicle Inspection</a></li>
+                </ul>
+            </div>
+        </div>
+        <img class="companyimg" src="{!$Resource.ETLogo}" />
+        <div class="menudropdowndiv1">
+            <button class="dropmenubtn1"><img class="profileimg" src="{!$Resource.ETST_ProfileImage}" /></button>
+            <div class="dropdown-content1">
+                <ul>
+                    <li><a href="/s">Home</a></li>
+                    <li><a href="{!v.profileUrl}">My Profile</a></li>
+                    <li><a href="/s/school-transport-case-history">My Cases</a></li>
+                    <!--li><a href="#">My Settings</a></li>
+                    <li><a href="#">Messages</a></li>
+                    <li><a href="#">My Account</a></li>                
+                    <li><a href="#">Contact Support</a></li-->
+                    <li><a href="/servlet/networks/switch?startURL=%2Fsecur%2Flogout.jsp" >Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <c:ET_LanguageSelectionCmp/>
+    </div> 
+    <aura:if isTrue="{!v.isETSTHomePage}">
+    <div class="bgetimgdiv">
+        <div class="welcometext">welcome</div>
+        <div class="welcometextet">Emirates Transport</div>
+        <a id="ourservicelink" class="ourservicelink" href="#studenttabID" ><img class="downarrowimg" src="{!$Resource.downarrow}" /> Your Children</a>
+      
+    </div>
+    </aura:if>
+    <!--<img class="logo" src="{!$Resource.ETST_EngLogo}" />
+    <img class="logo" src="{!$Resource.ETST_arabicLogo}" />-->
+</aura:component>

@@ -1,0 +1,20 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:html tag="style">
+        .cuf-content {
+        display:none;
+        }
+        .slds-p-around--medium {
+        display:none;
+        }
+        .slds-modal__content{
+        display:none;
+        }
+        .slds-modal__footer{
+        display:none;
+        }
+        .slds-modal__close{
+        display:none;
+        }
+    </aura:html>
+</aura:component>

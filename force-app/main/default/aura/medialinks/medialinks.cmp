@@ -1,0 +1,14 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+   
+    <div class="centerClass">
+    <!--a href="https://oneet.force.com/customer/services/auth/sso/Facebook" class="mediabutton" onclick="">
+        <img class="" src="{!$Resource.ETmedia_facebook}" alt="facebook" />
+    </a>
+    <a href="https://oneet.force.com/customer/services/auth/sso/Google" class="mediabutton" onclick="">
+        <img class="" src="{!$Resource.ETmedia_google}" alt="google"/>
+    </a-->
+    <a href="https://oneet.force.com/customer/services/auth/sso/Apple" class="mediabutton" onclick="">
+        <img class="" src="{!$Resource.ETmedia_apple}" alt="apple"/>
+    </a>
+        </div>
+</aura:component>

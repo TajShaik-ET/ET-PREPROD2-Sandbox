@@ -1,0 +1,23 @@
+.slds-modal__container{
+    max-width: 96% !important;
+    width: 96% !important;
+    min-width: 96% !important;
+    margin: auto;
+}
+.textcenter{
+    display: flex;
+    gap: .25rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0rem 1rem;
+}
+.textcenter_footer{
+    display: flex;
+    gap: .25rem;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+.small_padding{
+    padding-right:10px!important;
+}

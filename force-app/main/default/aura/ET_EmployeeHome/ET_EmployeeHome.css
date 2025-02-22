@@ -1,0 +1,646 @@
+.THIS.ET_tasksection {
+    position: relative;
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    justify-content: flex-start;
+    /* background: #f9fafe;*/
+    min-height: 100vh;
+}
+.THIS.ET_tasksection .left_menu {
+    width: 150px;
+    display: inline-block;
+    position: fixed;
+    /* background: #f9fafe;*/
+    border-right: 1px solid #e4e5ea;
+    height: 100vh;
+    z-index: 10;
+}
+.THIS.ET_tasksection .right_Info_section {
+    display: inline-block;
+    width: calc(100% - 30px);
+    padding-left: 180px;
+}
+.THIS .slds-tabs_default__item.slds-is-active:after{
+    background: #eb4026;
+    /* color: #000!important; */
+}
+.THIS .slds-tabs_default__link, .THIS .slds-tabs--default__link{
+    color: #000!important;
+    font-weight: 600!important;
+}
+.THIS .slds-tabs_default__item:hover:after, .THIS .slds-tabs--default__item:hover:after{
+    background:#eb4026;
+    height:3px;
+}
+.THIS h3.topheading {
+    padding: 1rem 0;
+    font-size: 20px;
+    color: #000;
+}
+/*Home page css start*/
+.THIS .Home_main {
+    display: flex;
+    gap: 30px;
+    position: relative;
+    width: 100%;
+}
+.THIS .Home_main .Home_left {
+    display: inline-block;
+    width: 70%;
+}
+.THIS .Home_main .leaves_section{
+    display: block;
+    width: 100%;
+}
+.THIS .Home_main .Home_right {
+    display: inline-block;
+    width: 30%;
+}
+.THIS .box_div {
+    box-shadow: 0px 3px 12px rgb(56 59 68 / 2%);
+    border-radius: 5px;
+    background: #fff;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.THIS .sub_heading {
+    letter-spacing: 0px;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+.THIS .sub_heading img {
+    margin-right: 0.5rem;
+    display: inline-block;
+}
+.THIS ul.notification_info {
+    padding-left: 1.25rem;
+    list-style: none;
+}
+.THIS ul.notification_info li {
+    padding: 0.5rem;
+    color: #000;
+    font-size: 12px;
+    padding-right:3rem;
+    position: relative;
+}
+.THIS ul.notification_info li:before {
+    content: "\2022";
+    color: #eb4026;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -2em;
+    position: absolute;
+}
+.THIS ul.notification_info li p.notice_info {
+    font-weight: 600;
+}
+.THIS ul.notification_info li span.notice_time {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: #949494;
+    font-size: 10px;
+}
+.THIS a.viewall_btn {
+    color: #eb4026;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: right;
+    display: block;
+}
+.THIS ul.company_info li {
+    padding: 0.5rem 0;
+    display: flex;
+    width: 100%;
+    color: #000;
+    gap: 1rem;
+}
+.THIS ul.company_info li .left_img_new {
+    width: 30%;
+    display: inline-block;
+}
+.THIS ul.company_info li div.right_comp_info {
+    width: 70%;
+    display: inline-block;
+    font-size: 12px;
+}
+.THIS ul.company_info li div.right_comp_info p{
+    font-weight: 600;
+}
+.THIS ul.company_info li div.right_comp_info span {
+    color: #949494;
+    font-size: 10px;
+}
+.THIS a.viewprofilebtn {
+    background: transparent;
+    color: #eb4026;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #eb4026;
+    box-shadow: none;
+    width: 80%;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px 5px;
+    text-decoration: none;
+    position: absolute;
+    left: 10%;
+    bottom: 2rem;
+}
+.THIS .profile_imgdiv .username{
+    font-size: 16px;
+    padding: 1rem 0;
+    display: block;
+    color: #000000;
+    font-weight: bold;
+}
+.THIS .profile_info {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+}
+.THIS .profile_left {
+    position: relative;
+    display: flex;
+    gap: 30px;
+    width: 70%;
+    box-shadow: 0 3px 12px rgb(56 59 68 / 2%);
+    border-radius: 5px;
+    background: #fff;
+    margin-bottom: 1rem;
+}
+.THIS .profile_imgdiv {
+    width: 30%;
+    display: inline-block;
+    height: 100%;
+    background: #E9E9E9;
+    text-align: center;
+    position: relative;
+    padding: 1.5rem 1rem;
+    float: left;
+    overflow: hidden;
+}
+.THIS .profile_details_div{
+    width: 70%;
+    display: inline-block;
+    padding: 1.5rem;
+}
+.THIS .profile_right{
+    width: 30%;
+    display: inline-block;
+}
+.THIS .profile_right div {
+    box-shadow: 0 3px 12px rgb(56 59 68 / 2%);
+    border-radius: 5px;
+    background: #fff;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+.THIS .profile_right div {
+    font-size: 16px;
+    color: #000;
+    line-height: 28px;
+    display: flex;
+}
+.THIS .profile_right div span {
+    color: #C0C0C0;
+    font-size: 28px;
+    padding-right: 1rem;
+    line-height: 28px;
+    font-weight: 600;
+}
+.THIS .profile_right div span:last-child {
+    color: #000;
+    font-size: 14px;
+    line-height: 28px;
+    font-weight: 700;
+}
+.THIS .prfile_innerdiv {
+    display: block;
+    width: 100%;
+}
+.THIS .profile_text {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    padding: 0.5rem 0;
+}
+.THIS .profile_text .pro_value {
+    color: #000000;
+    font-weight: 700;
+    width: 50%;
+    text-align: right;
+    display: inline-block;
+}
+.THIS .profile_text .pro_label {
+    color: #707070;
+    font-weight: 600;
+    width: 50%;
+    text-align: left;
+    display: inline-block;
+}
+.THIS .profile_imgdiv img {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    border: 2px solid #eb4026;
+    object-fit: cover;
+    box-shadow: 0 3px 12px rgb(56 59 68 / 90%);
+}
+.THIS .box_div table{
+    font-size: 12px;
+}
+.THIS .box_div table tr th, .THIS .box_div table tr td  {
+    border-bottom: 1px solid rgb(56 59 68 / 2%)!important;
+    color:#000!important;
+    padding:0.25rem 0.5rem;
+}
+.THIS .box_div table tr th{
+    font-weight:800!important;
+}
+.THIS .btn_red {    
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #EB4026;
+    margin-bottom: 1rem;
+    box-shadow: none;
+    background: transparent linear-gradient(0deg, #EB4026 0%, #F75064 100%) 0% 0% no-repeat padding-box;
+}
+.THIS .btn_white {
+    background: #fff;
+    color: #EB4026;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #EB4026;
+    margin-bottom: 1rem;
+    box-shadow: none;
+}
+.THIS .uploadbtn{
+    background: transparent;
+    color: #eb4026;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #eb4026;
+    box-shadow: none;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px 5px;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    min-width:100px;
+}
+.THIS .uploadbtn_disable{
+    background: transparent;
+    color: #C0C0C0;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #C0C0C0;
+    box-shadow: none;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px 5px;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    min-width:100px;
+    cursor: no-drop;
+}
+.THIS .payment_div {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+.THIS .payment_div div.payment_inner {
+    display: inline-block;
+    width: 25%;
+    text-align: left;
+}
+.THIS .payment_div div.payment_inner label {
+    font-size: 12px;
+    color: #707070;
+    display: block;
+}
+.THIS .payment_div div.payment_inner div {
+    font-size: 20px;
+    color: #000;
+    font-weight: 600;
+    display: block;
+}
+/*Home page css end*/
+/*Leaves page css start*/
+.THIS .leaves_filter_main {
+    display: block;
+    width: 100%;
+    position: absolute;
+}
+.THIS .leaves_filter_main .btn_search {
+    width: 100%;
+    display: block;
+    text-align: right;
+}
+.THIS .leaves_filter_main .btn_search{
+    text-align: right;
+}
+.THIS .btn_search label.slds-form-element__label.slds-no-flex {
+    display: none;
+}
+.THIS .leaves_filter_main .btn_search input , .THIS .leaves_filter_main .btn_search select{
+    border: 1px solid rgb(56 59 68 / 10%);
+    border-radius: 5px;
+    box-shadow: none;
+    max-width: 150px;
+    min-height: 32px;
+    margin-left: 5px;
+    outline: none;
+}
+.THIS .leaves_filter_main .btn_search select{
+    max-width: 120px;
+}
+.THIS .leaves_filter_main .search_div {
+    position: relative;
+    display: inline-block;
+}
+.THIS .leaves_filter_main img.search_icon {
+    position: absolute;
+    top: 35%;
+    right: 3%;
+}
+.THIS .leaves_top_status {
+    display: flex;
+    position: relative;
+    width: 100%;
+    gap: 10px;    
+    margin: 1rem 0 2rem;
+}
+.THIS .leaves_top_status .leaves_status {
+    box-shadow: 0 3px 12px rgb(56 59 68 / 2%);
+    border-radius: 5px;
+    background: #fff;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    width: 20%;
+    display: flex;
+}
+.THIS .leaves_top_status .leaves_status span {
+    color: #C0C0C0;
+    font-size: 28px;
+    padding-right: 1rem;
+    line-height: 28px;
+    font-weight: 600;
+}
+.THIS .leaves_top_status .leaves_status span:last-child {
+    color: #000;
+    font-size: 14px;
+    line-height: 28px;
+    font-weight: 700;
+}
+/*Leaves page css end*/
+/*Salary page css start*/
+.THIS .btn_top_div {
+    position: absolute;
+    right: 1rem;
+    z-index: 10;
+}
+.THIS .salary_inner {
+    position: relative;
+    display: flex;
+    width: 100%;
+    gap: 0px;
+    padding: 1rem;
+}
+.THIS .salary_inner .salary_left {
+    display: inline-block;
+    width: 15%;
+    border-bottom: 1px solid #ddd;    
+    padding-bottom: 15px;
+}
+.THIS .salary_inner .salary_left img{
+    width:90%;
+}
+.THIS .salary_inner .salary_right {
+    display: inline-block;
+    width: 85%;
+    border-bottom: 1px solid #ddd;
+    padding-left: 30px;
+    padding-bottom: 15px;
+}
+.THIS .salary_inner .salary_right .monthly{
+    letter-spacing: 0px;
+    color: #000000;
+    font-size: 20px;
+    font-weight: 700;
+}
+.THIS .salary_inner .salary_right .yearly {
+    color: #707070;
+    font-size: 14px;
+}
+.THIS .salary_status_info_div {
+    display: flex;
+    position: relative;
+    gap: 30px;
+    margin: 2rem 0;
+}
+.THIS .salary_status_info {
+    position: relative;
+    display: inline-block;
+    min-width: 150px;
+    border-left: 2px solid #C0C0C0;
+    padding-left: 1rem;
+}
+.THIS .blue_border{
+    border-left: 2px solid #26AAEB;
+}
+.THIS .red_border{
+    border-left: 2px solid #FA7E6B;
+}
+.THIS .salary_status_info label {
+    letter-spacing: 0px;
+    color: #707070;
+    font-size: 14px;
+    display: block;
+}
+.THIS .salary_status_info label:last-child {
+    letter-spacing: 0px;
+    color: #000;
+    font-size: 18px;
+    font-weight:700;
+}
+.THIS .earnings_details {
+    padding: 1rem;
+    position: relative;
+    display: block;
+    clear: both;
+}
+.THIS .earnings_details .earnings_details_inner {
+    display: flex;
+    gap: 30px;
+    position: relative;
+    width:50%
+}
+.THIS .earnings_details .earnings_details_inner span {
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+    width: 50%;
+    padding-bottom: 1rem;
+}
+.THIS .earnings_details .earnings_details_inner span:last-child {
+    width: 25%;
+    text-align:right;
+}
+
+.THIS .earnings_details .earnings_details_inner span.earnings_monthly {
+    font-weight: 700;
+    font-size: 18px!important;
+}
+.THIS .earnings_details hr {
+    margin: 1rem 0;
+    width: 40.5%;
+    background: #ddd;
+}
+/*Salary page css end*/
+/*support page css start*/
+
+.THIS .support_filter_main {
+    display: flex;
+    width: 100%;
+}
+.THIS .support_filter_main .btn_search , .THIS .support_filter_main .btn_innerfilter{
+    width: 50%;
+    display: inline-block;
+}
+.THIS .support_filter_main .btn_search{
+    text-align: right;
+}
+.THIS .btn_search label.slds-form-element__label.slds-no-flex {
+    display: none;
+}
+.THIS .support_filter_main .btn_search input , .THIS .support_filter_main .btn_search select{
+    border: 1px solid rgb(56 59 68 / 10%);
+    border-radius: 5px;
+    box-shadow: none;
+    max-width: 150px;
+    min-height: 32px;
+    margin-left: 5px;
+    outline: none;
+}
+.THIS .support_filter_main .btn_search select{
+    max-width: 120px;
+}
+.THIS .support_filter_main .search_div {
+    position: relative;
+    display: inline-block;
+}
+.THIS .support_filter_main img.search_icon {
+    position: absolute;
+    top: 35%;
+    right: 3%;
+}
+/*support page css end*/
+
+
+@media only screen and (max-width:991px){
+    .THIS .Home_main, .THIS .profile_info{
+        display: block;
+    }
+    .THIS .Home_main .Home_left, .THIS .Home_main .Home_right {
+        display: inline-block;
+        width: 100%;
+    }
+    .THIS .profile_left {
+        width: 100%;
+    }
+    .THIS .profile_right {
+        width: 100%;
+        display: flex;
+        gap: 20px;
+    }
+    .THIS .profile_right div {
+        width: 33.33%;
+    }
+    .THIS a.viewprofilebtn {
+        padding: 5px 15px;
+        position: relative;
+        left: 0%;
+        bottom: 0rem;
+    }
+    .THIS .left_img_new img {
+        object-fit: cover;
+        width: 100%;
+        object-position: center;
+    }
+    .THIS ul.company_info li .left_img_new {
+        width: 20%;
+    }
+    .THIS ul.company_info li div.right_comp_info {
+        width: 80%;
+    }
+}
+@media only screen and (max-width:767px){
+    .THIS.ET_tasksection .left_menu {
+        width: 45px;
+        background: #fff;
+    }
+    .THIS .menu_div ul li a, .THIS a.logoutbtn {
+        font-size: 0px;
+    }
+    .THIS a.logoutbtn img {
+        margin-right: 0rem;
+    }
+    .THIS.ET_tasksection {
+        display: block;
+    }
+    .THIS.ET_tasksection .right_Info_section {
+        display: inline-block;
+        width: calc(100% - 15px);
+        padding-left: 60px;
+    }
+    .THIS .menu_div .menulogo {
+        position: fixed;
+        top: 5px;
+        width: 110px;
+        left: -70px;
+        margin: 0;
+    }
+    .THIS .menu_div ul {
+        margin: 4rem 0 0;
+    }
+}
+@media only screen and (max-width:480px){
+    .THIS .profile_left {
+        display: block;
+    }
+    .THIS .profile_imgdiv {
+        width: 100%;
+    }
+    .THIS .profile_details_div {
+        width: 100%;
+        padding: 1rem;
+    }
+    .THIS .profile_text {
+        display: block;
+    }
+    .THIS .profile_text .pro_label {
+        width: 100%;
+    }
+    .THIS .profile_text .pro_value {
+        width: 100%;
+        text-align: left;
+    }
+    .THIS .profile_right {
+        display: block;
+    }
+    .THIS .profile_right div {
+        width: 100%;
+    }
+    .THIS .menu_div ul {
+        margin: 3rem 0 0;
+    }
+}

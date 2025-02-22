@@ -1,0 +1,16 @@
+<aura:component
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+    access="global">
+    <aura:attribute name="showIFrame" type="Boolean" default="false"/>
+    <aura:attribute name="recordDetailId" type="String" />
+    <aura:attribute name="recordTypeName" type="String" />
+    <aura:handler event="c:MyBusinessDetailPageEvent" action="{!c.handleRecordDetailApplicationEvent}" />
+
+    <aura:if isTrue="{!v.showIFrame}">
+        
+        <!--<iframe src="{! 'https://business-oneet.cs126.force.com/Business/s/'+v.recordTypeName + v.recordDetailId }"
+            width="100%" height="1400px" />-->
+        <iframe class="iframeDiv" src="{!$Label.c.Business_Community_URL+v.recordTypeName + v.recordDetailId }"
+            width="100%" height="1400px" />
+    </aura:if>
+</aura:component>

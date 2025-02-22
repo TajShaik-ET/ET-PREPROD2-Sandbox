@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT">
+    <aura:attribute name="alterRatesObj" type="Object" />
+    <aura:attribute name="isAlterRateChanged" type="Boolean" />
+</aura:event>

@@ -1,0 +1,408 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_B2B_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="emirate" type="String" />
+    <aura:attribute name="VehicleList" type="List" />
+    <aura:attribute name="VehicleColumns" type="List"/>
+    <aura:attribute name="tablelist" type="List"/>
+    <aura:attribute name="testObj1" type="String"/>
+    <aura:attribute name="vehicleWrapper" type="Object"/>
+    <aura:attribute name="selectedRowsList" type="List" />
+    <aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <aura:attribute name="reSchduleBooking" type="boolean" default="false"/>
+    <aura:attribute name="retestBooking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/>
+    <aura:attribute name="bookings" type="ETI_Booking__c" default="[{'sObjectType':'ETI_Booking__c','Name':''}]"/>
+    <aura:attribute name="customerVehicleList" type="ET_Customer_Vehicle__c" default="[{'sObjectType':'ET_Customer_Vehicle__c','Name':''}]"/>
+    <aura:attribute name="bookingWrp" type="Object[]" />
+    <aura:attribute name="isOpenRequestForService" type="boolean" default="false"/> 
+    <aura:attribute name="lstViewChk" type="boolean" default="true"/>
+    <aura:attribute name="gridviewChk" type="boolean" default="false"/>
+    <aura:attribute name="isSelectAll" type="boolean" default="false"/>
+    <aura:attribute name="isSpea" type="boolean" default="false"/>
+	<aura:attribute name="showDetails" type="boolean" default="true" />
+    <aura:attribute name="showSearch" type="boolean" default="false" />
+    <aura:attribute name="searchKeyword" type="String" />
+    <aura:attribute name="selectedVehicleId" type="String" />
+    <aura:attribute name="myCartVehicleWrapper" type="Object"/>
+    <aura:attribute name="isShowBookingHistory" type="boolean" default="false" />
+    <aura:attribute name="isShowAlert" type="boolean" default="false" />
+    <aura:handler event="c:ETI_B2B_ShowDetails" action="{!c.showDetailsEvent}"/>
+
+    <!--Pagination-->
+    <aura:attribute name="allVehicleData" type="Object"/>
+    <aura:attribute name="allVehicleDataWithSearch" type="Object"/>
+    <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="totalPages" type="Integer" default="0"/>
+    <aura:attribute name="pageList" type="List"/>
+    <aura:attribute name="totalRecords" type="integer" default="0"/>
+    <aura:attribute name="recordStart" type="integer" default="0"/>
+    <aura:attribute name="recordEnd" type="integer" default="0"/>
+	<aura:attribute name="cartCount" type="integer" default="0"/>
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:registerEvent name="DataEvent" type="c:ETI_DataEvent"/>
+    <aura:handler name="init" value="{!this}" action="{!c.getVehicleDetails}"/>
+    <aura:attribute name="issearching"    type="Boolean" default="false"/>
+    <aura:if isTrue="{!v.IsSpinner}">
+        <div class="slds-spinner_container">
+            <lightning:spinner variant="brand" size="large" />
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showDetails}">
+        <aura:if isTrue="{!v.showSearch}">
+            <div class="cart_icon" > 
+                <aura:if isTrue="{!v.cartCount!=0}">
+                	<span>{!v.cartCount}</span>     
+                </aura:if>
+                <c:ETI_B2B_MyCart emirate="{!v.emirate}" cartCount="{!v.cartCount}" showDetails="{!v.showDetails}" vehicleWrapper="{!v.vehicleWrapper}" myCartVehicleWrapper="{!v.myCartVehicleWrapper}" booking="{!v.booking}" isOpenRequestForService="{!v.isOpenRequestForService}"/>
+  			</div>
+            <div class="slds-float_right">
+                <span onkeyup="{!c.searchKeyUp}" >
+                    <lightning:layoutItem size="12" class="searchBox">
+                        <lightning:input aura:id="searchField"
+                                         label="{!v.Search}" 
+                                         name="{!v.Search}"
+                                         value="{!v.searchKeyword}" variant="label-inline"/>
+                    </lightning:layoutItem>
+                </span>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!or(not(empty(v.vehicleWrapper)),v.showSearch)}"> 
+            <div class="listviewvehichel">
+                <article class="slds-card custometable">  
+                    <table class="slds-table slds-max-medium-table stacked-horizontal" id="tableId">
+                        <aura:iteration items="{!v.vehicleWrapper}" var="veh" indexVar="index">
+                            <aura:if isTrue="{!veh.activePageRowIndex==1}">
+                                <thead>
+                                    <tr>
+                                        <th scope="col paddingfirst" class="smallWidth">
+                                            <lightning:input type="checkbox" title="{!v.Select_Current_Page_Vehicles}" onchange="{!c.selectAll}" aura:id="selectallcheckbox" value="{!veh.isSelectAll}" checked="{!veh.isSelectAll}" variant="brand" class="selectAllCheckBox"/>    
+                                        </th>
+                                        <th scope="col paddingfirst"><span class="slds-truncate">{!v.Vehicle_Number}</span></th>
+                                        <th scope="col" class="MediumWidth"><span class="slds-truncate">{!v.Plate_No}</span></th>
+                                        <th scope="col"><span class="slds-truncate">{!v.Plate_Source}</span></th>
+                                        <th scope="col"><span class="slds-truncate">{!v.Plate_Type}</span></th>
+                                        <th scope="col"><span class="slds-truncate">{!v.Plate_Color}</span></th>
+                                        <th scope="col" class="largeWidth"><span class="slds-truncate">{!v.Chassis_No}/{!v.Model}</span></th>
+                                        <th scope="col"><span class="slds-truncate">{!v.Type}</span></th>  
+                                        <th scope="col"><span class="slds-truncate">{!v.Reg_Expiry_Date}</span></th>  
+                                        <!--<th scope="col"><span class="slds-truncate">Payment Status</span></th>  
+                                        <th scope="col"><span class="slds-truncate">Test Result Status</span></th>  -->
+                                        <th scope="col"><span class="slds-truncate">{!v.Booking_History}</span></th>  
+                                        <th scope="col"><span class="slds-truncate">{!v.Action}</span></th>
+                                    </tr>
+                                </thead>
+                            </aura:if>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        {!veh.rowIndex}
+                                    </td>
+                                    <td class="paddingfirst">
+                                        <label class="checkboxcontainer">
+                                        </label><a href="{!'/Business/s/b2bvehicle-pageinspection?showH=true&amp;recordId='+veh.customerVehicle.Id+'&amp;isSpea='+v.isSpea+'&amp;lang='+v.clLang}" >{!veh.customerVehicle.Name} </a>
+                                    </td> 
+                                    <td>{!veh.customerVehicle.Plate_No__c}</td>
+                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Plate_Source_AR__c==undefined,veh.customerVehicle.Plate_Source_AR__c==null),v.clLang!='ar')}">
+                                        <td>{!veh.customerVehicle.Plate_Source__c}</td>
+                                        <aura:set attribute="else">
+                                            <td>{!veh.customerVehicle.Plate_Source_AR__c}</td>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Plate_Type_AR__c==undefined,veh.customerVehicle.Plate_Type_AR__c==null),v.clLang!='ar')}">
+										<td>{!veh.customerVehicle.Plate_Type__c}</td>
+                                        <aura:set attribute="else">
+                                             <td>{!veh.customerVehicle.Plate_Type_AR__c}</td>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Plate_Color_AR__c==undefined,veh.customerVehicle.Plate_Color_AR__c==null),v.clLang!='ar')}">
+                                        <td>{!veh.customerVehicle.Plate_Color__c}</td>
+                                        <aura:set attribute="else">
+                                            <td>{!veh.customerVehicle.Plate_Color_AR__c}</td>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!veh.customerVehicle.Registration_Type__c != 'Registered'}">
+                                        <td>{!veh.customerVehicle.Chassis_No__c}</td>
+                                        <aura:set attribute="else">
+                                            <aura:if isTrue="{!or(or(veh.customerVehicle.Vehicle_Model_AR__c==undefined,veh.customerVehicle.Vehicle_Model_AR__c==null),v.clLang!='ar')}">
+                                                <td>{!veh.customerVehicle.Vehicle_Model__c}</td>
+                                                <aura:set attribute="else">
+                                                    <td>{!veh.customerVehicle.Vehicle_Model_AR__c}</td>
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Registration_Type_AR__c==undefined,veh.customerVehicle.Registration_Type_AR__c==null),v.clLang!='ar')}">
+                                        <td>{!veh.customerVehicle.Registration_Type__c}</td>
+                                        <aura:set attribute="else">
+                                            <td>{!veh.customerVehicle.Registration_Type_AR__c}</td>
+                                        </aura:set>
+                                    </aura:if>
+                                    <td><ui:outputDate value="{!veh.customerVehicle.Registration_Expiry_Date__c}" format="DD-MM-YYYY" /></td>
+                                    <!--<td>{!veh.paymentStatus}</td>
+                                    <td>{!veh.testResultStatus}</td>-->
+                                    <td>
+                                        <aura:if isTrue="{!not(empty(veh.customerVehicle.Bookings__r))}">
+                                            <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.showBookingHistory}">
+                                                <img class="slds-button slds-align_absolute-center" alt="{!v.Booking_History}" title="{!v.Booking_History}" src="{!$Resource.ETI_BookingHistory}" />
+                                            </span>
+                                        </aura:if>
+                                    </td>
+                                    <td> 
+                                        <!--<aura:if isTrue="{!!veh.isChecked}">
+                                            <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.addtoCart}">
+                                                <img class="" alt="{!v.Add_to_Cart}" title="{!v.Add_to_Cart}" src="{!$Resource.ETI_Cart}" />
+                                            </span>
+                                        </aura:if>
+                                        <aura:if isTrue="{!veh.isChecked}">
+                                            <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.addtoCart}">
+                                                <img class="" alt="{!v.Add_to_Cart}" title="{!v.Add_to_Cart}" src="{!$Resource.ETI_ActiveCart}" />
+                                            </span>
+                                        </aura:if>-->
+                                        
+                                        <aura:if isTrue ="{!v.emirate != 'Sharjah'}">
+                                            <aura:if isTrue="{!!veh.isChecked}">
+                                                <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.addtoCart}">
+                                                    <img class="" alt="{!v.Add_to_Cart}" title="{!v.Add_to_Cart}" src="{!$Resource.ETI_Cart}" />
+                                                </span>
+                                            </aura:if>
+                                            <aura:if isTrue="{!veh.isChecked}">
+                                                <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.addtoCart}">
+                                                    <img class="" alt="{!v.Add_to_Cart}" title="{!v.Add_to_Cart}" src="{!$Resource.ETI_ActiveCart}" />
+                                                </span>
+                                            </aura:if>
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue ="{!v.emirate == 'Sharjah'}">
+                                            <aura:if isTrue="{!!veh.isChecked}">
+                                                <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.addtoCart}">
+                                                    <img class="" alt="{!v.Add_to_Cart}" title="{!v.Add_to_Cart}" src="{!$Resource.ETI_Cart_spea}" />
+                                                </span>
+                                            </aura:if>
+                                            <aura:if isTrue="{!veh.isChecked}">
+                                                <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.addtoCart}">
+                                                    <img class="" alt="{!v.Add_to_Cart}" title="{!v.Add_to_Cart}" src="{!$Resource.ETI_SPEA_ActiveCart}" />
+                                                </span>
+                                            </aura:if>
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!veh.isReTest}">
+                                            <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.dueforRetest}">
+                                                <img class="slds-button" alt="{!v.Due_for_Retest}" title="{!v.Due_for_Retest}" src="{!$Resource.ETI_DueForRetest}" />
+                                            </span>
+                                        </aura:if>
+                                        <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.deleteSelectedVehicle}">
+                                            <img class="slds-button" alt="{!v.Delete}" title="{!v.Delete}" src="{!$Resource.ETI_Delete}" />
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </aura:iteration>
+                    </table>
+                    <aura:if isTrue="{!empty(v.vehicleWrapper)}"> 
+                        <br></br>
+                        <div class="slds-notify slds-notify_alert slds-theme_error slds-float_none" role="alert" >
+                            <h2 style="text-align:right">{!v.No_Records_to_Display_with_Search}</h2>
+                        </div>
+                        <br></br><br></br>
+                    </aura:if>
+                    <!-- Pagination Start Here -->
+                    <aura:if isTrue="{!v.totalPages>1}">
+                        <div class="pagination">
+                            <div class="slds-clearfix">
+                                <div class="slds-page-header" role="banner">
+                                    <div class="slds-float_right">            
+                                        <lightning:button label="{!v.First}" iconName="utility:left" iconPosition="left"
+                                                          onclick="{!c.onFirst}" disabled="{! v.currentPageNumber == 1}"/>
+                                        <lightning:button iconName="utility:chevronleft" iconPosition="left"
+                                                          onclick="{!c.onPrev}" disabled="{! v.currentPageNumber == 1}"/>
+                                        <span class="slds-p-horizontal_x-small">
+                                            <a onclick="{!c.processMe}" name="1" 
+                                               class="{! (v.currentPageNumber == 1) ? 'selected' : ''}">1</a>
+                                        </span>
+                                        <aura:if isTrue="{!and(v.totalPages>5,v.pageList[0]!=2)}">
+                                            <span class="slds-p-horizontal_xxx-small">
+                                                <a>...</a>
+                                            </span>
+                                        </aura:if>
+                                        <aura:iteration items="{!v.pageList}" var="item">
+                                            <span class="slds-p-horizontal_x-small">
+                                                <a onclick="{!c.processMe}" name="{!item}"
+                                                   class="{! (v.currentPageNumber == item) ? 'selected' : ''}">{!item}</a>
+                                            </span>
+                                        </aura:iteration>
+                                        <aura:if isTrue="{!and(v.totalPages>5,v.totalPages-1!=v.pageList[4])}">
+                                            <span class="slds-p-horizontal_xxx-small">
+                                                <a>...</a>
+                                            </span>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.totalPages!=1}">
+                                            <span class="slds-p-horizontal_x-small">
+                                                <a onclick="{!c.processMe}" name="{!v.totalPages}"
+                                                   class="{! (v.currentPageNumber == v.totalPages) ? 'selected' : ''}">{!v.totalPages}</a>
+                                            </span>
+                                        </aura:if>
+                                        <lightning:button iconName="utility:chevronright" iconPosition="right" 
+                                                          disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onNext}"/>
+                                        <lightning:button label="{!v.Last}" iconName="utility:right" iconPosition="right" 
+                                                          disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onLast}"/>
+                                    </div>
+                                    <aura:if isTrue="{!v.v.clLang=='en'}">
+                                        <p class="slds-page-header__title" style="color:#23527c;">{!v.recordStart}-{!v.recordEnd} {!v.of} {!v.totalRecords} | {!v.Page} {!v.currentPageNumber} {!v.of} {!v.totalPages}</p>
+                                        <aura:set attribute="else">
+                                            <p class="slds-page-header__title" style="color:#23527c;">{!v.recordStart}-{!v.recordEnd} &nbsp; {!v.of} &nbsp; {!v.totalRecords} | {!v.Page} {!v.currentPageNumber} &nbsp; {!v.of} &nbsp; {!v.totalPages} </p>
+                                        </aura:set>
+                                    </aura:if>    
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+                    <!-- Pagination End Here -->    
+                </article>
+            </div>
+            <aura:set attribute="else">
+                <br></br> <br></br>
+                <div style="{!'position: relative;text-align: center; height: 95vh; background:' + v.backgroundColor + ' no-repeat;background-position: center;background-size: cover;'}">
+                    <div class="nochilddiv animated pulse infinite"> {!v.Add_your_Vehicles_Message} </div>
+                </div>
+                <br></br> <br></br>
+            </aura:set>
+        </aura:if>
+        <aura:if isTrue="{!v.isShowBookingHistory}">
+            <!--###### MODAL BOX Start######--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header modalHeader">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.Booking_History}</h2>
+                    </header>
+                    <!--###### MODAL BOX BODY  Start######-->
+                    <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                        <div class="listviewvehichel bookingHistPopup">
+                            <article class="slds-card custometable">  
+                                <table class="slds-table slds-max-medium-table stacked-horizontal" id="tableId">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col paddingfirst"><span class="slds-truncate">{!v.Booking_Id}</span></th>
+                                            <th scope="col"><span class="slds-truncate">{!v.Service_Type}</span></th>
+                                            <th scope="col"><span class="slds-truncate">{!v.Service_Name}</span></th>
+                                            <th scope="col"><span class="slds-truncate">{!v.Booking_Status}</span></th>  
+                                            <th scope="col"><span class="slds-truncate">{!v.Booking_Date}</span></th>
+                                            <th scope="col"><span class="slds-truncate">{!v.Test_Result}</span></th> 
+                                            <th scope="col"><span class="slds-truncate">{!v.Payment_Status}</span></th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.bookings}" var="bkng" >
+                                            <tr>
+                                                <td>{!bkng.Name}</td>
+                                                <td>{!bkng.Service_Type__c}</td>
+                                                <td>{!bkng.Selected_Services__c}</td>
+                                                <td>{!bkng.Booking_Status__c}</td>
+                                                <td>{!bkng.Booking_Date__c}</td>
+                                                <td>{!bkng.Test_Result__c}</td>
+                                                <td>{!bkng.Service_Request__r.Payment_Status__c}</td>
+                                            </tr>
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </article>
+                        </div>
+                    </div>
+                    <!--###### MODAL BOX FOOTER  Start ######-->
+                    <footer class="slds-modal__footer modalFooter">
+                        <lightning:button variant="neutral" 
+                                          label="{!v.Cancel}"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }" class="btn_back cancel"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--###### MODAL BOX Part END Here ######-->
+        </aura:if>
+    </aura:if>
+    <aura:if isTrue="{!v.isShowAlert}">
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header modalHeader">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeAlertModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.Alert}</h2>
+                </header>
+                <!--###### MODAL BOX BODY  Start######-->
+                <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                    <div class="listviewvehichel bookingHistPopup">
+                        <article class="slds-card custometable"> 
+                            <div class="slds-notify" >
+                                <aura:if isTrue="{!not(empty(v.bookings))}"> 
+                                	<h2 style="color:red;font-weight: bold;">{!v.Pending_or_Inspection_Completed}</h2>
+                                	<aura:set attribute="else">
+                                        <h2 style="text-align: center;color:red;font-weight: bold;">{!v.Pending_or_Inspection_Completed1}</h2>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                            <br></br>
+                            <aura:if isTrue="{!not(empty(v.bookings))}"> 
+                                <table class="slds-table slds-max-medium-table stacked-horizontal" id="tableId">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col paddingfirst"><span class="slds-truncate">{!v.Booking_Id}</span></th>
+                                            <th scope="col"><span class="slds-truncate">{!v.Service_Type}</span></th>
+                                            <th scope="col"><span class="slds-truncate">{!v.Service_Name}</span></th>
+                                            <th scope="col"><span class="slds-truncate">{!v.Booking_Status}</span></th>  
+                                            <th scope="col"><span class="slds-truncate">{!v.Booking_Date}</span></th>
+                                            <th scope="col"><span class="slds-truncate">{!v.Test_Result}</span></th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.bookings}" var="bkng" >
+                                            <tr>
+                                                <td>{!bkng.Name}</td>
+                                                <td>{!bkng.Service_Type__c}</td>
+                                                <td>{!bkng.Selected_Services__c}</td>
+                                                <td>{!bkng.Booking_Status__c}</td>
+                                                <td>{!bkng.Booking_Date__c}</td>
+                                                <td>{!bkng.Test_Result__c}</td>
+                                            </tr>
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </aura:if>
+                        </article>
+                    </div>
+                </div>
+                <!--###### MODAL BOX FOOTER  Start ######-->
+                <footer class="slds-modal__footer modalFooter">
+                    <lightning:button variant="neutral" 
+                                      label="{!v.Cancel}"
+                                      title="{!v.Cancel}"
+                                      onclick="{! c.closeAlertModel }" class="btn_back cancel"/>
+                    <lightning:button variant="neutral" 
+                                      label="{!v.Add}"
+                                      title="{!v.Add}"
+                                      onclick="{! c.proceedAddtoCart }" class="btn_back cancel"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+    </aura:if>
+    <aura:if isTrue="{!v.reSchduleBooking}">
+        <c:ETI_B2B_RequestForService bookingWrp="{!v.bookingWrp}" isRetest="True" isReschedule="True" emirate="{!v.emirate}" isNavigateToHome="true"/>
+    </aura:if>
+    <aura:if isTrue="{!v.isOpenRequestForService}">
+        <c:ETI_B2B_RequestForService booking="{!v.booking}" tableDisplay="True" emirate="{!v.emirate}" isNavigateToHome="true"/>
+    </aura:if>
+</aura:component>

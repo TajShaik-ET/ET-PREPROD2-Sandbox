@@ -1,0 +1,28 @@
+.THIS .slds-modal__container.addVehiclePopup{
+    max-width: 48rem;
+} 
+.THIS .noteTxt{
+    margin: 0 0rem 1rem;
+    display: block;
+}
+
+.THIS .infoDetail{
+    width: 100%;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 600;
+}
+/*
+.THIS .bulkVehicleTable{
+    padding: 1rem 0;
+	border-collapse: collapse;
+}*/
+.THIS .bulkVehicleTable td{
+    border: 1px solid #ccc;
+    width: 50%;
+    padding: .4rem;
+    color: #000;
+}
+.THIS .bulkVehicleTable td:first-child{
+    background: #f1f1f1;
+}

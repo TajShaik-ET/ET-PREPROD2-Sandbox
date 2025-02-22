@@ -1,0 +1,554 @@
+/*@font-face {
+font-family: 'Cronos';
+src: url(/resource/ETI_Cronos); 
+}
+.THIS {
+font-family: 'Cronos';
+letter-spacing: .5px;
+}*/
+.THIS .slds-modal__close {
+    position: absolute;
+    right: 0rem;
+    top: 0rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: .875rem;
+    font-weight: 300;
+    border-radius: 100%;
+    z-index: 4;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+}
+.THIS .slds-modal__container {
+    width: 95%;
+}
+.THIS .slds-modal__close .slds-button_icon-inverse{
+    /*color:rgb(0, 193, 158);*/
+    width: 13px;
+    height: 13px;
+    color:#000;
+}
+.THIS .slds-grid label{
+    visibility: hidden;display:inline-block;
+}
+.THIS .slds-modal__header {
+    position: relative;
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    border-bottom: 2px solid #f2f2f2;
+    padding: 1rem;
+    text-align: center;
+    background-color: #fff;
+    font-size: 18px;
+}
+.THIS .slds-modal__footer {
+    border-top: 1px solid #f2f2f2;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    padding: .75rem 1rem;
+    background-color: #ffffff;
+    text-align: right;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+.THIS .btnsave{
+    font-size: 14px;
+    margin-top: 3px;
+    border: 1px solid #337ab7;
+    background: #337ab7;
+    color: #fff;
+}
+.THIS .btnsave:hover{
+    background-color: #286090;
+    border-color: #204d74;
+}
+.THIS .btncancel{
+    font-size: 14px;
+    margin-top: 3px;
+    background: #fff;
+    border: 1px solid #204d74;
+    color: #286090;
+}
+.THIS .btnService{
+    font-size: 14px;
+    margin-top: 3px;
+    border: 1px solid #337ab7;
+    background: #337ab7;
+    color: #fff;
+    max-width: 50%;
+    max-height: 43px;
+}
+.THIS .toppadding{
+    padding-top: 10px;
+    width: 50%;    
+    font-weight: 700
+}
+.THIS .speaFile .slds-file-selector__dropzone .slds-file-selector__button:after {
+    content: 'Upload File' !important;
+    font-size: .8125rem;
+    color: rgba(27, 82, 151, 1.0);
+}
+/*.THIS.tableviewvehichel {
+margin-top: 10px;#00c19e;
+}*/
+.THIS .custometable{
+    border-radius: 0px;
+}
+/*.THIS .custometable table thead th {
+border-bottom: 1px solid #ccc;
+font-size: 13px;
+color:#fff;
+text-transform: uppercase;
+padding: 1rem .5rem;
+background: #117dca;
+}
+.THIS .custometable table tbody {
+border-bottom: 1px solid #ccc;
+font-size: 13px;
+padding: 1rem .5rem;
+}*/
+.THIS .locatioblink{
+    background: transparent;
+    height: 38px;
+    border-radius: 0;
+    width: 30px;
+    border: none;
+    box-shadow: none;
+    cursor: default;
+    margin-left: 5px;
+}
+.THIS .locatioblink .slds-icon-text-default {
+    fill: #337ab7;
+}
+.THIS .locatioblink use{
+    fill: #337ab7;
+}
+.THIS .locatioblink1{
+    right: 10px;
+    background: transparent;
+    top: 12px;
+    height: 38px;
+    border-radius: 0;
+    width: 30px;
+    border: none;
+    box-shadow: none;
+    cursor: default;
+    position: absolute;
+}
+.THIS .locatioblink1.externalLocationIcn{
+    top: 25px;
+}
+.THIS .slds-gutters.singleSearch .locatioblink1{
+    top: 5px;
+}
+.THIS .locatioblink1.locationext{
+    top: 36px !important;
+}
+.THIS .locatioblink1 .slds-icon-text-default {
+    /* fill: rgb(0, 193, 158); */
+    fill: #337ab7;
+}
+.THIS .locatioblink1 .slds-icon {
+    width: 1.4rem;
+}
+.THIS .slds-dropdown{
+    min-height:40px;
+    max-height:200px;
+    overflow:auto;
+}
+.THIS .slds-dropdown .slds-listbox{
+    width:100%;
+}
+.THIS .slds-spinner_container  {
+    background-color: rgba(0, 0, 0, 0.10);
+    margin-top: 200px;
+    margin-bottom: 200px; 
+}
+.THIS .slds-grid label {
+    display: none;
+}
+.THIS .tableviewvehichel{
+    width: 100%;
+    position: relative;
+    display: block;
+    border: 1px solid #ddd;
+    height:auto;
+}
+.THIS .tableviewvehichel table {
+    width: 100%;
+}
+.THIS .tableviewvehichel table tr th {
+    text-align: left;
+    padding: 10px;
+    font-weight: 600;    
+    text-transform: uppercase;
+    background: #d5d5d5;
+    color: #000;
+}
+
+.THIS .slds-form-element__label {
+    /*padding-top: .55rem; 30/10/20 */ 
+    display: none;
+    color: rgba(0, 0, 0, 0.6);
+}
+/*.THIS .slds-datepicker td>.slds-day {
+    display: contents;
+} */
+.THIS .slds-is-today {
+    /*background: #826228;
+    color: #fff;
+    border-radius: 50%;*/
+}
+.THIS .slds-is-selected{
+    color: green;
+}
+
+
+.THIS .slds-table:not(.slds-no-row-hover) tbody tr:hover>td{
+    background-color: transparent;
+}
+.THIS .slds-has-error .slds-form-element__help {
+    color: rgb(194, 57, 52);
+    position: absolute;
+    margin-top: 0px;
+}
+.THIS .slds-gutters .slds-col {
+    padding-right: .75rem;
+    padding-left: .75rem;
+    width: 50%;
+}
+.THIS .slds-table td {
+    padding:0rem 0.5rem;
+}
+.THIS .slds-listbox{
+    border: 1px solid #ddd;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    background: #fff;
+    margin-top: -7px;
+    display: block;
+    width: 96%;
+}
+.THIS .equlocation .slds-listbox{
+    border: 1px solid #ddd;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    background: #fff;
+    margin-top: -14px;
+    display: block;
+    width: auto!important;
+}
+.THIS .equlocation .slds-listbox .slds-col{
+    width:auto!important;
+}
+.THIS .equlocation .slds-listbox .slds-size_1-of-10{
+    padding:0px;
+}
+.THIS .equlocation .slds-listbox .slds-size_8-of-10{
+    padding:0px 10px 0px 0px;
+}
+.THIS .locatioblink .slds-icon {
+    width: 1.5rem;
+    height: 2rem;
+}
+.THIS .slds-input {
+    height: 44px;
+    margin: 0;
+    padding: 0 15px;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+.THIS .parentModel{
+    width: 60%;
+}
+.THIS .childModel{
+    width: 30%;
+    max-width: 30% !important;
+}
+.THIS .AdditionalInfoModel{
+    width: 35%;
+    min-height: 40px !important;
+}
+.THIS .AdditionalInfoModel header, .THIS .AdditionalInfoModel footer{
+    background-color: #94b0d4 !important;
+}
+.THIS .AdditionalInfoModel footer button{
+    background: #2196F3;
+    color: #000000;
+    border: 1px solid #1b84d7;
+}
+.THIS .AdditionalInfoModel footer button:hover{
+    background: #1870b5;
+    color: #ffffff;
+}
+.THIS .modalBgColor{
+    background: #f5f5f5;
+}
+.THIS header button{
+    display: block !important;
+}
+
+.THIS header, .THIS footer{
+    background-color: #fafafa !important;
+}
+.THIS .slds-modal .slds-card{
+    background-color: #fafafa!important;
+}
+.THIS .dissableInput input{
+    background-color: rgb(242, 242, 243);
+}
+.THIS .slds-has-bottom-magnet{
+    /* max-width: 1300px;
+    overflow: auto; */
+}
+/*.THIS .tableviewvehichel{
+width: 1400px;
+}
+.THIS .modalContainer article{
+overflow: auto;
+}*/
+.THIS .tableHead th.pickUpLocatn{
+    width: 265px !important;
+}
+.THIS .slds-m-left_medium, .THIS .slds-m-left--medium{
+    margin-left: .5rem;
+}
+.THIS .pickupInput input{
+    padding-right: 35px;
+    width: 100%;
+}
+.THIS .slds-gutters.singleSearch .slds-col{
+    width: auto;
+    margin: 0;
+}
+.THIS ul use{
+    fill: #00ff00;
+}
+
+.THIS label{
+    visibility: visible !important;
+    display: block !important;
+}
+.THIS .lableHide label{
+    display: none !important;
+}
+.THIS .btn_table {
+    font-size: 14px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    width:auto!important;
+    height: 30px;
+    background-color: #ff4b5a;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+}
+.THIS .btn_table:hover {
+    background-color: #333333;
+}
+.THIS .btn_back {
+    font-size: 14px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    background-color: #b0b1af;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+}
+.THIS .btn_back:hover {
+    background-color: #333333;
+}
+.THIS .slds-card{
+    background-color: #fafafa!important;
+}
+.THIS .btn_margin{
+    margin-left:0px!important;
+}
+.THIS .slds-modal__header, .THIS .slds-modal__content {
+    background: #fafafa;
+    /*font-family: 'Cronos';*/
+}
+.THIS .slds-modal__header {
+    position: relative;
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    border-bottom: 2px solid #f2f2f2;
+    padding: 1rem;
+    text-align: center;
+}
+.THIS .slds-modal__footer {
+    border-top: 1px solid #f2f2f2;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    padding: .75rem 1rem;
+    background-color: #ffffff;
+    text-align: right;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+.THIS .modalFooter{
+    margin-top: -15px!important;
+}
+.THIS .bookingService {
+    margin-bottom: -15px!important;
+}
+/*.THIS .slds-modal__content .slds-p-around_medium .modalContainer .bookingService {
+    margin-bottom: -15px!important;
+}*/
+.THIS input[type="text"], .THIS input[type="password"], .THIS textarea, .THIS textarea.form-control ,
+.THIS select , .THIS input[type="tel"] , .THIS input[type="email"]{
+    height: 38px;
+    margin: 0;
+    padding: 0 .5rem 0 .5rem;
+    vertical-align: middle;
+    background: transparent!important;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    /*font-family: 'Cronos';*/
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none!important;
+    transition: all .3s;
+    border-radius: 0px !important;
+}
+.THIS .slds-select_container:after {
+    border-top: 5px solid #888;
+    bottom: calc((1.75rem / 2) - -1px);
+}
+.THIS .slds-select_container:before {
+    display:none;
+}
+.THIS .slds-form-element {
+    margin-bottom: 10px;
+    width: 100%;
+}
+.THIS .slds-text-heading_medium{
+    margin:0px;
+    color: #333;
+    font-weight: 300 !important;
+    text-align: center;
+    font-size: 16px;
+    font-size: 26px;
+    /*font-family: 'Cronos';*/
+}
+.THIS .slds-modal__close .slds-button__icon{
+    fill: #000!important;
+}
+.THIS .slds-checkbox_faux{
+    border: 1px solid #d4d6d8;
+}
+.THIS .servicetypeoption .slds-form-element__label{
+    display:none!important;
+}
+.THIS .slds-button__icon , .THIS .slds-icon-text-default {
+    width: .875rem;
+    height: .875rem;
+    fill: rgb(107, 109, 112)!important;
+}
+
+.THIS td.mobileNo label {
+    display: none !important;
+}
+.THIS td.mobileNo input {
+    padding: 0;
+    font-weight: 600;
+}
+
+.THIS .slds-section__title{
+    background: #d5d5d5;
+    padding: 0 10px;
+    font-weight: 600;
+}
+.THIS .slds-button_icon-bare{
+    display: block;
+}
+.THIS .reqfield{
+    color: rgb(194, 57, 52);
+    margin: 0 .125rem;
+}
+.THIS .chassisNolab .slds-form-element__label{
+    display: none!important;
+}
+.THIS .textalignright{
+    text-align:right!important;padding-bottom: 5px;
+}
+.THIS .getlocationcss{
+    position: absolute;
+    right: 0;
+    text-align: right;
+    z-index: 9;
+    color: #ff4b5a;
+    background: transparent;
+    border: none;
+    font-weight: 600;
+}
+.THIS .getlocationcss:focus{
+    box-shadow: none;
+}
+.THIS .slds-day {
+    color: #888;
+}
+.THIS .selected{
+    color:orange;
+}
+
+.THIS .pagination{
+    margin: 1rem 0 0;
+}
+
+.THIS .pagination .slds-page-header{
+    background-color: #efefef;
+    padding: .5rem !important;
+}
+
+.THIS .pagination .slds-page-header button{
+    margin-top: -5px;
+}
+
+@media only screen and (max-width: 768px) {
+    .THIS .tableviewvehichel{
+        overflow:auto;
+    }
+    .THIS .slds-modal__container {
+        width: 95%!important;
+        margin:auto;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .childModel {
+        width:95%;
+        max-width: 95%!important;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .slds-gutters{
+        display: block;
+    }
+    .THIS .slds-gutters .slds-col {
+        padding-right: .75rem;
+        padding-left: .75rem;
+        width: 100%;
+    }
+}

@@ -1,0 +1,96 @@
+<aura:component controller="CICO_InspectionCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="checkInInfo" type="object"/>
+    <aura:attribute name="checkInfilterInfo" type="object"/>
+    <aura:attribute name="toggleListViewPage" type="boolean" default="true"/>
+    <aura:attribute name="toggleCheckInPage" type="boolean" default="false"/>
+    
+    <aura:attribute name="recordId" type="string"/> 
+    <aura:attribute name="recordStatus" type="string"/>
+    
+    <div class="mainDiv">
+        
+        <!-- ***list view and search functionality***Start -->
+        <aura:if isTrue="{!v.toggleListViewPage}">
+            <lightning:button class="slds-float_right btn_checkout" label="New Check In" title="New Check In" onclick="{!c.openCheckInForm}"/>
+            
+            <aura:if isTrue="{!not(empty(v.checkInInfo))}"> 
+                <div class="heading_div">
+                    <h2>Recent Check In List</h2> 
+                    <lightning:input type="search"
+                                     name="searchKey" value="" 
+                                     aura:id="searchKey"  oncommit="{!c.sortCheckInList}" onchange="{!c.sortCheckInList}" 
+                                     placeholder="Search Plate No..." class="searchbox"/>
+                </div>
+                <div class="processdiv" >
+                    <div class="checkout_details_div" style="height:100%;">
+                        <table>
+                            
+                            <tr>
+                                <!--th>Check In ID</th-->
+                                <th>Internal No</th>
+                                 <th>Plate No</th>
+                                <th>Check In For</th>
+                                 <th>Status</th>                        
+                                <th>Check In Date</th>
+                                <th></th>
+                            </tr>
+                            
+                            <aura:if isTrue="{!not(empty(v.checkInfilterInfo))}">  
+                                <aura:iteration items="{!v.checkInfilterInfo}" var="item">
+                                    
+                                    
+                                    <tr>
+                                        <!--td>{!item.Name}</td-->
+                                        <td>{!item.Internal_No__r.Name}</td>
+                                         <td>{!item.Plate_No__c}</td>
+                                        <td>{!item.Check_In_for__c}</td>
+                                       
+                                        <td>{!item.Check_In_Status__c}</td>
+                                        <td>
+                                            <lightning:formattedDateTime value="{!item.Check_In_Date__c}" year="numeric" month="numeric" day="numeric" hour="2-digit"
+                                                                         minute="2-digit" hour12="false"/>
+                                        </td>
+                                        
+                                        
+                                        <td> 
+                                            <a href="javascript:void(0)" data-filename="{!item.Check_In_Status__c}" data-index="{!item.Id}" onclick="{!c.viewCheckInForm}">
+                                                <lightning:button label="View" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                            </aura:if>
+                            <aura:if isTrue="{!!not(empty(v.checkInfilterInfo))}">
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="slds-align_absolute-center" style="height: 5rem;">No matching records found </div>
+                                    </td>
+                                </tr>
+                            </aura:if>
+                            
+                        </table>
+                    </div>
+                </div>                       
+                
+                <aura:set attribute="else">
+                    <div class="no_records">No Records to display</div>
+                </aura:set>
+                
+            </aura:if>
+        </aura:if> 
+        <!-- ***list view and search functionality***End -->
+        
+        <!-- ***Check Out form***Start -->
+        
+        <aura:if isTrue="{!v.toggleCheckInPage}">
+            
+            <c:CICO_CheckInForm goToListView="{!c.goToListView}" recordId="{!v.recordId}" recordStatus="{!v.recordStatus}" /> 
+            
+        </aura:if>
+        
+        <!-- ***Check Out form***End -->
+        
+        
+    </div>
+</aura:component>

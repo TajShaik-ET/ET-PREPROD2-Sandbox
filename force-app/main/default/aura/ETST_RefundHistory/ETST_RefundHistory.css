@@ -1,0 +1,124 @@
+.THIS.casesection{
+    margin: .45rem;
+    position: relative;
+    height: 100%;
+    display: block;
+    clear: both;
+}
+.THIS .slds-box {
+    padding: 0rem;
+    border-radius: .25rem;
+    width: 48%;
+    margin: 1%;
+    float: left;
+    border: 1px solid #f2f2f2;
+    box-shadow: 0 9px 6px -4px #eeeeee;
+}
+.THIS .headtxt {
+    font-size: 14px;
+    font-weight: bold;
+    float: left;
+    width: 140px;
+}
+.THIS .headtxtdyn {
+    font-size: 14px;
+}
+.THIS .Padbottomnon {
+    border-bottom: 1px solid #e5e9f2;
+    width: 100%;
+    display: block;
+}
+.THIS .desctxt {
+    height: 80px;
+    overflow: hidden;
+}
+.THIS .firstrow {
+    background-color: #00c19e;
+    color: #fff;
+}
+.THIS.sortdiv{
+    margin: 0% 2%;
+    background: #f7f7f7;
+    border-radius: 5px;
+    border: 1px solid #e2e2e2;
+}
+.THIS.sortdiv .slds-form-element__label {    
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 0rem;
+    padding-top: 0rem;
+}
+.THIS.sortdiv input[type=text] {
+    height: 44px;
+    margin: 0;
+    padding: 0 15px;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+.THIS .btnserach{
+    font-size: 14px;
+    background: #f2f2f2;
+    border: 1px solid #00c19e;
+    padding: 3px 15px;
+    color: #00c19e;
+    margin-left: 5px;
+}
+.THIS .btnserach:hover{
+    background: #00c19e;
+    border: 1px solid #00c19e;
+    color: #fff;
+}
+
+@media only screen and (max-width: 1024px) {
+    .THIS .headtxt {
+        width: 130px;
+    }
+    .THIS .btnserach {
+        padding: 0px 15px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .headtxt {
+        width: 130px;
+    }
+    .THIS .slds-box {
+        width: 98%;
+        margin: 1%;
+    }
+    .THIS .btnserach {
+        padding: 0px 15px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .headtxt {
+        width: 130px;
+    }
+    .THIS .slds-box {
+        width: 48%;
+    	margin: 1%;
+    }
+    .THIS .btnserach {
+        padding: 0px 15px;
+    }
+    .THIS .headtxtdyn , .THIS .headtxt {
+        font-size: 13px;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .THIS .headtxt {
+        width: 150px;
+    }
+    .THIS .slds-box {
+            width: 98%;
+    margin: 1% 1%;
+    }
+}

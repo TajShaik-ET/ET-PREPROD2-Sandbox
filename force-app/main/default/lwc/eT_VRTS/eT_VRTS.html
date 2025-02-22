@@ -1,0 +1,297 @@
+<template>
+  <!--  /VRTS_StartPage/ -->
+  <template if:true={VRTS_StartPage}>
+    <div class="container vRTSForm">
+      <div style="text-align: right;">
+        <img class="VRTS_ET" src={VRTS_ET_Logo} />
+      </div>
+      <div class="flash_screen">
+        <div class="heading_text">
+          <h5 class="slds-theme_shade SCHOOLBUSHeader">School Bus Smart Devices &</h5>
+          <h5 class="slds-theme_shade SCHOOLBUSHeader">Equipement Acceptence</h5>
+          <h5 class="slds-theme_shade SCHOOLBUSHeader">Form (VRTS)</h5>
+        </div>
+        <img class="VRTS_BUS" src={VRTS_SCHOOL_BUS} />
+      </div>
+      <div style="text-align: Center;" class="Start-button">
+        <lightning-button variant="brand" label="Start" title="Start" onclick={VRTS_Start} class="logoutbtn slds-align_absolute-cente"></lightning-button>
+      </div>
+    </div>
+  </template>
+  <!--  /VRTS_FormPage/ -->
+  <template if:true={VRTS_FormPage}>
+    <div class="container vRTSForm">
+      <lightning-record-edit-form record-id={recordId} object-api-name="VRTS_Observation__c" onsuccess={handleSuccess} onsubmit={handleSubmit} onerror={handleError}>
+        <lightning-messages></lightning-messages>
+        <div class="headers_div">
+          <h3 class="slds-theme_shade formHeader"> بيانات موقع الاستلام </h3>
+          <h3 class="slds-theme_shade formHeader"> Inspection Site Data </h3>
+        </div>
+        <div class="slds-grid slds-wrap slds-p-around_xx-small dataSection">
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="nameId">Name الاسم</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input-field id="nameId" field-name="Name__c" variant="label-hidden" required="true"></lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="zoneId">Zone المنطقة الجغرافية</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input-field id="zoneId" field-name="Zone__c" variant="label-hidden" required="true"></lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="branchId">Branch الفرع</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input-field id="branchId" field-name="Branch__c" variant="label-hidden" required="true"></lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="stationId">Station المحطة</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input-field id="stationId" field-name="Station__c" variant="label-hidden" required="true"></lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="inspectionDateId">Inspection Date تاريخ الاستلام</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input-field name="Inspection_Date__c" id="inspectionDateId" field-name="Inspection_Date__c" value={inspectionDateValue} variant="label-hidden" required="true" onchange={handleFieldChange}></lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="busInternalNoId">Bus Internal No. الرقم الداخلي للحافلة</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input-field name="ET_Bus_Internal_No__c" id="busInternalNoId" field-name="ET_Bus_Internal_No__c" variant="label-hidden" required="true" onchange={handleFieldChange}></lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="plateIssueId">Plate Issue رقم الإصدار</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input id="plateIssueId" value={vehicleData.Plate_Source__c} variant="label-hidden" disabled="true"></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="plateCodeId">Plate Code رقم الإصدار</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input id="plateCodeId" value={vehicleData.Plate_colour_code__c} variant="label-hidden" disabled="true"></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="plateNumberId">Plate Number رقم اللوحة</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input id="plateNumberId" value={vehicleData.Plate_Number__c} variant="label-hidden" disabled="true"></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <label for="simCardNumberId">Sim Card Number رقم الشريحة الالكترونية</label>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input-field id="simCardNumberId" field-name="Sim_Card_Number__c" variant="label-hidden" required="true"></lightning-input-field>
+          </div>
+        </div>
+        <div class="slds-p-around_x-small slds-grid" style="text-align: center;">
+          <div class="slds-col">
+            <lightning-button variant="brand" label="Back" title="Back" onclick={VRTS_FormPage_Back} class="logoutbtn slds-align_absolute-cente"></lightning-button>
+          </div>
+          <div class="slds-col">
+            <lightning-button variant="brand" label="Next" title="Next" type="submit" class="logoutbtn slds-align_absolute-cente"></lightning-button>
+          </div>
+        </div>
+      </lightning-record-edit-form>
+    </div>
+  </template>
+  <!--  /VRTS_InfoPage/ -->
+  <template if:true={VRTS_InfoPage}>
+    <div class="container vRTSForm">
+      <div class="headers_div">
+        <h3 class="slds-theme_shade formHeader"> ملاحظة بخصوص الأجهزة المدرجة </h3>
+        <h3 class="slds-theme_shade formHeader"> Attention for the below devices </h3>
+      </div>
+      <h5 class="slds-theme_shade CTRSPageHeader" style="text-align: center;padding-top:2rem;  "> Internal Siren (Speaker) </h5>
+      <h5 class="slds-theme_shade CTRSPageHeader PaddingClass" style="text-align: center; "> صفارات الإنذار الداخلية (صوت و ضوء) </h5>
+      <h5 class="slds-theme_shade CTRSPageHeader" style="text-align: center; "> Child Detection Sensor </h5>
+      <h5 class="slds-theme_shade CTRSPageHeader PaddingClass" style="text-align: center; "> جهاز مستشعر الحركة داخل الحافلة </h5>
+      <h5 class="slds-theme_shade CTRSPageHeader" style="text-align: center; "> Child Check Button </h5>
+      <h5 class="slds-theme_shade CTRSPageHeader PaddingClass" style="text-align: center; "> زر تفقد الحافلة بعد انتهاء الرحلة </h5>
+      <h5 class="slds-theme_shade CTRSPageHeader" style="text-align: center; "> Temp. - Humidity </h5>
+      <h5 class="slds-theme_shade CTRSPageHeader PaddingClass" style="text-align: center; "> جهاز قياس درجة الحرارة - الرطوبة </h5>
+      <div class="CTRSPageNotediv">
+        <h1 class="CTRSPageNote" style="text-align: center; "> يرجى فحص الجهاز باستثناء النقل المدرسي الخاص أو حسب خدمة العملاء Please Check the Device, exept for the private School Transportation or according to customer service </h1>
+      </div>
+      <div class="slds-p-around_x-small slds-grid" style="text-align: center;">
+        <div class="slds-col">
+          <lightning-button variant="brand" label="Back" title="Back" onclick={VRTS_InfoPage_Back} class="logoutbtn slds-align_absolute-cente"></lightning-button>
+        </div>
+        <div class="slds-col">
+          <lightning-button variant="brand" label="Next" title="Next" onclick={VRTS_InfoPage_Next} class="logoutbtn slds-align_absolute-cente"></lightning-button>
+        </div>
+      </div>
+    </div>
+  </template>
+  <!--  /VRTS_IterationPage/ -->
+  <template if:true={VRTS_IterationPage}>
+    <div class="container vRTSForm">
+      <div class="headers_div">
+        <h3 class="slds-theme_shade formHeader"> {sectionsName.Ar} </h3>
+        <h3 class="slds-theme_shade formHeader"> {sectionsName.En} </h3>
+      </div>
+      <template if:true={sections.secOptions}>
+        <div class="slds-box">
+          <p>
+            <template for:each={sections.secOptions} for:item="VRTS" for:index="index">
+              <div key={VRTS.Id}>
+                <template if:true={VRTS.isPicklist}>
+                  <lightning-layout class="box_VRTS">
+                    <lightning-layout-item padding="around-small" size="8">
+                      <div class="slds-box"> {VRTS.question.Ar} <br /> {VRTS.question.En} </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="4">
+                      <div class="slds-box">
+                        <lightning-combobox name="VRTSOption" data-index={index} options={VRTS.options} value={VRTS.response} onchange={handleonchange} variant="label-hidden"></lightning-combobox>
+                      </div>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                </template>
+                <template if:true={VRTS.isSubPicklistWithAtt}>
+                  <lightning-layout>
+                    <lightning-layout-item padding="around-small" size="12">
+                      <div class="slds-box devicename"> اختر جهاز <br /> Select Device </div>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                  <lightning-layout>
+                    <lightning-layout-item size="12">
+                      <div class="">
+                        <template for:each={VRTS.subRespWrps} for:item="sub" for:index="indexSub">
+                          <div key={sub.recId} class="upload_main_div">
+                            <lightning-layout>
+                              <lightning-layout-item size="4">
+                                <div class="slds-box "> {VRTS.question.Ar} <br /> {VRTS.question.En} </div>
+                              </lightning-layout-item>
+                              <lightning-layout-item size="4">
+                                <div class="slds-box">
+                                  <lightning-combobox name="VRTSOptionSub" data-index={index} data-subindex={indexSub} options={sub.options} value={sub.answer} onchange={handleonchangeSub} variant="label-hidden"></lightning-combobox>
+                                </div>
+                              </lightning-layout-item>
+                              <lightning-layout-item size="4">
+                                <div class="inner_div_btn slds-box singalupload">
+                                  <!--<lightning-icon data-index={index} disabled="true" data-respid={VRTS.recId} name={VRTS.question.En} onclick={addSubResponse} title="Add" size="x-small" icon-name="action:add_relationship"></lightning-icon><lightning-icon data-index={index} data-subindex={indexSub} data-subid={sub.recId} name={VRTS.question.En} onclick={removeSubResponse} title="Remove" size="x-small" icon-name="action:remove_relationship"></lightning-icon>
+                                -->
+                                  <!--<lightning-icon data-index={index} disabled="true" data-respid={VRTS.recId} name={VRTS.question.En} onclick={addSubResponse} title="Add" size="x-small" icon-name="action:add_relationship"></lightning-icon><lightning-icon data-index={index} data-subindex={indexSub} data-subid={sub.recId} name={VRTS.question.En} onclick={removeSubResponse} title="Remove" size="x-small" icon-name="action:remove_relationship"></lightning-icon>
+                                -->
+                                  <lightning-button-icon icon-name="action:new" variant="bare" alternative-text="Add" disabled={addSubRespDisabled} data-index={index} data-respid={VRTS.recId} name={VRTS.question.En} onclick={addSubResponse} title="Add"></lightning-button-icon>
+                                  <lightning-button-icon variant="bare" icon-name="action:delete" disabled={removeSubRespDisabled} alternative-text="Remove" data-index={index} data-subindex={indexSub} data-subid={sub.recId} name={VRTS.question.En} onclick={removeSubResponse} title="Remove"></lightning-button-icon>
+                                </div>
+                              </lightning-layout-item>
+                            </lightning-layout>
+                            <c-et_-v-r-t-s_-file-upload upload-disabled="false" record-id={sub.recId} style="width:100%;"></c-et_-v-r-t-s_-file-upload>
+                          </div>
+                        </template>
+                      </div>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                </template>
+                <template if:true={showComments}>
+                  <template if:true={VRTS.isComment}>
+                    <lightning-layout class="box_VRTS">
+                      <lightning-layout-item padding="around-small" size="4">
+                        <div class="slds-box">
+                          <h1>{VRTS.question.Ar} <br />{VRTS.question.En} </h1>
+                        </div>
+                      </lightning-layout-item>
+                      <lightning-layout-item padding="around-small" size="8">
+                        <div class="slds-box">
+                          <h1>
+                            <lightning-textarea data-id="commentId" name="commentId" type="text" label="" value={VRTS.response} onchange={handleFieldChange} variant="label-hidden"></lightning-textarea>
+                          </h1>
+                        </div>
+                      </lightning-layout-item>
+                    </lightning-layout>
+                  </template>
+                </template>
+                <template if:true={VRTS.isResult}>
+                  <lightning-layout class="box_VRTS">
+                    <lightning-layout-item padding="around-small" size="4">
+                      <div class="slds-box">
+                        <h1>{VRTS.question.Ar} <br />{VRTS.question.En} </h1>
+                      </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="8">
+                      <div class="slds-box">
+                        <h1 style="text-align: center;">{VRTS.response}</h1>
+                      </div>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                </template>
+              </div>
+            </template>
+          </p>
+        </div>
+      </template>
+      <div class="slds-p-around_x-small slds-grid" style="text-align: center;">
+        <div class="slds-col">
+          <lightning-button variant="brand" name="IterationsBack" label="Back" title="Back" onclick={clickBack} class="logoutbtn slds-align_absolute-cente"></lightning-button>
+        </div>
+        <div class="slds-col">
+          <lightning-button variant="brand" name="IterationsNext" label="Next" title="Next" onclick={clickNext} class="logoutbtn slds-align_absolute-cente"></lightning-button>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template if:true={VRTS_SubmitPage}>
+    <div class="container vRTSForm">
+      <div class="headers_div">
+        <h3 class="slds-theme_shade formHeader"> Submit </h3>
+      </div>
+      <div class="container">
+        <lightning-record-edit-form record-id={recordId} object-api-name="VRTS_Observation__c" onsuccess={handleSuccess} onsubmit={handleSubmit} onerror={handleError}>
+          <lightning-messages></lightning-messages>
+          <div class="slds-box">
+            <div class="slds-grid slds-wrap slds-p-around_xx-small dataSection box_VRTS">
+              <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+                <label for="otherCommentsId">Other Comments تعليقات أخرى</label>
+                <lightning-input-field id="otherCommentsId" field-name="Other_Comments__c" variant="label-hidden" required="true"></lightning-input-field>
+              </div>
+              <c-et_-v-r-t-s_-file-upload upload-disabled="false" record-id={recordId} style="width:100%;"></c-et_-v-r-t-s_-file-upload>
+              <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+                <label for="finalResultId">Final Result النتيجة النهائية</label>
+                <lightning-input-field id="finalResultId" field-name="Final_Result__c" variant="label-hidden" value={finalResult} required="true" read-only="true"></lightning-input-field>
+              </div>
+              <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+                <label for="staffId">Enter Your Name + Staff Number المنطقة الجغرافية</label>
+                <lightning-input-field id="staffId" field-name="Staff_Details__c" variant="label-hidden" required="true"></lightning-input-field>
+              </div>
+            </div>
+          </div>
+          <div class="slds-p-around_x-small slds-grid" style="text-align: center;">
+            <div class="slds-col">
+              <lightning-button variant="brand" name="SubmitBack" label="Back" title="Back" onclick={clickBack} class="logoutbtn slds-align_absolute-cente"></lightning-button>
+            </div>
+            <div class="slds-col">
+              <lightning-button variant="brand" label="Submit" title="Submit" type="submit" class="logoutbtn slds-align_absolute-cente"></lightning-button>
+            </div>
+          </div>
+        </lightning-record-edit-form>
+      </div>
+    </div>
+  </template>
+  <template if:true={VRTS_ThankPage}>
+    <div class="container vRTSForm">
+      <div class="headers_div">
+        <h3 class="slds-theme_shade formHeader"> شكرًا لك </h3>
+        <h3 class="slds-theme_shade formHeader"> Thank you </h3>
+      </div>
+      <div class="container">
+        <div class="thankyou">
+          <lightning-icon size="x-small" icon-name="action:check"></lightning-icon>
+          <div class="thankyou_message">Successfully Submitted</div>
+        </div>
+        <div style="text-align: Center;" class="Start-button">
+          <lightning-button variant="brand" label="Go to Home pPge" title="Start" onclick={returnHome} class="logoutbtn slds-align_absolute-cente"></lightning-button>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template if:true={SPNR}>
+    <lightning-spinner alternative-text="Loading..." variant="brand"></lightning-spinner>
+  </template>
+</template>

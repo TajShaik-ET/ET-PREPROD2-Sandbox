@@ -1,0 +1,426 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,lightning:isUrlAddressable" controller='ET_ProfitCalculationScreensController'>
+    <aura:handler value="{!this}" name="init" action="{!c.doinit}" />
+    <aura:attribute name="quoteId" type="Id"/>
+    <aura:attribute name="profitAndLossAnalysisLst" type="List"/>
+
+    <table class="slds-table slds-table_cell-buffer  slds-table_bordered slds-table_striped">
+
+
+
+        <tbody>
+            <tr class="slds-hint-parent red-color-class">   
+                <td data-label="Years">
+                    <div class="labelClass" title="Years"><b>Years</b></div>
+                </td>
+                <td data-label="1">
+                    <div class="labelClass" title="1">Y1</div>
+                </td>
+               
+                <td data-label="2">
+                        <div class="labelClass" title="2">Y2</div>
+                </td>
+                <td data-label="3">
+                        <div class="labelClass" title="3">Y3</div>
+                </td>
+                <td data-label="4">
+                    <div class="labelClass" title="4">Y4</div>
+                </td>
+                <td data-label="5">
+                    <div class="labelClass" title="5">Y5</div>
+                </td>
+                <td data-label="5">
+                    <div class="labelClass" title="6">Y6</div>
+                </td>
+                <td data-label="1">
+                    <div class="labelClass" title="7">Y7</div>
+                </td>
+                <td data-label="1">
+                    <div class="labelClass" title="8">Y8</div>
+                </td>
+            </tr>
+            <tr >
+                <td colspan="9"> 
+                    <div class="slds-align--absolute-center red-color-class"><b>Revenue</b></div>
+                </td>								
+    
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" title="Vehicle Revenue">Vehicle Revenue</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.vehicleRevenueRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" title="Manpower Revenue">Manpower Revenue</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.manpowerRevenueRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" title="Other Revenue">Other Revenue</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.otherRevenueRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" title="VAT Revenue">VAT Revenue</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.VATRevenueRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" title="Total Operating Revenue">Total Operating Revenue</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.totalOperatingRevenueRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+
+
+
+
+            <tr >
+                <td colspan="9"> 
+                    <div class="slds-align--absolute-center red-color-class"><b>Less : Cost of Revenue</b></div>
+                </td>								
+    
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass">Repairs and Maintenance</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.repairAndMaintenanceRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Fuel</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.fuelRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Man Power Wages</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.manpowerWagesRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Man Power Overtime</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.manpowerOverTimeRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Total Variable Cost</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.totalVariableCostRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Contributionn Margin</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.ContributionMarginRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            
+
+
+
+            <tr >
+                <td colspan="9"> 
+                    <div class="slds-align--absolute-center red-color-class"><b>Less : Fixed Overhead</b></div>
+                </td>								
+    
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass">Vehicle Registration</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.vehicleRegistrationRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Vehicle Insurance</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.vehicleInsuranceRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Annual Leave Allowance</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.annualLeaveAllowanceRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >End of Service</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.endOfServiceRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Clothes Allowance</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.clothesAllowanceRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Health Card</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.healthCardRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Licensing Fees</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.licensingFeeRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Visa Cost</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.visaCostRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Accommodation Allowance</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.accommodationRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Total Fixed Cost</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.totalFixedCostRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Gross Profit/Loss</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.grossProfitOrLossRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+           
+
+            <tr >
+                <td colspan="9"> 
+                    <div class="slds-align--absolute-center red-color-class"><b>Less : Selling and Administration EX</b></div>
+                </td>								
+    
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass">Total Selling and Administration</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.totalSellingAndAdministrationRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >EBITDA</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.ebitdaRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            
+            
+
+
+            <tr >
+                <td colspan="9"> 
+                    <div class="slds-align--absolute-center red-color-class"><b>Plus: Other Income</b></div>
+                </td>								
+    
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass">Capital Gain/Loss on Sale of Assets</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.capitalGainOrLossRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Total Other Income</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.totalOtherIncomeRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            
+            <tr >
+                <td colspan="9"> 
+                    <div class="slds-align--absolute-center red-color-class"><b>Less : Depreciation and Amortisation</b></div>
+                </td>								
+    
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass">Vehicle Depreciation</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.vehicleDepriciationRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Total Depreciation and Amortisation</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.totalDepriciationAndAmortisatRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >EBIT</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.ebitRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+           
+
+
+            <tr >
+                <td colspan="9"> 
+                    <div class="slds-align--absolute-center red-color-class"><b>Less : Interest</b></div>
+                </td>								
+    
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass">Vehicle Financing</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.vehicleFinancingRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Total Interest</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.totalInterestRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+            <tr>
+                <td data-label="1">
+                    <div class="labelClass" >Net Profit/Loss</div>
+                </td>
+                <aura:iteration items="{!v.profitAndLossAnalysisLst}" var="costCalculationYearWise">
+                    <td >
+                        <div class="slds-truncate" >{!costCalculationYearWise.netProfitOrLossRate}</div> 
+                    </td>
+                </aura:iteration>
+            </tr>
+           
+            
+
+        </tbody>
+    </table>
+</aura:component>

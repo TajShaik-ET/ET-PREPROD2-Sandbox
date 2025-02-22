@@ -1,0 +1,22 @@
+<apex:page standardStylesheets="true" sidebar="false" applyBodyTag="false" showHeader="false">
+        <header>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        </header>
+        <!-- Load the LWC component using lightning out -->
+        <apex:includeLightning />
+        <div id="LwcId" />
+        <script>
+            $Lightning.use("c:ETAmana_ReportingCaseApp", function () {
+                $Lightning.createComponent("c:etamana_FraudCaseForm",
+                   //$Lightning.createComponent("c:amanaSolution",                         
+                   // $Lightning.createComponent("c:eTAmana_ReportingCase",                         
+                    {
+    
+                    },
+                    "LwcId", // the Id of div tag where your component will be rendered
+                    function (cmp) {
+                        console.log('Calling the LWC Component');
+                    });
+            });
+        </script>
+    </apex:page>

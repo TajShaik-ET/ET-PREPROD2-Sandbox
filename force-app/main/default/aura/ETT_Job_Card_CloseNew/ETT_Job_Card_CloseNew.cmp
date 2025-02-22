@@ -1,0 +1,523 @@
+<aura:component controller="ETT_JobCardCloseCtrlNew" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction,lightning:actionOverride" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="EmployeeMasterId" type="string" />
+    <aura:attribute name="EmployeeMasterinfo" type="ETT_Tyre_Employee_Master__c[]" />
+    <aura:attribute name="jobCardId" type="string" />
+    <aura:attribute name="recordName" type="string" /> 
+    <aura:attribute name="jobCardInfo" type="ETT_Job_Card__c" />
+    <aura:attribute name="jobType" type="string" />
+    <aura:attribute name="selectedJobProcss" type="string"/>
+    <aura:attribute name="options" type="List" default="Buffing"/>
+    <aura:attribute name="allItemsList" type="list"/>
+    <aura:attribute name="allEmployeesList" type="list"/>
+    <aura:attribute name="filterItemsList" type="list"/>
+    <aura:attribute name="filterEmployeesList" type="list"/>
+    <aura:attribute name="showModel" type="boolean" default="false" />
+    <aura:attribute name="issuedQty" type="string"/>
+    <aura:attribute name="toolMasterId" type="Id"/>
+    <aura:attribute name="newJobCardCloseLines" type="ETT_Job_Card_Close_Lines__c[]"  /> 
+    <aura:attribute name="tempUOM" type="string"/>
+    <aura:attribute name="tempAvailQty" type="string"/>
+    <aura:attribute name="tempItemCode" type="string"/>
+    <aura:attribute name="tempItemDesc" type="string"/>
+    <aura:attribute name="tempIndiUnitVal" type="string"/>    
+    <aura:attribute name="ProdtnStatus" type="string"/>
+    <!-- <aura:attribute name="JobcardCloseStatus" type="string" default="Approved"/>-->
+    
+    <aura:attribute name="envInfo" type="list"/>
+    <aura:attribute name="curingInfo" type="list"/>
+    <aura:attribute name="buffingInfo" type="list"/>
+    <aura:attribute name="TreadPattern" type="ETT_Tread_Master__c" />
+    
+    <aura:attribute name="closeDate" type="date" />
+    
+    <aura:attribute name="empNo" type="string"/>
+    <aura:attribute name="empName" type="string"/>
+    <aura:attribute name="empWorkingDate" type="string"/>
+    <aura:attribute name="empStartTime" type="string"/>
+    <aura:attribute name="empEndTime" type="string"/>
+    <aura:attribute name="newJobCardCloseEmployees" type="ETT_JCC_Employee__c[]" />
+    <aura:attribute name="jccRejection" type="Object" />
+    <aura:attribute name="initialRemark" type="string"/>
+    <aura:attribute name="initialLife" type="string"/>
+    <aura:attribute name="initialCut" type="string"/>
+    <aura:attribute name="initialSideCut" type="string"/>
+    <aura:attribute name="initialCrownCut" type="string"/>
+    <aura:attribute name="skivingRemark" type="string"/>
+    <aura:attribute name="repairRemark" type="string"/>
+    <aura:attribute name="buildingRemark" type="string"/>
+    <aura:attribute name="curingDate" type="string" default="" />
+    <aura:attribute name="curingRound" type="string" default="" />
+    <aura:attribute name="curingChamber" type="string" default=""/>
+    <aura:attribute name="curingValue" type="string" default=""/>
+    <aura:attribute name="curingstartTime" type="DateTime" default=""/>
+    <aura:attribute name="curingendTime" type="DateTime"  default=""/>
+    <aura:attribute name="curingtotalHours" type="Decimal"/>
+    <aura:attribute name="buffingRemark" type="string"/>
+    <aura:attribute name="buffingWidth" type="string"/>
+    <aura:attribute name="buffingLength" type="string"/>
+    <aura:attribute name="filingRemark" type="string"/>
+    <aura:attribute name="treadRemark" type="string"/>
+    <aura:attribute name="finalRemark" type="string"/>
+    <aura:attribute name="startTime" type="time"  default=""/>
+    <aura:attribute name="endTime" type="time"  default=""/>
+    <aura:attribute name="WorkingDate" type="Date"  default=""/>
+    <aura:attribute name="employeeList" type="List" />
+    <aura:attribute name="isEditable" type="Integer" default="-1"  />
+    
+    
+    <aura:handler name="childComponentEvent" event="c:ETT_JCC_Line_Event"
+                  action="{!c.toolmasterChange}"/>
+    <!--<aura:handler name="init" value="{!this}" action="{!c.calculateTotalHours}"/>-->
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+    <lightning:spinner alternativeText="Loading" size="medium" class="{!v.isLoading ? 'slds-show' : 'slds-hide'}" />
+    
+    <div class="outer-div">
+        
+        <!--lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" /-->
+        <div class="jobcard_main" >
+            <h2>Job Card Close</h2>
+            <lightning:recordEditForm aura:id="JobCardCloseForm" recordId="" objectApiName="ETT_Job_Card_Close__c" onsubmit="" onsuccess="{!c.HanldeJobCloseSuccess}" >
+                <lightning:messages />
+                <div class="topsection">                   
+                    <lightning:inputField fieldName="Job_Card__c" onchange="{!c.getJobCardDetails}" value="{!v.jobCardId}"/>
+                    <lightning:inputField class="slds-hide" fieldName="Party__c" value="{!v.jobCardInfo.ETT_Inspection_Card__r.ETT_Account__c}"/><lightning:inputField fieldName="Collection_Card__c" value="{!v.jobCardInfo.ETT_Inspection_Card__r.ETT_Collection_Card__c}" disabled="true"/>
+                    <!-- <td><lightning:input label="Coll.Card Ref." value="{!v.jobCardInfo.ETT_Inspection_Card__r.ETT_Collection_Card__r.Collection_Card_Ref__c}" disabled="true"/></td> -->
+                    <lightning:inputField fieldName="Status__c" value="{!v.jobCardInfo.Job_Card_Status__c}" disabled="true"/>
+                    
+                    <lightning:input label="Open Date" value="{!v.jobCardInfo.Created_Date__c}" disabled="false" />
+                    <lightning:input label="Collection Date" type="date" value="{!v.jobCardInfo.ETT_Inspection_Card__r.ETT_Collection_Card__r.ETT_Collection_Date__c}" disabled="true"/>
+                    <lightning:input name="select1" label="Party Type" value="{!v.jobCardInfo.Customer_Type__c}" disabled="true"/>
+                    
+                    <lightning:input label="Party Name" value="{!v.jobCardInfo.Customer__r.Name}" disabled="true" />
+                    <lightning:input label="Party Code" value="{!v.jobCardInfo.Party_Code__c}" disabled="true" />
+                    <lightning:input label="Sub Inventory" value="{!v.jobCardInfo.Sub_Inventory__c}" disabled="true"/>
+                    <lightning:input label="Store Code" value="{!v.jobCardInfo.Store_Code__c}" disabled="true"/>  
+                    <lightning:input label="Job Type" value="{!v.jobCardInfo.ETT_Job_type_card__c}" disabled="true"/> 
+                    <lightning:input required="true" label="Close Date" type="date" value="{!v.closeDate}"/>
+                    
+                    
+                    
+                </div>
+                <div class="margintop_bottom">
+                    <div class="topsection tyreinfo">                        
+                        <h4>Tyre Info</h4>                        
+                        <lightning:inputField fieldName="Dno__c" />
+                        <lightning:inputField fieldName="Job_Type__c" value="{!v.jobCardInfo.ETT_Job_Type__c}" disabled="true"/>
+                        
+                        <lightning:inputField fieldName="Brand_Name__c" value="{!v.jobCardInfo.Tyre_Inventory__r.ETT_Brand__r.Name}" disabled="true"/>
+                        <lightning:inputField fieldName="Tyre_Size__c" value="{!v.jobCardInfo.Tyre_Inventory__r.ETT_Tyre_Master__r.ETT_Tyre_Size__r.Name}" disabled="true"/>
+                        <lightning:inputField fieldName="Serial_Number__c" value="{!v.jobCardInfo.ETT_Inspection_Card__r.ETT_Tyre_Serial_Number__c}" disabled="true"/>
+                        <lightning:inputField fieldName="O_Pattern__c" value="{!v.jobCardInfo.Tyre_Inventory__r.ETT_Tyre_Master__r.ETT_Original_Pattern__r.Name	}" disabled="true"/>
+                        <lightning:inputField fieldName="PR__c" value="{!v.jobCardInfo.Tyre_Inventory__r.ETT_Tyre_Master__r.ETT_Ply_Rate__c}" disabled="true"/>
+                        <lightning:inputField fieldName="LI__c" value="{!v.jobCardInfo.Tyre_Inventory__r.ETT_Tyre_Master__r.ETT_Load_Index__c}" disabled="true"/>
+                        <lightning:inputField fieldName="SI__c" value="{!v.jobCardInfo.Tyre_Inventory__r.ETT_Tyre_Master__r.ETT_Speed_Index__c}" disabled="true"/>
+                        <lightning:inputField fieldName="Origin__c" value="{!v.jobCardInfo.ETT_Inspection_Card__r.Country__c}" disabled="true"/>
+                        <lightning:inputField   aura:id="threadPatternField" class="slds-size_1-of-3"   fieldName="ThreadPattern__c" value="{!v.buffingInfo[0].Desired_Tread_Pattern__c}"/>
+                        <lightning:inputField class="slds-size_1-of-3" fieldName="Production_Status__c" value="{!v.ProdtnStatus}"/>
+                        <lightning:inputField class="slds-size_1-of-3" fieldName="Remarks__c" />
+                        
+                    </div>
+                </div>
+                <div>
+                    <lightning:tabset>
+                        <lightning:tab label="Consumption" class="borderTableNoMargin">
+                            <div class="Consumptiondiv">
+                                <div class="leftTable">                                    
+                                    <h4>Process</h4>
+                                    <div class="headingtop">
+                                        <label>PNo</label>
+                                        <label>Process Name</label>
+                                    </div>
+                                    <aura:iteration items="{!v.options}" var="item" indexVar="index">
+                                        <div class="valuestop">
+                                            <ui:outputText class="{!IF(v.selectedJobProcss==item.value,'active','inactive')}" value="{!index+1}" />
+                                            
+                                            <div class="Buffing" onclick="{!c.handleChangeProcess}" id="{!item.label}">
+                                                <ui:outputText value="{!item.label}" class="{!IF(v.selectedJobProcss==item.value,'active','inactive')}"/>
+                                            </div>
+                                            
+                                        </div>
+                                    </aura:iteration>
+                                    
+                                </div>
+                                
+                                <div class="rightTable">
+                                    <h4>Material Consumed</h4>
+                                    <div class="tableview" >
+                                        <aura:if isTrue="{!not(empty(v.newJobCardCloseLines))}">
+                                            <lightning:recordEditForm recordId="" objectApiName="ETT_Job_Card_Close_Lines__c">
+                                                
+                                                <table>                                                   
+                                                    <tr>
+                                                        <th>Item Name</th>
+                                                        <th>Item Code</th>                                                        
+                                                        <th>Uom</th>
+                                                        <th>Avail.Qty</th>
+                                                        <th>Factory Stock</th>
+                                                        <th>Issued Qty</th>
+                                                        <th>Item Description</th>
+                                                    </tr>
+                                                    <aura:iteration items="{!v.newJobCardCloseLines}" var="item" indexVar="rowIndex">
+                                                        <aura:if isTrue="{!v.selectedJobProcss==item.Job_Type__c}">
+                                                            <tr> 
+                                                                <td> <lightning:inputField id="{!rowIndex}"   name="{!rowIndex}" fieldName="Item_Name__c" value="{!item.Item_Name__c}" onchange="{!c.toolmasterChange}"/></td>
+                                                                <td><lightning:inputField  id="{!rowIndex}"  name="{!rowIndex}" fieldName="ETT_Unique_Code__c" value="{!item.ETT_Unique_Code__c}" /></td>
+                                                                <td><lightning:inputField id="{!rowIndex}"   name="{!rowIndex}" fieldName="UOM__c" value="{!item.UOM__c}" /></td>
+                                                                <td><lightning:inputField  id="{!rowIndex}"  name="{!rowIndex}" fieldName="Available_Quantity__c" value="{!item.Available_Quantity__c}" /></td>
+                                                                <td><lightning:inputField id="{!rowIndex}"   name="{!rowIndex}" fieldName="Factory_Stock__c" value="{!item.Factory_Stock__c}" /></td>
+                                                                <td><lightning:inputField id="{!rowIndex}"   name="{!rowIndex}" fieldName="Issued_Quantity__c" value="{!item.Issued_Quantity__c}" /></td> 
+                                                                <td><lightning:inputField  id="{!rowIndex}"  name="{!rowIndex}" fieldName="ETT_Item_Description__c" value="{!item.ETT_Item_Description__c}" /></td>
+                                                            </tr>
+                                                        </aura:if>                                                        
+                                                    </aura:iteration>
+                                                </table>
+                                            </lightning:recordEditForm>
+                                        </aura:if>
+                                    </div>
+                                    
+                                    <br/>
+                                    <h4></h4>
+                                    <div class="tableview">
+                                        <aura:if isTrue="{!not(empty(v.newJobCardCloseEmployees))}">
+    <h4>Assigned Employees</h4>
+    <table style="width: 100%; margin-bottom: 10px;">
+        <thead>
+            <tr>
+                <th>
+                    <div title="Work Schedule">Work Schedule</div>
+                </th>
+                <th>
+                    <div title="Work Station">Work Station</div>
+                </th>
+                <th>
+                    <div title="Employee Name">Emp No</div>
+                </th>
+                <th>
+                    <div title="Employee Name">Employee Name</div>
+                </th>
+                <th>
+                    <div title="Start Time">Start Time</div>
+                </th>
+                <th>
+                    <div title="End Time">End Time</div>
+                </th>
+                <th>
+                    <div title="Action">Action</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.employeeList}" var="employee" indexVar="rowIndex">
+                <tr>
+                    <td>
+                        <div title="Work Schedule">
+                            <lightning:input disabled="true" value="{!employee.Name}" />
+                        </div>
+                    </td>
+                    <td>
+                        <div title="Work Station">
+                            <lightning:input disabled="true" value="{!employee.ETT_Work_Station__r.Name}" />
+                        </div>
+                    </td>
+                    <td>
+                        <lightning:recordEditForm objectApiName="ETT_JCC_Employee__c">
+                            <lightning:inputField fieldName="Employee_Master__c" value="{!employee.Tyre_Employee_Master__r.Id}" onchange="{!c.employeemasterChange}" />
+                        </lightning:recordEditForm>
+                    </td>
+                    <td>
+                        <div title="Employee Name">
+                            <lightning:input disabled="true" value="{!employee.Tyre_Employee_Master__r.Employee_Name__c}" />
+                        </div>
+                    </td>
+                    <td>
+                        <lightning:recordEditForm objectApiName="ETT_JCC_Employee__c">
+                            <lightning:inputField fieldName="ETT_Start_Time__c" value="{!employee.ETT_Start_time__c}" />
+                        </lightning:recordEditForm>
+                    </td>
+                    <td>
+                        <lightning:recordEditForm objectApiName="ETT_JCC_Employee__c">
+                            <lightning:inputField fieldName="ETT_End_Time__c" value="{!employee.ETT_End_time__c}" />
+                        </lightning:recordEditForm>
+                    </td>
+                    <td>
+                        <lightning:button  class="button_save slds-button slds-button_neutral" label="Save" onclick="{!c.saveJCCloseEmployee}"  value="{!rowIndex}" />
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+</aura:if>
+                                     
+                                        
+                                    </div>                                
+                                </div>
+                            </div>
+                        </lightning:tab>
+                        
+                        <lightning:tab label="Additional Info" title="2nd tab extended title">
+                            <div class="flexdiv">
+                                <div class="first_div">
+                                    <div>
+                                        <table>
+                                            <tr>
+                                                <td colspan="2"><h4>Initial Inspection</h4></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><lightning:textarea label="Remarks" value="{!v.initialRemark}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="paddingright"><lightning:input label="Life" value="{!v.initialLife}"/></td>
+                                                <td class="paddingleft"><lightning:input label="No of Thorough Cuts" value=""/></td>
+                                            </tr>
+                                            <tr><td class="paddingright"><lightning:input label="No of Crown Cuts" value="{!v.initialCrownCut}"/></td>                                            
+                                                <td class="paddingleft"><lightning:input label="No of Side Walls Cuts" value="{!v.initialSideCut}"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div>
+                                        <table>
+                                            <tr><td><h4>Buffing</h4></td></tr>
+                                            <tr>
+                                                <td><lightning:textarea label="Remarks" value="{!v.buffingRemark}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><lightning:input label="Tread Width" value="{!v.buffingWidth}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><lightning:input label="Tread Length" value="{!v.buffingLength}"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="second_div">
+                                    <div >
+                                        <table>
+                                            <tr><td><h4>Skiving</h4></td></tr>
+                                            <tr>
+                                                <td><lightning:textarea label="Remarks" value="{!v.skivingRemark}"/></td>
+                                            </tr>
+                                            <tr><td><h4>Repair</h4></td></tr>
+                                            <tr>
+                                                <td><lightning:textarea label="Remarks" value="{!v.repairRemark}"/></td>
+                                            </tr>
+                                            <tr><td><h4>Filling</h4></td></tr>
+                                            <tr>
+                                                <td><lightning:textarea label="Remarks" value="{!v.filingRemark}"/></td>
+                                            </tr>
+                                            <tr><td><h4>Tread Preparation</h4></td></tr>
+                                            <tr>
+                                                <td><lightning:textarea label="Remarks" value="{!v.treadRemark}"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="third_div">
+                                    <div>
+                                        <!--<table>
+                                            <tr><td colspan="2"><h4>Building</h4></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><lightning:textarea label="Remarks" value="{!v.buildingRemark}"/></td>
+                                            </tr>
+                                            <tr><td colspan="2"><h4>Curing</h4></td></tr>
+                                           
+                                            <tr>
+                                                <td class="paddingright"><lightning:input   aura:id="curing"  type="number" label="Round No" value="{!v.curingRound}"/></td>
+                                                <td class="paddingleft"><lightning:input  aura:id="curing" label="Valve No" value="{!v.curingValue}"/></td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="timedetails"><lightning:input  aura:id="curing" type="DateTime" label="Start Time" value="{!v.curingstartTime}" onchange="{!c.calculateTotalHours}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="timedetails"><lightning:input type="DateTime" label="End Time" value="{!v.curingendTime}" onchange="{!c.calculateTotalHours}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="paddingright"><lightning:input  aura:id="curing" type="time"  label="Total Hour" value="{!v.curingtotalHours}"/></td>
+                                                <td class="paddingleft"><lightning:input  aura:id="curing" type="number" label="Chamber No" value="{!v.curingChamber}"/></td> 
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><lightning:input  aura:id="curing"  required="true" label="Curing Temprature" value="{!v.jobCardInfo.ETT_Curing_Temperature__c}"/></td>
+                                            </tr>
+                                            <tr><td  colspan="2"><h4>Final Inspection</h4></td></tr>
+                                            <tr>
+                                                <td colspan="2"><lightning:textarea label="Remarks" value="{!v.finalRemark}"/></td>
+                                            </tr>
+                                        </table>-->
+                                        <table>
+                                            <tr><td colspan="2"><h4>Building</h4></td></tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <lightning:textarea aura:id="buildingRemark" label="Remarks" value="{!v.buildingRemark}" required="true"/>
+                                                </td>
+                                            </tr>
+                                            <tr><td colspan="2"><h4>Curing</h4></td></tr>
+                                            <tr>
+                                                <td class="paddingright">
+                                                    <lightning:input aura:id="roundno" type="number" label="Round No" value="{!v.curingRound}" required="true"/>
+                                                </td>
+                                                <td class="paddingleft">
+                                                    <lightning:input aura:id="valve" label="Valve No" value="{!v.curingValue}" required="true"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="timedetails">
+                                                    <lightning:input aura:id="curingStartTime" type="datetime" label="Start Time" value="{!v.curingstartTime}" required="true" onchange="{!c.calculateTotalHours}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="timedetails">
+                                                    <lightning:input aura:id="curingEndTime" type="datetime" label="End Time" value="{!v.curingendTime}" required="true" onchange="{!c.calculateTotalHours}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="paddingright">
+                                                    <lightning:input aura:id="curingTotalHours" type="time" disabled="true" label="Total Hour" value="{!v.curingtotalHours}" />
+                                                </td>
+                                                <td class="paddingleft">
+                                                    <lightning:input aura:id="chamber" type="number" label="Chamber No" value="{!v.curingChamber}" required="true"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <lightning:input aura:id="curingTemp" label="Curing Temperature" value="{!v.jobCardInfo.ETT_Curing_Temperature__c}" />
+                                                </td>
+                                            </tr>
+                                            <tr><td colspan="2"><h4>Final Inspection</h4></td></tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <lightning:textarea aura:id="finalRemark" label="Remarks" value="{!v.finalRemark}" required="true"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning:tab>
+                        <lightning:tab class="RejAnalysis" label="Rejection Analysis">
+                            <div class="flexdiv">
+                                <div class="fourth">
+                                    <h4>Seperation</h4>
+                                    <div class="checkboxSection">
+                                        <lightning:input type="checkbox" label="Ply Seperation?" name="ETT_Ply_Seperation__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Ply_Seperation__c}"/>
+                                        <lightning:input type="checkbox" label="Bread Area Seperation?" name="ETT_Bread_Area_Seperation__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Bread_Area_Seperation__c}"/>
+                                        <lightning:input type="checkbox" label="Belt Seperation?" name="ETT_Belt_Seperation__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Belt_Seperation__c}"/>
+                                        <lightning:input type="checkbox" label="Cut Spot Seperation?" name="ETT_Cut_Spot_Seperation__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Cut_Spot_Seperation__c}"/>
+                                        <lightning:input type="checkbox" label="Tread Seperation?" name="ETT_Tread_Seperation__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Tread_Seperation__c}"/>
+                                        
+                                    </div>
+                                </div>
+                                <div class="fifth">
+                                    <h4>Repairs</h4>
+                                    <div class="checkboxSection">
+                                        
+                                        <lightning:input type="checkbox" label="Large Cut?" name="ETT_Large_Cut__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Large_Cut__c}"/>
+                                        <lightning:input type="checkbox" label="Excessive Cuts?" name="ETT_Excessive_Cuts__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Excessive_Cuts__c}"/>
+                                    </div>
+                                </div>
+                                <div class="six">
+                                    <h4>Scrap</h4>
+                                    <div class="checkboxSection">
+                                        
+                                        <lightning:input type="checkbox" label="Scrap?" name="ETT_Scrap__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Scrap__c}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="seven">
+                                <label class="headerColor">Casing Condition</label>
+                                <div class="checkboxSection">
+                                    <lightning:input type="checkbox" label="Old and Dry Casing?" name="ETT_Old_and_Dry_Casing__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Old_and_Dry_Casing__c}"/>
+                                    <lightning:input type="checkbox" label="Total Burst?" name="ETT_Total_Burst__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Total_Burst__c}"/>
+                                    <lightning:input type="checkbox" label="Steel Cord Visible?" name="ETT_Steel_Cord_Visible__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Steel_Cord_Visible__c}"/>
+                                    <lightning:input type="checkbox" label="Body Ply Distortance?" name="ETT_Body_Ply_Distortance__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Body_Ply_Distortance__c}"/>
+                                    <lightning:input type="checkbox" label="Excessive Damage on Seat Belt?" name="ETT_Excessive_Damage_on_Seat_Belt__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Excessive_Damage_on_Seat_Belt__c}"/>
+                                    <lightning:input type="checkbox" label="Overall Chipping?" name="ETT_Overall_Chipping__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Overall_Chipping__c}"/>
+                                    <lightning:input type="checkbox" label="Oil Choked Tyres?" name="ETT_Oil_Choked_Tyres__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Oil_Choked_Tyres__c}"/>
+                                    <lightning:input type="checkbox" label="Overall Rust?" name="ETT_Overall_Rust__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Overall_Rust__c}"/>
+                                    <lightning:input type="checkbox" label="Low Base Rubber?" name="ETT_Low_Base_Rubber__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Low_Base_Rubber__c}"/>
+                                    <lightning:input type="checkbox" label="Bread Area Damage?" name="ETT_Bread_Area_Damage__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Bread_Area_Damage__c}"/>
+                                    <lightning:input type="checkbox" label="Cut Spot Buckling?" name="ETT_Cut_Spot_Buckling__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Cut_Spot_Buckling__c}"/>
+                                    <lightning:input type="checkbox" label="Side Wall Buckling?" name="ETT_Side_Wall_Buckling__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Side_Wall_Buckling__c}"/>
+                                    <lightning:input type="checkbox" label="Price not Agreed?" name="ETT_Price_not_Agreed__c" onchange="{!c.handleChange}" value="{!v.jccRejection.ETT_Price_not_Agreed__c}"/>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </lightning:tab>
+                    </lightning:tabset>
+                    
+                </div>
+                
+                
+            </lightning:recordEditForm>
+            <div class="submitdiv">   
+                <!-- <ui:inputText aura:id="inputField" value="{!v.ProdtnStatus}"/> -->
+                <lightning:button variant="brand" label="Submit" title="submit" onclick="{!c.handleSubmit}" />
+            </div>
+        </div>
+        <br/>
+        
+        <aura:if isTrue="{!v.showModel}">
+            <!--###### MODAL BOX Start######--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="brand"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Material/Tool Addition</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        
+                        <lightning:recordEditForm recordId="" objectApiName="ETT_Job_Card_Close_Lines__c">
+                            <lightning:messages />                       
+                            <lightning:inputField fieldName="Item_Name__c" value="{!v.toolMasterId}" onchange="{!c.toolmasterChange}"/>
+                            <lightning:inputField fieldName="Job_Type__c" value="{!v.selectedJobProcss}" default="--None--"/>
+                            <lightning:inputField fieldName="Issued_Quantity__c" value="{!v.issuedQty}"/>
+                            
+                        </lightning:recordEditForm>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button class="slds-m-top_small" variant="brand"  name="save" label="Save12"  onclick="{!c.saveJCCloseLine}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+        <aura:if isTrue="{!v.showEmployeeModel}">
+            <!--###### MODAL BOX Start######--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="brand"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Time Consumed 12</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        
+                        <lightning:recordEditForm recordId="" objectApiName="ETT_JCC_Employee__c">
+                            <lightning:messages />
+                            <lightning:inputField fieldName="ETT_Job_Type__c" value="{!v.selectedJobProcss}" default="--None--"/>
+                            <lightning:inputField fieldName="ETT_Emp_No__c" value="{!v.empNo}" />
+                            <lightning:inputField fieldName="ETT_Employee_Name__c" value="{!v.empName}" />
+                            <lightning:inputField fieldName="ETT_Working_Date__c" value="{!v.empWorkingDate}" />
+                            <lightning:inputField fieldName="ETT_Start_Time__c" value="{!v.empStartTime}" />
+                            <lightning:inputField fieldName="ETT_End_Time__c" value="{!v.empEndTime}" />
+                        </lightning:recordEditForm>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button class="slds-m-top_small" variant="brand" name="save" label="Save" onclick="{!c.saveJCCloseEmployee}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+    </div> 
+    
+</aura:component>

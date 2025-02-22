@@ -1,0 +1,28 @@
+<aura:component >
+    <div class="footer_section">
+        <div class="footer_div">
+            <a href="">
+                <img src="{!$Resource.ET_Homefooterimg}" class="footerimg"/>
+                <label class="footer_label">Home</label>
+            </a>
+        </div>
+        <div class="footer_div">
+            <a href="">
+                <img src="{!$Resource.ET_Notificationfooterimg}" class="footerimg"/>
+                <label class="footer_label">Notification</label>
+            </a>
+        </div>
+        <div class="footer_div">
+            <a href="">
+                <img src="{!$Resource.ET_Profilefooterimg}" class="footerimg"/>
+                <label class="footer_label">Profile</label>
+            </a>
+        </div>
+        <div class="footer_div">
+            <a href="">
+                <img src="{!$Resource.ET_Logoutfooterimg}" class="footerimg"/>
+                <label class="footer_label">Log out</label>
+            </a>
+        </div>
+    </div>
+</aura:component>

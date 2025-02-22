@@ -1,0 +1,550 @@
+.THIS .documentmain{
+    position: relative;
+    width: 100%;
+    display: block;
+    clear: both;
+}
+.THIS .serchboxtab{
+    display: inline-block;
+    float: right;   
+    margin: 1rem;
+}
+.THIS .serchboxtab .slds-input , .THIS .serchboxtab .slds-input:focus{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #989898;
+    border-radius: 0px;
+    outline: none;
+    color: #989898;
+    box-shadow:none;
+}
+.THIS .serchboxtab_AR{
+    display: inline-block;
+    float: right;   
+    margin: 1rem;
+}
+.THIS .serchboxtab_AR .slds-input{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #989898;
+    border-radius: 0px;
+    outline: none;
+    color: #989898;
+    box-shadow:none;
+    direction:rtl;
+}
+.THIS .downloadButton{
+    color: #000;
+    font-size: 14px;
+    font-weight: 600;
+}
+.THIS .downloadicon{
+    color: red;
+    margin-left: 6px;
+}
+.THIS .serchboxtab .slds-input::-webkit-input-placeholder { /* Edge */
+    color:  #989898;
+}
+
+.THIS .serchboxtab .slds-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:  #989898;
+}
+
+.THIS .serchboxtab .slds-input::placeholder {
+    color:  #989898;
+}
+.THIS .serchboxtab .slds-button_icon{
+    color: #989898!important;
+}
+.THIS .serchboxtab .slds-input-has-icon .slds-input__icon {
+    width: 1rem;
+    height: 1rem;
+    fill: #989898;
+    left:0px;
+}
+.THIS .btnsorticon{
+    border: none;
+    display: inline-block;
+    text-align: right;
+    font-size: 10px;
+    width: auto;
+    position: absolute;
+    top: 5px;
+    right: 6px;
+}
+.THIS .btnsorticon:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.THIS .btnsorticon lightning-primitive-icon{
+    color: #575757 !important;
+}
+.THIS.casesupmaindiv{
+    /*min-height:86.2vh;*/
+    min-height:calc(100vh - 40px);
+    height:100%;
+    padding:0 5%;
+}
+.THIS .actionButton {
+    background-color: #624500;
+    color: white;
+    border: 1px solid #624500;
+    box-shadow: none;
+    font-size: 14px;
+    transition:0.4s;
+    line-height: 18px;
+    padding: 5px 10px;
+}
+.THIS .tableClass{
+    min-height:50px;
+    overflow:auto;
+    width: 100%;
+    position: relative;
+    max-height: 320px;
+}
+.THIS .actionButton:hover {
+    background-color: #fff;
+    color: #624500;
+    border: 1px solid #624500;
+    box-shadow: none;
+    transition:0.4s;
+}
+
+.THIS .emmergencyButton {
+    background-color: rgb(98 204 140);
+    color: white;
+    border: 1px solid rgb(98 204 140);
+    box-shadow: none;
+    font-size: 14px;
+    transition:0.4s;
+    line-height: 18px;
+    padding: 5px 10px;
+    border-radius: 0px;
+    text-transform: uppercase;
+}
+.THIS .emmergencyButton:hover {
+    background-color: #fff;
+    color: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    box-shadow: none;
+    transition:0.4s;
+}
+.THIS .maincantentdiv{
+    padding: 15px;
+    overflow: auto;
+}
+.THIS .Headingcontent{
+    font-size: 18px;
+    color: rgb(98 204 140);
+    text-transform: uppercase;
+    text-align: left;
+    /* padding-bottom: 8px; */
+    /* padding-top: 8px; */
+    display: inline-block;
+    padding-left:1rem;
+}
+.THIS .subheading{
+    font-size: 14px;
+    font-weight: 600;
+}
+.THIS .slds-gutters .slds-col {
+    padding-right: .75rem;
+    padding-left: .75rem;
+    width: 50%;padding-bottom: 1.50rem;
+}
+.THIS .textColor {
+    color:  #624500;font-size: 14px; /* #8a1538; */
+}
+.THIS table {
+    width: 100%;
+}
+.THIS table tr th {
+    text-align: left;
+    padding: 10px 5px;
+    border-bottom: 1px solid rgb(98 204 140);
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #fff!important;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    border-top: 1px solid #f1f1f1;
+}
+.THIS table tr td {
+    text-align: left;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    color:black;
+    white-space: break-spaces;
+}
+.THIS input[type=text], 
+.THIS input[type=password], 
+.THIS textarea, 
+.THIS textarea.form-control, 
+.THIS select, .THIS input[type=tel], .THIS input[type=email] , .THIS .uiInput--default input{
+    height: 38px;
+    margin: 0;
+    padding: 0 15px 0 15px;
+    vertical-align: middle;
+    background: transparent;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #555;
+    border-radius: 0px;
+    box-shadow: none;
+    transition: all .3s;
+    border: none;
+    border-bottom: 1px solid #555;
+}
+.THIS .slds-select:focus, .THIS .slds-select:active{
+    outline: 0;
+    border-color: #555;
+    background-color: transparent;
+    color: #555;
+    box-shadow: none;
+}
+.THIS .serchboxtab , .THIS .serchboxtab_AR{
+    display: inline-block;
+    float: right;
+    margin: .4rem 1rem;
+}
+.THIS .uiInput--input.input:focus {
+    outline: 0;
+    border-color: transparent;
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom: 1px solid #fff;
+}
+.THIS .cassnos input[type=text]{
+    padding: 0 15px 0 15px;
+}
+.THIS .slds-form-element__label {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+    color: rgb(224 223 223);
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 0px;
+    font-weight: normal;
+    position: absolute;
+    bottom: -24px;
+}
+.THIS.documenttable , .THIS.documentmain{
+    /* padding: 30px;
+    background: #fafafa;
+    border:4px solid #fff;*/
+}
+.THIS.documenttable table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.THIS.documenttable table tr th {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+    font-weight: 600;    text-transform: uppercase;
+    background:#f1f1f6;
+}
+.THIS .documenttable table tr td {
+    text-align: center;
+    padding: 5px;font-size: 12px;
+}
+.THIS.uiInput--default .form-element__label , .THIS .form-element__label{
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 5px;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.6);
+}
+.THIS.uiInput--datetime .form-element , .THIS .uiInput--default input{
+    position: relative;
+    margin-top: 5px!important;
+}
+.THIS .uiInput--datetime .datePicker-openIcon {
+    bottom: 14px!important;
+}
+.THIS .btncreatesection{
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+    padding: 0rem 0rem 1rem;
+}
+
+/* css for custom dashboard component*/
+.THIS .form-box-row2{
+    padding: 0rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    position: relative;
+    opacity: 1;
+    transition:.4s all;
+    height: auto;
+    overflow: hidden;
+}
+/*.THIS .form-box-row2:hover{
+transform:scale(1.05);
+transition:.4s all;
+background: #fff;
+}*/
+.THIS .form-title{
+    color: #000;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 0 0 0rem;
+}
+
+.THIS .numberSize{
+    text-align: right;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 28px;
+    padding-bottom: 5px;
+}
+.THIS .numberSize img{
+    float: left;
+    width: 36px;
+    height: 36px;
+}
+.THIS .slds-card {
+    background:transparent;
+    border: 0px solid #E0E0E0;
+    padding:1rem;
+}
+.THIS .rightsectiondiv{
+    display: inline-block;
+    width: 100%;
+    float: left;
+    padding: 0rem;
+    height: 100%;
+}
+.THIS .leftsectiondiv{
+    display: inline-block;
+    width: 35%;
+    float:left;
+    height: 100%;
+    background:#f2f2f2;
+    position: relative;
+}
+.THIS .leftsectiondiv img{
+    /*width: 100%;
+    height: 100%;
+    padding: 24px;*/
+    position: absolute;
+    width: 50px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.THIS.casesupmaindiv .slds-card .slds-col{
+    width: 19%;
+    display: inline-block;
+    margin: 0% .5% 1% .5%;
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 8px 6px -6px #9c9c9c;
+    transition: .4s all;
+}
+.THIS.casesupmaindiv .slds-card .slds-col:hover{
+    background:#2e2a2b!important;
+}
+.THIS.casesupmaindiv .slds-card .slds-col:hover .leftsectiondiv img {
+    padding: 1rem .5rem;
+}
+.THIS.casesupmaindiv .slds-card .slds-col:hover .numberSize ,
+.THIS.casesupmaindiv .slds-card .slds-col:hover .form-title{
+    color:#fff;
+}
+.THIS.casesupmaindiv .slds-card .slds-col2{
+    width: 30%;
+    display: inline-block;
+    margin: 1% 2% 2% 1%;
+}
+.THIS .filtersection .slds-accordion__section{
+    padding:0.75rem 0px;
+}
+.THIS .tableshow{
+    position: relative;
+    clear: both;
+    padding: 1rem 0rem;
+    margin: 1rem 0rem;
+    background: #fff;
+    border-radius: 10px;
+}
+.THIS .fivediv{
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+}
+/*footer css start*/
+.THIS.footer_section {
+    background: #000;
+    padding: 1rem 5%;
+    position: relative;
+    display: flow-root;
+}
+.THIS.footer_section .copytext {
+    font-size: 12px;
+    color: #fff;
+    float: right;
+    padding-top: 4px;
+}
+.THIS.footer_section .social_links {
+    position: relative;
+    width: 50%;
+    display: inline-block;
+}
+.THIS.footer_section .social_links a {
+    padding: 0 1rem;
+}
+.THIS.footer_section .social_links a img{
+    width: 20px;
+    height: 20px;
+}
+/*footer css end*/
+.THIS .slds-select_container:before{
+    display:none;
+}
+.THIS .slds-select_container:after {
+    bottom: calc((1.75rem / 2) - -2px);
+}
+
+.THIS .slds-modal__container{
+    width: 80%;
+    min-width: 80%;
+    max-width: 80%;
+}
+.THIS #customCmpCare .slds-card .slds-col {
+    width: 25%!important;
+    display: inline-block; 
+    margin: 0%!important;
+    background: #fff;
+    border-radius: 0px!important;
+    padding: 0rem .5rem .5rem;
+    box-shadow:none!important;
+    position:relative;
+}
+@media only screen and (max-width: 1024px){
+    .THIS .tableshow .slds-col{
+        overflow: auto;
+    }
+}
+@media only screen and (max-width: 992px){
+    .THIS .tableClass {
+        max-width: 100%;
+    }
+    .THIS .slds-gutters .slds-col {
+        padding-bottom: 0rem;
+    }
+}
+@media only screen and (max-width: 768px){
+    .THIS .slds-grid {
+        display: flex;
+    }
+    .THIS .slds-gutters .slds-col {
+        display: inline-block;
+    }
+    .THIS .form-title {
+        font-size: 10px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .slds-grid {
+        display: block;
+    }
+    .THIS .serchboxtab, .THIS .serchboxtab_AR {    width: 94%;
+    }
+    .THIS .numberSize {
+        font-size: 20px;
+    }
+    .THIS .form-title {
+        padding: .5rem 0;
+        position: relative;
+        display: block;
+        width: 100%;
+        clear: both;
+    }
+    .THIS .form-box-row2 {
+        height: 65px;
+    }
+    .THIS .numberSize img {
+        float: left;
+        width: 32px;
+        height: 32px;
+    }
+    .THIS table tr th {
+        font-size: 12px;
+    }
+    .THIS.footer_section {
+        padding: 1rem 5%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .THIS .slds-card .slds-col {
+        width: 48%;
+        display: inline-block;
+        margin: 1%;
+    }
+    .THIS .form-box-row2 {
+        height: auto;
+    }
+    .THIS .form-title {
+        font-size: 9px;padding:.5rem 0 0;
+    }
+    .THIS .fivediv .slds-card{
+        text-align: left!important;
+    }
+    .THIS .slds-gutters .slds-col {
+        width: 100%;
+        margin: 0% 0% 1% 0%;
+        display: block;
+    }
+    .THIS .emmergencyButton {
+        font-size: 12px;
+    }
+    .THIS.casesupmaindiv {
+        min-height: calc(100vh - 80px);
+    }
+    .THIS .tableshow {
+        margin: 1rem 0rem;
+    }
+    .THIS .serchboxtab {
+        margin: 1rem 0rem;
+        width: 100%;
+    }
+    .THIS.footer_section .social_links {
+        width: 100%;
+        text-align: center;
+    }
+    .THIS.footer_section .copytext {
+        float: none;
+        padding-top: 1rem;
+        text-align: center;
+    }
+    .THIS.footer_section {
+        padding: 1rem 5%;
+    }
+    .THIS .slds-card {
+        padding: 1rem 0;
+    }
+    .THIS.casesupmaindiv .slds-card .slds-col {
+        width: 48%;
+        margin: 0% 1% 3% 1%;
+    }
+}

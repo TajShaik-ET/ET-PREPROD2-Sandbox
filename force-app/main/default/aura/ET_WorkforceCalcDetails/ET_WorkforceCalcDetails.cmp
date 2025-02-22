@@ -1,0 +1,2018 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,lightning:isUrlAddressable" controller='ET_WorkforceCalDetailsController'>  
+    
+    <aura:attribute name="wrokforceCalcDetails" type="List"/>
+    <aura:attribute name="workforceType" type="String"/>
+    <aura:attribute name="wrokforceApprovalDetails" type="List"/>
+    
+    <aura:attribute name="quoteId" type="Id"/>
+    <aura:attribute name="pricingPolicy1" type="Object"/>
+    <aura:attribute name="pricingPolicy2" type="Object"/>
+    <aura:attribute name="pricingPolicy3" type="Object"/>
+    <aura:attribute name="pricingPolicy4" type="Object"/>
+    <aura:attribute name="pricingPolicy5" type="Object"/>
+    <aura:attribute name="pricingPolicy6" type="Object"/>
+    <aura:attribute name="pricingPolicy7" type="Object"/>
+    <aura:attribute name="pricingPolicy8" type="Object"/>
+    
+    <aura:attribute name="otherCost1" type="List"/>
+    <aura:attribute name="otherCost2" type="List"/>
+    <aura:attribute name="otherCost3" type="List"/>
+    <aura:attribute name="otherCost4" type="List"/>
+    <aura:attribute name="otherCost5" type="List"/>
+    <aura:attribute name="otherCost6" type="List"/>
+    <aura:attribute name="otherCost7" type="List"/>
+    <aura:attribute name="otherCost8" type="List"/>
+    <aura:attribute name="spcialRequirementLabelsLst" type="List"/>
+    
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:attribute name="page" type="integer"/>
+    <aura:attribute name="lineNo" type="integer" default="1"/>
+    <aura:attribute name="noOfWorkforce" type="Integer" default="0"/>
+    <aura:attribute name="workforceSalary" type="Decimal" />
+    <aura:attribute name="workforceCategory" type="String" />
+    <aura:attribute name="serviceType" type="String" />
+    <aura:attribute name="totalLines" type="integer"/>
+    <aura:attribute name="isTargetPriceRequired" type="Boolean" default="false"/>
+    <aura:attribute name="quoteType" type="String" />
+    <!--img src="{!$Resource.ET_Header}"/-->
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:method name="handleLineNumberChange" action="{!c.getDataWithRespectToLine}" access="public">
+        <aura:attribute name="lineNo" type="integer" />
+    </aura:method>
+    
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{! v.loaded }">
+        <aura:if isTrue="{!v.quoteType != 'Total Project Summary'}">
+            <div class="slds-box slds-box_xx-small bgColor">
+                <p >{!v.workforceType} Calculation Details</p>
+            </div>
+            <table class="slds-table slds-table_cell-buffer  slds-table_bordered slds-table_striped vehicleCaclTable"> 
+                <tr>
+                    <td style="width:100px">
+                        <label>Line Number :</label>     
+                    </td>
+                    <td style="width:200px">
+                        <div>{!v.lineNo}</div>
+                    </td>
+                    <td style="width:100px">
+                        <aura:if isTrue="{!v.workforceType != 'Nanny'}">
+                            <label>No of {!v.workforceType}s
+                            </label>
+                            <aura:set attribute="else">
+                                <label>No of {!v.workforceType}ies
+                                </label>
+                            </aura:set>
+                        </aura:if>
+                    </td>
+                    <td style="width:200px">
+                        <div>{!v.noOfWorkforce}</div>
+                    </td>
+                    <td style="width:100px">
+                        <label>{!v.workforceType} Category 
+                        </label>
+                    </td>
+                    <td style="width:200px">
+                        <div>{!v.workforceCategory}</div>
+                    </td>
+                    
+                    <td style="width:100px">
+                        <label>{!v.workforceType} Gross Salary 
+                        </label>
+                    </td>
+                    
+                    <td style="width:200px">
+                        <div>{!v.workforceSalary}</div>
+                    </td>
+                    
+                </tr> 
+            </table> 
+        </aura:if>
+        <br/>
+        
+        <div class="table-responsive">
+            <table class="slds-table slds-table_cell-buffer  slds-table_bordered slds-table_striped vehicleCaclTable">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Pricing Type">Pricing Type</div>
+                        </th>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                            </th>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                            </th>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                            </th>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                            </th>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                            </th>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                            </th>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                            </th>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                            </th>
+                        </aura:if>                
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="slds-hint-parent">   
+                        <td data-label="Years">
+                            <div class="slds-truncate" title="Contract Period">Contract Period</div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td data-label="1">
+                                <div class="slds-truncate" title="1">1</div>
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td data-label="2">
+                                <div class="slds-truncate" title="2">2</div>
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td data-label="3">
+                                <div class="slds-truncate" title="3">3</div>
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td data-label="4">
+                                <div class="slds-truncate" title="4">4</div>
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td data-label="5">
+                                <div class="slds-truncate" title="5">5</div>
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td data-label="5">
+                                <div class="slds-truncate" title="6">6</div>
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td data-label="1">
+                                <div class="slds-truncate" title="7">7</div>
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td data-label="1">
+                                <div class="slds-truncate" title="8">8</div>
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <aura:if isTrue="{!v.quoteType != 'Total Project Summary'}">
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="No. of Months per year">Working Months per year</div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Working_Months_Per_Year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Working_Months_Per_Year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Working_Months_Per_Year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Working_Months_Per_Year__c}</div> 
+                                </td>					
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Working_Months_Per_Year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Working_Months_Per_Year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Working_Months_Per_Year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Working_Months_Per_Year__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                        
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Working days per year">Working days per year</div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Working_days_per_year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Working_days_per_year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Working_days_per_year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Working_days_per_year__c}</div> 
+                                </td>		
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Working_days_per_year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Working_days_per_year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Working_days_per_year__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Working_days_per_year__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    <aura:if isTrue="{!v.quoteType != 'Total Project Summary'}">
+                        <tr class="innerTableHeader">
+                            <td colspan="9"> 
+                                <div class="slds-align--absolute-center">  Human resources Assumptions</div>
+                            </td>								
+                        </tr>
+                        
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Basic Salary">Basic Salary</div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Workforce_basic_salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Workforce_basic_salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Workforce_basic_salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Workforce_basic_salary__c}</div> 
+                                </td>	
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Workforce_basic_salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Workforce_basic_salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Workforce_basic_salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Workforce_basic_salary__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                        
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Basic Salary">Gross Salary</div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Workforce_Gross_Salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Workforce_Gross_Salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Workforce_Gross_Salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Workforce_Gross_Salary__c}</div> 
+                                </td>			
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Workforce_Gross_Salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Workforce_Gross_Salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Workforce_Gross_Salary__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Workforce_Gross_Salary__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <tr  class="innerTableHeader">
+                        <td colspan="9"> 
+                            <div class="slds-align--absolute-center">  Direct Cost ( A )</div>
+                        </td>								
+                    </tr>
+                    <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Annual salary">Annual salary</div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Wages__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Wages__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Wages__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Wages__c}</div> 
+                            </td>	
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Wages__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Wages__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Wages__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Wages__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.ET_Overtime__c != 0, v.pricingPolicy2.ET_Overtime__c != 0, v.pricingPolicy3.ET_Overtime__c != 0 , v.pricingPolicy4.ET_Overtime__c != 0, v.pricingPolicy5.ET_Overtime__c != 0 , v.pricingPolicy6.ET_Overtime__c != 0 , v.pricingPolicy7.ET_Overtime__c != 0 , v.pricingPolicy8.ET_Overtime__c != 0)}">
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Wages">Overtime
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Overtime__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Overtime__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Overtime__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Overtime__c}</div> 
+                                </td>		
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Overtime__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Overtime__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Overtime__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Overtime__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <tr class="totalCost" >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Total Direct Operational Costs">Total Direct Operational Costs
+                            </div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Total_Direct_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Total_Direct_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Total_Direct_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Total_Direct_Operational_Costs__c}</div> 
+                            </td>		
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Total_Direct_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Total_Direct_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Total_Direct_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Total_Direct_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <tr class="innerTableHeader">
+                        <td colspan="9"> 
+                            <div class="slds-align--absolute-center">Indirect costs ( B )</div>
+                        </td>								
+                    </tr>
+                    <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Annual leave allowance">Annual leave allowance
+                            </div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Annual_leave_allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Annual_leave_allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Annual_leave_allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Annual_leave_allowance__c}</div> 
+                            </td>	
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Annual_leave_allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Annual_leave_allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Annual_leave_allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Annual_leave_allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="End of Service">End of Service</div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_End_of_Service__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_End_of_Service__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_End_of_Service__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_End_of_Service__c}</div> 
+                            </td>		
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_End_of_Service__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_End_of_Service__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_End_of_Service__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_End_of_Service__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Clothes Allowance">Clothes Allowance</div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Clothes_Allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Clothes_Allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Clothes_Allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Clothes_Allowance__c}</div> 
+                            </td>		
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Clothes_Allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Clothes_Allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Clothes_Allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Clothes_Allowance__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Health Card">Health Card</div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Health_Card__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Health_Card__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Health_Card__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Health_Card__c}</div> 
+                            </td>	
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Health_Card__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Health_Card__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Health_Card__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Health_Card__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <aura:if isTrue ="{!v.serviceType == 'School Transportation'}">
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Licensing and Training Fees">Licensing and Training Fees
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Licensing_Fees__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Licensing_Fees__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Licensing_Fees__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Licensing_Fees__c}</div> 
+                                </td>			
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Licensing_Fees__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Licensing_Fees__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Licensing_Fees__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Licensing_Fees__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Visa Cost">Visa Cost</div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Visa_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Visa_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Visa_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Visa_Cost__c}</div> 
+                            </td>	
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Visa_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Visa_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Visa_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Visa_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.ET_Smart_Phone_Cost__c != 0, v.pricingPolicy2.ET_Smart_Phone_Cost__c != 0, v.pricingPolicy3.ET_Smart_Phone_Cost__c != 0 , v.pricingPolicy4.ET_Smart_Phone_Cost__c != 0, v.pricingPolicy5.ET_Smart_Phone_Cost__c != 0 , v.pricingPolicy6.ET_Smart_Phone_Cost__c != 0 , v.pricingPolicy7.ET_Smart_Phone_Cost__c != 0 , v.pricingPolicy8.ET_Smart_Phone_Cost__c != 0)}">
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Smart Phone">Smart Phone</div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Smart_Phone_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Smart_Phone_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Smart_Phone_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Smart_Phone_Cost__c}</div> 
+                                </td>				
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Smart_Phone_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Smart_Phone_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Smart_Phone_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Smart_Phone_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.ET_Accommodation_Allowance__c != 0, v.pricingPolicy2.ET_Accommodation_Allowance__c != 0, v.pricingPolicy3.ET_Accommodation_Allowance__c != 0 , v.pricingPolicy4.ET_Accommodation_Allowance__c != 0, v.pricingPolicy5.ET_Accommodation_Allowance__c != 0 , v.pricingPolicy6.ET_Accommodation_Allowance__c != 0 , v.pricingPolicy7.ET_Accommodation_Allowance__c != 0 , v.pricingPolicy8.ET_Accommodation_Allowance__c != 0)}">
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Accomodation">Accommodation</div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Accommodation_Allowance__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Accommodation_Allowance__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Accommodation_Allowance__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Accommodation_Allowance__c}</div> 
+                                </td>	
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Accommodation_Allowance__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Accommodation_Allowance__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Accommodation_Allowance__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Accommodation_Allowance__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.ET_Air_Tickets__c != 0, v.pricingPolicy2.ET_Air_Tickets__c != 0, v.pricingPolicy3.ET_Air_Tickets__c != 0 , v.pricingPolicy4.ET_Air_Tickets__c != 0, v.pricingPolicy5.ET_Air_Tickets__c != 0 , v.pricingPolicy6.ET_Air_Tickets__c != 0 , v.pricingPolicy7.ET_Air_Tickets__c != 0 , v.pricingPolicy8.ET_Air_Tickets__c != 0)}">
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Air Ticket">Air Ticket</div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Air_Tickets__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Air_Tickets__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Air_Tickets__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Air_Tickets__c}</div> 
+                                </td>				
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Air_Tickets__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Air_Tickets__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Air_Tickets__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Air_Tickets__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.ET_Extra_Certification_Cost__c != 0, v.pricingPolicy2.ET_Extra_Certification_Cost__c != 0, v.pricingPolicy3.ET_Extra_Certification_Cost__c != 0 , v.pricingPolicy4.ET_Extra_Certification_Cost__c != 0, v.pricingPolicy5.ET_Extra_Certification_Cost__c != 0 , v.pricingPolicy6.ET_Extra_Certification_Cost__c != 0 , v.pricingPolicy7.ET_Extra_Certification_Cost__c != 0 , v.pricingPolicy8.ET_Extra_Certification_Cost__c != 0)}">
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Extra Certification Cost">Extra Certification Cost</div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Extra_Certification_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Extra_Certification_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Extra_Certification_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Extra_Certification_Cost__c}</div> 
+                                </td>		
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Extra_Certification_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Extra_Certification_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Extra_Certification_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Extra_Certification_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <tr>
+                        <td data-label="1">
+                            <aura:iteration items="{!v.spcialRequirementLabelsLst}" var="vehicleSpecReqLabel" indexVar="indx">
+                                <tr>
+                                    <td>
+                                        <div class="slds-truncate" title="{!vehicleSpecReqLabel}">{!vehicleSpecReqLabel}</div>
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </td>
+                        <aura:if  isTrue="{!not(empty((v.otherCost1)))}">
+                            <td>  
+                                <aura:iteration items="{!v.otherCost1}" var="otherCost1" indexVar="indx">
+                                    <tr>   
+                                        <td><div class="slds-truncate">{!otherCost1.ET_Cost__c}</div></td>
+                                    </tr> 
+                                </aura:iteration>
+                            </td> 
+                        </aura:if>
+                        <aura:if  isTrue="{!not(empty((v.otherCost2)))}">
+                            <td>  
+                                <aura:iteration items="{!v.otherCost2}" var="otherCost2" indexVar="indx">
+                                    <tr>   
+                                        <td><div class="slds-truncate">{!otherCost2.ET_Cost__c}</div></td>
+                                    </tr> 
+                                </aura:iteration>
+                            </td> 
+                        </aura:if>
+                        <aura:if  isTrue="{!not(empty((v.otherCost3)))}">
+                            <td>  
+                                <aura:iteration items="{!v.otherCost3}" var="otherCost3" indexVar="indx">
+                                    <tr>   
+                                        <td><div class="slds-truncate">{!otherCost3.ET_Cost__c}</div></td>
+                                    </tr> 
+                                </aura:iteration>
+                            </td> 
+                        </aura:if>
+                        <aura:if  isTrue="{!not(empty((v.otherCost4)))}">
+                            <td>  
+                                <aura:iteration items="{!v.otherCost4}" var="otherCost4" indexVar="indx">
+                                    <tr>   
+                                        <td><div class="slds-truncate">{!otherCost4.ET_Cost__c}</div></td>
+                                    </tr> 
+                                </aura:iteration>
+                            </td> 
+                        </aura:if>
+                        <aura:if  isTrue="{!not(empty((v.otherCost5)))}">
+                            <td>  
+                                <aura:iteration items="{!v.otherCost5}" var="otherCost5" indexVar="indx">
+                                    <tr>   
+                                        <td><div class="slds-truncate">{!otherCost5.ET_Cost__c}</div></td>
+                                    </tr> 
+                                </aura:iteration>
+                            </td> 
+                        </aura:if>
+                        <aura:if  isTrue="{!not(empty((v.otherCost6)))}">
+                            <td>  
+                                <aura:iteration items="{!v.otherCost6}" var="otherCost6" indexVar="indx">
+                                    <tr>   
+                                        <td><div class="slds-truncate">{!otherCost6.ET_Cost__c}</div></td>
+                                    </tr> 
+                                </aura:iteration>
+                            </td> 
+                        </aura:if>
+                        <aura:if  isTrue="{!not(empty((v.otherCost7)))}">
+                            <td>  
+                                <aura:iteration items="{!v.otherCost7}" var="otherCost7" indexVar="indx">
+                                    <tr>   
+                                        <td><div class="slds-truncate">{!otherCost7.ET_Cost__c}</div></td>
+                                    </tr> 
+                                </aura:iteration>
+                            </td> 
+                        </aura:if>
+                        <aura:if  isTrue="{!not(empty((v.otherCost8)))}">
+                            <td>  
+                                <aura:iteration items="{!v.otherCost8}" var="otherCost8" indexVar="indx">
+                                    <tr>   
+                                        <td><div class="slds-truncate">{!otherCost8.ET_Cost__c}</div></td>
+                                    </tr> 
+                                </aura:iteration>
+                            </td> 
+                        </aura:if>
+                    </tr>
+                    
+                    <aura:if isTrue ="{!v.serviceType == 'School Transportation'}">
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Language and Psychometric Test">Language and Psychometric Test
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Language_and_Psychometric_Test__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Language_and_Psychometric_Test__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Language_and_Psychometric_Test__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Language_and_Psychometric_Test__c}</div> 
+                                </td>			
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Language_and_Psychometric_Test__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Licensing_Fees__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Language_and_Psychometric_Test__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Language_and_Psychometric_Test__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <tr class="totalCost" >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Total Indirect operational costs">Total Indirect operational costs
+                            </div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Total_Indirect_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Total_Indirect_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Total_Indirect_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Total_Indirect_Operational_Costs__c}</div> 
+                            </td>		
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Total_Indirect_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Total_Indirect_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Total_Indirect_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Total_Indirect_Operational_Costs__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Manpower Reserve">Manpower Reserve
+                            </div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Reserve_Amount__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Reserve_Amount__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Reserve_Amount__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Reserve_Amount__c}</div> 
+                            </td>		
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Reserve_Amount__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Reserve_Amount__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Reserve_Amount__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Reserve_Amount__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    
+                     <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Manpower Reserve">Manpower Reserve(Discounted)
+                            </div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.Manpower_Reserve_Discounted__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.Manpower_Reserve_Discounted__}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.Manpower_Reserve_Discounted__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.Manpower_Reserve_Discounted__c}</div> 
+                            </td>		
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.Manpower_Reserve_Discounted__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.Manpower_Reserve_Discounted__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.Manpower_Reserve_Discounted__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.Manpower_Reserve_Discounted__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    
+                     <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Manpower Reserve">Manpower Reserve(Target)
+                            </div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.Reserve_Cost_Target_Prices__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.Reserve_Cost_Target_Prices__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.Reserve_Cost_Target_Prices__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.Reserve_Cost_Target_Prices__c}</div> 
+                            </td>		
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.Reserve_Cost_Target_Prices__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.Reserve_Cost_Target_Prices__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.Reserve_Cost_Target_Prices__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.Reserve_Cost_Target_Prices__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <tr class="innerTableHeader">
+                        <td colspan="9"> 
+                            <div class="slds-align--absolute-center">Total Cost ( A + B )</div>
+                            
+                        </td>								
+                        
+                    </tr>
+                    <tr class="totalCost" >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Total Cost">Total Cost
+                            </div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Total_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Total_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Total_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Total_Cost__c}</div> 
+                            </td>	
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Total_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Total_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Total_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Total_Cost__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <aura:if  isTrue="{!v.isTargetPriceRequired}">
+                        <tr class="totalCost" >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Total Cost(Discounted)">Total Cost(Discounted)
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.Total_Cost_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.Total_Cost_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.Total_Cost_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.Total_Cost_Discounted__c}</div> 
+                                </td>	
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.Total_Cost_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.Total_Cost_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.Total_Cost_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.Total_Cost_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                        
+                        <tr class="totalCost" >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Total Cost">Total Cost(Target)
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.Total_Cost_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.Total_Cost_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.Total_Cost_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.Total_Cost_Target_Prices__c}</div> 
+                                </td>	
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.Total_Cost_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.Total_Cost_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.Total_Cost_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.Total_Cost_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.ET_Workforce_cost_per_each_vehicle__c != 0, v.pricingPolicy2.ET_Workforce_cost_per_each_vehicle__c != 0, v.pricingPolicy3.ET_Workforce_cost_per_each_vehicle__c != 0 , v.pricingPolicy4.ET_Workforce_cost_per_each_vehicle__c != 0, v.pricingPolicy5.ET_Workforce_cost_per_each_vehicle__c != 0 , v.pricingPolicy6.ET_Workforce_cost_per_each_vehicle__c != 0 , v.pricingPolicy7.ET_Workforce_cost_per_each_vehicle__c != 0 , v.pricingPolicy8.ET_Workforce_cost_per_each_vehicle__c != 0)}">
+                        <tr> 
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Total Cost Per Each Vehicle">Total Cost Per Each Vehicle
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Workforce_cost_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Workforce_cost_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Workforce_cost_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Workforce_cost_per_each_vehicle__c}</div> 
+                                </td>	
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Workforce_cost_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Workforce_cost_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Workforce_cost_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Workforce_cost_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.Workforce_cost_per_each_veh_Discounted__c != 0, 
+                                      v.pricingPolicy2.Workforce_cost_per_each_veh_Discounted__c != 0,
+                                      v.pricingPolicy3.Workforce_cost_per_each_veh_Discounted__c != 0 ,
+                                      v.pricingPolicy4.Workforce_cost_per_each_veh_Discounted__c != 0, 
+                                      v.pricingPolicy5.Workforce_cost_per_each_veh_Discounted__c != 0 ,
+                                      v.pricingPolicy6.Workforce_cost_per_each_veh_Discounted__c != 0 , 
+                                      v.pricingPolicy7.Workforce_cost_per_each_veh_Discounted__c != 0 , 
+                                      v.pricingPolicy8.Workforce_cost_per_each_veh_Discounted__c != 0)}">
+                        <tr> 
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Total Cost Per Each Vehicle">Total Cost Per Each Vehicle(Discounted)
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.Workforce_cost_per_each_veh_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.Workforce_cost_per_each_veh_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.Workforce_cost_per_each_veh_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.Workforce_cost_per_each_veh_Discounted__c}</div> 
+                                </td>	
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.Workforce_cost_per_each_veh_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.Workforce_cost_per_each_veh_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.Workforce_cost_per_each_veh_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.Workforce_cost_per_each_veh_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.Workforce_cost_per_each_veh_Target__c != 0, 
+                                      v.pricingPolicy2.Workforce_cost_per_each_veh_Target__c != 0,
+                                      v.pricingPolicy3.Workforce_cost_per_each_veh_Target__c != 0 , 
+                                      v.pricingPolicy4.Workforce_cost_per_each_veh_Target__c != 0, 
+                                      v.pricingPolicy5.Workforce_cost_per_each_veh_Target__c != 0 ,
+                                      v.pricingPolicy6.Workforce_cost_per_each_veh_Target__c != 0 , 
+                                      v.pricingPolicy7.Workforce_cost_per_each_veh_Target__c != 0 , 
+                                      v.pricingPolicy8.Workforce_cost_per_each_veh_Target__c != 0)}">
+                        <tr> 
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Total Cost Per Each Vehicle">Total Cost Per Each Vehicle(Target)
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.Workforce_cost_per_each_veh_Target__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.Workforce_cost_per_each_veh_Target__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.Workforce_cost_per_each_veh_Target__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.Workforce_cost_per_each_veh_Target__c}</div> 
+                                </td>	
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.Workforce_cost_per_each_veh_Target__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.Workforce_cost_per_each_veh_Target__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.Workforce_cost_per_each_veh_Target__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.Workforce_cost_per_each_veh_Target__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <tr class="innerTableHeader">
+                        <td colspan="9"> 
+                            <div class="slds-align--absolute-center">Total Profit</div>
+                        </td>								
+                    </tr>
+                    <tr >
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Annual Profit Margin">Annual Profit Margin(%)
+                            </div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Annual_Profit_Margin__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Annual_Profit_Margin__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Annual_Profit_Margin__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Annual_Profit_Margin__c}</div> 
+                            </td>		
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Annual_Profit_Margin__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Annual_Profit_Margin__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Annual_Profit_Margin__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Annual_Profit_Margin__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>
+                    <tr>
+                        <td data-label="1">
+                            <div class="slds-truncate" title="Total Annual Net Profit Value">Total Annual Net Profit Value
+                            </div>
+                        </td>
+                        <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy1.ET_Annual_Profit_Value__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                            <td >
+                                <div class="slds-truncate" >{!v.pricingPolicy2.ET_Annual_Profit_Value__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy3.ET_Annual_Profit_Value__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy4.ET_Annual_Profit_Value__c}</div> 
+                            </td>			
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy5.ET_Annual_Profit_Value__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy6.ET_Annual_Profit_Value__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy7.ET_Annual_Profit_Value__c}</div> 
+                            </td>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                            <td >
+                                <div class="slds-truncate">{!v.pricingPolicy8.ET_Annual_Profit_Value__c}</div> 
+                            </td>
+                        </aura:if>
+                    </tr>  
+                     <aura:if  isTrue="{!v.isTargetPriceRequired}">
+                       
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Total Annual Net Profit Value(Target)">Total Annual Net Profit Value(Target)
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.Manpower_Profit_Value_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.Manpower_Profit_Value_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.Manpower_Profit_Value_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.Manpower_Profit_Value_Target_Prices__c}</div> 
+                                </td>			
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.Manpower_Profit_Value_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.Manpower_Profit_Value_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.Manpower_Profit_Value_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.Manpower_Profit_Value_Target_Prices__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Annual Profit Value(Discounted)">Annual Profit Value(Discounted)
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.Manpower_Profit_Value_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.Manpower_Profit_Value_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.Manpower_Profit_Value_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.Manpower_Profit_Value_Discounted__c}</div> 
+                                </td>		
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.Manpower_Profit_Value_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.Manpower_Profit_Value_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.Manpower_Profit_Value_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.Manpower_Profit_Value_Discounted__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.ET_Workforce_profit_per_each_vehicle__c != 0, v.pricingPolicy2.ET_Workforce_profit_per_each_vehicle__c != 0, v.pricingPolicy3.ET_Workforce_profit_per_each_vehicle__c != 0 , v.pricingPolicy4.ET_Workforce_profit_per_each_vehicle__c != 0, v.pricingPolicy5.ET_Workforce_profit_per_each_vehicle__c != 0 , v.pricingPolicy6.ET_Workforce_profit_per_each_vehicle__c != 0 , v.pricingPolicy7.ET_Workforce_profit_per_each_vehicle__c != 0 , v.pricingPolicy8.ET_Workforce_profit_per_each_vehicle__c != 0)}">
+                        <tr class="totalCost" >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Total Profit Per Each Vehicle">Total Profit Per Each Vehicle
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Workforce_profit_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Workforce_profit_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Workforce_profit_per_each_vehicle__}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Workforce_profit_per_each_vehicle__c}</div> 
+                                </td>	
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Workforce_profit_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Workforce_profit_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Workforce_profit_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Workforce_profit_per_each_vehicle__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    <aura:if isTrue ="{!not(and ( 
+                                      (empty(v.pricingPolicy1.ET_Discounts_Additional_Profit__c ) || v.pricingPolicy1.ET_Discounts_Additional_Profit__c ==0 ),
+                                      (empty(v.pricingPolicy2.ET_Discounts_Additional_Profit__c ) || v.pricingPolicy2.ET_Discounts_Additional_Profit__c ==0 ),
+                                      (empty(v.pricingPolicy3.ET_Discounts_Additional_Profit__c ) || v.pricingPolicy3.ET_Discounts_Additional_Profit__c ==0 ),
+                                      (empty(v.pricingPolicy4.ET_Discounts_Additional_Profit__c ) || v.pricingPolicy4.ET_Discounts_Additional_Profit__c ==0 ),
+                                      (empty(v.pricingPolicy5.ET_Discounts_Additional_Profit__c ) || v.pricingPolicy5.ET_Discounts_Additional_Profit__c ==0 ),
+                                      (empty(v.pricingPolicy6.ET_Discounts_Additional_Profit__c ) || v.pricingPolicy6.ET_Discounts_Additional_Profit__c ==0 ),
+                                      (empty(v.pricingPolicy7.ET_Discounts_Additional_Profit__c ) || v.pricingPolicy7.ET_Discounts_Additional_Profit__c ==0 ),
+                                      (empty(v.pricingPolicy8.ET_Discounts_Additional_Profit__c ) || v.pricingPolicy8.ET_Discounts_Additional_Profit__c ==0 )                                      
+                                      ))}"> 
+                        <tr >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="Discount/Additional Profit(%)">Discount/Additional Profit(%)
+                                </div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Discounts_Additional_Profit__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Discounts_Additional_Profit__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Discounts_Additional_Profit__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Discounts_Additional_Profit__c}</div> 
+                                </td>		
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Discounts_Additional_Profit__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Discounts_Additional_Profit__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Discounts_Additional_Profit__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Discounts_Additional_Profit__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    <aura:if isTrue ="{!and (v.pricingPolicy1.ET_Workforce_VAT_Cost__c != 0, v.pricingPolicy2.ET_Workforce_VAT_Cost__c != 0, v.pricingPolicy3.ET_Workforce_VAT_Cost__c != 0 , v.pricingPolicy4.ET_Workforce_VAT_Cost__c != 0, v.pricingPolicy5.ET_Workforce_VAT_Cost__c != 0 , v.pricingPolicy6.ET_Workforce_VAT_Cost__c != 0 , v.pricingPolicy7.ET_Workforce_VAT_Cost__c != 0 , v.pricingPolicy8.ET_Workforce_VAT_Cost__c != 0)}"> 
+                        <tr  >
+                            <td data-label="1">
+                                <div class="slds-truncate" title="VAT Cost">VAT Cost</div>
+                            </td>
+                            <aura:if  isTrue="{!and(v.pricingPolicy1!=null,v.pricingPolicy1!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy1.ET_Workforce_VAT_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy2!=null,v.pricingPolicy2!='')}">
+                                <td >
+                                    <div class="slds-truncate" >{!v.pricingPolicy2.ET_Workforce_VAT_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy3!=null,v.pricingPolicy3!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy3.ET_Workforce_VAT_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy4!=null,v.pricingPolicy4!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy4.ET_Workforce_VAT_Cost__c}</div> 
+                                </td>			
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy5!=null,v.pricingPolicy5!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy5.ET_Workforce_VAT_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy6!=null,v.pricingPolicy6!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy6.ET_Workforce_VAT_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy7!=null,v.pricingPolicy7!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy7.ET_Workforce_VAT_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                            <aura:if  isTrue="{!and(v.pricingPolicy8!=null,v.pricingPolicy8!='')}">
+                                <td >
+                                    <div class="slds-truncate">{!v.pricingPolicy8.ET_Workforce_VAT_Cost__c}</div> 
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:if>
+                    
+                    
+                </tbody>
+            </table>
+            <table class="slds-table slds-table_cell-buffer  slds-table_bordered slds-table_striped vehicleCaclTable"> 
+                <aura:if isTrue="{! and(v.wrokforceApprovalDetails != undefined, not(v.wrokforceApprovalDetails.empty)) }">
+                    <tr class="innerTableHeader">
+                        <td colspan="9"  > 
+                            <div class="slds-align--absolute-center">The below Rates are altered from the standard rates</div>
+                        </td>								
+                    </tr>
+                    <tr class="innerTableHeader" style="color:black">
+                        <th > 
+                            <div class="slds-align--absolute-center">Element</div>
+                        </th>	
+                        <th colspan="2" > 
+                            <div class="slds-align--absolute-center">Requested By</div>
+                        </th>
+                        <th colspan="2"> 
+                            <div class="slds-align--absolute-center">Approved By</div>
+                        </th>
+                        <th colspan="4"> 
+                            <div class="slds-align--absolute-center">Reason</div>
+                        </th>                
+                    </tr>
+                    
+                    <aura:iteration items="{!v.wrokforceApprovalDetails}" var="wrp" indexVar="index">
+                        <tr>
+                            <td style="width:50%">{!wrp.element}</td>
+                            <td colspan="2">{!wrp.requestedBy}</td>
+                            <td colspan="2">{!wrp.approvedby}</td>
+                            <td colspan="4">{!wrp.reason}</td>
+                        </tr>
+                    </aura:iteration>
+                </aura:if>
+            </table>
+        </div>
+        
+        <aura:set attribute="else">
+            <lightning:spinner alternativeText="Loading" variant="brand" />
+        </aura:set>
+    </aura:if>
+    
+    
+</aura:component>

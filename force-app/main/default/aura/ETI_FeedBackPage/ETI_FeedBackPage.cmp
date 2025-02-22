@@ -1,0 +1,88 @@
+<aura:component access="global" extends="c:ETI_BilingualCommunity" controller="ETI_FeedBackPageController"
+                implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" >    
+    <aura:attribute name="listControllingValues" type="List"/>
+    <aura:attribute name="loaded" type="boolean"/> 
+    <aura:attribute name="isfeebackModal" type="boolean"/>
+    <aura:attribute name="disableSave" type="boolean"/>
+    <aura:attribute name="studentRecord" type="string"/>
+    <aura:attribute name="hasRecID" type="boolean" default="false" />
+    <aura:attribute name="selectedVehId" type="String" access="PUBLIC"/>
+    <aura:attribute name="VehicleList" type="List" access="PUBLIC"/>
+    <aura:attribute name="recordId" type="String" />
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:attribute name="caseRecord" type="Case"  default="{'sObjectType':'Case','Description':'','RecordTypeId':'','ETST_Suggestion_Type__c':'','ETST_Complaint_Type__c':'','ETST_Rating__c':'','ETST_Student__c':'','Case_Record_Types__c':'Add Service','Record_Types__c':'Vehicle Inspection Services'}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:if isTrue="{! v.loaded }">
+        <div class="feedback-content">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="{!v.Close}"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.Feedback_Form}</h2>
+                    </header>
+                    <!--###### MODAL BOX BODY Part Start######-->
+                    <div class="slds-modal__content slds-p-around_medium bgImageDiv"  id="modal-content-id-1">
+                        <div class="slds-modal__body slds-modal__bodyrtl" aura:id="mainDiv">  
+                            <form class="slds-form--stacked" aura:id="feedbackForm">
+                                <!-- Display the new Case form -->
+                                <!--   <lightning:card > -->
+                                <lightning:messages value="{!v.errors}"/>
+                                <div class="slds-p-horizontal--small"> 
+                                    <aura:if isTrue="{!v.spinner}">
+                                        <div aura:id="spinnerId" class="slds-spinner_header">
+                                            <div class="slds-spinner--brand  slds-spinner slds-spinner--medium slds-is-fixed" role="alert">
+                                                <span class="slds-assistive-text">Loading</span>
+                                                <div class="slds-spinner__dot-a"></div>
+                                                <div class="slds-spinner__dot-b"></div>
+                                            </div>
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!!v.hasRecID}">
+                                        <!--lightning:input name="chassis" label="Chassis No."  value="{!v.ChassisNo}" onblur="{!c.getVechicleId}"/-->
+                                        <lightning:select name="VehId" label="{!v.Chassis_No+'/'+v.Plate_Combination}" aura:id="VehicleId" value="{!v.selectedVehId}">
+                                            <option text="{!v.None}" value="" />
+                                            <aura:iteration items="{!v.VehicleList}" var="option">
+                                                <option text="{!option.Name}" value="{!option.Id}" selected="{!option.selected}"/> <!-- -->
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </aura:if>   
+                                    <lightning:select aura:id="CaseField" name="Type" label="Type" 
+                                                      value="{!v.caseRecord.RecordTypeId}" required="true" >
+                                        <option value="">{!v.Select_Request_Type}</option>
+                                        <aura:iteration items="{!v.listControllingValues}" var="val">
+                                            <option value="{!val.Record_Type_Id__c}"> {!val.Record_Type_Name__c}</option>
+                                        </aura:iteration>
+                                    </lightning:select> 
+                                    <!--lightning:select aura:id="CaseField" name="Type" label="Type1" 
+                                                      value="{!v.caseRecord.Case_Record_Types__c}" required="true" >
+                                        <option value=""> Select Request Type</option>
+                                        <aura:iteration items="{!v.listControllingValues}" var="val">
+                                            <option value="Add Service"> Add Service</option>
+                                        </aura:iteration>
+                                    </lightning:select--> 
+                                    <lightning:textarea aura:id="CaseField" label="{!v.Comments}" required="true"  
+                                                        value="{!v.caseRecord.Description}"/> 
+                                    <lightning:button label="{!v.Submit}"
+                                                      onclick="{!c.handleSaveCase}"
+                                                      disabled="{!v.disableSave}"
+                                                      class="slds-align_absolute-center btn_table"/> 
+                                </div>
+                            </form>
+                        </div> 
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+        <aura:set attribute="else">
+            <lightning:spinner alternativeText="Loading" />
+        </aura:set>
+    </aura:if>
+</aura:component>

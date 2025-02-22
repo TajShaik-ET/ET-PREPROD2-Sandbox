@@ -1,0 +1,264 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,force:lightningQuickAction"
+                controller="ET_B2BController" access="global">
+    
+    <aura:attribute name="Invoices" type="boolean" />
+    <aura:attribute name="AccountId" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="complaintAgainstType" type="String" />
+    
+    <aura:attribute name="AssignedResource" type="boolean" />
+    <aura:attribute name="AssignedVehicle" type="boolean" />
+    <aura:attribute name="SalesAggrement" type="boolean" />
+    <aura:attribute name="AssignedStud" type="boolean" />
+    <aura:attribute name="Others" type="boolean" />
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    <lightning:overlayLibrary aura:id="cmp1" /> 
+    <aura:registerEvent name="Actionname" type="c:ETST_sendDataEvent"/>
+    <!--aura:handler name="init" value="{!this}" action="{!c.doInit}"/-->
+    <lightning:recordEditForm objectApiName="Case" aura:id="caseForm" onload="{!c.handleOnLoad}"
+                              onsubmit="{!c.handleOnSubmit}" onsuccess="{!c.handleOnSuccess}" onerror="{!c.handleOnError}">
+        <div class="documentmain">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <!--<h3 class="Headingcontent">Create Complaint</h3>-->
+                    <div class="slds-tile__detail">
+                        <div class="slds-grid slds-gutters">
+                              
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    
+                                 
+                                    <lightning:select name="mySelect"  aura:id="mySelect"
+                                                      value="{!v.complaintAgainstType}" >
+                                        <option>None</option>
+                                        <option value="Others">ADP Police</option>
+                                        <option value="Assigned Vehicle">Assigned Vehicle</option>
+                                        <option value="Customer PO">Customer PO</option>
+                                        <option value="Feedback And Appreciation">Feedback And Appreciation</option>
+                                        <option value="Invoice">Invoice</option>
+                                        <option value="Others">Others</option>
+                                      
+                                    </lightning:select>
+                                </div>
+                            </div>
+                        </div>
+                        <aura:if isTrue="{!v.complaintAgainstType=='Invoice'}">
+                            
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col ">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <div class="slds-form-element__control">
+                                            <span style="color:#000;">Type</span><B/>
+                                            <lightning:inputField class="insidepadding" variant="label-hidden" fieldName="ETST_Complaint_Type__c" value="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col ">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <div class="slds-form-element__control">
+                                            <lightning:inputField aura:id="InvoiceId" fieldName="Invoice__c" class="insidepadding"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-grid_horizontal">
+                                <div class="slds-col slds-size_12-of-12">
+                                    <lightning:inputField fieldName="Subject" />
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-grid_horizontal">
+                                <div class="slds-col slds-size_12-of-12">
+                                    <lightning:inputField fieldName="Description" class="insidepadding"/>
+                                </div>
+                            </div>
+                            <aura:set attribute="else">
+                                <aura:if isTrue="{!v.complaintAgainstType=='Assigned Vehicle'}">
+                                    <div class="slds-grid slds-gutters">
+                                        <div class="slds-col ">
+                                            <div class="slds-form-element slds-is-editing">
+                                                <div class="slds-form-element__control">
+                                                    <span style="color:#000;">Type</span><B/>
+                                                    <lightning:inputField variant="label-hidden" fieldName="ETST_Complaint_Type__c" value="" />
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col ">
+                                            <div class="slds-form-element slds-is-editing">
+                                                <div class="slds-form-element__control">
+                                                    <lightning:inputField aura:id="assVehId" fieldName="Assigned_Vehicle__c" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid slds-grid_horizontal">
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <lightning:inputField fieldName="Subject" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid slds-grid_horizontal">
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <lightning:inputField fieldName="Description" />
+                                        </div>
+                                    </div>
+                                    <aura:set attribute="else">
+                                        <aura:if isTrue="{!v.complaintAgainstType=='Others'}">
+                                            
+                                            <div class="slds-grid slds-gutters">
+                                                <div class="slds-col ">
+                                                    <div class="slds-form-element slds-is-editing">
+                                                        <div class="slds-form-element__control">
+                                                            <span style="color:#000;">Type</span><B/>
+                                                            <lightning:inputField variant="label-hidden" fieldName="ETST_Complaint_Type__c" value="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="slds-grid slds-grid_horizontal">
+                                                <div class="slds-col slds-size_12-of-12">
+                                                    <lightning:inputField fieldName="Subject" />
+                                                </div>
+                                            </div>
+                                            <div class="slds-grid slds-grid_horizontal">
+                                                <div class="slds-col slds-size_12-of-12">
+                                                    <lightning:inputField fieldName="Description" />
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!v.complaintAgainstType=='Assigned Resource'}">
+                                                    
+                                                    <div class="slds-grid slds-gutters">
+                                                        <div class="slds-col ">
+                                                            <div class="slds-form-element slds-is-editing">
+                                                                <div class="slds-form-element__control">
+                                                                    <span style="color:#000;">Type</span><B/>
+                                                                    <lightning:inputField variant="label-hidden" fieldName="ETST_Complaint_Type__c" value="" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col ">
+                                                            <div class="slds-form-element slds-is-editing">
+                                                                <div class="slds-form-element__control">
+                                                                    <span style="color:#000;">Coordinator/Driver</span><B/>
+                                                                    <lightning:inputField variant="label-hidden" aura:id="assResId" fieldName="Assigned_Resource__c" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-grid slds-grid_horizontal">
+                                                        <div class="slds-col slds-size_12-of-12">
+                                                            <lightning:inputField fieldName="Subject" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-grid slds-grid_horizontal">
+                                                        <div class="slds-col slds-size_12-of-12">
+                                                            <lightning:inputField fieldName="Description" />
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    
+                                                    
+                                                    <aura:set attribute="else">
+                                                        <aura:if isTrue="{!v.complaintAgainstType=='Customer PO'}">
+                                                            <div class="slds-grid slds-gutters">
+                                                                <div class="slds-col ">
+                                                                    <div class="slds-form-element slds-is-editing">
+                                                                        <div class="slds-form-element__control">
+                                                                            <span style="color:#000;">Type</span><B/>
+                                                                            <lightning:inputField variant="label-hidden" fieldName="ETST_Complaint_Type__c" value="" />
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="slds-col ">
+                                                                    <div class="slds-form-element slds-is-editing">
+                                                                        <div class="slds-form-element__control">
+                                                                            <lightning:inputField aura:id="SaleAggId" fieldName="Customer_PO__c" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-grid slds-grid_horizontal">
+                                                                <div class="slds-col slds-size_12-of-12">
+                                                                    <lightning:inputField fieldName="Subject" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-grid slds-grid_horizontal">
+                                                                <div class="slds-col slds-size_12-of-12">
+                                                                    <lightning:inputField fieldName="Description" />
+                                                                </div>
+                                                            </div>
+                                                            <aura:set attribute="else">
+                                                                <aura:if isTrue="{!v.complaintAgainstType=='Feedback And Appreciation'}">
+                                                                    <!--<div class="slds-grid slds-gutters">
+                                                                        <div class="slds-col ">
+                                                                            <div class="slds-form-element slds-is-editing">
+                                                                                <div class="slds-form-element__control">
+                                                                                    <span style="color:#000;">Type</span><B/>
+                                                                                    <lightning:inputField variant="label-hidden" aura:id="complaintTypeFeedback" fieldName="ETST_Complaint_Type__c" value="" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>-->
+                                                                    <div class="slds-col ">
+                                                                        <div class="slds-form-element slds-is-editing">
+                                                                            <div class="slds-form-element__control">
+                                                                                <span style="color:#000;">Resource</span><B/>
+                                                                                <lightning:inputField variant="label-hidden" aura:id="assResId" fieldName="Assigned_Resource__c" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="slds-grid slds-grid_horizontal">
+                                                                        <div class="slds-col slds-size_12-of-12">
+                                                                            <lightning:inputField fieldName="Subject" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="slds-grid slds-grid_horizontal">
+                                                                        <div class="slds-col slds-size_12-of-12">
+                                                                            <lightning:inputField fieldName="Description" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="slds-grid slds-grid_horizontal" style="display:none;">
+                                                                        <div class="slds-col slds-size_12-of-12">
+                                                                             <lightning:inputField fieldName="ET_Rating__c" aura:id="caseRatingId" value="" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="slds-grid slds-grid_horizontal">
+                                                                        <div class="slds-col slds-size_12-of-12" style="width:300px;">
+                                                                            <span style="color:#000;">Rating</span><B/>
+                                                                            <c:ET_Rating change="{!c.caseRatingChange}" colorOn="#00A1E0" colorOff="#EEEEEE"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </aura:if>
+                                                                
+                                                                   
+                                                            </aura:set>
+                                                            
+                                                        </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:set>
+                        </aura:if>
+                        
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control" style="float: right;">
+                                        <lightning:button class="slds-m-top_small btbupdate" variant="brand" type="submit" name="SAVE" label="SAVE"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning:recordEditForm>
+</aura:component>

@@ -1,0 +1,12 @@
+.THIS .slds-modal__close{
+    top: -3.5rem;
+}
+
+.THIS .slds-spinner_container {
+        top: 10% !important;
+        bottom: 8% !important;
+}
+
+.THIS.customRadioCls .slds-form-element__control .slds-radio{
+    display : inline-block !important;
+}

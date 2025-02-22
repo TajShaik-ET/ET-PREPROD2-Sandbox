@@ -1,0 +1,370 @@
+<apex:page renderAs="" controller="ET_DriverCheckListPDFController" showHeader="false" sidebar="false" standardStylesheets="false"  applyBodyTag="false"   language="ar" applyHtmlTag="false" >
+  
+    <head>
+        <style type="text/css">
+            body {
+            padding: 0px;
+            margin: 0px;
+            font-size: 12px;
+            font-family: sans-serif;
+            font-family: 'Arial Unicode MS';
+           
+            }
+            @page {
+            size: A4;
+            margin: 10mm 10mm 10mm;
+            }
+            @bottom-left {
+            content: element(footer);
+            }
+            @top-center {
+            content: element(header);
+            }
+            @page:first {
+            margin: 30mm 10mm 10mm;
+            @top-center {
+            content: element(header);
+            }
+            }
+            .pagenumber:before {
+            content: counter(page);
+            }
+            .pagecount:before {
+            content: counter(pages);
+            }
+            .divFooter {
+            display: block;
+            padding: 5px;
+            position: running(footer);
+            }
+            .divHeader {
+            margin: 1px 0px;
+            display: block;
+            text-align: center;
+            padding: 1px;
+            position: running(header); 
+            }
+            table {
+            border-collapse: collapse;
+            width: 100%;
+            margin:0px;
+            }
+            .innertable{
+            margin:0px;
+            }
+            .innertable tr td,
+            .innertable tr th {
+            padding: 5px;
+            border: 0.2px solid #000;
+            font-size: 12px;
+            vertical-align: top;
+            }
+            .innertable tr th {
+            color: #000;
+            vertical-align: middle;
+            background-color: #adade1;
+            text-align: left;
+            }
+            .page-block-header {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+            margin: 10px 0;
+            }
+            h1 {
+            text-decoration: underline;
+            font-size: 18px;
+            margin:15px 0;
+            }
+            .topData{
+            display: block;
+            margin-bottom: 100px;
+            }
+            .topData div{
+            width: 50%;
+            float: left;
+            }
+            .high{
+            background-color: #f25e65;
+            }
+            
+            .medium{
+            background-color: #ffa465;
+            }
+            .low{
+            background-color: #fef64c;
+            }
+            .noBgColor{
+            background-color: transparent !important;
+            }
+            .colortable{
+            width:200px;
+            margin:15px 0 0 0;
+            }
+            .colortable tr td{
+            padding:5px;
+            color:#000;
+            font-size:12px;
+            text-align:center;
+            font-weight:bold;
+            }
+            tr {page-break-inside: avoid;}
+        </style>
+    </head>
+    <body> 
+        <!-- Header Section -->
+        <div class="divHeader">
+            <table style="width: 100%; ">
+                <tr>
+                    <td width="33.33%" style="border:none;text-align:left;">
+                        <apex:image url="{!$Resource.ET_Logo}" width="180" height="140"/>
+                    </td>
+                    <td width="33.33%" style="border:none;text-align:center;">
+                        <h1>Driver Daily Checklist</h1>
+                    </td>
+                    
+                    <td width="33.33%" style="border:none;text-align:right;font-size:10px;">
+                        Toll Free: 800 6006<br/>
+                        P.O.Box: 5757, Dubai, UAE<br/>
+                        Tel: 04-233 0680, Fax: 04-2872475<br/>
+                        www.et.gov.ae<br/>
+                    </td>
+                </tr>
+            </table>
+            
+        </div>
+        <!-- Checklist Line Items Section -->
+        <div class="page-block-header">#Driver Details</div>
+        <apex:repeat value="{!driverChecklist}" var="Item">
+            <table class="innertable">
+                <tr>
+                    <td colspan="2"><strong>School Name :</strong> {!Item.School_Name__c}</td>
+                    <td colspan="2"><strong>School Code :</strong> {!Item.School_Code__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>End Time :</strong> {!Item.End_Time__c}</td>
+                    <td colspan="2"><strong>Start Time :</strong> {!Item.Start_time__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>KM Reading :</strong> {!Item.KM_Reading__c}</td>
+                    <td colspan="2"><strong>Station :</strong> {!Item.Station__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Date :</strong> <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                        <apex:param value="{!Item.Date__c}" />
+                        </apex:outputText> </td>  
+                    <td colspan="2"><strong>Internal Number :</strong> {!Item.Internal_Number__r.Name}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Driver Name :</strong> {!Item.Driver__r.Name}</td>
+                    <td colspan="2"><strong>Branch :</strong> {!Item.Branch__c}</td>
+                </tr>
+                <tr>
+                  
+                    <td colspan="2"><strong>CreatedDate :</strong> <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                        <apex:param value="{!Item.CreatedDate}" />
+                        </apex:outputText> </td>   
+                    <td colspan="2"><strong>Name :</strong> {!Item.Name}</td>
+                </tr>
+            </table>
+        </apex:repeat>    
+        <apex:form >
+            <h1>#Final Results</h1>
+            <apex:pageBlock >
+                <apex:repeat value="{!driverChecklist}" var="Item">
+                    <table class="innertable" style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td colspan="2"><strong>Final Result:</strong></td>
+                            <td colspan="2" style="font-weight: bold; text-align: center;">
+                                <apex:outputText value="{!Item.Final_Result__c}" 
+                                                 style="color: {!IF(Item.Final_Result__c == 'PASS', 'green', 'red')}; font-size: 16px;" />
+                            </td>
+                        </tr>
+                        <tr> <td colspan="2"><strong>Final Comments:</strong></td>
+                            <td colspan="2" style="text-align: center;">
+                                <apex:outputText value="{!Item.Final_Comments__c}" style="font-size: 14px;" />
+                            </td>
+                        </tr>
+                    </table>
+                </apex:repeat>
+            </apex:pageBlock>
+            <h1>#Bus Safety </h1>
+            <apex:pageBlock >
+                <apex:repeat value="{!driverChecklist}" var="Item">
+                    <table class="innertable">
+                        <tr>
+                            <td class="bordered" colspan="2">
+                                <strong>Vital bus inspections completed:</strong>
+                                <apex:outputField value="{!Item.Vital_bus_inspections_completed__c}" />
+                            </td>
+                            <td class="bordered" colspan="2">
+                                <strong>Observations to not affect the safety:</strong>
+                                <apex:outputField value="{!Item.Observations_to_not_affect_the_safety_of__c}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bordered" colspan="2">
+                                <strong>Observation affect safety-bus replaced:</strong>
+                                <apex:outputField value="{!Item.Observation_affect_safety_bus_replaced__c}" />
+                            </td>
+                            <td class="bordered" colspan="2">
+                                <strong>Contact traffic coordinator for replace:</strong>
+                                <apex:outputField value="{!Item.Contact_traffic_coordinator_for_replacem__c}" />
+                            </td>
+                        </tr>
+                    </table>
+                </apex:repeat>
+            </apex:pageBlock>
+            <h1> #Action By Coordinator</h1>         
+            <apex:pageBlock >
+                <apex:repeat value="{!driverChecklist}" var="Item">
+                    <table class="innertable">
+                        <tr>
+                            <td class="bordered" colspan="2">
+                                <strong>Ensure Insp Observations Are Correct:</strong>
+                                <apex:outputField value="{!Item.Ensure_Insp_Observations_Are_Correct__c}" />
+                            </td>
+                            <td class="bordered" colspan="2">
+                                <strong>Confirmed By Coordinator:</strong>
+                                <apex:outputField value="{!Item.Confirmed_By_Coordinator__c}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bordered" colspan="2">
+                                <strong>Contact Internal Mobile Workshop:</strong>
+                                <apex:outputField value="{!Item.Contact_Internal_Mobile_Workshop__c}" />
+                            </td>
+                            <td class="bordered" colspan="2">
+                                <strong>Replacement Vehicle:</strong>
+                                <apex:outputField value="{!Item.Replacement_Vehicle__c}" />
+                            </td>
+                        </tr>
+                        <tr>
+                         <td class="bordered" colspan="2">
+                                <strong>Replace The Bus:</strong>
+                                <apex:outputField value="{!Item.Replace_The_Bus__c}" />
+                            </td>
+                            <td class="bordered" colspan="2">
+                                <strong>Assigned Resources:</strong>
+                                <apex:outputField value="{!Item.Assigned_Resources__c}" />
+                            </td>
+                        </tr>
+                    </table>
+                </apex:repeat>
+            </apex:pageBlock>
+            <h1> #Action By Supervisor</h1>        
+            <apex:pageBlock >
+                <apex:repeat value="{!driverChecklist}" var="Item">
+                    <table class="innertable">
+                        <tr>
+                            <td class="bordered" colspan="2">
+                                <strong>Admin Charge For Transfer Of Workshop:</strong>
+                                <apex:outputField value="{!Item.Admin_Charge_For_Transfer_Of_Workshop__c}" />
+                            </td>
+                            <td class="bordered" colspan="2">
+                                <strong>Confirmed By Supervisor:</strong>
+                                <apex:outputField value="{!Item.Confirmed_By_Supervisor__c}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bordered" colspan="2">
+                                <strong>Bus SentTo Workshop ReplacementRequested:</strong>
+                                <apex:outputField value="{!Item.Bus_SentTo_Workshop_ReplacementRequested__c}" />
+                            </td>
+                            <td class="bordered" colspan="2">
+                                <strong>Contact traffic coordinator for replace:</strong>
+                                <apex:outputField value="{!Item.Contact_traffic_coordinator_for_replacem__c}" />
+                            </td>
+                        </tr>
+                    </table>
+                </apex:repeat>
+            </apex:pageBlock>
+        </apex:form>
+        <apex:form >
+            <table>
+                <tr>
+                    <td><h1>#Safety of buses Check List :</h1></td>
+                    <td style="text-align:right; width:200px">
+                        <table class="colortable">
+                            <tr> 
+                                <td class="low">Low</td>
+                                <td class="medium">Medium</td>
+                                <td class="high">High</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <apex:pageBlock >
+                <!-- Outer Table for Grouped Categories -->
+                <table class="innertable" style="border-spacing: 0px;">
+                    <thead>
+                        <tr>
+                            <th> Ensuring the conditions of buses, and check the following
+                                التأكد من حالة الحافلات وتفقد ما يلي 
+                                بسوں کی اچھی حالت کو یقینی بنانا، اور درج ذیل کو چیک کریں 
+                            </th>
+                            <th>Category</th>
+                            <th>Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterate through the grouped checklist items -->
+                        <apex:repeat value="{!tableData}" var="group">
+                            <tr class="{!IF(group.severity == 'High', 'high', IF(group.severity == 'Medium', 'medium', 'low'))}">
+                                <td style="text-align: center;">
+                                    <!-- Inner Table for Questions -->
+                                    <table class="innertable DriverChecklistTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>Arabic </th>
+                                                <th>Urdu</th>
+                                                <th>English</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <apex:repeat value="{!group.consolidated}" var="item">
+                                                <tr>
+                                                    <td class="response-column" style="background-color: transparent !important; background: #fff !important;">
+                                                        <apex:outputPanel rendered="{!item.response == 'Selected'}">
+                                                            <div class="noBgColor" style="text-align: center; background-color: transparent !important;"> <apex:image url="{!$Resource.ET_Right}" width="18" height="18"/></div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!item.response == 'Not selected'}">
+                                                            <div style="text-align: center;"><apex:image url="{!$Resource.ET_Wrong}" width="18" height="18"/></div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!item.response == 'Not applicable'}">
+                                                            <div style="text-align: center;"><apex:image url="{!$Resource.ET_notApplicable}" width="18" height="18"/></div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!item.response != 'Not applicable' && item.response != 'Not selected' && item.response != 'Selected'}">
+                                                            {!item.response}
+                                                        </apex:outputPanel>                                                        
+                                                    </td>
+                                                    <td>{!item.questionAr}</td>
+                                                    <td>{!item.questionUr}</td>
+                                                    <td>{!item.questionEn}</td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <!-- <td style="text-align: center;">{!group.severity}</td>-->
+                                <td style="text-align: center;">
+                                    <p> {!group.categoryUr}</p>
+                                    <p> {!group.categoryAr}</p>
+                                    <p>{!group.categoryEn}</p>
+                                </td>
+                                <td style="text-align: center;">{!group.dcNumber}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:pageBlock>
+        </apex:form>
+        <apex:pageBlock >
+            <apex:outputPanel layout="block" style=" text-align:center; border-top: 1px solid #ccc; padding-top: 10px;">
+                <p>Generated on:{!NOW()}</p> 
+            </apex:outputPanel>
+        </apex:pageBlock>
+    </body>
+</apex:page>

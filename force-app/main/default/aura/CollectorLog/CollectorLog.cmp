@@ -1,0 +1,89 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" controller='CreateCollectorLogHandler' access="global" >
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="customerOracleId" type="String" />
+    <aura:attribute name="amountOriginal" type="String" />
+    <aura:attribute name="dispositionCode" type="String" />
+    <aura:attribute name="remarks" type="String" />
+    <aura:attribute name="totalOverDue" type="String" />
+    <aura:attribute name="accountRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:attribute name="dispositionList" type="list" />
+    <aura:attribute name="showSpinner" type="boolean" default="true"/>
+    <aura:attribute name="buttonDisable" type="boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="AccountNumber,ETSALES_Customer_Account_Id__c"
+                      targetFields="{!v.accountRecord}"
+                      targetError="{!v.recordLoadError}"
+                      recordUpdated="{!c.onAccountLoad}"
+                      />
+    
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 3 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 1rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .btnsend {
+        background: #fe864d;
+        border: 1px solid #fe864d;
+        outline: none;
+        box-shadow: none;
+        margin: 1rem;
+        }
+        .slds-border_bottom {
+        border-bottom: 1px solid #f2f2f2;
+        }
+        .slds-modal__close {
+        top: .5rem;
+        right: .5rem;
+        border: 1px solid #d4d4d4;
+        
+        }
+        .slds-modal__close svg.slds-button__icon.slds-button_icon-inverse {
+        fill: #000;
+        }
+        .slds-modal__container{
+        max-width: 95rem !important;
+        width:75% !important;
+        margin: auto;
+        
+        }
+        footer.slds-modal__footer {
+        display: none !important;
+        }
+        
+    </aura:html>
+   
+    
+    <div >
+        <div class="outer-div">
+            <aura:if isTrue="{!v.showSpinner}">
+                <lightning:spinner  alternativeText="Loading" variant="brand" class="spinnerCls"/>    
+            </aura:if>
+        <lightning:recordEditForm class="collectorLog" objectApiName="Collector_Logs__c" aura:id="CollectorLogsForm" onload="{!c.handleOnLoad}"
+                                  onsubmit="{!c.handleOnSubmit}" onsuccess="{!c.handleOnSuccess}" onerror="{!c.handleOnError}">
+             <lightning:messages />
+            <lightning:inputField class="inputSection" fieldName="Customer_Name__c" value="{!v.recordId}" disabled="true"/>
+            <lightning:input class="inputSection" name="input1" label="Customer No." value="{!v.accountRecord.AccountNumber}" disabled="true"/>
+            <lightning:inputField class="inputSection"   fieldName="Amount_Original__c"  value="{!v.amountOriginal}" disabled="true"/>
+            <lightning:inputField  class="inputSection"  fieldName="Total_Over_Due__c"   value="{!v.totalOverDue}" disabled="true"/>
+            <lightning:inputField  class="inputSection"  fieldName="Disposition_Code__c" onchange="{!c.dispositionHandler}" value="{!v.dispositionCode}" required="true"/>
+            <lightning:inputField class="inputSection"   fieldName="Remark__c" value="{!v.remarks}" disabled="true"/>
+            <lightning:inputField  class="commentSection"  fieldName="Comments__c"  />
+            <div class="slds-form-element__control buttonSection">
+                <lightning:button class="slds-m-top_small btbupdate" disabled="{!v.buttonDisable}" variant="brand" type="submit" name="SAVE" label="SAVE"/>
+            </div>
+            
+        </lightning:recordEditForm>
+    </div>
+    </div>
+</aura:component>

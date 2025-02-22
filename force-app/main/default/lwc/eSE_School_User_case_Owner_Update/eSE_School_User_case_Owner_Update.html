@@ -1,0 +1,119 @@
+<template>
+    
+    <div class="slds-grid slds-gutters slds-align_absolute-center">   
+        <div class="slds-col slds-size_2-of-12">
+           <b> <lightning-input
+                icon-name ="standard:account"
+                label="Account Name"
+                value={accountName}
+                onchange={handleAccountNameChange}
+                placeholder="Search Account">
+            </lightning-input></b>
+
+            <template if:true={accounts}>
+             <ul class="slds-list_vertical slds-accdown slds-accdown_fluid">
+            <template for:each={accounts} for:item="account">
+                <li key={account.Id} class="slds-dropdown__item">
+                   <a href="javascript:void(0);" onclick={handleAccountSelect} data-id={account.Id} data-name={account.Name} class="slds-truncate">
+                    <lightning-icon icon-name ="standard:account" alternative-text="account Icon" size="small" class="slds-m-right_x-small" data-id={account.Id} data-name={account.Name}></lightning-icon>
+                       {account.Name} 
+                    </a>
+                </li>
+            </template>
+        </ul>
+     </template>
+        </div>
+        <div class="slds-col slds-size_2-of-12">
+          <b>  <lightning-input
+                label="Start Date"
+                type="date"
+                value={startDate}
+                onchange={handleStartDateChange}>
+            </lightning-input></b>
+        </div>
+        <div class="slds-col slds-size_2-of-12">
+           <b> <lightning-input
+                label="End Date"
+                type="date"
+                value={endDate}
+                onchange={handleEndDateChange}>
+            </lightning-input></b>
+        </div>
+        <div class="slds-col slds-size_4-of-12">
+           <b> <lightning-combobox
+                label="Status"
+                value={status}
+                options={statusOptions}
+                onchange={handleStatusChange}>
+            </lightning-combobox></b>
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-align-middle">
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <lightning-button label="Search" variant="brand" onclick={handleSearch}></lightning-button>
+                <span class="slds-m-left_small slds-text-title_bold">Total Cases: {caseCount}</span>
+            </div>
+        </div>
+    </div>
+
+   <template if:true={cases.length}>
+    <lightning-datatable
+        data={paginatedCases}
+        columns={columns}
+        key-field="Id"
+        hide-checkbox-column="true">
+    </lightning-datatable>
+    <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread slds-m-top_medium">
+        <div>
+            <lightning-button label="Previous" onclick={handlePrevPage} disabled={isPreviousDisabled}></lightning-button>
+            <span class="slds-m-horizontal_small">Page {currentPage} of {totalPages}</span>
+            <lightning-button label="Next" onclick={handleNextPage} disabled={isNextDisabled}></lightning-button>
+        </div>
+        <div>
+        <lightning-button label="Report" variant="brand" onclick={handleOpenReport} class="slds-m-left_medium"></lightning-button>
+        <lightning-button label="Update Owner" variant="brand" onclick={handleUpdate} class="slds-m-left_medium"></lightning-button>
+        <lightning-button label="Export" variant="brand" onclick={handleExport} class="slds-m-left_medium"></lightning-button>
+        </div>
+    </div>
+</template>
+    <template if:true={showModal}>
+        <section class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close" title="Close" onclick={handleCloseModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium">Select New Owner</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input
+                        label="Search for User"
+                        value={searchKey} 
+                        onchange={handleSearchKeyChange}
+                        placeholder="Search for a user">
+                    </lightning-input>
+
+                    <template if:true={users.length}>
+                        <ul class="slds-list_vertical slds-list_dotted slds-dropdown slds-dropdown_fluid">
+                            <template for:each={users} for:item="user">
+                                <li key={user.value} class="slds-dropdown__item">
+                                    <a href="javascript:void(0);" onclick={handleUserSelect} data-id={user.value} data-name={user.label} class="slds-truncate">
+                                        <lightning-icon icon-name="standard:user" alternative-text="User Icon" size="small" class="slds-m-right_x-small"></lightning-icon>
+                                        <span class="slds-text-title_bold slds-text-color_default">{user.label}</span>
+                                    </a>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={handleCloseModal}></lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={handleSave}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

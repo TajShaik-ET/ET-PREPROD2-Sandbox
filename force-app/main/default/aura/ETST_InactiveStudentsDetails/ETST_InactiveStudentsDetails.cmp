@@ -1,0 +1,158 @@
+<aura:component implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <ltng:require styles="{!join(',',
+    $Resource.ETSTCSS + '/css/student.css',
+    $Resource.ETSTCSS + '/css/font-awesome.css',
+    $Resource.ETSTCSS + '/css/bootstrap.min.css')}"
+    scripts="{!join(',',
+     $Resource.ETSTCSS + '/js/jquery.min.js',
+     $Resource.ETSTCSS + '/js/bootstrap.min.js')}" 
+     afterScriptsLoaded=""
+/>   
+    <aura:attribute name="corousalSize" type="Integer" default="3"/>
+    <aura:attribute name="start" type="Integer" default="0"/>
+    <aura:attribute name="studentList" type="list" />
+    <aura:attribute name="studentCourosalList" type="list" />
+    <aura:attribute name="noofStudents" type="Integer" />
+    <aura:attribute name="serviceList" type="list" />
+    <aura:attribute name="recordId" type="Id" /> 
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="schoolId" type="Id" /> 
+    <aura:attribute name="today" type="Date" />
+    <aura:attribute name="serviceTypes" type="List"/>
+    <aura:attribute name="transportTypes" type="List"/> 
+    <aura:attribute name="cancellationReasons" type="List"/> 
+    <aura:attribute name="schoolAreas" type="List"/>
+    <aura:registerEvent name="sendDataEvent" type="c:ETST_sendDataEvent"/>
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="currentService" type="String" default="Yearly"/>
+    <aura:attribute name="addServiceModal" type="boolean" default="false"/>
+    <aura:attribute name="activateServiceModal" type="boolean" default="false"/>
+    <aura:attribute name="renewServiceModal" type="boolean" default="false"/>
+    <aura:attribute name="yearlyAmount" type="Integer" default="0"/>
+    <aura:attribute name="mandatoryFields" type="List" default="ETST_Service_Type__c,ETST_Area_Zone__c,ETST_Transport_Type__c"/>
+    <aura:attribute name="mandatoryRenewalFields" type="List" default="ETST_Service_Type__c,ETST_Transport_Type__c"/>
+    <aura:attribute name="serviceRecord" type="ET_Service_Request__c"  
+                   default="{'sObjectType':'ETST_Transport_Request__c', 'Name':'','ETST_Area_Zone__c':'','ETST_Pick_Up_From__c':'','ETST_Service_Type__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Drop_Off_To__c':'','ETST_Drop_of_Time__c':'','ETST_Cancellation_Effective_Date__c':'','ETST_Reason_for_Cancellation__c':'',
+                   'ETST_Cancellation_Reason_Comments__c':'','ETST_Location__Latitude__s':'','ETST_Location__Longitude__s':'','ETST_Transport_Type__c':'','ETST_Student__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Pick_Up_End_Date__c':'','ETST_Fare_Charges__c':''}" />
+    <aura:attribute name="studentRecord" type="ETST_Student__c"  
+                   default="{'sObjectType':'ETST_Student__c', 'ETST_School_Name__c':'','ETST_Status__c':''}" />
+
+    <aura:attribute name="searchKey" type="string" default=""/>
+    <aura:attribute name="placeholder" type="string" default="Search address" />
+    <aura:attribute name="AddressList" type="String[]"/>
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+  <div class="bg_top">
+        <div class="container">
+                       <div class="row main_student_div">
+                         <div class="col-xs-12 col-md-12">
+                            <div id="carousel" class="carousel slide" data-ride="carousel" data-type="multi" data-interval="2500">
+                             <div class="carousel-inner">
+                             <aura:iteration items="{!v.studentCourosalList}" var="item">
+                               <div class="item active">
+                                 <div class="carousel-col">
+                                   <div class="our-team">
+                                     <div class="student_id">{!item.ETST_Emirates_Id__c} </div>
+                                     <div class="picture">
+                                       <aura:if isTrue="{!item.ETST_Image_Document_Id__c!=null}">
+                                         <img class="img-fluid" src="{!item.ETST_Student_Image__c}"/> 
+                                         </aura:if>
+                                         <aura:if isTrue="{!item.ETST_Image_Document_Id__c==null}">
+                                            <img class="img-fluid" src="{!$Resource.ETSTStudentImage}"/>
+                                         </aura:if>
+                                         </div>
+                                     <div class="team-content">
+                                      <h3 ><a class="name" href="{!'/s/student-details?recordId='+item.Id+'&amp;requestId='+item.ETST_Transport_Requests__r[0].Id}" >{!item.Name}</a></h3>
+                                      <aura:if isTrue="{!item.ETST_Transport_Requests__r[0].ETST_Status__c==null}">
+                                       <h4 class="status">Current Status: Not Registered</h4>
+                                      </aura:if> 
+                                      <aura:if isTrue="{!item.ETST_Transport_Requests__r[0].ETST_Status__c!=null}">
+                                       <h4 class="status">Current Status: {!item.ETST_Transport_Requests__r[0].ETST_Status__c}</h4>
+                                       <h4 class="end_date">Pickup End Date: {!item.ETST_Transport_Requests__r[0].ETST_Pick_Up_End_Date__c}</h4>
+                                      </aura:if> 
+                                     </div>
+                                     <ul class="btn_div">
+                                       <li>
+                                         <lightning:button  class="btn" label='' title="Add Service"  
+                                         iconName="utility:new"   iconPosition="left"      variant="brand" onclick="{!c.openCreateSerivceModal}" value="{!item}"/>
+                                         
+                                       </li>
+                                     </ul>
+                                   </div>
+                                 </div>
+                               </div>
+                             </aura:iteration>  
+                             </div>
+                     
+                             <!-- Controls -->
+                             <aura:if isTrue="{!v.start!=0}">                                           
+                             <div class="left carousel-control">
+                               <a href="#carousel" role="button" data-slide="prev" onclick="{!c.getPreviousList}">
+                                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                 <span class="sr-only">Previous</span>
+                               </a>
+                             </div>
+                             </aura:if>
+                             <aura:if isTrue="{!lessthan(v.start+v.corousalSize,v.noofStudents)}">  
+                             <div class="right carousel-control">
+                               <a href="#carousel" role="button" data-slide="next" onclick="{!c.getNextList}">
+                                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                 <span class="sr-only">Next</span>
+                               </a>
+                             </div>
+                             </aura:if>
+                           </div>
+                     
+                         </div>
+                       </div>
+                     </div>  
+   
+     </div>
+    <aura:if  isTrue="{!v.addServiceModal}" > 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Service</h2>
+                    
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                
+                <!--lightning:fileUpload label="Upload Image"
+                    name="fileUploader"
+                    multiple="false"
+                    disabled="false"
+                    accept=".png"
+                    recordId="{!v.imageId}"
+                    onuploadfinished="{!c.handleUploadFinished}" /-->
+                    <c:ETST_AddStudentService serviceRecord="{!v.serviceRecord}" studentRecord="{!v.studentRecord}"
+                    aura:id="addStudentService" />
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    
+                    <!--lightning:button variant="brand" 
+                                      label="Save"
+                                      title="Save"
+                                      onclick="{!c.createNewService}"/-->
+                   
+                   
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+
+    </aura:if>
+   
+</aura:component>

@@ -1,0 +1,16 @@
+.THIS div#mainDriverTabDivId{
+    background-color: var(--backgroundColor);
+            }
+            
+            .THIS .serviceReqHeader{
+                text-transform: uppercase;
+                letter-spacing: .5px;
+                padding: 1rem;
+                background: #f3f2f2;
+                border: 1px solid rgb(217, 219, 221);
+                border-bottom: none;
+            }
+            .THIS .serviceReqHeader b{
+                font-size: 14px;
+                color: #143f76;
+            }

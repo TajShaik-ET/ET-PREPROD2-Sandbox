@@ -1,0 +1,100 @@
+<!--
+Name: Student_Code_of_Conduct
+Controller: ETST_TermsAndCondCtrl
+Author: Sreelakshmi SK
+Created Date: 21 Feb 2023
+Description: VF page to generate the student code of conduct as PDF
+-->
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf"  standardStylesheets="false" applyHtmlTag="false" controller="ETST_TermsAndCondCtrl">
+    <head>
+        <style>
+            span {
+            text-decoration:underline;
+            }
+            dd.d1 {
+            list-style-type: circle;
+            }           
+        </style>  
+        
+    </head>
+    
+    <div styleClass="center_section" style="width: 30%;display: inline-block;float: left;text-align:center;">
+        <apex:image style="height: 50px;" url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/logo.png')}"/>                
+    </div>
+    
+    <body>
+        
+        <h4 style="padding: 30px;">
+            <span>Student Code of Conduct</span>
+        </h4>
+        <h5>
+            This code sets out Emirates Transport policies and regulations. To assure that all students are transported safely and comfortably, we request that you ensure that your child adheres to the following rules: 
+            
+        </h5>
+        
+        <ul>
+            <li>Students should be present at the bus stop 5 minutes before their pick-up time.</li>
+            <li>Please note that the bus driver will not wait beyond the designated time. In case students below the age of 11 years have no parent/guardian at the drop off point, then the student will continue the journey on the bus and the bus supervisor will seek to contact the parent/guardian at an alternate drop off point. If all attempts fail to connect with the parents, the student will be bought back to the school and it will be the responsibility of the parent/guardian to pick up the student from the school.</li>
+            <li>The bus supervisor will not be allowed to leave the bus except in case of emergency. Under no circumstance will the supervisor escort the student to the front door of the student’s home.</li>
+            <li>The buses will depart at the designated time from the school. Should a student miss the bus for any reason, then it is the responsibility of the parent to pick up the student from school.</li>
+            <li>Parents must notify the bus company at least 2 weeks prior to the shifting to a new address/residence.</li>
+            <li>If students are found to have caused any damage to the bus or the belongings of a fellow student, the parent(s) will be required to compensate for the repair or replacement of the damaged item. </li>
+            <li>Students must always remain seated and have the seatbelt fastened.</li>
+            <li>Students are not allowed to standup or walk while the bus is moving.</li>
+            <li>Students should remain respectful to each other and the bus staff.</li>
+            <li>Students who are physically injured will not be allowed to travel on the bus and will be dealt with case by case. Parents must inform the school about such cases in advance and will be solely responsible for the pickup and drop of students during the period of injury.</li>
+            <li>Eating and drinking are not allowed on the bus.</li>
+            <li>Students should keep the bus clean and refrain from damaging the bus. </li>
+            <li>For students' safety windows should remain closed.</li>
+            <li>Students should follow instructions given by the bus attendant</li>
+            <li>Students should take all personal belongings before leaving the bus and is not the responsibility of the bus company in case any belongings are missing/lost.</li>
+            <li>Students should inform the bus attendant of any inappropriate behavior on the bus.</li>
+        </ul>
+        
+        <h4><span>NOT FOLLOWING THE ABOVE MENTIONTIONED RULES MAY RESULT IN:</span></h4>  
+        <ul>
+            <li>Moving to a different designated seat in the bus.</li>
+            <li>Informing to the parents as well as the school of any incident in the bus.</li>
+            <li>A written report will be issued to the school along with warning letters to the student. The school will speak to the child as a reminder of the expectations on the bus. If the child receives 3 such warning letters, the transport staff and school will mutually agree on suspension on services.</li>
+            <li>Repeated misbehavior and breaching rules may result in termination the bus service.</li>
+        </ul>
+        
+         
+        
+       <!-- <apex:pageBlock rendered="{!If (stdRecord[0].ETST_School__r.ETST_Account_Type__c=='Private School',true,false)}"> -->
+            <h4 style="text-align: center;"><span>Policies (Incase transportation fees is collected directly from parents):</span></h4>
+        <ol>
+            <li>In case a student consistently violates one or more of the above rules, the concerned parents will be notified in writing. After two such written warnings and in the interest of overall discipline and safety of the bus, the student may be disallowed from further use of the bus service and refund will not be issued.</li>
+            <li>Bus transport service will commence within a week from registration and payment receipt.</li>
+            <li>Mode of Payment accepted: Cheque (in case of company payment)/Bank Transfer/Credit card (Cash not accepted)</li>
+            <li>For bounced cheque’s, an AED 200 /- fee will be charged for each violation. </li>
+            <li>Once a place is reserved for students in the bus, there will be a 1-month cancellation fee regardless whether the services have been used or not in case of cancellation.</li>
+            <li>For refund purposes, amount will be calculated based on 10 months. </li>
+            <li>Periodical use of the bus is charged as follows: -
+                <ul class="dd.d1">
+                    <li>If a student attends any part of week one of the term or fails to show up at all without the Parent/Guardian notifying the transport in writing sufficiently n advance before the beginning of a term. In such a case, the School may retain the value of the registration or re-registration fees (equivalent to 1 month’s fee).</li>
+                    <li>If a student attends from one week and up to three weeks in a term, transport may retain the value of one full month of transportation fees.</li>
+                    <li>If a student attends over three weeks and up to six weeks in a term, the School may retain the value of two full months of transportation fees.</li>
+                    <li>If a student attends over six weeks in a term, the School may retain the full-term fee.</li>
+                </ul>
+            </li>
+            <li>Refund will be issued and calculated based on point 7 plus cancellation fee will apply (equivalent to 1 month’s fee). </li>
+            <li>Refund (if any) will be issued within 1 month after adjusting the cancellation fee.  </li>
+            <li>If there are any outstanding fees, the concerned parents will be notified in writing. Emirates Transport has the right to take legal action and/or suspend services as per management’s decision. </li>
+            <li>Emirates Transport holds the right to cancel any route at any point of time as per management’s decision. </li>
+            <li>Services are subject to seat availability and route availability.</li>
+            <li>If there is a change in the address of a student, bus service is subject to availability of seats as well as if a bus is available for that area. Refunds will be given correlatively. </li>
+            <li>Bus timings are non-negotiable and will be decided by Emirates Transport depending on the route but limited to ADEK’s guidelines. </li>
+            <li>Complaints should be discussed with the school and the bus company only through the portal. Not with the driver or the bus attendant.</li>
+        </ol>
+       <!-- </apex:pageBlock> -->
+        <p style="margin:10px">
+            I <b>{!stdRecord[0].ETST_Account_Name__r.name}</b> for <b>{!stdRecord[0].ETST_First_Name__c} {!stdRecord[0].name}</b> have understood and undertake the above and agree to the code of conduct and policies. 
+        </p>
+        <p style="margin:10px">
+        Date:<b><apex:outputText value="{0, date, MMMM d','  yyyy}"><apex:param value="{!stdRecord[0].CreatedDate}"/></apex:outputText>
+            </b>
+        </p>
+        <apex:image url="{!$Resource.TermsandConditionsAccepted}" width="200" height="50"/>
+    </body>  
+</apex:page>

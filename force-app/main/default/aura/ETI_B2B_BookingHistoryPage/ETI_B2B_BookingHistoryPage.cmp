@@ -1,0 +1,18 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_B2B_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="VehicleInfo" type="ET_Customer_Vehicle__c" default="{'sobjectType':'ET_Customer_Vehicle__c', 'Chassis_No__c':'','Plate_No__c':'','Location__c':'','Registration_Type__c':'','Plate_Color__c':'','Plate_Source__c':'','Plate_Type__c':''}"/>
+    <aura:attribute name="selectedEmirate" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    
+    <div class="textright" style="color: rgb(201, 199, 197);font-weight: bold;">
+        <aura:if isTrue="{!v.selectedEmirate != 'Sharjah'}">
+            <span class="infoDetail">*{!v.Service_availability}</span>
+            <aura:set attribute="else">
+                <span class="infoDetail">{!v.Service_availability_Sharjah}*</span>
+            </aura:set>
+        </aura:if>
+    </div>
+    <div aura:id="cmpBody">
+        {!v.body}
+    </div>    
+    
+</aura:component>

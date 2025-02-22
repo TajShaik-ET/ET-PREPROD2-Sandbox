@@ -1,0 +1,8 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" >
+    <aura:attribute name="recordId" type="String" />
+    <c:ETConfirmationBox promptBody="Are you sure, Do want to cancel refund ?" 
+                         recordId = "{!v.recordId}"
+                         serverAction="cancelRefund"
+                         header = "Refund Cancellation"
+                         actionName = "Cancel Refund"/>
+</aura:component>

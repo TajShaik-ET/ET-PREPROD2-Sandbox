@@ -1,0 +1,600 @@
+<apex:page controller="ET_Payment_Controller" showHeader="false" standardStylesheets="false" sidebar="false" docType="html-5.0" applyBodyTag="False" applyHtmlTag="False">
+    
+    <apex:includeLightning />
+    <!--script src="https://paypage.sandbox.ngenius-payments.com/hosted-sessions/sdk.js"></script-->
+     <script src="https://paypage.ngenius-payments.com/hosted-sessions/sdk.js"></script>
+
+    <head>
+        <title>Payment Gateway</title>
+        <apex:stylesheet value="{!URLFOR($Resource.ET_PaymentStyle,'bootstrap.css')}"/>
+            <apex:stylesheet value="{!URLFOR($Resource.ET_PaymentStyle,'font-awesome.min.css')}"/> 
+                <apex:stylesheet value="{!URLFOR($Resource.ET_PaymentStyle,'themify-icons.css')}"/>     
+                    <apex:stylesheet value="{!URLFOR($Resource.ET_PaymentStyle,'responsive.css')}"/>  
+                        <apex:stylesheet value="{!URLFOR($Resource.ET_PaymentStyle,'style.css')}"/>
+                            <apex:slds /> 
+                                </head>
+                            <style>
+                                /*@font-face {
+                                    font-family: 'Cronos';
+                                    src: url(/resource/ETST_Cronos); 
+                                }*/
+                                placeholder {
+                                    color: red;
+                                }
+    body{
+        /*font-family: 'Cronos'!important;*/
+    }
+    
+    .pay_btn{
+        font-size: 14px;
+        margin-right: 10px;
+        margin-left: 5px;
+        border: 0px solid #00c19e;
+        color: #fff;
+        padding: 2px 10px;
+        min-width: 100px;
+        height: 30px;
+        background-color: #ff4b5a;
+        border-radius: 0px;
+        color: #fff;
+        font-weight: normal!important;
+        text-transform: capitalize!important;
+        line-height: 2!important;
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        -moz-transition: all 0.4s;
+        transition: all 0.4s;
+        float:right;
+    }
+    .pay_btn:hover{
+        color:#fff!important;
+        background-color: #333333;
+    }
+    .cancel_btn{
+        font-size: 14px;
+        border: 0px solid #00c19e;    
+        background-color: #b0b1af;
+        border-radius: 0px;
+        color: #fff;
+        padding: 2px 10px;
+        min-width: 100px;
+        height: 30px;
+        font-weight: normal!important;
+        text-transform: capitalize!important;
+        line-height: 2!important;
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        -moz-transition: all 0.4s;
+        transition: all 0.4s;
+        float:right;
+    }
+    .cancel_btn:hover{
+        color: #fff;
+        background-color: #333333;
+    }
+    .order_box {
+        padding: 11px!important;
+        overflow: hidden;
+    }
+    .amountsec{
+        padding-left: 10px;
+        font-size: 24px;
+        line-height: 30px;
+        height: 30px;
+        position: relative;
+    }
+    .order_box h2{
+        font-weight: 600!important;
+        border: none!important;
+    }
+    .slds-scope .slds-modal__header {
+        position: relative;
+        border-top-right-radius: .25rem;
+        border-top-left-radius: .25rem;
+        border-bottom: 1px solid rgb(217, 219, 221)!important;
+        padding: 1rem;
+        text-align: center;
+    }
+    .slds-scope .slds-modal__footer {
+        border-top: 1px solid rgb(217, 219, 221)!important;
+        border-bottom-right-radius: .25rem;
+        border-bottom-left-radius: .25rem;
+        padding: .75rem 1rem;
+        background-color: rgb(255, 255, 255);
+        text-align: right;
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+    }
+    .slds-modal__container {
+        margin: 0 auto;
+        width: 50%;
+        min-width: 96%!important;
+        max-width: 96%!important;
+    }
+    
+    p{padding-left: 10px;}
+    #mainDiv{
+    	display : none;
+    }
+    #alertMsgBox{
+    border: 1px solid red;
+    padding: .5rem 1rem;
+    margin: 10px;
+       
+    }
+    .crosserror{
+    font-size: 13px;
+    background: red;
+    padding: 4px 6px;
+    color: #fff;
+    border-radius: 50%;
+    border: 1px solid red;
+    margin-right: 5px;  
+    }
+    #alertMsgBox .errorlist{
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: red; 
+    }
+    .slds-modal__content {
+        min-height: 270px;
+    }
+    .main_iframediv {
+        height: 400px !important;
+        min-height:400px!important;
+    }  
+    @media only screen and (max-width: 480px) {
+        .cancel_btn , .pay_btn{
+            min-width:auto!important;
+            margin-right: 0px;
+            margin-left: 2px;
+        }
+        .amountsec {
+            font-size: 18px;
+        }
+		body{	
+            background: transparent!important;	
+        }	
+        .order_box {	
+            background: transparent;	
+        }	
+        .pay_btn{	
+            background: #eb4026;	
+            border-radius: 5px;	
+        }	
+        .cancel_btn{	
+            border-radius: 5px;	
+        }	
+        .order_box {	
+            padding: 0px!important;	
+            margin-top:80px;	
+        }
+    }
+    </style>        
+    <body style="background:#f9f9f9;background-color:#f9f9f9;">
+        
+        
+       <apex:form id="frm"  html-autocomplete="off">
+   
+       <div style="{!If((showDetailForm==true),'display:block','display:None')};width: 320px;margin: 2rem auto;">
+ 	     <form class="slds-form--stacked slds-wrap ">
+		
+             <label for="fname">First Name <span style="font-size:14px;color:red;">*</span> </label><br/>
+                    <apex:inputtext id="fname" value="{!firstName}" required="true" style="width: 100%;margin-bottom:0.5rem;outline:none;padding:7px;border-width: 1px;border-radius: 2px;border: 1px solid #bfc2c5;background: transparent;color: #555;"/><br/>
+                    <label for="lname">Last Name <span style="font-size:14px;color:red;">*</span></label><br/>
+                   <apex:inputtext id="lname" value="{!lastName}" required="true" style="width: 100%;margin-bottom:0.5rem;outline:none;padding:7px;border-width: 1px;border-radius: 2px;border: 1px solid #bfc2c5;background: transparent;color: #555;"/><br/>
+                    <label for="email">Email <span style="font-size:14px;color:red;">*</span></label><br/>
+                   <apex:input type="email" id="email" value="{!emailVal}" required="true" style="width: 100%;margin-bottom:0.5rem;outline:none;padding:7px;border-width: 1px;border-radius: 2px;border: 1px solid #bfc2c5;background: transparent;color: #555;"/> <br/>
+		  
+		 
+		    <apex:commandButton action="{!updateFormValue}" value="Go to Payment" style="{!If((showDetailForm==true),'display:block','display:None')};background-color: #ff4b5a;color: #fff;border: 1px solid #ff4b5a;padding: 5px 10px;font-size: 12px;border-radius: 5px;float: right;cursor:pointer"/>    
+
+		</form>
+                </div>
+ 
+  
+
+ </apex:form>
+                
+        <!--================Checkout Area =================-->
+    <apex:outputPanel id="section1" rendered="{!!showDetailForm}" > 
+            <div  class="slds-scope"> 
+                <div id="spinner" class="slds-hide" style="background: #f9f9f9;">
+                    <div class="slds-spinner_container">
+                        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                            <span class="slds-assistive-text">Please do not refresh the page and wait while we are processing your payment!</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                            </div>
+                            </div>
+                            </div> 
+                            </div>                       
+                            
+                            <section class="checkout_area">
+                                <div class="">
+                                    <div class="billing_details order_box">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <h3 style="margin-bottom: 0px;padding: 10px 10px 0px;border-bottom: 0px solid #eee;">Card Details</h3>
+                                                <apex:form >
+                                                    <div id="mainDiv">
+                                                    <apex:outputpanel id="alertBox">
+                                                         <div Id="alertMsgBox">  
+                                                             <label class="errorlist slds-hide"><span class="crosserror">&#10006;</span>Error:</label><br/>
+                                                              <apex:outputtext style="white-space:pre-wrap;color:red;" value="{!message}" escape="false" />                                                            
+                                                            </div>
+                                                           
+                                                            <script>
+                                                                var message = 'Payment'+'~'+'{!message}'+'~'+'{!title}'+'~{!messageType}';
+    console.log('Message now: '+message);
+    </script>
+    <apex:actionFunction action="{!setMessage}"   name="setMessage" reRender="alertBox">
+        <apex:param name="messageUI" value=""/>
+    </apex:actionFunction>
+</apex:outputpanel>  
+ </div>
+</apex:form> 
+
+
+<div style="height:281px">
+    <div id="mount-id" style='height:100%'></div>
+    
+    <!--<div id="3ds_iframe"></div>-->
+    <div class ='slds-scope'>
+        <section id="paymentConfimationPopUp" role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium slds-hide" aria-labelledby="paymentConfirmationHeader" aria-modal="true" aria-describedby="paymentConfirmationContent">
+            <div class="slds-modal__container">
+                <div  class="slds-scope"> 
+                    <div class="slds-hide" id="spinner_popup" style="background: #f9f9f9;">
+                        <div class="slds-spinner_container">
+                            <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                                <span class="slds-assistive-text">Please do not refresh the page and wait while we are processing your payment!</span>
+                                <div class="slds-spinner__dot-a"></div>
+                                <div class="slds-spinner__dot-b"></div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onClick="togglePaymentPopUp();">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--small">
+                            <use xmlns:xlink="<a class='vglnk' href='http://www.w3.org/2000/xlink' rel='nofollow'><span>http</span><span>://</span><span>www</span><span>.</span><span>w3</span><span>.</span><span>org</span><span>/</span><span>2000</span><span>/</span><span>xlink</span></a>" 
+                                 xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#close">
+                            </use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="paymentConfirmationHeader" class="slds-modal__title slds-hyphenate">Payment Confirmation</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="paymentConfirmationContent">
+                    <div id="3ds_iframe" class="main_iframediv"></div>
+                </div>
+                <footer class="slds-modal__footer">
+                    
+                </footer>
+            </div>
+        </section>
+ 
+        <div id="paymentConfimationBackDrop" class="slds-backdrop slds-backdrop_open slds-hide"></div>
+    </div>
+    <div id="lightning" />
+    <b class="amountsec"><font style="color: #ff4b5a;font-weight: bold;letter-spacing: .5px;">AED {!serviceAmount}</font></b>
+    <a class="pay_btn" href="#" onclick="proceedPayment();">Pay Now</a>
+    <a class="cancel_btn" href="#" onclick="cancel();">Cancel</a>
+</div> 
+</div>
+<!-- Vinod Changes Start -->
+<!--script>
+$Lightning.use("c:ETST_TermsandConditionsApp", function() {
+    $Lightning.createComponent("c:ETST_TermsandConditions",{},
+                               "lightning",
+                               function(cmp){
+                                   console.log('Component created');
+                               });
+});
+</script-->
+<!--Vinod Changes - End -->
+<div class="col-lg-4">
+    <div class="order_box" style="padding:10px!important;">
+        
+    </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+</apex:outputPanel>
+<!--================End Checkout Area =================-->
+
+<!--================Start Footer Area =================-->
+<footer class="slds-scope slds-card__footer">	
+    <apex:form >
+        <apex:outputPanel id="paymentStatus"> 
+            <script>  
+            function paymentProcessed() 
+            {
+                console.log('Payment Processed...');
+                
+                try{ 
+                    var paymentReply = '{!paymentReply}';
+                    var paymentId = '{!paymentId}';
+                    console.log(paymentReply);
+                    console.log(paymentId);
+                    var jsonResponse = JSON.parse(paymentReply); 
+                    console.log(jsonResponse);
+                    readPaymentStatus(jsonResponse,paymentId);
+                    toggleSpinner("spinner"); 
+                    togglePaymentPopUp();    
+                }
+                catch(err){
+                    toggleSpinner("spinner");
+                    document.getElementById("mainDiv").style.display = "block";
+                    setMessage("There has been error during the processing the payment,please try later.");	
+                    console.log(err.message);
+                }
+                /**/
+                
+                
+            }
+            
+            
+            function cancel(){
+                var message = 'PaymentCancelled';
+                try{
+                    var baseUrl = "{!LEFT($Api.Partner_Server_URL_390,FIND('/services', $Api.Partner_Server_URL_390))}";
+                    parent.postMessage(message, baseUrl);
+                }catch(err){console.log(err.message);}
+            }
+            
+            
+            function paymentProcessCompleted(){
+                //toggleSpinner("spinner");
+                //toggleSpinner("spinner_popup");
+            }    
+            
+            </script>
+        </apex:outputPanel>
+        <apex:actionFunction action="{!updatePayment}" oncomplete="paymentProcessCompleted();"  name="updatePayment" reRender="paymentStatus">
+            <apex:param name="status" value=""/>
+            <apex:param name="paymentId" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!makePayment}" oncomplete="paymentProcessed();"  name="makePayment" reRender="paymentStatus">
+            <apex:param name="sessionId" value=""/>
+            <apex:param name="firstName" assignTo="{!firstName}" value=""/>
+            <apex:param name="lastName" assignTo="{!lastName}" value=""/>
+            <apex:param name="emailVal" assignTo="{!emailVal}" value=""/>
+        </apex:actionFunction>
+    </apex:form>
+</footer>
+<!--================END Footer Area =================-->
+</body>    
+
+<script>
+var alertbox;       
+const style = {
+    main: {} /* the style for the main wrapper div around the card input*/,
+    base: {fontFamily:'Cinzel', fontUrl:'https://fonts.googleapis.com/css?family=Cinzel&display=swap'} /* this is the default styles that comes with it */,
+    input: {borderColor:'rgb(191, 194, 197)',borderRadius:'2px',borderStyle: 'solid', borderWidth:'1px',padding: '10px 15px'} /* custom style options for the input fields */,
+    invalid: {} /* custom input invalid styles */
+};
+var apiKey = '{!hostedSessionAPIKey}';
+var outletRef = '{!outletRef}';
+var isCVVValidStatus = true;
+var isExpiryValidStatus = true;
+var isNameValidStatus = true;
+var isPanValidStatus = true;
+var isPaymentFailed = false;
+var alertMessage = '';
+var isValid = true;
+var formRequestCount = 0;
+
+toggleSpinner("spinner");
+/* Method call to mount the card input on your website */
+window.NI.mountCardInput('mount-id'/* the mount id*/, {
+    style, // Style configuration you can pass to customize the UI
+    apiKey, // API Key for WEB SDK from the portal
+    outletRef, // outlet reference from the portal
+    onSuccess: () => {
+        console.log('The payment form was successfully loaded!');
+        formRequestCount = 0;
+        alertMessage = '*** Payment Details';
+        toggleSpinner("spinner");
+    },
+        onFail: () => {
+            console.log('The payment was failed!');
+            isPaymentFailed = true;
+        },
+            onChangeValidStatus: ({
+                isCVVValid,
+                isExpiryValid,
+                isNameValid,
+                isPanValid,
+            }) => {
+                console.log(isCVVValid, isExpiryValid, isNameValid, isPanValid);
+                isPanValidStatus = isPanValid;
+                isExpiryValidStatus = isExpiryValid;
+                isCVVValidStatus = isCVVValid;
+                isNameValidStatus = isNameValid;
+                alertMessage = '';
+                isValid = true;
+                if(!isPanValidStatus)
+                {
+                if(alertMessage=='')
+                alertMessage  = '\n'+'Card number is not valid.';
+                
+                else
+                alertMessage += '\n'+'Card number is not valid.';
+                isValid = false;
+            }
+                
+                if(!isExpiryValidStatus)
+                {
+                if(alertMessage=='')
+                alertMessage = 'Expiry Date not valid.';
+                else
+                alertMessage += 'Expiry Date not valid.'+'\n';
+                
+                isValid = false;
+            }
+                
+                if(!isCVVValidStatus)
+                {
+                if(alertMessage=='')
+                alertMessage = 'CVV not valid.'+'\n';
+                else
+                alertMessage += 'CVV not valid.'+'\n';
+                
+                isValid = false;
+            }
+                
+                if(!isNameValidStatus)
+                {
+                if(alertMessage=='')
+                alertMessage = 'Name not valid.'+'\n';
+                else
+                alertMessage += 'Name not valid.'+'\n';
+                
+                isValid = false;
+            }
+                
+                
+                if(!isValid && formRequestCount!=0){
+                	//alert('error');
+                 document.getElementById("mainDiv").style.display = "block";
+               		 setMessage(alertMessage);
+                
+                
+                
+            }
+                
+                if(isValid){
+                		//alert('success');
+                 document.getElementById("mainDiv").style.display = "none";
+                	setMessage('');  
+                 	
+                }
+                formRequestCount++;
+            }
+            });
+                
+                async function readPaymentStatus(reply,paymentId) {
+                const { status, error } = await window.NI.handlePaymentResponse(
+                reply,
+                {
+                mountId: '3ds_iframe',
+                style: { width: 500, height: 500 }
+            }
+                                 );
+            var baseUrl = "{!LEFT($Api.Partner_Server_URL_390,FIND('/services', $Api.Partner_Server_URL_390))}";
+            var message = '';
+            var paymentReply = '';  
+            var payment_id = reply._id;
+            var payment_id_array;   
+            console.log('Payment_Id: '+payment_id);    
+            if(payment_id!=undefined && payment_id!=null && payment_id!=''){
+            payment_id_array = payment_id.split(':');
+        }    
+        if (
+        status === window.NI.paymentStates.AUTHORISED ||
+        status === window.NI.paymentStates.CAPTURED
+        ) {
+        try{
+        message ='SUCCESS';
+        // document.getElementById("mainDiv").style.display = "block";
+        // setMessage('Your service request is confirmed!.');
+        if(payment_id_array.length > 0)
+        {
+        //toggleSpinner("spinner_popup");
+        console.log('Success - Payment_Id_Split: '+payment_id_array[2]);
+        updatePayment(status,payment_id_array[2]);
+        togglePaymentPopUp();
+    }
+    parent.postMessage('Payment~'+paymentId+'~'+message, baseUrl);
+}catch(err){console.log(err.message);}
+// Same as before this signals successful payment
+} else if (
+    status === window.NI.paymentStates.FAILED ||
+    // A new state to look out for is 3DS Challenge failure
+    status === window.NI.paymentStates.THREE_DS_FAILURE
+) {
+    message = 'FAILED';
+    document.getElementById("mainDiv").style.display = "block";
+    setMessage('Your service request is failed!. Retry your payment.');
+    console.log('Failed - Payment_Id_Split: '+payment_id_array[2]);
+    updatePayment(status,payment_id_array[2]);
+    togglePaymentPopUp();
+    parent.postMessage('Payment~'+paymentId+'~'+message, baseUrl); 
+    // payment failure signal
+}     
+}
+
+
+let sessionId;//createSession
+async function proceedPayment() {
+    try {
+        if(isValid)
+        {
+            alertMessage = '';
+            toggleSpinner("spinner");
+              document.getElementById("mainDiv").style.display = "none";
+            
+            //1. create session Id
+            const response = await window.NI.generateSessionId();
+            sessionId = response.session_id;
+            console.log('Session ID : '+sessionId);
+                      
+            //2. Make Payment
+            makePayment(sessionId,'{!firstName}','{!lastName}','{!emailVal}');
+        }
+        else
+        {
+            document.getElementById("mainDiv").style.display = "block";
+            setMessage(alertMessage);
+            
+            
+        }
+    } catch (err) {console.error(err);}
+}
+
+
+
+function togglePaymentPopUp(){
+    var paymentConfimationPopUp = document.getElementById("paymentConfimationPopUp");
+    var paymentConfimationBackDrop = document.getElementById("paymentConfimationBackDrop");
+    toggleVisibility(paymentConfimationPopUp);
+    toggleVisibility(paymentConfimationBackDrop);
+}
+
+function toggleSpinner(elementId){
+    var spinner = document.getElementById(elementId);
+    toggleVisibility(spinner);
+}
+
+function toggleVisibility(element){
+    if (element.classList) {
+        element.classList.toggle("slds-hide");
+    } else {
+        // For IE9
+        var classes = element.className.split(" ");
+        var i = classes.indexOf("slds-hide");
+        
+        if (i >= 0)
+            classes.splice(i, 1);
+        else
+            classes.push("slds-hide");
+        element.className = classes.join(" ");
+    }
+}    
+
+function showAlert(title,message,type)     {
+    sforce.one.showToast({
+        "title": title,
+        "message": message,
+        "type": type
+    });
+}
+
+
+</script>
+
+</apex:page>

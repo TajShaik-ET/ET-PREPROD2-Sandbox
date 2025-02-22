@@ -1,0 +1,686 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" controller="ET_driverCheckLisFormCntrl">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!--<c:ET_DriverCheckListFormCustomLookup onDataReady="{!c.receiveData}" />-->
+    <!--<aura:handler name="onDataReady" event="c:ET_CustomLookupEvent" action="{!c.receiveData}"/>-->
+    <aura:attribute name="openForm" type="boolean" default="false" />
+    <aura:attribute name="openRow" type="boolean" default="false" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="driverRecord" type="String" />
+    <aura:attribute name="isModalOpen" type="Boolean" default="false" />
+    <aura:attribute name="currentUserName" type="String" />
+    <aura:attribute name="userInfo" type="user" />
+    <aura:attribute name="today" type="Date" />
+    <aura:attribute name="sObjectName" type="String" default="Driver_Daily_Check_List__c" />
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="saved" type="Boolean" default="false" />
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="selTabId" type="String" default="tab1" />
+    <aura:attribute name="accept" type="List" default="['.jpg', '.jpeg','.pdf','.csv','.xlsx']" />
+    <aura:attribute name="multiple" type="Boolean" default="true" />
+    <aura:attribute name="uploadedFiles" type="Object[]" />
+    <aura:attribute name="uplodedFilesData" type="ContentDocument[]"/> 
+    <aura:attribute name="DriverCheckList" type="Driver_Daily_Check_List__c[]" />
+    <aura:attribute name="GLLocation" type="ETSALES_Location__c[]" />
+    <aura:attribute name="driverChecklistWrp" type="Object" />
+    <aura:attribute name="driverChecklistWrpMdt" type="Object" />
+    <aura:attribute name="mycolumns" type="List" />
+    <aura:attribute name="schoolId" type="String" />
+    <aura:attribute name="schoolCode" type="String" />
+    <aura:attribute name="schoolRecord" type="Object" />
+    <aura:attribute name="schoolRecordSchool" type="Object" />
+    <aura:attribute name="schoolRecordDriver" type="Object" />
+    <aura:attribute name="currentTime" type="String" />
+    <aura:attribute name="status" type="String" default="tab1" />
+    <aura:attribute name="recordCount" type="string" default="5" description="Records visible at once" />
+    <aura:attribute name="label" type="string" default="" description="Label will be displayed above input Box" />
+    <aura:attribute name="selectedRecord" type="List" access="private" default="" />
+    <aura:attribute name="startTime" type="String" />
+    <aura:attribute name="internalNumber" type="String" />
+    <aura:attribute name="branchValue" type="String" />
+    <aura:attribute name="stationValue" type="String" />
+    <aura:attribute name="kmreading" type="String" />
+    <aura:attribute name="enableInfiniteLoading" type="Boolean" default="true"/> 
+    <lightning:notificationsLibrary aura:id="notifLib" />
+    <aura:attribute name="finalResult" type="String" />
+    <aura:attribute name="hasRendered" type="Boolean" default="true"/> 
+    <aura:attribute name="SignatureValue" type="Object[]"/>
+    <aura:attribute name="DriverCheckListrecordId" type="String" />
+    <aura:attribute name="userId" type="String" />
+    <aura:attribute name="currentUser" type="User" default="{'sObjecttype': 'User'}" />
+    <aura:attribute name="hasError" type="Boolean" default="false" />
+    <aura:attribute name="vfUrl" type="String" />
+    
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    
+    <div class="btn_filter">
+        <p class="infotext">Please click button to create new records</p>
+        <div class="btn_filter_main">
+            <div class="btn_innerfilter">
+                <lightning:button label=" Create Driver CheckList" onclick="{!c.openModel}" class="slds-button_brand btn_red ">
+                </lightning:button>
+                <!--lightning:button label="Download" class="slds-button_brand btn_white " onclick="" ></lightning:button-->
+            </div>
+        </div>
+    </div>
+    <div class="bordertab">
+        <lightning:datatable data="{! v.DriverCheckList }" columns="{! v.mycolumns }" keyField="id"
+                             hideCheckboxColumn="true" onrowaction="{! c.handleRowAction }" 
+                             loadMoreOffset="3"
+                             showRowNumberColumn="true"
+                             enableInfiniteLoading="{!v.enableInfiniteLoading}"
+                             onloadmore="{!c.hanldeloadMoreData}"/>
+        <!-- <c:driverChecklistDataTable aura:id="lWCChild"></c:driverChecklistDataTable>-->
+        <aura:if isTrue="{!!not(empty(v.DriverCheckList))}">
+            <div id="no-records" style="margin-top: 3%;font-size: 13px;" class="slds-align_absolute-center"> No Records
+                to display</div>
+        </aura:if>
+    </div>
+    <div class="slds-m-around--xx-large">
+        <aura:if isTrue="{!v.openRow}">
+            <div class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close" onclick="{!c.closeModalRow}" alternativeText="close"
+                                              variant="bare" class="slds-modal__close" />
+                        <h2 class="slds-text-heading_medium">Record Details</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning:recordEditForm recordId="{!v.driverRecord}" objectApiName="Driver_Daily_Check_List__c">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid">Internal Number</label>
+                                    <lightning:outputField fieldName="Internal_Number__c" aura:id="aid"
+                                                           label="Internal Number" readonly="true" />
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid1">Station</label>
+                                    <lightning:outputField fieldName="Station__c" aura:id="aid1" label="Station" />
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid">Branch</label>
+                                    <lightning:outputField fieldName="Branch__c" aura:id="aid" label="Branch"
+                                                           readonly="true" />
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid">Date</label>
+                                    <lightning:outputField fieldName="Date__c" aura:id="aid1" label="Date"
+                                                           readonly="true" />
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid">Driver Name</label>
+                                    <lightning:outputField fieldName="Driver__c" aura:id="aid" label="Branch"
+                                                           readonly="true" />
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid">KM Reading</label>
+                                    <lightning:outputField fieldName="KM_Reading__c" aura:id="aid1" label="KM Reading"
+                                                           readonly="true" />
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid">School Name</label>
+                                    <lightning:outputField fieldName="School_Name__c" aura:id="aid1" label="School Name"
+                                                           readonly="true" />
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid">School Code</label>
+                                    <lightning:outputField fieldName="School_Code__c" aura:id="aid1" label="School Code"
+                                                           readonly="true" />
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid">Examination of bus fluids</label>
+                                    <lightning:outputField fieldName="Examination_of_bus_fluids__c" aura:id="aid"
+                                                           label="Branch" readonly="true" />
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <label for="aid">Safety of seats and seat belts</label>
+                                    <lightning:outputField fieldName="Safety_of_seats_and_seatbelts__c" aura:id="aid1"
+                                                           label="Date" readonly="true" />
+                                </div>
+                            </div>
+                        </lightning:recordEditForm>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <lightning:button label="Close" onclick="{!c.closeModalRow}" />
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>  
+        </aura:if>
+    </div>
+    <aura:if isTrue="{!v.openForm}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close" onclick="{!c.closeModel}" alternativeText="close"
+                                          variant="bare-inverse" class="slds-modal__close" />
+                    <h2 id="modal-heading-01" style="text-align:left;"
+                        class="slds-text-heading_medium slds-hyphenate text-left">Driver CheckList Form</h2>
+                </header>
+                <div class="slds-modal__content" id="modal-content-id-1" style="padding:1rem 1rem 0">
+                    <aura:html tag="style">
+                        .cuf-content {
+                        padding: 0 0rem !important;
+                        }
+                        .slds-p-around--medium {
+                        padding: 0rem !important;
+                        }
+                        
+                        .btnsend {
+                        background: #fe864d;
+                        border: 1px solid #fe864d;
+                        outline: none;
+                        box-shadow: none;
+                        margin: 1rem;
+                        }
+                        .slds-border_bottom {
+                        border-bottom: 1px solid #f2f2f2;
+                        }
+                        .slds-modal__close {
+                        top: .5rem;
+                        right: .5rem;
+                        border: 1px solid #d4d4d4;
+                        }
+                        .slds-modal__close svg.slds-button__icon.slds-button_icon-inverse {
+                        fill: #000;
+                        }
+                        .slds-modal__container{
+                        max-width: 90% !important;
+                        width:90% !important;
+                        }
+                    </aura:html>
+                    <aura:if isTrue="{!v.showSpinner}">
+                        <lightning:spinner />
+                    </aura:if>
+                    <aura:if isTrue="{!!v.saved}">
+                        <div class="scroller-wrapper">
+                            <div class="scroller-content">
+                                <div class="inspectionForm">
+                                    <div class="mainForm">
+                                        <h2 id="modal-heading-01"
+                                            class="slds-text-heading_medium slds-border_bottom slds-hyphenate slds-align_absolute-center"
+                                            style="border-bottom: 1px solid #f2f2f2;font-size: 16px;font-weight: 500!important;padding: 1rem;margin-bottom:1rem">
+                                            نموذج تفقد الحافلة قبل الرحلة اليومية / Daily Pre - Trip Inspection Form /
+                                            روزانہ قبل ازسفر معائنہ کا فارم
+                                        </h2>
+                                        <div class="mainDiv slds-scrollable">
+                                            <lightning:layout horizontalAlign="center" class="tabdiv"> <!-- onsubmit="{!c.handleSubmit}" -->
+                                                <lightning:recordEditForm recordId="{!v.recordId}"
+                                                                          aura:id="checkListEditForm" onload="{!c.handleLoad}"
+                                                                          onsubmit="{!c.handleSubmit}" onerror="{!c.handleError}" 
+                                                                          onsuccess="{!c.handleSuccess}"
+                                                                          objectApiName="Driver_Daily_Check_List__c">
+                                                    <lightning:tabset variant="default" selectedTabId="{!v.selTabId}">
+                                                        <lightning:tab label="Driver Details" aura:id="tab1"
+                                                                       tabindex="1" id="tab1" title="">
+                                                            <div class="slds-grid">
+                                                                <div
+                                                                     class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                                                    <span class="reqspan">*</span>Internal: رقـمالحـافلة/>
+                                                                    <lightning:inputField class="slds-visible"
+                                                                                          aura:id="internalNumberID" 
+                                                                                          fieldName="Internal_Number__c"
+                                                                                          variant="label-hidden" 
+                                                                                          value="{!v.internalNumber}"
+                                                                                          onchange="{!c.handleChangeInternalNum}" />
+                                                                                 <aura:if isTrue="{!v.hasError}">
+                                                                        <lightning:formattedText value="Bus Number Already Selected for Today !!" style="color: red;" />
+                                                                    </aura:if>
+                                                                </div>
+                                                                <div
+                                                                     class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                                                    <span class="reqspan">*</span>Station: المحـطـة<B />
+                                                                    <lightning:inputField fieldName="Station__c"
+                                                                                          aura:id="stationID"
+                                                                                          variant="label-hidden" 
+                                                                                          value="{!v.GLLocation[0].Name}"
+                                                                                          disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-grid">
+                                                                <div
+                                                                     class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                                                    <span class="reqspan">*</span>Branch: الفـرع<B />
+                                                                    <lightning:inputField fieldName="Branch__c"
+                                                                                          aura:id="branchID"
+                                                                                          variant="label-hidden" 
+                                                                                          value="{!v.GLLocation[0].GL_Region__c}"
+                                                                                          disabled="true"/>
+                                                                </div>
+                                                                <div
+                                                                     class="slds-col slds-size_1-of-2 slds-p-around_medium slds-dropdown-trigger_click slds-is-open">
+                                                                    <div class="slds-grid">
+                                                                        <label for="aid1">Date: تاريخ</label>
+                                                                        <lightning:input  fieldName="Date__c"
+                                                                                         value="{!v.today}" type="date"
+                                                                                         aura:id="dateID" variant="label-hidden"
+                                                                                         displayDatePicker="true" 
+                                                                                         onchange="{!c.handleChange}" />
+                                                                        <span class="reqspan">*</span>Time<B />
+                                                                        <lightning:input aura:id="aid1"
+                                                                                         variant="label-hidden"
+                                                                                         value="{!v.startTime}"
+                                                                                         disabled="true" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-grid">
+                                                                <div
+                                                                     class="slds-col slds-size_1-of-2 slds-p-around_medium driver_name_div">
+                                                                    <label for="aid1">Driver Name</label>
+                                                                    <lightning:inputField fieldName="Driver__c" value="{!v.currentUser.AccountId}"  aura:id="aid1" variant="label-hidden"  disabled="true" readonly="true"/>
+                                                                </div>
+                                                                <!--<div
+                                                                     class="slds-col slds-size_1-of-2 slds-p-around_medium driver_name_div">
+                                                                    <c:ET_DriverCheckListFormCustomLookup
+                                                                                                          fieldName="Driver Name"
+                                                                                                          objectName="Account" lookupFieldType="Driver"
+                                                                                                          onDataReady="{!c.receiveData}" 
+                                                                                                          placeholder ="Search by Employee ID"
+                                                                                                          iconName="standard:employee_contact" />
+                                                                </div>-->
+                                                                <div
+                                                                     class="slds-col slds-size_1-of-2 slds-p-around_medium driver_name_div">
+                                                                    <c:ET_DriverCheckListFormCustomLookup
+                                                                                                          fieldName="School Name"
+                                                                                                          objectName="Account" lookupFieldType="School"
+                                                                                                          onDataReady="{!c.receiveData}"
+                                                                                                          placeholder="Search by school Name"
+                                                                                                          iconName="standard:employee_organization" />
+                                                                    <lightning:messages />
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-grid">
+                                                                <div
+                                                                     class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                                                    <span class="reqspan">*</span>KM Reading<B />
+                                                                    <lightning:inputField fieldName="KM_Reading__c"
+                                                                                          aura:id="kmreadingId"
+                                                                                          variant="label-hidden" 
+                                                                                          value="{!v.kmreading}"/>
+                                                                </div>
+                                                                <div
+                                                                     class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                                                    <span class="reqspan">*</span>School Code<B />
+                                                                    <lightning:input  aura:id="aid1" 
+                                                                                     variant="label-hidden"
+                                                                                     value="{!v.schoolCode}"
+                                                                                     disabled="true"/>
+                                                                </div>                          
+                                                            </div>
+                                                        </lightning:tab>
+                                                        <lightning:tab label="Safety of buses Check List" aura:id="tab2"
+                                                                       tabindex="2" id="tab2" title="Safety of buses Check points 2">
+                                                            <aura:if isTrue="{!v.showSpinner}">
+                                                                <lightning:spinner />
+                                                            </aura:if>
+                                                            <div class="status_info">
+                                                                <label class="Low">Low</label>
+                                                                <label class="Medium">Moderate</label>
+                                                                <label class="High">High</label>
+                                                            </div>
+                                                            <div class="table_div">
+                                                                <table
+                                                                       class="slds-table slds-table_cell-buffer slds-table_bordered tableBorder"
+                                                                       aria-labelledby="element-with-table-label other-element-with-table-label"
+                                                                       style="width:100%; margin: 1rem 0;">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th colspan="0" width="25%"
+                                                                                style="vertical-align : middle;text-align:center;">
+                                                                                <center>Action</center>
+                                                                            </th>
+                                                                            <th colspan="0" style="text-align: right;">
+                                                                                <div lang="ar" style="direction: rtl;">التأكد من حالة الحافلات وتفقد ما يلي</div>
+                                                                                <div lang="en" style="direction: ltr;"> Ensuring the conditions of buses, and check the following</div>
+                                                                                <div lang="ur" style="direction: rtl;">بسوں کی اچھی حالت کو یقینی بنانا، اور درج ذیل کو چیک کریں</div>
+                                                                            </th>
+                                                                            <th colspan="0" width="30%"
+                                                                                style="vertical-align : middle;text-align:center;">
+                                                                                <center>Category</center>
+                                                                            </th>
+                                                                            <th colspan="0"
+                                                                                style="vertical-align: middle;text-align:center;min-width:100px;">
+                                                                                <center>Sr.No</center></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <aura:iteration items="{!v.driverChecklistWrpMdt}"
+                                                                                        var="checklist">
+                                                                            <tr> 
+                                                                                <td style="horizontal-align : middle;text-align:center;width:100px">
+                                                                                    <aura:if isTrue="{!checklist.optionType == 'Radio'}">
+                                                                                        <lightning:buttonIcon
+                                                                                                              alternativeText="Approve"
+                                                                                                              iconName="utility:success"
+                                                                                                              variant="container"
+                                                                                                              name="approevButton"
+                                                                                                              title="approve"
+                                                                                                              value="{!checklist.seq}"
+                                                                                                              aura:id="{!checklist.srNo}"
+                                                                                                              onclick="{!c.toggleState}"
+                                                                                                              class="{!checklist.iconSelectedAction == 'approve' ? 'selected_class green' : 'notselected_class'}" />
+                                                                                        <lightning:buttonIcon
+                                                                                                              alternativeText="Close"
+                                                                                                              iconName="utility:close"
+                                                                                                              name="rejectButton"
+                                                                                                              value="{!checklist.seq}"
+                                                                                                              aura:id="{!checklist.srNo}"
+                                                                                                              variant="container"
+                                                                                                              title="close"
+                                                                                                              onclick="{!c.toggleState}"
+                                                                                                              class="{!checklist.iconSelectedAction == 'close' ? 'selected_class red' : 'notselected_class'}" />
+                                                                                        <aura:if isTrue="{!checklist.category.en == 'The Safety of the Wheelchair Lift'}">
+                                                                                            <lightning:buttonIcon
+                                                                                                                  alternativeText="Close"
+                                                                                                                  iconName='utility:error'
+                                                                                                                  name="notApplicableButton"
+                                                                                                                  value="{!checklist.seq}"
+                                                                                                                  aura:id="{!checklist.srNo}"
+                                                                                                                  variant="container"
+                                                                                                                  title="notApplicableButton"
+                                                                                                                  onclick="{!c.toggleState}"
+                                                                                                                  class="{!checklist.iconSelectedAction == 'notApplicableButton' ? 'selected_class yellow' : 'notselected_class'}" />
+                                                                                        </aura:if>
+                                                                                    </aura:if>
+                                                                                    <aura:if isTrue="{!checklist.optionType == 'Result'}">
+                                                                                        <label class="{!checklist.response == 'Pass' ? 'greentext' : checklist.response == 'Fail' ? 'redtext' : checklist.response == 'Not Applicable' ? 'yellowtext' : ''}">
+                                                                                            {!checklist.response}
+                                                                                        </label>                                                                                   
+                                                                                    </aura:if>
+                                                                                    <aura:if isTrue="{!checklist.optionType == 'Comment'}">                                                                                            
+                                                                                        <lightning:textarea name="input2" label="" variant="label-hidden" required="{!checklist.commentReq}" value="{!checklist.response}"></lightning:textarea>
+                                                                                    </aura:if>
+                                                                                </td>
+                                                                                <td style="vertical-align : middle;text-align:right;" class="{!checklist.severity.ar+' '+second_td}">
+                                                                                    {!checklist.checkPoint.ar}<br/>
+                                                                                    {!checklist.checkPoint.en}<br/>
+                                                                                    {!checklist.checkPoint.ur}
+                                                                                </td>
+                                                                                <aura:if isTrue="{!checklist.categoryShow}">
+                                                                                    <td style="vertical-align : middle;text-align:right;" rowspan="{!checklist.categoryCount}" class="{!checklist.severity.ar}">
+                                                                                        {!checklist.category.ar}<br/>
+                                                                                        {!checklist.category.en}<br/>
+                                                                                        {!checklist.category.ur}
+                                                                                    </td>
+                                                                                </aura:if>
+                                                                                <aura:if isTrue="{!checklist.srNoShow}">
+                                                                                    <td style="vertical-align : middle;text-align:right;" rowspan="{!checklist.srNoCount}" class="{!checklist.severity.ar+' '+last_td}">
+                                                                                        <center>{!checklist.srNo}</center>
+                                                                                    </td>
+                                                                                </aura:if>
+                                                                            </tr>
+                                                                        </aura:iteration>
+                                                                        <tr>
+                                                                            <td colspan="4" class="bgheading">
+                                                                                <center><strong>إإجراءات الفحص: ضع علامة (&#10004;) إذا كان الفحص آمنًا وواضحًا (&#10006;) إذا كان الاختبار غير صحيح</strong></center>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="4" class="bgheading">
+                                                                                <center><strong>INESPECTION PROCEDURES PUT ( &#10004; ) IF INESPECTION IS POSITIVE AND ( &#10006; ) IF INESPECTION IS NEGATIVE</strong></center>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="4" class="bgheading">
+                                                                                <center><strong>معائنہ کا طریقہ کار: اگر معائنہ مثبت ہے (&#10004;) اور اگر ٹیسٹ منفی ہے (&#10006;)</strong></center>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="slds-table slds-table_cell-buffer slds-table_bordered tableBorder"
+                                                                       aria-labelledby="element-with-table-label other-element-with-table-label"
+                                                                       style="width:100%; margin: 1rem 0;">
+                                                                    <tr>
+                                                                        <td style="border: none!important;padding: 0px!important;">
+                                                                            <div class="checkdiv">
+                                                                                <lightning:inputField fieldName="Vital_bus_inspections_completed__c"
+                                                                                                      aura:id="vitalID" variant="label-hidden"/> <!-- onchange="{!c.handleChange}" -->
+                                                                                <label for="vitalID">Vital bus inspections completed before operation. (تم التأكد من سالمة الحافلة قبل الحركة.)</label>
+                                                                            </div>
+                                                                            <div class="checkdiv">
+                                                                                <lightning:inputField  fieldName="Observations_to_not_affect_the_safety_of__c"
+                                                                                                      aura:id="safetyBusID" variant="label-hidden"/>                                                                            
+                                                                                <label for="safetyBusID">Observations do not affect the safety of the bus. (المالحظات غير مؤثرة على سالمة الحافلة.)</label>
+                                                                            </div>
+                                                                            <div class="checkdiv">
+                                                                                <lightning:inputField  fieldName="Observation_affect_safety_bus_replaced__c"
+                                                                                                      aura:id="safetyBusReplacedID" variant="label-hidden"/>              
+                                                                                <label for="safetyBusReplacedID">Observations affect the safety of the bus; the bus should be replaced. (المالحظات تؤثر على سالمة الحافلة والحافلة بحاجة الستبدال.)</label>
+                                                                            </div>
+                                                                            <div class="checkdiv">
+                                                                                <lightning:inputField  fieldName="Contact_traffic_coordinator_for_replacem__c"
+                                                                                                      aura:id="contTrafficID" variant="label-hidden"/>
+                                                                                <label for="contTrafficID">Contact Traffic Coordinator for replacement. (ابالغ منسق العمليات لالستبدال.)</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <br/>
+                                                                    <tr>
+                                                                        <td style="border: none!important;padding: 0px!important;">
+                                                                            <label for="finalCommetsID">Final Comments (التعليقات النهائية)</label>
+                                                                            <lightning:inputField fieldName="Final_Comments__c"
+                                                                                                  placeholder="Final Comments Here"
+                                                                                                  value="" type="text" required="true"
+                                                                                                  aura:id="finalCommetsID" variant="label-hidden"/>
+                                                                        </td>
+                                                                    </tr> 
+                                                                </table>
+                                                                <div class="finalresult_div">
+                                                                    Final Result: <label class="{!v.finalResult == 'Pass' ? 'greentext' : 'redtext'}">{!v.finalResult}</label>
+                                                                </div>
+                                                                <div>
+                                                                    <c:eT_SignatureCaptureLWC aura:id="lWCMethod" recordId="{!v.DriverCheckListrecordId}" SigCap="{!v.hasRendered}"/>
+                                                                </div>
+                                                                <div class="container">
+                                                                    <div class="uploading_div">
+                                                                        <lightning:button variant="neutral"
+                                                                                          class="btn_white staticbtn"
+                                                                                          label="Preview Files " title="show "
+                                                                                          onclick="{!c.uploadeFileWithID}"></lightning:button>
+                                                                        <div class="upload_file_sec">
+                                                                            <lightning:buttonIcon
+                                                                                                  alternativeText="Close"
+                                                                                                  iconName="utility:photo"
+                                                                                                  variant="container" class="photo_icon"
+                                                                                                  disabled="{!v.uploadedFiles.length > 0 ? 'false' : 'true'}" />
+                                                                            <lightning:fileUpload label="Upload Files"
+                                                                                                  multiple="{!v.multiple}"
+                                                                                                  accept="{!v.accept}"
+                                                                                                  recordId="{!v.recordId}"
+                                                                                                  onuploadfinished="{!c.handleUploadFinished}"
+                                                                                                  class="upload_file_info" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </lightning:tab>
+                                                        <aura:if isTrue="{!v.isModalOpen}">
+                                                            <div class="slds-backdrop slds-backdrop_open"></div>
+                                                            <section role="dialog" tabindex="-1"
+                                                                     aria-labelledby="modal-heading-01"
+                                                                     aria-describedby="modal-content-id-1" aria-modal="true"
+                                                                     class="slds-modal slds-fade-in-open">
+                                                                <div class="slds-modal__container">
+                                                                    <div class="slds-modal__content slds-p-around_medium"
+                                                                         id="modal-content-id-1">
+                                                                        <header>
+                                                                            <h2 id="modal-heading-01"
+                                                                                class="slds-text-heading_medium slds-hyphenate">
+                                                                                Documents</h2>
+                                                                        </header>
+                                                                        <!--<table
+                                                                               class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>#</th>
+                                                                                    <th>File Name</th>
+                                                                                    <th>File Type</th>
+                                                                                    <th>Actions</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <aura:iteration
+                                                                                                items="{!v.uploadedFiles}"
+                                                                                                var="file" indexVar="index">
+                                                                                    <tr>
+                                                                                        <td>{!index + 1}</td>
+                                                                                        <td> <a href=""
+                                                                                                id="{!file.name}"
+                                                                                                onclick="{!c.OpenFile}">{!file.name}</a>
+                                                                                        </td>
+                                                                                        <td>{!file.mimeType}</td>
+                                                                                        <td>
+                                                                                            <lightning:buttonIcon
+                                                                                                                  iconName="utility:delete"
+                                                                                                                  alternativeText="Delete"
+                                                                                                                  title="Delete"
+                                                                                                                  onclick="{!c.handleDeleteFile}"
+                                                                                                                  value="{!file.documentId}" />
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </aura:iteration>
+                                                                            </tbody>
+                                                                        </table>-->
+                                                                        <table
+                                                                               class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                                                            <tbody>
+                                                                                <aura:if isTrue="{!v.uplodedFilesData.length > 0}">
+                                                                                    <!-- Render table if uplodedFilesData list has elements -->
+                                                                                    
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>#</th>
+                                                                                            <th>Title</th>
+                                                                                            <th>File Type</th>
+                                                                                            <th>Created By</th>
+                                                                                            <th>Time</th>
+                                                                                            <th>Preview</th>
+                                                                                            <th>Action</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <aura:iteration items="{!v.uplodedFilesData}" var="file" indexVar="index">
+                                                                                            <tr>
+                                                                                                <td>{!index + 1}</td>
+                                                                                                <td>
+                                                                                                    <a href="#"  id="{!file.Id}" onclick="{}">{!file.Title}</a>
+                                                                                                </td>
+                                                                                                <td>{!file.FileType}</td>
+                                                                                                <td>{!file.CreatedBy.Name}</td>
+                                                                                                <td>{!file.formattedTime}</td>
+                                                                                                <td><div class="cwrap" title="Preview">
+                                                                                                    <lightning:fileCard fileId="{!file.Id}" description="{!file.Title}" />
+                                                                                                    </div></td>
+                                                                                                
+                                                                                                <td>
+                                                                                                    <a href="javascript:void(0)" id="{!file.Id}" onclick="{!c.delFilesAction}">
+                                                                                                        <lightning:icon iconName='action:delete' alternativeText='delete' size='Small' title='delete'></lightning:icon>
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </aura:iteration>
+                                                                                    </tbody>
+                                                                                    
+                                                                                    <aura:set attribute="else">
+                                                                                        <!-- Render message if uplodedFilesData list is empty -->
+                                                                                        <div class="centerNoFiles">
+                                                                                            <p>No files uploaded.</p>
+                                                                                        </div>
+                                                                                        
+                                                                                    </aura:set>
+                                                                                </aura:if>
+                                                                                
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <div class="slds-form-element">
+                                                                            <label class="slds-form-element__label">Yes</label>
+                                                                            <div class="slds-form-element__control">
+                                                                                <label class="slds-checkbox">
+                                                                                    <input type="checkbox"
+                                                                                           aura:id="yesCheckbox"
+                                                                                           name="yesCheckbox"
+                                                                                           onchange="{!c.handleCheckboxChange}" />
+                                                                                    <span class="slds-checkbox--faux"></span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="slds-form-element">
+                                                                            <label class="slds-form-element__label">No</label>
+                                                                            <div class="slds-form-element__control">
+                                                                                <label class="slds-checkbox">
+                                                                                    <input type="checkbox"
+                                                                                           aura:id="noCheckbox"
+                                                                                           name="noCheckbox"
+                                                                                           onchange="{!c.handleCheckboxChange}" />
+                                                                                    <span class="slds-checkbox--faux"></span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <lightning:icon aura:id="yesIcon"
+                                                                                        iconName="utility:success"
+                                                                                        alternativeText="Yes Icon"
+                                                                                        class="slds-hide" />
+                                                                        <lightning:icon aura:id="noIcon"
+                                                                                        iconName="utility:error"
+                                                                                        alternativeText="No Icon"
+                                                                                        class="slds-hide" />
+                                                                    </div>
+                                                                    <footer class="slds-modal__footer">
+                                                                        <lightning:button variant="neutral"
+                                                                                          class="btn_red" label="close"
+                                                                                          onclick="{!c.closeModal}" />
+                                                                    </footer>
+                                                                </div>
+                                                            </section>
+                                                        </aura:if>
+                                                        <div class="slds-float_left">
+                                                            <aura:if isTrue="{!v.selTabId != 'tab1'}">
+                                                                <lightning:button variant="neutral" class="btn_white"
+                                                                                  label="Previous" onclick="{!c.handleback}" />
+                                                            </aura:if>
+                                                        </div>
+                                                        <div class="slds-float_right">
+                                                            <aura:if isTrue="{!v.selTabId != 'tab2'}">
+                                                                <lightning:button variant="brand" class="btn_red"
+                                                                                  label="Next" onclick="{!c.handlenext}" />
+                                                            </aura:if>
+                                                            <aura:if isTrue="{!v.selTabId == 'tab2'}">
+                                                                <lightning:button variant="brand" type="submit"
+                                                                                  class="btn_red" name="save" label="Save" />
+                                                            </aura:if>
+                                                        </div>
+                                                    </lightning:tabset>
+                                                </lightning:recordEditForm>
+                                            </lightning:layout>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <aura:set attribute="else">
+                            <div class="thankyou_div">
+                                <lightning:icon iconName="action:approval" alternativeText="Approved" title="Approved" />
+                                <div>Thank you for your information.</div>
+                                <lightning:button variant="neutral"
+                                                  class="btn_red" label="Click here for home page"
+                                                  onclick="{!c.goToHome}" />
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

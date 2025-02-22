@@ -1,0 +1,676 @@
+<!--
+  @description       : 
+  @author            : Srihari.Koyila@Smaartt.com
+  @group             : 
+  @last modified on  : 01-24-2024
+  @last modified by  : Srihari.Koyila@Smaartt.com
+-->
+<template>
+	<template if:true={checkIn}>
+		<div class="container vehReceiveForm">
+			<div style="text-align: center; ">
+				<h3 class="slds-theme_shade formHeader">
+					Vehicle Receiving Form
+				</h3>
+			</div>
+
+			<Div class="slds-grid slds-wrap slds-p-around_x-small">
+				<div class="slds-col slds-size_1-of-3">
+					<p>{oppRecord.Account.Name}<span class="fieldHeader">Customer Name </span></p>
+					<template if:true={oppRecord.Vehicle_Brand__r}>
+						<p>{oppRecord.Vehicle_Brand__r.Name}<span class="fieldHeader">Vehicle Brand </span></p>
+					</template>
+				</div>
+				<div class="slds-col slds-size_1-of-3">
+					<p>{mobNum}<span class="fieldHeader">Mobile Number </span></p>
+					<template if:true={oppRecord.Vehicle_Model__r}>
+						<p>{oppRecord.Vehicle_Model__r.Name}<span class="fieldHeader">Vehicle Model </span></p>
+					</template>
+
+				</div>
+				<div class="slds-col slds-size_1-of-3">
+					<p>{oppRecord.Account.PersonEmail}<span class="fieldHeader">Email </span></p>
+					<template if:true={oppRecord.Vehicle_Model_Year__c}>
+						<p>{oppRecord.Vehicle_Model_Year__c}<span class="fieldHeader">Vehicle Model Year </span></p>
+					</template>
+
+				</div>
+			</Div>
+		</div>
+
+		<div class="slds-section">
+			<h3 class="slds-theme_shade formHeader">
+				Checklist
+			</h3>
+		</div>
+		<div class="slds-grid slds-wrap slds-p-around_xx-small">
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Vehcile Regirstation</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Vehicle_registration__c" selected={vehReceivingRec.Vehicle_registration__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Vehicle_registration__c" selected={Vehicle_registration__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Service Book</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Service_Book__c" selected={vehReceivingRec.Service_Book__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Service_Book__c" selected={Service_Book__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Remote</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Remote__c" selected={vehReceivingRec.Remote__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Remote__c" selected={Remote__c} onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Key</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Key__c" selected={vehReceivingRec.Key__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Key__c" selected={Key__c} onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Jack</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Jack__c" selected={vehReceivingRec.Jack__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Jack__c" selected={Jack__c} onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Tools</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Tools__c" selected={vehReceivingRec.Tools__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Tools__c" selected={Tools__c} onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Mirrors</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Mirrors__c" selected={vehReceivingRec.Mirrors__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Mirrors__c" selected={Mirrors__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Windows</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Windows__c" selected={vehReceivingRec.Windows__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Windows__c" selected={Windows__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+					<template if:true={Windows__c}>
+						<lightning-input type="file" label="" accept="image/*" name="windows" data-id="windowsv"
+							onchange={handleFileUpload}> </lightning-input>
+						<div class="sldsCardStyile gallery1">
+							<template for:each={showAllFiles} for:item="attachment" for:index="index">
+								<template if:true={attachment.Windows}>
+									<div key={attachment.index}>
+										<img src={attachment.imgUrl} />
+										<lightning-button-icon-stateful class="slds-m-left_x-small"
+											icon-name="utility:delete" onclick={handleRemoveAttachment}
+											data-filename={index}>
+										</lightning-button-icon-stateful>
+									</div>
+								</template>
+							</template>
+						</div>
+					</template>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Seats</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Seats__c" selected={vehReceivingRec.Seats__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Seats__c" selected={Seats__c} onclick={handleNoClick}></lightning-button-icon-stateful>
+					<template if:true={Seats__c}>
+						<lightning-input type="file" label="" accept="image/*" name="Seats" data-id="Seatsv"
+							onchange={handleFileUpload}></lightning-input>
+						<div class="sldsCardStyile gallery1">
+							<template for:each={showAllFiles} for:item="attachment" for:index="index">
+								<template if:true={attachment.Seats}>
+									<div key={attachment.index}>
+										<img src={attachment.imgUrl} />
+										<lightning-button-icon-stateful class="slds-m-left_x-small"
+											icon-name="utility:delete" onclick={handleRemoveAttachment}
+											data-filename={index}>
+										</lightning-button-icon-stateful>
+									</div>
+								</template>
+
+							</template>
+						</div>
+					</template>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Seat belts</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Seat_belts__c" selected={vehReceivingRec.Seat_belts__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Seat_belts__c" selected={Seat_belts__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+					<template if:true={Seat_belts__c}>
+						<lightning-input type="file" label="" accept="image/*" name="Seat belts" data-id="Seatbeltsv"
+							onchange={handleFileUpload}></lightning-input>
+						<div class="sldsCardStyile gallery1">
+							<template for:each={showAllFiles} for:item="attachment" for:index="index">
+								<template if:true={attachment.Seatbelts}>
+
+									<div key={attachment.index}>
+										<img src={attachment.imgUrl} />
+										<lightning-button-icon-stateful class="slds-m-left_x-small"
+											icon-name="utility:delete" onclick={handleRemoveAttachment}
+											data-filename={index}>
+										</lightning-button-icon-stateful>
+									</div>
+								</template>
+
+							</template>
+						</div>
+					</template>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Fire Extinguisher</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Fire_Extinguisher__c" selected={vehReceivingRec.Fire_Extinguisher__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Fire_Extinguisher__c" selected={Fire_Extinguisher__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Dashboard</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Dashboard__c" selected={vehReceivingRec.Dashboard__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Dashboard__c" selected={Dashboard__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+					<template if:true={Dashboard__c}>
+						<lightning-input type="file" label="" accept="image/*" name="Dashboard" data-id="Dashboardv"
+							onchange={handleFileUpload}></lightning-input>
+						<div class="sldsCardStyile gallery1">
+							<template for:each={showAllFiles} for:item="attachment" for:index="index">
+								<template if:true={attachment.Dashboard}>
+
+									<div key={attachment.index}>
+										<img src={attachment.imgUrl} />
+										<lightning-button-icon-stateful class="slds-m-left_x-small"
+											icon-name="utility:delete" onclick={handleRemoveAttachment}
+											data-filename={index}>
+										</lightning-button-icon-stateful>
+									</div>
+								</template>
+
+							</template>
+						</div>
+					</template>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Infotainment System Screen</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Infotainment_System_Screen__c" selected={vehReceivingRec.Infotainment_System_Screen__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Infotainment_System_Screen__c" selected={Infotainment_System_Screen__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+					<template if:true={Infotainment_System_Screen__c}>
+						<lightning-input type="file" label="" accept="image/*" name="Infotainment System Screen"
+							data-id="InfotainmentSystemScreenv" onchange={handleFileUpload}></lightning-input>
+						<div class="sldsCardStyile gallery1">
+							<template for:each={showAllFiles} for:item="attachment" for:index="index">
+								<template if:true={attachment.InfotainmentSystemScreen}>
+
+									<div key={attachment.index}>
+										<img src={attachment.imgUrl} />
+										<lightning-button-icon-stateful class="slds-m-left_x-small"
+											icon-name="utility:delete" onclick={handleRemoveAttachment}
+											data-filename={index}>
+										</lightning-button-icon-stateful>
+									</div>
+								</template>
+
+							</template>
+						</div>
+					</template>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>AC Functionality</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="A_C_Functionality__c" selected={vehReceivingRec.A_C_Functionality__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="A_C_Functionality__c" selected={A_C_Functionality__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+					<template if:true={A_C_Functionality__c}>
+						<lightning-input type="file" label="" accept="image/*" name="AC Functionality"
+							data-id="ACFunctionalityv" onchange={handleFileUpload}></lightning-input>
+						<div class="sldsCardStyile gallery1">
+							<template for:each={showAllFiles} for:item="attachment" for:index="index">
+								<template if:true={attachment.ACFunctionality}>
+
+									<div key={attachment.index}>
+										<img src={attachment.imgUrl} />
+										<lightning-button-icon-stateful class="slds-m-left_x-small"
+											icon-name="utility:delete" onclick={handleRemoveAttachment}
+											data-filename={index}>
+										</lightning-button-icon-stateful>
+									</div>
+								</template>
+
+							</template>
+						</div>
+					</template>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Radio Knobs Panel</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Radio_Knobs_Panel__c" selected={vehReceivingRec.Radio_Knobs_Panel__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Radio_Knobs_Panel__c" selected={Radio_Knobs_Panel__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+					<template if:true={Radio_Knobs_Panel__c}>
+						<lightning-input type="file" label="" accept="image/*" name="RadioKnobsPanel"
+							data-id="RadioKnobsPanelv" onchange={handleFileUpload}></lightning-input>
+						<div class="sldsCardStyile gallery1">
+							<template for:each={showAllFiles} for:item="attachment" for:index="index">
+								<template if:true={attachment.RadioKnobsPanel}>
+									<div key={attachment.index}>
+										<img src={attachment.imgUrl} />
+										<lightning-button-icon-stateful class="slds-m-left_x-small"
+											icon-name="utility:delete" onclick={handleRemoveAttachment}
+											data-filename={index}>
+										</lightning-button-icon-stateful>
+									</div>
+								</template>
+							</template>
+						</div>
+					</template>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Spare wheel</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Spare_wheel__c" selected={vehReceivingRec.Spare_wheel__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Spare_wheel__c" selected={Spare_wheel__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Floor Mats</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Floor_Mats__c" selected={vehReceivingRec.Floor_Mats__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Floor_Mats__c" selected={Floor_Mats__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Warning Triangle</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Warning_Triangle__c" selected={vehReceivingRec.Warning_Triangle__c}
+						onclick={handleYesClick}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Warning_Triangle__c" selected={Warning_Triangle__c}
+						onclick={handleNoClick}></lightning-button-icon-stateful>
+				</div>
+
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+				<lightning-combobox class="slds-p-around_xx-small" label="Asset Type" data-id="asset" value={assetType}
+					options={assetOption} onchange={handleAssetChange} disabled={isAsset}></lightning-combobox>
+			</div>
+
+
+			<!--<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+            <lightning-input class="slds-p-around_xx-small" label="Check In Fuel Reading" data-id="fuel" value={vehReceivingRec.Check_in_Fuel_Reading__c}
+                ></lightning-input>
+        </div>-->
+
+			<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+
+				<lightning-combobox class="slds-p-around_xx-small" label="Check In Fuel Reading"
+					name="Check_in_Fuel_Reading__c" data-id="fuel" required="true"
+					value={vehReceivingRec.Check_in_Fuel_Reading__c} onchange={handlePicklistChange}
+					options={picklistOptions}></lightning-combobox>
+
+			</div>
+
+			<div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+				<lightning-textarea class="slds-p-around_xx-small" data-id="Comments"
+					value={vehReceivingRec.Comments__c} placeholder="any concerns type here..."></lightning-textarea>
+			</div>
+
+			<div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+				<lightning-dual-listbox
+					label="Symptom Types"
+					source-label="Available Options"
+					selected-label="Selected Options"
+					options={parentOptions}
+					value={selectedParentValues}
+					onchange={handleParentChange}>
+				</lightning-dual-listbox>
+			</div>
+			<template if:true={openChilds}>
+			<div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+				<lightning-dual-listbox
+					label="Symptoms"
+					source-label="Available Options"
+					selected-label="Selected Options"
+					options={childOptions}
+					value={selectedChildValues}
+					onchange={handleChildChange}>
+				</lightning-dual-listbox>
+			</div>
+			<div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+				<lightning-dual-listbox
+					label="Possible Cause"
+					source-label="Available Options"
+					selected-label="Selected Options"
+					options={causeOptions}
+					value={selectedCauseValues}
+					onchange={handleCauseChange}>
+				</lightning-dual-listbox>
+			</div>
+		</template>
+		</div>
+
+
+
+
+		<div class="c-container slds-p-around_small container slds-box inspectionSummary" data-id="canvasV">
+			<div class="slds-section">
+				<h3 class="slds-theme_shade slds-text-align_center">
+					Inspection Summary
+				</h3>
+			</div>
+			<div style="text-align: center;overflow:auto; ">
+				<p class="slds-m-bottom_small">
+					<canvas name="canvasItem" style="border:2px solid rgb(136, 135, 135);" width="490" height="400"
+						data-id="canvasDia"></canvas>
+				</p>
+				<div class="sldsicons picUpload">
+					<lightning-button data-id="undoBtn" icon-name="utility:undo" icon-position="left"
+						class="slds-m-left_x-small"></lightning-button>
+					<lightning-button data-id="redoBtn" icon-name="utility:redo" icon-position="right"
+						class="slds-m-left_x-small"></lightning-button>
+					<lightning-button icon-name="utility:clear" onclick={clearDrawing}
+						class="slds-m-left_x-small"></lightning-button>
+					<img class="uploadImg" src={ETimage_uploadImage} />
+					<div class="slds-p-around_small">
+						<lightning-input type="file" label="" accept="image/*" name="CanvasFiles" data-id="CanvasFilesv"
+							onchange={handleFileUpload}></lightning-input>
+					</div>
+
+					<div class="sldsCardStyile gallery">
+						<template for:each={showAllFiles} for:item="attachment" for:index="index">
+							<template if:true={attachment.CanvasFiles}>
+								<div key={attachment.index}>
+									<img src={attachment.imgUrl} />
+									<lightning-button-icon-stateful class="slds-m-left_x-small"
+										icon-name="utility:delete" onclick={handleRemoveAttachment}
+										data-filename={index}>
+									</lightning-button-icon-stateful>
+								</div>
+							</template>
+
+						</template>
+					</div>
+
+				</div>
+				
+					<div class="slds-p-around_xx-small">
+						<c-e-t_-signature-capture has-rendered={hasRendered} onchild={handleAddToStorage} customer={customer}>
+							
+						</c-e-t_-signature-capture>
+					</div>
+					<div class="signature slds-p-around_xx-small">
+							<h2>{advisor}</h2>
+							<div class="slds-align_absolute-center">
+							<p>
+								
+								<canvas name="canvasItem" style="border:2px solid rgb(136, 135, 135);" width="350"
+									height="100" data-id="canvasSig"></canvas>
+								<lightning-button icon-name="utility:clear" onclick={SigclearDrawing}
+									class="slds-m-left_x-small" style="margin-right:35px; margin-top:4px"></lightning-button>
+									
+							</p>
+							</div>
+					</div>
+			</div>
+		</div>
+
+
+		<div class="slds-p-around_x-small " style="text-align: center;">
+			<lightning-button class="slds-p-around_xx-small" variant="brand" label="Save" title="Save"
+				onclick={vehRecSaveHandler}></lightning-button>
+			<lightning-button class="slds-p-around_xx-small" label="Back" title="Back"
+				onclick={backbButtonHanlder}></lightning-button>
+		</div>
+		<template if:true={loaded}>
+			<lightning-spinner variant="brand" class="SpinnerHolder"></lightning-spinner>
+		</template>
+	</template>
+	<!-- checkOut -->
+	<template if:true={checkOut}>
+		<div class="slds-section">
+			<h3 class="slds-theme_shade formHeader">
+				Check Out Accessories
+			</h3>
+		</div>
+		<template if:true={loaded}>
+			<lightning-spinner variant="brand" class="SpinnerHolder"></lightning-spinner>
+		</template>
+		<div class="slds-grid slds-wrap slds-p-around_xx-small">
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Radio</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Radio__c" selected={checkOutRec.Radio__c}
+						onclick={handleYesClickCO}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Radio__c" selected={Radio__c} onclick={handleNoClickCO}></lightning-button-icon-stateful>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Tool Kit</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Emer_Tool_Kit__c" selected={checkOutRec.Emer_Tool_Kit__c}
+						onclick={handleYesClickCO}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Emer_Tool_Kit__c" selected={Emer_Tool_Kit__c}
+						onclick={handleNoClickCO}></lightning-button-icon-stateful>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Fire Ext In</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Fire_Ext_In__c" selected={checkOutRec.Fire_Ext_In__c}
+						onclick={handleYesClickCO}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Fire_Ext_In__c" selected={Fire_Ext_In__c}
+						onclick={handleNoClickCO}></lightning-button-icon-stateful>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>First Aid Box</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="First_Aid_Box__c" selected={checkOutRec.First_Aid_Box__c}
+						onclick={handleYesClickCO}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="First_Aid_Box__c" selected={First_Aid_Box__c}
+						onclick={handleNoClickCO}></lightning-button-icon-stateful>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Reflect Train</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Reflec_Trian__c" selected={checkOutRec.Reflec_Trian__c}
+						onclick={handleYesClickCO}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Reflec_Trian__c" selected={Reflec_Trian__c}
+						onclick={handleNoClickCO}></lightning-button-icon-stateful>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-2 dataSection">
+				<label>Spare Wheel</label>
+				<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+					<lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" icon-name="utility:check"
+						name="Spare_Wheel__c" selected={checkOutRec.Spare_Wheel__c}
+						onclick={handleYesClickCO}></lightning-button-icon-stateful>
+					<lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+						name="Spare_Wheel__c" selected={Spare_Wheel__c}
+						onclick={handleNoClickCO}></lightning-button-icon-stateful>
+				</div>
+			</div>
+
+			<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+				<lightning-combobox class="slds-p-around_xx-small" label="Asset Type" data-id="asset" value={assetType}
+					options={assetOption} onchange={handleAssetChange}></lightning-combobox>
+			</div>
+
+			<!--<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+				<lightning-input class="slds-p-around_xx-small" label="Check In Fuel Reading" data-id="fuel" value={vehReceivingRec.Check_in_Fuel_Reading__c}
+					></lightning-input>
+			</div>-->
+
+			<div class="slds-col slds-size_1-of-2 slds-p-around_xx-small">
+
+				<lightning-combobox class="slds-p-around_xx-small" label="Check Out Fuel Reading"
+					name="Check_Out_fuel_reading__c" data-id="fuel" value={checkOutRec.Check_Out_fuel_reading__c}
+					onchange={handlePicklistChange} options={picklistOptions}></lightning-combobox>
+
+			</div>
+
+		</div>
+
+		<div class="c-container slds-p-around_small container slds-box inspectionSummary" data-id="canvasV">
+			<div class="slds-section">
+				<h3 class="slds-theme_shade slds-text-align_center">
+					Inspection Summary
+				</h3>
+			</div>
+			<div style="text-align: center;overflow:auto; ">
+				<p class="slds-m-bottom_small">
+					<canvas name="canvasItem" style="border:2px solid rgb(136, 135, 135);" width="490" height="400"
+						data-id="canvasDia"></canvas>
+				</p>
+				<div class="sldsicons picUpload">
+					<lightning-button data-id="undoBtn" icon-name="utility:undo" icon-position="left"
+						class="slds-m-left_x-small"></lightning-button>
+					<lightning-button data-id="redoBtn" icon-name="utility:redo" icon-position="right"
+						class="slds-m-left_x-small"></lightning-button>
+					<lightning-button icon-name="utility:clear" onclick={clearDrawing}
+						class="slds-m-left_x-small"></lightning-button>
+					<img class="uploadImg" src={ETimage_uploadImage} />
+					<div class="slds-p-around_small">
+						<lightning-input type="file" label="" accept="image/*" name="CanvasFiles" data-id="CanvasFilesv"
+							onchange={handleFileUpload}></lightning-input>
+					</div>
+
+					<div class="sldsCardStyile gallery">
+						<template for:each={showAllFiles} for:item="attachment" for:index="index">
+							<template if:true={attachment.CanvasFiles}>
+								<div key={attachment.index}>
+									<img src={attachment.imgUrl} />
+									<lightning-button-icon-stateful class="slds-m-left_x-small"
+										icon-name="utility:delete" onclick={handleRemoveAttachment}
+										data-filename={index}>
+									</lightning-button-icon-stateful>
+								</div>
+							</template>
+
+						</template>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="signature">
+			<h2>Signature </h2>
+			<p>
+				<canvas name="canvasItem" style="border:2px solid rgb(136, 135, 135);" width="490" height="100"
+					data-id="canvasSig"></canvas>
+				<lightning-button icon-name="utility:clear" onclick={SigclearDrawing}
+					class="slds-m-left_x-small"></lightning-button>
+			</p>
+		</div>
+		<div class="slds-p-around_x-small " style="text-align: center;">
+			<lightning-button class="slds-p-around_xx-small" variant="brand" label="Save" title="Save"
+				onclick={checkOutSaveHandler}></lightning-button>
+			<lightning-button class="slds-p-around_xx-small" label="Back" title="Back"
+				onclick={backbButtonHanlder}></lightning-button>
+		</div>
+
+	</template>
+</template>

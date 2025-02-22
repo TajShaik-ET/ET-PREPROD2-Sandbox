@@ -1,0 +1,154 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_B2B_VehicleController" access="global" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes">
+	<aura:attribute name="emirate" type="String" />
+    <aura:attribute name="lang" type="String" default="en" />
+    <aura:attribute name="url" type="String" />
+    <aura:attribute name="vehicleWrapper" type="Object"/>
+    <aura:attribute name="myCartVehicleWrapper" type="Object"/>
+    <aura:attribute name="SelectedVehicles" type="list" />
+    <aura:attribute name="booking" type="ETI_Booking__c" default="[{'sObjectType':'ETI_Booking__c','Name':''}]"/>
+    <aura:attribute name="cartCount" type="integer" default="0"/>
+    <aura:attribute name="showCartDetails" type="boolean" default="false" />
+    <aura:attribute name="IsSpinner" type="boolean" default="false" />
+    <aura:attribute name="isOpenModel" type="boolean" default="false" />
+    <aura:attribute name="isOpenRequestForService" type="boolean" default="false" />
+    <aura:attribute name="showDetails" type="boolean" />
+    <!--aura:handler value="{!this}" name="init" action="{!c.doInit}" /-->
+    <!--aura:registerEvent name="showDetails1" type="c:ETI_B2B_ShowDetails"/-->
+    <aura:registerEvent name="showButtons" type="c:ETI_B2B_ShowButtons"/>
+
+	<c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:registerEvent name="DataEvent" type="c:ETI_DataEvent"/>
+    <!--Pagination-->
+    <aura:attribute name="allVehicleData" type="Object"/>
+    <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="totalPages" type="Integer" default="0"/>
+    <aura:attribute name="pageList" type="List"/>
+    <aura:attribute name="totalRecords" type="integer" default="0"/>
+    <aura:attribute name="recordStart" type="integer" default="0"/>
+    <aura:attribute name="recordEnd" type="integer" default="0"/>
+    
+    <div class="countryselectdiv">
+        <div class="menudropdowndiv2">
+            <button class="dropmenubtn2" onclick="{! c.myServiceCart }">
+                <aura:if isTrue="{!empty(v.myCartVehicleWrapper)}">
+                    <img class="langdrop" alt="{!v.My_Cart}" title="{!v.My_Cart}" src="{!$Resource.ETI_Cart}" />
+                </aura:if>
+                <aura:if isTrue="{!not(empty(v.myCartVehicleWrapper))}">
+                    <img class="langdrop" alt="{!v.My_Cart}" title="{!v.My_Cart}" src="{!$Resource.ETI_ActiveCart}" />
+                </aura:if>
+            </button>
+        </div>
+    </div>	
+    <aura:if isTrue="{!v.showCartDetails}">
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <aura:if isTrue="{!v.IsSpinner}">
+                    <lightning:spinner alternativeText="Loading" size="medium" variant="brand"/>
+                </aura:if>
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header modalHeader">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="{!v.Close}"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.My_Cart}</h2>
+                </header>
+                <!--###### MODAL BOX BODY  Start######-->
+                <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                    <aura:if isTrue="{!not(empty(v.myCartVehicleWrapper))}">
+                        <aura:set attribute="else">
+                            <br></br> <br></br>
+                            <lightning:layout class="sortdiv" >
+                                <br></br><br></br><br></br>
+                                <div class="slds-notify slds-notify_alert slds-float_none" role="alert" >
+                                    <h2 style="text-align:right;font-size: 18px;font-family: 'Cronos';">{!v.Select_atleast_one_Vehicle}</h2>
+                                </div>
+                            </lightning:layout>
+                            <br></br><br></br>
+                        </aura:set>
+                        <div class="listviewvehichel">
+                            <table class="slds-table slds-max-medium-table stacked-horizontal tableData" id="tableId">
+                                <thead>
+                                    <tr>
+                                        <th scope="col paddingfirst"><span class="slds-truncate">{!v.Vehicle_Number}</span></th>
+                                        <th scope="col"><span class="slds-truncate">{!v.Plate_No}</span></th>
+                                        <th scope="col"><span class="slds-truncate">{!v.Plate_Source}</span></th>
+                                        <th scope="col"><span class="slds-truncate">{!v.Registration_Type}</span></th>  
+                                        <th scope="col"><span class="slds-truncate">{!v.Reg_Expiry_Date}</span></th>  
+                                        <th scope="col"><span class="slds-truncate">{!v.Action}</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.myCartVehicleWrapper}" var="veh" indexVar="index">
+                                        <tr>
+                                            <td class="paddingfirst">
+                                                <label class="checkboxcontainer">
+                                                </label><a href="{!'/Business/s/b2bvehicle-pageinspection?showH=true&amp;recordId='+veh.customerVehicle.Id+'&amp;isSpea='+v.isSpea}" >{!veh.customerVehicle.Name} </a>
+                                            </td> 
+                                            <td>{!veh.customerVehicle.Plate_No__c}</td>
+                                            <td>{!veh.customerVehicle.Plate_Source__c}</td>
+                                            <td>{!veh.customerVehicle.Registration_Type__c}</td>
+                                            <td>{!veh.customerVehicle.Registration_Expiry_Date__c}
+                                                <!--ui:outputDate value="{!veh.customerVehicle.Registration_Expiry_Date__c}" format="DD-MM-YYYY" /--></td>
+                                            <td> 
+                                                <aura:if isTrue="{!v.myCartVehicleWrapper.length>1}">
+                                                    <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.removeVehicle}">
+                                                        <img class="" src="{!$Resource.ETI_Remove}" />
+                                                    </span>
+                                                </aura:if>
+                                            </td>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                            <!-- Pagination Start Here -->
+                            <aura:if isTrue="{!v.totalPages>1}">
+                                <div class="pagination">
+                                    <div class="slds-clearfix">
+                                        <div class="slds-page-header" role="banner">
+                                            <div class="slds-float_right">            
+                                                <lightning:button label="{!v.First}" iconName="utility:left" iconPosition="left"
+                                                                  onclick="{!c.onFirst}" disabled="{! v.currentPageNumber == 1}"/>
+                                                <lightning:button iconName="utility:chevronleft" iconPosition="left"
+                                                                  onclick="{!c.onPrev}" disabled="{! v.currentPageNumber == 1}"/>
+                                                <lightning:button iconName="utility:chevronright" iconPosition="right" 
+                                                                  disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onNext}"/>
+                                                <lightning:button label="{!v.Last}" iconName="utility:right" iconPosition="right" 
+                                                                  disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onLast}"/>
+                                            </div>
+                                            <aura:if isTrue="{!v.v.clLang=='en'}">
+                                                <p class="slds-page-header__title" style="color:#23527c;">{!v.recordStart}-{!v.recordEnd} {!v.of} {!v.totalRecords} | {!v.Page} {!v.currentPageNumber} {!v.of} {!v.totalPages}</p>
+                                                <aura:set attribute="else">
+                                                    <p class="slds-page-header__title" style="color:#23527c;">{!v.recordStart}-{!v.recordEnd} &nbsp; {!v.of} &nbsp; {!v.totalRecords} | {!v.Page} {!v.currentPageNumber} &nbsp; {!v.of} &nbsp; {!v.totalPages} </p>
+                                                </aura:set>
+                                            </aura:if>    
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <!-- Pagination End Here -->    
+                        </div>
+                    </aura:if>
+                </div>
+                <!--###### MODAL BOX FOOTER  Start ######-->
+                <footer class="slds-modal__footer modalFooter">
+                    <lightning:button variant="neutral" 
+                                      label="{!v.Cancel}"
+                                      title="{!v.Cancel}"
+                                      onclick="{! c.closeModel }" class="btn_back"/>
+                    <aura:if isTrue="{!not(empty(v.myCartVehicleWrapper))}">
+                        <lightning:button variant="neutral" 
+                                          label="{!v.Service}"
+                                          title="{!v.Service}"
+                                          onclick="{! c.requestForService }" class="btn_table"/>
+                    </aura:if>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+    </aura:if>
+</aura:component>

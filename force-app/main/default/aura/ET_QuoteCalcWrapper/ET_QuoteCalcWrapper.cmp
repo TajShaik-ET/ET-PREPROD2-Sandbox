@@ -1,0 +1,214 @@
+<aura:component controller='ET_WorkforceCalDetailsController'>
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:attribute name="selectedTabId" type="String"/>
+    <aura:attribute name="quoteId" type="Id"/>
+    <aura:attribute name="workforceType" type="String"/>
+    <aura:attribute name="calcDetailsWpr" type="Object"/>
+    <aura:attribute name="response" type="Object"/>
+    <aura:attribute name="lineNumbers" type="integer[]" /> 
+    <aura:attribute name="lineNumber" type="integer" default="1" /> 
+    <aura:attribute name="totalNoOfVehicles" type="integer" default="1" /> 
+    <aura:attribute name="totalLines" type="integer" default="1" /> 
+    <aura:attribute name="rentalPriceHeaderInfo" type="Object" />
+     
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <aura:html tag="style">
+        #Vehicle, #Drivers {
+        --backgroundColor: {!v.backgroundColor};
+        }
+    </aura:html>
+    
+    <div class="mainDivClass bg_image">
+        <div class="slds-col slds-align_absolute-center slds-text-heading_large formHeader"> </div>
+         <div class="mainBodyClass">
+             
+            <aura:if isTrue="{!v.calcDetailsWpr.quoteType != 'Total Project Summary'}">
+                <c:ET_QuoteApprovalButtons/> 
+            </aura:if>
+             
+    <br/>
+             
+<div class="slds-grid slds-wrap slds-grid--pull-padded" style="margin: 5px 0;">
+	<div class="slds-col--padded slds-size--12-of-12 serviceReqHeader">
+    <aura:if isTrue="{!v.calcDetailsWpr.quoteType == 'Total Project Summary'}">
+         <label class="slds-form-element__label slds-p-left_x-small"><b>Total Project Summary</b></label>
+         
+        <aura:set attribute="else">
+             <label class="slds-form-element__label slds-p-left_x-small"><b>Quotation For Approval</b></label>
+        </aura:set>
+    </aura:if>    
+    
+                 </div>
+    <!-- Select Line Number --> 
+    <div class="slds-col--padded slds-size--12-of-12 serviceReqValue">
+    	<div class="slds-grid slds-wrap slds-grid--pull-padded slds-box">
+            <div class="slds-col slds-size--3-of-12">
+            <lightning:select  name="SelectLineNumber" label="LINE NUMBER"  aura:id="lineNumber" 
+                              value="{!v.lineNumber}"  onchange="{!c.handleLineNoChange}">
+                <!--<option value="">choose one...</option>  -->
+                <aura:iteration items="{!v.lineNumbers}" var="val">
+                    <option value="{!val}"> {!val}</option>
+                </aura:iteration>
+            </lightning:select>  
+    	</div>
+            
+            
+    <div class="c_container"> 
+        <div class="slds-grid slds-wrap mt-5 form_section">
+            <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                <label>Zone <em>:</em></label>
+                <span>{!v.rentalPriceHeaderInfo.zone}</span>
+            </div>
+            <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                <label>Total Investment Value <em>:</em></label>
+                <span>{!v.rentalPriceHeaderInfo.totalInvestmentValue}</span>
+            </div>
+            
+            <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                <label>Quote Number <em>:</em></label><span> {!v.rentalPriceHeaderInfo.quoteNumber}</span>
+            </div>
+            <aura:if isTrue ="{!not(empty(v.rentalPriceHeaderInfo.serviceEmirate)) }">
+                <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                    <label>Service Emirate <em>:</em></label><span> {!v.rentalPriceHeaderInfo.serviceEmirate}</span>
+                </div>
+            </aura:if>
+            
+            <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                <label>Client Name <em>:</em></label><span> {!v.rentalPriceHeaderInfo.clientName}</span>
+            </div>
+            <aura:if isTrue ="{!not(empty(v.rentalPriceHeaderInfo.fleetType)) }">
+                <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                    <label>Fleet Type <em>:</em></label><span> {!v.rentalPriceHeaderInfo.fleetType}</span>
+                </div>
+            </aura:if>
+            <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                <label>Client Type <em>:</em></label><span>{!v.rentalPriceHeaderInfo.clientType}</span>
+            </div>
+            <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                <label>Total No .of Vehicles <em>:</em></label><span>{!v.totalNoOfVehicles}</span>
+            </div>
+            <aura:if isTrue ="{!not(empty(v.rentalPriceHeaderInfo.lineNo)) }">
+                <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                    <label>Line No <em>:</em></label><span>{!v.rentalPriceHeaderInfo.lineNo}</span>
+                </div>
+            </aura:if>
+            <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                <label>Total Lines <em>:</em></label><span>{!v.totalLines}</span>
+            </div>
+            <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                <label>Contract Type <em>:</em></label><span>{!v.rentalPriceHeaderInfo.contractType}</span>
+            </div>
+            <div class="slds-col--padded slds-size--6-of-12 mb-3">
+                <label>Requestor <em>:</em></label><span>{!v.rentalPriceHeaderInfo.requestor}</span>
+            </div>
+        </div> 
+    </div>
+ 
+            
+            </div>
+         </div>    
+             </div>
+   
+    <div id="requestWrapperTabsetId" class="mt-5">
+        <lightning:tabset selectedTabId="{!v.selectedTabId}" variant="scoped" >
+            <aura:if  isTrue="{!v.calcDetailsWpr.showVehicleCalcDetails}">
+                <lightning:tab label="Vehicle" id="Vehicle">
+                    <c:ET_VehicleCalcDetails backgroundColor="{!v.backgroundColor}" 
+                                             aura:id="vehicleCalcTab" 
+                                             />
+                </lightning:tab>
+            </aura:if>
+            <aura:if  isTrue="{!v.calcDetailsWpr.showDriverCalcDetails}">
+                <lightning:tab label="Driver" id="driver">
+                    <c:ET_WorkforceCalcDetails backgroundColor="{!v.backgroundColor}"  
+                                               workforceType="Driver"
+                                               aura:id="driverCalcTab" 
+                                               lineNo ="{!v.lineNumber}"
+                                               />
+                </lightning:tab>
+            </aura:if>
+            <aura:if  isTrue="{!v.calcDetailsWpr.showNannyCalcDetails}">
+                <lightning:tab label="Nanny" id="nanny">
+                    <c:ET_WorkforceCalcDetails backgroundColor="{!v.backgroundColor}"  
+                                               workforceType="Nanny"
+                                               aura:id="nannyCalcTab" 
+                                               lineNo ="{!v.lineNumber}"
+                                               />
+                </lightning:tab>
+            </aura:if>
+            <aura:if  isTrue="{!v.calcDetailsWpr.showSupervisorCalcDetails}">
+                <lightning:tab label="Supervisor" id="supervisor">
+                    <c:ET_WorkforceCalcDetails backgroundColor="{!v.backgroundColor}"  
+                                               workforceType="Supervisor"
+                                               aura:id="supervisorCalcTab"
+                                               lineNo ="{!v.lineNumber}"
+                                               />
+                </lightning:tab>
+            </aura:if>
+            <aura:if  isTrue="{!v.calcDetailsWpr.showCoordinatorCalcDetails}">
+                <lightning:tab label="Coordinator" id="coordinator">
+                    <c:ET_WorkforceCalcDetails backgroundColor="{!v.backgroundColor}"  
+                                               workforceType="Coordinator"
+                                               aura:id="coordinatorCalcTab"
+                                               lineNo ="{!v.lineNumber}"
+                                               />
+                </lightning:tab>
+            </aura:if>
+            <aura:if  isTrue="{!v.calcDetailsWpr.showAccountantCalcDetails}">
+                <lightning:tab label="Accountant or Cashier" id="accountant_cashier">
+                    <c:ET_WorkforceCalcDetails backgroundColor="{!v.backgroundColor}"  
+                                               workforceType="Accountant/Cashier"
+                                               aura:id="accountantCalcTab"
+                                               lineNo ="{!v.lineNumber}"
+                                               />
+                </lightning:tab>
+            </aura:if>
+            <aura:if  isTrue="{!v.calcDetailsWpr.showOtherEmpCalcDetails}">
+                <lightning:tab label="Other Employee" id="otherEmp">
+                    <c:ET_WorkforceCalcDetails backgroundColor="{!v.backgroundColor}"  
+                                               workforceType="Other Employee"
+                                               aura:id="otherEmpCalcTab"
+                                               lineNo ="{!v.lineNumber}"
+                                               />
+                </lightning:tab>
+            </aura:if>
+            <!--
+            <aura:if  isTrue="{!v.calcDetailsWpr.showOtherCostCalcDetails}">
+                <lightning:tab label="Other Cost" id="otherCost">
+                    <c:ET_OtherCostCalcDetails backgroundColor="{!v.backgroundColor}"  
+                                               workforceType="Other Cost"
+                                               aura:id="otherCostCalcTab"
+                                               />
+                </lightning:tab>
+            </aura:if>
+            <lightning:tab label="Total Cost" id="totalCost">
+                <c:ET_TotalProjectScreen aura:id="totalCostCalcTab" />
+            </lightning:tab> -->
+            <aura:if  isTrue="{!v.calcDetailsWpr.showFinanceCalcDetails}">
+                <lightning:tab label="Financial Analysis" id="financialAnalysis">
+                    <c:ET_FinancialAnalysisScreen aura:id="financialAnalysisCalcTab" lineNo ="{!v.lineNumber}" />
+                </lightning:tab>
+            </aura:if>
+            <!--  <lightning:tab label="Project Profit/Loss" id="projectProfitOrLoss">
+                <c:ET_ProjectProfitAndLossCmp aura:id="projectProfitOrLossCalcTab" />
+            </lightning:tab> 
+
+            <lightning:tab label="Project Profit/Loss Analysis" id="projectProfitOrLessAnalysis">
+                <c:ET_ProjectProfitAndLossAnalysisCmp aura:id="projectProfitOrLessAnalysisCalcTab" />
+            </lightning:tab> 
+            
+            <lightning:tab label="Detailed Prices" id="prices">
+                <c:ET_PricesCalculationCmp aura:id="detailedPricesCalcTab" />
+            </lightning:tab>
+            
+           <lightning:tab label="Detailed Prices Analysis" id="pricesAnalysis">
+                <c:ET_PriceAnalysisCmp aura:id="detailedPricesAnalysisCalcTab" />
+            </lightning:tab> -->
+            
+        </lightning:tabset>
+    </div>
+    </div>
+        </div>
+    
+</aura:component>

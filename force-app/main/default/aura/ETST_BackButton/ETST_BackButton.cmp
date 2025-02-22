@@ -1,0 +1,5 @@
+<aura:component extends="c:ETST_BilingualCommunity" implements="forceCommunity:availableForAllPageTypes,force:appHostable" access="global">
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <a href="" class="backbtnlink" onclick="{!c.cancelSave}">{!v.clBack}</a>
+    <a href="" onclick="{!c.cancelSave}" class="backarrow"><img src="{!$Resource.backarrow_img}"/></a>
+</aura:component>

@@ -1,0 +1,54 @@
+<template>
+    <div class="lookup-container" onblur={handleBlur}>
+        <!-- Search Input -->
+        <lightning-input
+            type="search"
+            placeholder="Search Accounts"
+            value={searchTerm}
+            onchange={handleSearch}
+        >
+        </lightning-input>
+
+        <!-- Dropdown List -->
+        <template if:true={isDropdownOpen}>
+            <ul class="slds-listbox slds-listbox_vertical slds-dropdown">
+                <template for:each={searchResults} for:item="account">
+                    <li
+                        key={account.Id}
+                        class="slds-listbox__item"
+                        data-id={account.Id}
+                        data-name={account.Name}
+                        onclick={handleSelect}
+                    >
+                        <span class="slds-listbox__option-text">{account.Name}</span>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <!-- Selected Accounts -->
+        <template if:true={selectedAccounts}>
+            <div class="slds-pill-container">
+                <template for:each={selectedAccounts} for:item="account">
+                    <span key={account.id} class="slds-pill">
+                        <span class="slds-pill__label">{account.name}</span>
+                        <button
+                            class="slds-button slds-button_icon slds-pill__remove"
+                            data-id={account.id}
+                            onclick={handleRemove}
+                        >
+                            X
+                        </button>
+                    </span>
+                </template>
+            </div>
+        </template>
+
+        <!-- Save Button -->
+        <lightning-button
+            label="Add Employees"
+            onclick={handleSave}
+            class="slds-m-top_small"
+        ></lightning-button>
+    </div>
+</template>

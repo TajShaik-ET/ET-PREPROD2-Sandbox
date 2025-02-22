@@ -1,0 +1,304 @@
+<aura:component controller="CICO_InspectionCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <ltng:require afterScriptsLoaded="{!c.doInitCanvas}"/> 
+    <!--ltng:require scripts="{!$Resource.compress}" afterScriptsLoaded="{!c.scriptsLoaded}"/-->
+    <aura:attribute name="vehicelSpecId" type="String"/>
+    <aura:attribute name="InspStatus" type="String"/>
+    <aura:attribute name="comments" type="String"/>
+    <aura:attribute name="uploadedImgList" type="Object[]"/>
+    <aura:attribute name="uploadedSign" type="Object[]"/>
+    <aura:attribute name="uploadedDiagram" type="Object[]"/>
+    <aura:attribute name="canvasVal" type="string"/>
+    <aura:attribute name="userInfo" type="Object[]"/>   
+    <aura:attribute name="imgUrl" type="string"/>
+    <aura:attribute name="signUrl" type="string"/>
+    <aura:attribute name="signUrl2" type="string"/>
+    <aura:attribute name="signUrl3" type="string"/>
+    <aura:attribute name="signUrl4" type="string"/>
+    <aura:attribute name="imgUrlTemp1" type="string"/> 
+    <aura:attribute name="imgUrlTemp2" type="string"/>
+    <aura:attribute name="imgUrlTemp3" type="string"/>
+    <aura:attribute name="assetType" type="string"/>
+    <aura:attribute name="validationErr" type="boolean" default="false"/>
+    
+    <aura:attribute name="corousalSize" type="Integer" default="3"/>
+    <aura:attribute name="start" type="Integer" default="0"/>
+    <aura:attribute name="carouselImgList" type="Object[]"/>
+    <aura:attribute name="noofUploadImg" type="Integer"/> 
+    <aura:attribute name="showInspectors" type="boolean" default="false"/>
+    <aura:attribute name="inspector1Val" type="string"/>
+    <aura:attribute name="inspector2Id" type="string"/>
+    <aura:attribute name="inspector2Name" type="string"/>
+    <aura:attribute name="inspector3Id" type="string"/>
+    <aura:attribute name="inspector3Name" type="string"/>
+    <aura:attribute name="inspector4Id" type="string"/>
+    <aura:attribute name="inspector4Name" type="string"/>
+    <aura:attribute name="sliderVal" type="string"/>
+    <aura:attribute name="activeSections" type="List" default="['A','B']" />
+    
+    <aura:attribute name="uploadedDocs" type="Object[]"/>
+    <!--aura:handler event="aura:waiting" action="{!c.showWaiting}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideWaiting}"/-->
+    <aura:attribute name="toggleSpinner" type="boolean" default="false"/>
+    
+    <aura:registerEvent name="goToHomePage" type="c:CICO_InspectionGoToHomeEvent"/>
+    
+    <aura:attribute name="record" type="Object"/>
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.vehicelSpecId}"
+                      fields="Inspector2__c,Inspector2__r.Name,Inspector3__c,Inspector3__r.Name,Inspector4__c,Inspector4__r.Name,Fuel_Tank_Capacity__c"
+                      targetFields="{!v.record}"
+                      recordUpdated="{!c.onForceLoad}"
+                      />
+    
+    <div class="bgimage"></div>
+    <lightning:card class="outer_div">
+        
+        <!--lightning:fileCard fileId="0693M000000INTOQA4" description="Sample Description" aura:id="fileId"/-->
+        <!--img src="{!v.imgUrlTemp1}" alt="test" />
+         <img src="{!v.imgUrlTemp2}" alt="test" />
+        <img src="{!v.imgUrlTemp3}" alt="test" /--> 
+        
+        <aura:if isTrue="{!v.toggleSpinner}">
+            <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+        </aura:if>
+        <div class="slds-var-m-around_medium form_details">
+            
+            <div aura:id="backBtn">
+                <!--<button class="slds-button slds-button_brand" onclick="{!c.goToHomePage}">Back</button>-->
+                <lightning:button label="Back"  onclick="{!c.goToHomePage}" iconName="utility:chevronleft" class="btnback"/>
+                <!--lightning:buttonIcon  iconName="utility:print" onclick="{!c.printPDF}" class="slds-float_right btnprint" /-->
+            </div>
+            
+            <div >
+                
+                
+            </div>
+            
+            <lightning:recordEditForm
+                                      onload="{!c.onloadHandler}"
+                                      recordId="{!v.vehicelSpecId}"
+                                      onsubmit="{!c.handleSubmit}"
+                                      onsuccess="{!c.handleSuccess}"
+                                      objectApiName="CICO_Vehicle_Spec__c"
+                                      onerror="{!c.handleError}"
+                                      class="recEditForm"
+                                      aura:id="insForm">
+                
+                <lightning:accordion
+                                     allowMultipleSectionsOpen="true"
+                                     onsectiontoggle=""
+                                     activeSectionName="{!v.activeSections}"
+                                     >  
+                    <lightning:accordionSection name="A" label="Vehicle Details">
+                        <div class="details_first">
+                            <lightning:outputField fieldName="Name" />
+                            <lightning:inputField fieldName="Current_Chassis_No__c" />
+                            <lightning:outputField fieldName="Engine_No__c" />
+                            <lightning:outputField fieldName="Manufacturer__c" />
+                            <lightning:outputField fieldName="Make__c" />
+                            <lightning:outputField fieldName="Family__c" />
+                            <lightning:outputField fieldName="Family_Details__c" />
+                            <lightning:outputField fieldName="Year_Model__c" />
+                            <lightning:outputField fieldName="Fuel_Type__c" />
+                            <lightning:outputField fieldName="No_Of_Cylinders__c" />
+                            <lightning:outputField fieldName="No_Of_Doors__c" />
+                            <lightning:outputField fieldName="No_Of_Seats__c" />
+                            <lightning:outputField fieldName="Vehicle_Color__c" /> 
+                            
+                            <!--lightning:inputField fieldName="Asset_Type__c" aura:id="assetType" class="slds-hide"/--> 
+                        </div>
+                    </lightning:accordionSection>
+                    <lightning:accordionSection name="B" label="Inspection Details">
+                        <div class="details_second">
+                            <lightning:inputField fieldName="Receive_Km__c" required="true"/>
+                            <lightning:inputField fieldName="Asset_Type__c" aura:id="AssetType" required="true" onchange="{!c.setAssetTypeImg}"/> 
+                            <lightning:inputField class="" fieldName="Shipped_Date__c" aura:id="ShippedDate" required="true" onchange="{!c.DateValidation}"/>
+                            
+                            <lightning:inputField fieldName="Actual_Receive_Date__c" required="true" aura:id="ActualDate" onchange="{!c.DateValidation}" />
+                            <lightning:inputField fieldName="Sup_Doc_Type__c" required="true"/>
+                            <lightning:inputField fieldName="Sup_Doc_Date__c" required="true" aura:id="suppDocDate" onchange="{!c.DateValidation}" />
+                            <lightning:inputField fieldName="Sup_Doc_No__c" required="true"/>
+                            <lightning:inputField fieldName="Penalty__c"/>
+                            <lightning:inputField fieldName="Fuel_Tank_Capacity__c" value="{!v.sliderVal}" class="slds-hide"/>
+                            
+                            <!--lightning:slider aura:id="rangeId" class="rangeCls" label="Fuel(%)" step="5" size="x-small" value="{!v.sliderVal}" onchange="{!c.sliderHandler}"/-->
+                            <div class="slds-form-element range">
+                                <label class="slds-form-element__label">Fuel(%)</label>
+                                <div class="slds-form-element__control range__slider">
+                                    <input type="range" aura:id="vol" value="{!v.sliderVal}" name="vol" step="5" min="0" max="100" class="range__slider"/>
+                                    <p class="rangeDisplay" aura:id="rangeVal">{!v.sliderVal}%</p>
+                                </div>
+                            </div>
+                            <!--lightning:inputField fieldName="Fuel_Card__c" />
+                            <span onkeydown="{!c.textValidation}">
+                                <lightning:inputField fieldName="Fuel_Card_Supplier__c" /></span>
+                            <span onkeydown="{!c.numberValidation}">
+                                <lightning:inputField fieldName="Fuel_Card_Account__c" /></span>
+                            <lightning:inputField fieldName="Fuel_Card_Limit__c" />
+                            <lightning:inputField fieldName="Salik_Card__c" />
+                            <span onkeydown="{!c.numberValidation}">
+                                <lightning:inputField fieldName="Salik_Account__c"/> </span-->
+                            
+                        </div>      
+                    </lightning:accordionSection>     
+                </lightning:accordion>
+                
+                <div class="details_third">
+                    
+                    <div class="left_imagediv">
+                        <div class="slds-m-bottom_x-small">
+                            <img aura:id="customImg" src="{!v.imgUrl}" width="500" height="400" style="display:none"/>
+                            
+                            <canvas aura:id="canvasDia" width="500" height="400" ></canvas>
+                            <lightning:button label="Clear" onclick="{!c.erase}" iconName="utility:close" class="clearbtn"/>
+                        </div>
+                        <div class="slds-m-bottom_x-small uploadimages_div">                            
+                            <!--<lightning:input aura:id="Images" 
+                                             type="file"
+                                             files="{!v.uploadedDocs}"
+                                             onchange="{!c.OnUpload}"
+                                             accept="image/*"
+                                             label="Capture"
+                                             name="Capture" 
+                                             multiple="false"
+                                             disabled=""
+                                             />-->
+                            <div class="image-upload">
+                                <label for="file-input">
+                                    <img src="{!$Resource.ETimage_upload}"/>
+                                </label>                                
+                                <!--accept="image/*"<input id="file-input" type="file" files="{!v.uploadedDocs}"
+                                             onchange="{!c.OnUpload}" />-->
+                                <lightning:input aura:id="Images" 
+                                                 type="file"
+                                                 files="{!v.uploadedDocs}"
+                                                 onchange="{!c.OnUpload}"
+                                                 accept="image/*"
+                                                 label=""
+                                                 name="Capture" 
+                                                 multiple="false"
+                                                 disabled="" class="imgupload" title="Upload Images"
+                                                 />
+                            </div>
+                            
+                            
+                            
+                            <!--input type="file" accept="image/*" capture="camera" onChange="{!c.OnUpload}" multiple="multiple" /-->
+                            <aura:if isTrue="{!not(empty(v.carouselImgList))}">
+                                <div class="uploadimgs_div">
+                                    <ul>
+                                        <aura:iteration items="{!v.carouselImgList}" var="img"  indexVar="index">
+                                            <li style="color:black"><img width="100" height="100" src="{!img.strBase64Data}" />&nbsp;
+                                                <a href="javascript:void(0)" data-filename="{!img.strFileName}" data-index="{!index}" onclick="{!c.removeImg}">
+                                                    <lightning:button label="Remove" iconName="utility:delete" class="deletebtn"/>
+                                                </a>
+                                            </li> 
+                                        </aura:iteration>   
+                                    </ul>
+                                </div>
+                                
+                                <div class="MS-controls ">
+                                    
+                                    <aura:if isTrue="{!v.start!=0}">                                           
+                                        <a href="" class="btnperv btn_left"  title="pre" onclick="{!c.getPreviousList}"><lightning:icon iconName="utility:chevronleft" alternativeText="Previous" title="Previous"  /></a>
+                                    </aura:if>
+                                    <aura:if isTrue="{!lessthan(v.start+v.corousalSize,v.noofUploadImg)}">  
+                                        
+                                        <a  href="" class="btnnext btn_right"  title="next" onclick="{!c.getNextList}"><lightning:icon iconName="utility:chevronright" alternativeText="Next" title="Next" /></a>
+                                    </aura:if>
+                                </div>
+                            </aura:if> 
+                        </div>
+                    </div>
+                    <div class="right_checkboxdiv">
+                        
+                        <lightning:inputField fieldName="First_Aid_Box__c" />
+                        <lightning:inputField fieldName="Floor_Mats__c" />
+                        <lightning:inputField fieldName="Road_Triangle__c" />
+                        <lightning:inputField fieldName="Fire_Extinguisher__c" />
+                        <!--lightning:inputField fieldName="Fuel_Tank_Full__c" /-->
+                        <lightning:inputField fieldName="Spare_Wheel__c" />
+                        <lightning:inputField fieldName="Clean_Interior__c" />
+                        <lightning:inputField fieldName="Clean_Exterior__c" />
+                        <lightning:inputField fieldName="Wheel_Trims__c" />
+                        <lightning:inputField fieldName="Tool_Kit__c" />
+                        <lightning:inputField fieldName="Jack__c" />
+                        
+                        
+                        <!--lightning:fileUpload label="Attach receipt" multiple="true" accept="" recordId="" onuploadfinished="{!c.handleUploadFinished}" /-->
+                        
+                    </div>
+                </div>
+                <div class="detail_Inspector">
+                    <div class="inspector_info">
+                        <lightning:inputField fieldName="Inspector1__c"  value="{!v.userInfo[0].Id}" style="display:none"/><!--{!v.userInfo[0].EmployeeNumber} -->
+                        <c:CICO_customLkup required="true" custmPlaceholder="Search Inspector..." Label="Inspector 1" selectRecordId="{!v.userInfo[0].Id}" selectRecordName="{!v.userInfo[0].Name}"/>
+                        <div class="detail_signature">
+                            <label class="txtsign">Inspector 1 Signature</label>
+                            <div class="leftdiv_signature">
+                                <lightning:button label=""  onclick="{!c.eraseSign}" iconName="utility:close" class="clearbtnsign"/>
+                                <img aura:id="signImg" src="{!v.signUrl}" width="500" height="100" style="display:none"/>
+                                <canvas aura:id="canvasSign" width="500" height="100" />                       
+                            </div>
+                        </div>
+                    </div>
+                    <div style="{!v.showInspectors == true?'display:inline':'display:none'}">
+                        <div class="inspector_info">
+                            
+                            <lightning:inputField aura:id="inspector2" fieldName="Inspector2__c" style="display:none" value="{!v.inspector2Id}"/>
+                            <c:CICO_customLkup custmPlaceholder="Search Inspector..." Label="Inspector 2" selectRecordId="{!v.inspector2Id}" selectRecordName="{!v.inspector2Name}"/>
+                            <div class="detail_signature">
+                                <label class="txtsign">Inspector 2 Signature</label>
+                                <div class="leftdiv_signature">
+                                    <lightning:button label=""  onclick="{!c.eraseSign2}" iconName="utility:close" class="clearbtnsign"/>
+                                    <img aura:id="signImg2" src="{!v.signUrl2}" width="500" height="100" style="display:none"/>
+                                    <canvas aura:id="canvasSign2" width="500" height="100" />                       
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="inspector_info">
+                            
+                            <lightning:inputField aura:id="inspector3" fieldName="Inspector3__c" style="display:none" value="{!v.inspector3Id}"/>
+                            <c:CICO_customLkup  custmPlaceholder="Search Inspector..." Label="Inspector 3" selectRecordId="{!v.inspector3Id}" selectRecordName="{!v.inspector3Name}"/>
+                            <div class="detail_signature">
+                                <label class="txtsign">Inspector 3 Signature</label>
+                                <div class="leftdiv_signature">
+                                    <lightning:button label=""  onclick="{!c.eraseSign3}" iconName="utility:close" class="clearbtnsign"/>
+                                    <img aura:id="signImg3" src="{!v.signUrl3}" width="500" height="100" style="display:none"/>
+                                    <canvas aura:id="canvasSign3" width="500" height="100" />                       
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="inspector_info">
+                            
+                            <lightning:inputField aura:id="inspector4" fieldName="Inspector4__c" style="display:none" value="{!v.inspector4Id}"/>
+                            <c:CICO_customLkup custmPlaceholder="Search Inspector..." Label="Inspector 4" selectRecordId="{!v.inspector4Id}" selectRecordName="{!v.inspector4Name}"/>
+                            <div class="detail_signature">
+                                <label class="txtsign">Inspector 4 Signature</label>
+                                <div class="leftdiv_signature">
+                                    <lightning:button label=""  onclick="{!c.eraseSign4}" iconName="utility:close" class="clearbtnsign"/>
+                                    <img aura:id="signImg4" src="{!v.signUrl4}" width="500" height="100" style="display:none"/>
+                                    <canvas aura:id="canvasSign4" width="500" height="100" />                       
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <lightning:inputField fieldName="Comment__c" aura:id="comments" value="{!v.comments}" class="comments_sec"/>
+                </div>
+                <div class="detail_signature"> 
+                    <div class="backbtn_div">
+                        <lightning:button label="Back"  onclick="{!c.goToHomePage}" iconName="utility:chevronleft" class="btnbackbottom"/>
+                    </div>
+                    <div class="right_allbtn">
+                        <lightning:button class="slds-m-top_small rejbtn slds-no-print" variant="brand" type="submit" onclick="{!c.customHandleSubmit}" name="Reject" label="Reject" />
+                        <lightning:button class="slds-m-top_small appbtn slds-no-print" variant="brand" type="submit" onclick="{!c.customHandleSubmit}" name="Approved" label="Approve" />
+                    </div>
+                </div>
+            </lightning:recordEditForm>            
+        </div>
+        
+    </lightning:card>
+</aura:component>

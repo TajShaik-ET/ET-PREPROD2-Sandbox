@@ -1,0 +1,23 @@
+<apex:page showHeader="false" standardController="Account">
+    <apex:includeLightning />
+    <div id="preview" />
+    <script>
+        var accountId = "{!$CurrentPage.parameters.id}";
+        console.log(accountId);
+    	try{
+        $Lightning.use("c:ETPrintPreviewDeliveryNoteApp", function() {
+            $Lightning.createComponent(
+                "c:ETT_Print_Individual_DeliveryNote",
+                { "recordId" : accountId },
+                "preview",
+                function(cmp) {
+                    console.log("Component is created!");
+                    console.log(cmp);
+                });
+            });
+        }
+    catch(error){
+        console.log(error.message);
+        }
+      </script>
+</apex:page>

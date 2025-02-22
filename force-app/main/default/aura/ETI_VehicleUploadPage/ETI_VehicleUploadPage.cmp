@@ -1,0 +1,65 @@
+<aura:component controller="ETI_BulkUploadVehicles" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" 
+                access="global">
+    <aura:attribute name="prefixURL" type="String" default="/sfc/servlet.shepherd/version/download/"/>
+    <aura:attribute name="fileURL" type="String" />
+    
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="currentData" type="Object"/>
+    <aura:attribute name="enableInfiniteLoading" type="Boolean" default="true"/> 
+    <aura:attribute name="hideCheckbox" type="Boolean" default="true"/>
+    <aura:attribute name="loadMoreStatus" type="String" default="Loading .... "/>
+    <aura:attribute name="pageNo" type="Integer" default="1"/>
+    <aura:attribute name="loadOffset" type="Integer" default="1"/><!--Set when to trigger loading of more rows-->
+    <aura:attribute name="sortBy" type="String"/>
+    <aura:attribute name="sortDirection" type="String"/> 
+    <aura:attribute name="searchText" type="String" access="public"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+     
+    <lightning:layout horizontalAlign="spread" aura:id="mainLayout" class="mainLayout">
+        
+        <lightning:layoutItem padding="around-small" class="servicesdiv">
+            <div class="serviceheaddiv">
+                <p class="serheading">Bulk Vehicles Upload Requests</p>         
+                <!--div class="serchboxtab">
+                	<lightning:input type="search"
+                                 name="searchKey" value="{!v.searchText}" 
+                                 aura:id="searchKey"  onkeyup="{!c.searchRequest}" placeholder="Search Requests" />
+            	</div--> 
+                
+            </div> 
+            <aura:if isTrue="{! v.loaded }">
+            <aura:if isTrue="{!not(empty(v.currentData))}">  
+                
+                <!--Lightning data table markup-->
+                <div class="displaytable">
+                    <lightning:datatable aura:id="dataTableID"
+                                         keyField="Id"
+                                         hideCheckboxColumn="{!v.hideCheckbox}"
+                                         columns="{!v.columns}"
+                                         data="{!v.currentData}"
+                                         enableInfiniteLoading="{!v.enableInfiniteLoading}"
+                                         loadMoreOffset="{!v.loadOffset}"
+                                         onloadmore="{!c.handleLoadMore}"
+                                         onrowselection="{! c.updateSelectedRecords }"
+                                         sortedBy="{!v.sortBy}"
+                                         sortedDirection="{!v.sortDirection}"
+                                         onrowaction="{! c.handleRowAction }"
+                                         onsort="{!c.handleSort}"/>
+                </div>
+                
+                <aura:set attribute="else">
+                    <p style="color:red;text-align: center;font-size: 21px;">{!$Label.c.ETST_No_data_found}</p>  
+                  
+                </aura:set> 
+               
+            </aura:if>
+             <aura:set attribute="else">
+                        <lightning:spinner alternativeText="Loading" />
+                    </aura:set>
+                </aura:if> 
+        </lightning:layoutItem>
+    </lightning:layout>
+    
+</aura:component>

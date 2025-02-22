@@ -1,0 +1,40 @@
+.dummyClass{
+   color:black;
+}
+
+lightning-button.darkBtn {
+	
+  --slds-c-button-brand-color-background: #dc452e;
+  --slds-c-button-brand-color-background-active: #dc452e;
+  --slds-c-button-brand-color-border: #dc452e;
+  --slds-c-button-brand-text-color: #fff;
+  --slds-c-button-brand-color-background-hover: #eb4026; 
+  --slds-c-button-brand-color-border-hover: #eb4026;
+
+}
+lightning-button.lightBtn {	
+   
+   --slds-c-button-outline-brand-color-background:#fff;
+   --slds-c-button-outline-brand-color-border:#dc452e; 
+   --slds-c-button-outline-brand-text-color:#dc452e;     
+   --slds-c-button-outline-brand-color-border-hover:#dc452e; 
+  
+   
+ }
+ lightning-input-field.inputCss{
+   --slds-c-input-color-border:#312b2a; 
+      
+ }
+ lightning-input.inputCss{
+   --slds-c-input-color-border:#312b2a; 
+      
+ }
+
+ lightning-pill.customPill{  
+   --slds-c-pill-color-border: #312b2a;
+ }
+
+ lightning-combobox.inputCss{
+  --slds-c-input-color-border:#312b2a; 
+     
+}

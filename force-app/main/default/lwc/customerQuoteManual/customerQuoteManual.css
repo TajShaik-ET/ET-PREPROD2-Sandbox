@@ -1,0 +1,12 @@
+.space{
+    padding: 30px;
+}
+@media only screen and (max-width:480px) {
+    .customerQuote .slds-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .customerQuote .slds-grid .slds-col.slds-size_1-of-4 {
+        width: 100%;
+    }
+}

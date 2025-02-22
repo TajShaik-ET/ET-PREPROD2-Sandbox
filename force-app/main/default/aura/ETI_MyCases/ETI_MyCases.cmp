@@ -1,0 +1,85 @@
+<aura:component  implements="force:hasRecordId,forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="selectedTabId" type="String"/>
+    <aura:attribute name="backgroundImageURL" type="String" default=""/>
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:attribute name="caseList" type="List"/>
+    <aura:attribute name="startDate" type="Date"/>
+    <aura:attribute name="endDate" type="Date"/>
+    <aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{!v.IsSpinner}">
+       <div class="slds-spinner_container">
+       	   <lightning:spinner variant="brand"  size="large" />
+       </div>
+    </aura:if>
+     <!--Aura Attributes END--> 
+    <lightning:layout class="sortdiv" >
+            <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+                <div class="custom-box">
+                    <lightning:input aura:id="StartDateField" label="Start Date" type="date" name="sDate" dateStyle="short" value="{!v.startDate}" autocomplete="off" />
+                </div> 
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+                <div class="custom-box">
+                    <lightning:input aura:id="EndDateField" label="End Date"  type="date" name="eDate" dateStyle="short" value="{!v.endDate}" autocomplete="off" />                 
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem  padding="horizontal-medium" size="4" flexibility="auto">
+                <div class="custom-box">
+                    <br></br>
+                    <br></br>
+                    <lightning:button class="slds-size_full SizeBtn blackBtn btnserach" label="Submit" onclick="{!c.doInit}"/>
+                </div>
+            </lightning:layoutItem>
+            
+    </lightning:layout> 
+    <div aura:id="inspectionService" class="casesection" >
+        <aura:iteration items="{!v.caseList}" var="item">
+            <div class="slds-box">
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon firstrow">
+                        <span class="headtxt">Case Number</span>
+                        <span class="headtxtdyn">: {!item.CaseNumber} </span>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                     <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon">
+                        <span class="headtxt">Created Date</span>
+                        <span class="headtxtdyn">: <lightning:formattedDateTime value="{!item.CreatedDate}"  
+                        year="numeric" month="numeric" day="numeric"  
+                        timeZone="Asia/Dubai" hour12="false"/> </span>
+                     </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem  size="4" padding="around-small" class="Padbottomnon">
+                        <span class="headtxt">Priority</span>
+                        <span class="headtxtdyn">: {!item.Priority} </span>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon">
+                        <span class="headtxt">Case Type</span>
+                        <span class="headtxtdyn">: {!item.Subject} </span>
+                     </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                     <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon">
+                        <span class="headtxt">Status</span>
+                        <span class="headtxtdyn">: {!item.Status} </span>
+                     </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem  size="4" padding="around-small" class="Padbottomnon desctxt">
+                        <span class="headtxt">Description</span>
+                        <span class="headtxtdyn">: {!item.Description} </span>
+                     </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </aura:iteration>
+    </div> 
+               
+   
+  
+</aura:component>

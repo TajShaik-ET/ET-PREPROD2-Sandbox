@@ -1,0 +1,325 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="emirate" type="String" />
+    <aura:attribute name="VehicleList" type="List" />
+    <aura:attribute name="VehicleColumns" type="List"/>
+    <aura:attribute name="tablelist" type="List"/>
+    <aura:attribute name="testObj1" type="String"/>
+    <aura:attribute name="vehicleWrapper" type="Object"/>
+    <aura:attribute name="selectedRowsList" type="List" />
+    <aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <aura:attribute name="reSchduleBooking" type="boolean" default="false"/>
+    <aura:attribute name="retestBooking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/>
+    <aura:attribute name="booking" type="ETI_Booking__c" default="[{'sObjectType':'ETI_Booking__c','Name':''}]"/>
+    <aura:attribute name="customerVehicleList" type="ET_Customer_Vehicle__c" default="[{'sObjectType':'ET_Customer_Vehicle__c','Name':''}]"/>
+    <aura:attribute name="bookingWrp" type="Object[]" />
+    <aura:attribute name="isOpenRequestForService" type="boolean" default="false"/> 
+    <aura:attribute name="lstViewChk" type="boolean" default="false"/>
+    <aura:attribute name="gridviewChk" type="boolean" default="true"/>
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    
+    <aura:registerEvent name="DataEvent" type="c:ETI_DataEvent"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.getVehicleDetails}"/>
+    
+    <aura:if isTrue="{!v.IsSpinner}">
+        <div class="slds-spinner_container">
+            <lightning:spinner variant="brand"  size="large" />
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.vehicleWrapper))}"> 
+        <!--   <div >
+            <lightning:datatable data="{!v.VehicleList}"
+                                 columns="{!v.VehicleColumns}"
+                                 keyField="id"
+                                 onrowaction="{! c.handleRowAction }"
+                                 onrowselection="{!c.getSelectedName}"
+                                 hideCheckboxColumn="false"/>
+    </div> -->
+        <!-- <div class="gridandlistsec">
+            <lightning:buttonIcon iconName="utility:justify_text" aura:id="listviewBtn" value="" variant="brand" alternativeText="List View" title="List View" onclick="{!c.listViewHandleAction}"/>
+            <lightning:buttonIcon iconName="utility:apps" aura:id="gridviewBtn" variant="brand" value="" alternativeText="Grid View" title="Grid View" onclick="{!c.gridViewHandleAction}"/>                                    
+        </div>-->
+        <aura:if isTrue="{!v.lstViewChk}">
+            <div class="listviewvehichel">
+                <article class="slds-card custometable">            
+                    <table class="slds-table slds-max-medium-table stacked-horizontal">
+                        <thead>
+                            <tr>
+                                <th scope="col paddingfirst"><span class="slds-truncate">{!v.Vehicle_Number}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!v.Plate_No}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!v.Plate_Source}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!v.Plate_Type}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!v.Plate_Color}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!v.Chassis_No}/{!v.Model}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!v.Type}</span></th>                                
+                                <th scope="col"><span class="slds-truncate">{!v.Action}</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.vehicleWrapper}" var="veh" indexVar="index">
+                                <tr>
+                                    <td class="paddingfirst">
+                                        <label class="checkboxcontainer">
+                                            <!--lightning:input type="checkbox" label="" value="{!veh.customerVehicle}" checked="{!veh.isChecked}" onchange="{!c.getSelectedName}" disabled="{!!veh.customerVehicle.Is_Verified__c}"/-->
+                                        </label><a href="{!'/customer/s/vehicle-page?showH=true&amp;recordId='+veh.customerVehicle.Id}" >{!veh.customerVehicle.Name} </a>
+                                    </td> 
+                                    <td>{!veh.customerVehicle.Plate_No__c}</td>
+                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Plate_Source_AR__c==undefined,veh.customerVehicle.Plate_Source_AR__c==null),v.clLang!='ar')}">
+                                        <td>{!veh.customerVehicle.Plate_Source__c}</td>
+                                        <aura:set attribute="else">
+                                            <td>{!veh.customerVehicle.Plate_Source_AR__c}</td>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Plate_Type_AR__c==undefined,veh.customerVehicle.Plate_Type_AR__c==null),v.clLang!='ar')}">
+										<td>{!veh.customerVehicle.Plate_Type__c}</td>
+                                        <aura:set attribute="else">
+                                             <td>{!veh.customerVehicle.Plate_Type_AR__c}</td>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Plate_Color_AR__c==undefined,veh.customerVehicle.Plate_Color_AR__c==null),v.clLang!='ar')}">
+                                        <td>{!veh.customerVehicle.Plate_Color__c}</td>
+                                        <aura:set attribute="else">
+                                            <td>{!veh.customerVehicle.Plate_Color_AR__c}</td>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!veh.customerVehicle.Registration_Type__c != 'Registered'}">
+                                        <td>{!veh.customerVehicle.Chassis_No__c}</td>
+                                        <aura:set attribute="else">
+                                            <aura:if isTrue="{!or(or(veh.customerVehicle.Vehicle_Model_AR__c==undefined,veh.customerVehicle.Vehicle_Model_AR__c==null),v.clLang!='ar')}">
+                                                <td>{!veh.customerVehicle.Vehicle_Model__c}</td>
+                                                <aura:set attribute="else">
+                                                    <td>{!veh.customerVehicle.Vehicle_Model_AR__c}</td>
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Registration_Type_AR__c==undefined,veh.customerVehicle.Registration_Type_AR__c==null),v.clLang!='ar')}">
+                                        <td>{!veh.customerVehicle.Registration_Type__c}</td>
+                                        <aura:set attribute="else">
+                                            <td>{!veh.customerVehicle.Registration_Type_AR__c}</td>
+                                        </aura:set>
+                                    </aura:if>                             
+                                    <td>
+                                        <aura:if isTrue="{!veh.isReTest}">
+                                            <lightning:button variant="base" value="{!veh.customerVehicle.Id}" label="{!v.Due_for_Retest}"  
+                                                              title="{!v.Due_for_Retest}" onclick="{! c.dueforRetest }" class="btn_table"/>
+                                            <aura:set attribute="else">
+                                                <lightning:button variant="base" value="{!index}" label="{!if(veh.isDueToTest,'Due To Test','Request For Service')}"  
+                                                                  title="{!if(veh.isDueToTest,'Due To Test','Request For Service')}" onclick="{! c.requestforservicepage }" class="btn_table"/>
+                                            </aura:set>
+                                        </aura:if>
+                                        <lightning:button variant="base" value="{!veh.customerVehicle.Id}" label="{!v.Delete}"  
+                                                          title="{!v.Delete}" onclick="{! c.deleteSelectedVehicle}" class="btn_table"/>
+                                    </td>
+                                </tr>
+                                
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.gridviewChk}">
+            <div class="tableviewvehichel">
+                <article class="slds-card custometable deskstopview">  
+                    <aura:iteration items="{!v.vehicleWrapper}" var="veh" indexVar="index">
+                        <div class="item animated bounceInLeft">
+                            <div class="carousel-col">
+                                <div class="our-team">
+                                    <!--<div class="student_id"><a href="{!'/s/vehicle-page?showH=true&amp;recordId='+veh.customerVehicle.Id+'&amp;Loc='+v.emirate}" style="color: #fff !important;">{!veh.customerVehicle.Name}</a></div>-->
+                                    <div class="actionbtn">
+                                        <!--a href="{!'/s/vehicle-page?showH=true&amp;recordId='+veh.customerVehicle.Id+'&amp;Loc='+v.emirate}"-->
+                                        <div class="leftsectiondiv">
+                                            <a href="{!'/customer/s/vehicle-page?showH=true&amp;recordId='+veh.customerVehicle.Id}">
+                                                <div class="picture">
+                                                    <!--<img class="img-fluid" src="{!$Resource.ETI_Vehicleimg}" />-->
+                                                    <img class="carimg" src="{!$Resource.ET_car}"/>
+                                                    <!--<h4 class="plateclass">
+                                                        <img class="carimg" src="{!$Resource.ET_car}"/>
+                                                        <strong><span class="textgold">{!veh.customerVehicle.Plate_No__c}</span></strong>
+                                                    </h4>-->
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="rightsectiondiv">
+                                            <!--<a href="{!'/customer/s/vehicle-page?showH=true&amp;recordId='+veh.customerVehicle.Id}">
+                                                <img class="" src="{!$Resource.edit_img}"/>
+                                            </a>
+                                            <a href=""  onclick="{! c.deleteSelectedVehicle}" value="{!veh.customerVehicle.Id}">
+                                                <img class="" src="{!$Resource.delete_img}"/>
+                                            </a>
+                                            <lightning:button variant="base" value="{!veh.customerVehicle.Id}" label="Delete"  
+                                                              title="Delete" onclick="{! c.deleteSelectedVehicle}" class="slds-button slds-button_neutral btnsorticon"/>
+-->                                         <a href="{!'/customer/s/vehicle-page?showH=true&amp;recordId='+veh.customerVehicle.Id}">   
+                                            	<lightning:icon iconName="utility:edit" alternativeText="{!v.Edit}" title="{!v.Edit}"/>
+                                            </a>
+                                            <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.deleteSelectedVehicle}">
+                                                <img class="slds-button" alt="{!v.Delete}" title="{!v.Delete}" src="{!$Resource.ETI_Delete}" />
+                                            </span>
+                                            <!--lightning:buttonIcon iconName="utility:delete" onclick="{! c.deleteSelectedVehicle }" class="deleteicon"
+                                                                  title="{!v.Delete}" alternativeText="Delete" value="{!veh.customerVehicle.Id}" />
+                                            <lightning:icon iconName="utility:delete" alternativeText="Delete" title="Delete" onclick="{! c.deleteSelectedVehicle}"/-->
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="team-content">
+                                        <div class="innerdiv">
+                                            <div class="leftsectiondiv">
+                                                <h3 class="name_new"><!--lightning:input type="checkbox" label="" value="{!veh.customerVehicle}" checked="{!veh.isChecked}" onchange="{!c.getSelectedName}" disabled="{!!veh.customerVehicle.Is_Verified__c}"/-->
+                                                    <a href="{!'/customer/s/vehicle-page?showH=true&amp;recordId='+veh.customerVehicle.Id+'&amp;Loc='+v.emirate}" style="color:#00c19e" >{!veh.customerVehicle.Name}</a>
+                                                </h3>
+                                            </div>
+                                            <div class="rightsectiondiv">
+                                                <h4 class="typeofvehicle"><strong>{!veh.customerVehicle.Registration_Type__c}</strong></h4>
+                                            </div>
+                                        </div>
+                                        <div class="innerdiv Chassis_num">
+                                            <aura:if isTrue="{!veh.customerVehicle.Registration_Type__c != 'Registered'}">
+                                                <h4 class="studclass"><span class="textblack">{!v.Chassis_No} :&nbsp;</span><strong>{!veh.customerVehicle.Chassis_No__c}</strong></h4>
+                                                <aura:set attribute="else">
+                                                    <h4 class="studclass"><span class="textblack">{!v.Model} :&nbsp;</span><strong>{!veh.customerVehicle.Vehicle_Model__c}</strong></h4>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                        <div class="innerdiv">
+                                            <div class="leftsectiondiv">
+                                                <h4 class="studclass"><span class="textblack">{!v.Plate_Source} </span><strong><br></br>
+                                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Plate_Source_AR__c==undefined,veh.customerVehicle.Plate_Source_AR__c==null),v.clLang!='ar')}">
+                                                        {!veh.customerVehicle.Plate_Source__c}
+                                                        <aura:set attribute="else">
+                                                        	{!veh.customerVehicle.Plate_Source_AR__c}
+                                                        </aura:set>
+                                                    </aura:if>
+                                                    </strong></h4> 
+                                            </div>
+                                            <div class="rightsectiondiv">
+                                                <h4 class="studclass"><span class="textblack">{!v.Plate_Type}</span><strong><br></br>
+                                                    <aura:if isTrue="{!or(or(veh.customerVehicle.Plate_Type_AR__c==undefined,veh.customerVehicle.Plate_Type_AR__c==null),v.clLang!='ar')}">
+                                                        {!veh.customerVehicle.Plate_Type__c}
+                                                        <aura:set attribute="else">
+                                                            <td>{!veh.customerVehicle.Plate_Type_AR__c}</td>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                    </strong></h4>
+                                            </div>
+                                        </div>
+                                        <div class="innerdiv">
+                                            <div class="leftsectiondiv">
+                                                <h4 class="studclass"><span class="textblack">{!v.Plate_Color}</span><br></br> 
+                                                    <strong>
+                                                        <aura:if isTrue="{!or(or(veh.customerVehicle.Plate_Color_AR__c==undefined,veh.customerVehicle.Plate_Color_AR__c==null),v.clLang!='ar')}">
+                                                            {!veh.customerVehicle.Plate_Color__c}
+                                                            <aura:set attribute="else">
+                                                                <td>{!veh.customerVehicle.Plate_Color_AR__c}</td>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </strong></h4>
+                                            </div>
+                                            <div class="rightsectiondiv">
+                                                <h4 class="studclass"><span class="textblack">{!v.Traffic_Fines}</span><br></br>                                        
+                                                    <strong><lightning:formattedUrl value="{!'https://es.adpolice.gov.ae/trafficservices/finespublic/inquiry.aspx?Culture=ar/'}" label="{!v.Click_Here}" target="_blank" /></strong>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="btn_div">
+                                        <li> 
+                                            <aura:if isTrue="{!veh.isReTest}">
+                                                <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.dueforRetest}">
+                                                    <img class="slds-button" alt="{!v.Due_for_Retest}" title="{!v.Due_for_Retest}" src="{!$Resource.ETI_DueForRetest}" />
+                                                </span>
+                                                <!--lightning:button variant="base" value="{!veh.customerVehicle.Id}" label="Due for Retest"  
+                                                                  title="Due for Retest" onclick="{! c.dueforRetest }" class="slds-button slds-button_neutral btnsorticon"/-->
+                                                <aura:set attribute="else">
+                                                    <span data-value="{!index}" onclick="{!c.requestforservicepage}">
+                                                        <img class="slds-button" alt="{!if(veh.isDueToTest,v.Due_To_Test,v.Request_For_Service)}" 
+                                                             title="{!if(veh.isDueToTest,v.Due_To_Test,v.Request_For_Service)}" src="{!$Resource.ETI_DueToTest}" />
+                                                    </span>
+                                                    <!--lightning:button variant="base" value="{!index}" label="{!if(veh.isDueToTest,'Due To Test','Request for Service')}"  
+                                                                      title="{!if(veh.isDueToTest,'Due To Test','Request for Service')}" onclick="{! c.requestforservicepage }" class="slds-button slds-button_neutral btnsorticon"/-->
+                                                </aura:set>
+                                            </aura:if>
+                                            <!--<lightning:button variant="base" value="{!veh.customerVehicle.Id}" label="Delete"  
+                                                              title="Delete" onclick="{! c.deleteSelectedVehicle}" class="slds-button slds-button_neutral btnsorticon"/>-->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:iteration>
+                    <!--</tbody>                    
+                </table>-->
+                </article>
+                <article class="slds-card custometable mobileview">  
+                    <aura:iteration items="{!v.vehicleWrapper}" var="veh" indexVar="index">
+                        <div class="item animated bounceInLeft">
+                            <div class="carousel-col">
+                                <div class="our-team">
+                                    <div>
+                                        <a href="{!'/customer/s/vehicle-page?showH=true&amp;recordId='+veh.customerVehicle.Id+'&amp;Loc='+v.emirate}" class="cvnumber" >{!veh.customerVehicle.Name}</a>
+                                        <a href="{!'/customer/s/vehicle-page?showH=true&amp;recordId='+veh.customerVehicle.Id}" class="platenum">{!veh.customerVehicle.Plate_No__c}</a>
+                                        <div class="subheading">
+                                            <h4 class="studclass"><span class="textblack">{!v.Plate_Color} :&nbsp;</span> <strong>{!veh.customerVehicle.Plate_Color__c}</strong></h4>
+                                            <h4 class="studclass"><span class="textblack">{!v.Plate_Type} :&nbsp;</span><strong>{!veh.customerVehicle.Plate_Type__c}</strong></h4>
+                                            <h4 class="studclass"><span class="textblack">{!v.Plate_Source} :&nbsp;</span><strong>{!veh.customerVehicle.Plate_Source__c}</strong></h4> 
+                                            <aura:if isTrue="{!veh.customerVehicle.Registration_Type__c != 'Registered'}">
+                                                <h4 class="studclass"><span class="textblack">{!v.Chassis_No} :&nbsp;</span><strong>{!veh.customerVehicle.Chassis_No__c}</strong></h4>
+                                                <aura:set attribute="else">
+                                                    <h4 class="studclass"><span class="textblack">{!v.Model} :&nbsp;</span><strong>{!veh.customerVehicle.Vehicle_Model__c}</strong></h4>
+                                                </aura:set>
+                                            </aura:if>
+                                            <h4 class="studclass"><span class="textblack">{!v.Type} :&nbsp;</span><strong>{!veh.customerVehicle.Registration_Type__c}</strong></h4>
+                                            <h4 class="studclass"><span class="textblack">{!v.Traffic_Fines} :&nbsp;</span>                                        
+                                                <strong><lightning:formattedUrl value="{!'https://es.adpolice.gov.ae/trafficservices/finespublic/inquiry.aspx?Culture=ar/'}" label="Click Here" target="_blank" /></strong>
+                                            </h4>
+                                        </div>
+                                        <ul>
+                                            <li> 
+                                                <aura:if isTrue="{!veh.isReTest}">
+                                                    <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.dueforRetest}">
+                                                        <img class="slds-button" alt="{!v.Due_for_Retest}" title="{!v.Due_for_Retest}" src="{!$Resource.ETI_DueForRetest}" />
+                                                    </span>
+                                                    <!--lightning:button variant="base" value="{!veh.customerVehicle.Id}" label="Due for Retest"  
+                                                                      title="Due for Retest" onclick="{! c.dueforRetest }" class="slds-button slds-button_neutral btnsorticon"/-->
+                                                    <aura:set attribute="else">
+                                                        <span data-value="{!index}" onclick="{!c.requestforservicepage}">
+                                                            <img class="slds-button" alt="{!if(veh.isDueToTest,v.Due_To_Test,v.Request_For_Service)}" 
+                                                                 title="{!if(veh.isDueToTest,v.Due_To_Test,v.Request_For_Service)}" src="{!$Resource.ETI_DueToTest}" />
+                                                        </span>
+                                                        <!--lightning:button variant="base" value="{!index}" label="{!if(veh.isDueToTest,'Due To Test','Request for Service')}"  
+                                                                          title="{!if(veh.isDueToTest,'Due To Test','Request for Service')}" onclick="{! c.requestforservicepage }" class="slds-button slds-button_neutral btnsorticon"/-->
+                                                    </aura:set>
+                                                </aura:if>
+                                                <span data-value="{!veh.customerVehicle.Id}" onclick="{!c.deleteSelectedVehicle}">
+                                                    <img class="slds-button" alt="{!v.Delete}" title="{!v.Delete}" src="{!$Resource.ETI_Delete}" />
+                                                </span>
+                                                <!--lightning:button variant="base" value="{!veh.customerVehicle.Id}" label="Delete"  
+                                                                  title="Delete" onclick="{! c.deleteSelectedVehicle}" class="slds-button slds-button_neutral btnsorticon"/-->
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:iteration>
+                    <!--</tbody>                    
+                </table>-->
+                </article>
+            </div>
+        </aura:if>
+        <aura:set attribute="else">
+            <br></br> <br></br>
+            <div style="{!'position: relative;text-align: center; height: 95vh; background:' + v.backgroundColor + ' no-repeat;background-position: center;background-size: cover;'}">
+                <div class="nochilddiv"> {!v.Add_your_Vehicles_Message} </div>
+            </div>
+            <br></br> <br></br>
+        </aura:set>
+    </aura:if>  
+    <aura:if isTrue="{!v.reSchduleBooking}">
+        <c:ETI_RequestForService bookingWrp="{!v.bookingWrp}" tableDisplay="True" isRetest="True" emirate="{!v.emirate}" isNavigateToHome="true"/>
+    </aura:if>
+    <aura:if isTrue="{!v.isOpenRequestForService}">
+        <c:ETI_RequestForService booking="{!v.booking}" tableDisplay="True" emirate="{!v.emirate}" isNavigateToHome="true"/>
+    </aura:if>
+</aura:component>

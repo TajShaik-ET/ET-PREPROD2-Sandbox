@@ -1,0 +1,48 @@
+.THIS.collectorLog .slds-form-element_stacked:not(.slds-is-editing){
+    padding: 0 !important;
+}
+.THIS.backgroundInverse{
+        position: absolute;
+        background-color: #16325c;
+        top: 151px;
+        right: 0;
+        bottom: 183px;
+        
+}
+.THIS.slds-spinner_container {
+    position: absolute;
+    top: 159px;
+    right: 0;
+    bottom: 242px;
+    left: 0;
+}
+.THIS .inputSection{
+    width: 48%;
+    display: inline-block;
+    margin: .5% 1%;
+}
+.THIS .commentSection{
+    width: 98%;
+    margin: .5% 1%;
+}
+.THIS .buttonSection{
+    width: 98%;
+    margin: .5% 1%;
+	text-align: right;
+}
+.THIS .outer-div {
+    position: relative;
+}
+
+.THIS .spinnerCls {
+   position: absolute;
+}
+
+@media only screen and (max-width: 767px){
+    .THIS .inputSection, .THIS .commentSection, .THIS .buttonSection{
+    width: 100%;
+    margin: .5% 0;
+}
+   
+  
+}

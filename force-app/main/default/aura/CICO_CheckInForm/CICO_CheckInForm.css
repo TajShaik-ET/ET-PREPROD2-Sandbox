@@ -1,0 +1,1314 @@
+/*Range slider css start*/
+.THIS .range {
+    width: 100%;
+    display: inline-block;
+    float: none;
+    padding: .5rem 0rem!important;
+    margin-bottom: 0;
+    position: relative;
+    
+}
+.THIS .range p.rangeDisplay {
+    display: block;
+    position: relative;
+    color: #000;
+    font-size: 14px;
+    line-height: 1;
+    text-align: right;
+    font-weight: bold;
+}
+.THIS .range__slider {
+    width: 100%;
+    
+}
+.THIS .range__slider [type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 13px;
+    border-radius: 6px;
+    background: #f1f1f1;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    background: linear-gradient(to right, red, yellow 30%, yellow 70%, green 100%);
+}
+
+/* custom thumb */
+.THIS .range__slider [type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #354b9a;
+    border: #ccc 5px solid;
+    cursor: pointer;
+    -webkit-transition: background .15s ease-in-out;
+    transition: background .15s ease-in-out;
+}
+
+.THIS .range__slider [type="range"]::-webkit-slider-thumb:hover {
+    background: #f0932b;
+}
+
+.THIS .range__slider [type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    background: #f0932b;
+    border: #f9ca24 5px solid; cursor: pointer;
+    -webkit-transition: background .15s ease-in-out;
+    transition: background .15s ease-in-out;
+}
+
+.THIS .range__slider [type="range"]::-moz-range-thumb:hover {
+    background: #f9ca24;
+}
+/*Range slider css End*/
+.THIS .left_imagediv{
+    position: relative;
+    display: flow-root;
+    width: 100%;
+    float: left;
+    background: #fff;
+    padding: 1%;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: none;
+    overflow: auto;
+}
+.THIS .left_section .slds-m-bottom_x-small {
+    overflow: auto;
+}
+.THIS button.slds-button.slds-button_neutral.clearbtn {
+    position: absolute;
+    right: 10px;
+    background: #ebebeb;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: #364c9b;
+    top: 10px;
+}
+.THIS .undobtn{
+    position: absolute;
+    right: 153px;
+    background: #ebebeb;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: #364c9b;
+    padding: .35rem 1rem;
+    border-radius: 3px;
+    top: 10px;
+}
+.THIS .redobtn{
+    position: absolute;
+    right: 100px;
+    background: #ebebeb;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: #364c9b;
+    padding: .35rem 1rem;
+    border-radius: 3px;
+    top: 10px;
+}
+.THIS .image-upload{
+    position:relative;
+}
+.THIS .image-upload .imgupload
+{
+    display: block;
+    position: absolute;
+    top: -50px;
+    right: 5px;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+}
+
+.THIS.outer_div {
+    position: relative;
+    background: transparent;
+    border:none;
+    margin-top: -2rem;
+}
+
+.THIS .spinner2 {
+    position: fixed;
+}
+
+.THIS .image-upload img
+{
+    position: absolute;
+    top: -49px;
+    right: 5px;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    font-size: 0px;
+}
+.THIS .image-upload span.slds-file-selector__button.slds-button.slds-button_neutral {
+    background: transparent;
+    border: none;
+    height: 42px;
+    width: 42px;
+    font-size: 0px;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    right: 0px;
+    position: absolute;
+    top: -18px;
+}
+.THIS .image-upload lightning-primitive-file-droppable-zone.slds-file-selector__dropzone {
+    border: none;
+    font-size: 0px;
+}
+.THIS .image-upload lightning-primitive-icon{
+    visibility: hidden;
+}
+.THIS .uploadimgs_div{
+    display: block;
+    width: 100%;
+    clear: both;
+    padding: 1rem 0 0;
+    position: relative;
+    overflow: auto;
+}
+.THIS .uploadimgs_div ul{
+    display: block;
+    overflow-y: hidden;
+    margin: auto;
+    height: auto;
+    overflow-x: auto;
+    width: max-content;
+    min-height: 0px;
+    max-height: 66px;
+}
+.THIS .uploadimgs_div li{
+    color: black;
+    position: relative;
+    display: inline-block;
+    list-style-type: none;
+    margin: 5px;
+    float: left;
+}
+.THIS .uploadimgs_div li img{
+    width:100px;
+    height: auto;
+    min-height: 60px;
+    max-height: 60px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.THIS .uploadimgs_div li a{
+    position: absolute;
+    top: 3px;
+    right: 5px;
+}
+.THIS .uploadimgs_div li a button.slds-button.slds-button_neutral.deletebtn {
+    font-size: 0;
+    padding: 5px;
+    line-height: 1;
+    background: #fff;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+.THIS .uploadimgs_div li a button.slds-button.slds-button_neutral.deletebtn svg.slds-button__icon.slds-button__icon_left {
+    margin: 0;
+    fill: red;
+}
+
+.THIS .detail_signature{
+    display: block;
+    position: relative;
+    clear: both;
+    padding: 1rem;
+    width:100%;
+    float: left;
+    margin-top: 2rem;
+    
+}
+.THIS .detail_signature .leftdiv_signature {
+    display: inline-block;
+    width: 48.5%;
+    float: left;
+    background: #fff;
+    position:relative;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+    border-radius: 5px;
+    overflow: auto;
+}
+.THIS .detail_signature .leftdiv_signature button.slds-button.slds-button_neutral.clearbtnsign {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 0px;
+    text-align: center;
+    padding: 0 10px;
+    background: #ebebeb;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+.THIS .detail_signature .leftdiv_signature button.slds-button.slds-button_neutral.clearbtnsign svg.slds-button__icon.slds-button__icon_left {
+    margin: 0;
+    fill: #818181;
+}
+.THIS .detail_signature .txtsign{
+    position: relative;
+    display: block;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding-bottom: 3px;
+    color: #696969;
+}
+
+.THIS .detail_signature .right_allbtn {
+    display: inline-block;
+    width: 51.5%;
+    float: left;
+    height: 100px;
+    padding: 4rem 0rem 0rem;
+    text-align: right;
+}
+
+.THIS .detail_signature .right_allbtn .appbtn{
+    background: #FE864D;
+    border: 1px solid #FE864D;
+    outline: none;
+    box-shadow: none;
+    margin: 0px;
+    margin-left: .5rem;
+}
+.THIS .detail_signature .right_allbtn .rejbtn{
+    background: #364C9B;
+    border: 1px solid #364C9B;
+    margin: 0px;
+    color: #fff;
+    font-weight: bold;
+    outline: none;
+    box-shadow: none;
+}
+.THIS.btnbackbottom {
+    background: transparent;
+    color: #fff;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+.THIS .uploadimgs_div{
+    display: block;
+    width: 100%;
+    clear: both;
+    padding: 1rem 0 0;
+    position: relative;
+    overflow: auto;
+}
+.THIS .uploadimgs_div ul{
+    display: block;
+    overflow-y: hidden;
+    margin: auto;
+    height: auto;
+    overflow-x: auto;
+    width: max-content;
+    min-height: 0px;
+    max-height: 76px;
+}
+.THIS .uploadimgs_div li{
+    color: black;
+    position: relative;
+    display: inline-block;
+    list-style-type: none;
+    margin: 5px;
+    float: left;
+}
+.THIS .uploadimgs_div li img{
+    width:100px;
+    height: auto;
+    min-height: 60px;
+    max-height: 70px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.THIS .uploadimgs_div li a{
+    position: absolute;
+    top: 3px;
+    right: 5px;
+}
+.THIS button.slds-button.slds-button_neutral.btnback lightning-primitive-icon {
+    line-height: 1;
+}
+.THIS button.slds-button.slds-button_neutral.btnback {
+    background: transparent;
+    color: #fff;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    margin-bottom: 1rem;
+    margin-top: 0rem;
+    font-weight: bold;
+}
+
+.THIS .checkin_checkout_details{
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    position: relative;
+    display: flex;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+.THIS .checkin_checkout_details .internal_no_div ,
+.THIS .checkin_checkout_details .chassis_no_div{
+    position: relative;
+    width: 100%;
+    display: block;
+    clear: both;
+}
+.THIS .checkin_checkout_details .left_checkin_div {
+    position: relative;
+    display: inline-block;
+    width: 48%;
+    float: left;
+    margin-right: 2%;
+}
+.THIS .checkin_checkout_details .right_checkout_div {
+    position: relative;
+    display: inline-block;
+    width:48%;
+    float: left;
+    margin-left: 2%;
+}
+.THIS .checkin_checkout_details label.slds-form-element__label ,
+.THIS .checkin_checkout_details legend.slds-form-element__legend.slds-form-element__label{
+    color: #222f5d;
+    font-weight: bold;
+    padding-bottom: 5px;
+    max-width:100%;
+}
+.THIS .checkin_checkout_details lightning-input-field.slds-form-element.slds-form-element_horizontal {
+    margin: 0;
+    padding: 3px 0 0;
+}
+.THIS .checkin_checkout_details .right_checkout_div .slds-form-element_horizontal .slds-form-element__control ,
+.THIS .checkin_checkout_details .left_checkin_div .slds-form-element_horizontal .slds-form-element__control{
+    padding-left: 0;
+    clear: both;
+}
+.THIS .checkin_checkout_details .canvas_div{
+    position: relative;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    padding: 1rem 1rem 0;
+}
+.THIS .checkin_checkout_details span.slds-slider__value{
+    position: absolute;
+    right: -25px;
+    top: -7px;
+}
+.THIS .checkin_checkout_images{
+    position: relative;
+    display: flex;
+    width: 100%;
+    clear: both;
+    background: transparent;
+    margin-bottom: 1rem;
+    padding: 0rem;
+}
+.THIS .checkin_checkout_images .left_section{
+    position: relative;
+    width: 49%;
+    margin-right: 1%;
+    background: #fff;
+    border-radius: 15px;
+}
+.THIS .checkin_checkout_images .right_section{
+    position: relative;
+    width: 49%;
+    margin-left: 1%;
+    background: #fff;
+    border-radius: 15px;
+}
+.THIS .checkin_checkout_images p {
+    background: #364C9B;
+    padding: 1rem;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 15px 15px 0px 0px;
+}
+
+.THIS .MS-controls {
+    padding: 0!important;
+    position: absolute!important;
+    width: 500px;
+    margin: -9% -0.5%;
+}
+.THIS .MS-controls lightning-icon.slds-icon-utility-chevronleft.slds-icon_container ,
+.THIS .MS-controls lightning-icon.slds-icon-utility-chevronright.slds-icon_container{
+    background: #fff;
+    margin: 0 .5rem;
+    padding: .5rem 1rem;
+}
+.THIS .MS-controls svg.slds-icon.slds-icon-text-default {
+    width: 16px;
+    fill: #364C9B;
+}
+.THIS .MS-controls svg.slds-button__icon.slds-button__icon_left {
+    margin: 0;
+    width: 24px;
+    height: 24px;
+    background: #fff;
+}
+.THIS .MS-controls lightning-icon.slds-icon-utility-chevronright.slds-icon_container {
+    position: absolute;
+    float: right;
+    right: 3rem;
+    padding: 3px 8px!important;
+    border: 1px solid #ccc;
+}
+.THIS .MS-controls lightning-icon.slds-icon-utility-chevronleft.slds-icon_container {
+    position: absolute;
+    float: left;
+    left: 3rem;
+    padding: 3px 8px!important;
+    border: 1px solid #ccc;
+}
+.THIS .left_section .uploadimgs_div li a {
+    position: relative;
+    top: 3px;
+    right: 5px;
+}
+.THIS .left_section .uploadimgs_div{
+    padding-top: 2.85rem;
+}
+.THIS .left_section .slds-m-bottom_x-small{
+    text-align: center;
+}
+.THIS canvas {
+    cursor: url(/resource/ET_pencil1),default;
+}
+.THIS .static_values_check {
+    background: #fbfbfb;
+    padding:1rem 2rem 2rem;
+    border-radius: 15px;
+    position: relative;
+    margin-bottom: 1rem;
+    display: flow-root;
+}
+.THIS .static_values_check p {
+    color: #FE864D;
+    font-size: 18px;
+    clear: both;
+    padding: 1rem 0 .5rem;
+}
+.THIS .static_values_check .uiInput.uiInputCheckbox.uiInput--default.uiInput--checkbox {
+    width: 25%;
+    display: inline-block;
+    float: left;
+    padding: .5rem .5rem 1rem 0!important;
+    border-bottom: 0 solid #ddd;
+    margin-bottom: 0;
+}
+.THIS .static_values_check .uiInput--checkbox input[type=checkbox][disabled], 
+.THIS .static_values_check input.uiInput--checkbox[type=checkbox][disabled]{
+    float:left;
+    margin-right: .5rem;
+}
+.THIS .static_values_check  .uiInput--checkbox input[type=checkbox]:checked{
+    border-color: #ddd;
+}
+.THIS .static_values_check lightning-input-field.slds-form-element.slds-form-element_horizontal {
+    width: 25%;
+    display: inline-block;
+    float: left;
+    padding: .5rem .5rem 1rem 0!important;
+    border-bottom: 0 solid #ddd;
+    margin-bottom: 0;
+}
+.THIS .static_values_check .slds-form-element__control.slds-grow {
+    float: left;
+    padding-left: 0;
+}
+.THIS .static_values_check label.slds-checkbox__label { 
+    display: inline-block;
+    width: 90%;
+}
+.THIS .static_values_check label.slds-checkbox__label span.slds-form-element__label {
+    width: 100%;
+    display: contents;
+    font-size: 13px;
+}
+.THIS .static_values_check span.slds-checkbox.slds-checkbox_standalone {
+    padding: 0;
+}
+.THIS .checkin_checkout_table {
+    background: #fbfbfb;
+    border-radius: 15px;
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: auto;
+    
+    overflow: auto;
+    margin-bottom: 2rem;
+}
+.THIS .checkin_checkout_table p {
+    color: #fe864d;
+    font-size: 18px;
+    clear: both;
+    padding: 1rem 2rem 1rem;
+}
+.THIS .checkin_checkout_table table{
+    margin: 0px;
+}
+.THIS .checkin_checkout_table tr th {
+    background: #DDDDDD;
+    padding: 1rem 0rem 1rem 2rem;
+    color: #364C9B;
+    text-align: center;
+    width: 50%;
+    float: left;
+    white-space: nowrap;
+}
+.THIS .checkin_checkout_table tr td{
+    background: #fff;
+    padding: 1rem 0rem 1rem 2rem;
+    color: #3D3D3D;
+    text-align: center;
+    width: 20%;
+    float: left;
+}
+.THIS .checkin_checkout_table tr td:last-child ,
+.THIS .checkin_checkout_table tr th:last-child{
+    padding: 1rem 2rem 1rem 2rem;
+}
+.THIS .checkin_checkout_details span.slds-slider-label__label {
+    display: none;
+}
+.THIS table.slds-var-m-around_medium.checkout_table {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: auto;
+    background: #fff;
+}
+.THIS .checkout_table tr {
+    background: #fff;
+    min-width: 100%;
+    max-width: 100%;
+    float: left;
+}
+.THIS .checkin_checkout_table tr td {
+    background: #fff;
+    padding: 1rem;
+    color: #3d3d3d;
+    text-align: center;
+    width: 50%;
+    float: left;
+    /*border-left: 1px solid #f3f3f3;
+    border-bottom: 1px solid #f3f3f3;
+    border-right: 1px solid #f3f3f3;*/
+}
+.THIS .checkin_checkout_table tr td .slds-textarea{
+    padding: 5px;
+    height: 32px;
+    width: 100%;
+    resize: none;
+}
+.THIS .comments_div {
+    position: relative;
+    display: block;
+    clear: both;
+    margin-bottom: 1rem;
+}
+.THIS .comments_div lightning-input-field.slds-form-element.slds-form-element_horizontal {
+    padding: 0;
+    margin: 0;
+}
+.THIS .comments_div .slds-form-element__control.slds-grow.textarea-container {
+    padding-left: 0;
+}
+.THIS .comments_div label.slds-form-element__label {
+    color: #fff;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+.THIS .comments_div textarea {
+    border-radius: 15px;
+    height: 100px;
+    outline: none;
+    box-shadow: none;
+}
+.THIS .detail_signature {
+    display: block;
+    position: relative;
+    clear: both;
+    padding: 0rem;
+    width: 100%;
+    float: left;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.THIS .detail_signature .txtsign {
+    position: relative;
+    display: block;
+    font-size: .75rem;
+    font-weight: bold;
+    padding-bottom: 5px;
+    color: #ffffff;
+}
+.THIS .slds-select_container:after {
+    border-top: 5px solid #000;
+    bottom: calc((1.75rem / 2) - 2px);
+}
+.THIS .slds-input , .THIS .slds-faux-input , .THIS .slds-select ,
+.THIS input[aria-readonly=true][lightning-baseCombobox_baseCombobox]{
+    height: 38px;
+    color: #797979;
+    font-size: 13px;
+}
+.THIS .delete_atag{
+    float:right;
+    margin-left: 5px;
+    margin-top: -5px;
+    position: absolute;
+    right: 1rem;
+}
+.THIS .delete_atag button.slds-button.slds-button_neutral.deletebtn {
+    font-size: 0px;
+    border: 1px solid red;
+    padding: 5px;
+    line-height: 1;
+}
+.THIS .delete_atag button.slds-button.slds-button_neutral.deletebtn svg.slds-button__icon.slds-button__icon_left {
+    margin: 0;
+    fill: red;
+}
+.THIS .checkout_table span.slds-checkbox_faux {
+    margin: 0px!important;
+}
+.THIS .canvas_div canvas {
+    cursor: pointer;
+}
+.THIS button.slds-button.slds-button_icon.slds-float_right.btnprint.slds-button_icon-border {
+    display: inline-block;
+    float: right;
+    margin-bottom: 1rem;
+    margin-top: 0;
+    color: #fe864d;
+    border: 1px solid #fe864d;
+    box-shadow: none;
+    transition: all .4s;
+    background: #fff;
+}
+.THIS button.slds-button.slds-button_icon.slds-float_right.btnprint.slds-button_icon-border svg.slds-button__icon{
+    fill: #fe864d;
+}
+.THIS button.slds-button.slds-button_icon.slds-float_right.btnprint.slds-button_icon-border:hover {
+    background: #fe864d;
+}
+.THIS button.slds-button.slds-button_icon.slds-float_right.btnprint.slds-button_icon-border:hover svg.slds-button__icon{
+    fill: #fff;
+}
+.THIS .left_section {
+    position: relative;
+    display: inline-block;
+    float: left;
+    width: 49%;
+    margin-right:1%;
+    /*margin-left: 1%;
+    min-height: 50px;
+    max-height: 350px;
+    height: auto;
+    overflow: auto;*/
+    margin-bottom: 1rem;
+}
+.THIS .right_section {
+    position: relative;
+    display: inline-block;
+    float: left;
+    width: 49%;
+    margin-left: 1%;
+    /*min-height: 50px;
+    max-height: 350px;
+    height: auto;
+    overflow: auto;*/
+    margin-bottom: 1rem;
+}
+
+.THIS .checkout_search {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+.THIS .checkout_search div:first:child {
+    position: relative;
+    display: inline-block;
+    /* padding: 0px; */
+}
+.THIS .checkout_search div .slds-combobox_container{
+    padding: 0px!important;
+}
+.THIS .checkout_search div label.slds-form-element__label.slds-no-flex{
+    color: #222f5d!important;
+}
+.THIS .checkout_search div .slds-dropdown{
+    margin: 0rem;
+    width: 100%;
+    margin-top: 0rem;
+}
+.THIS .checkout_search div lightning-icon.slds-icon.slds-icon_small.slds-icon-text-default.slds-icon-utility-clear.slds-icon_container {
+    padding: 1.35rem 0;
+}
+.THIS .checkout_search div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.slds-input__icon_right.iconheight {
+    margin: 2rem 0.15rem;
+}
+.THIS .checkout_search div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.iconheight {
+    margin: 2rem 0.15rem;
+}
+.THIS lightning-input-field.internalNo_div.slds-form-element.slds-form-element_horizontal {
+    width: 92%;
+    display: inline-block;
+}
+.THIS lightning-input-field.internalNo_div2.slds-form-element.slds-form-element_horizontal {
+    width: 92%;
+    display: inline-block;
+}
+
+.THIS button.slds-button.slds-button_icon.description_icon.slds-button_icon-brand {
+    display: inline-block;
+    margin-top: 2rem;
+    vertical-align: top;
+    margin-left:1%;
+}
+.THIS .masterlist_table{
+    border: 1px solid #f2f2f2;
+    margin: 0 1% 3%;
+    width: 98%;
+    min-height: 50px;
+    max-height: 150px;
+    height: auto;
+    overflow: auto;
+}
+.THIS .masterlist_table table{
+    width:100%;
+    margin:0px;
+}
+.THIS .masterlist_table tr th {
+    color: #fff;
+    padding: .5rem 1rem;
+    position: sticky;
+    top: 0;
+    background: #364c9b;
+    z-index: 1;
+    font-size: 14px;
+}
+.THIS .masterlist_table tr td {
+    color: #222f5d;
+    padding: .5rem 1rem;
+    cursor: pointer;
+    font-size: 12px!important;
+}
+.THIS .masterlist_table tr:hover {
+    background: #f1f1f1;
+}
+.THIS .slds-modal__container header.slds-modal__header {
+    border-bottom: 1px solid #f2f2f2;
+}
+.THIS .slds-modal__container header button.slds-button.slds-button_icon.slds-modal__close.slds-button_icon-bare.slds-button_icon-inverse {
+    top: .5rem;
+    right: .5rem;
+    border: 1px solid #d4d4d4;
+}
+.THIS .slds-modal__container header button.slds-button.slds-button_icon.slds-modal__close.slds-button_icon-bare.slds-button_icon-inverse svg.slds-button__icon.slds-button_icon-inverse {
+    fill: #000;
+}
+.THIS .slds-modal__container h2#modal-heading-01 {
+    font-size: 16px;
+    font-weight: 200!important;
+}
+.THIS .slds-modal__container div#modal-content-id-1 {
+    padding: 0rem;
+    border-radius:5px;
+}
+.THIS .slds-modal__container div#modal-content-id-1 .slds-border_bottom {
+    border-bottom: 1px solid #f2f2f2;
+}
+.THIS div#modal-content-id-1 lightning-combobox.slds-form-element ,
+.THIS div#modal-content-id-1 lightning-input.slds-form-element{
+    width: 50%;
+    display: inline-block;
+    padding: .5rem;
+}
+.THIS div#modal-content-id-1 button.slds-button.slds-button_brand.searchpopup_btn {
+    margin: .5rem .5rem 1rem;
+    float: right;
+}
+.THIS .nodata_div{
+    display: block;
+    position: relative;
+    clear: both;
+    padding: 0 1rem 1rem;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+.THIS .slds-modal__container label.uiLabel-left.form-element__label.uiLabel {
+    color: #222f5d;
+    font-weight: bold;
+    font-size: 12px;
+}
+.THIS .slds-modal__container button.slds-button.slds-button_brand.btnsend {
+    background: #fe864d;
+    border: 1px solid #fe864d;
+    outline: none;
+    box-shadow: none;
+    margin: 1rem;
+}
+.THIS div#no-records {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 1rem;
+}
+.THIS .fuelWarnError{
+    font-size: 14px !important;
+    color: red !important;
+    font-weight: bold;
+}
+.THIS .search_driver_bottom div label.slds-form-element__label.slds-no-flex{
+    color: #fff!important;
+}
+.THIS .search_driver_bottom lightning-icon.slds-icon.slds-icon_small.slds-icon-standard-user.slds-icon_container {
+    margin-top: -0.5rem;
+}
+
+.THIS .checkout_search.search_driver_bottom .slds-form-element__control{
+    padding-left: 0;
+}
+@media only screen and (max-width:1024px) {
+    .THIS label.slds-form-element__label.slds-no-flex.slds-form-element_horizontal {
+        display: block;
+        width: 100%;
+        min-width: 100%;
+    }
+    .THIS .MS-controls {
+        margin: -11% -.5%;
+    }
+    .THIS .MS-controls lightning-icon.slds-icon-utility-chevronright.slds-icon_container {
+        right: 0rem;
+    }
+    .THIS .MS-controls lightning-icon.slds-icon-utility-chevronleft.slds-icon_container {
+        left: 0rem;
+    }
+    .THIS .static_values_check .uiInput.uiInputCheckbox.uiInput--default.uiInput--checkbox ,
+    .THIS .static_values_check lightning-input-field.slds-form-element.slds-form-element_horizontal{
+        width: 33.33%;
+    }
+    .THIS lightning-input-field.internalNo_div.slds-form-element.slds-form-element_horizontal {
+        width: 90%;
+    }
+    .THIS lightning-input-field.internalNo_div2.slds-form-element.slds-form-element_horizontal {
+        width: 90%;
+    }
+}
+@media only screen and (max-width:992px) {
+    .THIS .checkin_checkout_details label.slds-form-element__label, .THIS .checkin_checkout_details legend.slds-form-element__legend.slds-form-element__label {
+        width: 100%;
+        position: relative;
+        display: contents;
+    }
+    .THIS .slds-faux-input_label{
+        color: #222f5d;
+        font-weight: bold;
+        padding-bottom: 0px;
+    }
+    .THIS .MS-controls {
+        margin: -15% 0%;
+    }
+    .THIS .static_values_check label.slds-checkbox__label {
+        width: 80%!important;
+    }
+    .THIS .checkout_search div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.slds-input__icon_right.iconheight {
+        margin: 1.35rem 0.15rem;
+    }
+    .THIS .checkout_search div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.iconheight {
+        margin: 1.35rem 0.15rem;
+    }
+    .THIS lightning-input-field.internalNo_div.slds-form-element.slds-form-element_horizontal {
+        width: 87%;
+    }
+    .THIS lightning-input-field.internalNo_div2.slds-form-element.slds-form-element_horizontal {
+        width: 87%;
+    }
+    .THIS .checkout_search div lightning-icon.slds-icon.slds-icon_small.slds-icon-text-default.slds-icon-utility-clear.slds-icon_container {
+        padding: 0.5rem 0 0;
+    }
+    .THIS .datetime .slds-input{
+        padding-top: 10px;
+    }
+    .THIS .detail_signature .leftdiv_signature {    
+        width: 64.5%;
+    }
+    .THIS .detail_signature .right_allbtn {
+        width: 35.5%;
+    }
+    .THIS .search_driver_bottom div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.slds-input__icon_right.iconheight {
+        margin: 1.77rem .15rem 0;
+    }   
+    .THIS .search_driver_bottom lightning-icon.slds-icon.slds-icon_small.slds-icon-standard-user.slds-icon_container {
+        margin-top: .25rem;
+    }
+}
+@media only screen and (max-width:768px) {
+    .THIS.toptab .outer_div {
+        padding: 0rem;
+        margin-top: 1rem;
+    }
+    .THIS .checkin_checkout_details {
+        display: flow-root;
+    }
+    /*.THIS .checkin_checkout_details .left_checkin_div {
+    width: 100%;
+    margin-right: 0%;
+    margin-bottom: 1rem;
+}
+    .THIS .checkin_checkout_details .right_checkout_div {
+    width: 100%;
+    margin-left: 0%;
+}*/
+    .THIS .checkin_checkout_details .canvas_div {
+        padding: 1rem 0rem 0;
+    }
+    .THIS lightning-input-field.slds-form-element.slds-form-element_stacked {
+        padding: 0;
+    }
+    .THIS .checkin_checkout_images {
+        display: block;
+        width: 100%;
+    }
+    .THIS .checkin_checkout_images .left_section {
+        width: 100%;
+        margin-right: 0%;
+    }
+    .THIS .checkin_checkout_images .right_section {
+        width: 100%;
+        margin-left: 0%;
+    }
+    .THIS .left_imagediv {
+        border-radius: 0 0 15px 15px;
+        margin-bottom: 1rem;
+    }
+    .THIS .MS-controls {
+        margin: -9% 0%;
+    }
+    .THIS .static_values_check lightning-input-field.slds-form-element.slds-form-element_stacked {
+        width: 33.33%;
+        position: relative;
+        display: inline-block;
+        float: left;
+    }
+    .THIS .static_values_check label.slds-checkbox__label span.slds-form-element__label {
+        width: 100%;
+        display: inline-block;
+        font-size: 13px;
+        float: left;
+        padding-left: 20px;
+    }
+    .THIS .static_values_check .slds-form-element__control.slds-grow {
+        float: left;
+        padding-left: 0;
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 5px;
+    }
+    .THIS .checkin_checkout_images .left_section {
+        width: 100%;
+        margin-right: 0%;
+    }
+    .THIS .checkin_checkout_images .right_section {
+        width: 100%;
+        margin-left: 0%;
+    }
+    .THIS .checkout_search div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.slds-input__icon_right.iconheight {
+        margin: 1.35rem 0.15rem;
+    }
+    .THIS .checkout_search div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.iconheight {
+        margin: 1.35rem 0.15rem;
+    }
+    .THIS .search_driver_bottom div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.slds-input__icon_right.iconheight {
+        margin: 1.75rem 0.15rem;
+    }
+    .THIS lightning-input-field.internalNo_div.slds-form-element.slds-form-element_stacked {
+        width: 84% !important;
+        display: inline-block;
+    }
+    .THIS lightning-input-field.internalNo_div2.slds-form-element.slds-form-element_stacked {
+        width: 84% !important;
+        display: inline-block;
+    }
+    .THIS button.slds-button.slds-button_icon.description_icon.slds-button_icon-brand {
+        margin-top: 1.5rem;
+    }
+    .THIS .left_imagediv canvas{
+        margin: auto;
+    }
+    .THIS .search_driver_bottom lightning-icon.slds-icon.slds-icon_small.slds-icon-standard-user.slds-icon_container {
+        margin-top: .35rem;
+    }
+}
+@media only screen and (max-width:767px) {
+    /*.THIS .checkin_checkout_details .left_checkin_div {
+    width: 100%;
+    margin-right: 0%;
+}
+    .THIS .checkin_checkout_details .right_checkout_div {
+    width: 100%;
+    margin-left: 0%;
+    margin-top: 2rem;
+}*/
+    .THIS.outer_div{
+        padding: 3rem 1rem 2rem!important;
+    }
+    .THIS .canvas_div canvas {
+        width: 100%!important;
+    }
+    .THIS div#no-records {
+        font-size: 14px;        
+    }
+    .THIS lightning-input-field.internalNo_div.slds-form-element.slds-form-element_stacked {
+        width: 86%;
+        display: inline-block;
+    }
+    .THIS lightning-input-field.internalNo_div2.slds-form-element.slds-form-element_stacked {
+        width: 86%;
+        display: inline-block;
+    }
+    .THIS button.slds-button.slds-button_icon.description_icon.slds-button_icon-brand {
+        margin-top: 1.85rem;
+    }
+}
+@media only screen and (max-width:480px) {
+    .THIS.mainDivForm {
+        padding: 1rem 0!important;
+    }
+    .THIS .checkin_checkout_details {
+        padding: 1rem;
+    }
+    .THIS .MS-controls {
+        bottom: 3.5rem!important;
+        top: auto!important;
+    }
+    .THIS .static_values_check {
+        padding: 1rem;
+    }
+    .THIS .static_values_check lightning-input-field.slds-form-element.slds-form-element_stacked {
+        width: 50%;
+    }
+    .THIS .static_values_check .uiInput.uiInputCheckbox.uiInput--default.uiInput--checkbox, 
+    .THIS .static_values_check lightning-input-field.slds-form-element.slds-form-element_horizontal {
+        width: 50%;
+    }
+    .THIS .checkin_checkout_table tr td {
+        background: transparent!important;
+    }
+    .THIS .checkin_checkout_table {
+        background: transparent;
+    }
+    /*Table css start*/
+    /*.THIS .checkin_checkout_table table, .THIS .checkin_checkout_table thead, .THIS .checkin_checkout_table tbody ,
+    .THIS .checkin_checkout_table td, .THIS .checkin_checkout_table tr , 
+    .THIS .checkin_checkout_table table, .THIS .checkin_checkout_table thead, .THIS .checkin_checkout_table tbody ,
+    .THIS .checkin_checkout_table td, .THIS .checkin_checkout_table tr{
+    display: block;
+}
+    .THIS .checkin_checkout_table table.slds-var-m-around_medium {
+    background: #fff;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+    .THIS .checkin_checkout_table th , .THIS .checkin_checkout_table th{
+    display:none;
+}
+    .THIS .checkin_checkout_table table tr:nth-child(odd) {
+    background: #f0f0f0!important;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+    .THIS .checkout_table tr:nth-child(odd)  {
+    background:#f0f0f0!important;
+}
+    .THIS .checkin_checkout_table table tr td , .THIS .checkin_checkout_table table tr td {
+    border: none;
+    border-bottom: 1px solid #eae9e9;
+    position: relative;
+    padding-left: 50%;
+    color: #000;
+    font-weight: bold;
+    font-size:12.5px;
+    text-align: right;
+    padding: .5rem 1rem;
+    width: 100%;
+}
+    .THIS .checkin_checkout_table table tr td:before , .THIS .checkin_checkout_table table tr td:before{
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 45%;
+    padding:.5rem 1rem;
+    white-space: nowrap;
+    color: #000;
+    font-weight: normal;
+    font-size:13px;
+    text-align: left;
+}
+    .THIS .checkin_checkout_table table tr td:nth-of-type(1):before {
+    content: "Child Asset Type";
+}
+    .THIS .checkin_checkout_table table tr  td:nth-of-type(2):before{
+    content: "Tag Number";
+}
+    .THIS .checkin_checkout_table table tr  td:nth-of-type(3):before{
+    content: "Received";
+}
+    .THIS .checkin_checkout_table table tr  td:nth-of-type(4):before {
+    content: "Status";
+}
+    .THIS .checkin_checkout_table table tr  td:nth-of-type(5):before {
+    content: "Comments";
+}    */
+    /*Table css end*/
+    /*.THIS .checkin_checkout_table tr td:last-child, .THIS .checkin_checkout_table tr th:last-child {
+    padding: .5rem 1rem;
+}*/
+    
+    .THIS .checkout_search div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.slds-input__icon_right.iconheight {
+        margin: 1.35rem 0.15rem;
+    }
+    .THIS .checkout_search div span.slds-icon_container.slds-icon-utility-search.slds-input__icon.iconheight {
+        margin: 1.35rem 0.15rem;
+    }
+    .THIS table tr:nth-child(odd) {
+        background: transparent!important;
+    }
+    .THIS .checkin_checkout_table p {
+        padding: 1rem;
+        background:#fff;
+        border-radius: 15px 15px 0 0;
+    }
+    .THIS .checkout_table .slds-form-element__control {
+        width: 100%;
+        float: right;
+    }
+    .THIS .checkin_checkout_table {
+        margin-bottom: 1rem;
+    }
+    .THIS .detail_signature {
+        margin-top: 0rem;
+    }
+    .THIS .detail_signature .leftdiv_signature {
+        width: 100%;
+        border-radius: 15px;
+    }
+    .THIS .detail_signature .right_allbtn {
+        width: 100%;
+        height: auto;
+        padding: 2rem 0 0;
+    }
+    .THIS .detail_signature .right_allbtn .rejbtn {
+        width: 48%;
+        margin-left: 0%;
+        margin-right: 1%;
+        display: inline-block;
+        float: left;
+    }
+    .THIS .detail_signature .right_allbtn .appbtn {
+        width: 48%;
+        display: inline-block;
+    }
+    .THIS.btnbackbottom  {
+        width: 100%;
+        margin-left: 0%!important;
+        border: 1px solid #fff;
+        margin-top: 0;
+    }
+    .THIS .detail_signature {
+        margin-bottom: 1rem;
+    }
+    .THIS .slds-input , .THIS .slds-faux-input , .THIS .slds-select ,
+    .THIS input[aria-readonly=true][lightning-baseCombobox_baseCombobox]{
+        height: 38px;
+        color: #797979;
+        font-size: 13px;
+    }
+    .THIS lightning-input.slds-form-element {
+        margin-bottom: .5rem;
+    }
+    .THIS div#no-records {
+        background: #fff;
+        padding: 0rem 1rem 1rem;
+        margin-bottom: 1rem;
+    }
+    .THIS .static_values_check label.slds-checkbox__label {
+        width: 100%!important;
+    }
+    .THIS .uploadimgs_div li img {
+        width: 80px;
+        height: 80px;
+    }
+    .THIS .left_section .uploadimgs_div {
+        padding-bottom: 1rem;
+    }
+    .THIS button.slds-button.slds-button_neutral.btnback , 
+    .THIS button.slds-button.slds-button_icon.slds-float_right.btnprint.slds-button_icon-border{
+        margin-top: 1rem;
+    }
+    .THIS .left_section {
+        width: 100%;
+        margin-right: 0%;
+        margin-bottom: 1rem;
+        background: #fff;
+        border-radius: 0px 0px 15px 15px;
+    }
+    .THIS .right_section {
+        width: 100%;
+        margin-left: 0%;
+    }
+    .THIS .checkin_checkout_details .left_checkin_div {
+        width: 100%;
+        margin-right: 0%;
+    }
+    .THIS .checkin_checkout_details .right_checkout_div {
+        width: 100%;
+        margin-left: 0%;
+        margin-top: 2rem;
+    }
+    .THIS .masterlist_table {
+        max-height: 250px;
+    }
+    .THIS div#modal-content-id-1 lightning-combobox.slds-form-element, 
+    .THIS div#modal-content-id-1 lightning-input.slds-form-element {
+        width: 100%;
+        display: inline-block;
+        padding: 0rem .5rem;
+    }
+    .THIS .slds-modal__container header.slds-modal__header {
+        padding: 1rem 2rem;
+    }
+}

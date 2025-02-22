@@ -1,0 +1,251 @@
+<aura:component controller="ET_CommonWorkForceController">
+    <aura:attribute name="commonWorkForceRecord" type="ET_Special_Workforce_Requirement__c" default="{'sObjectType':'ET_Specific_Workforce_Requirement__c'}"/>
+    <aura:attribute name="workForceMaster" type="Workforce_Master__c" default="{'sObjectType':'Workforce_Master__c'}"/>
+    <aura:attribute name="picklistFields" type="List" default="ET_Specific_Leave_Plan__c"/>
+    <aura:attribute name="specLeavePlan" type="String[]" /> 
+    <aura:attribute name="workforceSalaryDetailMap" type="Map"/>
+    <aura:attribute name="editableFieldsByPricingTeam" type="Object" />
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    
+    <!-- <aura:attribute name="grossSalaryFromMasterData" type=""/> -->
+    <aura:method  name="prePopulateCommonWorkforceData" action="{!c.setAlreadyStoredData}">
+        <aura:attribute name="commonDataToBeSet" type="ET_Special_Workforce_Requirement__c" />
+    </aura:method>
+    
+    <!-- <aura:attribute name="specInsurance" type="String[]" />  -->
+    <aura:registerEvent name="refreshEvent" type="c:ET_doNotAllowChildRefresh"/>
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <div class="slds-grid slds-wrap slds-grid--pull-padded">
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:input type="Number" name="Specific Gross Salary" label="Specific Gross Salary" aura:Id="ET_Specific_Gross_Salary__c"  required="true"
+                             value="{!v.commonWorkForceRecord.ET_Specific_Gross_Salary__c}" min="1" 
+                             messageWhenRangeUnderflow="please enter a positive value"
+                             disabled="{! and(!v.editableFieldsByPricingTeam.ET_Specific_Gross_Salary__c, v.isPricingTeam)}"/>
+        </div>
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:input type="Number" name="Specific Basic Salary" label="Specific Basic Salary" aura:Id="ET_Specific_Base_Salary__c"  required="true" 
+                             value="{!v.commonWorkForceRecord.ET_Specific_Base_Salary__c}" min="1"
+                             messageWhenRangeUnderflow="please enter a positive value"
+                             disabled="{! and(!v.editableFieldsByPricingTeam.ET_Specific_Base_Salary__c, v.isPricingTeam)}"/>
+        </div>
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:select name="Resource Type" label="Resource Type" aura:Id= "Resource_Type__c" required="True"
+                              value="{!v.commonWorkForceRecord.Resource_Type__c}"
+                              disabled="{! and(!v.editableFieldsByPricingTeam.Resource_Type__c, v.isPricingTeam)}">
+                <option value="">choose one...</option>
+                <option value="UAE">UAE</option>
+                <option value="Expat">Expat</option>
+            </lightning:select>
+        </div>
+        <aura:if isTrue="{!(v.commonWorkForceRecord.Resource_Type__c=='UAE')}">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Cost of Living Allowance" label="Cost of Living Allowance"  aura:Id="Cost_of_Living_Allowance__c" required="true" 
+                                 value="{!v.commonWorkForceRecord.Cost_of_Living_Allowance__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.Cost_of_Living_Allowance__c, v.isPricingTeam)}"/>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Transport Allowance" label="Transport Allowance"  aura:Id="Transport_Allowance__c" required="true" 
+                                 value="{!v.commonWorkForceRecord.Transport_Allowance__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.Transport_Allowance__c, v.isPricingTeam)}"/>
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Additional Transport Allowance" label="Additional Transport Allowance"  aura:Id="Additional_Transport_Allowance__c" required="true" 
+                                 value="{!v.commonWorkForceRecord.Additional_Transport_Allowance__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.Additional_Transport_Allowance__c, v.isPricingTeam)}"/>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Other Allowance" label="Other Allowance"  aura:Id="Other_Allowance__c" required="true" 
+                                 value="{!v.commonWorkForceRecord.Other_Allowance__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.Other_Allowance__c, v.isPricingTeam)}"/>
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Social Allowance" label="Social Allowance"  aura:Id="Social_Allowance__c" required="true" 
+                                 value="{!v.commonWorkForceRecord.Social_Allowance__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.Social_Allowance__c, v.isPricingTeam)}"/>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Social Insurance" label="Social Insurance"  aura:Id="Social_Insurance__c" required="true" 
+                                 value="{!v.commonWorkForceRecord.Social_Insurance__c}" max="0"
+                                 messageWhenRangeOverflow="Please enter a negative value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.Social_Insurance__c, v.isPricingTeam)}"/>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Housing Allowance (%)" label="Housing Allowance (%)"  aura:Id="Housing_Allowance__c" required="true" 
+                                 value="{!v.commonWorkForceRecord.Housing_Allowance__c}" min="0" max="100"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.Housing_Allowance__c, v.isPricingTeam)}"/>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!(v.commonWorkForceRecord.Resource_Type__c=='UAE')}">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select name="Married" label="Married?" aura:Id= "Married__c" required="True"
+                                  value="{!v.commonWorkForceRecord.Married__c}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.Married__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </lightning:select>
+                
+            </div>
+            <aura:if isTrue="{!(v.commonWorkForceRecord.Married__c=='Yes')}">
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:input type="Number" name="No of Children" label="Number of Children (Under 18 yrs old)"  aura:Id="Number_of_Children__c" required="true" 
+                                     value="{!v.commonWorkForceRecord.Number_of_Children__c}" min="1"
+                                     messageWhenRangeUnderflow="please enter a positive value"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.Number_of_Children__c, v.isPricingTeam)}"/>
+                </div>
+            </aura:if>
+        </aura:if>
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:input type="Number" name="Over Time" label="Over Time"  aura:Id="ET_Over_Time__c" required="false" 
+                             value="{!v.commonWorkForceRecord.ET_Over_Time__c}" min="0"
+                             messageWhenRangeUnderflow="please enter a positive value"
+                             disabled="{! and(!v.editableFieldsByPricingTeam.ET_Over_Time__c, v.isPricingTeam)}"/>
+        </div>
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:select name="Specific leave Plan" label="Specific leave Plan" aura:Id= "ET_Specific_Leave_Plan__c" required="false" 
+                              value="{!v.commonWorkForceRecord.ET_Specific_Leave_Plan__c}" 
+                              disabled="{! and(!v.editableFieldsByPricingTeam.ET_Specific_Leave_Plan__c, v.isPricingTeam)}">
+                <option value="">choose one...</option>
+                <aura:iteration items="{!v.specLeavePlan}" var="val">
+                    <option value="{!val}"> {!val}</option>
+                </aura:iteration>
+            </lightning:select> 
+        </div>
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:select name="Smart Phone Cost Type" label="Smart Phone Cost Type" aura:Id= "ET_Smart_Phone_Cost_Type__c" required="false" 
+                              value="{!v.commonWorkForceRecord.ET_Smart_Phone_Cost_Type__c}" 
+                              disabled="{! and(!v.editableFieldsByPricingTeam.ET_Smart_Phone_Cost_Type__c, v.isPricingTeam)}">
+                <option value="">choose one...</option>
+                <option value="onetime">Onetime</option>
+                <option value="annualy">Annualy</option>
+                <option value="both">Both</option>
+                
+            </lightning:select> 
+        </div>
+        <aura:if isTrue="{!and(v.commonWorkForceRecord.ET_Smart_Phone_Cost_Type__c != null, v.commonWorkForceRecord.ET_Smart_Phone_Cost_Type__c != '')}">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Smart Phone" label="Smart Phone" aura:Id="ET_Smart_Phone__c" required="true" 
+                                 value="{!v.commonWorkForceRecord.ET_Smart_Phone__c}" min="1" 
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Smart_Phone__c, v.isPricingTeam)}"/>
+            </div>
+        </aura:if>
+        
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:select name="Air Tickets Cost Type" label="Air Tickets Cost Type" aura:Id= "ET_Air_Tickets_Cost_Type__c " 
+                              required="false" value="{!v.commonWorkForceRecord.ET_Air_Tickets_Cost_Type__c}"
+                              disabled="{! and(!v.editableFieldsByPricingTeam.ET_Air_Tickets_Cost_Type__c, v.isPricingTeam)}">
+                <option value="">choose one...</option>
+                <option value="onetime">Onetime</option>
+                <option value="annualy">Annualy</option>
+                <option value="both">Both</option>
+                
+            </lightning:select> 
+        </div>
+        <aura:if isTrue="{!and(v.commonWorkForceRecord.ET_Air_Tickets_Cost_Type__c != null,v.commonWorkForceRecord.ET_Air_Tickets_Cost_Type__c != '')}">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input name="Air Tickets" type="Number" label="Air Tickets" aura:Id="ET_Air_Tickets__c" required="true"  
+                                 value="{!v.commonWorkForceRecord.ET_Air_Tickets__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Air_Tickets__c, v.isPricingTeam)}"/>
+            </div>
+        </aura:if>
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:select name="Accommodation Allowance Type" label="Accommodation Allowance Type" aura:Id= "ET_Accommodation_Allowance_Type__c " 
+                              required="false" value="{!v.commonWorkForceRecord.ET_Accommodation_Allowance_Type__c}"
+                              disabled="{! and(!v.editableFieldsByPricingTeam.ET_Accommodation_Allowance_Type__c, v.isPricingTeam)}">
+                <option value="">choose one...</option>
+                <option value="onetime">Onetime</option>
+                <option value="annualy">Annualy</option>
+                <option value="both">Both</option>
+                
+            </lightning:select> 
+        </div>
+        <aura:if isTrue="{!and(v.commonWorkForceRecord.ET_Accommodation_Allowance_Type__c != null,v.commonWorkForceRecord.ET_Accommodation_Allowance_Type__c != '')}">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input name="Accommodation Allowance" type="Number" label="Accommodation Allowance" aura:Id="ET_Accommodation_Allowance__c" 
+                                 required="true"  value="{!v.commonWorkForceRecord.ET_Accommodation_Allowance__c}" min="1" 
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Accommodation_Allowance__c, v.isPricingTeam)}"/>
+            </div>
+        </aura:if>
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:select name="Extra Certification Cost Type" label="Extra Certification Cost Type" aura:Id= "ET_Extra_Certification_Cost_Type__c " required="false"
+                              value="{!v.commonWorkForceRecord.ET_Extra_Certification_Cost_Type__c}"
+                              disabled="{! and(!v.editableFieldsByPricingTeam.ET_Extra_Certification_Cost_Type__c, v.isPricingTeam)}">
+                <option value="">choose one...</option>
+                <option value="onetime">Onetime</option>
+                <option value="annualy">Annualy</option>
+                <option value="both">Both</option>
+                
+            </lightning:select> 
+        </div>
+        <aura:if isTrue="{!and(v.commonWorkForceRecord.ET_Extra_Certification_Cost_Type__c != null,v.commonWorkForceRecord.ET_Extra_Certification_Cost_Type__c != '')}">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Extra Certification" label="Extra Certification" aura:Id="ET_Extra_Certification__c"
+                                 required="true"  value="{!v.commonWorkForceRecord.ET_Extra_Certification__c}" min="1" 
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Extra_Certification__c, v.isPricingTeam)}"/>
+            </div>
+        </aura:if>
+        
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:select name="Language and Psychometric Test Cost Type" label="Language and Psychometric Test Cost Type" aura:Id= "Language_and_Psychometric_Fee_Cost_Type__c " required="false"
+                              value="{!v.commonWorkForceRecord.Language_and_Psychometric_Fee_Cost_Type__c}"
+                              disabled="{! and(!v.editableFieldsByPricingTeam.Language_and_Psychometric_Fee_Cost_Type__c, v.isPricingTeam)}">
+                <option value="">choose one...</option>
+                <option value="onetime">Onetime</option>
+                <option value="annualy">Annualy</option>
+                <option value="both">Both</option>
+            </lightning:select> 
+        </div>
+        
+        <aura:if isTrue="{!and(v.commonWorkForceRecord.Language_and_Psychometric_Fee_Cost_Type__c != null,v.commonWorkForceRecord.Language_and_Psychometric_Fee_Cost_Type__c != '')}">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Language and Psychometric Test " label="Language and Psychometric Test " aura:Id="Language_and_Psychometric_Test_Fee__c"
+                                 required="true"  value="{!v.commonWorkForceRecord.Language_and_Psychometric_Test_Fee__c}" min="1" 
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.Language_and_Psychometric_Test_Fee__c, v.isPricingTeam)}"/>
+            </div>
+        </aura:if>
+        
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:select name="Training and Licensing Cost Type" label="Training and Licensing Cost Type" aura:Id= "Training_and_Licensing_Cost_Cost_Type__c " required="false"
+                              value="{!v.commonWorkForceRecord.Training_and_Licensing_Cost_Cost_Type__c}"
+                              disabled="{! and(!v.editableFieldsByPricingTeam.Training_and_Licensing_Cost_Cost_Type__c, v.isPricingTeam)}">
+                <option value="">choose one...</option>
+                <option value="onetime">Onetime</option>
+                <option value="annualy">Annualy</option>
+                <option value="both">Both</option>
+            </lightning:select> 
+        </div>
+        
+        <aura:if isTrue="{!and(v.commonWorkForceRecord.Training_and_Licensing_Cost_Cost_Type__c != null,v.commonWorkForceRecord.Training_and_Licensing_Cost_Cost_Type__c != '')}">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input type="Number" name="Training and Licensing Cost" label="Training and Licensing Cost" aura:Id="Training_and_Licensing_Cost__c"
+                                 required="true"  value="{!v.commonWorkForceRecord.Training_and_Licensing_Cost__c}" min="1" 
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.Training_and_Licensing_Cost__c, v.isPricingTeam)}"/>
+            </div>
+        </aura:if>
+        <div class="slds-col--padded slds-size--12-of-12">
+            
+        </div>
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:textarea name="Notes" label="Notes" placeholder="type here..." aura:Id="Notes"
+                                value="{!v.commonWorkForceRecord.Notes__c}" 
+                                disabled="{! and(!v.editableFieldsByPricingTeam.Notes__c, v.isPricingTeam)}"/>
+        </div>
+        
+    </div>
+</aura:component>

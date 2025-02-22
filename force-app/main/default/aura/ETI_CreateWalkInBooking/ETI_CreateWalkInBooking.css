@@ -1,0 +1,127 @@
+.THIS.c-container {
+    border: 1px solid #d8dde6;
+    margin: 10px 0 20px 0;
+}
+.THIS .custom-box {
+    background-color: #f4f6f9;
+    padding: 1rem;
+    border: 1px solid #d8dde6;
+}
+.THIS .label-hidden > label {
+    display: none;
+}
+.THIS .iconColor{
+    padding-top: 25px;
+    fill:green !important;
+}
+.THIS .slds-modal__close{
+    top: -3.5rem;
+}
+
+.THIS .slds-spinner_container {
+    position: fixed;
+}
+
+.THIS .fieldRequired{
+    border-color: #800000;
+    border-width: 3px;
+}
+.THIS .required:before {
+    content:" *";
+    color: red;
+}
+.THIS .leftSectn{
+    width: 74%;
+}
+.THIS .rightSectn{
+    width: 26%;
+}
+.THIS .slds-textarea {
+    height:120px !important;
+}
+.THIS .leftSectn .slds-tabs_scoped__nav a:active, .THIS .leftSectn .slds-tabs_scoped__nav a:focus{
+    text-decoration: none;
+}
+.THIS .leftSectn .slds-tabs_scoped__nav .slds-is-active a{
+    background: #286090;
+    color: #ffffff;
+}
+.THIS .errorSave .slds-box{
+    width: 98%;
+    margin: 1% auto;
+}
+.THIS .leftSectn button{
+    top: 0px;
+}
+.THIS .serachvi button{
+    top: 15px;
+}
+.THIS .feeInputwIcon{
+    width: 93%;
+}
+.THIS .feeInput{
+    width: 73%;
+}
+.THIS .feeDetailIcon{
+    width: 20%;
+    display: inline-block;
+    margin: 1% 0;
+    clear: both;
+    padding-top: 15px;
+    padding-left: 0;
+}
+.THIS .feeDetailIcon lightning-icon{
+    padding-top: 8px !important;
+    cursor: pointer;
+}
+.THIS .feeDetailsModal{
+    top: 0rem;
+    right: 0;
+}
+.THIS .feeDetailsModal:active, .THIS .feeDetailsModal:focus{
+    outline: none;
+}
+.THIS .feeDetailsModal svg{
+    color: rgb(44, 93, 205);
+}
+.THIS .bookingHistory table tr th{
+    background-color: #2c8fbc;
+    color: #ffffff;
+    padding: 5px 10px;
+}
+.THIS .slds-col{
+    margin-bottom: .5rem;
+}
+.THIS label.slds-form-element__label , .THIS label{
+    font-size: 13px;
+    margin-bottom: .5rem;
+    font-weight: bold;
+    float: left;
+}
+.THIS .selectserv .slds-form-element{
+    padding: 0 .75rem;
+}
+.THIS .ms-filter-input {
+    margin: 0%!important;
+}
+
+.THIS .selectVechiclePopup{
+    width: 90%;
+    max-width: 85rem;
+}
+.THIS .selectVechiclePopup .slds-modal__content{
+    overflow-y: auto;
+    height: 195px;
+    padding-top: 0px;
+}
+.THIS .selectVechiclePopup table{
+    border-collapse: collapse;
+    width: 100%;
+}
+.THIS .selectVechiclePopup thead th{
+    position: sticky;
+    top: 0;
+    text-align: left;
+    z-index: 999;
+    padding: 1rem 0.5rem;
+}

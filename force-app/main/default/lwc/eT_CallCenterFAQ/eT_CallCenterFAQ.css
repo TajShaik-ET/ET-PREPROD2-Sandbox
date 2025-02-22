@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 70%;
+    margin-right: 10px;
+}
+
+.search-button {
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+.accordion {
+    width: 100%;
+}
+
+/* Styling for accordion sections */
+.slds-accordion__summary-content {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.slds-accordion__content {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-top: none;
+}

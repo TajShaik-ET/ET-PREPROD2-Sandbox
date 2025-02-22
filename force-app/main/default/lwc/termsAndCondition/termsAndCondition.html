@@ -1,0 +1,88 @@
+<template>
+    <lightning-record-edit-form object-api-name={termsAndCondition} onsuccess={handleSuccess}>
+        <div class="slds-grid infoTabs condition_div">
+            <div class="slds-col slds-size_medium" style="min-width:300px;max-width:300px">
+                <lightning-input-field 
+                    field-name={terms.TERMS_DESC}
+                    disabled={isTermDisabled}
+                    value={termItem.termsDescription}
+                    onchange = {handleTermsChange}
+                ></lightning-input-field>
+            </div>
+            <template if:false={isAdditionalTerm}>
+                <div class="slds-col" style="min-width:150px;max-width:150px">
+                    <lightning-input-field 
+                        field-name={terms.CHARGE_TYPE}
+                        value={termItem.chargeType}
+                        disabled={isTermDisabled}
+                    ></lightning-input-field>
+                </div>
+                <template if:false={termItem.isChargeValueFreezed}>
+                    <div class="slds-col " style="min-width:90px;max-width:90px">
+                        <lightning-input-field 
+                            field-name={terms.CHARGE_VALUE}
+                            value={termItem.chargeValue}
+                        ></lightning-input-field>
+                    </div>
+                </template>
+                <template if:false={termItem.isChargeValueTypeFreezed}>
+                    <div class="slds-col" style="min-width:140px;max-width:140px;">
+                        <lightning-input-field 
+                            field-name={terms.CHARGE_VALUE_TYPE}
+                            value={termItem.chargeTypeValue}
+                        ></lightning-input-field>
+                    </div>
+                </template>
+                
+                <div class="slds-col">
+                    <lightning-input-field field-name={terms.REMARKS} 
+                        value={termItem.remarks} 
+                        data-id="remarsk" 
+                        disabled = "true"
+                    ></lightning-input-field>
+                </div>
+                <template if:false={termItem.isRemarksValueFreezed}>
+                    <div class="slds-col" style="min-width:100px;max-width:100px">
+                        <lightning-input-field 
+                            field-name={terms.REMARKS_VALUE}
+                            value={termItem.remarksValue}
+                        ></lightning-input-field>
+                    </div>
+                </template>
+                <template if:false={termItem.isRemarksValueTypeFreezed}>
+                    <div class="slds-col" style="min-width:90px;max-width:90px">
+                        <lightning-input-field 
+                            field-name={terms.REMARKS_TYPE}
+                            value={termItem.remarkType}
+                            disabled={termItem.isRemarksValueTypeFreezed}
+                        ></lightning-input-field>
+                    </div>
+                </template>
+                
+                <div class="slds-col" style="min-width:90px;max-width:90px">
+                    <lightning-input-field 
+                        field-name={terms.CHARGEABLE}
+                        value={termItem.chargeableToCustomer}
+                    ></lightning-input-field>
+                </div>
+            </template>
+            <template if:true={isAdditionalTerm}>
+                <div class="slds-col" style="min-width:700px;max-width:700px">
+                    <lightning-input-field 
+                        field-name={terms.ADD_TERM}>
+                    </lightning-input-field>
+                </div>
+            </template>
+            
+            <div class="slds-col slds-p-right_small" style="padding-top: 25px;">
+                    <lightning-button variant="brand" class="slds-m-top_small" onclick={handleTermsDelete} disabled={isRemoveButtonDisabled} label="Remove" ></lightning-button>
+            </div>
+            <div class="slds-hide">
+                <lightning-input-field field-name={terms.TERMS_CODE} value={termItem.termCode} data-id="termsCode"></lightning-input-field>
+                <lightning-input-field field-name={terms.SH_Order} value={termItem.orderLine} data-id="orderLine"></lightning-input-field>
+                <lightning-input-field data-id="customerQuoteId" value={customerQuoteId} field-name={terms.CUSTOMER_QUOTE}></lightning-input-field>
+                <lightning-button variant="brand" type="submit" label="Save"> </lightning-button>
+            </div>
+        </div>
+    </lightning-record-edit-form>
+</template>

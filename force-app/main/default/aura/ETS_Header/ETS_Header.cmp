@@ -1,0 +1,27 @@
+<aura:component implements="force:hasRecordId,forceCommunity:availableForAllPageTypes">
+    <div id="parentDiv" class="parentDivClass">
+        <!-- <div class="slds-page-header slds-grid ETBackground " >
+           <div>
+                <img src="{!$Resource.ET_Common_Banner}"  />
+            </div>
+          </div> -->
+        <div class="ETBackground" >
+            <div class="slds-col">
+                <div id="UAELogo" >
+                    <img src="{!$Resource.ET_Logo}" class="UAELogoClass"  />
+                </div>
+            </div>
+           <!-- <div class="slds-col">
+                <div id="UAELogo"   >
+                    <img src="{!$Resource.ET_NewLogo}" class="ETLogoClass1" />
+                </div>
+            </div>
+            <div class="slds-col">
+                <div id="ETLogo" >
+                    <img src="{!$Resource.UAE_Logo}" class="ETLogoClass" />
+                </div>
+            </div> -->
+        </div>
+    </div>
+    
+</aura:component>

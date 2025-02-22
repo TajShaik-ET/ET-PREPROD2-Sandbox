@@ -1,0 +1,411 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" controller='ET_B2BController' extends="c:ET_MOE_BilingualCommunity">
+    
+    <!-- Handling events -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:ServiceRequestEvent" action="{!c.handleApplicationEvent}" />
+    
+    <!-- Registering events -->
+    <aura:registerEvent name="appEvent" type="c:MyBusinessDetailPageEvent"/>
+    
+    <!-- Attributes to calculate Dashboard Values-->
+    <aura:attribute name="newCases" type="Integer" default="0" />
+    <aura:attribute name="inProgressCases" type="Integer" default="0" />
+    <aura:attribute name="escalatedCases" type="Integer" default="0" />
+    <aura:attribute name="onHoldCases" type="Integer" default="0" />
+    <aura:attribute name="invalidCases" type="Integer" default="0" />
+    <aura:attribute name="closedCases" type="Integer" default="0" />
+    <aura:attribute name="finalListToAdd" type="list" />
+    <aura:attribute name="customerSupportDashboard" type="Boolean" default="true" />
+    <aura:attribute name="createRequest" type="Boolean" />
+    <aura:attribute name="reqHistory" type="Boolean" />
+    <aura:attribute name="escalation" type="Boolean" />
+    <aura:attribute name="feedback" type="Boolean" />
+    <aura:attribute name="sortDirection" type="string" default="asc"/>
+    
+    <!-- Attributes to show Case Table-->
+    <aura:attribute name="showCaseTable" type="Boolean" /> 
+    <aura:attribute name="newCase" type="Boolean" /> 
+    <aura:attribute name="clickedDashboard" type="String" default=""/> 
+    <aura:handler event="c:ETST_sendDataEvent" action="{!c.closeactionevt}"/>
+    <!--Attribute to get the selected case filters on All cases Page--> 
+    <aura:attribute name="caseRecord" type="case"  default="{'sobjectType':'Case',
+                                                            'Status':'New'
+                                                            }"/> 
+    
+    <!-- Attributes to store search filter values -->
+    <aura:attribute name="caseNumber" type="String" default=""/> 
+    <aura:attribute name="statusFilter" type="String" default=""/>
+    <aura:handler event="force:refreshView" action="{!c.doInit}"/>
+    <aura:attribute name="selectedLookUpSalesAgreementRecord" type="sObject" />
+    <aura:attribute name="selectedLookUpResourcesRecord" type="sObject" />
+    <aura:attribute name="selectedLookUpVehiclesRecord" type="sObject" />
+    <aura:attribute name="selectedLookUpStudentRecord" type="sObject" />
+    <aura:attribute name="searchText" type="string"/>
+    <aura:attribute name="showFilter" type="Boolean" /> 
+    <aura:attribute name="selectedStartDate" type="date" />
+    <aura:attribute name="selectedEndDate" type="date" />
+    
+    <!-- Attributes to handle filter search -->
+    <!-- <aura:handler name="change" value="{!v.caseRecord}" action="{!c.handleSearch}"/> -->
+    <aura:handler name="change" value="{!v.caseNumber}" action="{!c.handleSearch}"/>
+    <aura:handler name="change" value="{!v.statusFilter}" action="{!c.handleSearch}"/>
+    <aura:handler name="change" value="{!v.selectedsAgreementRecord}" action="{!c.handleSearch}"/>
+    <aura:handler name="change" value="{!v.selectedLookUpResourcesRecord}" action="{!c.handleSearch}"/>
+    
+    <!-- Attributes to handle accordian-->
+    <aura:attribute name="activeSections" type="List" default="[]" />
+    <aura:attribute name="new" type="String" default="New" />
+    <aura:attribute name="inProgress" type="String" default="Pending Approval" />
+    <aura:attribute name="rejected" type="String" default="Rejected" />
+    <aura:attribute name="approved" type="String" default="Approved" />
+    <aura:attribute name="closed" type="String" default="Closed" />
+    <aura:attribute name="status" type="String" default="" /> 
+    <aura:attribute name="statusAR" type="String" default="" /> 
+    <aura:attribute name="caseList" type="Case[]" /> 
+    <aura:attribute name="currentData" type="Case[]" />
+    <!-- Attributes to show detail page modal popup -->
+    <aura:attribute name="showRecordDetailModal" type="Boolean" default="false"/>
+    <aura:attribute name="recordDetailId" type="String" />
+    <aura:attribute name="recordTypeName" type="String" />
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <!-- Attributes added for filter -->
+    <aura:attribute name="selectedType" type="String" access="global" default=""/>
+    <aura:attribute name="selectedAccountName" type="String" access="global" default=""/>
+    <aura:attribute name="selectedStatus" type="String" access="global" default=""/>
+    <aura:attribute name="caseType" type="List"/>
+    <aura:attribute name="AccountNameList" type="List"/>
+    <aura:attribute name="caseStatus" type="List"/>
+    <aura:attribute name="accountType" type="Boolean"/>
+    <c:ET_MOE_LanguageSelectionCmp aura:id="landId" />
+    
+    <!-- Attributes added for Custom Record detail popup -->
+    <aura:attribute name="showDetailCmp" type="Boolean" default="false"/>
+    <aura:attribute name="ObjectName" type="String" />
+    <aura:attribute name="objectApiName" type="String" />
+    <aura:attribute name="recordName" type="String" />
+    <aura:attribute name="fieldApiName1" type="String"/>
+    <aura:attribute name="fieldApiName2" type="String"/>
+    <aura:attribute name="fieldApiName3" type="String"/>
+    <aura:attribute name="fieldApiName4" type="String"/>
+    <aura:attribute name="field1Label" type="String"/>
+    <aura:attribute name="field2Label" type="String"/>
+    <aura:attribute name="field3Label" type="String"/>
+    <aura:attribute name="field4Label" type="String"/>
+    <aura:attribute name="profileName" type="String" />
+    <aura:if isTrue="{!v.newCase}">        
+        <!--###### MODAL BOX Start######--> 
+        <c:CaseB2BPopupMOE aura:id="CaseB2BPopupMOE" newCase="{!v.newCase}"/>             
+        <div class="slds-backdrop slds-backdrop_open"></div>    
+    </aura:if>
+    <div class="menudiv">
+        <c:MenuItemsList />
+    </div>
+    <div class="casesupmaindiv">
+        
+        
+        <aura:if isTrue="{!v.customerSupportDashboard}">
+            
+            <div class="fivediv">
+                <article class="slds-card" style="text-align:center;">
+                    <a href="" id="newcase" onclick="{!c.handleNewCasesClick}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        <img src="{!$Resource.newcase_img}"/>
+                                        {!v.newCases}
+                                    </div>
+                                    <h3 class="form-title">{!v.clNew}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>  
+                    <a href="" id="escalatedcase" onclick="{!c.handleApprovalCasesClick}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        <img src="{!$Resource.pandingcase_img}"/>
+                                        {!v.escalatedCases}
+                                    </div>
+                                    <h3 class="form-title">{!v.clInProgress}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="" id="closedcase" onclick="{!c.handleClosedCasesClick}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        <img src="{!$Resource.closecase_img}"/>
+                                        {!v.closedCases}
+                                    </div>
+                                    <h3 class="form-title">{!v.clClosed}</h3>                            
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </aura:if>
+        <div align="left" class="slds-p-right_small slds-p-bottom_medium btncreatesection">
+            <lightning:button class="emmergencyButton" label="{!v.clCreateCase}" title="{!v.clCreateCase}"  onclick="{!c.createCasePopup}" />
+            <lightning:button class="emmergencyButton" label="{!v.clAllRequests}" title="{!v.clAllRequests}" onclick="{!c.showAllCasesAction}"/>
+            <lightning:button class="emmergencyButton" label="{!v.clDownload}" title="{!v.clDownload}" onclick="{!c.downloadCases}"/>
+        </div>
+        <aura:if isTrue="{!v.showCaseTable}">
+            
+            
+            
+            
+            <div class="slds-grid slds-gutters">
+                <aura:if isTrue="{!v.showFilter}">
+                    <div class="slds-col">
+                        <lightning:select aura:id="types" value="{!v.selectedType}"  name="" label="" onchange="{!c.handleTypeFilter}" >
+                            <option value="">{!V.clSelectType}</option>
+                            <aura:iteration items="{!v.caseType}" var="type">
+                                <option value="{!type.value}">{!type.label}</option>
+                            </aura:iteration>
+                        </lightning:select> 
+                    </div>
+                    <aura:if isTrue="{!v.accountType}">
+                        <div class="slds-col">
+                            <lightning:select aura:id="accountIds" value="{!v.selectedAccountName}"  name="" label="" onchange="{!c.handleTypeFilter}" >
+                                <option value="">{!v.clSelectAccount}</option>
+                                <aura:iteration items="{!v.AccountNameList}" var="type">
+                                    <option value="{!type.value}">{!type.label}</option>
+                                </aura:iteration>
+                            </lightning:select> 
+                        </div>
+                    </aura:if>
+                    <!--  <div class="slds-col">
+                    <lightning:select aura:id="statusId" value="{!v.selectedStatus}"  name="" label="" onchange="{!c.handleTypeFilter}" >
+                        <option value="">{!v.clSelectStatus}</option>
+                        <aura:iteration items="{!v.caseStatus}" var="type">
+                            <option value="{!type.value}">{!type.label}</option>
+                        </aura:iteration>
+                    </lightning:select> 
+                </div>-->
+                    
+                    <div class="slds-col"> 
+                        <lightning:input type="Date" name="input1" label="" value="{!v.selectedStartDate}" onchange="{!c.handleTypeFilter}"  placeholder="Start Date" />
+                    </div>
+                    <div class="slds-col"> 
+                        <lightning:input type="Date" name="input2" label="" value="{!v.selectedEndDate}" onchange="{!c.handleTypeFilter}"  placeholder="End Date" />
+                    </div>
+                </aura:if>
+                
+                <!--  <aura:if isTrue="{!v.caseList.length>0}">   -->
+                <div class="slds-col">
+                    <div style="padding:0px" class="{!v.clLang =='ar' ? 'serchboxtab_AR' : 'serchboxtab'}">
+                        <lightning:input type="search"
+                                         name="searchKey" value="{!v.searchText}" 
+                                         aura:id="searchKey"  onkeyup="{!c.searchRequest}" 
+                                         placeholder="{!v.clSearchCase}" />
+                    </div>
+                </div>
+                <!--   </aura:if> -->
+            </div>
+            
+            
+            <div class="documentmain animated slideInDown">
+                <div class="tableshow">
+                    <div class="slds-grid">
+                        <div class="slds-col">   
+                            <h3 class="Headingcontent"> {!v.status} </h3>
+                            <lightning:buttonIcon iconName="utility:download" variant="neutral" class="downloadicon"
+                                                  aura:id="more1"
+                                                  onclick="{!c.downloadCasesNew}"   
+                                                  alternativeText="Download"   
+                                                  title="Download" />
+                            <lightning:button class="downloadButton" label="Download" title="Download" 
+                                              onclick="{!c.downloadCasesNew}"/>
+                            <div class="tableClass">
+                                
+                                <table class="slds-table slds-table_bordered " width="100%">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="" scope="col" style="text-align:center">
+                                                <div class="slds-truncate" title="Sr. No.">{!v.clSrNo}</div>
+                                            </th>
+                                            <th class="" style="padding:0px 25px 0px 10px" scope="col">
+                                                <div class="slds-truncate" title="Case Number">
+                                                    <a onclick="{!c.handleSort}" Id="CaseNumber" style="color: #8f8888;"> {!v.clCaseNumber}</a></div> 
+                                                <!--<lightning:buttonIcon iconName="utility:sort"
+                                                                      onclick="{! c.handleSort }"
+                                                                      alternativeText=""
+                                                                      value="CaseNumber"
+                                                                      class="btnsorticon"/>-->
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status">
+                                                    <a onclick="{!c.handleSort}" Id="RecordType.Name" style="color: #8f8888;"> {!v.clType}</a></div>
+                                            </th>
+                                            <!-- added status-->
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status">
+                                                    <a onclick="{!c.handleSort}" Id="Status" style="color: #8f8888;"> {!v.clStatus}</a></div>
+                                            </th>
+                                            
+                                            <!--commented next activity and recent activity
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status">{!v.clNextActivity}</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status">{!v.clRecentActivity}</div>
+                                            </th> -->
+                                            <!-- <th class="" scope="col">
+                                            <div class="slds-truncate" title="Sales Agreement">Sales Agreement</div>
+                                        </th>  -->
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Assigned Resources">
+                                                    <a onclick="{!c.handleSort}" Id="Assigned_Resource__r.Name" style="color: #8f8888;">{!v.clAssignedResources}</a></div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Assigned Vehicles">
+                                                    <a onclick="{!c.handleSort}" Id="Assigned_Vehicle__r.Name" style="color: #8f8888;">{!v.clAssignedVehicles}</a></div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Account Name">
+                                                    <a onclick="{!c.handleSort}" Id="Account.Name" style="color: #8f8888;">{!v.clAccountName}</a></div>
+                                                <!--<lightning:buttonIcon iconName="utility:sort"
+                                                                      onclick="{! c.sortData }"
+                                                                      alternativeText=""
+                                                                      value="Account.Name"
+                                                                      class="btnsorticon"/>-->
+                                                
+                                                
+                                                
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Created By">
+                                                    <a onclick="{!c.handleSort}" Id="CreatedBy.Name" style="color: #8f8888;">{!v.clCreatedBy}</a></div>
+                                            </th>
+                                            <aura:if isTrue="{!v.profileName=='ADNOC Partner Community'}">  
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Case Owner">
+                                                        <a onclick="{!c.handleSort}" Id="Owner.Name" style="color: #8f8888;">{!v.clCaseOwner}</a></div>
+                                                </th>
+                                            </aura:if> 
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status" >
+                                                    <a onclick="{!c.handleSort}" Id="CreatedDate" style="color: #8f8888;"> {!v.clCreatedDate}</a></div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.currentData}" var="case" indexVar="index">
+                                            <tr class="slds-hint-parent">
+                                                <td style="word-wrap: break-word;text-align:center">
+                                                    {!index + 1}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!case.Id}" href="" onclick="{!c.handleCaseClickNew}">
+                                                        {!case.CaseNumber}
+                                                    </a>
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!case.RecordType.Name} 
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!case.Status} 
+                                                </td>
+                                                
+                                                
+                                                <!-- commented next activity and recent activity
+            <td style="word-wrap: break-word;">
+                                                    {!case.Status_Category__c} 
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!case.Sub_Status__c} 
+                                                </td>-->
+                                                <!--    <td style="word-wrap: break-word;">
+                                                    <a id="{!case.Sales_Agreement__c}" href=""
+                                                       onclick="{!c.handleSalesAgreementClick}">
+                                                        {!case.Sales_Agreement__r.Name}
+                                                    </a>
+                                                </td> -->
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!case.Assigned_Resource__c}" href=""
+                                                       onclick="{!c.handleAssignedResourcesClickNew}">
+                                                        {!case.Assigned_Resource__r.Name}
+                                                    </a>   
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!case.Assigned_Vehicle__c}" href=""
+                                                       onclick="{!c.handleAssignedVehiclesClickNew}">
+                                                        {!case.Assigned_Vehicle__r.Name}
+                                                    </a> 
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!case.Account.Name}
+                                                    <!--  <a id="{!case.Account.Id}" href=""
+                                                       onclick="{!c.handleAccountNameClickNew}">
+                                                        {!case.Account.Name}
+                                                    </a>  -->
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <!-- {!case.Owner.Name}-->
+                                                    {!case.CreatedBy.Name}
+                                                </td>
+                                                <aura:if isTrue="{!v.profileName=='ADNOC Partner Community'}"> 
+                                                    <td style="word-wrap: break-word;">
+                                                        {!case.Owner.Name}
+                                                    </td>
+                                                </aura:if>
+                                                <td style="word-wrap: break-word;">
+                                                    <lightning:formattedDateTime value="{!case.CreatedDate}"/>
+                                                </td>
+                                            </tr>
+                                            
+                                            
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.showRecordDetailModal}">
+            <c:BusinessCommunityRecordDetailPopup showIFrame="{!v.showRecordDetailModal}"
+                                                  recordDetailId="{!v.recordDetailId}"
+                                                  recordTypeName="{!v.recordTypeName}"/>
+        </aura:if>
+        
+        <!-- Custom Dashboard -->
+        <aura:if isTrue="{!v.profileName =='P-Private School Partner User Login'}">
+            <c:ET_CustomDashboard/>
+        </aura:if>
+    </div>
+    
+    <div class="footer_section">
+        <div class="social_links">
+            <a href="https://www.instagram.com/emiratestrans/" target="_blank"><img src="{!$Resource.ET_instagramimg}"  class=""/></a>
+            <a href="https://twitter.com/emiratestrans" target="_blank"><img src="{!$Resource.ET_twitterimg}" class=""/></a>
+            <a href="https://www.facebook.com/EmiratesTrans/" target="_blank"><img src="{!$Resource.ET_facebookimg}" class=""/></a>
+            <a href="https://www.linkedin.com/in/emirates-transport-9b0673103" target="_blank"><img src="{!$Resource.ET_linkedinimg}"  class=""/></a>
+        </div>
+        <div class="copytext">© 2021 Emirates Transport and Powered by Smaartt</div>
+    </div>
+    <aura:if isTrue="{!v.showDetailCmp}">
+        <div id="customCmpCare">
+            <c:ET_CustomDetailPage showDetailCmp="{!v.showDetailCmp}" recordId="{!v.recordDetailId}" 
+                                   objectApiName="{!v.objectApiName}" ObjectName="{!v.ObjectName}"
+                                   recordName="{!v.recordName}"
+                                   fieldApiName1="{!v.fieldApiName1}" fieldApiName2="{!v.fieldApiName2}"
+                                   fieldApiName3="{!v.fieldApiName3}" fieldApiName4="{!v.fieldApiName4}"
+                                   field1Label="{!v.field1Label}" field2Label="{!v.field2Label}"
+                                   field3Label="{!v.field3Label}" field4Label="{!v.field4Label}"/>
+            
+        </div>
+        
+    </aura:if>
+    
+    
+</aura:component>

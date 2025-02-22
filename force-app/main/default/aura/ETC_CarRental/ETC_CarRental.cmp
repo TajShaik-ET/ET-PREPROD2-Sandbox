@@ -1,0 +1,239 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:appHostable" access="global" controller="ETCAR_Car_Services_Controller">
+     <div class="imgBackground"></div>
+   <aura:attribute name="pickupAddress" type="String" /> 
+    <aura:attribute name="dropAddressList" type="String[]"/>
+    <aura:attribute name="pickAddressList" type="String[]"/>
+	<aura:attribute name="deliveryAddress" type="String" /> 
+    <aura:attribute name="flightdetails" type="Boolean" description="to check if pickup from contains airport"/>
+    <aura:attribute name="flightdetails_D" type="Boolean" description="to check if dropoff contains airport"/>
+    <aura:attribute name="additionalHours" type="Boolean" description="to check if durtion is highest from dropdown"/>
+    <aura:attribute name="flightType" type="String[]" default="Arrival"/>
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+    <aura:attribute name="destinationCheckDuration" type="Boolean" default="false" />
+    <aura:attribute name="serReqId" type="String"/> <!-- Service Request Id -->
+    <aura:attribute name="recId" type="String"/> <!-- Service Request Id -->
+    <aura:attribute name="todaysDate" type="Object" />
+    
+    <!-- URL Parameters -->
+    <aura:attribute name="vBkngId" type="String" default="" /> 
+    <aura:attribute name="reqSource" type="String" default="" /> 
+	<aura:attribute name="isChooseCar" type="Boolean"/> 
+    <aura:attribute name="selCar_Id" type="String"/>
+    <aura:attribute name="billingTotal" type="String"/>
+    <aura:attribute name="reqType" type="String"/>
+    <aura:attribute name="serviceType" type="String"/>
+	 <!-- selected Tab Id-->
+    <aura:attribute name="selTabId" type="String" default="oneWay" />
+    
+    <!-- Error Handling -->
+    <aura:attribute name="invalidPickupDate" type="Boolean" default="false" />
+    <aura:attribute name="invalidPickupDate_H" type="Boolean" default="false" />
+    <aura:attribute name="invalidReturnDate" type="Boolean" default="false" />
+    <aura:attribute name="serverValidationMsg" type="String" /> 
+    <aura:attribute name="serverValidationMsg_H" type="String" /> 
+    <aura:attribute name="passengerMobileNumber" type="String" />
+    <aura:attribute name="isDropoff" type="boolean" default="false"/>
+	<aura:attribute name="buttonLabel" type="String" default="Select My Car"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	 <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!-- Service Record  Type -One Way -->
+    <aura:attribute name="serviceRecord" type="ET_Service_Request__c"  
+                    default="{'sobjectType':'ET_Service_Request__c','Name':'','ETST_Country__c':'','ETST_Emirates__c':'','ETST_Dropoff_Street__c':'','ETST_Dropoff_Location__Latitude__s':'','ETST_Dropoff_Emirate__c':'','ETST_Dropoff_Location__Longitude__s':'','ETST_Location__Longitude__s':'','ETST_State_or_Province__c':'','ETST_Street_Number__c':'','ETST_Area_Zone__c':'','ETST_Pick_Up_From__c':'','ETST_Service_Type__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Drop_Off_To__c':'',
+                             'ETST_Location__Latitude__s':'','ETCAR_Duration__c':'','ETST_Location__Longitude__s':'', 'ETCAR_Pick_UP_Date_Time__c': '', 'ETCAR_Return_Date_Time__c': '' , 'ETCAR_Age__c':'','ETC_Flight_Number__c':'','ETC_Flight_Type__c':'','ETC_Instructions_To_Driver__c':'','ETC_Duration__c':'','ETC_Additional_Hours__c':''}" />
+    <!-- Service Record Type = Hourly -->
+  
+    <aura:attribute name="VehicleBooking" type="ETCAR_Service_Request_Line_Item__c"  
+                    default="{'sobjectType':'ETCAR_Service_Request_Line_Item__c','ETST_Pick_Up_From__c':'','ETST_Service_Type__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Drop_Off_To__c':'','ETCAR_Pickup_Zone__c':'','ETCAR_Drop_Off_Zone__c':'','ETC_Guest_Name__c':'','ETC_Passenger_Mobile_Number__c':'',
+                             'ETCAR_Duration__c':'','ETCARS_Customer_Type__c':'', 'ETCAR_Pick_UP_Date_Time__c': '', 'ETCAR_Return_Date_Time__c': '' , 'ETCAR_Age__c':'','ETC_Flight_Number__c':'','ETC_Flight_Type__c':'','ETC_Instructions_To_Driver__c':'','ETC_Additional_Hours__c':''}" />
+     
+    
+    <!-- mandatory fields for One Way-->
+    <aura:attribute name="mandatoryFields_oneWay" type="List" default="pickupAddress,PickupDateTime,ETCAR_Return_Date_Time__c,ETC_Guest_Name__c"/>
+    <!-- mandatory fields for Hourly-->
+    <!-- all fields -->
+    <aura:attribute name="allFields" type="List" default="pickupAddress_H,ETCAR_Duration__c,PickupDateTime_H,pickupAddress,ETC_Flight_Number__c,ETC_Flight_Type__c,PickupDateTime,ETST_Drop_Off_To__c,ETC_Duration__c,ETCAR_Return_Date_Time__c,ETC_Guest_Name__c"/>
+    
+    <c:ETCAR_UtillityMethods aura:id="ETCAR_UtillityMethods"/>
+    <lightning:layout multipleRows="true" class="centerdiv"> 
+        <lightning:layoutItem class="slds-col slds-size_1-of-1 slds-small-size_1-of-2">
+            <div  class="mainsearchdiv">
+            	<lightning:layout multipleRows="true">
+                        <aura:set attribute="body" >
+                            <lightning:recordEditForm aura:id="form"
+                                                      objectApiName="ETCAR_Service_Request_Line_Item__c" 
+                                                      recordId="{!v.recordId}" 
+                                                      onsubmit="{!c.handleSubmit}"
+                                                      onsuccess="{!c.handleOnSuccess}"
+                                                      density = "Comfy"
+                                                      onerror="{!c.handleOnError}">
+                                
+                                <lightning:inputField fieldName="ETST_Pick_Up_From__c" style="display:none" value="{!v.VehicleBooking.ETST_Pick_Up_From__c}"/>
+                                <lightning:inputField fieldName="ETST_Drop_Off_To__c" style="display:none"  value="{!v.VehicleBooking.ETST_Drop_Off_To__c}"/>
+                                <lightning:layout multipleRows="true">
+                                    <!-- validation Messages from server-->
+                                     <lightning:layoutItem class=" slds-p-around_small slds-size_12-of-12">
+                                        <p aura:id="serverValidations" style="color:red" class="slds-hide">{!v.serverValidationMsg}</p>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class=" slds-p-around_small slds-size_6-of-12 flightNo">
+                                            <lightning:inputField fieldName="ETC_Guest_Name__c" aura:id ="ETC_Guest_Name__c" required="true"  value="{!v.VehicleBooking.ETC_Guest_Name__c}"/>
+                                        </lightning:layoutItem>
+                                    <lightning:layoutItem class=" slds-p-around_small slds-size_6-of-12 flightNo">
+                                        <lightning:inputField fieldName="ETC_Passenger_Mobile_Number__c"  style="display:none" aura:id ="H_ETC_Passenger_Mobile_Number__c"  value="{!v.VehicleBooking_H.ETC_Passenger_Mobile_Number__c}"/>
+                                        <lightning:input type="tel" name="Phone" class="phonetextwidthno" required="true" label="Passenger Mobile Number(+971)" disabled="false" minlength="9" maxlength="9" pattern="[0-9]*"  messageWhenPatternMismatch="Please enter 9 digit mobile number only"
+                                                         aura:id="ETST_Phone__c" value="{!v.passengerMobileNumber}" autocomplete="off"/>
+                                    </lightning:layoutItem>
+                                    <!-- Pick-Up Location-->
+                                    <lightning:layoutItem padding="around-small" size="12" class="padbottom">
+                                        
+                                            <lightning:input type="text" autocomplete="off" class="search_icon" name="Pick-Up Location"
+                                                         label="Pick-Up Location" disabled="false" 
+                                                         messageWhenValueMissing ="Pick-Up Location is Mandatory"
+                                                         aura:id="pickupAddress"  onkeyup ="{!c.getPickupLocation}" 
+                                                         oncommit="{!c.checkForAirportText}"
+                                                         required="true" value="{!v.VehicleBooking.ETST_Pick_Up_From__c}"/>
+                                        <p aura:id="invalidpickup" style="color:red" class="slds-hide">Invalid Address!</p>
+                                        <aura:if isTrue="{!not(empty(v.pickAddressList))}">
+                                            <div class="Drop-Address-listbox" role="listbox">
+                                                <ul aura:id="Drop-Address-listbox" class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation">
+                                                    <aura:iteration items="{!v.pickAddressList}" var="addList">
+                                                        <li role="presentation"
+                                                            onclick="{!c.selectPickUpOption}"
+                                                            data-value="{!addList.place_id}"
+                                                            data-address="{!addList.main_text}"
+                                                            class="slds-listbox__item">
+                                                            <span id="listbox-option-unique-id-01"
+                                                                  class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                                                  role="option">
+                                                                <span class="slds-media__body slds-m-left_xx-small slds-m-bottom_xx-small">
+                                                                    <div class="slds-grid slds-m-bottom_small">
+                                                                        <div class="slds-col slds-size_1-of-10"> 
+                                                                            <lightning:ButtonIcon size="medium" iconName="utility:checkin" class="slds-input__icon" variant="bare"/></div>
+                                                                        <div class="slds-m-left_medium slds-col slds-size_8-of-10"> 
+                                                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity"><b>{!addList.main_text}</b></span>
+                                                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity slds-m-top_xxx-small">{!addList.secondary_text}</span></div>
+                                                                        <div class="slds-col slds-size_1-of-10"></div>
+                                                                    </div>
+                                                                </span>
+                                                            </span>
+                                                        </li>
+                                                    </aura:iteration>
+                                                </ul>
+                                            </div>
+                                        </aura:if>
+                                    </lightning:layoutItem>
+                                    <!-- Drop Off Location-->
+                                    <lightning:layoutItem padding="around-small" size="12" class="datepickdiv">
+                                        <lightning:input type="text" autocomplete="off" class="search_icon" name="Drop Off Location" label="Return Location" disabled="false" 
+                                                         aura:id="ETST_Drop_Off_To__c"  onkeyup ="{!c.getDropoffLocation}" 
+                                                         messageWhenValueMissing ="Drop Off Location is Mandatory"
+                                                         required="true" value="{!v.VehicleBooking.ETST_Drop_Off_To__c}" id="drop-offlocation"/>
+                                        <p aura:id="invalidDrop" style="color:red" class="slds-hide">Invalid Address!</p>
+                                        <aura:if isTrue="{!not(empty(v.dropAddressList))}">
+                                            <div class="Drop-Address-listbox" role="listbox">
+                                                <ul aura:id="Drop-Address-listbox2" class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation">
+                                                    <aura:iteration items="{!v.dropAddressList}" var="addList">
+                                                        <li role="presentation"
+                                                            onclick="{!c.selectDropOffOption}"
+                                                            data-value="{!addList.place_id}"
+                                                            data-address="{!addList.main_text}"
+                                                            class="slds-listbox__item">
+                                                            <span id="listbox-option-unique-id-01"
+                                                                  class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                                                  role="option">
+                                                                <span class="slds-media__body slds-m-left_xx-small slds-m-bottom_xx-small">
+                                                                    <div class="slds-grid slds-m-bottom_small">
+                                                                        <div class="slds-col slds-size_1-of-10"> 
+                                                                            <lightning:ButtonIcon size="medium" iconName="utility:checkin" class="slds-input__icon" variant="bare"/></div>
+                                                                        <div class="slds-m-left_medium slds-col slds-size_8-of-10"> 
+                                                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity"><b>{!addList.main_text}</b></span>
+                                                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity slds-m-top_xxx-small">{!addList.secondary_text}</span></div>
+                                                                        <div class="slds-col slds-size_1-of-10"></div>
+                                                                    </div>
+                                                                </span>
+                                                            </span>
+                                                        </li>
+                                                    </aura:iteration>
+                                                </ul>
+                                            </div>
+                                        </aura:if>
+                                    </lightning:layoutItem>
+                                   
+                                    
+                                    <!-- Pick UP Date Time-->
+									<div class="desktopView">
+                                        <lightning:inputField class="dateTime" fieldName="ETCAR_Pick_UP_Date_Time__c" style="display:none"  value="{!v.VehicleBooking.ETCAR_Pick_UP_Date_Time__c}"/>
+                                        <lightning:inputField class="dateTime" fieldName="ETCAR_Return_Date_Time__c" style="display:none"  value="{!v.VehicleBooking.ETCAR_Return_Date_Time__c}"/>
+                                        <lightning:layoutItem class=" slds-p-around_small slds-size_12-of-12">
+                                            <lightning:input class="dateTime" type="dateTime" required="true" aura:id ="PickupDateTime" id="PickupDateTime"
+                                                             label="Pick up Date/Time" messageWhenValueMissing ="Pick UP Date Time is Mandatory"
+                                                             onchange="{!c.validatePickupDateTime}"  
+                                                             value="{!v.VehicleBooking.ETCAR_Pick_UP_Date_Time__c}"/>
+                                            <p aura:id="invalidPickupDate" style="color:red" class="slds-hide">Please select Future date!</p>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem class=" slds-p-around_small slds-size_12-of-12">
+                                            <lightning:inputField class="dateTime" fieldName="ETCAR_Return_Date_Time__c" style="display:none"  value="{!v.VehicleBooking.ETCAR_Return_Date_Time__c}"/>
+                                            <lightning:input class="dateTime" type="dateTime" required="true" aura:id ="ETCAR_Return_Date_Time__c"
+                                                             label="Return Date/Time" messageWhenValueMissing ="Return Date Time is Mandatory"
+                                                             onchange="{!c.validateReturnDateTime}"  
+                                                             value="{!v.VehicleBooking.ETCAR_Return_Date_Time__c}"/>
+                                            <p aura:id="returnLessthanPickup" style="color:red" class="slds-hide">Return date time should be greater than pickup date time.</p>
+                                            <p aura:id="invalidreturnDate" style="color:red" class="slds-hide">Please select Future date!</p>
+                                        </lightning:layoutItem>
+           
+                                     <!-- Instructions To Driver-->
+									    </div>
+                                    <div class="mobileView"> 
+                                        <label>Pick Up</label> 
+                                         <div class="row">
+                                             <div class="col-6"><lightning:input type="date" name="input1" label="Date" /> </div>
+                                             <div class="col-6">
+                                                 <label>Time</label>
+                                                 <div class="time_section">
+                                                 	<span><lightning:input type="number" value="6" name="input1" label=""/></span>
+                                                    <em>:</em>
+                                                    <span><lightning:input type="number" value="30" name="input1" label=""/></span>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <lightning:layoutItem class=" slds-p-around_small slds-size_12-of-12">
+                                        <lightning:inputField fieldName="ETC_Instructions_To_Driver__c" value="{!v.VehicleBooking.ETC_Instructions_To_Driver__c}"/>
+                                    </lightning:layoutItem>
+                                    <!-- Save Button-->
+									 <!-- Pick UP Date Time>
+                                <lightning:layoutItem padding="around-small" size="6" class="datepickdiv">
+                                    <lightning:input class=" slds-p-around_small slds-size_12-of-12" type="datetime" aura:id="PickupDateTime" onchange="{!c.validatePickupDateTime}" required="true" format="YYYY-MM-DD" name="PickupDateTime" label="Pick UP Date Time" 
+                                                     value="{!v.VehicleBooking.ETCAR_Pick_UP_Date_Time__c}" autocomplete="off"/>
+                                    <p aura:id="invalidPickupDate" style="color:red" class="slds-hide">Please select Future date!</p>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem padding="around-small" size="6" >
+                                    <lightning:input type="text" aura:id="driverInstructions" name="driverInstructions" label="Instructions to Driver" 
+                                                     value="{!v.VehicleBooking.ETC_Instructions_To_Driver__c}" autocomplete="off"/>
+                                </lightning:layoutItem-->
+                                    <lightning:layoutItem padding="around-small" size="12" class="datepickdiv">
+                                        <lightning:layoutItem padding="around-small" size="12" class="rightserachbtn">
+                                            <lightning:button class="btnsave selectCar" type="submit" variant="brand" name="Save" label="Select Car"/>
+                                        <!--<lightning:button variant="brand"
+                                                          label="{!v.buttonLabel}"
+                                                          title="Select Car"
+                                                          onclick="{!c.createCarBooking_oneWay}" class="btnsave"/>-->
+										</lightning:layoutItem>    
+                                    </lightning:layoutItem>                     
+                                </lightning:layout>
+                            </lightning:recordEditForm>
+                            <!-- Spinner -->
+                            <aura:if isTrue="{! v.loaded }">
+                                <lightning:spinner alternativeText="Loading.." variant="brand" />
+                            </aura:if>
+                        </aura:set>
+
+            </lightning:layout>
+            </div>
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem class="slds-col slds-size_1-of-1 slds-small-size_1-of-2">
+            <h2 class="caption-title">All Discounts Just For You</h2>
+        	<h3 class="caption-subtitle">Car Rentals</h3>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

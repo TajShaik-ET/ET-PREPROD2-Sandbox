@@ -1,0 +1,8 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+	 <lightning:empApi aura:id="empApi"/>
+    <aura:attribute name="channel" type="String" default="/event/CommunityEventNotify__e"/>
+    <aura:attribute name="subscription" type="Map"/>
+    <aura:attribute name="notifications" type="Object"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+</aura:component>

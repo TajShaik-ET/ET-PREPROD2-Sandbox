@@ -1,0 +1,265 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                extends="c:ET_MOE_BilingualCommunity" access="global">
+     <aura:attribute name="columns" type="Integer" access="global" default="2" />
+    <aura:attribute name="showIFrame" type="Boolean"/>
+    <aura:attribute name="recordDetailId" type="String" />
+    <aura:attribute name="recordTypeName" type="String" />
+    <aura:attribute name="objectApiName" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="caseCommentslist" type="ET_Case_Comment__c[]" />
+    <aura:attribute name="fields" type="String[]" default="['CaseNumber','Driver_Name__c','Driver_Name_1__c','RecordTypeId','Description','CreatedDate','School_Name_Acc__c','ESE_Type_En__c','ESE_Type_Ar__c','Fine_Applicable__c','KPI_Number__c']" />
+    <aura:html tag="style">
+        .slds-modal__container {
+        max-width: 90%;
+        width:90%;
+        max:height:99%;
+        height:99%;
+        margin:auto;
+        }
+    </aura:html>
+    
+    <!--Use "slds-m-around_xx-large" class to add standard X-Large padding to the component--> 
+    <div class="slds-m-around_xx-large">
+        <aura:if isTrue="{!v.clLang !='ar'}">
+            <aura:if isTrue="{!v.showIFrame}">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <h3>
+                                Case Details  
+                            </h3>
+                            
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <div class="detailTabClass"> 
+                                <lightning:tabset selectedTabId="details">
+                                    <lightning:tab label="Details" id="details">
+                                        <div class="oppDetailDiv"> 
+                                            <div id="accDiv" style="col-2">
+                                                
+                                                <lightning:recordForm recordId="{!v.recordDetailId}" objectApiName="{!v.objectApiName}"  mode="readOnly"
+                                                                      columns="{!v.columns}"
+                                                                      fields="{!v.fields}"/>
+                                            </div>
+                                        </div>
+                                    </lightning:tab>
+                                     <lightning:tab label="Case Comments" id="comments">
+                                        <div class="slds">
+                                            <div class="slds-scrollable_y">
+                                                   <aura:if isTrue="{!v.caseCommentslist != null}">
+                                            <table class="slds-table slds-table_bordered THIS">
+                                                <thead class="slds-theme_shade">
+                                                    <tr>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Number">SR,NO</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Number">Number</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Comments">Comments</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Created By">Created By</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Created By and Time">Created Date and Time</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <aura:iteration items="{!v.caseCommentslist}" var="con" indexVar="index">
+                                                        <tr class="slds-hint-parent">
+                                                            <td>
+                                                                {!index + 1}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                <a href="" style="color: #0070d2; text-decoration: underline;">{!con.Name}</a>
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                {!con.ET_Comments__c}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                {!con.CreatedBy.Name}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                 {!con.formattedTime} <!-- Use the formattedTime property here -->
+                                                            </td>
+                                                        </tr>
+                                                    </aura:iteration>
+                                                </tbody>
+                                            </table>
+                                            <aura:set attribute="else">
+                                                <!-- If caseCommentslist is empty -->
+                                                <div class="slds-m-vertical_medium">
+                                                    No comments are available.
+                                                </div>
+                                            </aura:set>
+                                        </aura:if>
+                                            </div>
+                                        </div>
+                                    </lightning:tab>
+                                </lightning:tabset>
+                            </div>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <lightning:button class="btn_close" label="Close" title="Close" onclick="{! c.closeModel }"/>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                
+            </aura:if>
+        </aura:if>
+    </div>
+    <div class="">
+        <aura:if isTrue="{!v.clLang =='ar'}">
+            <aura:if isTrue="{!v.showIFrame}">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <h2>
+                                تفاصيل الطلب 
+                            </h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium slds-float--right" id="modal-content-id-1">
+                           
+                               
+                                   
+                                     
+                                  
+                                 <lightning:tabset selectedTabId="details">
+                                    <lightning:tab label="Details" id="details">
+                                      <div class="detailsPageArabic"> 
+                                            <div id="accDiv" style="col-2">
+                                                <lightning:recordViewForm recordId="{!v.recordDetailId}" objectApiName="Case">
+                                                     
+                                                
+                                                        <lightning:layout multipleRows="true">
+                                                            <!--1-->
+                                                              <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input-description"><b>School Name</b></label>
+                                                             <lightning:outputField class=" slds-form-element__static " fieldName="School_Name_Acc__c" variant="label-hidden"/>
+                                                            </lightning:layoutItem>
+                                                              <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input-description"><b>Person Name</b></label>
+                                                                <lightning:outputField class=" slds-form-element__static " fieldName="Driver_Name_1__c" variant="label-hidden"/>
+                                                            </lightning:layoutItem>
+                                                             <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input-description"><b>Person Name[Not Available]</b></label>
+                                                                 <lightning:outputField class=" slds-form-element__static " fieldName="Driver_Name__c" variant="label-hidden"/>
+                                                            </lightning:layoutItem>
+                                       
+                                                             <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input"><b>Case Number</b></label>
+                                                                <lightning:outputField class="slds-form-element__static" fieldName="CaseNumber" variant="label-hidden"/>
+                                                            </lightning:layoutItem>
+                                                            <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input-description"><b>Record Type</b></label>
+                                                                <lightning:outputField class=" slds-form-element__static " fieldName="RecordTypeId" variant="label-hidden"/>
+                                                            </lightning:layoutItem>
+                                                            <!--2-->
+                                                            
+                                                             <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input-description"><b>Fine Applicable</b></label>
+                                                                <lightning:outputField class=" slds-form-element__static " fieldName="Fine_Applicable__c" variant="label-hidden"/>
+                                                            </lightning:layoutItem>
+                                                             <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input-description"><b>KPI Number</b></label>
+                                                                <lightning:outputField class=" slds-form-element__static " fieldName="KPI_Number__c" variant="label-hidden"/>
+                                                            </lightning:layoutItem>
+                                                              <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input-description"><b>Type Arabic</b></label>
+                                                                <lightning:outputField class=" slds-form-element__static " fieldName="ESE_Type_Ar__c" variant="label-hidden"/>
+                                                            </lightning:layoutItem>
+                                                            <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input-description"><b>Description </b></label>
+                                                                <lightning:outputField class="slds-form-element__static" fieldName="Description" variant="label-hidden" />
+                                                            </lightning:layoutItem>
+                                                            <!--3-->
+                                                             <lightning:layoutItem size="6" class="arabic" mediumDeviceSize="3" padding="around-small">
+                                                                <label class="slds-form-element__label" for="unique-id-of-input-description"><b>Created Date</b></label>
+                                                                <lightning:outputField class="slds-form-element__static" fieldName="CreatedDate" variant="label-hidden" />
+                                                            </lightning:layoutItem>
+                                                            
+
+                                                           
+                                                        </lightning:layout>
+
+                                                  
+                                                   
+                                                </lightning:recordViewForm>
+                                            </div>
+                                        </div>
+                                    </lightning:tab>
+                                     <lightning:tab label="Case Comments" id="comments">
+                                        <div class="slds">
+                                            <div class="slds-scrollable_y">
+                                                   <aura:if isTrue="{!v.caseCommentslist != null}">
+                                            <table class="slds-table slds-table_bordered THIS">
+                                                <thead class="slds-theme_shade">
+                                                    <tr>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Number">SR,NO</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Number">Number</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Comments">Comments</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Created By">Created By</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Created By and Time">Created Date and Time</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <aura:iteration items="{!v.caseCommentslist}" var="con" indexVar="index">
+                                                        <tr class="slds-hint-parent">
+                                                            <td>
+                                                                {!index + 1}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                <a href="" style="color: #0070d2; text-decoration: underline;">{!con.Name}</a>
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                {!con.ET_Comments__c}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                {!con.CreatedBy.Name}
+                                                            </td>
+                                                            <td style="word-wrap: break-word;">
+                                                                 {!con.formattedTime} <!-- Use the formattedTime property here -->
+                                                            </td>
+                                                        </tr>
+                                                    </aura:iteration>
+                                                </tbody>
+                                            </table>
+                                            <aura:set attribute="else">
+                                                <!-- If caseCommentslist is empty -->
+                                                <div class="slds-m-vertical_medium">
+                                                    No comments are available.
+                                                </div>
+                                            </aura:set>
+                                        </aura:if>
+                                            </div>
+                                        </div>
+                                    </lightning:tab>
+                                </lightning:tabset>
+                            
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <lightning:button class="btn_close" label="يغلق" title="Close" onclick="{! c.closeModel }"/>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                
+            </aura:if>
+        </aura:if>
+    </div>
+    
+</aura:component>

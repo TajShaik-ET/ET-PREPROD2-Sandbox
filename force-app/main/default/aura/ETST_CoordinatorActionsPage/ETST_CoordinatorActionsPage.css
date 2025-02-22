@@ -1,0 +1,260 @@
+.THIS .CarLogo{
+    width: 70%;    padding: 5% 10% 5%;transition: all 300ms;
+}
+.THIS .downloadButton {
+    background-color: transparent;
+    color: #000;
+    float: right;
+    border: 1px solid transparent;
+    box-shadow: none;
+    font-size: 14px;
+    transition: .4s;
+    line-height: 18px;
+    white-space: inherit;
+    outline: none;
+    box-shadow: none;
+    font-weight: bold;
+    padding: 0px;
+    margin: .4rem 0 0 .5rem;
+}
+.THIS .btnclass{
+    margin-right:10px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+}
+.THIS .textcontenthead{
+    border-top: 1px solid #dedede;
+    margin-top: 20px;
+    padding-top: 10px;
+}
+.THIS .CarLabel{ 
+    font-size:16px;font-weight: bold;
+}
+.THIS .slds-p-around_small{
+    width:25%;
+    order:1;
+    -webkit-order: 1;
+}
+.THIS .latestupdates , .THIS .quicklinks{
+    margin-bottom: 20px;
+    height: auto;
+    overflow: auto;
+    border: 1px solid #dedede;
+    margin-top: -12px;
+    background: #fff;
+    border-radius: 5px;
+}
+.THIS .latestupdates p , .THIS .quicklinks p{
+    border-bottom: 1px solid #dedede;
+    padding: 13px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    background: #f3f2f2;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.THIS .quicklinks .filterlist{
+    float:left;
+    line-height: 36px;
+}
+.THIS .mainfilterdiv{
+    display: block;
+    position: relative;
+    width: 100%;
+    clear: both;    padding: 0px 10px;
+}
+.THIS .mainfilterdiv .slds-select_container .slds-select {
+    margin: 5px 0px 0px;
+}
+.THIS .filtercontectdiv{
+    padding:10px;
+}
+.THIS .mainfilterdiv .slds-form-element {
+    position: relative;
+    min-width: 0;
+    display: inline-block;width: 50%;
+}
+.THIS .servicesdiv{
+    width: 75%;
+    padding: 5%;
+    border: none;
+    padding: 0px;
+    order: 2;
+    background: #fff; border-radius: 5px;
+}
+.THIS .servicesdiv .slds-box{
+    border: none;
+}
+.THIS .servicesdiv .slds-box .serheading{
+    font-size: 24px;
+    font-weight: bold;
+    display: inline-block;
+    position: relative;
+}
+.THIS .serviceheaddiv{
+    border-bottom: 1px solid #dedede;
+    padding: 10px;
+    display: block;
+    position: relative;
+    clear: both;
+    background: #f3f2f2;    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;   
+}
+.THIS .servicelist{
+    display: inline-block;
+    float: right;width: 150px;
+}
+.THIS .slds-form-element__label{
+    display: none;
+}
+.THIS .servicecontent{
+    text-align: center;
+    margin: 1% 0%;
+}
+.THIS .servicecontent .serviceitem{
+    width: 31%;
+    margin: 1% 2% 2% 0;
+    float: left;
+    text-align: center;
+    padding: 2%;
+    background: #f2f2f2;
+    border: 1px solid #dedede;cursor: pointer;
+}
+
+.THIS .mainLayout{
+    padding-left: 90px;
+    padding-top: 20px;
+}
+.THIS .serviceitem:hover .CarLogo{
+    transform: scale(1.1);
+    transition: all 300ms;
+}
+.THIS .serheading{
+    display: inline-block;
+    position: relative;
+    font-size: 14px;
+    padding-top: 8px;
+    font-weight: 600;
+}
+.THIS .serchboxtab{
+    padding: 0px;
+    display: inline-block;
+    float: right;
+}
+.THIS .slds-input:focus, .THIS .slds-input:active {
+    border-color: #ccc;
+    box-shadow: none;
+}
+.THIS .displaytable{
+    height: 340px;
+    overflow: auto;
+    clear: both;
+    position: relative;
+    border: 1px solid #dedede;
+    margin: 10px 10px 0px;
+}
+.THIS .slds-is-resizable .slds-th__action:focus, .THIS .slds-is-resizable .slds-th__action:focus:hover{
+    background-color: #fff;
+    box-shadow: none;
+}
+.THIS .slds-is-resizable .slds-th__action:hover, .THIS .slds-is-resizable .slds-th__action:focus {
+    box-shadow: none;
+}
+.THIS .slds-has-focus .slds-th__action {
+    background-color: #fff;
+    box-shadow: none;
+}
+.THIS .slds-table_header-fixed_container{
+    background-color: #fff; 
+}
+.THIS .slds-modal__container {
+    margin: 0 auto;
+    width: 38%;
+    max-width: 40rem;
+    min-width: 20rem;
+}
+.THIS .slds-modal__close {
+    position: absolute;
+    top: 11px;
+    right: 12px;
+    border-radius: 50%;
+    background: #1b5297;
+}
+.THIS .slds-modal__header {
+    position: relative;
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    border: 1px solid #ccc!important;
+    padding: 1rem;
+    text-align: center;
+    background: #f2f2f2;
+}
+.THIS .slds-p-around_medium, .THIS .slds-p-around--medium {
+    border: 1px solid #ccc;
+    border-top: none;
+    text-align: center;
+    font-size: 16px;
+}
+.THIS .slds-modal__footer {
+    border: 1px solid #ccc;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    padding: .75rem 1rem;
+    background-color: #ffffff;
+    text-align: right;
+    /* box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16); */
+    background: #f2f2f2;
+    border-top: none;
+}
+/*@media only screen and (max-width: 768px) {
+.THIS .servicesdiv {
+width: 65%;
+}
+.THIS .slds-p-around_small {
+width: 35%;
+}
+}*/
+@media only screen and (max-width: 767px) {
+    .THIS.slds-grid{
+        display:block!important; 
+    }
+    .THIS .servicesdiv {
+        width: 100%!important;
+        border: none;
+        padding: 0;
+        float: left!important;
+        display: block;
+        position: relative;
+        order:1!important;
+        -webkit-order: 1!important;
+    }
+    .THIS .slds-p-around_small{
+        width: 100%;
+        float: left;
+        display: block;
+        position: relative;
+        float: left;
+        order:2!important;
+        -webkit-order: 2!important;
+    }
+    .THIS .quicklinks , .THIS .latestupdates {
+        height: auto;
+    }
+    .THIS .servicesdiv .slds-box .serheading {
+        font-size: 20px;
+    }
+    .THIS .CarLogo {
+        width: 70%;
+        padding: 5% 10% 0%;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .CarLabel {
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .THIS .CarLogo {
+        width: 70%;
+        padding: 20px 10px 0px 10px;
+    }
+}

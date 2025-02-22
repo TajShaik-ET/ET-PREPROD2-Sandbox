@@ -1,0 +1,78 @@
+<aura:component controller="simplyBookIntegrationHandler" implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>	
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="simplyBookId" type="string"/>
+    <aura:attribute name="hasError" type="boolean" default="false"/>
+    <aura:attribute name="ErrMsg" type="string" />
+    <aura:attribute name="showSpinner" type="boolean" default="false" />
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="Vehicle_Brand__c,Vehicle_Brand__r.Name,Type_of_Services__c,Vehicle_Plate_Number__c,Vehicle_Chassis__c,ETM_Vehicle_Model__c,Moto_Vehicle_Model__c,Moto_Vehicle_Model__r.Name,FirstName,LastName,Name,Email,MobilePhone,Appointment_Date__c,Description,Campaign__c,Campaign__r.Name,Campaign__r.Simplybook_Category_Id__c,Campaign__r.Simplybook_Service_Id__c,List_of_Required_Services__c,Service_Cateogry__c,Preferred_Location__c,Owner.Name"
+                      targetFields="{!v.record}"
+                      recordUpdated="{!c.onForceLoad}"
+                      />
+    
+    <div>
+        <div class="outer-div">
+            <aura:if isTrue="{!v.showSpinner}">
+                <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+            </aura:if>
+            <P>Please Check the below information to create Simplybooking</P>
+            <aura:if isTrue="{!v.record.Appointment_Date__c == null?true:false}">
+                <p>* Appointment Date is required</p>
+            </aura:if>
+            <aura:if isTrue="{!v.record.Email == null?true:false}">
+                <p>* Email is required</p>
+            </aura:if>
+            <aura:if isTrue="{!v.record.MobilePhone == null?true:false}">
+                <p>* Mobile number is required</p>
+            </aura:if>
+            <aura:if isTrue="{!v.record.Vehicle_Brand__r.Name == null?true:false}">
+                <p>* Vehicle Brand is required</p>
+            </aura:if>
+            <aura:if isTrue="{!v.record.Moto_Vehicle_Model__r.Name == null?true:false}">
+                <p>* Vehicle Model is required</p>
+            </aura:if>
+            <aura:if isTrue="{!v.record.ETM_Vehicle_Model__c == null?true:false}">
+                <p>* Vehicle model year is required</p>
+            </aura:if>
+            <aura:if isTrue="{!v.record.List_of_Required_Services__c == null?true:false}">
+                <p>* List of required services are required</p>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.record.Service_Cateogry__c == null?true:false}">
+                <p>* Service cateogry is required</p>
+            </aura:if>   
+            <aura:if isTrue="{!v.record.Type_of_Services__c == null?true:false}">
+                <p>* Type of services are required</p>
+            </aura:if>
+            <aura:if isTrue="{!v.record.Type_of_Services__c == 'Campaign'?true:false}">        
+                <aura:if isTrue="{!v.record.Campaign__c == null?true:false}">
+                    <p>* Campaign is required</p>
+                    <aura:if isTrue="{!v.record.Campaign__r.Simplybook_Service_Id__c == null?true:false}">
+                        <p>* Campaign Service Id is not mapped to simplybooking campaign</p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.record.Campaign__r.Simplybook_Category_Id__c == null?true:false}">
+                        <p>* Campaign Category Id is not mapped to simplybooking campaign</p>
+                    </aura:if>
+                </aura:if>
+            </aura:if>
+            
+            
+            <lightning:recordEditForm objectApiName="Lead"
+                                      aura:id="leadForm"
+                                      recordId="{!v.recordId}"
+                                      onsubmit=""
+                                      onsuccess=""
+                                      onerror="">
+                <lightning:messages />
+                
+                <lightning:inputField class="slds-hide" fieldName="Simply_Book_Id__c" value="{!v.simplyBookId}"/>
+                
+            </lightning:recordEditForm>
+            
+            <p style="color: red;}">{!v.ErrMsg}</p>
+        </div>
+    </div>
+</aura:component>

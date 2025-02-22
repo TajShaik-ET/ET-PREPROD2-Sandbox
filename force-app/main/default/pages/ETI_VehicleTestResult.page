@@ -1,0 +1,240 @@
+<apex:page controller="ETI_BookingTestResultController" applyBodyTag="false" showHeader="false" sidebar="false" 
+           standardStylesheets="false" applyHtmlTag="false" renderAs="pdf">
+    
+    <!--apex:stylesheet value="{!URLFOR($Resource.ETST_Invoice,'css/invoice.css')}"/--> 
+    <head>
+        <style type="text/css">
+            
+            body {
+            //background: #e6e6e6;
+            padding:10px 0px;
+            margin: 0px;
+            font-family: 'Roboto', sans-serif;
+            }
+            .container {
+            background: #fff;
+            padding: 0px;
+            width: 100%;
+            margin: auto;
+            }
+            .col-sm-6 {
+            width: 50%;
+            display: inline-block;
+            float: left;
+            }
+            .text-right{
+            text-align: right;
+            }
+            .log_div{
+            padding-top: 15px;
+            }
+            .log_div p{
+            margin: 0px;margin-bottom: 5px;
+            }
+            .address , .bill_to , .table-responsive{
+            display: block;
+            clear: both;
+            position: relative;padding-top: 15px;
+            }
+            .logo_img{
+            height: 100px;
+            }
+            .log_div h1{
+            margin: 0px;
+            }
+            .log_div #invoice_no{
+            color:#9E9E9E;
+            }
+            .log_div #balance_due{
+            font-size: 12px;font-weight: bold;
+            }
+            .log_div #amount{
+            font-weight: bold;font-size: 18px;
+            }
+            .address h4{
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+            }
+            .address p{
+            color: #9E9E9E;
+            margin-bottom: 5px;
+            font-size: 14px;
+            margin-top: 0px;
+            }
+            .bill_to h5{
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+            margin: 0px;
+            }
+            .bill_to p{
+            color: #9E9E9E;
+            margin-bottom: 4px;
+            font-size: 14px;margin-top: 0px;
+            }
+            .date_div div{
+            color: #9E9E9E;
+            /*font-weight: bold;*/
+            width: 50%;
+            display: inline-block;
+            float: left;
+            }
+            .table-responsive table{
+            margin-bottom: 10px;border-collapse: collapse;
+            }
+            .table-responsive table {
+            margin-bottom: 10px;
+            width: 100%;
+            }
+            table thead{
+            background: #555;
+            color: #fff;
+            }
+            table thead th{
+            padding: 10px 5px;
+            border: none;
+            font-size: 14px;    text-align: left;
+            }
+            table tbody{
+            border-bottom: 2px solid #dadada;
+            }
+            table tbody td{
+            padding: 10px 5px;
+            border: none;
+            font-size: 14px;
+            }
+            .total_div{
+            width: 50%;float: left;display: inline-block;
+            }
+            .final_div div{
+            color: #9E9E9E;
+            font-weight: bold;
+            margin: 5px auto;width: 50%;
+            float: left;
+            }
+            .total div{ 
+            color: #000;
+            }
+            .final{
+            background: #f2f2f2;
+            color: #000;
+            }
+            .final div{
+            background: #f2f2f2;
+            color: #000;padding: 10px 0px;
+            }
+            .bottom_pad{
+            padding-bottom: 40px;
+            }
+            .final_in_word{
+            color: #333;
+            }
+            .thanks_div p{
+            margin-bottom: 1px;
+            }
+            .term_cond , .note{
+            color: #9E9E9E;
+            font-weight: bold;
+            font-size: 16px;
+            }
+        </style>
+    </head>
+    <div class="container bottom_pad">
+        <div class="row log_div">
+            <div class="col-sm-6 col-xs-12">
+                <apex:image style="height: 100px;"
+                            url="{!URLFOR($Resource.ETST_Invoice, 'images/logo.png')}"/>
+                
+            </div> 
+            <div class="col-sm-6 col-xs-12 text-right">
+                <h1>Inspection Result</h1>
+                <p id="invoice_no">{!BookingName}</p>
+            </div>
+        </div>
+        <div class="row address">
+            <div class="col-sm-12 col-xs-12 text-left">
+                <h4>{!$Organization.Name}
+                </h4>
+                <p>{!$Organization.Street}
+                </p>
+                <p>{!$Organization.City}
+                </p>
+                <p>{!$Organization.State}
+                </p>
+                <p>{!$Organization.Country}
+                </p>
+                <p>{!$Organization.Phone}
+                </p>
+            </div>
+        </div>
+        <br/>
+        <div class="row bill_to">
+            
+        </div>
+        <br/>
+        <div class="row"> 
+            <div class="col-sm-12">    
+                <div class="table-responsive">          
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="max-width:5%;">#</th>
+                                <th style="max-width:15%;">Chassis No</th>
+                                <th style="max-width:15%;">Service Name</th>
+                                <th style="max-width:15%;">Location</th>
+                                <th style="max-width:10%;">Booking Date</th>
+                                <th style="max-width:40%;">Test Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <apex:repeat value="{!serviceLineItemWrp}" var="wrp" id="theRepeat" >
+                                <tr>
+                                    <td style="max-width:5%;">{!wrp.srN}</td>
+                                    <td style="max-width:15%;">{!wrp.chassis}</td>
+                                    <td style="max-width:15%;">{!wrp.srLineItem.Service_Name__c}</td>
+                                    <td style="max-width:15%;">{!wrp.srLineItem.Booking__r.ET_Location__r.Name}</td>
+                                    <td style="max-width:10%;"><apex:outputText value="{0,date,MM/dd/yy}">
+                                        <apex:param value="{!wrp.srLineItem.Booking__r.Booking_Date__c}"/> 
+                                        </apex:outputText> 
+                                    </td>
+                                    <td style="max-width:40%;">
+                                        <apex:outputPanel rendered="{!wrp.srLineItem.Service_Name__c != 'SPEA Inspection'}">
+                                            {!wrp.testResult} 
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!wrp.srLineItem.Service_Name__c == 'SPEA Inspection'}">
+                                            <a href="{!wrp.testResultLink}" target="_blank">{!wrp.testResult}</a>
+                                        </apex:outputPanel>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row bill_to">
+            <div class="col-sm-6 col-xs-12 total_div">
+                &nbsp;
+            </div>
+            <div class="col-sm-6 col-xs-12 total_div">
+                
+                <div class="row final_div final" >
+                    
+                    <!-- <div class="col-sm-4 col-xs-6 text-right">{!ETST_Transport_Request__c.ETST_Fare_Charges__c}</div> -->
+                </div>
+                
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <div class="row">
+            <div class="col-sm-12 thanks_div">
+                
+                
+                <p class="note">Notes </p>
+                <p>Thanks for your business.</p>
+            </div>
+        </div>
+    </div>    
+</apex:page>

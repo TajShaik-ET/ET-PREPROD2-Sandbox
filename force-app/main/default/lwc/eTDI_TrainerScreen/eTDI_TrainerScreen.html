@@ -1,0 +1,460 @@
+<!--
+  @description       : 
+  @author            : Srihari.Koyila@Smaartt.com
+  @group             : 
+  @last modified on  : 05-07-2024
+  @last modified by  : Srihari.Koyila@Smaartt.com
+-->
+<template>
+	<div style="margin-top: 44px;">
+		<template if:true={hasTrainerScheduleData}>
+			<!-- <lightning-datatable key-field="id" data={TrainerScheduleList} columns={columns} hide-checkbox-column=true
+				onrowaction={hanldeRowAction}>
+			</lightning-datatable> -->
+
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+				<thead>
+					<tr class="slds-line-height_reset">
+						<th class="" scope="col">
+							<div class="slds-truncate" title="Schedule Ref.No">Schedule Ref.No</div>
+						</th>
+						<th class="" scope="col">
+							<div class="slds-truncate" title="Booking Request">Booking Request</div>
+						</th>
+						<th class="" scope="col">
+							<div class="slds-truncate" title="Booking Request">Program Name</div>
+						</th>
+						<th class="" scope="col" data-type="date" data-format-string="Do MMMM YYYY">
+							<div class="slds-truncate" title="Schedule Date and Time">Schedule Date and Time</div>
+						</th>
+						<!-- <th class="" scope="col">
+							<div class="slds-truncate" title="Location">Location</div>
+						</th> -->
+						<th class="" scope="col">
+							<div class="slds-truncate" title="Language">Language</div>
+						</th>
+						<th class="" scope="col">
+							<div class="slds-truncate" title="No.Trainees">No. of Trainees</div>
+						</th>
+						<th class="" scope="col">
+							<div class="slds-truncate" title="Status">Status</div>
+						</th>
+						<th class="" scope="col">
+						</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<template for:each={TrainerScheduleList} for:item="trsch">
+						<tr class="slds-hint-parent" key={trsch.Id}>
+							<td>
+								<!-- <button onclick={handleSelectSchedule} data-trschid={trsch.Id}>
+									<div class="slds-truncate">{trsch.Name}</div></button> 
+								<a onclick={handleSelectSchedule} data-trschid={trsch.Id}
+									data-bkid={trsch.Booking_Request__c}>
+									<div class="slds-truncate">{trsch.Name}</div>
+								</a>-->
+							</td>
+							<td>
+								<div class="slds-truncate">{trsch.Booking_Request__r.Name}</div>
+							</td>
+							<td>
+								<div class="slds-truncate">{trsch.Booking_Request__r.Program_Name__r.Name}</div>
+							</td>
+							<td>
+								<div class="slds-truncate">
+									<lightning-formatted-date-time value={trsch.Schedule_Date_Time__c} year="numeric"
+										month="short" day="2-digit" hour="2-digit" minute="2-digit" hour12={ampm}>
+									</lightning-formatted-date-time>
+								</div>
+							</td>
+							<!-- <td>
+								<div class="slds-truncate">{trsch.Booking_Request__r.Location__c}</div>
+							</td> -->
+							<td>
+								<div class="slds-truncate">{trsch.Booking_Request__r.Language__c}</div>
+							</td>
+							<td>
+								<div class="slds-truncate">{trsch.Booking_Request__r.Number_of_Trainees__c}</div>
+							</td>
+							<td>
+								<div class="slds-truncate">{trsch.Status__c}</div>
+							</td>
+							<td>
+								<template lwc:if={trsch.showAttendenceBtn}>
+									<lightning-button style='margin-right:5px' class="darkBtn" label="Add Attendence"
+										variant="brand" onclick={hanldeAttendenceButton}
+										data-id={trsch.Booking_Request__c} data-schid={trsch.Id}></lightning-button>
+									<lightning-button style='margin-right:5px' class="darkBtn" label="Add Trainees"
+										onclick={hanldeAddTraineeButton} data-brid={trsch.Booking_Request__c}
+										variant="brand"></lightning-button>
+								</template>
+								<!-- SK -->
+								<template lwc:if={trsch.showMarkseBtn}>
+									<lightning-button style='margin-right:5px' class="darkBtn" label="Add Marks"
+										variant="brand" onclick={hanldeMarksButton} data-id={trsch.Booking_Request__c}
+										data-schid={trsch.Id}></lightning-button>
+								</template>
+							</td>
+						</tr>
+					</template>
+				</tbody>
+			</table>
+		</template>
+		<template if:false={hasTrainerScheduleData}>
+			<div class="slds-align_absolute-center" style="margin-top: 29px;font-weight: bold;">No records found.</div>
+		</template>
+
+
+		<!-- ADD Attendence -->
+		<template if:true={showModalAttendance}>
+			<section aria-modal="true" class="slds-modal slds-fade-in-open">
+				<div class="slds-backdrop slds-backdrop_open">
+					<div class="slds-modal__container " id="MyModal3">
+						<header class="slds-modal__header">
+							<h2 class="slds-text-heading_small">Trainees Attendence</h2>
+							<br>
+							<div class="slds-modal__content">
+								<div class="slds-grid slds-wrap slds-gutters">
+        <div class="slds-col slds-size_1-of-3">
+										<lightning-input type="search" label="Employee Search"
+											placeholder="Search for the Employee Name or Id" onchange={filterData}>
+										</lightning-input>
+
+									</div>
+									<!-- <div style="padding: 10px;">
+										<div class="slds-col" style="margin-top: 23px;">
+											<lightning-button label="Search" class="darkBtn"
+												onclick={handleSearchKeyword} variant="brand">
+											</lightning-button>
+										</div>
+									</div>
+
+									<div style="padding: 10px;">
+										<div class="slds-col">
+											<lightning-input type="search" value={searchValue} label="Employee Id"
+												class="inputCss" placeholder="Search for the Employee Id"
+												onchange={searchKeyword}></lightning-input>
+										</div>
+									</div>
+									<div style="padding: 10px;">
+										<div class="slds-col" style="margin-top: 23px;">
+											<lightning-button label="Search" class="darkBtn"
+												onclick={handleSearchKeyword} variant="brand">
+											</lightning-button>
+										</div>
+									</div> -->
+								</div>
+							</div>
+
+							<br>
+							<p style="text-align:left;"><strong>NOTE:</strong> Please check the checkbox to mark the
+								attendence</p>
+						</header>
+						<div class="slds-modal__content trainerData">
+							<template if:true={hasTraineeData}>
+								<!-- <lightning-datatable if:false={examReq} key-field="id" class="my-datatable"
+									data={TraineeList} columns={columnsTrainee} data-id="empDataTable">
+								</lightning-datatable> -->
+								<!-- <lightning-datatable if:true={examReq} key-field="id" class="my-datatable"
+									data={TraineeList} columns={couloumsProfTrainee} data-id="empDataTable">
+								</lightning-datatable> -->
+
+								<table data-id="empDataTable"
+									class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+									<thead>
+										<tr class="slds-line-height_reset">
+											<th class="" scope="col">
+												<div class="slds-truncate" title="Employee Name">Employee Name</div>
+											</th>
+											<th class="" scope="col">
+												<div class="slds-truncate" title="Employee Id">Employee Id</div>
+											</th>
+											<th class="" scope="col">
+												<div class="slds-truncate" title="Total Days">Total Days</div>
+											</th>
+											<th>
+												<div class="slds-truncate" title="Mark Attendance">Mark Attendance</div>
+											</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr for:each={filteredTraineeList} for:item="emp" class="slds-hint-parent"
+											key={emp.Id} for:index="index1">
+											<td>
+												<div class="slds-truncate">{emp.EmpName}</div>
+											</td>
+											<td>
+												<div class="slds-truncate">{emp.EmpId}</div>
+											</td>
+											<td>
+												<div class="slds-truncate">{emp.TotalDays}</div>
+											</td>
+											<td>
+												<lightning-input type="checkbox" name={emp.Id} data-index={index1}
+													onchange={traineeDayAttendanceHandler}></lightning-input>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="slds-align_absolute-center">
+									<lightning-file-upload record-id={currentScheduleId}
+										onuploadfinished={handleUploadFinished}>
+									</lightning-file-upload>
+								</div>
+								<template for:each={lstAllFiles} for:item="file" for:index="index">
+									<div key={file} style="margin-top:10px;">
+										<div
+											class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12">
+											<!-- <p style="color: green"><strong>{fileIterator}</strong></p> -->
+											<lightning-pill label={file.filename} name={file.fileid} data-num={index}
+												onremove={deleteattachment}></lightning-pill>
+											<!-- <lightning-button-icon icon-name="utility:delete"    alternative-text="Delete" onclick={deleteattachment} data-id={fileIterator.id}  class="slds-m-left_xx-small" title="Delete"></lightning-button-icon> -->
+										</div>
+									</div>
+								</template>
+							</template>
+							<template if:false={hasTraineeData}>
+								<div class="slds-align_absolute-center" style="margin-top: 29px;font-weight: bold;">No
+									records found.</div>
+							</template>
+							<footer class="slds-modal__footer">
+								<div class="slds-text-align_center">
+									<lightning-button if:true={hasTraineeData} class="darkBtn" label="Save"
+										variant="brand" onclick={handleSaveAttendance}></lightning-button>
+									<lightning-button class="lightBtn slds-m-left_x-small" label="Cancel"
+										variant="brand-outline" onclick={cancel}></lightning-button>
+								</div>
+							</footer>
+						</div>
+					</div>
+				</div>
+			</section>
+		</template>
+		<!-- 1 -->
+
+		<!-- ADD Trainee -->
+		<template if:true={showAddTraineeModal}>
+			<section aria-modal="true" class="slds-modal slds-fade-in-open">
+				<div class="slds-backdrop slds-backdrop_open">
+					<div class="slds-modal__container " id="MyModal1">
+						<header class="slds-modal__header">
+							<h2 class="slds-text-heading_small">Add Trainees</h2>
+						</header>
+						<div class="slds-modal__content trainerData">
+							<div class="slds-grid slds-gutters">
+								<div style="padding: 10px;">
+									<div class="slds-col">
+										<lightning-input type="search" value={searchValue} label="Employee"
+											class="inputCss" placeholder="Search for the Employee"
+											onchange={searchKeyword}></lightning-input>
+									</div>
+								</div>
+								<div style="padding: 10px;">
+									<div class="slds-col" style="margin-top: 23px;">
+										<lightning-button label="Search" class="darkBtn" onclick={handleSearchKeyword}
+											variant="brand">
+										</lightning-button>
+									</div>
+								</div>
+							</div>
+							<div>
+								<template for:each={selectedEmployees} for:item="emp">
+									<lightning-pill class="customPill" label={emp.Name} key={emp.Id} name={emp}
+										onremove={onEmpRemove}>
+										<lightning-icon icon-name="utility:user" alternative-text="Account">
+										</lightning-icon>
+									</lightning-pill>
+								</template>
+							</div>
+							<template if:true={hasEmployees}>
+
+								<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+									<thead>
+										<tr class="slds-line-height_reset">
+											<th></th>
+											<th class="" scope="col">
+												<div class="slds-truncate" title="Employee Name">Employee Name</div>
+											</th>
+											<th class="" scope="col">
+												<div class="slds-truncate" title="Employee Id">Employee Id</div>
+											</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<template for:each={AccountRecord} for:item="acc">
+											<tr class="slds-hint-parent" key={acc.Id}>
+												<td>
+													<input type="checkbox" name={acc.Id}
+														onchange={handleCheckboxChange}>
+												</td>
+												<td>
+													<div class="slds-truncate">{acc.Name}</div>
+												</td>
+												<td>
+													<div class="slds-truncate">{acc.ETIN_Employee_Id__c}</div>
+												</td>
+											</tr>
+										</template>
+									</tbody>
+								</table>
+							</template>
+						</div>
+						<footer class="slds-modal__footer">
+							<div class="slds-text-align_center">
+								<lightning-button class="darkBtn" label="Save" onclick={handleAddTrainee}
+									variant="brand"></lightning-button>
+								<lightning-button class="lightBtn slds-m-left_x-small" label="Cancel"
+									variant="brand-outline" onclick={closeAddTraineeModal}></lightning-button>
+							</div>
+						</footer>
+					</div>
+				</div>
+			</section>
+		</template>
+		<!-- 2 -->
+
+		<!-- ADD marks -->
+		<template if:true={showModalMarks}>
+			<section aria-modal="true" class="slds-modal slds-fade-in-open">
+				<div class="slds-backdrop slds-backdrop_open">
+					<div class="slds-modal__container " id="MyModal">
+						<header class="slds-modal__header">
+							<h2 class="slds-text-heading_small">Trainees marks</h2>
+							<br>
+							<!-- <p style="text-align:left;"><strong>NOTE:</strong> Please check the checkbox to mark the
+						attendence</p> -->
+						</header>
+						<div class="slds-modal__content trainerData">
+							<template if:true={hasTraineeData}>
+								<!-- <lightning-datatable if:false={examReq} key-field="id" class="my-datatable"
+							data={TraineeList} columns={columnsTrainee} data-id="empDataTable">
+						</lightning-datatable> -->
+								<!-- <lightning-datatable if:true={examReq} key-field="id" class="my-datatable"
+							data={TraineeList} columns={couloumsProfTrainee} data-id="empDataTable">
+						</lightning-datatable> -->
+
+								<table data-id="empDataTable"
+									class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+									<thead>
+										<tr class="slds-line-height_reset">
+											<th></th>
+											<th class="" scope="col">
+												<div class="slds-truncate" title="Employee Name">Employee Name</div>
+											</th>
+											<th class="" scope="col">
+												<div class="slds-truncate" title="Employee Id">Employee Id</div>
+											</th>
+											<th if:true={examReq} class="" scope="col">
+												<div class="slds-truncate" title="Theoretical">Theoretical</div>
+											</th>
+											<th if:true={examReq} class="" scope="col">
+												<div class="slds-truncate" title="Practical">Practical</div>
+											</th>
+											<th if:true={examReq} class="" scope="col">
+												<div class="slds-truncate" title="Remarks">Remarks</div>
+											</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr for:each={TraineeList} for:item="emp" class="slds-hint-parent" key={emp.Id}
+											for:index="index">
+											<td>
+												<!-- <input type="checkbox" name="Attended__c" data-index={index}
+											onchange={traineeFieldChange}> -->
+											</td>
+											<td>
+												<div class="slds-truncate">{emp.EmpName}</div>
+											</td>
+											<td>
+												<div class="slds-truncate">{emp.EmpId}</div>
+											</td>
+											<td if:true={examReq}>
+												<input type="number" value={emp.Theoretical_Marks__c} data-index={index}
+													name="Theoretical_Marks__c" onchange={traineeFieldChange}>
+											</td>
+											<td if:true={examReq}>
+												<input type="number" value={emp.Practical_Marks__c} data-index={index}
+													name="Practical_Marks__c" onchange={traineeFieldChange}>
+											</td>
+											<td if:true={examReq}>
+												<input type="text" value={emp.Remarks__c} data-index={index}
+													name="Remarks__c" onchange={traineeFieldChange}>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="slds-align_absolute-center">
+									<lightning-file-upload record-id={currentScheduleId}
+										onuploadfinished={handleUploadFinished}>
+									</lightning-file-upload>
+								</div>
+								<template for:each={lstAllFiles} for:item="file" for:index="index">
+									<div key={file} style="margin-top:10px;">
+										<div
+											class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12">
+											<!-- <p style="color: green"><strong>{fileIterator}</strong></p> -->
+											<lightning-pill label={file.filename} name={file.fileid} data-num={index}
+												onremove={deleteattachment}></lightning-pill>
+											<!-- <lightning-button-icon icon-name="utility:delete"    alternative-text="Delete" onclick={deleteattachment} data-id={fileIterator.id}  class="slds-m-left_xx-small" title="Delete"></lightning-button-icon> -->
+										</div>
+									</div>
+								</template>
+							</template>
+							<template if:false={hasTraineeData}>
+								<div class="slds-align_absolute-center" style="margin-top: 29px;font-weight: bold;">No
+									records found.</div>
+							</template>
+							<footer class="slds-modal__footer">
+								<div class="slds-text-align_center">
+									<lightning-button if:true={hasTraineeData} class="darkBtn" label="Save"
+										variant="brand" onclick={handleSaveMarks}></lightning-button>
+									<lightning-button class="lightBtn slds-m-left_x-small" label="Cancel"
+										variant="brand-outline" onclick={cancel}></lightning-button>
+								</div>
+							</footer>
+						</div>
+					</div>
+				</div>
+			</section>
+		</template>
+		<!-- 3 -->
+
+		<!-- for schedule details -->
+		<template if:true={showdetailsmodal}>
+			<section aria-modal="true" class="slds-modal slds-fade-in-open">
+				<div class="slds-backdrop slds-backdrop_open">
+					<div class="slds-modal__container " id="MyModal2">
+						<header class="slds-modal__header">
+							<h2 class="slds-text-heading_small">Training Schedule Details</h2>
+						</header>
+						<div class="slds-modal__content trainerData">
+
+							<div style="padding: 30px;">
+								<b>Branch: </b>{bkBranch}
+								<br>
+								<b>Depot: </b>{bkProgramName}
+								<br>
+								<b>Program Name: </b>{bkDepot}
+								<br>
+								<b>Exam Required?: </b>{exm}
+							</div>
+						</div>
+
+						<footer class="slds-modal__footer">
+							<div class="slds-text-align_center">
+								<lightning-button class="lightBtn slds-m-left_x-small" label="Close"
+									variant="brand-outline" onclick={closeDetailsModal}></lightning-button>
+
+							</div>
+						</footer>
+					</div>
+				</div>
+			</section>
+		</template>
+
+	</div>
+</template>

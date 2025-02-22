@@ -1,0 +1,94 @@
+<apex:page standardController="ETDI_Trainees__c" extensions="TraineeCertificatePdfController" applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf"  standardStylesheets="false" applyHtmlTag="false">
+    <head>
+        <style>
+            @page {
+            margin: 0.25in; 
+            size: 12in 8in;
+            margin-top: 130px;
+            padding:0px;
+            margin-bottom: 140px; 
+            
+            @top-left {
+                content: element(header);
+            }                           
+            @bottom-left {   
+                content: element(footer);
+            } 
+        }        
+        div.header {
+            margin-top:10px;
+            position: running(header);
+            width: 100%;
+            margin-right: 40px;
+        }
+        div.footer {                    
+            position: running(footer);
+            width: 100%;
+            margin-left: 10px;
+            margin-top:0px;
+        }
+        </style>
+    </head>
+    
+    <div class="header" style="width: 100%;display: inline-block;float: center;text-align:center;">
+        <apex:image style="height: 100px;" url="{!URLFOR($Resource.certificate_header)}"/>                
+    </div>
+
+ 	   
+    <div style="width: 100%;display: inline-block;">
+        <apex:image style="height: 100px; text-align:left;" url="{!URLFOR($Resource.ETDI_certificate_heading_eng)}"/> 
+        <apex:image style="height: 100px; float: right;" url="{!URLFOR($Resource.ETDI_certificate_heading_arb)}"/> 
+    </div>
+    
+    <div>
+        <h1 style="text-align:center;"> <b>{!ETDI_Trainees__c.Employee__r.Name}</b></h1>
+        <h4 style="text-align:center;"> <b>( {!ETDI_Trainees__c.Employee__r.ETIN_Employee_Id__c} )</b></h4>
+    </div>
+    
+  <!--  <div style="direction: rtl;">
+        <p style= "font-size: 30px; font-family: 'Arial Unicode MS';"> البرنامـج التدريبي / اسم البرنامج التدريبي  <b>{!ETDI_Trainees__c.ETDI_Booking_Request__r.Program_Name__r.Name}</b></p>
+    </div> -->
+    
+    <div>
+        <apex:image style="height: 35px; float: right;" url="{!URLFOR($Resource.ETDI_ProgramName_Text)}"/>
+        <p style="text-align:left; font-size: 20px;"> Training Program / Training program name  <b>{!ETDI_Trainees__c.ETDI_Booking_Request__r.Program_Name__r.Name}</b></p>
+    </div>
+    
+    <div>
+        <apex:image style="height: 35px; float: right;" url="{!URLFOR($Resource.ETDI_Conducted_Text)}"/>   
+        <p style="text-align:center; font-size: 25px;"><b><i> Conducted </i> </b>&nbsp;&nbsp;<apex:outputText value="{0, date, dd'/'MM'/'yyyy}"><apex:param value="{!ETDI_Trainees__c.ETDI_Booking_Request__r.Requested_Date__c}"/></apex:outputText></p>
+    </div>
+    
+    
+    <div>
+        <apex:image style="height: 35px; float: right;" url="{!URLFOR($Resource.ETDI_expDate_Text)}"/>  
+        <p style="text-align:center; font-size: 25px;"> Expiry Date &nbsp;&nbsp;<apex:outputText value="{0, date, dd'/'MM'/'yyyy}"><apex:param value="{!ETDI_Trainees__c.ETDI_Booking_Request__r.Expiry_Date__c}"/></apex:outputText></p>
+    </div>
+    
+    
+    
+    
+   <!--  <div style="width: 100%;display: inline-block;float: center;text-align:right;">
+        <apex:image style="height: 100px;" url="{!URLFOR($Resource.ETDI_certificate_heading_arb)}"/> 
+    </div>-->
+    
+    
+ <!--   <div styleClass="center_section" style="width: 100%;display: inline-block;float: center;text-align:center;">
+        <apex:image style="height: 100px;" url="{!URLFOR($Resource.certificate_Heading)}"/>                
+    </div>
+    <div styleClass="center_section" style="width: 100%;display: inline-block;float: center;text-align:center;">
+        <apex:image style="height: 50px;" url="{!URLFOR($Resource.certificate1)}"/>                
+    </div>
+    <div>
+        <p style="text-align:center;"> This certifate is awarded to  <b>{!ETDI_Trainees__c.Employee__r.Name}</b></p>
+        <p style="text-align:center;"> For the training conducted during the period <b><apex:outputText value="{0, date, dd'/'MM'/'yyyy}"><apex:param value="{!ETDI_Trainees__c.ETDI_Booking_Request__r.Requested_Date__c}"/></apex:outputText></b> to <b><apex:outputText value="{0, date, dd'/'MM'/'yyyy}"><apex:param value="{!ETDI_Trainees__c.ETDI_Booking_Request__r.Completed_Date__c}"/></apex:outputText></b></p>
+    </div> -->
+    
+    <div class="footer">
+        <apex:image style="height: 100px;" url="{!URLFOR($Resource.certificate_footer)}"/>
+        <!--div style="text-align:center"-->
+        <b align="right" style="float:right; margin-top:70px; padding-right:30px;">{!ETDI_Trainees__c.Certificate_Serial_Number__c}</b>
+        <!--/div-->
+    </div>
+    
+</apex:page>

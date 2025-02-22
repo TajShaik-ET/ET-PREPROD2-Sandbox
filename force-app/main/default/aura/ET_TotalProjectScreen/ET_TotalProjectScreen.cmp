@@ -1,0 +1,622 @@
+<aura:component  implements="force:lightningQuickAction,force:hasRecordId,lightning:isUrlAddressable" controller='ET_ProfitCalculationScreensController'>
+    <aura:handler value="{!this}" name="init" action="{!c.doinit}" />
+    <aura:attribute name="quoteId" type="Id"/>
+
+    <aura:attribute name="costCalculations" type="List" />
+    <aura:attribute name="ProfitValueCalculations" type="List"/>
+    <aura:attribute name="ProfitRateCalculations" type="List"/>
+    <aura:attribute name="PaybackValueCalculations" type="List"/>
+    <aura:attribute name="PaybackAnalysisCalculations" type="List"/>
+
+
+
+
+    <table class="slds-table slds-table_cell-buffer  slds-table_bordered slds-table_striped">
+
+
+
+        <tbody>
+            <tr class="slds-hint-parent red-color-class">   
+                <td data-label="Years">
+                    <div class="labelClass" title="Years"><b>Years</b></div>
+                </td>
+                <td data-label="1">
+                    <div class="labelClass" title="1">Y1</div>
+                </td>
+               
+                <td data-label="2">
+                        <div class="labelClass" title="2">Y2</div>
+                </td>
+                <td data-label="3">
+                        <div class="labelClass" title="3">Y3</div>
+                </td>
+                <td data-label="4">
+                    <div class="labelClass" title="4">Y4</div>
+                </td>
+                <td data-label="5">
+                    <div class="labelClass" title="5">Y5</div>
+                </td>
+                <td data-label="5">
+                    <div class="labelClass" title="6">Y6</div>
+                </td>
+                <td data-label="1">
+                    <div class="labelClass" title="7">Y7</div>
+                </td>
+                <td data-label="1">
+                    <div class="labelClass" title="8">Y8</div>
+                </td>
+            </tr>
+
+
+
+
+
+
+
+
+          
+            <aura:if isTrue="{!not(empty(v.costCalculations))}">
+                <tr >
+                    <td colspan="9"> 
+                        <div class="slds-align--absolute-center red-color-class"><b>Cost Elements</b></div>
+                    </td>								
+        
+                </tr>
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Vehicle Cost">Vehicle Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.vehicleCost}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Fuel Cost">Fuel Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.fuelCost}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Driver Cost">Driver Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.driverCost}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Nanny Cost">Nanny Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.nanniesCost}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Supervisor Cost">Suppervisor Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.supervisorCost }</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Coordinator Cost">Coordinator Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.coordinatorCost}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Accountant Cost">Accountant/Cashier Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.accountantCost}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Other Employe Cost">Other Employee Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.otherEmpCost}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Other Cost">Other Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.otherCosts}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="VAT Cost">VAT Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.VATCost}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Total Cost">Total Cost</div>
+                    </td>
+                    <aura:iteration items="{!v.costCalculations}" var="costCalculationYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!costCalculationYearWise.toalCost}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+            </aura:if>
+
+
+
+
+
+
+
+
+          
+
+            <aura:if isTrue="{!not(empty(v.ProfitValueCalculations))}">
+                <br/>
+                <br/>
+                <tr >
+                    <td colspan="9"> 
+                        <div class="slds-align--absolute-center red-color-class"><b>Profit Value Calculations</b></div>
+                    </td>								
+        
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Vehicle Profit">Vehicle Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.vehicleProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Fuel Profit">Fuel Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.fuelProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Driver Profit">Driver Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.driverProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Nanny Profit">Nanny Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.nannyProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Supervisor Profit">Supervisor Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.supervisorProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Coordinator Profit">Coordinator Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.coordinatorProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Accountant/Cashier Profit">Accountant/Cashier Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.accountantProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Other Employee Profit">Other Employee Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.otherEmpProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Other Cost Profit">Other Cost Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.otherCostProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" title="Total Profit">Total Profit</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitValueCalculations}" var="profitValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitValueYearWise.totalProjectProfitMarginValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+            </aura:if>
+
+
+
+
+
+
+
+
+           
+
+            <aura:if isTrue="{!not(empty(v.ProfitRateCalculations))}">
+                <br/>
+                <br/>
+                <tr >
+                    <td colspan="9"> 
+                        <div class="slds-align--absolute-center red-color-class"><b>Profit Margin Rate Calculations</b></div>
+                    </td>								
+        
+                </tr>
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Vehicle Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.vehicleProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Fuel Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.fuelProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Driver Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.driverProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass">Nanny Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.nannyProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Supervisor Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.supervisorProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClasse" >Coordinator Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.coordinatorProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClasse" >Accountant/Cashier Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.accountantProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Other Employee Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.otherEmpProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass">Other Cost Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.otherCostProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Total Project Profit Margin Rate</div>
+                    </td>
+                    <aura:iteration items="{!v.ProfitRateCalculations}" var="profitMarginRateYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!profitMarginRateYearWise.totalProjectProfitMarginRate}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+            </aura:if> 
+
+
+
+
+
+
+
+
+
+
+           
+
+            <aura:if isTrue="{!not(empty(v.PaybackValueCalculations))}">
+                <br/>
+                <br/>
+                <tr >
+                    <td colspan="9"> 
+                        <div class="slds-align--absolute-center red-color-class"><b>Payback Values</b></div>
+                    </td>								
+        
+                </tr>
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Total Value of Rental</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackValueCalculations}" var="paybackValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackValueYearWise.totalValueofRental}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Total Investment</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackValueCalculations}" var="paybackValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackValueYearWise.totalInvestment}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Total Depreciation</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackValueCalculations}" var="paybackValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackValueYearWise.totalDepreciation}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Total Resale Value</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackValueCalculations}" var="paybackValueYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackValueYearWise.totalResaleValue}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+            </aura:if>
+
+
+
+
+
+
+
+
+
+
+            
+
+           
+
+            <aura:if isTrue="{!not(empty(v.PaybackAnalysisCalculations))}">
+                <br/>
+                <br/>
+                <tr >
+                    <td colspan="9"> 
+                        <div class="slds-align--absolute-center red-color-class"><b>Payback Analysis</b></div>
+                    </td>								
+        
+                </tr>
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Payback 1</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackAnalysisCalculations}" var="paybackAnalysisYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackAnalysisYearWise.payback1}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Payback Ratio 1</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackAnalysisCalculations}" var="paybackAnalysisYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackAnalysisYearWise.paybackRatio1}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Payback 2</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackAnalysisCalculations}" var="paybackAnalysisYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackAnalysisYearWise.payback2}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Payback Ratio 2</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackAnalysisCalculations}" var="paybackAnalysisYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackAnalysisYearWise.paybackRatio2}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Annual Share Payback Ratio 2</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackAnalysisCalculations}" var="paybackAnalysisYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackAnalysisYearWise.annualSharePayback2}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Payback 3</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackAnalysisCalculations}" var="paybackAnalysisYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackAnalysisYearWise.payback3}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Payback Ratio 3</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackAnalysisCalculations}" var="paybackAnalysisYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackAnalysisYearWise.paybackRatio3}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+
+                <tr>
+                    <td data-label="1">
+                        <div class="labelClass" >Annual Share Payback Ratio 3</div>
+                    </td>
+                    <aura:iteration items="{!v.PaybackAnalysisCalculations}" var="paybackAnalysisYearWise">
+                        <td >
+                            <div class="slds-truncate" >{!paybackAnalysisYearWise.annualSharePayback3}</div> 
+                        </td>
+                    </aura:iteration>
+                </tr>
+            </aura:if>
+        </tbody>
+    </table>
+</aura:component>

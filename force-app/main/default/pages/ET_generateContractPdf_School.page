@@ -1,0 +1,451 @@
+<apex:page applyBodyTag="false" standardController="Contract_Pdf_Header__c" extensions="PRI_customerQuoteContractController" showHeader="false" sidebar="false" renderAs="pdf"  standardStylesheets="false" applyHtmlTag="false">
+    
+    <html>
+        <head>
+            <style>
+                @page {
+                size: A4;
+                margin:25mm 10mm;
+                @bottom-left {
+                content: element(footer);
+                }
+                @top-left {
+                content: element(header);
+                }
+                @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-size: 12px;
+                }
+                }
+                @page:first {
+                @bottom-left {
+                content: element(footer);
+                }
+                @top-left {
+                content: element(header);
+                }
+                } 
+                
+                div.divFooter {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                div.divHeader {
+                margin:20px 0px;
+                display: block;
+                padding: 5px;
+                position: running(header);
+                }
+                
+                table{
+                width: 100%;
+                }
+                div.divFooter {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .termNCondition{
+                //page-break-before: always;
+                } 
+                .topContact{
+                font-size: 10px;
+                float: right;
+                margin: 1rem;
+                line-height: 24px;
+                }
+                .headerRight img{
+                float: right;
+                margin: 0 5px;
+                }
+                .grey40{
+                color: rgb(88 89 91);
+                }
+                .heading{
+                color:#000;
+                margin:0px;
+                padding:13px 15px;
+                font-size:28px;
+                display:inline-block;
+                float: left;
+                text-transform: capitalize;
+                border-left:2px solid #939393;
+                margin-top:-10px;
+                }
+                h6{
+                color:rgb(88 89 91);
+                margin:0px;
+                padding:0px;
+                }
+                .leftsection .value{
+                color:rgb(88 89 91);
+                font-size:13px;
+                }
+                .leftsection p{
+                margin:0px 0 10px 0;
+                }
+                .leftsection .info{
+                color:#b3b2b2;
+                width:150px;
+                font-size:13px;
+                display:inline-block;
+                }
+                .rightsection {
+                color:rgb(88 89 91);
+                font-size:13px;
+                }
+                .subject{
+                color:#b3b2b2;
+                font-size:13px;
+                }
+                .workorder{
+                color:rgb(88 89 91);
+                font-size:13px;
+                }
+                .order_table, .STATable{
+                border-collapse: collapse;
+                }
+                .order_table tr th{
+                background:#f2f2f2;
+                padding:10px;
+                font-size:13px;
+                color:#000;
+                border: 1px solid #ccc;
+                font-weight: 300;
+                }
+                .order_table tr td{
+                border: 1px solid #ccc;
+                padding:10px;
+                font-size:13px;
+                color:#000;    
+                vertical-align: middle;
+                }
+                .border_bottom{
+                border-bottom:1px solid #dadada;
+                }
+                .order_table .values{
+                width:130px;
+                font-size:13px;
+                display:inline-block;
+                }
+                .subheading{
+                color:#878787;
+                font-size:15px;
+                margin-bottom:10px;
+                }
+                .subtext{
+                font-size:10px;
+                color:#878787;
+                }
+                .order_table .label_text{
+                float: left;
+                display: block;
+                width: 100%;
+                font-size:11px;
+                }
+                .order_table .label_value{
+                float: left;
+                padding: 10px 5px;
+                display: block;
+                width: 95%;
+                border-radius: 5px;
+                color: #000;
+                font-size:11px;
+                background:#f7f6f9;
+                }
+                body {
+                font-family: Arial, sans-serif;
+                }
+                .section {
+                margin: 14px;
+                }
+                .title {
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 16px;
+                text-decoration: underline;
+                }
+                .content {
+                margin-left: 0px;
+                line-height: 22px;
+                font-size:14px;
+                }
+                .definition {
+                font-weight: bold;
+                }
+                p {
+                margin: 0 0 8px 0;
+                line-height: 22px;
+                font-size:14px;
+                }
+                .numbers{
+                margin-right: 5px;
+                }
+                .textCenter{
+                text-align: center;
+                }
+                .STATable tr th, .STATable tr td{
+                padding: 5px 10px;
+                border: .5px solid #000;
+                font-size:14px;
+                vertical-align: top;
+                }
+                .left_margin{
+                margin-left:20px;
+                }
+                .article_table{
+                font-size:14px;
+                }
+                .article_table tr td, .content ol li{
+                vertical-align: top;
+                margin: 0 0 8px 0;
+                line-height: 22px;
+                font-size:14px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="divHeader">
+                <table>
+                    <tr>
+                        <td>
+                            <img src="{!$Resource.logoET}" alt="ETLogo" width="160" style="float: right;"/> 
+                        </td>
+                    </tr>      
+                </table> 
+            </div>
+            <apex:pageBlock >
+                <div class="section">
+                    <div class="title ">AGREEMENT FOR PROVISION OF THE {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Name} SCHOOL TRANSPORT SERVICE (Private School)</div>
+                    <div class="content">
+                        <p>
+                            This School Transport Service Agreement (the “Agreement”) is executed on {!Contract_Pdf_Header__c.Effective_Date__c} (“Effective date”).
+                        </p>
+                        <p>
+                            <strong> BETWEEN</strong> 
+                        </p>
+                        <p class="left_margin">
+                            <strong class="numbers"> (1) </strong> Emirates Public Transport  Services Company, a PJSC established under laws of UAE having its principal place of business is at Marrakech Street, Umm Ramool Area, P.O. Box - 5757, Dubai, United Arab Emirates, represented by {!Contract_Pdf_Header__c.ET_Representative__c} as ‘{!Contract_Pdf_Header__c.ET_Rep_Designation__c}’ (“hereinafter referred to as the <strong> “Company”)</strong>.
+                        </p>
+                        <p>
+                            <strong>AND</strong></p>
+                        
+                        <p class="left_margin">
+                            <strong class="numbers"> (2) </strong> {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Name}, a school registered in the United Arab Emirates, Commercial License number {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.AccountNumber}, United Arab Emirates whose principal place of business is at {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Station_Code__c} PO Box - {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Station__c} Dubai, United Arab Emirates, represented by Mr. {!Contract_Pdf_Header__c.Lessee_Rep__c} as ‘ {!Contract_Pdf_Header__c.Lessee_Rep_Designation__c}’, UAE (hereinafter referred to as the<strong> “Client”</strong>).
+                        </p> 
+                        <p class="left_margin"> Company and the Client are hereinafter referred to as “Parties” and individually as “Party”.  </p>
+                        
+                    </div>
+                </div>
+                <!-- RECITAL -->
+                <div class="section">
+                    <div class="title textCenter">RECITAL</div>
+                    <div class="content left_margin">
+                        <p class="article ">
+                            <strong class="numbers"> a)  Whereas,</strong> the Company is a qualified and experienced service provider and is authorized to operate and provide “School Bus Transportation” in UAE in accordance with applicable laws and regulations of United Arab Emirates.
+                        </p>
+                        <p class="article">
+                            <strong class="numbers"> b)  Whereas,</strong> the Client intends to use the Company’s bus/es to be utilized for School Bus Transportation Services according to the terms and conditions stated in this Agreement.
+                        </p>
+                        <p class="article">
+                            <strong class="numbers"> c)  Whereas,</strong> the Client requires School Transportation Services and has agreed to appoint the Company as its service provider for the required Services subject to the terms and conditions of this Agreement.
+                        </p>
+                        <p class="article">
+                            <strong class="numbers"> d)  Whereas,</strong> the Company has agreed to provide the Services against the payment paid by the Client on regular basis and in timely manner as determined under this Agreement.
+                        </p>
+                        <p>
+                            The above Recital is an integral part of this Agreement and shall be read together with this Agreement.
+                        </p> 
+                        <p>
+                            Now, therefore, for good and valuable consideration, the Parties agree as follows: 
+                        </p>
+                    </div>
+                </div>
+                <!-- Article 1 -->
+                <div class="section">
+                    <apex:pageBlockTable value="{!contractDetails}" var="article">
+                        <apex:column >
+                            <div>
+                                <h4><u>{!article.Name}</u></h4>
+                            </div>
+                            <table class="article_table">
+                                <apex:repeat value="{!article.subCaluses}" var="subClause">
+                                    <tr class="left_margin"><td style="padding-left:20px;padding-right:5px;padding-bottom:8px">{!subClause.Name}</td><td>{!subClause.Description}</td></tr>
+                                </apex:repeat>                                
+                            </table>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </div>
+                <!-- Additional Text for Article 12 -->
+                <div class="section">
+                    <div class="title">Article 12 - CORRESPONDENCES and COMMUNICATIONS</div>
+                    <div class="content left_margin">
+                        <p class="article">
+                            <strong class="numbers">12.1</strong> All notices or correspondences arising from or relating to this Agreement must be in writing and be sent by email or delivered to the Parties on the following address: -
+                        </p>
+                        <p class="article left_margin">
+                            <strong class="numbers"> a) </strong> Emirates Public Transport and Services Company, a company registered in the United Arab Emirates whose principal place of business is at PO Box 5757, Dubai, United Arab Emirates, Represented by Mr. {!Contract_Pdf_Header__c.ET_Representative__c} as ‘{!Contract_Pdf_Header__c.ET_Rep_Designation__c}  (“Company”).
+                        </p>
+                        <p class="article left_margin">
+                            <strong class="numbers"> b) </strong> {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Name} L.L.C  -, a company registered in the United Arab Emirates, Commercial License number {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.AccountNumber} , P.O box {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Station_Code__c}, Dubai, United Arab Emirates whose principal place of business is at  {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Station__c}, Dubai , United Arab Emirates, Represented by Ms.{!Contract_Pdf_Header__c.Lessee_Rep__c} as (“Client”).
+                        </p>
+                        <p class="article left_margin">
+                            This Agreement together with the Schedule 1 and Annexure A shall constitute the entire Agreement.
+                        </p>
+                        <p class="article left_margin">
+                            In WITNESS Whereof, The Parties have executed this Agreement through their duly Authorized Officers.
+                        </p>
+                    </div>
+                </div>
+                
+                <div style="position: relative;display:block;clear: both;width: calc( 100% - 50px)%; font-family:sans-serif;margin: 20px 0px 0 55px;">
+                    <table class="STATable" style="width:100%;border: trasprant;border-collapse: collapse;">
+                        <thead style="background:#f2f2f2;">
+                            <tr>
+                                <th><strong>On behalf of Emirates Transport</strong></th>
+                                <th><strong>On behalf of</strong> {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Name}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Name :{!Contract_Pdf_Header__c.ET_Representative__c}</td>
+                                <td>Name :{!Contract_Pdf_Header__c.Lessee_Rep__c}</td>
+                            </tr>
+                            <tr>
+                                <td>Position :{!Contract_Pdf_Header__c.ET_Rep_Designation__c}</td>
+                                <td>Position :{!Contract_Pdf_Header__c.Lessee_Rep_Designation__c}</td>
+                            </tr>
+                            <tr>
+                                <td style="height:150px"><strong>Seal and Signature:</strong></td>
+                                <td style="height:150px"><strong>Seal and Signature:</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Date :</td>
+                                <td>Date :</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+                <p class="title">Schedule – 1</p>
+                <div class="content">
+                    <ol>
+                        <li>
+                            <strong>Ref Clause 3 (d)</strong><br/>
+                            Extra Services charges – AED 0.
+                        </li>
+                        <li>
+                            <strong>Ref Clause 4 (a)</strong><br/>
+                            Bus specifications and requirements for the Services shall be as follows:<br/><br/>
+                            <table class="STATable" cellspacing="0" cellpadding="5">
+                                <thead>
+                                    <tr>
+                                        <th>Type of Buses</th>
+                                        <th>Model</th>
+                                        <th>Number of Buses</th>
+                                        <th>Monthly Value for each bus</th>
+                                        <th>Yearly Value for each bus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <apex:repeat var="Veh" value="{!VehiclList}">
+                                        <tr>
+                                            <td>{!Veh.Name}</td>
+                                            <td>{!Veh.Vehicle_Manufacture_Year__c}</td>
+                                            <td>{!Veh.Number_of_Vehicles__c}</td>
+                                            <td>{!Veh.Vehicle_Monthly_Price__c}</td>
+                                            <td>{!Veh.Total_Annual_Price_Target_Prices__c}</td>
+                                        </tr>
+                                        <!-- Add other rows here -->
+                                    </apex:repeat>
+                                </tbody>
+                            </table><br/>
+                        </li>
+                        <li>
+                            <strong>Ref Clause 5(a)</strong>
+                            The Company shall be paid throughout the duration of this Agreement.
+                            Payment to be made within 30 days from the receipt of the invoice.
+                            The payment shall be made through wire transfer or current dated cheque.
+                        </li>
+                        <li>
+                            <strong>Ref Clause 5 (c)</strong>
+                            School academic years 2023 To 2028 
+                            <ul>
+                                <li>Payment - Quarterly</li>
+                                <li>Payment - Monthly</li>
+                                <li>Number of buses – XX</li>
+                                <li>School days from Monday to Friday</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Ref Clause 5 (c)</strong>
+                            The Service for each Academic year will be provided with an average of 200 Kms per day/bus and the total Km allowed of this agreement of (16) buses = 330,000/-.
+                            Access kilometers charges -- 2 AED per Kilometer                            
+                        </li>
+                        <li>
+                            <strong>Ref Clause 5 (d)</strong>
+                            Free trip shall be within 200 kms and the timing shall not exceed 7 AM to 3 PM.
+                            The cost for the extra trips costing out of the school hours:<br/>
+                            <div class="left_margin">
+                                <p><strong>From 0 – 3 hours:</strong> AED 100 per bus during school hours, inclusive of driver and fuel.</p>
+                                <p><strong>3 hours and above:</strong> AED 200 per bus during school hours, inclusive of driver and fuel.</p>
+                                <p><strong>(Weekends/ holidays):</strong> Inclusive driver and fuel AED 750 per bus.</p>
+                                <p><strong>Outside the Emirate:</strong> Inclusive driver and fuel AED 1000 per bus.</p>
+                                
+                                • The Rent Price includes XXX and XXXX.
+                                • The mentioned price is based in 80% of seat utilization in each bus.
+                                If the seat utilization in any bus was below 80%, we will charge as per bus monthly rent.   
+                            </div>
+                        </li>
+                        <li>
+                            <strong>Ref Clause 6 (a)</strong>
+                            <strong>Fuel Escalation Factor Calculation:</strong>
+                            <ul>
+                                <li>Fuel allowance: The Company shall issue fuel cards for the buses operating under this Agreement. The fuel value shall be calculated on monthly basis and any increase in the current fuel price that is AED X.xx Per liter shall be charged additionally from the Client. (“Fuel Allowance”).</li>
+                                <li>The monthly reconciliation will be prepared between the actual and the allocated fuel allowance value. If the actual value of fuel cost exceeds the allocated fuel allowance value, the Company shall issue invoices for the additional amount payable by the Client to cover the additional fuel cost incurred by the Company and the same shall be paid within XX days from the date of receipt of the invoice. The settlement for fuel prices between both Parties shall be carried out according to the following equation: Fuel cost variance (to be paid by the Client) = Actual fuel cost for the specified period –(Minus) Fuel Allowance.</li>
+                                <li>In the event that the budgeted amount for the Fuel Allowance has not been consumed, a credit note for the same amount shall be issued by the Company in favor of the Client.</li>
+                            </ul>
+                        </li>
+                        <li> 
+                            <strong>Ref Clause 7 (a)</strong>
+                            The term of this Agreement - X years.
+                            
+                        </li>
+                        <li>
+                            <strong>Ref Clause 7 (b)</strong>                               
+                            The billing term shall be effective from --Start date of service for each academic year xxx  till 30th June 2028. All invoices shall be paid by the Client within 30 days from the date of receipt of the invoice.
+                        </li>
+                        <li>
+                            <strong>Ref Clause 7 (e)</strong>
+                            The Client shall pay in – Monthly installments.
+                        </li>
+                        <li>
+                            <strong>Ref Clause 7 (g)</strong>
+                            Value for Security Cheque – AED XXXX.
+                            Charges for the delay in payment - 5% (based on a simple interest calculation method) of the due payable amount on monthly for each month of delay. 
+                            Fee for return Cheque - AED 1000 (+ VAT) on the returned cheque.                            
+                        </li>
+                        <li>
+                            <strong>Ref Clause 7(h)</strong>
+                            In case payment is unpaid or delayed for more than 60 days, then the Company has the right to suspend the Services by providing 1 week notice to suspend the Services.
+                        </li>
+                        <li>
+                            <strong>Ref Clause 7(i)</strong>
+                            In case payment is unpaid or delayed for more than 75 days, then the Company has the right to terminate this Agreement.
+                        </li>
+                        <li>
+                            <strong>Ref Clause 7 (k)</strong>
+                            Charges for providing letter or any document - Fee of AED 50 on all types of Letters/Certificates (+VAT).
+                        </li>
+                        <li>
+                            <strong>Ref Clause 9(d)</strong>
+                            In case of any early termination or decrease in the number of buses for whatsoever reason, the same shall lead the Client to pay 3 months Transportation Fee as liquidated damages for each terminated bus.
+                            
+                        </li>
+                    </ol>
+                </div>
+            </apex:pageBlock>
+        </body>
+    </html>
+</apex:page>

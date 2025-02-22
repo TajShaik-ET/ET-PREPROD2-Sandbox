@@ -1,0 +1,21 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+    
+    <aura:handler event="force:refreshView" action="{!c.doInit}"/>
+    
+    
+   <lightning:overlayLibrary aura:id="overlayLib" />
+    <a href="" onclick="{!c.handlecase}">
+                    
+                    <div class="slds-col">
+                        <div class="form-box-row2 createCaseSection" id="step-1">
+                            <div class="leftsectiondiv">
+                                <img src="{!$Resource.MOM_Create_Case_New}"/>
+                            </div>
+                            <div class="rightsectiondiv">
+                                <h3 class="form-title">Create MRO Case</h3> 
+                            </div>
+                        </div>
+                    </div>
+                </a>
+</aura:component>

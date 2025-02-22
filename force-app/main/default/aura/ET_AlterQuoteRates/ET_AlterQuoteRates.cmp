@@ -1,0 +1,137 @@
+<aura:component controller="ET_ServiceRequestControllerHelper" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="showAlterRates" type="Boolean" default="false" />
+    <aura:attribute name="isSelectedAll" type="Boolean" default="false" />
+    <aura:attribute name="isSpinner" type="Boolean" default="false" />
+    <aura:attribute name="isEdit" type="Boolean" default="false" />
+    <aura:attribute name="alteringReason" type="String" />
+    <aura:attribute name="alterRatesObj" type="Object" />
+    <aura:attribute name="alterRatesObj1" type="Object" />
+    <aura:attribute name="serviceName" type="String" />
+    <aura:attribute name="Line" type="String" />
+    <aura:attribute name="requestedBylst" type="String[]" default="COO,Zone Executive Manager,Zone Head of Sales,Sales Manager,Rate Fixing,General Manager,Pricing Deparment Manager"/>
+    <aura:attribute name="approvedBylst" type="String[]" default="COO,General Manager,Pricing Deparment Manager"/>
+    <aura:attribute name="quoteId" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:registerEvent name="alterRateEvent" type="c:ET_AlterRatesEvent"/>
+    <aura:registerEvent name="notifyAlterRatesEvent" type="c:ET_AlterRatesEvent"/>>
+    <!--Taj-->
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    
+    <aura:if isTrue="{!v.isSpinner}">
+        <lightning:spinner alternativeText="Loading" />
+    </aura:if>
+    <aura:if isTrue="{!v.showAlterRates}">
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header modalHeader">
+                    <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeAlterRates}"
+                                          alternativeText="close" variant="bare-inverse"
+                                          class="slds-modal__close bulkCancelModal"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Alter Rates</h2>
+                </header> 
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium alterRatesContainer" id="modal-content-id-1">
+                    <div class="slds-form-element" >
+                        <div class="slds-card slds-has-bottom-magnet" >
+                            <table class="slds-table slds-no-row-hover slds-table_bordered slds-table_col-bordered" style="width:100%;">
+                                <aura:iteration items="{!v.alterRatesObj}" var="obj" indexVar="index">
+                                    <aura:if isTrue="{!obj.service==v.serviceName}">
+                                        <aura:iteration items="{!obj.elementRatesLineObj}" var="line" indexVar="index1">
+                                            <aura:if isTrue="{!line.Line==v.Line}">
+                                                <thead>
+                                                    <tr >
+                                                        <th scope="col" style="width:1%;max-width:1%;"><span class="slds-truncate">Name</span></th>
+                                                        <th colspan="8" class="year_th" scope="col" style="text-align: center;width:40%;" >
+                                                            <span class="slds-truncate">Years</span>
+                                                            <th scope="col"><span class="slds-truncate">1</span></th>
+                                                            <th scope="col"><span class="slds-truncate">2</span></th>
+                                                            <th scope="col"><span class="slds-truncate">3</span></th>
+                                                            <th scope="col"><span class="slds-truncate">4</span></th>
+                                                            <th scope="col"><span class="slds-truncate">5</span></th>
+                                                            <th scope="col"><span class="slds-truncate">6</span></th>
+                                                            <th scope="col"><span class="slds-truncate">7</span></th>
+                                                            <th scope="col"><span class="slds-truncate">8</span></th>
+                                                        </th>
+                                                        <th scope="col" style="width:10%;"><span class="slds-truncate">Requested By</span></th>
+                                                        <th scope="col" style="width:10%;"><span class="slds-truncate">To be Approved By</span></th>
+                                                        <th scope="col" style="width:15%;"><span class="slds-truncate">Reason for Altering</span></th>
+                                                        <th scope="col" style="width:5%;" class="custom_checkox">
+                                                            <span class="slds-truncate">
+                                                                <lightning:input type="checkbox" value="{!line.isSelectedAll}" checked="{!line.isSelectedAll}" onchange="{!c.handleSelectAll}"/>
+                                                            </span>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <aura:iteration items="{!line.elementRatesYearObj}" var="year" indexVar="index2"> 
+                                                    <tbody>
+                                                        <aura:if isTrue="{!and(year.errorMsg!=null,year.errorMsg!='')}">
+                                                            <tr> 
+                                                                <td >
+                                                                </td>
+                                                                <td colspan="8" style="font-weight:bold;color:red;">
+                                                                    {!year.errorMsg}
+                                                                </td>
+                                                            </tr>
+                                                        </aura:if>
+                                                        <tr> 
+                                                            <td>
+                                                                <p class="name_text"> {!year.elementLabel} <!--{!year.allowEdit}-->
+                                                                    <lightning:buttonIcon iconName="utility:edit" onclick="{! c.editEliment }"
+                                                                                          alternativeText="Edit" value="{!index2}" disabled="{!!year.allowEdit}"/>
+                                                                </p>
+                                                            </td>
+                                                            <aura:iteration items="{!year.elementRatesLineItemsObj}" var="item" indexVar="index2">
+                                                                <td >
+                                                                    <lightning:input type="number" name="{!year.elementLabel+':'+index2}" class="input_width"  formatter="decimal" step="0.001" value="{!item.elementRate}" disabled="{!!item.isEdit}" onblur="{!c.handleChange}"/>
+                                                                </td>
+                                                            </aura:iteration>
+                                                            <td class="label_none">
+                                                                <lightning:select aura:id="requestedById" 
+                                                                                  value="{!year.requestedBy}" disabled="{!!year.isRowEdit}" >
+                                                                    <option value="">-None-</option>
+                                                                    <aura:iteration items="{!v.requestedBylst}" var="val">
+                                                                        <option value="{!val}"> {!val}</option>
+                                                                    </aura:iteration>
+                                                                </lightning:select>
+                                                            </td>
+                                                            <td class="label_none">
+                                                                <lightning:select aura:id="approvedById" 
+                                                                                  value="{!year.approvedBy}" disabled="{!!year.isRowEdit}" >
+                                                                    <option value="">-None-</option>
+                                                                    <aura:iteration items="{!v.approvedBylst}" var="val">
+                                                                        <option value="{!val}"> {!val}</option>
+                                                                    </aura:iteration>
+                                                                </lightning:select>
+                                                                
+                                                            </td>
+                                                            <td >
+                                                                <lightning:input aura:id="fieldId" value="{!year.alteringReason}" disabled="{!!year.isRowEdit}" /> 
+                                                            </td>
+                                                            <td class="custom_checkox"> 
+                                                                <lightning:input type="checkbox" value="{!index2}" checked="{!year.isSelected}" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </aura:iteration>
+                                            </aura:if>
+                                        </aura:iteration>
+                                    </aura:if>
+                                </aura:iteration>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer modalFooter modalFooter">
+                    <lightning:button variant="brand" label="Close" title="Close" 
+                                      onclick="{! c.closeAlterRates }" class="btnsave"/>
+                    <lightning:button variant="brand" label="Submit" title="Submit" 
+                                      onclick="{! c.submitAlterRates }" class="btnsave"/>
+                </footer>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->  
+    </aura:if>
+</aura:component>

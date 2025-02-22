@@ -1,0 +1,7 @@
+.infoTabs .slds-size_1-of-13 label{
+    min-height: 40px !important;
+}
+.btn_div{
+    display: flex;
+    gap: 0.5rem;
+}

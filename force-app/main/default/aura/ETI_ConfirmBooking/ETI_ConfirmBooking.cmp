@@ -1,0 +1,32 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader" controller="ETI_ConfirmBookingController">
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="isConfirm" type="Boolean" default="false"/>
+    <aura:attribute name="isSpinnerOpen" type="Boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    
+    <lightning:card>
+
+            <header class="slds-modal__header ">
+        <h2 id="modal-heading-01" class="slds-text-heading_small slds-hyphenate">Confirm Booking</h2>
+    </header>
+                <aura:if isTrue="{!v.isSpinnerOpen}">
+            <lightning:spinner alternativeText="Loading" size="medium" variant="brand"/>
+        </aura:if>
+        <aura:if isTrue="{!v.isConfirm}">
+            <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="ETI_Booking__c"
+                                      onsubmit="{!c.handleSubmit}" aura:id="theForm"
+                                      onsuccess="{!c.handleSuccess}" onload="{!c.handleOnLoad}">
+                <lightning:messages />
+                <lightning:inputField fieldName="Booking_Date__c" required="true"/>
+                <lightning:inputField fieldName="Preferred_Time__c"  required="true"/>
+                <lightning:inputField fieldName="Inspector__c"  required="true"/>
+                <div class="slds-align_absolute-center">
+                    <lightning:button class="slds-m-top_small" name="Cancel" label="Cancel" onclick="{!c.cancel}"/>
+                    <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="Confirm" label="Confirm" />
+                </div>
+            </lightning:recordEditForm>
+        </aura:if>
+    </lightning:card>
+    
+</aura:component>

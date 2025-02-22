@@ -1,0 +1,57 @@
+.THIS .contentbox{
+    border-left: 1px solid #1a1818;  
+    border-right: 1px solid #1a1818;  
+    border-bottom: 1px solid #1a1818;  
+    border-top: 1px solid #1a1818;
+ }
+ 
+ .THIS .header{
+    border-radius: 0px; 
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 0px;  
+    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.1);
+    background-color: #383838;
+    color: white;
+ }
+
+ .THIS .deletButton{
+    background-color: #3ba755;
+    color: white;
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: none;
+    font-size: 12px;
+    transition: .4s;
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 17px;
+    text-transform: capitalize;
+}
+
+
+
+.THIS .deletButton:hover {
+    background-color: rgb(234, 0, 30);
+    color: #3ba755;
+    border: 1px solid rgb(98 204 140);
+    box-shadow: none;
+    transition:0.4s;
+}
+
+.THIS .sldstruncate{
+    color: Black;
+    max-width: 270px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .error{
+    color: red;
+     font-size: 110%;
+}
+
+.THIS .slds-modal__container {
+    margin: 0 auto;
+   
+    min-width: 60%!important;
+}

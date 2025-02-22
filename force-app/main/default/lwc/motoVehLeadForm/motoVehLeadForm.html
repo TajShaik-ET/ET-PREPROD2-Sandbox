@@ -1,0 +1,56 @@
+<template>
+    <lightning-card title="Customer Info">
+        <div class="slds-p-around_medium">
+            <lightning-input label="First Name" name="FirstName" value={firstName} data-id="valid-input" required="true"  message-when-value-missing="Please enter First Name"
+                onchange={handleFormInputChange}></lightning-input>
+            <lightning-input label="Last Name" name="LastName" value={lastName} data-id="valid-input" required="true"
+                onchange={handleFormInputChange}></lightning-input>
+            <lightning-input label="MobilePhone" name="MobilePhone" value={mobilePhone} data-id="valid-input" required="true"
+                onchange={handleFormInputChange}></lightning-input>
+            <lightning-input label="Email" name="Email" value={email} data-id="valid-input" required="true"
+                onchange={handleFormInputChange}></lightning-input>
+
+            <lightning-combobox label="Lead Source" name="LeadSource" value={leadSource} data-id="valid-input" required="true"
+                options={leadsourceoptions} onchange={handleFormInputChange}></lightning-combobox>
+
+            <c-reusable-Custom-Lookup-Field label="Vehicle Brand" required-input="true"
+                onselectedrecordevent={getvehBrandRecordDetails} onrecordupdated={clearvehModelRecordDetails}
+                object-api-name="Vehicle_Brand_Master__c" icon-name="custom:custom31"></c-reusable-Custom-Lookup-Field>
+
+            <c-reusable-Custom-Lookup-Field label="Vehicle Model" disable-input={disabled} required-input="true"
+                data-id="vehicle-model" selected-ids={vehBrandRecordId} icon-name="custom:custom31"
+                filters={filterCondition} onselectedrecordevent={getVehModelRecordDetails}
+                object-api-name="Vehicle_Model_Master__c"
+                onkeychangeevent={SearchKeyHandler}></c-reusable-Custom-Lookup-Field>
+
+            <lightning-combobox label="Vehicle Model Year" name="ETM_Vehicle_Model__c" value={etmVehicleModel} data-id="valid-input"
+                required="true" options={ModelYearOptions} onchange={handleFormInputChange}></lightning-combobox>
+
+             <template if:true={CampaignField}>
+                <c-reusable-Custom-Lookup-Field label="Campaign" name="Campaign" required-input={requiredCampain}
+                onselectedrecordevent={getCampaignRecordDetails} object-api-name="Campaign" filters="IsActive = true"
+                icon-name="custom:custom31"></c-reusable-Custom-Lookup-Field>
+             </template>                   
+             <c-reusable-Custom-Lookup-Field label="Workshop Location" name="WorkshopLocation" required-input="true"
+                onselectedrecordevent={getWorkshopRecordDetails} object-api-name="CICO_Workshop_Location__c"
+                icon-name="custom:custom31"></c-reusable-Custom-Lookup-Field>
+
+            <lightning-input label="Description For Service Request" name="Description_for_Service_Request__c" value={descripton} data-id="valid-input" required="true"
+                onchange={handleFormInputChange}></lightning-input>
+
+            <!--<lightning-dual-listbox label="List of Required Services" name="List_of_Required_Services__c"
+                source-label="Available" selected-label="Selected" options={VehlistOfRequiredServicesOptions}
+                value={listOfRequiredServices} required="true" onchange={handleFormInputChange}>
+            </lightning-dual-listbox>-->
+
+            <div class="slds-m-top_medium slds-text-align_center">
+                <lightning-button variant="brand" class="slds-m-top_medium" label="Save" onclick={handleSubmit}></lightning-button>&nbsp;&nbsp;
+                <lightning-button variant="brand" label="Back" title="Back" onclick={backbButtonHanlder}></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+    <template if:true={loaded}>
+        <lightning-spinner variant="brand" alternative-text="Loading" class="SpinnerHolder"></lightning-spinner>
+    </template>
+
+</template>

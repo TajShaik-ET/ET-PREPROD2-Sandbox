@@ -1,0 +1,98 @@
+<aura:component controller="ETVIN_ShowVehicleInsuranceCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" >
+	
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" description=""/>
+    <aura:attribute name="selectedTabId" type="String"/>
+     <aura:attribute name="VehiclePolicyCount" type="String"/>
+     <aura:attribute name="ClaimPolicyCount" type="String"/>
+    <aura:attribute name="CorrectionCount" type="String"/>
+    <aura:attribute name="CancellationCount" type="String"/>
+    <aura:attribute name="mulkiyaCount" type="String" default="00"/>
+    
+    <aura:attribute name="detailpage" type="boolean"  default="false"/>
+    
+      <div class="mybussinessdiv">
+            <article class="slds-card">
+                
+                <a href="javascript:void(0)" id="Vehiclepolicy" onclick="{!c.getSelectedTab}">
+                    <div class="slds-col">
+                        <div class="form-box-row2" id="step-1">
+                            <div class="leftsectiondiv">
+                                <img src="{!$Resource.carIcon}"/>
+                            </div>
+                            <div class="rightsectiondiv">
+                                <div class="numberSize">
+                                    {!v.VehiclePolicyCount}
+                                </div>
+                                <h3 class="form-title">Vehicle Policy</h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="" id="Claimpolicy" onclick="{!c.getSelectedTab}">
+                    <div class="slds-col">
+                        <div class="form-box-row2" id="step-1">
+                            <div class="leftsectiondiv">
+                                <img src="{!$Resource.rightTickIcon}"/>
+                            </div>
+                            <div class="rightsectiondiv">
+                                <div class="numberSize">
+                                    {!v.ClaimPolicyCount}
+                                </div>
+                                <h3 class="form-title">Claim Policy</h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!--<a href="" onclick="{!c.handleActiveResourceClickDashboard}">
+                     -->    <a href="" id="Correction" onclick="{!c.getSelectedTab}" >
+                <div class="slds-col">
+                    <div class="form-box-row2" id="step-1">
+                        <div class="leftsectiondiv">
+                            <img src="{!$Resource.bookTickIcon}"/>
+                        </div>
+                        <div class="rightsectiondiv">
+                            <div class="numberSize">
+                               {!v.CorrectionCount}
+                            </div>
+                            <h3 class="form-title">Correction Request</h3>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                <!-- <a href="" onclick="{!c.handleActiveVehiclesClickDashboard}">
+                     -->   <a href="" id="Cancellation" onclick="{!c.getSelectedTab}">
+                <div class="slds-col">
+                    <div class="form-box-row2" id="step-1">
+                        <div class="leftsectiondiv ">
+                            <img src="{!$Resource.crossTickIcon}"/>
+                        </div>
+                        <div class="rightsectiondiv">
+                            <div class="numberSize">
+                               {!v.CancellationCount}
+                            </div>
+                            <h3 class="form-title">Cancellation Request</h3>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                <a href="" id="Mulkiya" onclick="{!c.getSelectedTab}">
+                <div class="slds-col">
+                    <div class="form-box-row2" id="step-1">
+                        <div class="leftsectiondiv ">
+                            <img src="{!$Resource.bookTickIcon}"/>
+                        </div>
+                        <div class="rightsectiondiv">
+                            <div class="numberSize">
+                               {!v.mulkiyaCount}
+                            </div>
+                            <h3 class="form-title">Available for Mulkiya</h3>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                 
+            </article>
+        </div> 
+    
+    
+</aura:component>

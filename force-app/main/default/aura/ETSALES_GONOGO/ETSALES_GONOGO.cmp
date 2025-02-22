@@ -1,0 +1,775 @@
+<aura:component controller="ETSALES_GONOGOController" 
+                implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global">  
+    <aura:handler name="init" value="{!this}" action="{!c.initData}"/>
+    <!-- Attributes declaration--> 
+    <aura:attribute name="getOppAccountVehicleDetails" type="object"/>
+    <aura:attribute name="btnLabel" type="String" Default="Submit For Approval" />
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="opportunityRecordType" type="Opportunity" default="{'sobjectType': 'Opportunity'}"/>
+    <aura:attribute name="activeSections" type="List" default="[]" />
+    <aura:attribute name="noOfPSRs" type="Integer" default="0" />
+    <aura:attribute name="errorMessage" type="String" Default="Some error has occurred." />
+    <aura:attribute name="showError" type="Boolean" Default="false" />
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content {
+        overflow-y: hidden !important;
+        height: unset !important;
+        max-height: unset !important;
+        }
+        .slds-modal__container{
+        max-width: 120rem !important;
+        width:80% !important;
+        }
+        
+        table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+        }
+        th{
+        background: #f2f2f2;
+        }
+        th, td {
+        font-size:14px;
+        text-align: left;
+        padding: 4px 8px;
+        border: 1px solid #ccc;
+        }
+        p{
+        padding-top:10px;
+        padding-bottom:5px;
+        }
+    </aura:html>
+    
+    <div class="slds-col modal-header slds-modal__header ">
+        <h2 class="title slds-text-heading--medium">Go-NoGo</h2>
+    </div>
+    <div class="modal-body slds-scrollable_y"  style="height: 400px; max-height: 400px;">
+        <!--<aura:if isTrue="{!v.showError}">
+            <c:ET_DisplayErrorMessage message='{!v.errorMessage}' type='error'/>
+        </aura:if>-->
+        <lightning:accordion allowMultipleSectionsOpen="true" activeSectionName="{!v.activeSections }">
+            <lightning:accordionSection name="A" label="Account Information" class="section">
+                <aura:set attribute="body">
+                    <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                        <div class="slds-size_1-of-2">
+                            <div class="slds-grid">
+                                <div class="slds-size_1-of-2">
+                                    Account Name
+                                </div>
+                                
+                                <div class="slds-size_1-of-2">
+                                    <b> {!v.getOppAccountVehicleDetails.oppRecord.Account.Name}</b> </div>  
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-2">
+                            <div class="slds-grid">
+                                <div class="slds-size_1-of-2">
+                                    Account Type 
+                                </div>
+                                
+                                <aura:if isTrue="{!v.getOppAccountVehicleDetails.oppRecord.Account.Type}">
+                                    <div class="slds-size_1-of-2">
+                                        <b>  {!v.getOppAccountVehicleDetails.oppRecord.Account.Type} </b> </div>
+                                </aura:if>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="slds-size_1-of-2">
+                            <div class="slds-grid">
+                                <div class="slds-size_1-of-2">
+                                    Account Industry 
+                                </div>
+                                <aura:if isTrue="{!v.getOppAccountVehicleDetails.oppRecord.Account.Industry}">
+                                    <div class="slds-size_1-of-2">
+                                        <b>  {!v.getOppAccountVehicleDetails.oppRecord.Account.Industry}</b> </div>
+                                </aura:if>
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-2">
+                            <div class="slds-grid">
+                                <div class="slds-size_1-of-2">
+                                    Contact Name 
+                                </div>
+                                <aura:if isTrue="{!v.getOppAccountVehicleDetails.conRecord.Name}">
+                                    <div class="slds-size_1-of-2">
+                                        <b>{!v.getOppAccountVehicleDetails.conRecord.Name}</b> </div>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </div>
+                </aura:set>
+            </lightning:accordionSection>
+            <lightning:accordionSection name="B" label="{! v.opportunityRecordType.RecordType.Name != 'Driving School- B2B' ? 'Service Detail Information':'Contract Details Information' }" class="section">
+                <aura:if isTrue="{!v.opportunityRecordType.RecordType.Name == 'Driving School- B2B'}">
+                    <aura:set attribute="body">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        Contract Request Name
+                                    </div>                              
+                                    <div class="slds-size_1-of-2">
+                                        <b> {!v.getOppAccountVehicleDetails.contractRequestForm[0].Name}</b> </div>  
+                                </div>   
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        Self Payment    
+                                    </div>                                
+                                    <div class="slds-size_1-of-2">
+                                        <!--<b>{!v.getOppAccountVehicleDetails.contractRequestForm[0].ETS_Self_Payment__c}</b>-->
+                                        <ui:outputCheckbox aura:id="output" value="{!v.getOppAccountVehicleDetails.contractRequestForm[0].ETS_Self_Payment__c}"/>
+                                    </div>  
+                                </div><br/>
+                            </div>       
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        Vehicle
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <b>{!v.getOppAccountVehicleDetails.contractRequestForm[0].ETS_vehicle__c}</b>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        Lumpsum Package
+                                    </div>                                   
+                                    <div class="slds-size_1-of-2">
+                                        <!--<b>{!v.getOppAccountVehicleDetails.contractRequestForm[0].ETS_Lumpsum_Package__c}</b>-->
+                                        <ui:outputCheckbox aura:id="output" value="{!v.getOppAccountVehicleDetails.contractRequestForm[0].ETS_Lumpsum_Package__c}"/>
+                                    </div>  
+                                </div>
+                            </div>
+                            <br></br>
+                            <div class="slds-size_1-of-2">
+                                <br/>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        Contract Amount
+                                    </div>                                   
+                                    <div class="slds-size_1-of-2">
+                                        <b>{!v.getOppAccountVehicleDetails.contractRequestForm[0].Contract_Amount__c}</b>
+                                        
+                                        
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <br/>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        Pool Chance 
+                                    </div>                                   
+                                    <div class="slds-size_1-of-2">
+                                        <!--<b>{!v.getOppAccountVehicleDetails.contractRequestForm[0].ETS_Pool_Chance__c}</b>-->
+                                        <ui:outputCheckbox aura:id="output" value="{!v.getOppAccountVehicleDetails.contractRequestForm[0].ETS_Pool_Chance__c}"/>
+                                    </div>  
+                                </div>
+                            </div>
+                            <br></br>
+                            <div class="slds-size_1-of-2">
+                                <br/>
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <br/>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        Credit Invoice Allowed 
+                                    </div>                                   
+                                    <div class="slds-size_1-of-2">
+                                        <!--<b>{!v.getOppAccountVehicleDetails.contractRequestForm[0].ETS_Credit_Invoice_Allowed__c}</b>-->
+                                        <ui:outputCheckbox aura:id="output" value="{!v.getOppAccountVehicleDetails.contractRequestForm[0].ETS_Credit_Invoice_Allowed__c}"/>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </aura:set>
+                </aura:if>
+                <aura:if isTrue="{!v.opportunityRecordType.RecordType.Name != 'Driving School- B2B'}">
+                	<aura:set attribute="body">
+                            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-2">
+                                            Service Data Name
+                                        </div>                              
+                                        <div class="slds-size_1-of-2">
+                                            <b> {!v.getOppAccountVehicleDetails.oppRecord.Pricing_Service_Requests__r[0].Name}</b> </div>  
+                                    </div>   
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-2">
+                                            Service Emirate
+                                        </div>                                
+                                        <div class="slds-size_1-of-2">
+                                            <b>{!v.getOppAccountVehicleDetails.oppRecord.Pricing_Service_Requests__r[0].ET_Service_Request_Common_Data__r.ET_Service_Emirate__c}</b> 
+                                        </div>  
+                                    </div>
+                                    <br/>
+                                </div>       
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-2">
+                                            Contract Type
+                                        </div>
+                                        
+                                        <div class="slds-size_1-of-2">
+                                            <b> {!v.getOppAccountVehicleDetails.oppRecord.Pricing_Service_Requests__r[0].ET_Service_Request_Common_Data__r.ET_Contract_Type__c}</b> </div>  
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-2">
+                                            Pricing Type
+                                        </div>                                   
+                                        <div class="slds-size_1-of-2">
+                                            <b> {!v.getOppAccountVehicleDetails.oppRecord.Pricing_Service_Requests__r[0].ET_Service_Request_Common_Data__r.ET_Pricing_Type__c}</b> </div>  
+                                    </div>
+                                </div>
+                                <br></br>
+                                <div class="slds-size_1-of-2">
+                                    <br/>
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-2">
+                                            Contract Period
+                                        </div>                                   
+                                        <div class="slds-size_1-of-2">
+                                            <b> {!v.getOppAccountVehicleDetails.oppRecord.Pricing_Service_Requests__r[0].ET_Service_Request_Common_Data__r.ET_Contract_Period__c}</b> </div>  
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <br/>
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-2">
+                                            Pricing Method
+                                        </div>                                   
+                                        <div class="slds-size_1-of-2">
+                                            <b> {!v.getOppAccountVehicleDetails.oppRecord.Pricing_Service_Requests__r[0].ET_Service_Request_Common_Data__r.ET_Pricing_Method__c}</b> </div>  
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:set>
+                </aura:if>
+            </lightning:accordionSection>    
+            <lightning:accordionSection name="C" label="Opportunity Information">
+                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                    <div class="slds-size_1-of-2">
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                Opportunity Name
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <b> {!v.getOppAccountVehicleDetails.oppRecord.Name}</b> 
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="slds-size_1-of-2">
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                Opportunity Record Type
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <b>{!v.getOppAccountVehicleDetails.oppRecord.RecordType.Name}</b> 
+                            </div>
+                        </div>  
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="slds-size_1-of-2">
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                Tender Name 
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <b>  {!v.getOppAccountVehicleDetails.oppRecord.ETSALES_Tender__r.Name}</b> 
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="slds-size_1-of-2">
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                Bidding Type
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <b>  {!v.getOppAccountVehicleDetails.oppRecord.ETSALES_Bidding_Type__c}</b> 
+                            </div>
+                        </div> 
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="slds-size_1-of-2">
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                GL Service 
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <b>  {!v.getOppAccountVehicleDetails.oppRecord.ETSALES_GL_Services__c}</b> 
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="slds-size_1-of-2">
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                Customer Budget 
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <b>  {!v.getOppAccountVehicleDetails.oppRecord.ETSALES_Customer_Budget__c}</b> 
+                            </div>
+                        </div> 
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="slds-size_1-of-2">
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                Opportunity Close Date 
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <b>  {!v.getOppAccountVehicleDetails.oppRecord.CloseDate}</b> 
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </lightning:accordionSection>
+            <aura:if isTrue="{!v.opportunityRecordType.RecordType.Name == 'Leasing'||v.opportunityRecordType.RecordType.Name == 'Manpower'||v.opportunityRecordType.RecordType.Name == 'Transportation' 
+                             || v.opportunityRecordType.RecordType.Name =='Rental -B2B'}">
+                            
+                <lightning:accordionSection name="E" label="Item Details">
+                    <!--VEHICLE INFORMATION-->
+                    <aura:if isTrue="{!not(empty(v.getOppAccountVehicleDetails.vehicleRecords))}">
+                        <aura:iteration var="vehicle" items="{!v.getOppAccountVehicleDetails.vehicleRecords}" indexVar="index">
+                            
+                            <aura:if isTrue="{! index == 0}">
+                                
+                                <aura:set attribute="else">
+                                    <br/>
+                                </aura:set>
+                            </aura:if>
+                            <div class="slds-border_top"><b>Vehicle {!index+1}:</b></div>
+                            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-2">
+                                            Vehicle Make 
+                                        </div>
+                                        <aura:if isTrue="{!vehicle.ET_Vehicle_MAKE__c}">
+                                            <div class="slds-size_1-of-2">
+                                                <b>{!vehicle.ET_Vehicle_MAKE__c}</b> </div>
+                                        </aura:if>
+                                    </div> 
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-2">
+                                            Vehicle Quantity 
+                                        </div>
+                                        <aura:if isTrue="{!vehicle.ET_Vehicle_Quantity__c}">
+                                            <div class="slds-size_1-of-2">
+                                                <b>  {!vehicle.ET_Vehicle_Quantity__c}</b> </div>
+                                        </aura:if>
+                                    </div> 
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-2">
+                                            Contract Period 
+                                        </div>
+                                        <aura:if isTrue="{!vehicle.ET_Contract_Period__c}">
+                                            <div class="slds-size_1-of-2">
+                                                <b>  {!vehicle.ET_Contract_Period__c}</b> </div>
+                                        </aura:if>
+                                    </div>    
+                                </div>
+                            </div>
+                        </aura:iteration>
+                        
+                        <aura:set attribute="else">
+                            <div>
+                                No Vehicle Information Available!
+                            </div>
+                            
+                        </aura:set>
+                    </aura:if>
+                    <!--MANPOWER INFORMATION-->
+                    <aura:if isTrue="{!not(empty(v.getOppAccountVehicleDetails.workForceRecords))}">
+                        <aura:iteration var="workforce" items="{!v.getOppAccountVehicleDetails.workForceRecords}" indexVar="index">
+                            
+                            <aura:if isTrue="{! index == 0}">
+                                
+                                <aura:set attribute="else">
+                                    <br/>
+                                </aura:set>
+                            </aura:if>
+                            <!--<div class="slds-border_top"><b>workforce {!index+1}:</b></div>-->
+                            <aura:if isTrue="{!workforce.RecordType.Name == 'Driver'}">
+                                <div class="slds-border_top"><b>Driver Details: </b></div>
+                                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                No of Drivers
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_No_of_Drivers__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>{!workforce.ET_No_of_Drivers__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Driver Category 
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Driver_Category__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>  {!workforce.ET_Driver_Category__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                </div>    
+                            </aura:if>
+                            <aura:if isTrue="{!workforce.RecordType.Name == 'Nanny'}">
+                                <div class="slds-border_top"><b>Nanny Details: </b></div>
+                                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Number Of School Bus Nannies
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Number_of_Nannies__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>{!workforce.ET_Number_of_Nannies__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                School Bus Nanny Category 
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Nanny_Category__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>  {!workforce.ET_Nanny_Category__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                </div>    
+                            </aura:if>
+                            <aura:if isTrue="{!workforce.RecordType.Name == 'Supervisor'}">
+                                <div class="slds-border_top"><b>Supervisor Details: </b></div>
+                                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Number Of Supervisors
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Number_of_Supervisors__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>{!workforce.ET_Number_of_Supervisors__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Supervisor Category 
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Supervisor_Category__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>  {!workforce.ET_Supervisor_Category__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                </div>    
+                            </aura:if>
+                            <aura:if isTrue="{!workforce.RecordType.Name == 'Coordinator'}">
+                                <div class="slds-border_top"><b>Coordinator Details: </b></div>
+                                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Number Of Coordinators
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Number_of_Coordinators__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>{!workforce.ET_Number_of_Coordinators__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Coordinator Category 
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Coordinator_Category__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>  {!workforce.ET_Coordinator_Category__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                </div>    
+                            </aura:if>
+                            <aura:if isTrue="{!workforce.RecordType.Name == 'Accountant/Cashier'}">
+                                <div class="slds-border_top"><b>Accountant/Cashier Details: </b></div>
+                                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Number Of Accountant/Cashier
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Number_of_Accountants__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>{!workforce.ET_Number_of_Accountants__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Accountant/Cashier Category 
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Accountant_Category__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>  {!workforce.ET_Accountant_Category__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                </div>    
+                            </aura:if>
+                            <aura:if isTrue="{!workforce.RecordType.Name == 'Other Employee'}">
+                                <div class="slds-border_top"><b>Other Employee Details: </b></div>
+                                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Number Of Other Employee
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Number_of_Other_Employees__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>{!workforce.ET_Number_of_Other_Employees__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-grid">
+                                            <div class="slds-size_1-of-2">
+                                                Other Employee Category 
+                                            </div>
+                                            <aura:if isTrue="{!workforce.ET_Other_employee_Category__c}">
+                                                <div class="slds-size_1-of-2">
+                                                    <b>  {!workforce.ET_Other_employee_Category__c}</b> </div>
+                                            </aura:if>
+                                        </div> 
+                                    </div>
+                                </div>    
+                            </aura:if>
+                        </aura:iteration>
+                        
+                        <aura:set attribute="else">
+                            <div>
+                                No Workfroce Information Available!
+                            </div>
+                            
+                        </aura:set>
+                    </aura:if>
+                </lightning:accordionSection>	
+            </aura:if>
+            <aura:if isTrue="{!v.opportunityRecordType.RecordType.Name == 'Maintainance'}">
+                <lightning:accordionSection name="D" label="Maintenance Request">
+                    <aura:if isTrue="{!not(empty(v.getOppAccountVehicleDetails.maintenanceRequestRecords))}">
+                        <body>
+                            <p>1) Fleet information for Light and Heavy vehicles and Equipment’s </p>
+                            <span class="answerStyle">Ans:</span> <div style="overflow-x:auto;">
+                            <table>
+                                <thead>
+                                    <tr class="">
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Team Role"><b>Sr. No.</b></div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Make/manufacturer type"><b>Make / manufacturer type</b></div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Model /Type"><b>Model / Type</b></div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Model Year"><b>Model Year</b></div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Chassis No"><b>Chassis No</b></div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Current KM/Hrs"><b>Current KM/Hrs</b></div>
+                                        </th> 
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Location"><b>Location</b></div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>    
+                                    <aura:iteration var="mainReq" items="{!v.getOppAccountVehicleDetails.maintenanceRequestRecords}" indexVar="index">
+                                        <tr>
+                                            <td> 
+                                                {!index + 1}
+                                            </td>
+                                            <td>
+                                                {!mainReq.Make_manufacturer_type__c}
+                                            </td>
+                                            <td>
+                                                {!mainReq.Model_Type__c}
+                                            </td>
+                                            <td>
+                                                {!mainReq.Model_Year__c}
+                                            </td>
+                                            <td>
+                                                {!mainReq.Chassis_No__c}
+                                            </td>
+                                            <td>
+                                                {!mainReq.Current_KM_Hrs__c}
+                                            </td>
+                                            <td>
+                                                {!mainReq.Location__c}
+                                            </td>
+                                        </tr>
+                                        <!-- </lightning:recordEditForm>-->
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                            
+                            </div>
+                            <p>2) Average  usage  P/Month ( kilometer or Hrs) </p>
+                            <span class="answerStyle">Ans:</span>
+                            <div style="overflow-x:auto;">
+                                <table>
+                                    <tr>
+                                        <th>Light vehicle </th>
+                                        <th>Heavy vehicle</th>
+                                        <th>Equipments</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Light_vehicle__c}
+                                            <!--  <input type="text" id="fname" name="fname"/> -->
+                                        </td>
+                                        <td>
+                                            {!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Heavy_vehicle__c}
+                                        </td>
+                                        <td>
+                                            {!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Equipments__c}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <p>3) Current location of workshop, No of Bays and Tools and Equipment’s </p>
+                            <span class="answerStyle">Ans:</span>
+                            <div style="overflow-x:auto;">
+                                <table>
+                                    <tr>
+                                        <th>Location</th>
+                                        <th>No. Bays</th>
+                                        <th>Tools And Equipment</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Location__c}
+                                        </td>
+                                        <td>
+                                            {!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.No_Bays__c}
+                                        </td>
+                                        <td>
+                                            {!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Tools_Equipment__c}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <p>4) Current organization chart of Fleet management including management, supporting staff and Technicians.</p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Current_organization_chart_of_Fleet__c}
+                                </span></p>
+                            <p>5) What is the operating system (software) used for the workshop operation and fleet maintenance/ store system? </p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Operating_system_software_used__c}
+                                </span></p>
+                            <p>6) What are the procedures to follow for the accident repairs ? Name of the Insurance companies dealt by you? </p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Procedures_follow_for_accident_repairs__c}
+                                </span></p>
+                            <p>7) Spare parts and Tyres currently using methods.<br/>
+                                <p>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Are you using any replacement parts, Non genuine parts , OEM Parts ? </p>
+                                <p>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; What are the TYRE brands /make  used for fleet? What is the duration of replacement KM vs fleet type.</p>
+                            </p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Spare_parts_and_Tyres_currently_using__c}</span></p>
+                            <p>8) What is the normal duty time currently following in your operation? </p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Normal_duty_time__c}</span></p>
+                            <p>9) Kindly provide us your Workshop Safety and HSE policy manual to understand the various aspects of HSE procedures followed in your workshop .</p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Workshop_Safety_HSE_policy__c}</span></p>
+                            <p>10) What is the service interval of the Lube service followed by the various categories of fleet </p>
+                            <span class="answerStyle">Ans:</span>
+                            <div style="overflow-x:auto;">
+                                <table>
+                                    <tr>
+                                        <th>Light vehicle(km)</th>
+                                        <th>Heavy vehicle</th>
+                                        <th>Equipments </th>
+                                    </tr>
+                                    <tr>
+                                        <td>{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Service_interval_Light_vehicle_km__c}</td>
+                                        <td>{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Service_interval_Heavy_vehicle__c}</td>
+                                        <td>{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Service_interval_Equipments__c}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <p>11) Kindly provide the details of warranty terms available with the dealer and its expiry dates ?</p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Warranty_terms_available__c}</span></p>
+                            <p>12) Provide us the KPI details /control procedures being followed currently in your workshop and Service level achieved currently against your fleet? </p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.KPI_details__c}</span></p>
+                            <p>13) What is the average percentage of availability % of vehicle/equipment on the road? Downtime %, Yearly accidental fleet % for last three years.</p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.percentage_of_availability_of_vehicle__c}</span></p>
+                            <p>14) Do you have any service contract with outsourcing company for the maintenance of workshop Equipment’s /Tools ?   If so kindly share the contract copies with us so as to understand the scope of works undertaken by them .</p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Service_contract_to_outsourcing_company}</span></p>
+                            <p>15) Details of persons who do the regular Maintenance and cleaning of the workshop including Equipment’s and Tools.</p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Details_of_persons_regular_Maintenance__c}</span></p>
+                            <p>16) What are the criteria being followed by you  to scrap the vehicle ?  </p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Criteria_to_Scrap_Vehicle__c}</span></p>
+                            <p>17) Kindly provide us the procedure to remove workshop scrap, used oil , etc. Who is the custodian of scrap materials ? Whether the contractor (ET)  or Company (Client)?</p>
+                            <p><span class="answerStyle">Ans:&nbsp;&nbsp;{!v.getOppAccountVehicleDetails.maintenanceQuestionnaire.Procedure_to_remove_workshop_scrap__c}</span></p>
+                            <br/><br/>
+                        </body>
+                        
+                        
+                        <aura:set attribute="else">
+                            <div>
+                                No Maintenance Information Available!
+                            </div>
+                            
+                        </aura:set>
+                    </aura:if>
+                </lightning:accordionSection>
+            </aura:if>
+        </lightning:accordion>
+    </div>
+    
+    <footer class="slds-modal__footer slds-align_absolute-center">
+        <lightning:button aura:id="submitBtn" class="slds-button slds-button_brand" label="{!v.btnLabel}"  
+                          onclick="{!c.submitForApproval}"/>
+        <lightning:button aura:id="cancelBtn" variant="Brand" label="Cancel"  onclick="{!c.cancel}"/>
+    </footer>
+    
+    <!--</ui:scrollerWrapper>-->
+    
+    
+</aura:component>

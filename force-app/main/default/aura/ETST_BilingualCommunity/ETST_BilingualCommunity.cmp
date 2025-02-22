@@ -1,0 +1,194 @@
+<aura:component extensible="true" access="global">
+    <aura:attribute name="clchooseone" type="string" default=""/>
+    <aura:attribute name="clAccept" type="string" default=""/>
+    <aura:attribute name="clPickupLandMark" type="string" default=""/>
+    <aura:attribute name="clDropupLandMark" type="string" default=""/> 
+    <aura:attribute name="clYourChildren" type="string" default=""/>
+    <aura:attribute name="clServiceInfo" type="string" default=""/>
+    <aura:attribute name="clPersonalInfo" type="string" default=""/>
+    <aura:attribute name="clRenewService" type="string" default=""/>
+    <aura:attribute name="clServiceType" type="string" default=""/>
+    <aura:attribute name="clTransportType" type="string" default=""/>
+    <aura:attribute name="clPickupStartDate" type="string" default=""/>
+    <aura:attribute name="clPickupEndDate" type="string" default=""/>
+    <aura:attribute name="clPickupLocation" type="string" default=""/>
+    <aura:attribute name="clDropOffLocation" type="string" default="" />    
+    <aura:attribute name="clPaidBy" type="string" default=""/>
+    <aura:attribute name="clBuildingNumber" type="string" default=""/>
+    <aura:attribute name="clEmployerName" type="string" default=""/>
+    <aura:attribute name="clStreetNumber" type="string" default=""/>
+    <aura:attribute name="clEmployerBillingAddress" type="string" default=""/>
+    <aura:attribute name="clCity" type="string" default=""/>
+    <aura:attribute name="clCountry" type="string" default="" />
+    <aura:attribute name="clFare" type="string" default="" />
+    <aura:attribute name="clLang" type="string" default="en" />
+    <aura:attribute name="clUpdateService" type="string" default="" /> <!-- Update Service -->
+    <aura:attribute name="clUpdate" type="string" default="" /> <!-- Update -->
+    <aura:attribute name="clPayNow" type="string" default="" /> <!-- Pay Now -->
+    <aura:attribute name="clRenew" type="string" default="" /> <!-- Renew -->
+    <aura:attribute name="clAddService" type="string" default="" /> <!-- Add Service -->
+    <aura:attribute name="clEmailInvoice" type="string" default="" /> <!-- Email Invoice -->
+    <aura:attribute name="clActivate" type="string" default="" /> <!-- Activate -->
+    <aura:attribute name="clDeactivateService" type="string" default="" />
+    <aura:attribute name="clCancellationType" type="string" default="" />
+	<aura:attribute name="clCancellationReason" type="string" default="" />  
+    <aura:attribute name="clCancellationValidationMsg" type="string" default="" />
+    <aura:attribute name="clCancellationEffectiveDateValidationMsg" type="string" default="" />
+    <aura:attribute name="clCancellationEffectiveDate" type="string" default="" />
+    <aura:attribute name="clRefundAmount" type="string" default="" />
+    <aura:attribute name="clCancellationEndDate" type="string" default="" />
+    <aura:attribute name="clComments" type="string" default="" />
+    <aura:attribute name="clOnholdNote" type="string" default="" />
+    <aura:attribute name="clCancel" type="string" default="" />
+    <aura:attribute name="clCancelService" type="string" default="" /> 
+    <aura:attribute name="clDeactivate" type="string" default="" />
+    <aura:attribute name="clHome" type="string" default="" /> <!-- Home -->
+    <aura:attribute name="clChangeImage" type="string" default="" /> <!-- Change Image -->
+    <aura:attribute name="clPayment" type="string" default="" /> <!-- Payment -->
+    <aura:attribute name="clSupport" type="string" default="" /> <!-- Support -->
+ 	<aura:attribute name="clAddChild" type="string" default="" />
+    <aura:attribute name="clSchoolType" type="string" default="" /> <!-- Select School Type -->   
+    <aura:attribute name="clFirstName" type="string" default="" /> <!-- First Name -->
+    <aura:attribute name="clMiddleName" type="string" default="" /> <!-- Middle Name -->
+ 	<aura:attribute name="clLastName" type="string" default="" /> <!-- Last Name -->
+    <aura:attribute name="clStudentId" type="string" default="" /> <!-- Student Id -->
+    <aura:attribute name="clEmail" type="string" default="" /> <!-- Email -->
+    <aura:attribute name="clNationality" type="string" default="" /> <!-- Nationality -->
+ 	<aura:attribute name="clGender" type="string" default="" /> <!-- Gender -->
+    <aura:attribute name="clGrade" type="string" default="" /> <!-- Grade -->
+    <aura:attribute name="clSection" type="string" default="" /> <!-- Section -->
+    <aura:attribute name="clDateofBirth" type="string" default="" /> <!-- Date of Birth -->
+    <aura:attribute name="clBloodGroup" type="string" default="" /> <!--Blood Group -->    
+    <aura:attribute name="clMedicalCondition" type="string" default="" /> <!-- Medical Condition -->
+    <aura:attribute name="clTermsandConditions" type="string" default="" /> <!-- Terms and Conditions -->
+    <aura:attribute name="clUploadPhoto" type="string" default="" /> <!-- $Label.c.ETST_Upload_Your_Student_Photo -->
+    <aura:Attribute name="clSearchSchool" type="string" default="" /> <!-- Search School -->
+    <aura:attribute name="clSelectLocation" type="string" default="" />
+    <aura:attribute name="clonHoldButton" type="string" default="" /><!-- Select Location -->
+    
+    <aura:Attribute name="clClose" type="string" default="" /> <!-- Close -->
+    <aura:attribute name="clInvalidAddress" type="string" default="" /> <!-- Invalid Address -->
+    <aura:attribute name="clBack" type="string" default="" /> <!-- Back -->
+    <aura:attribute name="clAddYourBankDetails" type="string" default="" /> <!-- Add Your Bank Details --> 
+    <aura:attribute name="clAddYourChild" type="string" default="" /> <!-- Add Your Child -->   
+    <aura:attribute name="clPersonal" type="string" default="" /> <!-- Personal --> 
+    <aura:attribute name="clOther" type="string" default="" /> <!-- Other -->   
+    <aura:attribute name="clUpload" type="string" default="" /> <!-- Upload --> 
+    <aura:attribute name="clNext" type="string" default="" /> <!-- Next -->   
+    <aura:attribute name="clPrevious" type="string" default="" /> <!-- Previous --> 
+    <aura:attribute name="clSaveChild" type="string" default="" /> <!-- Save Child -->
+    <aura:attribute name="clSubmit" type="string" default="" /> <!-- Submit -->
+    <aura:attribute name="clTermsandConditionsvalidationMsg" type="string" default="" /> <!-- Submit -->
+    <aura:attribute name="clBusInfo" type="string" default="" /> <!-- Bus Info -->
+    <aura:attribute name="clSave" type="string" default="" /> <!-- Save -->    
+    <aura:attribute name="clPaymentsInfo" type="string" default="" /> <!-- Payments Info -->
+    <aura:attribute name="clNoPayments" type="string" default="" /> <!-- No Payments -->    
+    <aura:attribute name="clFeedbackForm" type="string" default="" /> <!-- Feedback Form -->
+    <aura:attribute name="clCaseType" type="string" default="" /> <!-- Case Type -->
+    <aura:attribute name="clIssueCategory" type="string" default="" /> <!-- Issue Category -->
+	<aura:attribute name="clIssueType" type="string" default="" /> <!-- Issue Type -->
+    <aura:attribute name="clCompletethisfield" type="string" default="" /> <!-- Complete this field -->
+    <aura:attribute name="clSameasPickUp" type="string" default="" /> <!-- Same as Pickup Location -->
+	<aura:attribute name="clUseCurrentLocation" type="string" default="" /> <!-- Use Current Location -->
+    <aura:attribute name="clSearchLocation" type="string" default="" /> <!-- Search Location -->
+    <aura:attribute name="clSearch" type="string" default="" /> <!-- Search -->
+    <aura:attribute name="clPhone" type="string" default="" /> <!-- Phone -->
+    <aura:attribute name="clEID" type="string" default="" /> <!-- EID -->
+    <aura:attribute name="clPaymentMethods" type="string" default="" /> <!-- Payment Methods -->
+    <aura:attribute name="clOnpremise" type="string" default="" /> <!-- ETST_Please_pay_at_our_office -->
+    <aura:attribute name="clAcceptchequeorCreditcard" type="string" default="" /> <!-- ETST_Note_We_only_accept_Cheque_or_Credit_card -->    
+    <aura:attribute name="clAddress" type="string" default="" /> <!-- Address -->
+    <aura:attribute name="clVerifyBankTransfer" type="string" default="" /> <!-- ETST_We_will_verify_the_submitted_bank_transaction -->
+    <aura:attribute name="clVerifyChequeDetails" type="string" default="" /> <!-- ETST_We_will_verify_the_submitted_cheque_details -->
+    
+    <aura:attribute name="clBankTransfer" type="string" default="" /> <!-- ETST_Bank_Transfer -->
+    <aura:attribute name="clChequeDetails" type="string" default="" /> <!-- ETST_Cheque_Details -->
+    <aura:attribute name="clSubmittedBy" type="string" default="" /> <!-- Submitted By -->
+    <aura:attribute name="clAddresstoCourier" type="string" default="" /> <!-- Address to Courier -->
+    <aura:attribute name="clTotalInvAmount" type="string" default="" /> <!-- Total Inv Amount -->
+    <aura:attribute name="clETBankIBAN" type="string" default="" /> <!-- ET IBAN # -->    
+    <aura:attribute name="clETBankACNumber" type="string" default="" /> <!-- ET Bank A/C # -->
+    <aura:attribute name="clETBankName" type="string" default="" /> <!-- ET Bank Name -->
+    <aura:attribute name="clHaveyoutransferedamount" type="string" default="" /> <!-- Have you already transfered the amount -->
+    <aura:attribute name="clShow" type="string" default="" /> <!-- Show -->
+    <aura:attribute name="clHide" type="string" default="" /> <!-- Hide -->
+    <aura:attribute name="clFileUpload" type="string" default="" /> <!-- File Upload-->
+    <aura:attribute name="clEmiratesId" type="string" default="" /> <!-- Emirates ID -->
+    <aura:attribute name="clSchoolisMandatory" type="string" default="" /> <!-- School is Mandatory -->
+    <aura:attribute name="clPleaseuseonlyletters" type="string" default="" /> <!-- Please use only letters -->    
+    <aura:attribute name="clFirstNameisMandatory" type="string" default="" /> <!-- First Name is Mandatory -->
+    <aura:attribute name="clLastNameisMandatory" type="string" default="" /> <!-- Last Name is Mandatory -->
+    <aura:attribute name="clPleaseuseonlylettersorDigits" type="string" default="" /> <!-- Please use only letters or Digits -->
+    <aura:attribute name="clIBANcodemuststartwithAE" type="string" default="" />
+    <aura:attribute name="clStudentIdisMandatory" type="string" default="" /> <!-- Student Id is Mandatory -->
+    <aura:attribute name="clEnteronlydigits" type="string" default="" /> <!-- Enter only digits -->
+    <aura:attribute name="clCompletethispart" type="string" default="" /> <!-- Complete this part -->
+    <aura:attribute name="clPleaseentercorrectmobilenumber" type="string" default="" /> <!-- Please enter correct mobile number-->
+    <aura:attribute name="clGradeisMandatory" type="string" default="" /> <!-- Grade is Mandatory -->
+    <aura:attribute name="clSectionisMandatory" type="string" default="" /> <!-- Section is Mandatory -->
+    <aura:attribute name="clPleaseselectCorrectdate" type="string" default="" /> <!-- Please select Correct date -->
+    <aura:attribute name="clPhoneisMandatory" type="string" default="" /> <!-- Phone is Mandatory -->
+    <aura:attribute name="clNoPricelistisassociatedtoyourschool" type="string" default="" /> <!-- ETST_No_Price_list_is_associated_to_your_school -->
+    <aura:attribute name="clPleasecontactEmiratesTransport" type="string" default="" /> <!-- Please contact Emirates Transport -->
+    <aura:attribute name="clGetlocation" type="string" default="" /> <!-- Get location -->
+    <aura:attribute name="clSecondaryPhone" type="string" default="" /> <!-- Get secondary phone number -->
+    <aura:attribute name="clCurrent" type="string" default="" /> <!-- Current -->
+    <aura:attribute name="clRenewed" type="string" default="" /> <!-- Renewed -->
+    <aura:attribute name="clMyServices" type="string" default="" /> <!-- My Services -->
+    <aura:attribute name="clHelp" type="string" default="" /> <!-- Help -->
+    <aura:attribute name="clPleaseusecurrentlocationorUseMaptogetthelocation" type="string" default="" /> <!-- Please use current location or Use Map to get the location -->
+    <aura:attribute name="clSchoolName" type="string" default=""/> <!--- School Name -->
+    <aura:attribute name="clNew" type="string" default="" /> <!-- New -->
+    <aura:attribute name="clInprogress" type="string" default="" /> <!-- In Progress -->
+    <aura:attribute name="clClosed" type="string" default="" /> <!-- Closed -->
+    <aura:attribute name="clOnHold" type="string" default="" /> <!-- On Hold -->
+    <aura:attribute name="clTotal" type="string" default="" /> <!-- Total -->
+    <aura:attribute name="clCaseNumber" type="string" default=""/> <!--- Case Number -->
+    <aura:attribute name="clDescription" type="string" default="" /> <!-- Description -->
+    <aura:attribute name="clRaisedDate" type="string" default="" /> <!-- Raised Date -->
+    <aura:attribute name="clSolution" type="string" default="" /> <!-- Solution -->
+    <aura:attribute name="clStatus" type="string" default=""/> <!--- Status -->
+    <aura:attribute name="clSearchRequests" type="string" default=""/> <!--- Search Requests -->
+    <aura:attribute name="clStudent" type="string" default="" /> <!-- Student -->
+    <aura:attribute name="clSelectStudent" type="string" default=""/> <!--- Select Student -->
+    <aura:attribute name="clSelectRequestType" type="string" default=""/> <!--- Select Request Type -->
+    
+    <aura:attribute name="clBeneficiary" type="string" default="" /> <!-- Beneficiary -->
+    <aura:attribute name="clBankName" type="string" default=""/> <!--- BankName -->
+    <aura:attribute name="clAccountNo" type="string" default=""/> <!--- Account No -->
+    <aura:attribute name="clIBANCode" type="string" default="" /> <!-- IBAN Code -->
+    <aura:attribute name="clBranchName" type="string" default=""/> <!--- Branch Name -->
+    <aura:attribute name="clBankAddress" type="string" default=""/> <!--- Bank Address -->
+    <aura:attribute name="clPleaseentercorrectBankAddress" type="string" default=""/> <!--- Please enter correct Bank Address -->
+    <aura:attribute name="clNote" type="string" default="" /> <!-- Note -->
+    <aura:attribute name="clChangeSchool" type="string" default=""/> <!--- Change School -->
+    <aura:attribute name="clPleaseentercorrectIBAN" type="string" default=""/> <!--- Please enter correct IBAN -->
+    <aura:attribute name="clPleaseentercorrectBranchName" type="string" default=""/> <!--- Please enter correct Branch Name -->
+    <aura:attribute name="clUploadEmiratesId" type="string" default=""/> <!--- Upload Emirates Id -->
+    <aura:attribute name="clUploadStudentEmiratesId" type="string" default=""/> <!--- Upload Student Emirates Id -->
+    <aura:attribute name="clDelete" type="string" default=""/> <!--- Delete -->
+    <aura:attribute name="clEnterBankDetails" type="string" default=""/> <!--- Enter Bank Details -->
+    <aura:attribute name="clWouldyoulikearefund" type="string" default=""/> <!--- Would you like a refund -->
+    <aura:attribute name="clType" type="string" default=""/> <!--- Type -->
+    <aura:attribute name="clPleasesubscribeaservice" type="string" default=""/> <!-- Please subscribe a service -->
+    <aura:attribute name="clChangeofschoolwillleadtocancellingthecurrentrequestandremaining" type="string" default="" />
+    <aura:attribute name="clChangeofschoolwillleadtocancellingthecurrentrequestifany" type="string" default=""/> 
+    <aura:attribute name="clDivision" type="string" default=""/>  <!-- Division -->
+    <aura:attribute name="clUpdateLocation" type="string" default=""/>  <!-- Update Location -->
+    <aura:attribute name="clServiceRequest" type="string" default=""/> <!-- Service Request -->
+    <aura:attribute name="clPayee" type="string" default=""/>  <!-- Payee -->
+    <aura:attribute name="clFareCharges" type="string" default=""/>  <!-- Fare Charges -->
+    <aura:attribute name="clPickUpFrom" type="string" default=""/>  <!-- Pick-Up From -->
+    <aura:attribute name="clDropOffTo" type="string" default=""/>  <!-- Drop-Off To -->
+    <aura:attribute name="clPaymentFailed" type="string" default=""/>  <!-- Payment Failed -->
+    <aura:attribute name="clTransactionId" type="string" default=""/>  <!-- Transaction Id -->
+    <aura:attribute name="clPaymentMode" type="string" default=""/>  <!-- Payment Mode -->
+    <aura:attribute name="clTransactionDate" type="string" default=""/>  <!-- Transaction Date -->
+    <aura:attribute name="clDuration" type="string" default=""/>  <!-- Duration -->
+    <aura:attribute name="clArea" type="string" default=""/>  <!-- Area -->
+    
+    
+    {!v.body}
+   <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> -->
+    
+</aura:component>

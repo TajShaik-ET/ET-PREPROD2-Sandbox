@@ -1,0 +1,94 @@
+<aura:component controller="ETIN_EmployeeDetailCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+        
+        <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+        <aura:attribute name="Insurancedata" type="Object" />
+        <aura:attribute name="InsCurrentdata" type="Object" />
+        <aura:attribute name="Casesdata" type="Object" />  
+        <aura:attribute name="CaseCurrentData" type="Object" />
+        <aura:attribute name="searchText" type="string" />
+        <aura:attribute name="WrapperList" type="object"/>
+        <aura:attribute name="WrapperListFiltered" type="object"/>
+        
+        <lightning:input type="search" 
+                                 name="searchKey" value="{!v.searchText}"
+                                 aura:id="searchKey" onkeyup="{!c.searchRequest}" placeholder="Search" class="searchdiv"/>
+        <article class="slds-card" >
+            <div class="slds-col reqdivserach" >
+                <div class="headingdiv">Request Status</div>
+                
+            </div>
+            <div class="reqmaintable" >
+                
+                <table class="slds-table">
+                    
+                    <thead>
+                        <tr >
+                            <th style="font-weight: bold;">Ref Number</th>
+                            <th style="font-weight: bold;">First Name</th> 
+                            <th style="font-weight: bold;">Last Name</th>
+                            <th style="font-weight: bold;">Relation</th>
+                            <th style="font-weight: bold;">Status</th>
+                            <th style="font-weight: bold;">Request Type</th>
+                            <th style="font-weight: bold;">Created Date</th>
+                        </tr>
+                    </thead>
+                    <!--aura:iteration items="{!v.InsCurrentdata}" var="row" indexVar="index">
+                        
+                        <tr>
+                            <td>{!row.Name}</td>
+                            <td>{!row.First_Name__c} </td>
+                            <td>{!row.Last_Name__c} </td>
+                            <td>{!row.Relation__c} </td>
+                            <td>{!row.Status__c} </td>
+                            <td>
+                                 <aura:if isTrue="{!row.RecordType.Name =='Health Insurance'}">New Request</aura:if>
+                            
+                            </td>
+                            <td><ui:outputDate value="{!row.CreatedDate}"/></td>
+                        </tr>
+                    </aura:iteration>
+                    <aura:iteration items="{!v.CaseCurrentData}" var="row" indexVar="index">
+                        
+                        <tr>
+                            <td>{!row.CaseNumber}</td>
+                            <td>{!row.Insurance__r.First_Name__c} </td>
+                            <td>{!row.Insurance__r.Last_Name__c} </td>
+                            <td>{!row.Insurance__r.Relation__c} </td>
+                            <td>{!row.Status} </td>
+                            <td>
+                                 <aura:if isTrue="{!row.RecordType.Name =='Health Correction Request'}">Correction Request</aura:if>
+                            
+                            </td>
+                            <td><ui:outputDate value="{!row.CreatedDate}"/> </td>
+                            
+                        </tr>
+                    </aura:iteration -->
+                    <tbody>
+                        <aura:if isTrue="{!not(empty(v.WrapperListFiltered))}">   
+                            <aura:iteration items="{!v.WrapperListFiltered}" var="row" indexVar="index">
+                                <tr>
+                                    <td>{!row.RefNum}</td>
+                                    <td>{!row.FirstName} </td>
+                                    <td>{!row.LastName} </td>
+                                    <td>{!row.Relation} </td>
+                                    <td>{!row.Status} </td>
+                                    <td>{!row.RequestType} </td>                   
+                                    
+                                    <td><ui:outputDate value="{!row.dateRes}"/> </td>
+                                    
+                                </tr>
+                            </aura:iteration>    
+                        </aura:if>  
+                        
+                    </tbody>
+                    
+                </table>
+                <aura:if isTrue="{!!not(empty(v.WrapperListFiltered))}">
+                    <div id="no-records" class="slds-align_absolute-center norecordsdiv"> No Records to display</div>
+                </aura:if> 
+            </div>
+            
+        </article>
+        
+        
+    </aura:component>

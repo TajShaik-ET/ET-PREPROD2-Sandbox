@@ -1,0 +1,93 @@
+.cc-selector input{
+    margin:0;padding:0;
+    -webkit-appearance:none;
+       -moz-appearance:none;
+            appearance:none;
+}
+.VeryHappy{background-image:url(https://image.marketing.et.ae/lib/fe3711717564047d711d75/m/1/2beb1be7-fa61-4101-a4e7-939138f83713.png);}
+.Happy{background-image:url(https://image.marketing.et.ae/lib/fe3711717564047d711d75/m/1/ef4f60dc-c902-4ceb-b4db-8514043c9455.png);}
+.Sad{background-image:url(https://image.marketing.et.ae/lib/fe3711717564047d711d75/m/1/3ddc6a14-3309-4d75-979d-d84d5f9397ba.png);}
+.VerySad{background-image:url(https://image.marketing.et.ae/lib/fe3711717564047d711d75/m/1/f5ae44ea-873a-4820-977c-6a109ea01900.png);}
+.Neutral{background-image:url(https://image.marketing.et.ae/lib/fe3711717564047d711d75/m/1/3d225acb-0050-47e6-8e18-91d37afc917c.png);} 
+
+.cc-selector input:active +.drinkcard-cc{opacity: .9;}
+.cc-selector input:checked +.drinkcard-cc{
+    -webkit-filter: none;
+       -moz-filter: none;
+            filter: none;
+}
+.drinkcard-cc{
+    cursor:pointer;
+    background-size:contain;
+    background-repeat:no-repeat;
+    display:inline-block;
+    width:100px;height:55px;
+    -webkit-transition: all 100ms ease-in;
+       -moz-transition: all 100ms ease-in;
+            transition: all 100ms ease-in;
+    -webkit-filter: brightness(1) grayscale(1) opacity(.7);
+       -moz-filter: brightness(1) grayscale(1) opacity(.7);
+            filter: brightness(1) grayscale(1) opacity(.7);
+            position: relative;
+}
+.drinkcard-cc:hover{
+    -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+       -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+            filter: brightness(1.2) grayscale(.5) opacity(.9);
+}
+.drinkcard-cc span {
+    position: absolute;
+    left: 26%;
+    top: 125%;
+    transform: translate(-50%, -50%);
+}
+.slds-modal__container{
+   max-width: 650px;
+}
+section.slds-modal.slds-fade-in-open {
+    background: #f7f7f7;
+}
+.slds-modal__content {
+    text-align: center;
+    padding: 2rem;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff!important;
+        border-radius: 10px;
+}
+.thankimg {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+}
+.logo{
+       width: 200px;
+       height: auto;
+}
+h1 {
+    font-size: 32px!important;
+}
+h1.heading {
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    text-transform: inherit!important;
+}
+p{
+   font-size: 16px;
+}
+header.slds-modal__header {
+    background: #000!important;
+    color: #fff!important;
+}
+.comments {
+    margin: 1rem 0;
+}
+lightning-button.darkBtn {
+	
+  --slds-c-button-brand-color-background: #000;
+  --slds-c-button-brand-color-background-active: #000;
+  --slds-c-button-brand-color-border: #000;
+  --slds-c-button-brand-text-color: #fff;
+  --slds-c-button-brand-color-background-hover: #000; 
+  --slds-c-button-brand-color-border-hover: #000;
+
+}

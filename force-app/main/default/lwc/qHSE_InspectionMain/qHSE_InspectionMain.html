@@ -1,0 +1,99 @@
+<template>
+    <lightning-card  title="Inspection of safety procedures on school buses/التفتيش على إجراءات السلامة في حافلات النقل المدرسي" class="slds-border" >
+        <template if:false={inspectionSaved}>
+            <div style="border-style: solid;border-width: 1px; border-radius: 25px; padding:20px;" class="--slds-c-button-radius-border">
+                <lightning-record-edit-form data-id="inspection" record-id={inspectionId}  object-api-name={inspectionObject} onsuccess={handleSuccess} onerror={handleError}>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning-input-field class="inputCss" data-id="Station" field-name={inspectionFields.Station} required ></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning-input-field class="inputCss" data-id="Inspection_Date" field-name={inspectionFields.Inspection_Date} required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3"></div>
+                    </div>
+                    <div class="slds-grid">
+                        <!--div class="slds-col slds-size_1-of-3">
+                            <lightning-input-field class="inputCss" field-name={inspectionFields.Result_Date}></lightning-input-field>
+                        </div-->
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning-input-field class="inputCss" data-id="Inspector_Name" field-name={inspectionFields.Inspector_Name} required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning-input-field class="inputCss" data-id="Designation" field-name={inspectionFields.Designation} required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3"></div>
+                    </div>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning-input-field class="inputCss" data-id="Location" field-name={inspectionFields.Location} required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3"></div>
+                    </div>
+                    <div class="slds-grid slds-hide">
+                        <lightning-button variant="brand" type="submit" label="Save"> </lightning-button>
+                    </div>
+                </lightning-record-edit-form>
+                
+                <lightning-accordion allow-multiple-sections-open >
+                    <lightning-accordion-section name="A2" label="Inspection Info/معلومات التفتيش">
+                        <div>
+                            <template for:each={termsDetail} for:item="item">
+                                    <c-q-h-s-e-_-inspection-lines key={item.lineNo} line-no={item.lineNo} inspection-id={inspectionId}  onremoveline={removeInspectionLine}></c-q-h-s-e-_-inspection-lines>
+                            </template>
+                            <div>
+                                <lightning-button-icon 
+                                    icon-name="utility:add" title="Add" variant="brand" tooltip="To add more inpsection lines" style="padding-left: 15px;"
+                                    onclick ={addInspectionLine}>
+                                </lightning-button-icon>  
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-4"></div>
+                    <div class="slds-col slds-size_1-of-4 slds-p-right_small">
+                        <lightning-button variant="brand" class="slds-m-top_small slds-float_right"  label="Cancel" onclick={handleCancel}></lightning-button>
+                    </div>
+                    <div class="slds-col slds-size_1-of-4">
+                        <lightning-button variant="brand" onclick={handleSaveClick}  class="slds-m-top_small slds-float_left"  label="Save"></lightning-button>
+                    </div>
+                    <div class="slds-col slds-size_1-of-4 slds-p-right_small">
+                        <lightning-button variant="brand" class="slds-m-top_small slds-float_right"  label="Go to ListView" onclick={handleList}></lightning-button>
+                    </div>
+                </div>
+            </div>
+
+        </template>
+        <template if:true={inspectionSaved}>
+            <div style=" height: 500px; border-style: solid; border-width: 1px; border-radius:25px; padding:20px;"
+                 class="--slds-c-button-radius-border slds-scrollable_x">
+                <lightning-datatable
+                        key-field="id"
+                        data={inspectionsData}
+                        columns={columns}
+                        hide-checkbox-column
+                        onrowaction={handleRowAction} >
+                </lightning-datatable>
+            </div>
+
+            <template if:true={showInspectionLine}>
+                <div style="border-style: solid;border-width: 1px; border-radius: 25px; padding:20px;" class="--slds-c-button-radius-border">
+                        <template for:each={inspectionsLinesData} for:item="item">
+                            <!-- <c-q-h-s-e-_-inspection-line-view key={item.Id} inpsectionlineid={item.Id}></c-q-h-s-e-_-inspection-line-view> -->
+                            <c-q-h-s-e-_-inspection-line-detail key={item.Id} inpsectionlineid={item.Id}></c-q-h-s-e-_-inspection-line-detail>
+                        </template>
+                </div>
+            </template>
+            
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-2 slds-p-right_small">
+                    <lightning-button variant="brand" class="slds-m-top_small slds-float_right"  label="Back" onclick={handleBack}></lightning-button>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>

@@ -1,0 +1,148 @@
+<apex:page sidebar="false"  controller="ETST_UploadSchoolsController"
+           showHeader="false">
+    <apex:form >
+        <!--apex:sectionHeader title="Upload School data from CSV file"/-->
+        <apex:pagemessages />
+        
+        <apex:pageBlock title="Upload School Data" >
+            <!--apex:pageBlockSection >
+               
+                     Guidelines to Upload School Data <br/>
+              <table border="true">      
+                <tr>
+                   <th>Field Name</th>
+                   <th>Is Mandatory</th>
+                   <th>Type</th>
+                   <th>Accepted Value</th>
+                   <th>Example</th>
+               </tr> 
+                   <tr>
+                       <td>Regulatory Id</td>
+                       <td>Yes</td>
+                       <td>Alpha Numeric Data</td>
+                       <td>Any alpha Numeric Data</td>
+                       <td>123, abc123, abc-123</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>School Name</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>Street</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>City</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                   <tr>
+                       <td>State</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>Country</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>Coordinator Name</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>Coordinator Email</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>Contract Id</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>Phone</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>Website</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>Main Branch Regulatory Id</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>School Type</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+                  <tr>
+                       <td>Created Date</td>
+                       <td>Yes</td>
+                       <td>Text</td>
+                       <td>Text</td>
+                       <td>THE PEARL ACADAMY</td>
+                   
+                   </tr>
+        </table>
+                     
+                     1. Download the template from <a href="{!baseUrl}" target="_blank">  here </a><br/>
+                     
+            </apex:pageBlockSection-->
+            <!--  Component to allow user to upload file from local machine -->
+            <center>
+                <apex:inputFile value="{!contentFile}" filename="{!nameFile}" />
+                <apex:commandButton action="{!ReadFile}" value="Upload File" id="theButton" style="width:70px;"/>
+               <br/> <br/> <font color="red"> <b>Note: Please use the standard template to upload Schools. <a href="{!baseUrl}" target="_blank"> Click here </a> to download the template. </b> </font>
+            </center>  
+            
+        </apex:pageBlock>
+            
+           
+        
+        </apex:form>   
+    </apex:page>

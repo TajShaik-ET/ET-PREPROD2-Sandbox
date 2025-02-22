@@ -1,0 +1,24 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" Controller="ET_CustomDashboardController">
+    
+    <ltng:require scripts="{!$Resource.Chartjs}"
+                  afterScriptsLoaded="{!c.scriptsLoaded}" />
+    <div class="chart_details">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col" >
+                <canvas id="school-chart" />
+            </div>
+            <div class="slds-col" >
+                <canvas id="status-chart" />
+            </div>
+        </div>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col" >
+                <canvas id="type-chart" />
+            </div>
+            <div class="slds-col" >
+                
+            </div>
+        </div>
+    </div>
+</aura:component>

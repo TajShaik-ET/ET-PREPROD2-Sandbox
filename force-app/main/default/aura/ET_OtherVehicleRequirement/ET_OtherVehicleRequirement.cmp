@@ -1,0 +1,33 @@
+<aura:component >
+    <aura:attribute name="predefinedOtherCostRecord" type="ET_Other_Cost_Request__c" default="{'sObjectType':'ET_Other_Cost_Request__c'}"/>
+    <aura:attribute name="costTypeValue" type="List"/>
+    <aura:attribute name="costTypeOptions" type="List" default="[{label: 'One time Cost',value : 'One_time_Cost'},{label : 'Annual Cost', value: 'Annual_Cost'}]"/>
+    <aura:attribute name="existingData" type="ET_Other_Cost_Request__c"/>
+    <aura:attribute name="otherCostDetailFieldsToValidate" type="List" default="otherCostLabel,otherCostValue,CostType_CheckboxGrp"/>
+    <aura:attribute name="editableFieldsByPricingTeam" type="Object" />
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    <aura:attribute name="predefinedOtherCostMasterData" type="Map"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-grid slds-wrap slds-grid--pull-padded" style="width: 97%;float: left;">
+        <div class="slds-col--padded slds-size--3-of-12">
+            <lightning:checkboxGroup name="{!v.predefinedOtherCostRecord.Name}"
+                                     label="{!v.predefinedOtherCostRecord.Name+':'}"
+                                     aura:id="CostType_CheckboxGrp"
+                                     options="{!v.costTypeOptions}"
+                                     value="{!v.costTypeValue}"
+                                     required="true"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.costTypeValue, v.isPricingTeam)}"
+                                     onchange="{! c.handleCostTypeChange }"/>
+            
+        </div>
+        <div class="slds-col--padded slds-size--4-of-12">
+            <lightning:input type="number" name="Cost" label="Cost"  required="true" aura:id="otherCostValue"
+                             value="{!v.predefinedOtherCostRecord.ET_Cost_Value__c}" min="1" 
+                             messageWhenRangeUnderflow="please enter a positive value"
+                             disabled="{! and(!v.editableFieldsByPricingTeam.ET_Cost_Value__c, v.isPricingTeam)}"/>
+        </div>     
+    </div> 
+    
+</aura:component>

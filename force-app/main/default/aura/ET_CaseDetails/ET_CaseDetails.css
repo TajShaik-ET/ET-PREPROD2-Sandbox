@@ -1,0 +1,392 @@
+.THIS html {
+    scroll-behavior: smooth;
+}
+table.THIS { 
+    border-collapse: collapse; 
+    padding: 3rem 3rem;
+}
+.THIS td{
+    background: #fff;
+    padding: 10px 5px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    color: black;
+    text-align: left;
+}
+
+.THIS th{
+    text-align: left;
+    padding: 10px 5px;
+    border-bottom: 1px solid rgb(98 204 140);
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #fff !important;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    border-top: 1px solid #f1f1f1;
+}
+.THIS .inprogress{    
+    font-style: italic;
+    font-weight:700;
+}
+.THIS .slds-form-element .slds-form-element__label:empty{
+    display:none;
+}
+.THIS.serchboxtab .slds-input, .THIS.serchboxtab .slds-input:focus
+{
+    width: 80%;
+    margin-bottom: 1rem;
+    float: right;
+    background-color: transparent;
+    border-bottom: 1px solid #989898;
+    border-radius: 0;
+    outline: none;
+    color: #989898;
+    box-shadow: none;
+    padding: 0px 32px 0px 10px;
+}
+.THIS.serchboxtab_AR .slds-input, .THIS.serchboxtab_AR .slds-input:focus
+{
+    width: 80%;
+    margin-bottom: 1rem;
+    float: right;
+    background-color: transparent;
+    border-bottom: 1px solid #989898;
+    border-radius: 0;
+    outline: none;
+    color: #989898;
+    box-shadow: none;
+    padding: 0px 10px 0px 32px;
+    direction:rtl;
+}
+.THIS.serchboxtab .slds-input-has-icon{
+    float: right;
+}
+.THIS.serchboxtab_AR .slds-input-has-icon{
+    float: left;
+    direction:rtl;
+}
+.THIS.serchboxtab .slds-input-has-icon lightning-primitive-icon{
+    float: right;
+    position: absolute;
+    top: 16px;
+    right: 34px;
+}
+.THIS.serchboxtab_AR .slds-input-has-icon lightning-primitive-icon{
+    float: left;
+    position: absolute;
+    top: 16px;
+    left: 34px;
+}
+.THIS .btn_table{
+    font-size: 14px;
+    margin-top: 3px;
+    background: #f2f2f2;
+    border: 1px solid #00c19e;
+    padding: 2px 15px;
+    color: #00c19e;
+    white-space: nowrap;
+}
+.THIS .btn_table:hover{
+    background: #00c19e;
+    border: 1px solid #00c19e;
+    padding: 2px 15px;
+    color: #fff;
+}
+.THIS .pickupLabel{
+    min-height: 65px;
+    width: 100%;
+    position: relative;
+    display: block;
+    padding: 12px 10px;
+    border-left: 1px dashed #a2a2a2;
+}
+.THIS .pickupLabel::before { 
+    content: "From";
+    color: #a2a2a2;
+    position: absolute;
+    font-weight: bold;
+    top:-5px;
+    left:10px;
+}
+.THIS .deliveryLabel{
+    width: 100%;
+    position: relative;
+    display: block;
+    padding: 2px 10px 0px 10px;
+}
+.THIS .deliveryLabel::before { 
+    content: "To";
+    color: #a2a2a2;
+    position: absolute;
+    font-weight: bold;
+    top:-14px;
+    left:10px;
+}
+.THIS .pickupdot{
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    background: #a2a2a2;
+    border-radius: 50%;
+    left: -4px;
+    top: -1px;
+}
+.THIS .deliverydot{
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    background: #a2a2a2;
+    border-radius: 50%;
+    left: -3px;
+    top: -8px;
+}
+.THIS .slds-modal__container {
+    margin: 0 auto;
+    width: 400px;
+    max-width: 400px;
+    min-width: 20rem;
+}
+.THIS .slds-theme_warning, .THIS .slds-theme--warning {
+    background-color: #2c8fbc;
+    color: #fff;
+    font-weight: 300;
+    font-size: 1.25rem;
+    line-height: 1.25;
+}
+.THIS .slds-modal_prompt .slds-modal__content, .THIS .slds-modal--prompt .slds-modal__content {
+    padding: 0rem;
+}
+.THIS .slds-modal__container {
+    margin: 0 auto;
+    width: 400px;
+    max-width: 400px;
+    /*min-width: 20rem;
+    bottom: -22%!important;
+    position: absolute!important;
+    right: 8%;*/
+}
+.THIS .slds-modal_prompt .slds-modal__content{
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+.THIS .popupviewbtn1{
+    position: absolute!important;
+    left: 0px!important;
+    top: 0px!important;
+    width: 400px!important;
+    background: #fff!important;
+    border: 7px solid #ccc!important;
+}
+.THIS .btnsorticon{
+    border: none;
+    display: inline-block;
+    text-align: right;
+    font-size: 10px;
+    width: auto;
+    position: absolute;
+    top: 5px;
+    right: 6px;
+}
+
+.THIS .btnsorticon_AR {
+    border: none;
+    display: inline-block;
+    text-align: left;
+    font-size: 10px;
+    width: auto;
+    /* position: absolute; */
+    /* top: 5px; */
+    right: 6px;
+}
+.THIS .btnsorticon:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.THIS .btnsorticon lightning-primitive-icon{
+    color: #575757 !important;
+}
+.THIS .slds-input__icon-group {
+    display: none;
+}
+.THIS .btnsaveicon {
+    color: #00c19e;
+    border-radius: 50%;
+    border: 1px solid #00c19e;
+}
+.THIS .btnsaveicon:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.THIS .btnsaveicon:hover {
+    background:#00c19e;
+    color: #fff;
+    border-radius: 50%;
+    border: 1px solid #00c19e;
+}
+.THIS .btnnext{
+    font-size: 14px;
+    color: #62cc8c;
+    margin: 15px 0px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.THIS .btnviewlist{
+    font-size: 14px;
+    color: #00c19e;
+    background: transparent;
+    border: none;
+    text-decoration: underline;
+    padding: 0px;
+}
+.THIS .btnviewlist:focus{
+    box-shadow: none;
+}
+.THIS .txtleft{
+    float:left;  
+}
+.THIS .txtright{
+    float:right;  
+}
+.THIS.btnbotdiv{
+    width: 100%;
+    position: relative;
+    display: block;
+    background: transparent;
+    clear: both;    
+    display: flow-root;
+}
+.THIS.tablemaindiv{
+    width: 100%;
+    overflow: auto;
+    min-height: 50px;
+    max-height: 400px;
+    position: relative;
+    clear: both;
+    padding: 1rem 0;
+    margin: 1rem 0rem;
+    background: #fff;
+    border-radius: 10px;
+}
+.THIS.tablemaindiv_AR{
+    width: 100%;
+    overflow: auto;
+    min-height: 50px;
+    max-height: 400px;
+    position: relative;
+    clear: both;
+    padding: 1rem 0;
+    margin: 1rem 0rem;
+    background: #fff;
+    border-radius: 10px;
+    direction: rtl;
+}
+.THIS#viewlistdiv{
+    position: fixed;
+    right: 35%;
+    top: 35%;
+    width: 400px;
+    background: #fff;
+    border: 7px solid #ccc;
+}
+.THIS.textcenter{
+    text-align:center;
+}
+.THIS .noresultsimg{
+    max-width:50%;
+}
+.THIS .noresult{
+    position: relative;
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: .2em .2em .2em rgba(0,0,0,0.2);
+    padding: 3rem 0rem;
+}
+.THIS .viewlisttd{
+    position:relative;
+}
+
+.THIS .slds-modal__close {
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    z-index: 1;
+    background: #2c8fbc;
+    border-radius: 50%;
+    color: #fff;
+    border:1px solid #2c8fbc;
+}
+.THIS .slds-button:focus {
+    box-shadow: none;
+}
+.THIS.tabmobileview{
+    display:none;
+}
+
+@media only screen and (max-width: 768px){
+    .THIS .slds-input {
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 480px){
+    .THIS .slds-tabs_default, .THIS .slds-tabs--default {
+        background-color: transparent;
+    }
+    .THIS.btnbotdiv {
+        background: transparent;
+    }
+    .THIS.tablemaindiv {
+        display:none;
+    }
+    .THIS.tabmobileview{
+        display:block;
+        clear: both;
+    }
+    .THIS .newcasesdiv{
+        background: #fff;
+        padding: 1rem;
+        border-radius: 15px;
+        margin-bottom: 1rem;
+        box-shadow: 0 8px 6px -6px #9c9c9c;
+        border: 1px solid #ddd;
+        position:relative;
+    }
+    .THIS .btnbotdiv {
+        padding-bottom: 1rem;
+    }
+    .THIS .newcasesdiv .caseno{
+        font-size: 14px;
+        padding-bottom: 5px;
+        color: #62cc8c;
+    }
+    .THIS .newcasesdiv .casesdate{
+        color: #000;
+        font-size: 14px;
+    }
+    .THIS .newcasesdiv .casestatus{
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 14px;
+        color: red;
+    }
+    .THIS .slds-input-has-icon {
+        float: left;
+        width: 100%;
+    }   
+    .THIS.serchboxtab .slds-input, .THIS.serchboxtab .slds-input:focus {
+        width: 100%;
+        background-color: #fff;
+        border: 1px solid #fff;
+        border-radius: 5px;
+        outline: none;
+        box-shadow: none;
+    }
+    .THIS .btnnext {
+        color: #fff;
+    }
+}

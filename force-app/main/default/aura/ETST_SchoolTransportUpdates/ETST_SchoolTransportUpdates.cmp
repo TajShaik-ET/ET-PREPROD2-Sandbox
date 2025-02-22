@@ -1,0 +1,11 @@
+<aura:component access="global" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" > 
+    <lightning:card   title="Updates">
+        <!--aura:set attribute="actions">
+            <lightning:button label="New"/>
+        </aura:set-->
+        <p class="slds-p-horizontal_small">
+             
+        </p>
+    </lightning:card>
+
+</aura:component>

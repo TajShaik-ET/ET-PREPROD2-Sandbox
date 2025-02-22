@@ -1,0 +1,75 @@
+<aura:component controller="ET_RegistrationController" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:appHostable" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="fields" type="String[]" default="['Name',ue','Industry']" />
+    <aura:attribute name="spinnerVal" type="boolean" default="false"/>
+    <aura:attribute name="showMsg" type="String" />
+    <aura:attribute name="registrationReq" type="Object" />
+    <aura:html tag="style">
+        
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        
+        .slds-border_bottom {
+        border-bottom: 1px solid #f2f2f2;
+        }
+        .slds-modal__close {
+        top: .5rem;
+        right: .5rem;
+        border: 1px solid #d4d4d4;
+        }
+        .slds-modal__close svg.slds-button__icon.slds-button_icon-inverse {
+        fill: #000;
+        }
+    </aura:html>
+    
+    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-border_bottom slds-hyphenate slds-align_absolute-center" style="border-bottom: 1px solid #f2f2f2;font-size: 16px;font-weight: 500!important;padding: 1rem;">
+        Registration Request Approval Request
+    </h2>
+    <div >
+        
+        <div class="outer-div">
+           <aura:if isTrue="{!v.spinnerVal}">
+            <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+          </aura:if>
+            <div class="slds-border_bottom ">
+                <div class="slds-form-element__control slds-m-around_medium slds-align_absolute-center" style="height:5rem">
+                   <!-- Do you want approve request, if yes please click on Approve else click on Reject -->
+                    {!v.showMsg}
+                </div>
+                
+                <lightning:recordEditForm aura:id="submitForm" recordId="{!v.recordId}" 
+                                          objectApiName="ET_Registration_Request__c" class="" 
+                                          onsuccess="{!c.onSuccessMethod}">
+                    <lightning:inputField aura:id="fieldId" fieldName="Request_Status__c" value="Approved" class="slds-hide"/>
+                </lightning:recordEditForm>
+                
+            </div>
+            
+           
+        </div>
+        
+    </div>
+    <aura:if isTrue ="{!v.registrationReq.Request_Status__c != 'Approved'}">
+        <div class="slds-float--right ">
+            <lightning:button variant="brand" 
+                              label="Approve"
+                              title="approve"
+                              onclick="{!c.approveRequest}" class="btnsend" disabled="" /> 
+            <lightning:button variant="brand" 
+                              label="Reject"
+                              title="reject"
+                              onclick="{!c.rejectRequest}" class="btnsend1" disabled="" /> 
+        </div>
+    </aura:if>
+    
+</aura:component>

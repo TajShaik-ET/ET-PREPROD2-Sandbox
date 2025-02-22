@@ -1,0 +1,302 @@
+.THIS .left_imagediv{
+    position: relative;
+    display: flow-root;
+    width: 73%;
+    float: left;
+    background: #fff;
+    padding: 1%;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+}
+
+.THIS button.slds-button.slds-button_neutral.clearbtn {
+    position: absolute;
+    right: 10px;
+    background: #eb4026;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: #fff;
+}
+.THIS .image-upload{
+    position:relative;
+}
+.THIS .image-upload .imgupload
+{
+    display: block;
+    position: absolute;
+    top: -50px;
+    right: 5px;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+}
+
+.THIS .image-upload img
+{
+    position: absolute;
+    top: -49px;
+    right: 5px;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    font-size: 0px;
+}
+.THIS .image-upload span.slds-file-selector__button.slds-button.slds-button_neutral {
+    background: transparent;
+    border: none;
+    height: 42px;
+    width: 42px;
+    font-size: 0px;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    right: 0px;
+    position: absolute;
+    top: 1px;
+}
+.THIS .image-upload lightning-primitive-file-droppable-zone.slds-file-selector__dropzone {
+    border: none;
+    font-size: 0px;
+}
+.THIS .image-upload lightning-primitive-icon{
+    visibility: hidden;
+}
+
+
+.THIS.mainDiv {
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+    margin-top: 2rem;
+}
+.THIS .btn_checkout{
+    display: inline-block;
+    float: right;
+    background: #fe864d;
+    color: #fff;
+    border: 1px solid #fe864d;
+    border-radius: 5px;
+    outline: none;
+    box-shadow: none;    
+    transition: all .4s;
+}
+.THIS .btn_checkout:hover{
+    color: #fe864d;
+    border: 1px solid #fe864d;
+    box-shadow: none;
+    background: #fff;
+}
+.THIS .heading_div{
+    position: relative;
+    display: block;
+    clear: both;
+    width: 100%;
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+    float: left;
+}
+.THIS .heading_div h2 {
+    display: inline-block;
+    float: left;
+    margin: 0;
+    font-size: 24px;
+    color: #fff;
+}
+.THIS .heading_div .searchbox {
+    margin: 0px!important;
+}
+.THIS .heading_div .searchbox label.slds-form-element__label.slds-no-flex {
+    display: none;
+}
+.THIS .checkout_details_div {
+    position: relative;
+    clear: both;
+    width: 100%;
+    float: left;
+    display: block;
+    padding-bottom: .5rem;
+    background: #fff;
+    margin-bottom: 1rem;
+    overflow: auto;
+}
+.THIS .checkout_details_div table tr th {
+    padding: 1rem;
+    background: #354b9a;
+    color: #fff;
+    font-size: 14px;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+}
+.THIS .checkout_details_div table tr td {
+    color: #222f5d;
+    padding: .5rem 1rem;
+    background:#fff;
+    border-bottom: 1px solid #f2f2f2;
+}
+.THIS .checkout_details_div table tr td button{
+    color: #fe864d;
+    border: 1px solid #fe864d;
+    background: #fff;
+    transition: all .4s;
+}
+.THIS .checkout_details_div table tr td button:hover {
+    color: #fff;
+    border: 1px solid #fe864d;
+    text-decoration: none!important;
+    background: #fe864d;
+}
+.THIS .checkout_details_div table tr td a , .THIS .checkout_details_div table tr td a:hover{
+    text-decoration: none!important;
+}
+.THIS .checkout_details_div .slds-align_absolute-center {
+    font-size: 24px;
+    padding: 5rem 0;
+    font-weight: bold;
+}
+.THIS div#no-records {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 1rem;
+}
+.THIS .no_records {
+    text-align: center;
+    display: block;
+    padding: 9rem 0 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+.THIS .processdiv{
+    min-height: 150px;
+    max-height: 450px;
+    overflow: auto;
+    clear: both;
+}
+@media only screen and (max-width: 992px){
+    .THIS lightning-input.searchbox.slds-form-element {
+        width: auto;
+    }
+    .THIS .processdiv{
+        max-height: 650px;
+    }
+}
+@media only screen and (max-width: 768px){
+    .THIS.mainDiv {
+        width: 90%;
+        margin: auto;
+        margin-top: 2rem;
+    }
+    .THIS .processdiv{
+        max-height: 650px;
+    }
+}
+@media only screen and (max-width: 767px){
+    .THIS.mainDiv {
+        width: 96%;
+        margin: auto;
+        margin-top: 2rem;
+        padding-top:2rem;
+    }
+    .THIS .processdiv{
+        max-height: 650px;
+    }
+    
+}
+@media only screen and (max-width: 480px){
+    .THIS .heading_div h2 {
+        display: none;
+    }
+    .THIS lightning-input.searchbox.slds-form-element {
+        width: 100%;
+    }
+    .THIS .btn_checkout {
+        width: 100%;
+        padding: .5rem;
+    }
+    .THIS .checkout_details_div {
+        background: transparent;
+    }
+    .THIS .heading_div {
+        margin-bottom: 0rem;
+    }
+    /*Table css start*/
+    .THIS .checkout_details_div table, .THIS .checkout_details_div thead, 
+    .THIS .checkout_details_div tbody
+    {
+        display: block;
+    }
+    .THIS .checkout_details_div td {
+        display: block;
+        background: transparent!important;
+        border:none;
+    }
+    .THIS .checkout_details_div tr {
+        display: block;
+        margin-bottom:1rem;
+        background-color: #fff;
+        background-image: linear-gradient(to right,#ebf9ff,#ffffff);
+        border-radius: 15px;
+    }
+    .THIS .checkout_details_div th {
+        display:none;
+    }
+    .THIS .checkout_details_div table tr td {
+        border: none;
+        border-bottom: 0px solid #eae9e9;
+        position: relative;
+        padding-left: 50%;
+        color: #000;
+        font-weight: bold;
+        font-size:12px;
+        padding: 2.5rem 1rem 0rem;
+        width: 50%;
+        display: inline-block;
+        height: 60px;
+    }
+    .THIS .checkout_details_div table tr td:last-child{
+        width: 100%;
+        padding: 1rem;
+        text-align: right;
+    }
+    .THIS .checkout_details_div table tr td:before {
+        position: absolute;
+        top: 0;
+        left: 0px;
+        width: 100%;
+        padding:1rem;
+        white-space: nowrap;
+        color: #929292;
+        font-weight: normal;
+        font-size: 12px;
+        text-align: left;
+    }
+    .THIS .checkout_details_div table tr td:nth-of-type(1):before  {
+        content: "Check In ID";
+    }
+    .THIS .checkout_details_div table tr  td:nth-of-type(2):before {
+        content: "Internal No";
+    }
+    .THIS .checkout_details_div table tr  td:nth-of-type(3):before {
+        content: "Check In For";
+    }
+    .THIS .checkout_details_div table tr  td:nth-of-type(4):before {
+        content: "Plate No";
+    }
+    .THIS .checkout_details_div table tr  td:nth-of-type(5):before {
+        content: "Status";
+    } 
+    .THIS .checkout_details_div table tr  td:nth-of-type(6):before {
+        content: "Check In Date";
+    }
+    .THIS .checkout_details_div table tr  td:nth-of-type(7):before {
+        content: "";
+    }
+    /*Table css end*/  
+    .THIS .processdiv{
+        max-height: 450px;
+    }
+}

@@ -1,0 +1,322 @@
+<aura:component extends="c:ETST_BilingualCommunity" 
+                implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    <!--use boolean attribute for Store true/false value,
+    make default to "false" so modal box are not display on the load of component. 
+    --> 
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <!--Santosh-->
+    <aura:attribute name="studentRecord" type="ETST_Student__c"  
+                    default="{'sObjectType':'ETST_Student__c', 'ETST_School_Name__c':'','ETST_SchoolName__c':'','ETST_Status__c':''}" />
+    
+    <aura:attribute name="isOpen" type="boolean" default="false"/> 
+    <aura:attribute name="studentType" type="string"/>
+    <aura:attribute name="lang" type="string"/>
+    <aura:attribute name="studentTypeAR" type="string"/> 
+    <aura:attribute name="isCheckbox" type="boolean" default="false" /> 
+    <aura:attribute name="termsandConditionsFollow" type="List"/>
+    <aura:attribute name="termsandConditionsNotFollow" type="List"/>   
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    
+    <aura:attribute name="language" type="string" default="en"/> 
+    
+    
+    <aura:method name="doCheck" action="{!c.doCheck}" access="PUBLIC" >
+        <aura:attribute name="isCheckbox" type="boolean" default="false" />
+    </aura:method>
+    <!--Use "slds-m-around_xx-large" class to add standard X-Large padding to the component--> 
+    <div class="slds-m-around_xx-small termandcondition">
+        <lightning:input type="checkbox" label="" aura:id="checkboxField" 
+                         checked="{!v.isCheckbox}" onclick="{!c.openModel}" class="{!v.clLang =='ar' ? 'tccheckbox_AR' : 'tccheckbox'}"/>
+        <span class="{!v.clLang =='ar' ? 'iaccept_AR' : 'iaccept'}">{!v.clAccept}</span><a href="" onclick="{!c.openModel}">{!v.clTermsandConditions}</a>
+        <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+        <aura:if isTrue="{!v.isOpen}">
+            
+            <!--###### MODAL BOX Start######--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium"> ET Terms &amp; Conditions </h2>
+                    </header>
+                    <!--###### MODAL BOX BODY Part Start######-->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <!--b>This code sets out Emirates Transport policies and regulations. To assure that all students are transported safely and comfortably, we request that you ensure that your child adheres to the following rules:</b-->
+                        <aura:if  isTrue="{!and(v.clLang == 'ar' ,
+                                          or(v.studentTypeAR== 'مدارس الشراكة', v.studentTypeAR == 'مدارس أجيال'))}">
+                            <div>
+                                
+                                <b> الشروط والأحكام </b><br/>
+                                <b>عام: </b><br/>
+                                <br/>
+                                1.	تبدأ خدمة النقل بالحافلات من خلال عملية التسجيل في الخدمة. <br/>
+                                2.	تخضع الخدمات لتوفر المقاعد والمسارات.<br/>
+                                3.	تحتفظ مواصلات الإمارات بالحق في إلغاء أي مسار في أي وقت وفقًا لقرار الإدارة.<br/>
+                                4.	في حال تغيير عنوان الطالب، فإن خدمة النقل تخضع حينها لتوفر المقاعد وما إذا كانت الحافلة متاحة لتلك المنطقة (المسار)،<br/>
+                                5.	يجب مناقشة الشكاوى مع المدرسة وشركة الإمارات العامة للنقل والخدمات (مواصلات الإمارات) فقط من خلال الأشخاص المخولين وذلك عبر البريد الإلكتروني، وليس مع السائق أو المشرف/المشرفة.
+                                6.	الشركة غير مسؤولة عن فقدان أي متعلقات للطلبة على متن حافلاتها<br/>
+                                <br/>
+                                
+                                حقوق الطالب مستخدم الحافلة المدرسية
+                                <br/>
+                                يحق لكل طالب/ة مستخدم لحافلات النقل المدرسي /أو وليه ما يلي:
+                                
+                                1-	تلقي خدمة النقل المدرسي خلال فترة دراسته وفق الشروط والأحكام.
+                                2-	احترام كرامته وخصوصيته وثقافته وقيمه من قبل طاقم العمل وبقية الطلبة المنقولين على متن الحافلة.
+                                3-	الحصول على وسيلة نقل مناسبة على أن تكون آمنة ونظيفة ومطابقة للتشريعات في الإمارة. 
+                                4-	الحصول على مقعد في الحافلة المدرسية 
+                                5-	ضمان سرية بيانات الطالب وموقع منزله (مع احتفاظ مواصلات الإمارات بحقها في تبادل تلك البيانات مع طرف ثالث فيما لو اقتضت الضرورة التشغيلية ذلك). 
+                                6-	التعرف على أرقام التواصل مع طاقم الحافلة المدرسية ومقدمي خدمة النقل المدرسي (السائق والمشرفة والمنسق).
+                                7-	معرفة مواعيد الصعود والنزول من الحافلة المدرسية.
+                                8-	تحديد نقطة الصعود إلى الحافلة المدرسية والنزول منها، وذلك في مكان آمن وبعيد عن أي مخاطر 
+                                9-	أن توفر الشركة مرافقة مناسبة (مشرف  نقل وسلامة أو مشرفة نقل وسلامة) للطلبة والطالبات داخل الحافلة المدرسية وعند استلام وتسليم الطلبة لذويهم أثناء تقديم الخدمة، وذلك بما يتوافق مع تشريعات النقل المدرسي في كل إمارة على حدة.
+                                10-	تلقي الرعاية والمرافقة المناسبة للطلبة ذوي الهمم المعتمد تقديم الخدمة لهم.
+                                11-	وجود خطة طوارئ للحافلات مع إبراز إرشادات السلامة بشكل ظاهر في الحافلة، بحيث تتيح التعرف على مخارج الطوارئ فيها. 
+                                12-	أن يتم تقديم الخدمة من قبل كوادر مرخصة ومدربة ومؤهلة. 
+                                13-	أن يستطيع الطالب أو ولي أمره متابعة سير تنفيذ الخدمة والحصول على المعلومات التي تلزمه للانتفاع من خدمة النقل المدرسي لا سيما خط سير الرحلة الخاصة به.
+                                14-	أن يتمكن من تقييم خدمة النقل المدرسي وجودة الخدمة عبر القنوات المتاحة.
+                                15-	أن يستطيع تقديم شكوى في حال وجود ملاحظات على خدمة النقل المدرسي عبر القنوات الرسمية والمعتمدة من قبل الشركة.
+                                
+                                
+                                
+                                
+                                
+                                <br/>
+                                واجبات الطالب مستخدم الحافلة المدرسية
+                                <br/>
+                                على الطالب (المنقول على متن الحافلات المدرسية التابعة لشركة مواصلات الإمارات) و/أو ولي أمره (الوصي) التأكد من الالتزام بالقواعد السلوكية الآتية:
+                                <br/>
+                                1-	التسجيل في خدمة النقل المدرسي بالطرق المعتمدة، وإبداء موافقة خطية تؤكد معرفة الطالب بالحقوق والالتزامات المرتبطة بالخدمة.
+                                <br/>
+                                2-	تحديث البيانات بشأن الحضور والغياب والمواقع.
+                                <br/>
+                                3-	يجب على الوالدين إخطار الشركة قبل أسبوعين على الأقل من الانتقال إلى عنوان السكن الجديد.
+                                <br/>
+                                4-	توفير البيانات اللازمة للتواصل وتحديثها باستمرار.
+                                <br/>
+                                <br/>
+                                5-	ستغادر الحافلات المدرسة في الوقت المحدد، وإذا تأخر الطالب عن الالتحاق بالحافلة لأي سبب من الأسباب، فإنه يقع على عاتق ولي الأمر مسؤولية اصطحابه من وإلى المدرسة.
+                                <br/>
+                                6-	الحضور إلى النقطة المحددة للصعود إلى الحافلة المدرسية قبل 5 دقائق من موعد وصول الحافلة المدرسية لتسليم واستقبال الطلبة الذين تقل أعمارهم عن 11 سنة،مع ملاحظة أن سائق الحافلة لن ينتظر بعد الوقت المحدد، وفي حالة عدم وجود ولي الامر للطلاب في نقطة الإنزال، فسيواصل الطالب الرحلة في الحافلة، وسيسعى مشرف الحافلة إلى الاتصال بولي الامر في نقطة إنزال بديلة، وإذا فشلت جميع المحاولات في التواصل مع أولياء الأمور، فسيتم إعادة الطالب إلى المدرسة، وسيكون من مسؤولية ولي الامر اصطحاب الطالب من المدرسة، مع توقيع تعهد بالالتزام بجدول المواعيد مستقبلاً.
+                                <br/>
+                                7-	لن يُسمح للطلبة المصابين جسديًا باستخدام الحافلة وسيتم التعامل مع كل حالة على حدة، ويجب على أولياء الأمور إبلاغ المدرسة بمثل هذه الحالات مسبقًا، وسيكونون وحدهم المسؤولين عن اصطحاب الطالب وإنزاله خلال فترة الإصابة.
+                                <br/>
+                                8-	إذا تبين أن الطالب قد تسبب في أي ضرر للحافلة أو ممتلكات طالب آخر على متنها، فسيُطلب من ولي الأمر التعويض عن/ إصلاح/ أو استبدال العنصر أو الممتلكات التالفة وللشركة الحق في اتخاذ الإجراءات القانونية تجاه ذلك.
+                                <br/>
+                                9-	الإبلاغ عن الملاحظات التي تتعلق بالحافلة والسائق والمرافقة عبر القنوات المعتمدة فقط.
+                                <br/>
+                                10-	على أولياء الأمور توعية أبنائهم الطلبة بضرورة الالتزام بإجراءات الأمن والسلامة المعتمدة أثناء الرحلة المدرسية، والتي تتضمن الآتي: 
+                                <br/>
+                                a.	إبداء الاحترام والكياسة للموظفين والطلبة في الحافلة، وعدم إثارة الشغب (أو إتيان أي سلوك غير لائق أو خادش للحياء).
+                                <br/>
+                                b.	الالتزام بتعليمات كل من سائق الحافلة المدرسية والمرافقة والتعاون معهما في تنفيذ إجراءات السلامة. 
+                                <br/>
+                                c.	عند انتظار الحافلة المدرسية في نقطة النقل؛ يجب أن يقف الطالب في مكان آمن على أن يكون ظاهراً ليتمكن سائق الحافلة من رؤيته عند وصوله إلى النقطة، وألا يجري باتجاه الحافلة. 
+                                <br/>
+                                d.	أن يحرص الطالب على ركوب الحافلة المدرسية المخصصة لمنطقة سكن الطالب، وأن يستقلها من وإلى المدرسة فقط.
+                                <br/>
+                                e.	عدم مغادرة الحافلة قبل الوصول إلى المدرسة أو نقطة الوصول المحددة، وألا يطلب من السائق إنزاله في موقع مختلف عن تلك النقطة. 
+                                <br/>
+                                f.	عدم اصطحاب غير المعنيين من الطلبة أو سواهم إلى داخل الحافلة المدرسية. 
+                                <br/>
+                                g.	الالتزام بالجلوس على المقعد المخصص في الحافلة المدرسية، وربط أحزمة الأمـان بإحكـام حيثما وجدت، وتجنب النوم في الحافلة المدرسية.
+                                <br/>
+                                h.	لا يسمح للطالب بالوقوف أو المشي أثناء تحرك الحافلة.
+                                <br/>
+                                i.	لا يحق للطالب التصوير بهاتفه النقال أو الكاميرات داخل الحافلة وللشركة اتخاذ أي إجراء تجاه الطالب ولها الحق باتخاذ الإجراءات القانونية لدى الجهات المختصة.
+                                <br/>
+                                j.	إبقاء نوافذ الأمان الخاصة بالطلبة مغلقة.
+                                <br/>
+                                k.	الالتزام بالهدوء والامتناع عن الصراخ داخل الحافلة المدرسية، وعدم الوقوف على المقاعد أو في ممرات الحافلة أو في مقصورة السائق.
+                                <br/>
+                                l.	يجب على الطلبة الحفاظ على نظافة الحافلة والامتناع عن إتلاف موجوداتها أو إلحاق أي ضرر بها، بما في ذلك الامتناع عن رمي الأجسام على الحافلة.
+                                <br/>
+                                m.	يجب على الطلبة أخذ جميع متعلقاتهم الشخصية قبل مغادرة الحافلة، والشركة غير مسؤولة عن فقدان أي متعلقات للطلبة فيها.
+                                <br/>
+                                n.	عدم التدافع مع الزملاء أثناء صعود الحافلة أو النزول منها. 
+                                <br/>
+                                o.	الامتناع عن التدخين أو استهلاك الممنوعات في الحافلة. 
+                                <br/>
+                                p.	الامتناع عن إحضار الأجسام والمواد الخطرة أو التي تشكل خطورة على الطلبة الآخرين أثناء الرحلة المدرسية. 
+                                <br/>
+                                q.	عدم العبث بأية أجهزة مثبتة داخل الحافلة المدرسية. 
+                                <br/>
+                                r.	عدم العبث بأبواب الطوارئ أو الاستناد عليها.
+                                <br/>
+                                s.	يجب على الطلبة إبلاغ مشرف/مشرفة الحافلة عن أي سلوك غير لائق من قبل طالب آخر في الحافلة.
+                                <br/>
+                                t.	في حالة سوء سلوك الطالب أو انتهاكه لواحدة أو أكثر من القواعد المذكورة أعلاه، سيتم إصدار تقرير مكتوب للمدرسة مع رسالة تحذير للطالب، كما سيتم إخطار أولياء الأمور كتابةً، فإذا تلقى الطالب أو ذويه ثلاث رسائل تحذير من هذا القبيل - ولصالح الانضباط العام وسلامة الحافلة- قد يُمنع الطالب من استخدام الحافلة مرة أخرى، ولن تتم إعادة المبلغ المدفوع.
+                                <br/>
+                                
+                            </div>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(v.clLang == 'en',
+                                          or(v.studentType == 'Chartered School', 
+                                          v.studentType == 'Ajyal School'))}">
+                            <div>
+                                <b>General:</b><br/>
+                                
+                                1. The bus transport service starts with the registration process.
+                                <br/>
+                                2. Service is subject to availability of seats and routes.
+                                <br/>
+                                3. Emirates Transport (ET) reserves the right to cancel any route at any time in accordance with the management’s decision.
+                                <br/>
+                                4. In the event the student changes his/her address, the bus transport service shall be subject to seat availability and whether the vehicle is available for that area (route).
+                                <br/>
+                                5. Complaints should be solely discussed with the school management and Emirates Transport through authorized persons via email, and not with the driver or supervisor (male or female).
+                                <br/>
+                                6. The company shall not be responsible for the loss of any students’ belongings on its buses.
+                                <br/>
+                                The rights of the students using the school bus service
+                                
+                                <b>	Every student using the school bus and their parent/guardian is entitled to:</b>
+                                <br/>
+                                1. Receive school transport services during the study period, in accordance with the applied terms and conditions.
+                                <br/>
+                                2. Be respected in terms of his/her dignity, privacy, culture and values by the staff and the rest of the students transported on the bus.
+                                <br/>
+                                3. Obtain an appropriate means of transport, provided it is safe, clean and in conformity with the legislations within the emirate.
+                                <br/>
+                                4. Receive a designated seat on the bus.
+                                <br/>
+                                5. Ensure the confidentiality of the student’s personal information and the location of his home (while ET reserves the right to exchange such information with a third-party if the operational necessity requires it).
+                                <br/>
+                                6. Be aware of the contact numbers of the school bus crew and school. transportation service providers (the driver, supervisor and the coordinator).
+                                <br/>
+                                7. Be aware of the times of boarding and disembarking from the school bus.
+                                <br/>
+                                8. Allocated a point of boarding and disembarking from the school bus in a safe place away from any dangers.
+                                <br/>
+                                9. The company shall provide a suitable escort (male or female bus supervisors) for students inside the school bus, to accompany them upon being received from - or handled to - their guardians, in accordance with the school transport legislations applicable to each emirate.
+                                <br/>
+                                10. Receive the appropriate care and escort if the students are people of determination.
+                                <br/>
+                                11. Have an emergency plan for buses in place, with safety instructions clearly visible on the bus, to allow the identification of emergency exits.
+                                <br/>
+                                12. The service should be provided by a licensed, trained and qualified team.
+                                <br/>
+                                13. The student or his parent/guardian should be able to follow the progress of the service implementation and obtain the necessary information to benefit from the school transport service, including the bus route.
+                                <br/>
+                                14. Should be able to evaluate the school transport service and its quality through the available channels.
+                                <br/>
+                                15. Should be able to file a complaint in the event of an unusual incident on the school bus, through the official channels approved by the company.
+                                <br/>
+                                <b>The responsibilities of the student using the school bus service</b>
+                                <br/>
+                                The student (transported on the ET school buses) and/or his parent/guardian must ensure that they adhere to following rules of conduct:
+                                <br/>
+                                1. Register in the school transport service via the approved methods and submit a written consent confirming the student’s knowledge of his rights and obligations associated with the service.
+                                <br/>
+                                2. Update data related to attendance, absence and locations.
+                                <br/>
+                                3. Parents/guardians must notify the company at least two weeks prior to moving to a new residential address.
+                                <br/>
+                                4. Provide the necessary data for communication and ensure the update on a regular basis.
+                                <br/>
+                                5. The buses leave the school on a scheduled time, and in case the student is late in catching the bus for any reason whatsoever, it is the parent’s/guardian’s responsibility to take him/her to and from the school.
+                                <br/>
+                                6. Ensure presence in the specified pick-up point 5 minutes earlier than the bus arrival to board or disembark students under the age of 11. Please note that the bus driver will not wait after the specified time, and in case of the absence of the student’s parent/guardian at the drop-off point, the student shall remain in the bus to continue the journey. In such a case, the bus supervisor shall seek to contact the parent/guardian at an alternative drop-off point, and if all attempts to communicate with the parent/guardian fail, the student will be returned to the school, and it will be the responsibility of the parent/guardian to pick up the student from the school and sign a pledge to adhere to the schedule in the future.
+                                <br/>
+                                7. Physically injured students will not be allowed on board the bus and each case will be dealt with separately. Parents must inform the school of such cases in advance, and they will be solely responsible for picking up and dropping off the student during the injury period.
+                                <br/>
+                                8. If it is found that the student has caused any damage to the bus or the property of another student on board, the parent/guardian will be required to compensate/repair/or replace the damaged item or property and the company reserves the right to take legal action in this regard.
+                                <br/>
+                                9. Report any complaints related to the bus, driver and bus supervisor through the approved channels only.
+                                <br/>
+                                10. Parents should educate their children about the need to adhere to the security and safety measures adopted during the school trip, which include the following:
+                                <br/>
+                                a. Showing respect and courtesy to the staff and other students on the bus, and to not cause a disturbance (or engage in any inappropriate or indecent behaviour).
+                                <br/>
+                                b. Adhere to the instructions of the school bus staff and cooperate with them in implementing safety measures.
+                                <br/>
+                                c. While waiting for the school bus to arrive at the pick-up point, the student must stand in a safe place that is visible to the bus driver when this latter reaches the point and should refrain from running in the direction of the bus.
+                                <br/>
+                                d. The student should ride the school bus designated for his/her residence area and should board the bus to and from the school premises only.
+                                <br/>
+                                e. The student is not permitted to leave the bus before reaching the school or the specified destination point, and not permitted to ask the driver to drop him/her off at a different location than that point.
+                                <br/>
+                                f. The student is prohibited from bringing onboard other students or people not assigned to his/her school bus.
+                                <br/>
+                                g. The student should remain seated in his/her designated seat on the school bus, fasten seat belts tightly, and refrain from sleeping on board.
+                                <br/>
+                                h. The student is not allowed to stand or walk while the bus is in motion.
+                                <br/>
+                                i. The student is not permitted to take pictures with his mobile phone or cameras inside the bus, and the company has the right to take any action against the student and reserves the right to take legal actions with the relevant authorities.
+                                <br/>
+                                j. The students’ safety windows shall be kept closed at all times.
+                                <br/>
+                                k. Students must stay calm and refrain from shouting inside the school bus or standing on the seats or in the bus aisles or in the driver’s cabin.
+                                <br/>
+                                l. Students must keep the bus clean and refrain from destroying its assets or causing any damage to it, including refraining from throwing objects on the bus.
+                                <br/>
+                                m. Students must take all their personal belongings before leaving the bus; the company is not responsible for any of their lost items.
+                                <br/>
+                                n. Students should not jostle with colleagues while getting on or off the bus.
+                                <br/>
+                                o. Refrain from smoking or consuming illegal substances on the bus.
+                                <br/>
+                                p. Refrain from carrying dangerous objects and materials or anything that may pose a danger to other students during the school trip.
+                                <br/>
+                                q. Students are not permitted to tamper with any devices installed on board the school bus.
+                                <br/>
+                                r. Students are not permitted to tamper with emergency doors or lean on them.
+                                <br/>
+                                s. Students must report to the bus supervisor any inappropriate behaviour by any other student/s on the bus.
+                                <br/>
+                                t. In the event of a student misbehaving or violating one or more of the above rules, a written report will be issued to the school with a warning message to the student, and the parent/guardian will be notified in writing. If the student or parent/guardian receive three such warning messages - in the interest of public discipline and bus safety - the student may be prevented from using the bus again, and the amount paid will not be refunded.
+                            </div>
+                        </aura:if>
+                        <aura:if  isTrue="{!and(
+                                          and(
+                                          and(
+                                          notequals(v.studentType ,'Chartered School'), 
+                                          notequals(v.studentType , 'Ajyal School')
+                                          ),
+                                          notequals(v.studentTypeAR , 'مدارس الشراكة')),
+                                          notequals(v.studentTypeAR , 'مدارس أجيال'))}">
+                            
+                            <ul class="slds-list--dotted">
+                                <aura:iteration items="{!v.termsandConditionsFollow}" var="condition" >
+                                    
+                                    <aura:if  isTrue="{!condition.Header_Line__c==null}">
+                                        <li class="slds-list--dotted">{!condition.ET_Condition__c}</li>
+                                    </aura:if>
+                                    <aura:if  isTrue="{!condition.ET_Condition__c==null}">
+                                        <b>{!condition.Header_Line__c}</b><br/>
+                                    </aura:if>
+                                    
+                                </aura:iteration>
+                                <br/>
+                                <!--  <b>NOT FOLLOWING THE ABOVE MENTIONTIONED RULES MAY RESULT IN:</b>-->
+                                <br/><br/>
+                                <aura:iteration items="{!v.termsandConditionsNotFollow}" var="condition" >
+                                    <li class="slds-list-dotted">{!condition}</li>
+                                </aura:iteration>
+                            </ul>
+                        </aura:if>
+                    </div>
+                    
+                    <!--###### MODAL BOX FOOTER Part Start ######-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="brand" 
+                                          label="Accept"
+                                          title="Accept"
+                                          onclick="{! c.likenClose }" class="btn_table"/>
+                        <lightning:button variant="neutral" 
+                                          label="Decline"
+                                          title="Decline"
+                                          onclick="{! c.closeModel }" class="btn_back"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--###### MODAL BOX Part END Here ######-->            
+        </aura:if>
+    </div>
+</aura:component>

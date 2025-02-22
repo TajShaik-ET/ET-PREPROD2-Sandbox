@@ -1,0 +1,75 @@
+.THIS .listviewdiv h2{
+    text-align: left;
+   /* border-bottom: 3px solid #624500;*/
+    font-weight: 500;
+    padding: 7px 5px;
+    font-size: 16px;
+     color: #fafafa;
+}
+.THIS .lightningVerticalNavigationSection div[role=list] {
+    list-style: none;
+}
+.THIS .slds-nav-vertical__action {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 1rem 1rem 1rem;
+    color: rgba(0, 0, 0, 0.8);
+  /*  border-top: 1px solid transparent;
+    border-bottom: 1px solid #f2f2f2; */
+    border-radius: 0;
+    box-shadow: inset 0 0 0 rgb(98, 69, 0);
+    cursor: pointer;
+    color: #a7a1a1;
+}
+.THIS .slds-nav-vertical__item:hover:before, .THIS .slds-nav-vertical__item.slds-is-active:before {
+    background: #fff;
+    box-shadow: inset 0.25rem 0 0 rgb(98, 69, 0);
+}
+.THIS .slds-nav-vertical__item.slds-is-active .slds-nav-vertical__action {
+    font-weight: bold;
+    box-shadow: inset 0.25rem 0 0 rgb(98, 69, 0);
+}
+
+
+.THIS .animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+.THIS .animated.delay-1s {
+  -webkit-animation-delay: 1s;
+  animation-delay: 1s;
+}
+@-webkit-keyframes slideInLeft {
+  from {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.THIS .slideInLeft {
+  -webkit-animation-name: slideInLeft;
+  animation-name: slideInLeft;
+}

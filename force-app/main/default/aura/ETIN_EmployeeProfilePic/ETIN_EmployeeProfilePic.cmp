@@ -1,0 +1,58 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="InsRecord" type="Object"/>
+    <aura:attribute name="recordError" type="String"/>
+
+  <!-- below recorddata is used to get just dummy profle pic, in future it will get image from the community user for this contact -->
+<force:recordData aura:id="record"
+        fields="Owner.MediumPhotoUrl"
+        recordId="{!v.recordId}"
+        targetError="{!v.recordError}"
+        targetRecord="{!v.record}"
+        targetFields ="{!v.simpleRecord}"
+        mode="VIEW"/>
+    <force:recordData aura:id="record"
+        fields="ETIN_Image_URL__c,PhotoUrl"
+        recordId="{!v.recordId}"
+        targetError="{!v.recordError}"
+        targetRecord="{!v.record}"
+        targetFields ="{!v.InsRecord}"
+        mode="VIEW"/>
+   
+
+    <div class="slds-box user-profile-wrapper slds-text-color_inverse">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-text-align_center slds-size_11-of-12 profile-main">
+                <div class="photoWrapper slds-avatar_circle slds-m-bottom_medium">
+                    <aura:if isTrue="{!v.InsRecord.ETIN_Image_URL__c != null}">
+                        <img class="image" src="{!v.InsRecord.ETIN_Image_URL__c}" alt=""/>
+                        <aura:set attribute="else">
+                            
+                            <img class="image " src="{!v.simpleRecord.Owner.MediumPhotoUrl}" alt="" />
+                        </aura:set>
+                    </aura:if> 
+                   
+                   
+                </div>
+                
+               
+            </div>
+            <!--a class="slds-button slds-hide" aura:id="removeBtn" href="javascript:void(0);" onclick="{!c.removeProfilePic}">Remove</a-->
+                               <!--lightning:fileUpload aura:id="uploadBtn" label="Upload Image"
+                                                     name="filePicUploader"
+                                                     multiple="false"
+                                                     disabled="false"
+                                                     accept=".png,.jpg,.jpeg"
+                                                     recordId="{!v.NewInsuRecId}"
+                                                     onuploadfinished="{!c.handleUploadFinishedProfile}" style="content: 'Upload Image';"/-->
+            
+        </div>
+    </div>
+    
+    
+    
+</aura:component>

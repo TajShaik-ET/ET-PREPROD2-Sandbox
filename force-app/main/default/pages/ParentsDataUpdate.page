@@ -1,0 +1,79 @@
+<apex:page controller="ParentsDataUpdateController" >
+    <apex:pageBlock title="To find student list please Parent Emirates Id">
+        <apex:form id="frm1"  html-autocomplete="off">
+            <div style="width: 320px;margin: 2rem auto;">
+                <form class="slds-form--stacked slds-wrap ">
+                    <label for="Emirates Id">Emirates Id <span style="font-size:14px;color:red;">*</span> </label><br/>
+                    <apex:inputtext id="eid" value="{!eid}" html-placeholder="Enter Parent Emirates Id with or without dash"    required="true" style="width: 100%;margin-bottom:0.5rem;outline:none;padding:7px;border-width: 1px;border-radius: 2px;border: 1px solid #bfc2c5;background: transparent;color: #555;"/><br/>
+                    <apex:commandButton action="{!search}" value="Search"  style="float: right;cursor:pointer; border: 1px solid;padding: 5px 10px;font-size: 12px;" />    
+                </form>
+            </div>
+        </apex:form>
+        
+        <apex:form id="frm2"  html-autocomplete="off" rendered="{!IF(accountFound == true && userFound == true, true, false)}">
+            <div style="width: 320px;margin: 2rem auto;">
+                <form class="slds-form--stacked slds-wrap ">
+                    <apex:inputHidden value="{!eid}" id="eid"/>
+    
+                    <label for="Emirates Id">Email  </label><br/>
+                    <apex:inputtext id="email" value="{!email}" required="true" style="width: 100%;margin-bottom:0.5rem;outline:none;padding:7px;border-width: 1px;border-radius: 2px;border: 1px solid #bfc2c5;background: transparent;color: #555;"/><br/>
+                    
+                    <label for="Emirates Id">Phone </label><br/>
+                    <apex:inputtext id="phone" value="{!phone}" required="true" style="width: 100%;margin-bottom:0.5rem;outline:none;padding:7px;border-width: 1px;border-radius: 2px;border: 1px solid #bfc2c5;background: transparent;color: #555;"/><br/>
+                    <apex:commandButton action="{!save}" value="Update Info" style="float: right;cursor:pointer; border: 1px solid;padding: 5px 10px;font-size: 12px;" />    
+                </form>
+            </div>
+        </apex:form>
+        <apex:pageMessages id="msg"/>
+        <div style = "text-align:center;">
+            <apex:outputLabel rendered="{!IF(accountFound  == false && eid !=NULL, true, false)}" style="color:red; font-size: 15px;" > No Parent Record found!</apex:outputLabel> <br/>
+            <apex:outputLabel rendered="{!IF(userFound  == false && eid !=NULL, true, false)}" style="color:red; font-size: 15px;" > No User Record found!</apex:outputLabel>
+        </div>
+    </apex:pageBlock>
+    <apex:pageBlock rendered="{!IF(students.size>0 && accountFound == true, true, false)}" title ='Students List'>
+        <apex:pageBlockTable value="{!students}" var="std" rows="50" id="students_table" >
+            <apex:column >
+                <a target="_parent" href="{!URLFOR($Action.ETST_Student__c.View, std.id)}" style = 'color:blue; important!'>{!std.name}</a>
+                <apex:facet name="header">Student Name</apex:facet>
+            </apex:column>
+            <apex:column value="{!std.ETST_Emirates_Id__c}"/>
+            <apex:column value="{!std.ETST_Student_Id__c}" />
+            <apex:column value="{!std.ETST_Grade__c}" />
+            <apex:column value="{!std.ETST_Nationality__c}" />                    
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="To find Students without parent">
+        <apex:form id="frm3"  html-autocomplete="off">
+            <div style="width: 320px;margin: 2rem auto;">
+                <form class="slds-form--stacked slds-wrap ">
+                    <apex:inputHidden value="{!eid}" id="eid"/>
+    
+                    <label for=" Emirates Id"> Student Emirates Id<span style="font-size:14px;color:red;">*</span>  </label><br/>
+                    <apex:inputtext id="stdEmiratesId" value="{!stdEmiratesId}"  html-placeholder="Enter Student Emirates Id with or without dash" style="width: 100%;margin-bottom:0.5rem;outline:none;padding:7px;border-width: 1px;border-radius: 2px;border: 1px solid #bfc2c5;background: transparent;color: #555;"/><br/>
+                    
+                    <apex:commandButton action="{!searchStudent}" value="Search Student" style="float: right;cursor:pointer; border: 1px solid;padding: 5px 10px;font-size: 12px;" />    
+                </form>
+            </div>
+        </apex:form>
+        <div style = "text-align:center;">
+           <apex:outputLabel rendered="{!IF(orphanStudentFound  == false && stdEmiratesId !=NULL, true, false)}" style="color:red; font-size: 15px;" > No Record found!</apex:outputLabel>
+        </div>
+    </apex:pageBlock>
+    
+    <apex:pageBlock rendered="{!IF(orphanstudents.size>0 && orphanStudentFound  == true , true, false)}" title ='Students without parents List'>
+        <apex:pageBlockTable value="{!orphanstudents}" var="std" rows="50" id="orphans_students" >
+            <apex:column >
+                <a target="_parent" href="{!URLFOR($Action.ETST_Student__c.View, std.id)}" style = 'color:blue; important!'>{!std.name}</a>
+                <apex:facet name="header">Student Name</apex:facet>
+            </apex:column>
+            <apex:column value="{!std.ETST_Emirates_Id__c}" />
+            <apex:column value="{!std.ETST_Student_Id__c}" />
+            <apex:column value="{!std.ETST_Grade__c}" />
+            <apex:column value="{!std.ETST_Nationality__c}" />
+        </apex:pageBlockTable>
+       
+    </apex:pageBlock>
+     
+    
+</apex:page>

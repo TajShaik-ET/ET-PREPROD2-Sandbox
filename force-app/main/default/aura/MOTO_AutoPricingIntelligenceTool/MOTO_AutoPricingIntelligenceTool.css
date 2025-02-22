@@ -1,0 +1,17 @@
+.THIS .outer-div {
+    position: relative;
+}
+.THIS .valueCls{
+    
+    font-size: 19px;
+    font-weight: 400;    
+}
+.THIS .slds-grid .slds-col{
+    
+    padding-right: 10px;
+}
+
+.THIS .slds-grid .slds-form-element__label{
+    font-size: 12px;
+    font-weight: 500;
+}

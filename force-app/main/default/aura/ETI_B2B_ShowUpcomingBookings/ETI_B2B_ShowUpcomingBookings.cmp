@@ -1,0 +1,364 @@
+<aura:component extends="c:ETI_BilingualCommunity" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" controller="ETI_B2B_VehicleController" access="global" >
+    
+    <aura:attribute name="serviceReqList" type="List" />
+    <aura:attribute name="VehicleList" type="List" />
+    <aura:attribute name="VehicleColumns" type="List"/>
+    <aura:attribute name="selectedRowsList" type="List" />
+    <aura:registerEvent name="DataEvent" type="c:ETI_DataEvent"/>
+    <aura:attribute name="reSchduleBooking" type="boolean" default="false"/>
+    <aura:attribute name="booking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/>
+    <aura:attribute name="bookingWrp" type="Object[]" />
+    <aura:attribute name="loc" type="list"/>
+    <aura:attribute name="RegistrationType" type="list"/>
+    <aura:attribute name="branch" type="list"/>
+    <aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <aura:attribute name="startDate" type="Date"/>
+    <aura:attribute name="endDate" type="Date"/>
+    <aura:attribute name="serviceType" type="list"/>
+    <aura:attribute name="minDate" type="Date"/>
+    <aura:attribute name="maxDate" type="Date"/>
+    <aura:attribute name="minDateForError" type="Date"/>
+    <aura:attribute name="startDateForError" type="Date"/>
+    <aura:attribute name="reshudleCancelMetaData" type="map"/>
+    <aura:attribute name="emirate" type="String" />
+    <aura:attribute name="isSpea" type="boolean" default="false"/>
+    <aura:attribute name="showBookings" type="boolean" default="false"/>
+    <aura:attribute name="selectedserviceReq" type="String" />
+    
+    <!--Pagination-->
+    <aura:attribute name="allBookingData" type="List"/>
+    <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="totalPages" type="Integer" default="0"/>
+    <aura:attribute name="pageList" type="List"/>
+    <aura:attribute name="totalRecords" type="integer" default="0"/>
+    <aura:attribute name="recordStart" type="integer" default="0"/>
+    <aura:attribute name="recordEnd" type="integer" default="0"/>
+    
+    <aura:attribute name="IsReSchduleBookingSpea" type="boolean" default="false"/>
+    <aura:attribute name="minDateErrmsg" type="Date"  />
+    <aura:attribute name="maxDateErrmsg" type="Date"  />
+    <aura:attribute name="preferredTimeList" type="list"/>
+    <aura:attribute name="rescheduleBkngDate" type="Date"  />
+    <aura:attribute name="availableSlots" type="List"/>
+    <aura:attribute name="rescheduleSlot" type="string"/>
+    <aura:attribute name="selectedBkngRow" type="ETI_Booking__c"/>
+    <aura:attribute name="showSpinnerReschedule" type="boolean" default="false"/>
+    
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.IsSpinner}">
+        <div class="slds-spinner_container">
+            <lightning:spinner variant="brand"  size="large" />
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.serviceReqList))}">
+        <aura:set attribute="else">
+            <br></br> <br></br>
+            <lightning:layout class="sortdiv" >
+                <br></br><br></br><br></br>
+                <div class="slds-notify slds-notify_alert slds-float_none" role="alert" >
+                    <h2 style="text-align:right;font-size: 18px;font-family: 'Cronos';">{!v.No_Records_Message}</h2>
+                </div>
+            </lightning:layout>
+            <br></br><br></br>
+        </aura:set>
+        <div class="distabledivmain">
+            <article class="slds-card"><br></br>                
+                <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">                    
+                    <tbody>
+                        <aura:iteration items="{!v.serviceReqList}" var="service" indexVar="index">
+                            <div class="divpayment">
+                                <div class="successdiv">{!v.Service_No}&nbsp;<strong>{!service.serviceRecord.Name}</strong></div>
+                                <div class="datailsdiv">{!v.Payment_Status}&nbsp;<strong>{!service.serviceRecord.Payment_Status__c}</strong></div>
+                                <div class="datailsdiv">{!v.Inspection_Center}&nbsp;<strong>{!service.serviceRecord.ET_Location__r.Name}</strong></div>
+                                <div class="datailsdiv">{!v.AMOUNT_AED}&nbsp;<strong>{!service.serviceRecord.Total_Amount__c}</strong></div>
+                                <div class="datailsdiv padtop">
+                                    <!--
+                                    <button name="{!v.Invoice}" class="slds-button">
+                                        <span data-value="{!service.serviceRecord.Id}" onclick="{!c.openInvoicePdf}">
+                                            <img class="slds-button" alt="{!v.Invoice}" title="{!v.Invoice}" src="{!$Resource.ETI_Invoice}" />
+                                            lightning:icon iconName="standard:portal_roles_and_subordinates" alternativeText="{!v.Invoice}" title="{!v.Invoice}" size="small"/
+                                        </span>
+                                    </button>
+                              -->
+                                    <aura:if isTrue="{!service.isPayNowVisible}">
+                                        <!--aura:if isTrue="{!and(service.Total_Amount__c!=0,service.Payment_Status__c!='Payment Success')}"-->
+                                        <button name="{!v.Pay_Now}" class="slds-button">
+                                            <span data-value="{!service.serviceRecord.Id}" onclick="{!c.payByCard}">
+                                                <img class="slds-button" alt="{!v.Pay_Now}" title="{!v.Pay_Now}" src="{!$Resource.ETI_PayNow}" />
+                                                <!--lightning:icon iconName="custom:custom41" alternativeText="{!v.Pay_Now}" title="{!v.Pay_Now}" size="small"/-->
+                                            </span>
+                                        </button>
+                                    </aura:if>
+                                    <button name="{!v.Booking_Details}" class="slds-button">
+                                        <span data-value="{!service.serviceRecord.Id}" onclick="{!c.fetchBookingDetails}">
+                                            <img class="slds-button" alt="{!v.Booking_Details}" title="{!v.Booking_Details}" src="{!$Resource.ETI_BookingDetails}" />
+                                        </span>
+                                    </button>
+                                    <!--lightning:buttonIcon iconName="utility:description" aura:id="invoiceBtn" value="{!service.Id}" variant="brand" alternativeText="Invoice" title="{!v.Invoice}" onclick="{!c.openInvoicePdf}"/>
+                                    <aura:if isTrue="{!service.Total_Amount__c!=0}">
+                                        <lightning:buttonIcon value="{!index}" iconName="utility:new" variant="brand"  title="{!v.Pay_Now}" onclick="{! c.payByCard }"/>
+                                    </aura:if>
+                                    <lightning:buttonIcon iconName="utility:full_width_view" aura:id="viewBtn" value="{!service.Id}" variant="brand" alternativeText="View" title="{!v.Invoice}" onclick="{!c.fetchBookingDetails}"/-->
+                                </div>
+                            </div> 
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </article>
+        </div>
+    </aura:if>  
+    <aura:if isTrue="{!v.showBookings}">
+        <!--###### MODAL BOX Start######--> 
+        <div class="slds-grid slds-gutters">
+            <article class="slds-card">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <aura:if isTrue="{!v.IsSpinner}">
+                            <lightning:spinner alternativeText="Loading" size="medium" variant="brand"/>
+                        </aura:if>
+                        <!-- ###### MODAL BOX HEADER Start ######-->
+                        <header class="slds-modal__header modalHeader">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeModel }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.Booking_Details}</h2>
+                        </header>
+                        <!--###### MODAL BOX BODY  Start######-->
+                        <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                            <aura:if isTrue="{!not(empty(v.VehicleList))}">
+                                <aura:set attribute="else">
+                                    <br></br> <br></br>
+                                    <lightning:layout class="sortdiv" >
+                                        <br></br><br></br><br></br>
+                                        <div class="slds-notify slds-notify_alert slds-float_none" role="alert" >
+                                            <h2 style="text-align:right;font-size: 18px;font-family: 'Cronos';">{!v.No_Records_Message}</h2>
+                                        </div>
+                                    </lightning:layout>
+                                    <br></br><br></br>
+                                </aura:set>
+                                <lightning:layout class="sortdiv" >
+                                    <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+                                        <div class="custom-box">
+                                            <ui:inputDate aura:id="StartDateField" label="{!v.Start_Date}" value="{!v.startDate}" displayDatePicker="true" format="dd/MM/yyyy"/>
+                                        </div> 
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+                                        <div class="custom-box">
+                                            <ui:inputDate aura:id="EndDateField" label="{!v.End_Date}" value="{!v.endDate}" displayDatePicker="true" format="dd/MM/yyyy"/>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem  padding="horizontal-medium" size="4" flexibility="auto" class="btnsubmitdiv desktopView">
+                                        <div class="custom-box">
+                                            <lightning:button class="SizeBtn blackBtn btnserach btn_table" label="{!v.Submit}" onclick="{!c.getVehicleDetails}"/>
+                                            <lightning:button variant="brand" name="Back" label="{!v.Back}" onclick="{!c.cancelSave}" class="btn_back"/>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    
+                                </lightning:layout> 
+                                <lightning:layoutItem  padding="horizontal-medium" size="12" flexibility="auto" class="btnsubmitdiv mobileView">
+                                    <div class="custom-box">
+                                        <lightning:button class="SizeBtn blackBtn btnserach btn_table" label="{!v.Submit}" onclick="{!c.getVehicleDetails}"/>
+                                        <lightning:button variant="brand" name="Back" label="{!v.Back}" onclick="{!c.cancelSave}" class="btn_back"/>
+                                    </div>
+                                </lightning:layoutItem>
+                                <div class="distabledivmain">
+                                    <article class="slds-card">                
+                                        <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">                    
+                                            <tbody>
+                                                <aura:iteration items="{!v.VehicleList}" var="veh" indexVar="index">
+                                                    <div class="divpayment">
+                                                        <aura:if isTrue="{!veh.Customer_Vehicle__r.Registration_Type__c != 'Registered'}">
+                                                            <div class="successdiv">{!v.Chassis_No}&nbsp;<strong>{!veh.Chassis_No__c}</strong></div>
+                                                            <aura:set attribute="else">
+                                                                <div class="successdiv">{!v.Plate_Details}&nbsp;<strong>{!veh.Customer_Vehicle__r.Plate_Color__c}-{!veh.Customer_Vehicle__r.Plate_No__c}</strong></div>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                        <!-- <img class="successpay" src="{!$Resource.ETST_payment}" />
+                                                        <div class="datailsdiv">Chassis No&nbsp;<strong>{!item.Chassis_No__c}</strong></div>-->
+                                                        <div class="datailsdiv">{!v.Booking_Date}&nbsp;<strong><ui:outputDate format="dd/MM/yyyy" value="{!veh.Booking_Date__c}"  /></strong></div>
+                                                        <div class="datailsdiv">{!v.Booking_Id}&nbsp;<strong>{!veh.Name}</strong></div>
+                                                        <div class="datailsdiv">{!v.Payment_Status}&nbsp;<strong>{!veh.Payment_Status__c}</strong></div>
+                                                        <div class="datailsdiv">{!v.Location}&nbsp;<strong><lightning:formattedAddress street="{!veh.Branch__c}" city="{!veh.Location__c}" country="UAE" /></strong></div>
+                                                        <div class="datailsdiv padtop">
+                                                            <span data-value="{!veh.Id}" onclick="{!c.openInvoicePdf}">
+                                                                <img class="slds-button" alt="{!v.Invoice}" title="{!v.Invoice}" src="{!$Resource.ETI_Invoice}" />
+                                                            </span>
+                                                            <!--lightning:buttonIcon iconName="utility:description" aura:id="invoiceBtn" value="{!veh.Id}" variant="brand" alternativeText="Invoice" title="{!v.Invoice}" onclick="{!c.openInvoicePdf}"/-->
+                                                            <aura:if isTrue="{!veh.Booking_Date__c != v.minDate}">
+                                                                <aura:if isTrue="{!or(veh.Service_Type__c != 'SPEA Inspection',and(veh.Service_Type__c == 'SPEA Inspection',empty(veh.Service_Appointments__r)))}">
+                                                                    <span data-value="{!index}" onclick="{!c.rescheduleBooking1}">
+                                                                        <img class="slds-button" alt="{!v.Reschedule}" title="{!v.Reschedule}" src="{!$Resource.ETI_Reschedule}" />
+                                                                    </span>
+                                                                    <span data-value="{!index}" onclick="{!c.cancelBooking1}">
+                                                                        <img class="slds-button" alt="{!v.Cancel}" title="{!v.Cancel}" src="{!$Resource.ETI_Cancel}" />
+                                                                    </span>
+                                                                    <!--lightning:buttonIcon value="{!index}" iconName="utility:refresh" variant="brand"  title="{!v.Reschedule}" onclick="{! c.rescheduleBooking1 }"/>
+                                                                <lightning:buttonIcon value="{!index}" iconName="utility:delete" variant="brand"  title="{!v.Cancel}" onclick="{! c.cancelBooking1 }"/-->
+                                                                </aura:if>
+                                                                <aura:if isTrue="{!and(veh.Service_Type__c == 'SPEA Inspection',!empty(veh.Service_Appointments__r))}">
+                                                                    <aura:if isTrue="{!veh.Service_Appointments__r[0].Status != 'Scheduled'}">
+                                                                        <span data-value="{!index}" onclick="{!c.rescheduleBooking1}">
+                                                                            <img class="slds-button" alt="{!v.Reschedule}" title="{!v.Reschedule}" src="{!$Resource.ETI_Reschedule}" />
+                                                                        </span>
+                                                                        <span data-value="{!index}" onclick="{!c.cancelBooking1}">
+                                                                            <img class="slds-button" alt="{!v.Cancel}" title="{!v.Cancel+' test'}" src="{!$Resource.ETI_Cancel}" />
+                                                                        </span>
+                                                                        <!--lightning:buttonIcon value="{!index}" iconName="utility:refresh" variant="brand"  title="{!v.Reschedule}" onclick="{! c.rescheduleBooking1 }"/>
+                                                                <lightning:buttonIcon value="{!index}" iconName="utility:delete" variant="brand"  title="{!v.Cancel}" onclick="{! c.cancelBooking1 }"/-->
+                                                                    </aura:if>
+                                                                </aura:if>
+                                                            </aura:if>
+                                                            <!--aura:if isTrue="{!and(and(veh.Payment_Status__c!='Refund Requested',veh.Payment_Status__c!='Payment Success'),veh.Total_Amount__c)}">
+                                                                <lightning:buttonIcon value="{!index}" iconName="utility:new" variant="brand"  title="{!v.Pay_Now}" onclick="{! c.payByCard }"/>
+                                                            </aura:if-->
+                                                        </div>
+                                                    </div> 
+                                                </aura:iteration>
+                                            </tbody>
+                                        </table>
+                                    </article>
+                                </div>
+                                <!-- Pagination Start Here -->
+                                <aura:if isTrue="{!v.totalPages>1}">
+                                    <div class="pagination">
+                                        <div class="slds-clearfix">
+                                            <div class="slds-page-header" role="banner">
+                                                <div class="slds-float_right">            
+                                                    <lightning:button label="{!v.First}" iconName="utility:left" iconPosition="left"
+                                                                      onclick="{!c.onFirst}" disabled="{! v.currentPageNumber == 1}"/>
+                                                    <lightning:button iconName="utility:chevronleft" iconPosition="left"
+                                                                      onclick="{!c.onPrev}" disabled="{! v.currentPageNumber == 1}"/>
+                                                    <span class="slds-p-horizontal_x-small">
+                                                        <a onclick="{!c.processMe}" name="1" 
+                                                           class="{! (v.currentPageNumber == 1) ? 'selected' : ''}">1</a>
+                                                    </span>
+                                                    <aura:if isTrue="{!and(v.totalPages>5,v.pageList[0]!=2)}">
+                                                        <span class="slds-p-horizontal_xxx-small">
+                                                            <a>...</a>
+                                                        </span>
+                                                    </aura:if>
+                                                    <aura:iteration items="{!v.pageList}" var="item">
+                                                        <span class="slds-p-horizontal_x-small">
+                                                            <a onclick="{!c.processMe}" name="{!item}"
+                                                               class="{! (v.currentPageNumber == item) ? 'selected' : ''}">{!item}</a>
+                                                        </span>
+                                                    </aura:iteration>
+                                                    <aura:if isTrue="{!and(v.totalPages>5,v.totalPages-1!=v.pageList[4])}">
+                                                        <span class="slds-p-horizontal_xxx-small">
+                                                            <a>...</a>
+                                                        </span>
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!v.totalPages!=1}">
+                                                        <span class="slds-p-horizontal_x-small">
+                                                            <a onclick="{!c.processMe}" name="{!v.totalPages}"
+                                                               class="{! (v.currentPageNumber == v.totalPages) ? 'selected' : ''}">{!v.totalPages}</a>
+                                                        </span>
+                                                    </aura:if>
+                                                    <lightning:button iconName="utility:chevronright" iconPosition="right" 
+                                                                      disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onNext}"/>
+                                                    <lightning:button label="{!v.Last}" iconName="utility:right" iconPosition="right" 
+                                                                      disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onLast}"/>
+                                                </div>
+                                                <aura:if isTrue="{!v.v.clLang=='en'}">
+                                                    <p class="slds-page-header__title" style="color:#23527c;">{!v.recordStart}-{!v.recordEnd} {!v.of} {!v.totalRecords} | {!v.Page} {!v.currentPageNumber} {!v.of} {!v.totalPages}</p>
+                                                    <aura:set attribute="else">
+                                                        <p class="slds-page-header__title" style="color:#23527c;">{!v.recordStart}-{!v.recordEnd} &nbsp; {!v.of} &nbsp; {!v.totalRecords} | {!v.Page} {!v.currentPageNumber} &nbsp; {!v.of} &nbsp; {!v.totalPages} </p>
+                                                    </aura:set>
+                                                </aura:if>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </aura:if>
+                                <!-- Pagination End Here -->
+                            </aura:if>
+                        </div>
+                        <!--###### MODAL BOX FOOTER  Start ######-->
+                        <footer class="slds-modal__footer modalFooter">
+                            <lightning:button variant="neutral" 
+                                              label="{!v.Cancel}"
+                                              title="Cancel"
+                                              onclick="{! c.closeModel }" class="btn_back"/>
+                        </footer>
+                    </div>
+                </section>
+            </article>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+        <!--###### MODAL BOX Part END Here ######-->
+    </aura:if>  
+    
+    <!--aura:if isTrue="{!v.reSchduleBooking}">
+        <c:ETI_RequestForService booking="{!v.booking}" tableDisplay="True" isNavigateToHome="true" />
+    </aura:if-->
+    <aura:if isTrue="{!v.reSchduleBooking}">
+        <c:ETI_B2B_RequestForService bookingWrp="{!v.bookingWrp}" isReschedule="true" isRetest="True" emirate="{!v.emirate}" childPopupTitle="{!v.Reschedule_Booking}" isNavigateToHome="true"/>
+    </aura:if>
+    
+  
+        <aura:if isTrue="{!v.IsReSchduleBookingSpea}">       
+        
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open custompopup"> 
+                
+                <div class="slds-modal__container backgroundInverse" >   
+                    <aura:if isTrue="{!v.showSpinnerReschedule}">
+                        <lightning:spinner alternativeText="Loading" variant="brand" />
+                    </aura:if>
+                    
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeSpeaRes }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">SPEA Booking Reschedule</h2>
+                    </header>
+                    
+                    <div class="slds-modal__content slds-p-around_medium " id="modal-content-id-1">
+                        
+                        
+                        <div class="slds-form-element__control" >
+                            
+                            <lightning:input label="{!v.Booking_Date}" aura:id="bookingNewDate" name="" type="date" format="YYYY-MM-DD" disabled="" 
+                                             placeholder="" min="{!v.minDate}" max="{!v.maxDate}"  value="{!v.rescheduleBkngDate}" required="true"
+                                             onchange="{!c.fetchAvailableSlots}" autocomplete="off" messageWhenRangeOverflow="{!'Value must be ' + v.maxDateErrmsg + ' or earlier'}" messageWhenRangeUnderflow="{!'Value must be ' + v.minDateErrmsg + ' or later'}"/>   <!-- 29/10/20 -->
+                        </div>
+                        <div class="slds-form-element__control" >
+                            
+                            <lightning:select label="{!v.Available_Slots}" aura:id="rescheduleSlot" name="" disabled="{!empty(v.availableSlots)}"
+                                              value="{!v.rescheduleSlot}" required="true" class="labelClrCls" messageWhenValueMissing="Complete this field.">      
+                                <option value="">--{!v.Select}--</option>
+                                <aura:iteration items="{!v.availableSlots}" var="slot">
+                                    <option value="{!slot}">{!slot}</option>
+                                </aura:iteration>
+                            </lightning:select>
+                            
+                        </div>
+                    </div>
+                    
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="{!v.Cancel}"
+                                          title="{!v.Cancel}"
+                                          onclick="{! c.closeSpeaRes}"/>
+                        <lightning:button variant="brand"
+                                          label="{!v.Save}"
+                                          title="{!v.Save}"
+                                          onclick="{!c.saveRescheduleInfo}"/>
+                    </footer>
+                </div>
+                
+            </section>
+            
+ 
+            <div class="slds-backdrop slds-backdrop_open"></div>
+             
+        </aura:if>
+    
+    
+</aura:component>

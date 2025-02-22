@@ -1,0 +1,755 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_VehicleController"  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="emirate" type="String" />
+    <aura:attribute name="locationsMap" type="list"/>
+    <aura:attribute name="serviceType" type="list"/>
+    <aura:attribute name="bookingWrp" type="Object[]"/>
+    <aura:attribute name="bookingWrp1" type="Object[]"/>
+    <aura:attribute name="booking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'','ETI_Pick_Up_Location__c':''}]"/>
+    <aura:attribute name="bookingSlots" type="list"/>
+    <aura:attribute name="preferredTimeList" type="list"/>
+    <aura:attribute name="bookingSlotOptions" type="list"/>
+    <aura:attribute name="bookingLaneOptions" type="list"/>
+    <aura:attribute name="testPurposeType" type="list"/>
+    <aura:attribute name="adfcaPermitOptions" type="list" default="['Abu dhabi Permit Vehicle','Non Abu dhabi Permit Vehicle']" />
+    <aura:attribute name="certificateServices" type="list"/>
+    <aura:attribute name="selectedCertificateServices" type="list"/>
+    <aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <aura:attribute name="showAvailableSlots" type="boolean" default="false"/>
+    <aura:attribute name="showPaymentDetail1" type="boolean" default="false"/>
+    <aura:attribute name="selectedServiceType" type="String"/>
+    <aura:attribute name="ChooseDataInfo" type="String[]" default="Visit ET Premises,Customer Premises"/>
+    <aura:attribute name="selectedPremises" type="String"/>
+    <aura:attribute name="place" type="String[]" default="Ocean/Island,Home/Office Premise"/>
+    <aura:attribute name="selectedPlace" type="String"/>
+    <aura:attribute name="selectedId1" type="String" />
+    <aura:attribute name="AddressList" type="String[]"/>
+    <aura:attribute name="serviceRecord" type="ETI_Booking__c"  
+                    default="{'sObjectType':'ETI_Booking__c', 'Name':'','ETI_Pick_Up_Location__c':''}" /> 
+    <aura:attribute name="Afterbooking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/>
+    <aura:attribute name="bookingFeeDetails" type="Map" />
+    <aura:attribute name="tableDisplay" type="boolean" default="false" />
+    <aura:attribute name="errorMsg" type="string"  />
+    <aura:attribute name="minDate" type="Date"  />
+    <aura:attribute name="minDateErrmsg" type="Date"  />
+    <aura:attribute name="maxDateErrmsg" type="Date"  />
+    <aura:attribute name="maxDate" type="Date"  />
+    <aura:attribute name="tradeMinDate" type="Date"  />
+    <aura:attribute name="todayDate" type="Date"  />
+    <aura:attribute name="indexVar" type="string"  />
+    <aura:attribute name="selectedValues" type="string"  />
+    <aura:attribute name="isFeeDetailsVar" type="boolean" default="false" />
+    <aura:attribute name="isRetest" type="boolean" default="false" />
+    <aura:attribute name="isReschedule" type="boolean" default="false" />
+    <aura:attribute name="isDataValidated" type="boolean" default="false" />
+    <aura:attribute name="testObj" type="String"  />
+    <aura:attribute name="openAdditionalInfo" type="boolean" default="false" />
+    <aura:attribute name="newColorList" type="String[]" />
+    <aura:attribute name="newVehicleTypeList" type="String[]"/>
+    <aura:attribute name="isColorChange" type="boolean" default="false" />
+    <aura:attribute name="isVehicleTypeChange" type="boolean" default="false" />
+    <aura:attribute name="servicesList1" type="List" />
+    <aura:attribute name="selectedServices1" type="String" />
+    <aura:attribute name="newColor1" type="String" />
+    <aura:attribute name="newVehicleType1" type="String" />
+    <aura:attribute name="rowIndex" type="Integer" default="0"/>
+    <aura:attribute name="selectedRowIndex" type="Integer" />
+    <aura:attribute name="certificatesErrorMsg" type="String" default="" />
+    <aura:attribute name="errorSelectedPremises" type="boolean" default="false" />
+    <aura:attribute name="errorSelectedPlace" type="boolean" default="false" />
+    <aura:attribute name="isChildModel" type="boolean" default="false" />
+    <aura:attribute name="showPurposeType" type="boolean" default="false" />
+    <aura:attribute name="requiredDocsList" type="ETI_Required_Documents__c[]" default="[{'sobjectType':'ETI_Required_Documents__c', 'Id':'','Name':'' }]"/>
+    <aura:attribute name="isFilesNotUploaded" type="boolean" default="false" />
+    <aura:attribute name="fileNotUploadedErrorMsg" type="string"  />
+    <aura:attribute name="isTearmAndCondition" type="boolean" default="false" />
+    <aura:attribute name="feeDetails" type="ETI_Service_Line_Item__c" default="[{'sobjectType':'ETI_Service_Line_Item__c', 'Test__c':'' }]"/>
+    <aura:attribute name="isNavigateToHome" type="boolean" default="false" />
+    <aura:attribute name="childPopupTitle" type="String" />
+    <aura:attribute name="isServiceChanged" type="boolean" default="false" />
+    <aura:attribute name="pickUpLocation" type="string"  />
+    <aura:attribute name="selectedLocation" type="string"  />
+    <aura:attribute name="showBook" type="boolean" default="true" />
+    
+    <aura:attribute name="fileListFornewVersion" type="List" />
+    <aura:attribute name="isOpenDocumentSec" type="boolean" default="false"  />
+    <aura:attribute name="requiredDocError" type="boolean" default="false"  />
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    hello--
+    <aura:if isTrue="{!v.tableDisplay}">
+        <!--###### MODAL BOX Start######--> 
+        <aura:if isTrue="{!v.IsSpinner}">
+            <div class="slds-spinner_container">
+                <lightning:spinner variant="brand"  size="large" />
+            </div>
+        </aura:if>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_large" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container parentModel" aura:id="modelId">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header modalHeader" >
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeRequestForService}"
+                                          alternativeText="{!v.Close}"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" >{!v.Book_Service}</h2>
+                </header>
+                <!--###### MODAL BOX BODY  Start######-->
+                <div class="slds-modal__content slds-p-around_medium modalContainer bookingService" id="modal-content-id-1">
+                    <div class="slds-card slds-has-bottom-magnet">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col">    
+                                <label class="slds-form-element__label" for="text-input-id-1">
+                                    <abbr class="slds-required" title="required">*</abbr> 
+                                    {!v.Inspection_Premises}
+                                    <lightning:select label="" aura:id="selectedPremises" name="Cust_serviceType" 
+                                                      class="{!v.errorSelectedPremises?'slds-form-element slds-has-error':''}" disabled="{!v.isRetest}"
+                                                      value="{!v.selectedPremises}" onchange="{!c.onPremisesChange}">      
+                                        <aura:if isTrue="{!v.emirate!='Sharjah'}">
+                                            <option value="Visit ET Premises">{!v.Visit_ET_Premises}</option>
+                                            <option value="Customer Premises">{!v.Customer_Premises}</option>
+                                            <aura:set attribute="else">
+                                                <option value="Customer Premises">{!v.Customer_Premises}</option>
+                                            </aura:set>
+                                        </aura:if>
+                                    </lightning:select>
+                                </label>
+                                <aura:if isTrue="{!v.errorSelectedPremises}">
+                                    <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                </aura:if>    
+                            </div>
+                            <div class="slds-col">
+                                <aura:if isTrue="{!or(v.selectedPremises=='Customer Premises')}">
+                                    <label class="slds-form-element__label" for="text-input-id-1">
+                                        <abbr class="slds-required" title="required">*</abbr> 
+                                        {!v.Place_of_Service}
+                                        <lightning:select label="" aura:id="Cust_place" name="Cust_place" disabled="{!v.isRetest}"
+                                                          class="{!v.errorSelectedPlace?'slds-form-element slds-has-error':''}"
+                                                          value="{!v.selectedPlace}" onchange="{!c.clearWrapper}" >      
+                                            <aura:if isTrue="{!v.emirate!='Sharjah'}">
+                                                <option value="">--{!v.None}--</option>
+                                                <option value="Ocean/Island">{!v.Ocean_Island}</option>
+                                                <option value="Home/Office Premise">{!v.Home_Office_Premise}</option>
+                                                <aura:set attribute="else">
+                                                    <option value="Home/Office Premise">{!v.Home_Office_Premise}</option>
+                                                </aura:set>
+                                            </aura:if>
+                                        </lightning:select>
+                                    </label>
+                                    <aura:if isTrue="{!v.errorSelectedPlace}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                    </aura:if>    
+                                </aura:if>
+                                <aura:if isTrue="{!!v.isRetest}">
+                                    <aura:if isTrue="{!v.selectedPremises=='Visit ET Premises'}">
+                                        <!--aura:if isTrue="{!and(bkng.booking.Selected_Services_Code__c!='',bkng.booking.Selected_Services_Code__c!=null)}">
+                                            <aura:if isTrue="{!and(v.selectedPremises!='Customer Premises',!v.isRetest)}">
+                                                <aura:if isTrue="{!bkng.booking.Service_Type__c=='Certificate'}">
+                                                    <lightning:button variant="brand" label="Get Locations" title="Get Locations" onclick="{!c.getCertificateLocations}" class="getlocationcss"/>
+                                                </aura:if>
+                                            </aura:if>
+                                        </aura:if-->
+                                        <div class="slds-form-element__control" >
+                                            <label class="slds-form-element__label" for="text-input-id-1">
+                                                <abbr class="slds-required" title="required">*</abbr> 
+                                                {!v.Available_Locations}<lightning:helptext content="{!v.Services_shown_by_location}" />
+                                                <lightning:select label="" aura:id="locationId" name="{!v.Available_Locations}" disabled="{!or(empty(v.locationsMap),v.isRetest)}"
+                                                                  value="{!v.selectedLocation}" onchange="{!c.locationChanged}" class="hideLabel">   <!-- 18/10/20 -->   
+                                                    <aura:if isTrue="{!v.emirate!='Sharjah'}" >
+                                                        <option value="">{!v.Select}</option>
+                                                    </aura:if>
+                                                    <aura:iteration items="{!v.locationsMap}" var="loc">
+                                                        <option value="{!loc.id}">{!loc.name}</option>
+                                                    </aura:iteration>
+                                                </lightning:select>
+                                            </label>
+                                        </div>
+                                    </aura:if>
+                                </aura:if>
+                            </div>
+                        </div>
+                        <aura:if isTrue="{!and(v.selectedPlace!=null,v.selectedPlace!='')}">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col" style="max-width:50%;">
+                                    <div class="slds-form-element__control equlocation" style="position: relative;">
+                                        <label class="slds-form-element__label" for="text-input-id-1">
+                                            <abbr class="slds-required" title="required">*</abbr> 
+                                            {!v.Equipment_Location}
+                                            <lightning:input type="text" id="pickUpFromId" name="Equipment Location" label="" disabled="{!v.selectedPremises!='Customer Premises'}" placeholder="{!v.Search_for_location}"
+                                                             onkeyup ="{!c.getPickupLocation}" aura:id="pickUpFromId"  
+                                                             value="{!v.pickUpLocation}" autocomplete="off" />
+                                            <aura:if isTrue="{!not(empty(v.AddressList))}">
+                                                <ul class="slds-listbox" style="border: 1px solid #ddd;overflow:hidden;">
+                                                    <aura:iteration var="num" items="{!v.AddressList}">
+                                                        <li role="presentation" onclick="{!c.selectOption}" id="pickUpFromId1"
+                                                            data-value="{!num.place_id}" class="slds-listbox__item" style="display: block;">
+                                                            <span id="listbox-option-unique-id-01"
+                                                                  class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                                                  role="option">
+                                                                <span class="slds-media__body">
+                                                                    <div class="slds-grid slds-m-bottom_small">
+                                                                        <div class="slds-col slds-size_1-of-10 "> 
+                                                                            <!--lightning:ButtonIcon size="medium" iconName="utility:checkin" class="slds-input__icon" variant="bare"/-->
+                                                                            <lightning:icon aura:id="pickUpFromIconId" iconName="utility:checkin" alternativeText="{!v.Equipment_Location}" title="{!v.Equipment_Location}" onclick="{!c.getPickupLocation}" class="locatioblink" />
+                                                                        </div>
+                                                                        <div class="slds-m-left_medium slds-col slds-size_8-of-10"> 
+                                                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity"><b>{!num.main_text}</b></span>
+                                                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity slds-m-top_xxx-small">{!num.secondary_text}</span></div>
+                                                                        <div class="slds-col slds-size_1-of-10"></div>
+                                                                    </div>
+                                                                </span>
+                                                            </span>
+                                                        </li>
+                                                    </aura:iteration> 
+                                                </ul>
+                                            </aura:if> 
+                                        </label>
+                                        <lightning:icon iconName="utility:checkin" alternativeText="{!v.Equipment_Location}" title="{!v.Equipment_Location}" onclick="{!c.getPickupLocation}" class="locatioblink1 locationext" />
+                                    </div>
+                                </div>
+                                <div class="slds-col" style="max-width:50%;">
+                                    <aura:if isTrue="{!!v.isRetest}">
+                                        <aura:if isTrue="{!and(v.selectedPremises=='Customer Premises',v.emirate!='Sharjah')}">
+                                            <div class="slds-form-element__control" >
+                                                <label class="slds-form-element__label" for="text-input-id-1">
+                                                    <abbr class="slds-required" title="required">*</abbr> 
+                                                    {!v.Inspection_Centers}<lightning:helptext content="{!v.Services_shown_by_location}" />
+                                                    <lightning:select label="" aura:id="locationId" name="{!v.Inspection_Centers}" disabled="{!or(empty(v.locationsMap),v.isRetest)}"
+                                                                      value="{!v.selectedLocation}" onchange="{!c.locationChanged}" class="hideLabel">   <!-- 29/10/20 -->   
+                                                        <option value="">{!v.Select}</option>
+                                                        <aura:iteration items="{!v.locationsMap}" var="loc">
+                                                            <option value="{!loc.id}">{!loc.name}</option>
+                                                        </aura:iteration>
+                                                    </lightning:select>
+                                                </label>     
+                                            </div>
+                                        </aura:if>
+                                    </aura:if>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <article class="slds-card custometable">  
+                            <div class="slds-card">
+                                <aura:if isTrue="{!or(v.selectedPremises=='Visit ET Premises',and(v.selectedPremises=='Customer Premises',v.selectedPlace!=''))}">
+                                    <div class="" >
+                                        <div class="tableviewvehichel">                                            
+                                            <div class="desktopdesign">
+                                                <table class="slds-table">
+                                                    <thead >
+                                                        <tr class="tableHead">
+                                                            <th scope="col" ><span class="slds-truncate">{!v.Chassis_No}/{!v.Plate_Details}</span></th>
+                                                            <th scope="col" ><span class="slds-truncate">{!v.Mobile_No}</span></th>
+                                                            <th scope="col" ><span class="slds-truncate">{!v.Service_Type}</span></th>
+                                                            <th scope="col" ><span class="slds-truncate">{!v.Action}</span></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <aura:iteration items="{!v.bookingWrp}" var="bkng" >
+                                                            <aura:if isTrue="{!bkng.isEnabled}" >
+                                                                <tr >
+                                                                    <aura:if isTrue="{!bkng.isValidated}" >
+                                                                        <td colspan="4" style="padding:0px;">
+                                                                            <div class="slds-text-color_destructive">&nbsp;{!bkng.errorMessage}</div>
+                                                                        </td>
+                                                                    </aura:if>
+                                                                </tr>
+                                                                <tr id ="{!bkng.rowIndex}">
+                                                                    <td >
+                                                                        <aura:if isTrue="{!bkng.booking.Registration_Type__c!='Registered'}"  >
+                                                                            <lightning:input type="text" name="{!bkng.rowIndex}" label="" disabled="true"
+                                                                                             aura:id="chassisNo" value="{!bkng.booking.Chassis_No__c}" class="chassisNolab"/>
+                                                                            <aura:set attribute="else">
+                                                                                <lightning:input type="text" name="{!bkng.rowIndex}" label="" disabled="true"
+                                                                                                 aura:id="chassisNo" value="{!bkng.booking.Plate_Color__c+'-'+bkng.booking.Plate_No__c}" class="chassisNolab"/>
+                                                                            </aura:set>
+                                                                        </aura:if>
+                                                                    </td>
+                                                                    <td class="mobileNo">
+                                                                        <lightning:input type="text" name="{!bkng.rowIndex}" label="" placeholder="971XXXXXXXXX" pattern="[0-9]*"
+                                                                                         aura:id="mobileNo" value="{!bkng.booking.Mobile_No__c}" maxlength="12" />
+                                                                    </td>
+                                                                    <td >
+                                                                        <lightning:select  label="" aura:id="Cust_serviceType"  name="{!bkng.rowIndex}" disabled="{!v.isRetest}"
+                                                                                          value="{!bkng.booking.Service_Type__c}" onchange="{!c.serviceTypeChange}" class="servicetypeoption">      
+                                                                            <aura:if isTrue="{!v.emirate!='Sharjah'}">
+                                                                                <option value="">{!v.Select}</option>
+                                                                                <aura:iteration items="{!bkng.serviceTypes}" var="status">
+                                                                                    <option value="{!status.value}">{!status.label}</option>
+                                                                                </aura:iteration>
+                                                                            </aura:if>
+                                                                        </lightning:select>
+                                                                    </td>
+                                                                    <td >
+                                                                        <aura:if isTrue="{!bkng.showBook}">
+                                                                            <span data-value="{!bkng.rowIndex}" onclick="{!c.bookService}">
+                                                                                <img class="" alt="{!v.Book}" title="{!v.Book}" src="{!$Resource.ETI_Book}" />
+                                                                            </span>
+                                                                        </aura:if>
+                                                                        <aura:if isTrue="{!and(and(!bkng.isAddDisabled,bkng.serviceTypes.length!=1),bkng.showBook)}"> 
+                                                                            <aura:if isTrue="{!and(bkng.booking.Service_Type__c!=null,bkng.booking.Service_Type__c!='')}">&nbsp;&nbsp;|&nbsp;
+                                                                                <span data-value="{!bkng.rowIndex}" onclick="{!c.addService}">
+                                                                                    <img class="" alt="{!v.Add}" title="{!v.Add}" src="{!$Resource.ETI_Add}" />
+                                                                                </span>
+                                                                            </aura:if>
+                                                                        </aura:if>
+                                                                        <aura:if isTrue="{!and(bkng.rowIndex!=0,!bkng.isRemoveDisabled)}">&nbsp;|&nbsp;
+                                                                            <span data-value="{!bkng.rowIndex}" onclick="{!c.removeService}">
+                                                                                <img class="" alt="{!v.Remove}" title="{!v.Remove}" src="{!$Resource.ETI_Remove}" />
+                                                                            </span>
+                                                                        </aura:if>
+                                                                    </td>
+                                                                </tr>             
+                                                            </aura:if>
+                                                        </aura:iteration> 
+                                                    </tbody>
+                                                </table>
+                                                <div>
+                                                    <div class="slds-col slds-size_1-of-2" style="padding:10px 0px;">
+                                                        <div class="slds-show">
+                                                            <c:ETI_TermsandConditions aura:id="termsandconditioncheckboxParent1" placeOfVisibility="Book Service" isCheckbox="{!v.bookingWrp[0].isTermsAndConditionsAgreed}"/>
+                                                        </div>
+                                                        <p aura:id="TC" class="slds-hide" style="color:rgb(194, 57, 52);padding: 0 .5rem .5rem;">Please agree the Terms and Conditions</p>
+                                                        <div class="slds-form-element__help slds-hide" aura:id="termsandconditioncheckboxError1" style="color:rgb(194, 57, 52);padding: 0 .5rem .5rem;">{!v.Field_is_required}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mobiledesign">
+                                                <aura:iteration items="{!v.bookingWrp}" var="bkng" >
+                                                    <aura:if isTrue="{!bkng.isEnabled}" >
+                                                        <aura:if isTrue="{!bkng.isValidated}" >
+                                                            <div class="slds-text-color_destructive">&nbsp;{!bkng.errorMessage}</div>
+                                                        </aura:if>
+                                                        <div id ="{!bkng.rowIndex}" class="addreqservice">
+                                                            <div>
+                                                                <div>{!v.Chassis_No}/{!v.Plate_Details} <br></br>
+                                                                    <aura:if isTrue="{!bkng.booking.Registration_Type__c!='Registered'}"  >
+                                                                        <lightning:input type="text" name="{!bkng.rowIndex}" label="" disabled="true"
+                                                                                         aura:id="chassisNo" value="{!bkng.booking.Chassis_No__c}" class="chassisNolab"/>
+                                                                        <aura:set attribute="else">
+                                                                            <lightning:input type="text" name="{!bkng.rowIndex}" label="" disabled="true"
+                                                                                             aura:id="chassisNo" value="{!bkng.booking.Plate_Color__c+'-'+bkng.booking.Plate_No__c}" class="chassisNolab"/>
+                                                                        </aura:set>
+                                                                    </aura:if>
+                                                                </div>
+                                                                <div>{!v.Mobile_No} <br></br>
+                                                                    <lightning:input type="text" name="{!bkng.rowIndex}" label="" placeholder="971XXXXXXXXX" pattern="[0-9]*"
+                                                                                     aura:id="mobileNo" value="{!bkng.booking.Mobile_No__c}" maxlength="12" />
+                                                                </div>
+                                                                <div>{!v.Service_Type} <br></br>
+                                                                    <lightning:select label="" aura:id="Cust_serviceType" name="{!bkng.rowIndex}" disabled="{!v.isRetest}"
+                                                                                      value="{!bkng.booking.Service_Type__c}" onchange="{!c.serviceTypeChange}" class="servicetypeoption">      
+                                                                        <aura:if isTrue="{!v.emirate!='Sharjah'}">
+                                                                            <option value="">{!v.Select}</option>
+                                                                            <aura:iteration items="{!bkng.serviceTypes}" var="status">
+                                                                                <option value="{!status.value}">{!status.label}</option>
+                                                                            </aura:iteration>
+                                                                        </aura:if>
+                                                                    </lightning:select>
+                                                                </div>
+                                                                <div>
+                                                                    <aura:if isTrue="{!bkng.showBook}">
+                                                                        <span data-value="{!bkng.rowIndex}" onclick="{!c.bookService}">
+                                                                            <img class="" alt="{!v.Book}" title="{!v.Book}" src="{!$Resource.ETI_Book}" />
+                                                                        </span>
+                                                                    </aura:if>
+                                                                    <aura:if isTrue="{!and(and(!bkng.isAddDisabled,bkng.serviceTypes.length!=1),bkng.showBook)}"> 
+                                                                        <aura:if isTrue="{!and(bkng.booking.Service_Type__c!=null,bkng.booking.Service_Type__c!='')}">&nbsp;&nbsp;|&nbsp;
+                                                                            <span data-value="{!bkng.rowIndex}" onclick="{!c.addService}">
+                                                                                <img class="" alt="{!v.Add}" title="{!v.Add}" src="{!$Resource.ETI_Add}" />
+                                                                            </span>
+                                                                        </aura:if>
+                                                                    </aura:if>
+                                                                    <aura:if isTrue="{!and(bkng.rowIndex!=0,!bkng.isRemoveDisabled)}">&nbsp;&nbsp;|&nbsp;
+                                                                        <span data-value="{!bkng.rowIndex}" onclick="{!c.removeService}">
+                                                                            <img class="" alt="{!v.Remove}" title="{!v.Remove}" src="{!$Resource.ETI_Remove}" />
+                                                                        </span>
+                                                                    </aura:if>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                                <div class="slds-col slds-size_1-of-2" style="padding:10px 0px;width:100%;">
+                                                    <div class="slds-show">
+                                                        <c:ETI_TermsandConditions aura:id="termsandconditioncheckboxParent" placeOfVisibility="Book Service" isCheckbox="{!v.bookingWrp[0].isTermsAndConditionsAgreed}"/>
+                                                    </div>
+                                                    <p aura:id="TC" class="slds-hide" style="color:#000!important;padding: 0 .5rem .5rem;">Please agree the Terms and Conditions</p>
+                                                    <div class="slds-form-element__help slds-hide" aura:id="termsandconditioncheckboxError" style="color:rgb(194, 57, 52);padding: 0 .5rem .5rem;">This field is required</div>
+                                                </div>
+                                            </div>
+                                        </div>    
+                                    </div>
+                                </aura:if>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <!--###### MODAL BOX Part END Here ######-->
+                <footer class="slds-modal__footer modalFooter">
+                    <lightning:button variant="neutral" 
+                                      label="{!v.Cancel}"
+                                      title="{!v.Cancel}"
+                                      onclick="{! c.closeRequestForService }" class="btn_back"/>
+                    <lightning:button variant="neutral" 
+                                      label="{!v.Confirm_Next}"
+                                      title="Save"
+                                      onclick="{! c.createBooking }" class="btn_table"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <aura:if isTrue="{!or(v.isChildModel,v.isReschedule)}">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_large" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container childModel" aura:id="modelId">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header modalHeader" >
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeChildModel}"
+                                          alternativeText="{!v.Close}"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <aura:if isTrue="{!!v.isRetest}">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" >{!v.New_Booking}</h2>
+                        <aura:set attribute="else">
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" >{!v.childPopupTitle}</h2>
+                        </aura:set>
+                    </aura:if>
+                </header>
+                
+                <!--###### MODAL BOX BODY  Start######-->
+                <div class="slds-modal__content slds-p-around_medium modalContainer bookingService" id="modal-content-id-1" aura:id="sectionidblock">
+                    <div class="slds-form-element" >
+                        <div class="slds-card slds-has-bottom-magnet">
+                            <aura:iteration items="{!v.bookingWrp}" var="bkng" >
+                                <aura:if isTrue="{!v.selectedRowIndex == bkng.rowIndex}" >
+                                    <aura:if isTrue="{!bkng.isChildValidated}" >
+                                        <c:ETI_MessageComponent message="{!bkng.childErrorMessage}" type="error" />
+                                    </aura:if>
+                                    <div class="textright" style="color: rgb(201, 199, 197);font-weight: bold;">
+                                        <aura:if isTrue="{!bkng.booking.Service_Type__c=='ADFCA'}">
+                                            <aura:if isTrue="{!v.clLang=='en'}">
+                                                <span class="infoDetail">*{!v.Booking_Police_Inspection_separately}</span>
+                                                <aura:set attribute="else">
+                                                    <span class="infoDetail">{!v.Booking_Police_Inspection_separately}*</span>
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:if>
+                                    </div>
+                                    <div class="slds-section__title">{!v.Required_Details}</div>
+                                    <aura:if isTrue="{!and(and(and(bkng.booking.Service_Type__c=='Police Inspection',bkng.booking.Registration_Type__c!='Un-Registered'),v.emirate!='Sharjah'),!v.isRetest)}" >
+                                        <div class="slds-form-element__control" >
+                                            <label class="slds-form-element__label" for="text-input-id-1">
+                                                <abbr class="slds-required" title="required">*</abbr> 
+                                                {!v.Purpose_Type}
+                                            </label>
+                                            <lightning:select label="" aura:id="purposeId" name="{!bkng.rowIndex}" onchange="{!c.handleOnChangeOfPurpose}"
+                                                              value="{!bkng.booking.Purpose_Type__c}" disabled="{!bkng.booking.Service_Type__c=='Certificate'}"> <!-- 18/10/20 -->
+                                                <option value="">{!v.Select}</option>
+                                                <aura:iteration items="{!v.testPurposeType}" var="purpose">
+                                                    <option value="{!purpose.id}">{!purpose.name}</option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!v.isRetest}" >
+                                        <lightning:input type="text" name="{!bkng.rowIndex}" label="{!v.Select_Services}" disabled="true"
+                                                         aura:id="servicesId" value="{!bkng.booking.Selected_Services__c}" />
+                                    </aura:if>
+                                    <aura:if isTrue="{!and(and(v.emirate!='Sharjah',!v.isRetest),!bkng.isAdfcaVehicle)}" >
+                                        <div class="slds-form-element__control" >
+                                            <aura:if isTrue="{!!empty(bkng.certificates)}" >
+                                                <label class="slds-form-element__label" for="text-input-id-1" style="font-size: 14px;">
+                                                    <abbr class="slds-required" title="required">*</abbr> 
+                                                    {!v.Select_Services}
+                                                    <c:ETI_MultiSelect servicesList="{!bkng.certificates}" selectedServices="{!bkng.booking.Selected_Services_Code__c}" bookingWrp="{!v.bookingWrp}" emirate="{!v.emirate}" locations="{!bkng.locationMap}" isLocationExist="{!bkng.isChildValidated}" locationError="{!bkng.childErrorMessage}"
+                                                                       isRetest="{!v.isRetest}" location="{!bkng.booking.ET_Location__c}" selectedPremises="{!v.selectedPremises}" selectedPlace="{!v.selectedPlace}" isColorChangeSelected="{!bkng.isColorChange}" isVehicleTypeChangeSelected="{!bkng.isVehicleTypeChange}" selectedRowIndex="{!bkng.rowIndex}" />
+                                                </label>
+                                            </aura:if>
+                                            <aura:if isTrue="{!!empty(bkng.servicesMap)}" >
+                                                <label class="slds-form-element__label" for="text-input-id-1" style="font-size: 14px;">
+                                                    <abbr class="slds-required" title="required">*</abbr> 
+                                                    {!v.Select_Services}
+                                                    <lightning:select label="" aura:id="servicesId" name="{!bkng.rowIndex}" 
+                                                                      value="{!bkng.booking.Selected_Services_Code__c}" disabled="{!or(empty(bkng.servicesMap),bkng.isAdfcaVehicle)}" > <!-- onchange="{!c.fetchCenters}" 18/10/20-->
+                                                        <aura:if isTrue="{!!bkng.isAdfcaVehicle}" >
+                                                            <option value="">{!v.Select_Service}</option>
+                                                        </aura:if>
+                                                        <aura:if isTrue="{!bkng.isAdfcaVehicle}" >
+                                                            <option value="">{!v.Select_Permit_Type}</option>
+                                                        </aura:if>
+                                                        <aura:iteration items="{!bkng.servicesMap}" var="service">
+                                                            <option value="{!service.Id}">{!service.Name}</option>
+                                                        </aura:iteration>
+                                                    </lightning:select>
+                                                </label>
+                                            </aura:if>
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!and(and(bkng.isAdfcaVehicle,bkng.booking.Service_Type__c=='ADFCA'),!v.isReschedule)}" >
+                                        <div class="slds-form-element__control dissableInput" >
+                                            <label class="slds-form-element__label" for="text-input-id-1">
+                                                <abbr class="slds-required" title="required">*</abbr> 
+                                                {!v.Trade_License_Number}
+                                                <lightning:input type="text" name="{!bkng.rowIndex}" label="" 
+                                                                 aura:id="tradeLicenseId" value="{!bkng.customerVehicle.Trade_License_Number__c}" />
+                                            </label>
+                                        </div>
+                                        <div class="slds-form-element__control dissableInput" >
+                                            <label class="slds-form-element__label" for="text-input-id-1">
+                                                <abbr class="slds-required" title="required">*</abbr> 
+                                                {!v.Trade_License_Expiry_Date}
+                                                <lightning:input type="date" name="{!bkng.rowIndex}" label="" format="YYYY-MM-DD"
+                                                                 aura:id="tradeLicenseDate" value="{!bkng.customerVehicle.Trade_License_Expiry_Date__c}" min="{!v.tradeMinDate}" />
+                                            </label>
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!bkng.isColorChange}">
+                                        <div class="slds-form-element__control" >
+                                            <label class="slds-form-element__label" for="text-input-id-1">
+                                                <abbr class="slds-required" title="required">*</abbr> 
+                                                {!v.New_Color}1
+                                            </label>
+                                            <lightning:select label="" aura:id="newColor1" name="{!bkng.rowIndex}" 
+                                                              value="{!bkng.newColor}" >      
+                                                <option value="">{!v.Select}</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=bkng.newColor2,color.id!=bkng.newColor3),color.id!=bkng.newColor4)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <div class="slds-form-element__control" >
+                                            <lightning:select label="{!v.New_Color+'2'}" aura:id="newColor2" name="{!bkng.rowIndex}" 
+                                                              value="{!bkng.newColor2}" >      
+                                                <option value="">{!v.Select}</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=bkng.newColor,color.id!=bkng.newColor3),color.id!=bkng.newColor4)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <div class="slds-form-element__control" >
+                                            <lightning:select label="{!v.New_Color+'3'}" aura:id="newColor3" name="{!bkng.rowIndex}" 
+                                                              value="{!bkng.newColor3}" >      
+                                                <option value="">{!v.Select}</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=bkng.newColor2,color.id!=bkng.newColor),color.id!=bkng.newColor4)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                        <div class="slds-form-element__control" >
+                                            <lightning:select label="{!v.New_Color+'4'}" aura:id="newColor4" name="{!bkng.rowIndex}" 
+                                                              value="{!bkng.newColor4}" >      
+                                                <option value="">{!v.Select}</option>
+                                                <aura:iteration items="{!v.newColorList}" var="color">
+                                                    <aura:if isTrue="{!and(and(color.id!=bkng.newColor2,color.id!=bkng.newColor3),color.id!=bkng.newColor)}">
+                                                        <option value="{!color.id}">{!color.name}</option>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!bkng.isVehicleTypeChange}">
+                                        <div class="slds-form-element__control" >
+                                            <label class="slds-form-element__label" for="text-input-id-1">
+                                                <abbr class="slds-required" title="required">*</abbr> 
+                                                {!v.New_Vehicle_Type}
+                                            </label>
+                                            <lightning:select label="" aura:id="vehicleTypeId" name="{!bkng.rowIndex}" 
+                                                              value="{!bkng.newVehicleType}" >      
+                                                <option value="">{!v.Select}</option>
+                                                <aura:iteration items="{!v.newVehicleTypeList}" var="type">
+                                                    <option value="{!type.id}">{!type.name}</option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </aura:if>
+                                    <div class="slds-form-element__control" >
+                                        <label class="slds-form-element__label" for="text-input-id-1">
+                                            <abbr class="slds-required" title="required">*</abbr> 
+                                            {!v.Booking_Date}
+                                        </label>
+                                        <lightning:input label="" aura:id="bookingDate" name="{!bkng.rowIndex}" type="date" format="YYYY-MM-DD" disabled="{!v.selectedPremises =='Customer Premises' ? false : and(or(bkng.booking.Selected_Services_Code__c=='',bkng.booking.Selected_Services_Code__c==null),!bkng.isAdfcaVehicle)}" 
+                                                         placeholder="" min="{!v.minDate}" max="{!v.maxDate}" value="{!bkng.booking.Booking_Date__c}" 
+                                                         onchange="{!c.fetchAvailableSlots}" autocomplete="off" messageWhenRangeOverflow="{!'Value must be ' + v.maxDateErrmsg + ' or earlier'}" messageWhenRangeUnderflow="{!'Value must be ' + v.minDateErrmsg + ' or later'}"/> <!-- 18/10/20 -->
+                                    </div>
+                                    <aura:if isTrue="{!v.selectedPremises=='Visit ET Premises'}">
+                                        <div class="slds-form-element__control" >
+                                            <label class="slds-form-element__label" for="text-input-id-1">
+                                                <abbr class="slds-required" title="required">*</abbr> 
+                                                {!v.Available_Slots}
+                                            </label>
+                                            <lightning:select label="" aura:id="availableSlots" name="{!bkng.rowIndex}" disabled="{!!bkng.enableAvailableSlots}"
+                                                              value="{!bkng.booking.ETI_Booking_slots__c}" class="{!v.errorSlot?'slds-form-element slds-has-error':''}" >      
+                                                <option value="">--{!v.Select}--</option>
+                                                <aura:iteration items="{!bkng.slotList}" var="bookingSlots">
+                                                    <option value="{!bookingSlots}">{!bookingSlots}</option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                            <aura:if isTrue="{!v.errorSlot}">
+                                                <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                            </aura:if> 
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!v.selectedPremises=='Customer Premises'}">
+                                        <div class="slds-form-element__control" >
+                                            <label class="slds-form-element__label" for="text-input-id-1">
+                                                <abbr class="slds-required" title="required">*</abbr> 
+                                                {!v.Select_Preferred_Time}
+                                            </label>
+                                            <lightning:select label="" aura:id="preferredTimeId" name="{!bkng.rowIndex}" class="{!v.errorPreferredTime?'slds-form-element slds-has-error':''}"
+                                                              value="{!bkng.booking.Preferred_Time__c}" >      <!--onchange="{!c.fetchRquiredDocuments}"-->
+                                                <option value="">--{!v.Select}--</option>
+                                                <aura:iteration items="{!bkng.slotList}" var="preferredTime">
+                                                    <option value="{!preferredTime}">{!preferredTime}</option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                            <aura:if isTrue="{!v.errorPreferredTime}">
+                                                <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                            </aura:if> 
+                                        </div>
+                                    </aura:if>
+                                    
+                                    <!--File Upload 'fileId' + index -->
+                                    <aura:if isTrue="{!!empty(bkng.requiredDocuments)}">
+                                        <div class="slds-section__title">{!v.Required_Documents}</div><br></br>
+                                        <aura:iteration items="{!bkng.requiredDocuments}" var="doc" indexVar="index">
+                                            <table>
+                                                <tr><label>{!index+1+'. '+doc.Name}</label>
+                                                    <lightning:input label="{!doc.Name}" aura:id="{!'fileId' + index}"  id="fileId" onchange="{!c.handleFilesChange}" type="file" name="{!doc.Id}" multiple="false" accept="image/jpeg, image/png, .zip, .doc, .docx, .pdf" />
+                                                </tr>
+                                                <aura:iteration items="{!bkng.fileName}" var="text"  indexVar="index">
+                                                    <tr>
+                                                        <aura:if isTrue="{!text.Id == doc.Id}">
+                                                            <!--div class="slds-text-body_small slds-text-color_error">{!bkng.fileName} </div-->
+                                                            <td style="padding-bottom: 5px;">{!text.Name}</td>                 
+                                                            <td class="textalignright"><a href="javascript:void(0)" data-filename="{!text.Name}" data-index="{!index}" onclick="{!c.removeFile}">{!v.Delete}</a></td>
+                                                        </aura:if>
+                                                    </tr>
+                                                </aura:iteration>
+                                            </table> 
+                                        </aura:iteration>
+                                    </aura:if>
+                                    <!---File Upload End-->
+                                    <aura:if isTrue="{!or(bkng.booking.Service_Type__c=='Certificate',bkng.booking.Service_Type__c=='ADFCA' )}"  >
+                                        <div class="noteTxt">
+                                            <b>Please use the standard template .&nbsp; <a href=""  onclick="{!c.openDocumentSection}">click here</a> &nbsp; to download the template </b>  
+                                        </div>  
+                                        
+                                        <div>
+                                            <lightning:input label="" aura:id="multipledocumentfiledId"  id="fileIddoc" onchange="{!c.handleOnFileUploadFornewVersion}" type="file"  multiple="true" accept="image/jpeg, image/png, .zip, .doc, .docx, .pdf" />
+                                        </div>
+                                        <aura:if isTrue="{!v.requiredDocError}">
+                                            <span class="slds-has-error" style="color:red;">
+                                                Document is Required
+                                            </span>
+                                        </aura:if>
+                                        <div>
+                                            <aura:iteration items="{!bkng.fileListWrap}" var="file"  indexVar="index">
+                                                <h2 class=""> {!file.fileName}</h2>
+                                            </aura:iteration>
+                                        </div>
+                                    </aura:if>
+                                    
+                                </aura:if>
+                            </aura:iteration>
+                            <aura:if isTrue="{!v.isRetest}">
+                                <div class="slds-col slds-size_1-of-2" style="padding:10px 0px;width:100%">
+                                    <div class="slds-show">
+                                        <c:ETI_TermsandConditions aura:id="termsandconditioncheckboxParent1" placeOfVisibility="Book Service" isCheckbox="{!v.bookingWrp[0].isTermsAndConditionsAgreed}"/>
+                                    </div>
+                                    <p aura:id="TC" class="slds-hide" style="color:#000!important;">Please agree the Terms and Conditions</p>
+                                    <div class="slds-form-element__help slds-hide" aura:id="termsandconditioncheckboxError1" style="color:red">{!v.Field_is_required}</div>
+                                </div>
+                            </aura:if>
+                        </div>
+                    </div>
+                </div>      
+                
+                <!--###### MODAL BOX FOOTER  Start ######-->
+                <footer class="slds-modal__footer modalFooter">
+                    <lightning:button variant="neutral" 
+                                      label="{!v.Cancel}"
+                                      title="{!v.Cancel}"
+                                      onclick="{! c.closeChildModel }" class="btn_back"/>
+                    <aura:if isTrue="{!!v.isReschedule}">
+                        <lightning:button variant="neutral" 
+                                          label="{!v.Save}"
+                                          title="{!v.Save}"
+                                          onclick="{! c.createDraftBooking }" class="btn_table"/>
+                        <aura:set attribute="else">
+                            <lightning:button variant="neutral" 
+                                              label="{!v.Save_Next}"
+                                              title="Save"
+                                              onclick="{! c.createBooking }" class="btn_table"/>
+                        </aura:set>
+                    </aura:if>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <!--div class="slds-backdrop slds-backdrop_open"></div-->
+    <aura:if isTrue="{!v.showPaymentDetail1}">
+        <c:ETI_DisplayServicePrice bookingFeeDetails="{!v.bookingFeeDetails}" isInspectionFeeExist="{!v.isFeeDetailsVar}" isNavigateToHome="{!v.isNavigateToHome}"/>
+    </aura:if>
+    
+    <!-- Download Document Section start -->
+    <aura:if isTrue="{!v.isOpenDocumentSec}">
+        <div aura:id="editDialog" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open slds-modal_small slds-backdrop " style="z-index: 99999;">
+            <div class="slds-modal__container ">
+                <div class="slds-modal__header">
+                    
+                    <button class="slds-button slds-modal__close slds-button--icon" title="Close" onclick="{!c.closeDocumentSection}">
+                        <lightning:icon iconName="utility:close" size="medium" />
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium slds-grid slds-wrap " style="height:400px;" >
+                    <div class="slds-card slds-has-bottom-magnet">
+                        
+                        <aura:if isTrue="{!or(v.selectedServiceType=='Certificate', v.selectedServiceType =='ADFCA')}" >
+                            <div class="noteTxt">
+                                <b>Please use the standard template to upload ADFCA Application.&nbsp; <a href="{!$Resource.ADFCAApplication}" target="_blank" >click here</a> &nbsp; to download the template </b>  
+                            </div>  
+                            <div class="noteTxt">
+                                <b>Please use the standard template to upload THAHUD ADFCA.&nbsp; <a href="{!$Resource.THAHUDADFCA}" target="_blank" >click here</a> &nbsp; to download the template </b>  
+                            </div>  
+                            <div class="noteTxt">
+                                <b>Please use the standard template to upload TypeChangeRequest.&nbsp; <a href="{!$Resource.TypeChangeRequest}" target="_blank" >click here</a> &nbsp; to download the template </b>  
+                            </div>  
+                            <div class="noteTxt">
+                                <b>Please use the standard template to upload ChangeChassis Form.&nbsp; <a href="{!$Resource.ChangeChassisform}" target="_blank" >click here</a> &nbsp; to download the template </b>  
+                            </div>  
+                            <div class="noteTxt">
+                                <b>Please use the standard template to upload ColorChangeRequest Form.&nbsp; <a href="{!$Resource.colorchangerequestform}" target="_blank" >click here</a> &nbsp; to download the template </b>  
+                            </div>   
+                            <div class="noteTxt">
+                                <b>Please use the standard template to upload RepuningChassisNumber Form.&nbsp; <a href="{!$Resource.RepuningChassisNumberForm}" target="_blank" >click here</a> &nbsp; to download the template </b>  
+                            </div>  
+                            <div class="noteTxt">
+                                <b>Please use the standard template to upload PunchingCHassisNumber.&nbsp; <a href="{!$Resource.Punchingchassisnumberontrailer}" target="_blank" >click here</a> &nbsp; to download the template </b>  
+                            </div>  
+                        </aura:if>
+                        
+                    </div>
+                </div>
+                <footer class="slds-modal__footer modalFooter">
+                    <lightning:button variant="neutral" 
+                                      label="{!v.Cancel}"
+                                      title="{!v.Cancel}"
+                                      onclick="{! c.closeDocumentSection }" class="btn_back"/>
+                </footer>
+            </div>
+        </div>
+        
+        
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

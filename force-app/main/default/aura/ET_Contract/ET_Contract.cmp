@@ -1,0 +1,595 @@
+<aura:component
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:actionOverride,lightning:isUrlAddressable"
+                access="global" controller="ET_ContractController">
+    
+    <aura:html tag="style">
+        .cuf-content { padding: 0 0rem !important; } .slds-p-around--medium {
+        padding: 0rem !important; }
+        .slds-modal__content{
+        <!--overflow-y:hidden !important;-->
+        height:unset !important; max-height:unset !important; }
+        .slds-modal__container{
+        max-width: 95rem !important;
+        width:95% !important;
+        }
+        
+    </aura:html>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="setDecimal" type="String" default="4" />
+    <aura:attribute name="contractLineList" type="List" default="[]"/>
+    <aura:attribute name="customerVQIList" type="List" default="[]" />
+    <aura:attribute name="agreementTypeList" type="List" />
+    <!-- <aura:attribute name="tempLineList" type="ET_Sales_Agreement_Sub_Line_Item__c[]" /> -->
+    <aura:attribute name="tempLineList" type="ET_Sales_Agreement_Sub_Line_Item__c[]" />
+
+    <aura:attribute name="contractList" type="Contract__c[]" />
+    <aura:attribute name="salesAgreementId" type="String" />
+    <aura:attribute name="showSpinner" type="boolean" default="false" />
+    
+    
+    <aura:attribute name="record" type="Object" />
+    <force:recordData aura:id="recordLoader" recordId="{!v.recordId}"
+                      fields="Account_Name__c,Opportunity_Name__c,Opportunity_Name__r.ETSALES_Customer_PO_Number__c,Opportunity_Name__r.Contract_Start_Date__c,Opportunity_Name__r.Contract_End_Date__c"
+                      targetFields="{!v.record}" recordUpdated="{!c.onForceLoad}" />
+    
+    <aura:method name="AutoFillData" action="{!c.autoFillDataHandler}" access="public">
+        <aura:attribute name="index" type="String" />
+        <aura:attribute name="recordData" type="List" />
+        <aura:attribute name="identifier" type="string" />
+    </aura:method>
+    
+    
+    <div>
+        <div class="outer-div">
+            <aura:if isTrue="{!v.showSpinner}">
+                <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+            </aura:if>
+            
+            <div class="modal-header slds-modal__header">
+                <h2>Sales Agreement Creation</h2>
+            </div>
+            
+            <div class="mainDiv slds-modal__content slds-m-around_medium">
+                
+                <lightning:recordEditForm objectApiName="ET_Sales_Agreement__c" aura:id="conForm"
+                                          onload="{!c.handleOnLoad}" onsubmit="{!c.handleOnSubmit}" onsuccess="{!c.handleOnSuccess}"
+                                          onerror="{!c.handleOnError}">
+                    <lightning:messages />
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Customer</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Salesforce_Customer__c"
+                                                  required="true" value="{!v.record.Account_Name__c}" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <!-- <label for="aid">Sales Agreement Type</label> -->
+                            <!-- <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Agreement_Type__c"
+                                                  required="true" variant="label-hidden" /> -->
+                            <lightning:select name="abc" label="Sales Agreement Type" >
+                                <aura:iteration  items="{!v.agreementTypeList}" var="opt">
+                                    <option value="{!opt.value}">{!opt.label}</option>
+                                </aura:iteration>
+                            </lightning:select>
+                            <lightning:inputField class="slds-hide" aura:id="aid" fieldName="ETSALES_Opportunity__c"
+                                                  value="{!v.record.Opportunity_Name__c}" variant="label-hidden" />
+                            <lightning:inputField class="slds-hide" aura:id="aid" fieldName="ETSALES_Customer_Quote__c"
+                                                  value="{!v.recordId}" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Customer PO</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Customer_PO_No__c"
+                                                  required="true" value="{!v.record.Opportunity_Name__r.ETSALES_Customer_PO_Number__c}"
+                                                  variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Sales Agreement Name</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Name" required="true"
+                                                  value="" variant="label-hidden" />
+                        </div>
+                        
+                    </div>
+
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Activation Date</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Contract_Start_Date__c"
+                                                  required="true" value="{!v.record.Opportunity_Name__r.Contract_Start_Date__c}"
+                                                  variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Expiration Date</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Contract_End_Date__c"
+                                                  required="true" value="{!v.record.Opportunity_Name__r.Contract_End_Date__c}"
+                                                  variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Contract Type</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Sales_Agreement_Type__c"
+                                                  required="true" value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Auto Invoice</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Auto_Invoice__c"
+                                                  value="" variant="label-hidden" />
+                        </div>
+                    </div>
+                   
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Round Decimal</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Round_Decimal__c"
+                                                  required="true" value="{!v.setDecimal}" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Contract Pay Mode</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Contract_Payment_Type__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Driver OT Allowed</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Driver_OT_Allowed__c"
+                                                  value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Max Driver OT</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Max_Driver_OT__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                    </div>
+                    
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Administration Charges</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Administration_Charges__c"
+                                                  value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Premature Charges</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Premature_Charges__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Customer Reference</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Customer_Reference__c"
+                                                  value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Service Contract Rule</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Service_Contract_Rule__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                    </div>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Contract Renewal Date</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Contract_Renewal_Date__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Mobilization Date</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Mobilization_Date__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Letter Of Award Date</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Letter_Of_Award_Date__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Contract Execution Date</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Contract_Execution_Date__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                    </div>
+
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">PO From Customer Date</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="PO_From_Customer_Date__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Fine Customer Email</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Fine_Customer_Email__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Invoicing Collection Email</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Invoicing_Collection_Email__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                            <label for="aid">Is Single Invoice</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Is_Single_Invoice__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                    </div>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                            <label for="aid">Customer Complaints</label>
+                            <lightning:inputField class="slds-visible" aura:id="aid" fieldName="Customer_Complaints__c"
+                                                   value="" variant="label-hidden" />
+                        </div>
+                    </div>
+
+                </lightning:recordEditForm>
+                <lightning:recordViewForm recordId="{!v.record.Opportunity_Name__c}" objectApiName="Opportunity">
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                            <lightning:outputField fieldName="GL_Location_Lookup__c" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                            <lightning:outputField fieldName="GL_Activity_Lookup__c" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning:outputField fieldName="GL_Project_Code_Lookup__c" />
+                        </div>
+                    </div>
+                </lightning:recordViewForm>
+                
+            </div>
+            <div class="slds-border_bottom">
+                
+                <div class="slds-form-element__control slds-m-around_medium">
+                    <!-- Scrollbar added by Sreelakshmi SK 11/5/23 -->
+                    <div class="slds-scrollable" style="">
+                        <table class="slds-box slds-table slds-table slds-table--striped">
+                            <thead>
+                                
+                                <tr>
+                                    <th style="vertical-align : middle;text-align:center;">S.No</th>
+                                    <th style="vertical-align : middle;text-align:center;">Item</th>
+                                    <th style="vertical-align : middle;text-align:center;">Item Description</th>
+                                    <th style="vertical-align : middle;text-align:center;">Vehicle Description</th>
+                                    <th style="vertical-align : middle;text-align:center;">Start Date</th>
+                                    <th style="vertical-align : middle;text-align:center;">End Date</th>
+                                    <th style="vertical-align : middle;text-align:center;">Effective Start Date</th>
+                                    <th style="vertical-align : middle;text-align:center;">Sat</th>
+                                    <th style="vertical-align : middle;text-align:center;">Sun</th>
+                                    <th style="vertical-align : middle;text-align:center;">Mon</th>
+                                    <th style="vertical-align : middle;text-align:center;">Tue</th>
+                                    <th style="vertical-align : middle;text-align:center;">Wed</th>
+                                    <th style="vertical-align : middle;text-align:center;">Thu</th>
+                                    <th style="vertical-align : middle;text-align:center;">Fri</th> 
+                                    <th style="vertical-align : middle;text-align:center;">No Of Days</th>
+                                    <th style="vertical-align : middle;text-align:center;">No Of Vehicles/Employees</th>
+                                    <th style="vertical-align : middle;text-align:center;">Rate Type</th>
+                                    <th style="vertical-align : middle;text-align:center;">Amount To Be Calculated</th>
+                                    <th style="vertical-align : middle;text-align:center;">Rate/Day</th>
+                                    <th style="vertical-align : middle;text-align:center;">Line Amount</th>
+                                    <th style="vertical-align : middle;text-align:center;">Hours/Day</th>
+                                    <th style="vertical-align : middle;text-align:center;">Km/Day</th>
+                                    <th style="vertical-align : middle;text-align:center;">Excess KM</th>
+                                    <th style="vertical-align : middle;text-align:center;">Excess Hours</th>
+                                    <th style="vertical-align : middle;text-align:center;">Allow Secondary</th>
+                                    <th style="vertical-align : middle;text-align:center;">Route</th>
+                                    <th style="vertical-align : middle;text-align:center;">Options</th>
+                                    <th style="vertical-align : middle;text-align:center;">Driver Count</th>
+                                    <th style="vertical-align : middle;text-align:center;">Service Type</th>
+                                    <th style="vertical-align : middle;text-align:center;">Service Code</th>
+                                    <th style="vertical-align : middle;text-align:center;">Tax Code</th>
+                                    <th style="vertical-align : middle;text-align:center;">Tax Rate</th>
+                                    <th style="vertical-align : middle;text-align:center;">Tax Amount</th>
+                                    <th style="vertical-align : middle;text-align:center;">Line Amount</th>
+                                    <th style="vertical-align : middle;text-align:center;">Fuel Collection Basis</th>
+                                    <th style="vertical-align : middle;text-align:center;">Toll Included</th>
+                                    <th style="vertical-align : middle;text-align:center;">Toll Collection Fee</th>
+                                    <th style="vertical-align : middle;text-align:center;">Traffice Fines Fee</th>
+                                    
+                                    <th style="vertical-align : middle;text-align:center;">Fuel Included</th>
+                                    <th style="vertical-align : middle;text-align:center;">Toll Collection Basis</th>
+                                    <th style="vertical-align : middle;text-align:center;">Remarks</th>
+                                    <th style="vertical-align : middle;text-align:center;min-width:100px;">action</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody class="padtb">
+                                 
+                                <aura:iteration items="{!v.contractLineList}" var="item" indexVar="index">
+                                       
+                                        
+                                        <tr>
+                                            <td style="horizontal-align : middle;text-align:center;">
+                                                {!index+1}
+                                                
+                                            </td>
+                                            
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 200px;">
+                                                    <c:CommonCustomLookup objectName="Item__c"
+                                                                          fieldApiNames="Item_Description__c" selectRecordId="{!item.Item__c}"
+                                                                          rowIndex="{!index}" required="true" callParentMethod="{!this}"
+                                                                          iconName="standard:all" />
+                                                </div>
+                                                
+                                            </td>
+                                            
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <lightning:input type="text" name="ItemDesc" value="{!item.ItemDesc}"  rowIndex="{!index}"
+                                                                     disabled="true" />
+                                                </div>
+                                                
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <lightning:input type="text" name="{!index}" value="{!item.Vehicle_Description__c}"
+                                                                    rowIndex="{!index}"  />
+                                                </div>
+                                                
+                                             </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 245px;">
+                                                    <lightning:input type="datetime" name="{!index}"  
+                                                                     aura:id="Contract_Start_Date__c" timezone="GMT"
+                                                                     value="{!item.Contract_Start_Date__c}"
+                                                                     onchange="{!c.contractDateHandler}" />
+                                                </div>
+                                                
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 245px;">
+                                                    <lightning:input type="datetime" name="{!index}"
+                                                                     aura:id="Contract_End_Date__c" timezone="GMT"
+                                                                     value="{!item.Contract_End_Date__c}"
+                                                                     onchange="{!c.contractDateHandler}" />
+                                                </div>
+                                                
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 245px;">
+                                                    <lightning:input type="datetime" name="effStartdate" timezone="GMT"
+                                                                     value="{!item.Effective_Date__c}" disabled="true" />
+                                                </div>
+                                                
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <span data-name="6">
+                                                    <lightning:input type="checkbox" name="{!index}"
+                                                                     checked="{!item.Saturday__c}" onchange="{!c.dayCheckHandler}" />
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <span data-name="0">
+                                                    <lightning:input type="checkbox" name="{!index}"
+                                                                     checked="{!item.Sunday__c}" onchange="{!c.dayCheckHandler}" />
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <span data-name="1">
+                                                    <lightning:input type="checkbox" name="{!index}"
+                                                                     checked="{!item.Monday__c}" onchange="{!c.dayCheckHandler}" />
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <span data-name="2">
+                                                    <lightning:input type="checkbox" name="{!index}"
+                                                                     checked="{!item.Tuesday__c}" onchange="{!c.dayCheckHandler}" />
+                                                </span>
+                                            </td>
+                                            <td style="horizontal-align : middle;text-align:center;">
+                                                <span data-name="3">
+                                                    <lightning:input type="checkbox" name="{!index}"
+                                                                     checked="{!item.Wednesday__c}" onchange="{!c.dayCheckHandler}" />
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <span data-name="4">
+                                                    <lightning:input type="checkbox" name="{!index}"
+                                                                     checked="{!item.Thursday__c}" onchange="{!c.dayCheckHandler}" />
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <span data-name="5">
+                                                    <lightning:input type="checkbox" name="{!index}"
+                                                                     checked="{!item.Friday__c}" onchange="{!c.dayCheckHandler}" />
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="NoOfDays" value="{!item.No_Of_Days__c}"
+                                                                 disabled="true" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <lightning:input type="number" name="{!index}"
+                                                                     value="{!item.No_of_Vehicles_Employee__c}"
+                                                                     onchange="{!c.noOfVehEmpChangeHandler}" />
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <lightning:select name="{!index}" value="{!item.Rate_Type__c}"
+                                                                      onchange="{!c.rateChangeHandler}">
+                                                        <option value="10">Rate/Month-30 Days</option>
+                                                        <option value="50">Manual</option>
+                                                        <option value="20">Rate/Month-Actual</option>
+                                                        <option value="30">Rate/Year</option>
+                                                        <option value="40">Rate/Year Total</option>
+                                                        
+                                                    </lightning:select>
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="{!index}"
+                                                                 value="{!item.Amount_Calcualted__c}"
+                                                                 onchange="{!c.amountChangeHandler}" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <lightning:input type="number" name="rateDay"
+                                                                     value="{!item.Rate_Day__c}" disabled="true" />
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <lightning:input type="number" name="lineAmount"
+                                                                     value="{!item.Line_Amount__c}" disabled="true" />
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="hoursDay"
+                                                                 value="{!item.Hours_per_Day__c}" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="kmDay" value="{!item.KM_per_Day__c}" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="excessKm"
+                                                                 value="{!item.Excess_Km__c}" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="excessHrs"
+                                                                 value="{!item.Excess_Hours__c}" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="checkbox" name="allowSec"
+                                                                 checked="{!item.Allow_Secondary__c}" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <c:CommonCustomLookup objectName="Route__c" fieldApiNames=""
+                                                                          selectRecordId="{!item.Route__c}" rowIndex="{!index}"
+                                                                          required="true" callParentMethod="{!this}"
+                                                                          iconName="standard:location" />
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <c:CommonCustomLookup objectName="Option__c" fieldApiNames=""
+                                                                          selectRecordId="{!item.Option__c}" rowIndex="{!index}"
+                                                                          required="true" callParentMethod="{!this}"
+                                                                          iconName="standard:merge" />
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="driverCount"
+                                                                 value="{!item.Driver_Count__c}" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <c:CommonCustomLookup objectName="Service_Type__c"
+                                                                          fieldApiNames="Service_Code__c,Tax_Code__c,Tax_Rate__c"
+                                                                          selectRecordId="{!item.Service_Type__c}" rowIndex="{!index}"
+                                                                          required="true" callParentMethod="{!this}"
+                                                                          iconName="standard:catalog" />
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input name="servCode" value="{!item.serviceCode}"
+                                                                 disabled="true" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <lightning:input name="TaxCode" value="{!item.taxCode}"
+                                                                     disabled="true" />
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input name="TaxRate" value="{!item.taxRate}" disabled="true" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="TaxAmount"
+                                                                 value="{!item.Tax_Amount__c}" disabled="true" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="lineAmount" value="{!item.totalAmount}"
+                                                                 disabled="true" />
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:select name="fuelCollection"
+                                                                  value="{!item.Fuel_Collection_Basis__c}">
+                                                    <option value="">choose one...</option>
+                                                    <option value="Contract">Contract</option>
+                                                    <option value="Transaction">Transaction</option>
+                                                    
+                                                </lightning:select>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:select name="tollIncluded" value="{!item.Toll_Included__c}">
+                                                    <option value="">choose one...</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                    
+                                                </lightning:select>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="tollFee"
+                                                                 value="{!item.Toll_Collection_Fee__c}" />
+                                                
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:input type="number" name="trafficFine"
+                                                                 value="{!item.Traffic_Fine__c}" />
+                                                
+                                            </td>
+                                            
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:select name="fuelIncluded" value="{!item.Fuel_Included__c}">
+                                                    <option value="">choose one...</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                    
+                                                </lightning:select>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <lightning:select name="tollCollection"
+                                                                  value="{!item.Toll_Collection_Basis__c}">
+                                                    <option value="">choose one...</option>
+                                                    <option value="Contract">Contract</option>
+                                                    <option value="Transaction">Transaction</option>
+                                                    
+                                                </lightning:select>
+                                            </td>
+                                            <td style="vertical-align : middle;text-align:center;">
+                                                <div style="width: 140px;">
+                                                    <lightning:textarea name="Remarks" value="{!item.Remarks__c}" />
+                                                </div>
+                                            </td>
+                                            <td data-label="Action" class="slds-cell-wrap"
+                                                style="horizontal-align : middle;text-align:center;">
+                                                <aura:if isTrue="{!index == 0}">
+                                                    <!-- <a onclick="{!c.addNewLine}" id="{!item.Line_Number__c}"> -->
+                                                    <a onclick="{!c.addNewLine}" id="{!index}">
+                                                        <lightning:icon iconName="utility:add"
+                                                                        class="slds-icon slds-icon_small" size="small"
+                                                                        alternativeText="add" />
+                                                        <span class="slds-assistive-text">Add Icon</span>
+                                                    </a>
+                                                    <aura:set attribute="else">
+                                                        <a onclick="{!c.addNewLine}" id="{!index}">
+                                                            <lightning:icon iconName="utility:add"
+                                                                            class="slds-icon slds-icon_small" size="small"
+                                                                            alternativeText="add" />
+                                                            <span class="slds-assistive-text">Add Icon</span>
+                                                        </a>
+                                                        <a onclick="{!c.removeLine}" id="{!index}">
+                                                            <lightning:icon variant="error" iconName="utility:delete"
+                                                                            class="slds-icon slds-icon_small" size="small"
+                                                                            alternativeText="icon" />
+                                                            <span class="slds-assistive-text">Delete Icon</span>
+                                                        </a>
+                                                    </aura:set>
+                                                </aura:if>
+                                                
+                                            </td>
+                                        </tr>
+                                </aura:iteration>
+                               
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slds-col modal-footer slds-modal__footer">
+                <lightning:button variant="Brand" class="btnsend" type="button" label="Cancel"
+                                  onclick="{!c.OnCancel}" />
+                <lightning:button variant="brand" class="btnsend" type="button" name="Save" label="Save"
+                                  onclick="{!c.handleSave}" />
+            </div>
+        </div>
+    </div>
+</aura:component>

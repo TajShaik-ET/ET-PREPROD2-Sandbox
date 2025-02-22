@@ -1,0 +1,89 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"
+                controller="ET_RegistrationController"  access="global" >
+     <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="locList" type="List"/>
+    <aura:attribute name="orgList" type="List"/>
+    <aura:attribute name="loaded" type="boolean"/> 
+    <aura:attribute name="disable" type="boolean"/>
+    <aura:attribute name="showmsg" type="boolean"/>  
+    <aura:attribute name="newRegistration" type="ET_Registration_Request__c"
+         default="{ 'sobjectType': 'ET_Registration_Request__c',
+                        'Name': '',
+                        'ET_First_name__c': '',
+                        'ET_Last_name__c': '',
+                        'ET_Email_Id__c': '',
+                        'ET_Mobile_Number__c': '',
+                        'ET_Organization_Name__c': '',
+                        'ET_Organization_Type__c': '',
+                        'ET_Preferred_Location__c': '',
+                        'ET_TRN_Number__c':''}"/>
+  		 <aura:if isTrue="{! v.loaded }">
+        <form class="slds-form_stacked inputContainer">
+            <aura:if isTrue="{!v.showmsg}">
+              <p aura:id="toggleId" style="font-size:large; color:#00c19e; padding-bottom:20px; text-align:center">Thanks for registering with OneET. You will receive email once your account is activated.</p>
+            </aura:if>
+              <aura:if isTrue="{!not(v.showmsg)}">                               
+            <lightning:input aura:id="registrationForm" label="First Name"
+                             name="First Name"  placeholder="First Name"
+                             variant = "label-hidden" class="inputclass"
+                             value="{!v.newRegistration.ET_First_name__c}"
+                             required="true"/>
+            <lightning:input aura:id="registrationForm" label="Last Name"
+                             variant = "label-hidden"
+                             name="Last Name" placeholder="Last Name"
+                             value="{!v.newRegistration.ET_Last_name__c}"
+                             required="true"/>
+            <lightning:input aura:id="registrationForm" label="Email Id"
+                             variant = "label-hidden"
+                             name="Email Id" type="email"  placeholder="Email"
+                             value="{!v.newRegistration.ET_Email_Id__c}"
+                             required="true"/>
+            <lightning:input aura:id="registrationForm" label="Mobile"
+                             variant = "label-hidden"
+                             name="EMobile" type="phone"  placeholder="Phone"
+                             value="{!v.newRegistration.ET_Mobile_Number__c}"
+                             required="true"/>
+            <lightning:input aura:id="registrationForm" label="Organization Name"
+                             variant = "label-hidden"
+                             name="orgName"   placeholder="Organization Name"
+                             value="{!v.newRegistration.ET_Organization_Name__c}"
+                             required="true"/>
+            <lightning:input aura:id="Trn" label="Trn Number"
+                             variant = "label-hidden"
+                             name="Trn"   placeholder="Trn Number"
+                             value="{!v.newRegistration.ET_TRN_Number__c}"
+                             required="true"/>
+            <lightning:select   aura:id="registrationForm" name="Organization Type"
+                             variant = "label-hidden" class="hideLabel"
+                              label="" 
+                              required="true" 
+                              value="{!v.newRegistration.ET_Organization_Type__c}" >
+                <option value="">Organization Type</option>
+                <aura:iteration items="{!v.orgList}" var="val">
+                    <option value="{!val}" > {!val}</option>
+                </aura:iteration>
+            </lightning:select>
+              <lightning:select   aura:id="registrationForm" name="Prefered Location" 
+                              label=""  variant = "label-hidden" class="hideLabel"
+                              required="true" 
+                              value="{!v.newRegistration.ET_Preferred_Location__c}" >
+                <option value="">Prefered Location</option>
+                <aura:iteration items="{!v.locList}" var="val">
+                    <option value="{!val}" > {!val}</option>
+                </aura:iteration>
+            </lightning:select>
+			<div class="slds-align_absolute-center">
+            <lightning:button label="Register Now"
+                              class="slds-m-top_medium"
+                              variant="brand"
+                              disabled="{!v.disable}"
+                              onclick="{!c.clickCreate}"/>
+                </div>
+            </aura:if>
+        </form> 
+       <aura:set attribute="else">
+                <lightning:spinner alternativeText="Loading" />
+            </aura:set>
+       </aura:if> 
+    
+</aura:component>

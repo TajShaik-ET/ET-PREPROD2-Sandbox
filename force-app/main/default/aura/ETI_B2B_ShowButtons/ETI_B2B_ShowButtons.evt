@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Event template" >
+<aura:attribute name="isShowButtons" type="boolean" default="true"/>
+<aura:attribute name="booking" type="ETI_Booking__c" default="[{'sObjectType':'ETI_Booking__c','Name':''}]"/>
+<aura:attribute name="selectedEmirate" type="String" />
+</aura:event>

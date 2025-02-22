@@ -1,0 +1,42 @@
+.THIS .outer-div {
+    position: relative;
+}
+
+.THIS .spinner2 {
+   position: absolute;
+}
+
+.THIS .btn_table{
+    font-size: 14px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 7px;
+    min-width: 100px;
+    height: 30px;
+    background-color: #ff4b5a;
+    border-radius: 0;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+    text-decoration: none;
+}
+.THIS .btn_table:hover{
+    background-color: #333333!important;
+}
+.THIS .btn_back{
+    font-size: 14px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: auto!important;
+    height: 30px;
+    background-color: #b0b1af;
+    border-radius: 0;
+    color: #fff;  
+    line-height: 1.2;
+    transition: all .4s;
+}
+.THIS .btn_back:hover{
+    background-color: #333333;
+}

@@ -1,0 +1,25 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+	<lightning:carousel disableAutoRefresh="false" disableAutoScroll="false">
+        <lightning:carouselImage
+            src = "{!$Resource.banner1}"
+            header = "School Transport"
+            description = "Safe and reliable Transport System"
+            alternativeText = ""
+            href = "/s/etst-home-page">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+           src = "{!$Resource.banner2}"
+            header = "School Transport"
+            description = "Safe and reliable Transport System"
+            alternativeText = "Safe and reliable Transport System"
+                                 href = "/s/etst-home-page">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+            src = "{!$Resource.banner3}"
+            header = "Inspection"
+            description = "Vehcile Inspection"
+            alternativeText = "Vehcile Inspection"
+            href = "/s/eti-homepage">
+        </lightning:carouselImage>
+    </lightning:carousel>
+</aura:component>

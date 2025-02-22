@@ -1,0 +1,70 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 08-05-2024
+  @last modified by  : Srihari.Koyila@Smaartt.com-SK
+-->
+<template>
+    <template if:true={showLoadingSpinner}>
+        <div class="spinner-container">
+            <lightning-spinner alternative-text="Uploading..." size="medium"></lightning-spinner>
+        </div>
+    </template>
+
+    <template if:true={eT_overTimeAutoLWCcomp}>
+        <lightning-tabset class="custom-tabset" active-tab-value={activeTab} onactive={handleTabSelect}>
+
+            <!-- Tab for Over Time Sheet -->
+            <lightning-tab label="Over Time Sheet" value="OverTime_Sheet">
+                <div class="tab-content">
+                    <div class="file-upload-section">
+                        <lightning-input name="file uploader" onchange={handleFilesChange} type="file" multiple
+                            class="custom-file-input">
+                        </lightning-input>
+                    </div>
+                    <template if:true={Show_dataTable_Upload}>
+                        <lightning-datatable data={OT_CSVlines} columns={OT_CSVColumns} key-field="id"
+                            hide-checkbox-column="true" class="custom-datatable">
+                        </lightning-datatable>
+                    </template>
+                    <div class="file-name slds-text-color_success">{fileName}</div>
+                    <template if:true={showButtons}>
+                        <lightning-button class="custom-upload-button" label={UploadFile} onclick={handleSave}
+                            variant="brand" disabled={isTrue}>
+                        </lightning-button>
+                        <lightning-button class="custom-reset-button" label="Reset" onclick={handleReset}
+                            variant="brand">
+                        </lightning-button>
+                    </template>
+                </div>
+            </lightning-tab>
+
+            <!-- Tab for ShowDataTableData Time Sheet -->
+            <lightning-tab label="Uploaded Time Sheet" value="OverTime_Uploaded_Sheet">
+                <div class="tab-header">
+                    <lightning-button-icon variant="brand" icon-name="utility:back" alternative-text="Back" title="Back"
+                        onclick={handleBackButtonClick} class="backward-button">
+                    </lightning-button-icon>
+                </div>
+                <div class="tab-content timesheet_tab">
+                    <lightning-datatable key-field="Id" data={OT_Sheets_Data} columns={OT_columns}
+                        onrowaction={handleRowAction} onfileupload={handleFileUpload} hide-checkbox-column="true"
+                        class="custom-datatable">
+                    </lightning-datatable>
+                </div>
+            </lightning-tab>
+
+            <!-- Tab for Dashboard of Overtime -->
+            <lightning-tab label="Dashboard of Overtime" value="OverTime_Dashboard">
+                <div class="tab-content">
+                    <h3 class="dashboard-heading">Over Time Dashboard</h3>
+                </div>
+            </lightning-tab>
+
+        </lightning-tabset>
+    </template>
+    <input id="fileInput" type="file" onchange={handleFileUpload} style="display:none;" />
+
+
+</template>

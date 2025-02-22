@@ -1,0 +1,86 @@
+<aura:component controller="ETI_B2B_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" >
+    <aura:attribute name="emirate" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <lightning:layoutItem padding="around-small" class="servicesdiv">
+        <div class="slds-box notoppad">
+            <!--<div class="serviceheaddiv">
+                <p class="serheading">Explore ET Services</p>
+            </div>-->
+            <div class="menudiv">
+                <c:MenuItemsList />
+            </div>
+            <div class="dashboardmain">
+                <div class="businessdiv">
+                    <div class="heading">Business Dashboard</div>
+                    <div class="innerdivmain">
+                        <div>0
+                            <span class="innerheading">Active <br></br>Agreements</span>
+                        </div>
+                        <div>0
+                            <span class="innerheading">Active  <br></br>Resources</span>
+                        </div>
+                        <div>0
+                            <span class="innerheading">Active  <br></br>Vehicles</span>
+                        </div>
+                        <div>0
+                            <span class="innerheading">Active <br></br>Invoices</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="casesdiv">
+                    <div class="heading">Case Dashboard</div>
+                    <div class="innerdivmain">
+                        <div>0
+                            <span class="innerheading">New <br></br>Cases</span>
+                        </div>
+                        <div>0
+                            <span class="innerheading">Escalated <br></br>Cases</span>
+                        </div>
+                        <div>0
+                            <span class="innerheading">On Hold <br></br>Cases</span>
+                        </div>
+                        <div>0
+                            <span class="innerheading">Closed <br></br>Cases</span>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <div class="serviceheaddiv">
+                <p class="serheading"><span class="gbheading">Pioneer in</span> <span class="gbsubheading"> Transportation</span></p>
+            </div> 
+            <div class="slds-grid slds-gutters" style="text-align: center;">
+                <div class="slds-col">
+                    <div class="item">
+                        <div class="serviceitem" >
+                            <img src="{!$Resource.ETI_BUS}" onclick="{!c.redirectSchoolTransport}" class="CarLogo"/>
+                            <div class="textcontenthead">
+                                <label class="CarLabel" onclick="{!c.redirectSchoolTransport}">School Transport </label><span class="rightarrow" onclick="{!c.redirectSchoolTransport}">&#10140;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!v.emirate=='Sharjah'}">
+                        <div class="item">
+                            <div class="serviceitem">
+                                <img src="{!$Resource.ET_Inspection_car}" class="CarLogo" onclick="{!c.redirectToVehicleInspection}"/> 
+                                <div  class="textcontenthead">
+                                    <label class="CarLabel" onclick="{!c.redirectToSpeaInspection}">SPEA Inspection</label><span class="rightarrow" onclick="{!c.redirectToVehicleInspection}">&#10140;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <aura:set attribute="else">
+                            <div class="item">
+                                <div class="serviceitem">
+                                    <img src="{!$Resource.ET_Inspection_car}" class="CarLogo" onclick="{!c.redirectToVehicleInspection}"/> 
+                                    <div  class="textcontenthead">
+                                        <label class="CarLabel" onclick="{!c.redirectToVehicleInspection}">Vehicle Inspection </label><span class="rightarrow" onclick="{!c.redirectToVehicleInspection}">&#10140;</span>
+                                    </div>
+                                </div>
+                    		</div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+        </div>
+    </lightning:layoutItem>
+</aura:component>

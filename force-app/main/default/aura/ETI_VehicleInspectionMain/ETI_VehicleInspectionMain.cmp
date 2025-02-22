@@ -1,0 +1,142 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    
+    <aura:attribute name="selectedTabId" type="String" />
+    <aura:attribute name="account" type="object" />
+    <aura:attribute name="languageList" type="list" default="['Arabic','English']" />
+    <aura:attribute name="showPopup" type="boolean" default="false"/>
+    <aura:attribute name="saveState" type="String" default="UNSAVED" />
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:handler name="onSaveSuccess" event="force:recordSaveSuccess" action="{!c.handleSaveSuccess}"/>
+    <aura:attribute name="showAlertPopup" type="boolean" default="false"/>
+    <aura:attribute name="showPreferredLanguage" type="boolean" default="false" />
+    <aura:attribute name="showPersonMobilePhone" type="boolean" default="false" />
+    <aura:attribute name="errorLanguage" type="boolean" default="false" />
+    <aura:attribute name="selectedEmirate" type="String" />
+    <div class="bgimage"></div>
+    <div aura:id="vehicleService" class="bgetimgdiv">
+        <!--<h2 class="caption-title">Welcome Emirates Transport</h2>
+        <h3 class="caption-subtitle">OnDemand Inspection Services</h3>-->
+        <div class="mainsearchdiv desktopview">
+            <lightning:tabset selectedTabId="{!v.selectedTabId}" variant="scoped">
+                
+                <lightning:tab label="{!v.Vehicle}" id="Vehicle" class="vehicleDetails" >
+                    <c:ETI_VehicleDetailPage aura:id="vehicleTab" selectedEmirate="{!v.selectedEmirate}" /> 
+                </lightning:tab> 
+                
+                <lightning:tab label="{!v.Upcoming_Service}" id="UpComingservices" class="upcomingServices">
+                    <c:ETI_UpcomingBookingPage aura:id="upcoming" selectedEmirate="{!v.selectedEmirate}" />
+                </lightning:tab>
+                
+                <lightning:tab label="{!v.History}" id="Historyservices" class="historyDetails">
+                    <c:ETI_BookingHistoryPage aura:id="history" selectedEmirate="{!v.selectedEmirate}" />
+                </lightning:tab>
+                
+                <lightning:tab label="{!v.Payment_History}" id="Payment" class="paymentDetails">
+                    <c:ETI_PaymentHistory aura:id="paymentdetail" selectedEmirate="{!v.selectedEmirate}" />
+                </lightning:tab>
+                <lightning:tab label="{!v.My_Cases}" id="myCases" class="vehicleDetails">
+                    <c:ETI_CaseHistory aura:id="casedetail" selectedEmirate="{!v.selectedEmirate}" />
+                </lightning:tab>
+            </lightning:tabset>
+        </div>
+        <div class="mobileviewdiv">
+            <lightning:tabset selectedTabId="{!v.selectedTabId}" variant="scoped">                
+                <lightning:tab label="{!v.Vehicle}" id="Vehicle" class="vehicleDetails">
+                    <c:ETI_VehicleDetailPage aura:id="vehicleTab" selectedEmirate="{!v.selectedEmirate}" /> 
+                </lightning:tab> 
+                
+                <lightning:tab label="{!v.Upcoming_Service}" id="UpComingservices" class="upcomingServices">
+                    <c:ETI_UpcomingBookingPage aura:id="upcoming" selectedEmirate="{!v.selectedEmirate}" />
+                </lightning:tab>
+                
+                <lightning:tab label="{!v.History}" id="Historyservices" class="historyDetails">
+                    <c:ETI_BookingHistoryPage aura:id="history" selectedEmirate="{!v.selectedEmirate}" />
+                </lightning:tab>
+                
+                <lightning:tab label="{!v.Payment_History}" id="Payment" class="paymentDetails">
+                    <c:ETI_PaymentHistory aura:id="paymentdetail" selectedEmirate="{!v.selectedEmirate}" />
+                </lightning:tab>
+                <lightning:tab label="{!v.My_Cases}" id="myCases" class="vehicleDetails">
+                    <c:ETI_CaseHistory aura:id="casedetail" selectedEmirate="{!v.selectedEmirate}" />
+                </lightning:tab> 
+            </lightning:tabset>
+        </div>
+    </div>
+    
+    <aura:if isTrue="{!v.showAlertPopup}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header modalHeader">
+                    
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.Alert}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                    <div class="slds-card slds-has-bottom-magnet">
+                        <p class="alertmessage">                           
+                            <b>{!v.Inspection_Service_availability}</b><br></br>
+                            <b></b>{!v.To_book_go_to_Home_Page} </p>
+                        <p class="alertmessage"> <b><u>{!v.Note} {!v.Change_service_centers}</u></b>
+                        </p>
+                        
+                    </div>
+                </div>
+                
+                <footer class="slds-modal__footer modalFooter modalFooter">
+                    <lightning:button variant="brand" 
+                                      label="{!v.Ok}"
+                                      title="{!v.Ok}"
+                                      onclick="{! c.redirectToHOme }" class="btn_table"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+    <!--Model pop up to update Preferred Language -->
+    <aura:if isTrue="{!and(v.showPopup,!v.showAlertPopup)}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header modalHeader">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.Required_Details}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium modalContainer aaa" id="modal-content-id-1">
+                    <div class="slds-card slds-has-bottom-magnet">
+                        <p style="text-align: left;padding: 5px 10px;font-size: 15px; background: #f7f7f7;color: #2c8fbc">
+                            <b>{!v.Fill_Required_Details}</b>
+                        </p>
+                        <div class="slds-grid slds-gutters">
+                            <aura:if isTrue="{!v.showPreferredLanguage}">
+                                <div class="slds-col toppadding" style="max-width:50%;">
+                                    <lightning:select label="{!v.Preferred_Language}" aura:id="Cust_Language" name="Cust_Language" class="{!v.errorLanguage?'slds-form-element slds-has-error':''}"
+                                                      value="{!v.account.Preferred_Language__c}" >      
+                                        <option value="">{!v.Select_Language}</option>
+                                        <aura:iteration items="{!v.languageList}" var="lang">
+                                            <option value="{!lang}">{!lang}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    <aura:if isTrue="{!v.errorLanguage}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">This field is required</div>
+                                    </aura:if>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showPersonMobilePhone}">
+                                <div class="slds-col toppadding" style="max-width:50%;">
+                                    <lightning:input type="text" name="Cust_mobileNo" label="{!v.Mobile_No}" placeholder="971XXXXXXXXX" pattern="[0-9]*"
+                                                     aura:id="Cust_mobileNo" value="{!v.account.PersonMobilePhone}" maxlength="12" minlength="12"/>
+                                </div>
+                            </aura:if>
+                        </div><br/>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer modalFooter modalFooter">
+                    <lightning:button variant="brand" 
+                                      label="{!v.Update}"
+                                      title="{!v.Update}"
+                                      onclick="{! c.updateAccount }" class="btnsave"/>
+                </footer>
+                
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

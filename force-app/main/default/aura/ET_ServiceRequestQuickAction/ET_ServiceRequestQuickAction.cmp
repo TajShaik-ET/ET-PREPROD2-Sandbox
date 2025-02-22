@@ -1,0 +1,18 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId" controller="ET_ServiceRequestController">
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:navigation aura:id="navService"/>
+    <aura:attribute name="pageReference" type="Object"/>
+    
+    <aura:if isTrue="{! not(v.loaded) }">
+       
+        <div class="outer-div"> 
+            <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+            
+        </div>
+      
+    </aura:if>
+    
+</aura:component>

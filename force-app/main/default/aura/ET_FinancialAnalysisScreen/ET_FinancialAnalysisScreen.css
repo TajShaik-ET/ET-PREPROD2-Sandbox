@@ -1,0 +1,24 @@
+.THIS .left-float {
+    width:50%;
+    float:left;
+}
+.THIS.c_container{
+    padding: 0rem 1rem;
+}
+.THIS .slds-col.slds-p-horizontal_medium {
+    display: inline-block;
+    float: left;
+    width: 50%;
+}
+.THIS.c_container .slds-p-horizontal_medium span {
+    width: 50%;
+    display: inline-block;
+    float: left;
+    padding: 1px 7px;
+}
+.THIS.c_container .slds-p-horizontal_medium span:first-child {
+    font-weight: bold;
+}
+.THIS.slds-table{
+    border-top:none;
+}

@@ -1,0 +1,4 @@
+<aura:tokens>
+<aura:token name="fieldPlaceholderColor"
+  value="#767676"/>	
+</aura:tokens>

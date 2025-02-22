@@ -1,0 +1,728 @@
+<template>
+    <div class="pointCheckForm">
+    <div class="container  ">
+        <div style="text-align: center; ">
+            <h3 class="slds-theme_shade">
+                <span style="font-size: 1.5em;">36 PointsCheck Form</span>
+            </h3>
+        </div>
+        <Div class="slds-grid slds-wrap slds-p-around_x-small">
+			<div class="slds-col slds-size_1-of-3">
+				<p>{ oppRecord.Account.Name}<span class="fieldHeader">Customer Name </span></p>
+				<p>{ oppRecord.Account.PersonMobilePhone}<span class="fieldHeader">Mobile Number </span></p>
+			</div>
+			<div class="slds-col slds-size_1-of-3">
+                <p>{ oppRecord.Account.PersonEmail}<span class="fieldHeader">Email </span></p>
+                <p>{oppRecord.Vehicle_Brand__r.Name}<span class="fieldHeader">Vehicle Brand </span></p>
+			</div>
+            <div class="slds-col slds-size_1-of-3">
+				<p>{oppRecord.Vehicle_Model__r.Name}<span class="fieldHeader">Vehicle Model </span></p>
+				<p>{ oppRecord.Vehicle_Model_Year__c}<span class="fieldHeader">Vehicle Model Year </span></p>
+			</div>
+          
+        </Div>
+       
+    </div>
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            <span style=" ">CAR IN BAY:</span>
+        </h3> 
+       
+        
+    </div>
+
+    <div class="slds-grid slds-wrap slds-p-around_xx-small   dataSection">
+        <div class="slds-col slds-size_1-of-3">
+            <label>All Doors Hinges Locks</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="All_Doors_Hinges_Locks__c" name="All_Doors_Hinges_Locks__c" onclick={handleUrgent}>
+            </lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="All_Doors_Hinges_Locks__c"
+                name="All_Doors_Hinges_Locks__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="All_Doors_Hinges_Locks__c" name="All_Doors_Hinges_Locks__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input type="text" name="All_Doors_Hinges_Locks__c"
+                value={HealthCheckRec.All_Doors_Hinges_Locks__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Front Rear Wiper Blades</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Front_Rear_Wiper_Blades__c" name="Front_Rear_Wiper_Blades__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Front_Rear_Wiper_Blades__c"
+                name="Front_Rear_Wiper_Blades__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Front_Rear_Wiper_Blades__c" name="Front_Rear_Wiper_Blades__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Front_Rear_Wiper_Blades__c"
+                value={HealthCheckRec.Front_Rear_Wiper_Blades__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Body Check Dents Corrosion</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Body_Check_Dents_Corrosion__c" name="Body_Check_Dents_Corrosion__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Body_Check_Dents_Corrosion__c"
+                name="Body_Check_Dents_Corrosion__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Body_Check_Dents_Corrosion__c" name="Body_Check_Dents_Corrosion__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Body_Check_Dents_Corrosion__c"
+                value={HealthCheckRec.Body_Check_Dents_Corrosion__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Internal Lights Guages</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Internal_Lights_Guages__c" name="Internal_Lights_Guages__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Internal_Lights_Guages__c"
+                name="Internal_Lights_Guages__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Internal_Lights_Guages__c" name="Internal_Lights_Guages__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Internal_Lights_Guages__c"
+                value={HealthCheckRec.Internal_Lights_Guages__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Opern Lights Horn Wipers Washers</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Opern_Lights_Horn_Wipers_Washers__c" name="Opern_Lights_Horn_Wipers_Washers__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Opern_Lights_Horn_Wipers_Washers__c"
+                name="Opern_Lights_Horn_Wipers_Washers__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Opern_Lights_Horn_Wipers_Washers__c" name="Opern_Lights_Horn_Wipers_Washers__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Opern_Lights_Horn_Wipers_Washers__c"
+                value={HealthCheckRec.Opern_Lights_Horn_Wipers_Washers__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Power Window</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Power_Window__c" name="Power_Window__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Power_Window__c" name="Power_Window__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Power_Window__c" name="Power_Window__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Power_Window__c"
+                value={HealthCheckRec.Power_Window__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>AII Seat Belts Operation</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="AII_Seat_Belts_Operation__c" name="AII_Seat_Belts_Operation__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="AII_Seat_Belts_Operation__c"
+                name="AII_Seat_Belts_Operation__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="AII_Seat_Belts_Operation__c" name="AII_Seat_Belts_Operation__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="AII_Seat_Belts_Operation__c"
+                value={HealthCheckRec.AII_Seat_Belts_Operation__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Airbag SRS System</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Airbag_SRS_System__c" name="Airbag_SRS_System__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Airbag_SRS_System__c" name="Airbag_SRS_System__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Airbag_SRS_System__c" name="Airbag_SRS_System__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Airbag_SRS_System__c"
+                value={HealthCheckRec.Airbag_SRS_System__c} onchange={handleRmarks}></lightning-input>
+        </div>
+    </div>
+
+
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            <span style=" ">UNDER BONNET:</span>
+        </h3>
+        
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small   dataSection">
+        <div class="slds-col slds-size_1-of-3">
+            <label>Spark Plugs Platinum lridium</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Spark_Plugs_Platinum_lridium__c" name="Spark_Plugs_Platinum_lridium__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Spark_Plugs_Platinum_lridium__c"
+                name="Spark_Plugs_Platinum_lridium__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Spark_Plugs_Platinum_lridium__c" name="Spark_Plugs_Platinum_lridium__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Spark_Plugs_Platinum_lridium__c"
+                value={HealthCheckRec.Spark_Plugs_Platinum_lridium__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Air filter</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Air_filter__c" name="Air_filter__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Air_filter__c" name="Air_filter__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Air_filter__c" name="Air_filter__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Air_filter__c"
+                value={HealthCheckRec.Air_filter__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>coolant LLC</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="coolant_LLC__c" name="coolant_LLC__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="coolant_LLC__c" name="coolant_LLC__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="coolant_LLC__c" name="coolant_LLC__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="coolant_LLC__c"
+                value={HealthCheckRec.coolant_LLC__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Coolant SLLC</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Coolant_SLLC__c" name="Coolant_SLLC__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Coolant_SLLC__c" name="Coolant_SLLC__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Coolant_SLLC__c" name="Coolant_SLLC__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Coolant_SLLC__c"
+                value={HealthCheckRec.Coolant_SLLC__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Battery Connections</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Battery_Connections__c" name="Battery_Connections__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Battery_Connections__c" name="Battery_Connections__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Battery_Connections__c" name="Battery_Connections__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Battery_Connections__c"
+                value={HealthCheckRec.Battery_Connections__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Air Conditioner Filter</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Air_Conditioner_Filter__c" name="Air_Conditioner_Filter__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Air_Conditioner_Filter__c"
+                name="Air_Conditioner_Filter__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Air_Conditioner_Filter__c" name="Air_Conditioner_Filter__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Air_Conditioner_Filter__c"
+                value={HealthCheckRec.Air_Conditioner_Filter__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Brake Fluid</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Brake_Fluid__c" name="Brake_Fluid__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Brake_Fluid__c" name="Brake_Fluid__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Brake_Fluid__c" name="Brake_Fluid__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Brake_Fluid__c"
+                value={HealthCheckRec.Brake_Fluid__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Power Steering Fluid</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Power_Steering_Fluid__c" name="Power_Steering_Fluid__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Power_Steering_Fluid__c"
+                name="Power_Steering_Fluid__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Power_Steering_Fluid__c" name="Power_Steering_Fluid__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Power_Steering_Fluid__c"
+                value={HealthCheckRec.Power_Steering_Fluid__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Drive Belts</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Drive_Belts__c" name="Drive_Belts__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Drive_Belts__c" name="Drive_Belts__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Drive_Belts__c" name="Drive_Belts__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Drive_Belts__c"
+                value={HealthCheckRec.Drive_Belts__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Leaks Oil Fluids</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Leaks_Oil_Fluids__c" name="Leaks_Oil_Fluids__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Leaks_Oil_Fluids__c" name="Leaks_Oil_Fluids__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Leaks_Oil_Fluids__c" name="Leaks_Oil_Fluids__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Leaks_Oil_Fluids__c"
+                value={HealthCheckRec.Leaks_Oil_Fluids__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>windshield Fluid</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="windshield_Fluid__c" name="windshield_Fluid__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="windshield_Fluid__c" name="windshield_Fluid__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="windshield_Fluid__c" name="windshield_Fluid__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="windshield_Fluid__c"
+                value={HealthCheckRec.windshield_Fluid__c} onchange={handleRmarks}></lightning-input>
+        </div>
+    </div>
+
+
+
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            <span style=" ">UNDER CAR:</span>
+        </h3>
+       
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small   dataSection">
+        <div class="slds-col slds-size_1-of-3">
+            <label>Engine Oil Oil Filter</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Engine_Oil_Oil_Filter__c" name="Engine_Oil_Oil_Filter__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Engine_Oil_Oil_Filter__c"
+                name="Engine_Oil_Oil_Filter__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Engine_Oil_Oil_Filter__c" name="Engine_Oil_Oil_Filter__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Engine_Oil_Oil_Filter__c"
+                value={HealthCheckRec.Engine_Oil_Oil_Filter__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>ATM Oil</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="ATM_Oil__c" name="ATM_Oil__c" onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="ATM_Oil__c" name="ATM_Oil__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="ATM_Oil__c" name="ATM_Oil__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="ATM_Oil__c"
+                value={HealthCheckRec.ATM_Oil__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Tranfer Box Oil</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Tranfer_Box_Oil__c" name="Tranfer_Box_Oil__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Tranfer_Box_Oil__c" name="Tranfer_Box_Oil__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Tranfer_Box_Oil__c" name="Tranfer_Box_Oil__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Tranfer_Box_Oil__c"
+                value={HealthCheckRec.Tranfer_Box_Oil__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Differential Oil</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Differential_Oil__c" name="Differential_Oil__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Differential_Oil__c" name="Differential_Oil__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Differential_Oil__c" name="Differential_Oil__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Differential_Oil__c"
+                value={HealthCheckRec.Differential_Oil__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Brake Pipes Hoses</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Brake_Pipes_Hoses__c" name="Brake_Pipes_Hoses__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Brake_Pipes_Hoses__c" name="Brake_Pipes_Hoses__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Brake_Pipes_Hoses__c" name="Brake_Pipes_Hoses__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Brake_Pipes_Hoses__c"
+                value={HealthCheckRec.Brake_Pipes_Hoses__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Fuel Lines Connections</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Fuel_Lines_Connections__c" name="Fuel_Lines_Connections__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Fuel_Lines_Connections__c"
+                name="Fuel_Lines_Connections__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Fuel_Lines_Connections__c" name="Fuel_Lines_Connections__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Fuel_Lines_Connectiocheckns__c"
+                value={HealthCheckRec.Fuel_Lines_Connections__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Steering Wear Leaks</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Steering_Wear_Leaks__c" name="Steering_Wear_Leaks__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Steering_Wear_Leaks__c" name="Steering_Wear_Leaks__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Steering_Wear_Leaks__c" name="Steering_Wear_Leaks__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Steering_Wear_Leaks__c"
+                value={HealthCheckRec.Steering_Wear_Leaks__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Steering Knuckle Grease If fitted</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Steering_Knuckle_Grease_If_fitted__c" name="Steering_Knuckle_Grease_If_fitted__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Steering_Knuckle_Grease_If_fitted__c"
+                name="Steering_Knuckle_Grease_If_fitted__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Steering_Knuckle_Grease_If_fitted__c" name="Steering_Knuckle_Grease_If_fitted__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Steering_Knuckle_Grease_If_fitted__c"
+                value={HealthCheckRec.Steering_Knuckle_Grease_If_fitted__c} onchange={handleRmarks}></lightning-input>
+        </div>
+
+        <div class="slds-col slds-size_1-of-3">
+            <label>Propeller Shaft</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Propeller_Shaft__c" name="Propeller_Shaft__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Propeller_Shaft__c" name="Propeller_Shaft__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Propeller_Shaft__c" name="Propeller_Shaft__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Propeller_Shaft__c"
+                value={HealthCheckRec.Propeller_Shaft__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Drive Shah Boots</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Drive_Shah_Boots__c" name="Drive_Shah_Boots__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Drive_Shah_Boots__c" name="Drive_Shah_Boots__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Drive_Shah_Boots__c" name="Drive_Shah_Boots__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Drive_Shah_Boots__c"
+                value={HealthCheckRec.Drive_Shah_Boots__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Ball Joints Dust Cover</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Ball_Joints_Dust_Cover__c" name="Ball_Joints_Dust_Cover__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Ball_Joints_Dust_Cover__c"
+                name="Ball_Joints_Dust_Cover__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Ball_Joints_Dust_Cover__c" name="Ball_Joints_Dust_Cover__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Ball_Joints_Dust_Cover__c"
+                value={HealthCheckRec.Ball_Joints_Dust_Cover__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Fr Rr Susp Bushes Shock Absorber</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Fr_Rr_Susp_Bushes_Shock_Absorber__c" name="Fr_Rr_Susp_Bushes_Shock_Absorber__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Fr_Rr_Susp_Bushes_Shock_Absorber__c"
+                name="Fr_Rr_Susp_Bushes_Shock_Absorber__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Fr_Rr_Susp_Bushes_Shock_Absorber__c" name="Fr_Rr_Susp_Bushes_Shock_Absorber__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Fr_Rr_Susp_Bushes_Shock_Absorber__c"
+                value={HealthCheckRec.Fr_Rr_Susp_Bushes_Shock_Absorber__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Leaks oil and fluids</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Leaks_Oil_and_Fluids__c" name="Leaks_Oil_and_Fluids__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Leaks_Oil_and_Fluids__c"
+                name="Leaks_Oil_and_Fluids__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Leaks_Oil_and_Fluids__c" name="Leaks_Oil_and_Fluids__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Leaks_Oil_and_Fluids__c"
+                value={HealthCheckRec.Leaks_Oil_and_Fluids__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Exhaust Pipes Gaskets</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Exhaust_Pipes_Gaskets__c" name="Exhaust_Pipes_Gaskets__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Exhaust_Pipes_Gaskets__c"
+                name="Exhaust_Pipes_Gaskets__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Exhaust_Pipes_Gaskets__c" name="Exhaust_Pipes_Gaskets__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Exhaust_Pipes_Gaskets__c"
+                value={HealthCheckRec.Exhaust_Pipes_Gaskets__c} onchange={handleRmarks}></lightning-input>
+        </div>
+    </div>
+
+
+
+    <div class="slds-section">
+        <h3 class="slds-theme_shade formHeader">
+            <span style=" ">LEFT HAND RAISED:</span>
+        </h3>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-around_xx-small   dataSection">
+        <div class="slds-col slds-size_1-of-3">
+            <label>Brake Pads Discs Shoes</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Brake_Pads_Discs_Shoes__c" name="Brake_Pads_Discs_Shoes__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Brake_Pads_Discs_Shoes__c"
+                name="Brake_Pads_Discs_Shoes__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Brake_Pads_Discs_Shoes__c" name="Brake_Pads_Discs_Shoes__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Brake_Pads_Discs_Shoes__c"
+                value={HealthCheckRec.Brake_Pads_Discs_Shoes__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>Parking Brake</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="Parking_Brake__c" name="Parking_Brake__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="Parking_Brake__c" name="Parking_Brake__c"
+                onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="Parking_Brake__c" name="Parking_Brake__c" onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="Parking_Brake__c"
+                value={HealthCheckRec.Parking_Brake__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <label>All Tyre Condition Pressure</label>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+            <lightning-button-icon-stateful class="slds-p-around_xx-small redButton" icon-name="utility:close"
+                data-id="All_Tyre_Condition_Pressure__c" name="All_Tyre_Condition_Pressure__c"
+                onclick={handleUrgent}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small orangeIcon"
+                icon-name="utility:questions_and_answers" data-id="All_Tyre_Condition_Pressure__c"
+                name="All_Tyre_Condition_Pressure__c" onclick={handleAdviosry}></lightning-button-icon-stateful>
+            <lightning-button-icon-stateful class="slds-p-around_xx-small greenButton" selected icon-name="utility:check"
+                data-id="All_Tyre_Condition_Pressure__c" name="All_Tyre_Condition_Pressure__c"
+                onclick={handleOk}></lightning-button-icon-stateful>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <lightning-input class="slds-p-around_xx-small" type="text" name="All_Tyre_Condition_Pressure__c"
+                value={HealthCheckRec.All_Tyre_Condition_Pressure__c} onchange={handleRmarks}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+            <label>Other Remarks</label>
+        </div>
+        <div class="slds-col slds-size_2-of-2 slds-p-around_xx-small">
+            <lightning-textarea class="slds-p-around_xx-small" data-id="Comments" value={objTempRec.Other_Remarks__c}
+                placeholder="type here..."></lightning-textarea>
+        </div>
+    </div>
+
+
+    <div class="slds-p-around_x-small" style="text-align: center;">
+        <lightning-button class="slds-p-around_xx-small" variant="brand" label="Save" title="Save" onclick={handleSubmit}></lightning-button>
+        <lightning-button class="slds-p-around_xx-small" label="Back" title="Back" onclick={backbButtonHanlder}></lightning-button>
+    </div>
+
+    </div>
+    <template if:true={loaded}>
+		<lightning-spinner variant="brand" class="SpinnerHolder"></lightning-spinner>
+	</template>
+
+
+
+
+
+   
+
+</template>

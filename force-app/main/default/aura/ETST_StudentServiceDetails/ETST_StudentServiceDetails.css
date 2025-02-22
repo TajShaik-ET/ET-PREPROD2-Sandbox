@@ -1,0 +1,661 @@
+/*@font-face {
+font-family: 'Cronos';
+src: url(/resource/ETST_Cronos); 
+}
+*/
+.THIS .pickupdatails span , .THIS .dropdatails span{
+    position: absolute;
+    top: 30px;
+    right: 4px;
+    color: #0000ff;
+    cursor: pointer;
+    height: 38px;
+    line-height: 38px;
+    padding: 0px 20px 0px 5px;
+    text-decoration: underline;
+}
+.THIS.userservicedet {
+    width:100%;
+}
+.THIS.userservicedetrtl {
+    direction:rtl;
+    width:100%;
+}
+.THIS .slds-card{
+    border:1px solid rgb(212, 212, 212);
+}
+.THIS .slds-card__header {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 10px;
+    background: #00c19e;
+    color: #fff;
+}
+.THIS .slds-card__body {
+    padding: 0 20px 20px;
+    display: inline-block;
+    position: relative;
+    min-height: 100%;
+    height: 100%;
+}
+.THIS .slds-modal__body{
+    min-height: 100px;
+    max-height: 310px;
+    height: auto;
+    overflow-x: hidden;
+}
+.THIS .slds-modal__bodyrtl{
+    min-height: 200px;
+    max-height: 310px;
+    height: auto;
+    overflow-x: hidden;
+    direction:rtl
+}
+.THIS .slds-form-element__label{
+    font-size: 14px!important;
+    padding-right: 0px;
+    padding-bottom: .20rem;
+    margin-bottom: .125rem;
+    display: block;
+    color: #555;
+    font-weight: 600; 
+}
+
+.THIS .btn_table{
+    font-size: 14px;
+    margin-top: 8px;
+    margin-left: 10px;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: 80px;
+    height: 30px;
+    background: #eb4026;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .btn_table:hover{
+    background-color: #333333;
+}
+.THIS .cancel_btn {
+    font-size: 14px;
+    border: 0px solid #00c19e;
+    background-color: #b0b1af;
+    border-radius: 5px;
+    color: #fff;
+    padding: 2px 10px;
+    min-width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    font-weight: normal!important;
+    text-transform: capitalize!important;
+    line-height: 2!important;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    margin-top: 8px;
+}
+.THIS .cancel_btn:hover {
+    color: #fff;
+    background-color: #333333;
+    box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+    -moz-box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+    -webkit-box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+    -o-box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+    -ms-box-shadow: 0 4px 10px 0px rgba(51, 51, 51, 0.5);
+}
+.THIS .slds-form-element_stacked{
+    width: 100%;
+    flex-basis: 100%;
+    float: left;
+}
+.THIS .btndiv{
+    display: block;
+    position: relative;
+    clear: both;
+    width: 100%;    text-align: right;
+}
+.THIS .slds-form-element_compound .slds-form-element {
+    margin-bottom: 16px!important;
+    position: relative;
+}
+.THIS .slds-select_container:after {
+    border-top: 5px solid #888;
+    bottom: calc((1.75rem / 2) - -1px);
+}
+.THIS .slds-select_container:before {
+    display:none;
+}
+.THIS.updateservice{
+    background: rgb(255, 255, 255);
+    width: 100%;
+    height: 95vh!important;
+    position: relative;
+    clear: both;  background-image: url(/resource/homepagebg_img);
+    height: auto;
+    background-size: cover;
+    background-position: center;
+}
+.THIS.updateservice:before{
+    background-color: rgba(0, 0, 0, 0.5);
+    content: '';
+    left: 0;
+    top: 0;
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.THIS.updateservice .mainupdatesection{    
+    padding: 10px 30px;
+    background: #fff;
+    border: 0px solid #fff;
+    position: absolute;
+    width:40%;
+    top:10%;
+    left:30%;
+    margin:auto;
+    border-radius: 5px;
+    /*transform: translate(-50%,-50%);*/
+}
+
+.THIS .checkboxsame{
+    border-color: rgb(212, 212, 212);
+    display: inline-block!important;
+    margin-right: 5px;
+}
+.THIS .uiInput--checkbox input[type=checkbox]:checked, .THIS input.uiInput--checkbox[type=checkbox]:checked {
+    border-color: rgb(212, 212, 212);
+}
+.THIS .locatioblink {
+    display: inline-block;
+    border-radius: .25rem;
+    line-height: 1;
+    position: absolute;
+    right: 11px; 
+    top: 27px; 
+    cursor: pointer;
+}
+
+.THIS .locatioblink_AR {
+    display: inline-block;
+    border-radius: .25rem;
+    line-height: 1;
+    position: absolute;
+    left: 11px; 
+    top: 27px; 
+    cursor: pointer;
+}
+.THIS .locatioblink .slds-icon {
+    width: 1.5rem;
+    height: 2rem;
+    fill: rgb(255, 255, 255); 
+} 
+
+.THIS .locatioblink .slds-icon-text-default {
+    fill: #333;
+}
+.THIS .picklocatioblink {
+    display: inline-block;
+    border-radius: .25rem;
+    line-height: 1;
+    position: absolute;
+    right: 11px;
+    top: 27px;
+    cursor: pointer;
+}
+.THIS .picklocatioblink_AR {
+    display: inline-block;
+    border-radius: .25rem;
+    line-height: 1;
+    position: absolute;
+    left: 11px;
+    top: 27px;
+    cursor: pointer;
+}
+.THIS .picklocatioblink .slds-icon {
+    width: 1.5rem;
+    height: 2rem;
+    fill: rgb(255, 255, 255);
+}
+.THIS .picklocatioblink .slds-icon-text-default {
+    fill: #333;
+}
+.THIS .slds-form-element_compound .slds-form-element {
+    margin-bottom: .5rem;
+}
+.THIS .slds-dropdown {
+    margin-top: -0.5rem;
+    border: 1px solid rgb(212, 212, 212);
+}
+.THIS  .slds-dropdown_fluid, .THIS .slds-dropdown--fluid {
+    min-width: 12rem;
+    max-width: 100%;
+    width: 94%;
+}
+.THIS .spansameloc{
+    position: absolute;
+}
+.THIS .servicehead{
+    padding: 20px 0 5px;
+    /*font-family: 'Cronos'; */
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+    color:#333;
+    border-top: 1px dotted #d4d4d4;
+}
+.THIS .servicetext{
+    padding: 10px 0 15px;
+    /*font-family: 'Cronos'; */
+    font-size: 14px;    line-height: 1.5rem;
+    color: #a7a7a7;
+}
+.THIS .slds-form-element__static {
+    color: #888;
+    font-size: 14px;
+}
+.THIS .slds-form-element__static:empty {
+    display:none;
+}
+.THIS .slds-text-heading_medium {
+    color: #333;
+    font-weight: 300!important;
+    text-align: center;
+    font-size: 24px;
+    /*font-family: 'Cronos'; */
+    border-bottom: 1px solid #f2f2f2;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.THIS input[type=text], .THIS input[type=password], .THIS textarea, .THIS textarea.form-control, .THIS select, .THIS input[type=tel], .THIS input[type=email] {
+    height: 38px;
+    margin: 0;
+    padding: 0 .5rem 0 .5rem;
+    vertical-align: middle;
+    background: transparent!important;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    /*font-family: 'Cronos'; */
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none!important;
+    transition: all .3s;
+    border-radius: 0px;
+}
+.THIS .locationimgpos{
+    position: absolute;
+    top: 32px;
+    left: 0px;
+    width: 28px;
+}
+.THIS #pick-uplocation input[type=text], .THIS #drop-offlocation input[type=text]{
+    padding-left:10px;padding-right:20px;
+}
+.THIS .faremaindiv {
+    margin: auto;
+    font-size: 20px;
+    color: #555;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    float: left;
+    display: inline-block;
+    /*font-family: 'Cronos'; */
+}
+.THIS .spacebottom {
+    margin-bottom: 0px;
+    margin-left: 5px;
+    background-color: transparent;
+    border-color: transparent;
+    color: #ff4b5a;
+    padding: 0px;
+    line-height: 15px;
+    text-decoration: underline;
+    outline: none;
+    box-shadow: none;
+    font-size: 12px;
+    position: absolute;
+    top: 0px;
+    right: 10px;
+}
+.THIS .spacebottom_AR {
+    margin-bottom: 0px;
+    margin-left: 5px;
+    background-color: transparent;
+    border-color: transparent;
+    color: #ff4b5a;
+    padding: 0px;
+    line-height: 15px;
+    text-decoration: underline;
+    outline: none;
+    box-shadow: none;
+    font-size: 12px;
+    position: absolute;
+    top: 0px;
+    left: 10px;
+}
+.THIS .searchlocationdiv {
+    position: sticky;
+    margin-bottom: 10px;
+    width: 100%;
+    top: 0px;
+}
+.THIS .searchlocationdiv .slds-form-element__control input[type=text]{
+    background: #fff!important;
+    border: 1px solid #ddd;
+    border-radius: 20px!important;
+}
+.THIS .searchlocationdiv .slds-form-element__label{
+    display:none;
+}
+.THIS .searchlocationdiv .slds-form-element__control{
+    margin: 0px;
+    display: block;
+}
+.THIS .searchlocationdiv .slds-form-element{
+    padding:0px; 
+}
+.THIS .searchlocationdiv .btn_table{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 0;
+    height: 37px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    min-width: auto;
+}
+
+.THIS .searchlocationdiv .btn_table_AR{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 0;
+    height: 37px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    min-width: auto;
+}
+.THIS .pickupdatails span , .THIS .dropdatails span{
+    position: absolute;
+    top: 25px;
+    right: 5px;
+    color: #0000ff;
+    cursor: pointer;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 32px 0 5px;
+    text-decoration: underline;
+    background: #ccc;
+}
+.THIS #pick-uplocation input[type=text] , .THIS #drop-offlocation input[type=text] {
+    padding-right:115px;
+}
+.THIS #pick-uplocation input[type=text]{
+    padding-right:115px;
+}
+.THIS .animated , .THIS.animated{
+    -webkit-animation-duration:.75s;
+    animation-duration: .75s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+.THIS .slideInLeft , .THIS.slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+@-webkit-keyframes slideInUp {
+    from {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInUp , .THIS.slideInUp {
+    -webkit-animation-name: slideInUp;
+    animation-name: slideInUp;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS.updateservice .mainupdatesection{
+        width: 80%;
+        left: 10%;
+    }
+    .THIS.updateservice {
+        height: 96vh!important;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS.userservicedet {
+        width:100%!important;
+    }
+    .THIS.updateservice .mainupdatesection{
+        width: 80%;
+        left: 10%;
+    }
+    .THIS .slds-form-element_horizontal{
+        width: 50%;
+        flex-basis: 100%;
+        display: inline-block;
+    }
+    .THIS .slds-form-element_horizontal .slds-form-element__control{
+        border: 0px solid #d4d4d4;
+        padding: 7px 0px;
+        border-radius: 5px;
+        min-height: 34px;
+        width: 100%;
+        float: left; 
+    }
+    .THIS .slds-form-element_horizontal .slds-form-element__label {
+        width: 100%;
+        max-width: 100%;
+        letter-spacing: 1px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .THIS.userservicedet {
+        width:100%!important;
+    }
+    .THIS.updateservice {
+        height: 550px!important;
+    }
+    .THIS.updateservice .mainupdatesection {
+        width: 70%;
+        left: 15%;
+        top: 10%;
+    }
+    .THIS .slds-form-element_horizontal{
+        width: 50%;
+        flex-basis: 100%;
+        float: left;
+    }
+    .THIS .slds-form-element_horizontal .slds-form-element__control{
+        border: 1px solid #d4d4d4;
+        padding: 7px 10px;
+        border-radius: 5px;
+        min-height: 34px;
+        width: 100%;
+        float: left;
+    }
+    .THIS .slds-form-element_horizontal .slds-form-element__label {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .THIS.userservicedet {
+        width:100%!important;        
+    }
+    .THIS.updateservice {
+        height: 650px!important;
+    }
+    .THIS.updateservice .mainupdatesection {
+        width: 98%;
+        left: 1%;
+        top:10%;
+        padding: 10px;
+    }
+    .THIS.slds-form-element_horizontal{
+        width: 100%!important;
+        flex-basis: 100%;
+        float: left;
+    }
+    .THIS .slds-form-element_horizontal .slds-form-element__control{
+        border: 1px solid #d4d4d4;
+        padding: 7px 10px;
+        border-radius: 5px;
+        min-height: 34px;
+        width: 100%;
+        float: left;
+    }
+    .THIS .slds-form-element_horizontal .slds-form-element__label {
+        width: 100%;
+        max-width: 100%;
+    }
+    .THIS .faremaindiv {
+        width: 100%;
+        text-align: left;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS.updateservice{        
+        background-image: url(/resource/userbg_img);
+        background-size: cover;
+        background-position: center;
+        padding: 0%;
+        width: 100%;
+        margin: auto;
+        height: calc(100vh - 48px)!important;
+        position: relative;
+    }
+    .THIS.updateservice:before {
+        background-color: rgb(0 0 0 / 0.5)!important;
+    }
+    .THIS.updateservice .mainupdatesection {
+        width: 100%;
+        left: 0%;
+        padding: 1rem 1.5rem;
+        bottom: 0px;
+        height: auto;
+        top: auto;
+        background: #ffffff;
+        border: 0px solid #fff;
+        border-top-left-radius: 35px!important;
+        border-top-right-radius: 35px!important;
+    }
+    .THIS .slds-text-heading_medium {
+        color: #62cc8c;
+        text-align: center;
+        font-size: 20px;
+    }
+    .THIS .btndiv {
+        text-align: center;
+    }
+    .THIS .cancel_btn{
+        border-radius: 5px;
+        margin: auto;
+    }
+    .THIS .btn_table{
+        background: #eb4026;
+        border-radius: 5px;
+        margin: auto;
+        margin-left: 10px;
+    }
+    .THIS .pickupdatails span, .THIS .dropdatails span{
+        display: none;
+    }
+    .THIS #pick-uplocation input[type=text], 
+    .THIS #drop-offlocation input[type=text] {
+        padding-right: 10px;
+    }
+    .THIS .spacebottom{
+        right: 50px;
+        background-image: url(/resource/curentlocation_img);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 28px;
+        height: 28px;
+        font-size: 0;
+        top: -3px;
+        margin: auto;
+        display: inline-block;
+    }
+    .THIS .picklocatioblink {
+        right: 10px;
+        top: -5px;
+    }
+    .THIS .slds-modal__container {
+        position: fixed;
+        transform: translate(0, 0);
+        transition: transform 0.1s linear,opacity 0.1s linear;
+        width: 100%;
+        bottom: 0px!important;
+        left: 0px;
+        margin: 0rem!important;
+        height: auto;
+        padding: 0rem 0;
+    }
+    .THIS .slds-modal {
+        position: fixed;
+        
+    }
+    .THIS .slds-modal__content{
+        border-top-left-radius: 35px!important;
+        border-top-right-radius: 35px;
+    }
+    .THIS .slds-modal__footer{
+        text-align: center;
+    }
+    .THIS .searchlocationdiv {
+        position: sticky;
+        margin-bottom: 10px;
+        width: 100%;
+        top: 0px;
+    }
+    .THIS .searchlocationdiv .slds-form-element__control input[type=text]{
+        background: #fff!important;
+    }
+}

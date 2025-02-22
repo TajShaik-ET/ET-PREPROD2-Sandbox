@@ -1,0 +1,88 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" controller='ET_BusinessCommunityController'>
+    <div class="servicemainsection">
+        <!--<h2 class="serviceheading">Explore Services</h2>-->
+        <a href=""><div class="serviceitem">
+            <div class="imagediv">
+                <img src="{!$Resource.ETST_SchoolBG}"/>
+            </div>
+            <div>
+                <h3>Student Transport</h3>
+                <a href="">More Details</a>
+            </div>
+            </div>
+        </a>
+        <a href="">
+            <div class="serviceitem">
+                <div class="imagediv">
+                    <img src="{!$Resource.banner1}"/>
+                </div>
+                <div>
+                    <h3>Transport and Rental</h3>
+                    <a href="">More Details</a>
+                </div>
+            </div>
+        </a>
+        <a href="">
+            <div class="serviceitem">
+                <div class="imagediv">
+                    <img src="{!$Resource.Technical_Services}"/>
+                </div>
+                <div>
+                    <h3>Technical Services</h3>
+                    <a href="">More Details</a>
+                </div>
+            </div>
+        </a>
+        <a href="">
+            <div class="serviceitem ">
+                <div class="imagediv">
+                    <img src="{!$Resource.Supporting_Services}"/>
+                </div>
+                <div>
+                    <h3>Supporting Services</h3>
+                    <a href="">More Details</a>
+                </div>
+            </div>
+        </a>
+        <a href="">
+            <div class="serviceitem">
+                <div class="imagediv">
+                    <img src="{!$Resource.Logistic_Services}"/>
+                </div>
+                <div>
+                    <h3>Logistic Services</h3>
+                    <a href="">More Details</a>
+                </div>
+            </div>
+        </a>
+    </div>
+    <!--sub services-->
+    <div class="subservicesection">
+        <h2 class="serviceheading">Student Transport</h2>
+        <div class="subserviceitem">
+            <div class="imagediv">
+                <img src="{!$Resource.ETST_servicebg}"/>
+                <h3>Private Schools Transport Services</h3>
+                <a href="">More Details</a>
+                <a href="" class="requestbtn">Request For Service</a>
+            </div>
+        </div>
+        <div class="subserviceitem">
+            <div class="imagediv">
+                <img src="{!$Resource.Public_ST}"/>
+                <h3>Public Schools Transport Services</h3>
+                <a href="">More Details</a>
+                <a href="" class="requestbtn">Request For Service</a>
+            </div>
+        </div>
+        <div class="subserviceitem">
+            <div class="imagediv">
+                <img src="{!$Resource.banner2}"/>
+                <h3>Universities Transport</h3>
+                <a href="">More Details</a>
+                <a href="" class="requestbtn">Request For Service</a>
+            </div>
+        </div>
+    </div>
+</aura:component>

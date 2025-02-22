@@ -1,0 +1,33 @@
+<aura:component >
+<div id="parentDiv" class="parentDivClass">
+    
+    <div class="slds-grid">
+        <div class="slds-col">
+            <div id="UAELogo" class="UAELogoClass">
+                <img src="{!$Resource.UAE_Logo}"  />
+             </div>
+        </div>
+            
+        <div class="slds-col slds-align_absolute-center slds-text-heading_large" style="width:26%;padding: 30px;"><b>Service Request Form</b></div>
+        <div class="slds-col">
+            <div id="ETLogo" class="ETLogoClass">
+                    <img src="{!$Resource.ET_Logo}" />
+            </div>
+        </div>
+    </div>
+<!--      <div id="emiratesLogo" class="emiratesLogoClass">
+        
+    </div>
+    <div id="requestFormHeader" class="requestFormHeaderClass">
+        
+        
+    </div>
+    
+        
+        
+        UAE_Logo	
+    </div>-->
+    
+</div>
+
+</aura:component>

@@ -1,0 +1,1090 @@
+.THIS.bgimage{
+    background-image: url(/resource/homepagebg_img1);
+    background-size: cover;
+    background-position: revert;
+    position: fixed;
+    top: 4rem;
+    left: 0px;
+    right: 0;
+    bottom: 0;
+    height: Calc(100vh - 0px);
+    overflow: auto;
+}
+.THIS.outer_div {
+    position: relative;
+    background: transparent;
+    border:none;
+    margin-top: -2rem;
+}
+
+.THIS .spinner2 {
+    position: fixed;
+}
+.THIS .itemBorder{
+    border: 3px solid #fe864d!important;
+}
+.THIS .profileText{
+    color: white;
+    display: inline-block;
+    float: left;
+    padding: 1rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80px;
+    cursor: pointer;
+}
+.THIS .companylogo{
+    width: 150px;
+    display: inline-block;
+}
+.THIS.menudiv{
+    position: fixed;
+    width: 100%;
+    padding: 1% 4%;
+    left: 0;
+    right: 0;
+    top: 0;
+    transition: all .5s;
+    z-index: 100000;
+    background: #354B9A;
+}
+
+.THIS .nointimationMsg {
+    font-size: 20px;
+    padding-top: 8rem;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+.THIS .profileimg{
+    float: left;
+    width: 28px;
+    padding: 7px 5px;
+    cursor: pointer;
+    margin: 8px 0 0;
+}
+.THIS.menudiv:hover .profileimg{
+    float: left;
+    width: 28px;
+    padding: 7px 5px;
+    filter: none;
+    transition: all .5s;
+}
+.THIS .slds-select_container .slds-select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    padding-left: .5rem;
+    padding-right: 1.5rem;
+    color: #797979;
+    font-size: 13px;
+    /* background: transparent;
+    color: #fff;
+    border: none;*/
+}
+.THIS .slds-select_container::before {
+    display:none;
+}
+.THIS .slds-select_container:after {
+    border-top: 5px solid #fff;
+    bottom: calc((1.75rem / 2) - 2px);
+}
+
+.THIS.bgetimgdiv{
+    background-image: url(/resource/ETST_SchoolBG1);
+    height: 610px;
+    width: 102.3%;
+    margin-left: -16px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    margin-top: -16px;
+}
+.THIS .welcometext{
+    position: absolute;
+    top: 40%;
+    left: 90px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.THIS .welcometextet{
+    position: absolute;
+    top: 48%;
+    left: 90px;
+    color: #fff;
+    font-size: 4.5rem;
+    font-family: 'Cronos';
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-shadow: 1px 1px 2px #f2f2f2;
+}
+/*Menu list code start*/
+.THIS .dropmenubtn {
+    color: white;
+    padding: 16px 5px;
+    font-size: 16px;
+    border: none;
+    background: transparent;
+    outline: none;
+}
+
+.THIS .menudropdowndiv {
+    position: relative;
+    display: inline-block;
+}
+
+.THIS .dropdown-content {
+    /*display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 200px;
+    z-index: 1;*/
+    width: 160px;
+    position: absolute;
+    z-index: 1;
+    background-color: #fff;
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: height 0.3s ease-in;
+    -moz-transition: height 0.3s ease-in;
+    -o-transition: height 0.3s ease-in;
+    -ms-transition: height 0.3s ease-in;
+    transition: height 0.3s ease-in;
+    border-radius: 0px 0px 10px 10px;
+    box-shadow: 0px 1px 3px #dedede;
+}
+
+.THIS .dropdown-content ul li a {
+    color: #000;
+    padding: 0 15px 0 15px;
+    line-height: 32px;
+    font-size: 12px;
+    text-decoration: none;
+    display: block;
+    font-weight: 600;
+    font-family: roboto;
+    letter-spacing: 1px;
+}
+
+.THIS .dropdown-content ul li a:hover {
+    background-color: #ddd;
+    font-family: roboto;
+}
+
+.THIS .menudropdowndiv:hover .dropdown-content {
+    display: block;    height: 100px;
+}
+/*Menu list code end*/
+
+
+/*Profile dropdown code start*/
+.THIS .dropmenubtn1 {
+    color: white;
+    font-size: 16px;
+    border: none;
+    background: transparent;
+    outline: none;
+    display: inline-block;
+    float: left;
+}
+
+.THIS .menudropdowndiv1 {
+    position: relative;
+    display: inline-block;
+    float:right;
+    transition: height .3s ease-in;
+}
+
+.THIS .dropdown-content1 {
+    /*display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 200px;
+    z-index: 1;
+    right: 0;*/
+    width: 160px;
+    position: absolute!important;
+    z-index: 10!important;
+    right: 0;
+    background-color: #fff!important;
+    /*height: 0;*/
+    overflow: hidden;
+    -webkit-transition: height 0.3s ease-in;
+    -moz-transition: height 0.3s ease-in;
+    -o-transition: height 0.3s ease-in;
+    -ms-transition: height 0.3s ease-in;
+    transition: height 0.3s ease-in;
+    border-radius: 0px 0px 10px 10px;
+    box-shadow: 0px 1px 3px #dedede;
+    top:52px;
+}
+
+.THIS .dropdown-content1 ul li a {
+    color: #000;
+    padding: 0 15px 0 15px;
+    line-height: 32px;
+    font-size: 12px;
+    text-decoration: none;
+    display: block;font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.THIS .dropdown-content1 ul li a:hover {
+    background-color: #ddd;
+}
+
+.THIS .menudropdowndiv1:hover .dropdown-content1 {
+    display: block;
+    /*min-height: 80px;
+    max-height: 165px;
+    overflow: auto;
+    height: 80px;*/
+}
+/*Profile dropdown code end*/
+
+/*country dropdown code start*/
+.THIS .dropmenubtn2 {
+    color: white;
+    font-size: 12px;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: 'Cronos';
+    letter-spacing: 1px;
+}
+.THIS.menudiv:hover .dropmenubtn2 {
+    color: #000;
+    font-size: 12px;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: 'Cronos';
+    letter-spacing: 1px;
+}
+
+.THIS .menudropdowndiv2 {
+    position: relative;
+    display: inline-block;
+    float:right;
+}
+
+.THIS .menudropdowndiv2 img{
+    width: 20px;
+    margin-right: 10px;
+}
+.THIS .dropdown-content2 {
+    /*display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 120px;
+    z-index: 1;
+    right: -36px;*/
+    width: 120px;
+    position: absolute;
+    z-index: 1;
+    right: -23px;
+    background-color: #fff;
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: height 0.3s ease-in;
+    -moz-transition: height 0.3s ease-in;
+    -o-transition: height 0.3s ease-in;
+    -ms-transition: height 0.3s ease-in;
+    transition: height 0.3s ease-in;
+    border-radius: 0px 0px 10px 10px;
+    box-shadow: 0px 1px 3px #dedede;
+}
+
+.THIS .dropdown-content2 ul li a {
+    color: #000;
+    padding: 0 10px;
+    line-height: 32px;
+    font-size: 12px;
+    text-decoration: none;
+    display: block;font-weight: 600;
+    font-family: 'Cronos';
+    letter-spacing: 1px;
+}
+
+.THIS .dropdown-content2 ul li a:hover {
+    background-color: #ddd;
+}
+
+.THIS .menudropdowndiv2:hover .dropdown-content2 {
+    display: block;height:70px;
+}
+/*country dropdown code End*/
+.THIS .ourservicelink{
+    position: absolute;
+    top: 70%;
+    color: #fff;
+    left: 90px;
+    font-size: 16px;
+    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.THIS .downarrowimg{
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 2px;
+}
+
+.THIS.main_contain{
+    margin-top: 1rem;
+    background: transparent;
+    border: none;
+}
+.THIS.main_contain .slds-card__header {
+    display:none;
+}
+.THIS lightning-input.searchbox.slds-form-element {
+    width: 200px;
+    float: right;
+    margin: 0% .5%;
+}
+.THIS lightning-input.searchbox.slds-form-element input {
+    height: 38px;
+    border: none;
+    outline: none;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+    /* width:200px;    
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;*/
+}
+/*.THIS lightning-input.searchbox.slds-form-element input:focus {
+width: 100%;
+}*/
+.THIS .accordion_main ul.slds-accordion {
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+}
+.THIS .accordion_main .slds-accordion__summary {
+    margin: 0;
+    width: 100%;
+}
+.THIS .accordion_main button.slds-button.slds-button_reset.slds-accordion__summary-action {
+    color: #fff;
+    background: #364C9B;
+    padding: 1rem 1rem 1rem 3rem;
+    font-size: 16px;
+    position: relative;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+    text-decoration: none;
+}
+.THIS .accordion_main .slds-accordion__list-item {
+    display: block;
+    width: 100%;
+    border: none;
+}
+.THIS .accordion_main .slds-accordion__section {
+    padding: 0;
+    width: 99%;
+    margin: auto;
+    margin-bottom: 1rem;
+    background: transparent;
+    position: relative;
+}
+.THIS .accordion_main .accordionMainSection .slds-truncate {
+    color: #62cc8c;
+}
+.THIS .accordion_main .slds-accordion__summary-action lightning-primitive-icon {
+    position: absolute;
+    left: 1rem;
+}
+.THIS .accordion_main .slds-accordion__summary-action .slds-icon-text-default {
+    fill: #fff;
+    width: 18px;
+}
+.THIS .accordion_main .slds-is-open>.slds-accordion__content{
+    padding:0rem 0rem 1rem;
+    background: #fbfbfb;
+}
+.THIS .accordion_main .table_div {
+    padding: 1rem;
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+}
+.THIS .accordion_main .table_div button.slds-button.slds-button_neutral {
+    background: #62cc8c;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: #fff;
+    float: right;
+}
+.THIS .accordion_main .slds-card__body {
+    margin: 0;
+}
+.THIS .inner_accordian{
+    background: transparent;
+}
+.THIS .inner_accordian button.slds-button.slds-button_reset.slds-accordion__summary-action{
+    background: #ebf6ef;
+    border-radius: 0;
+    color: #000;
+    font-size: 14px;
+}
+.THIS .inner_accordian .first_table{
+    background: #ebf6ef;
+    padding: 0rem 1rem 1rem;
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    clear: both;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+}
+.THIS .inner_accordian .first_table table tr th{
+    width: 200px;
+    float: left;
+}
+.THIS .inner_accordian .first_table label{
+    font-weight: normal;
+    font-size: 14px;
+}
+.THIS .inner_accordian .first_table span{
+    font-weight: bold;
+    color: #000;
+}
+.THIS .inner_accordian .second_table{
+    background: #fff;
+    padding: 0rem;
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    clear: both;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+    min-height: 50px;
+    max-height: 450px;
+    overflow: auto;
+}
+.THIS .inner_accordian .second_table tr th{
+    color: #62cc8c;
+    padding: .5rem 1rem;
+}
+.THIS .inner_accordian .second_table tr td{
+    color: #000;
+    padding: .5rem 1rem .5rem;
+    border-top: 1px solid #ddd;
+}
+.THIS .searchresult{
+    display: block;
+    position: relative;
+    clear: both;
+    margin-bottom: 1rem;
+    width: 99%;
+    margin: auto;
+}
+.THIS .search_heading{
+    color: #fff;
+    font-size: 18px;
+    padding: 1rem 0rem .5rem;
+    display: block;
+    clear: both;
+}
+.THIS .search_details{
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    clear: both;
+}
+.THIS .search_details table{
+    background: #fff;
+    clear: both;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    box-shadow: 0px 2px 20px rgb(82 82 82 / 20%);
+}
+.THIS .search_details table tr th{
+    color: #707070;
+    padding: 1rem 1rem .5rem;
+    font-size: 13px;
+    width: 20%;
+}
+.THIS .search_details table tr td{
+    color: #000;
+    padding: 0 1rem 1rem;
+    font-weight: bold;
+    width: 20%;
+    cursor: pointer;
+}
+.THIS .slds-show {
+    display: block;
+    opacity: 1;
+    z-index: 10;
+    position: relative;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+.THIS.toptab {
+    margin-top: 5.05rem;
+}
+.THIS.toptab ul.slds-tabs_default__nav {
+    background: #fff;
+    position: relative;
+    width: 100%;
+    border-top: 1px solid #fff;
+}
+.THIS.toptab li.slds-tabs_default__item.slds-is-active {
+    background: #354b9a;
+    color: #fff;
+    padding: 0 1rem;
+}
+.THIS.toptab li.slds-tabs_default__item.slds-is-active::after {
+    background-color: #354b9a!important;
+}
+.THIS.toptab .slds-tabs_default__item:hover:after{
+    background-color: #354b9a!important;
+}
+.THIS.toptab .slds-tabs_default__content {
+    width: 92%;
+    margin: auto;
+}
+.THIS.toptab .item {
+    position: relative;
+    display: inline-block;
+    /* float: left;*/
+    width: 24%;
+    margin: .5%;
+    /* background: #fff; 
+    padding: 2rem 1rem;*/
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgb(0 0 0 / 20%);
+    background-color: #fff;
+    background-image: linear-gradient(to right,#FFF8EF,#F8F8BF);
+    border: 3px solid #fff;
+    transition: all .4s;
+}
+.THIS.toptab .item:hover{
+    border: 3px solid #fe864d!important;
+}
+.THIS.toptab .head_div {
+    position: relative;
+    display: flow-root;
+    margin-bottom: .5rem;
+    width: 100%;
+}
+.THIS.toptab .head_div div {
+    display: inline-block;
+    float: left;
+    font-size: 18px;
+    color: #6100C1;
+    font-weight: bold;
+}
+.THIS.toptab .head_div button.slds-button.slds-button_neutral {
+    display: inline-block;
+    float: right;
+    background: #FE864D;
+    color: #fff;
+    border: 1px solid #FE864D;
+    border-radius: 5px;
+}
+.THIS.toptab .details_div {
+    display: block;
+    position: relative;
+    clear: both;
+    float: left;
+    width: 100%;
+}
+.THIS.toptab .details_div .inner_details {
+    position: relative;
+    display: block;
+    padding-top: .5rem;
+    width: 100%;
+    clear: both;
+}
+.THIS.toptab .details_div .inner_details span {
+    color: #929292;
+    font-size: 12px;
+    float: left;
+}
+.THIS.toptab .details_div .inner_details span:last-child {
+    color: #000;
+    font-size: 14px;
+    float: right;
+    font-weight: bold;
+    line-height: 1;
+}
+.THIS.toptab .outer_div {
+    position: relative;
+    cursor: pointer;
+    padding: 1rem 1rem 2rem;
+}
+.THIS.toptab .MS-controls {
+    position: relative;
+    width: 100%;
+    display: block;
+    clear: both;
+    padding: 2rem 0;
+    text-align: center;
+    margin-bottom: 0rem;
+}
+.THIS.toptab .MS-controls lightning-icon.slds-icon-utility-chevronleft.slds-icon_container ,
+.THIS.toptab .MS-controls lightning-icon.slds-icon-utility-chevronright.slds-icon_container{
+    background: #fff;
+    margin: 0 .5rem;
+    padding: .5rem 1rem;
+}
+.THIS.toptab .MS-controls svg.slds-icon.slds-icon-text-default {
+    width: 16px;
+    fill: #364C9B;
+}
+.THIS.toptab .MS-controls svg.slds-button__icon.slds-button__icon_left {
+    margin: 0;
+    width: 24px;
+    height: 24px;
+    background: #fff;
+}
+.THIS.toptab .item_main {
+    position: relative;
+    width: 100%;
+    display: block;
+    clear: both;
+    margin-top: 2rem;
+    text-align: center;
+}
+.THIS .second_table table th {
+    color: #6100C1;
+    padding: 1rem 1rem .5rem;
+    position: sticky;
+    top: 0px;
+    background: #fff;
+    z-index: 1;
+}
+.THIS .second_table table td {
+    color: #222F5D;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+.THIS .second_table table tr:hover{
+    background: #f1f1f1;
+}
+.THIS .first_table{
+    position: absolute;
+    top: 0rem;
+    right: 1rem;
+    color: #fff;
+    font-size: 14px;
+    min-height: 50px;
+    max-height: 450px;
+    overflow: auto;
+}
+.THIS .first_table table th{
+    padding: 1rem 0rem 1rem 3rem;
+}
+.THIS .first_table table th span {
+    font-weight: normal;
+}
+.THIS .searchbox svg.slds-input__icon.slds-input__icon_left.slds-icon-text-default {
+    fill: #fe864d;
+}
+.THIS li.slds-tabs_default__item.slds-is-active a {
+    text-decoration: none;
+}
+.THIS .MS-controls button.slds-button.slds-button_neutral.btnback {
+    padding: .5rem;
+    margin: 0 .5rem;
+    background: #fff;
+}
+.THIS .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.THIS .slideInLeft{
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+.THIS .second_table {
+    overflow: auto;
+    min-height: 50px;
+    max-height: 350px;
+}
+.THIS .notification_section{
+    position: relative;
+    display: inline-block;
+    float: right;
+    padding: .9rem ;
+}
+.THIS .notification_section lightning-icon.slds-button__icon.slds-global-header__icon.slds-icon-utility-notification.slds-icon_container.forceIcon {
+    color: #fff;
+}
+@-webkit-keyframes bounce {
+    from,
+    20%,
+    53%,
+    80%,
+    to {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    
+    40%,
+    43% {
+        -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        -webkit-transform: translate3d(0, -30px, 0);
+        transform: translate3d(0, -30px, 0);
+    }
+    
+    70% {
+        -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        -webkit-transform: translate3d(0, -15px, 0);
+        transform: translate3d(0, -15px, 0);
+    }
+    
+    90% {
+        -webkit-transform: translate3d(0, -4px, 0);
+        transform: translate3d(0, -4px, 0);
+    }
+}
+
+@keyframes bounce {
+    from,
+    20%,
+    53%,
+    80%,
+    to {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    
+    40%,
+    43% {
+        -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        -webkit-transform: translate3d(0, -30px, 0);
+        transform: translate3d(0, -30px, 0);
+    }
+    
+    70% {
+        -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        -webkit-transform: translate3d(0, -15px, 0);
+        transform: translate3d(0, -15px, 0);
+    }
+    
+    90% {
+        -webkit-transform: translate3d(0, -4px, 0);
+        transform: translate3d(0, -4px, 0);
+    }
+}
+
+.THIS .bounce {
+    -webkit-animation-name: bounce;
+    animation-name: bounce;
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+}
+
+@media only screen and (max-width:1024px) {
+    .THIS.toptab .details_div .inner_details span:last-child {
+        font-size: 12px;
+        line-height: 1;
+    }
+    .THIS.toptab {
+        margin-top: 4.7rem;
+    }
+    .THIS .first_table table th {
+        padding: 1.2rem 0 1rem 1rem;
+        font-size: 12px;
+    }
+}
+@media only screen and (max-width:992px) {
+    .THIS.toptab .item {
+        width: 49%;
+    }    
+    .THIS.toptab {
+        margin-top: 4.4rem;
+    }
+    .THIS lightning-input.searchbox.slds-form-element {
+        width: 99%;
+    }
+    .THIS .menudropdowndiv1:hover .dropdown-content1 {
+        height: 180px;
+    }
+}
+@media only screen and (max-width:768px) {
+    .THIS .first_table {
+        position: relative;
+        top: -2px;
+        right: 0;
+        color: #fff;
+        font-size: 14px;
+        background: #364c9b;
+    }
+    .THIS .first_table table th {
+        padding: .7rem 0 1rem 1rem;
+    }
+    .THIS.toptab .MS-controls svg.slds-button__icon.slds-button__icon_left {
+        margin: 0;
+        width: 20px;
+        height: 20px;
+        background: #fff;
+    }
+    .THIS.toptab {
+        margin-top: 4.4rem;
+    }
+    .THIS.menudiv {
+        padding: 1% 2% 1% 1%;
+    }
+    .THIS.toptab .slds-tabs_default__content {
+        width: 98%;
+        margin: auto;
+    }
+    .THIS .menudropdowndiv1 {
+        padding-top: 3px;
+    }
+    .THIS .menudropdowndiv1:hover .dropdown-content1 {
+        height: 180px;
+    }
+}
+
+
+@media only screen and (max-width: 767px) {
+    .THIS .inner_accordian .first_table table tr th {
+        width: 160px;
+        float: left;
+    }
+    .THIS.toptab .item {
+        padding: 0rem;
+    }  
+    .THIS.toptab {
+        margin-top: 4.2rem;
+    }
+    .THIS lightning-input.searchbox.slds-form-element {
+        width: 99%;
+        margin: 0% .5%;
+    }
+    .THIS.toptab ul.slds-tabs_default__nav {
+        display: none;
+    }
+    .THIS .menudropdowndiv1:hover .dropdown-content1 {
+        height: 180px;
+    }
+    .THIS .companylogo {
+        width: 100px;
+        display: inline-block;
+        padding: .5rem 0;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS.toptab {
+        margin-top: 5rem;
+    }
+    .THIS.toptab .item_main {
+        margin-top: 1rem;
+    }
+    .THIS.toptab .item {
+        width: 80%;
+        margin: 0% 10%;
+    }
+    .THIS .second_table {
+        overflow: auto;        
+        min-height: 50px;
+        max-height: 450px;
+        overflow: auto;
+    }
+    .THIS .second_table table th , .THIS .search_details table tr th{
+        white-space: nowrap;
+    }
+    .THIS.toptab .MS-controls{
+        margin-bottom: 0rem;
+        padding: 0;
+        position: absolute;
+        top: 4rem;
+    }
+    .THIS .MS-controls button.slds-button.slds-button_neutral.btnback {
+        padding: .5rem;
+        margin: 0 .5rem;
+        background: transparent;
+        position: absolute;
+        border: none;
+        box-shadow: none;
+    }
+    .THIS .MS-controls button.slds-button.slds-button_neutral.btnback.btnnext {
+        right: -.5rem;
+    }
+    .THIS .MS-controls button.slds-button.slds-button_neutral.btnback.btnprev {
+        left: -.5rem;
+    }
+    .THIS.toptab .MS-controls svg.slds-button__icon.slds-button__icon_left {
+        margin: 0;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        /*fill: #fff;*/
+    }
+    .THIS lightning-input.searchbox.slds-form-element {
+        width: 94%;
+        margin: 0% 3%;
+    }
+    .THIS lightning-input.searchbox.slds-form-element input {
+        box-shadow: none;
+        background: transparent;
+        border-bottom: 1px solid #FFFFFF;
+        border-radius: 0px;
+        color: #fff;
+    }
+    .THIS lightning-input.searchbox.slds-form-element input::placeholder { 
+        color: #fff;
+        opacity: 1; /* Firefox */
+    }
+    
+    .THIS lightning-input.searchbox.slds-form-element input:-ms-input-placeholder {
+        color: #fff;
+    }
+    
+    .THIS lightning-input.searchbox.slds-form-element input::-ms-input-placeholder {
+        color: #fff;
+    }
+    .THIS .searchbox svg.slds-input__icon.slds-input__icon_left.slds-icon-text-default {
+        fill: #ffffff;
+    }
+    .THIS .searchbox svg.slds-button__icon {
+        fill: #fff;
+    }
+    .THIS .searchresult {
+        width: 96%;
+        margin: auto;
+    }
+    .THIS.toptab li.slds-tabs_default__item.slds-is-active {
+        background: #fff;
+        color: #FE864D;
+        padding: 0 1rem;
+    }
+    .THIS.toptab li.slds-tabs_default__item.slds-is-active:after {
+        background-color: #FE864D!important;
+    }
+    .THIS.toptab .slds-accordion {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+    .THIS .accordion_main .slds-accordion__section {
+        width: 96%;
+        margin: auto;
+        margin-bottom: 1rem;
+    }
+    .THIS .accordion_main button.slds-button.slds-button_reset.slds-accordion__summary-action {
+        padding: 1rem 1rem 1rem 3rem;
+        font-size: 14px;
+    }
+    .THIS .accordion_main .slds-accordion__summary-action .slds-icon-text-default {
+        fill: #fff;
+        width: 14px;
+    }
+    .THIS .accordion_main .slds-is-open>.slds-accordion__content {
+        margin-bottom: 1rem;
+        padding-bottom: 0;
+    }
+    /*Table css start*/
+    .THIS .second_table table, .THIS .second_table thead, .THIS .second_table tbody ,
+    .THIS .second_table td, .THIS .second_table tr , 
+    .THIS .search_details table, .THIS .search_details thead, .THIS .search_details tbody ,
+    .THIS .search_details td, .THIS .search_details tr{
+        display: block;
+    }
+    .THIS .second_table th , .THIS .search_details th{
+        display:none;
+    }
+    .THIS .second_table table tr:nth-child(odd) {
+        background: #f0f0f0;
+    }
+    .THIS .second_table table tr td , .THIS .search_details table tr td {
+        border: none;
+        border-bottom: 1px solid #eae9e9;
+        position: relative;
+        padding-left: 50%;
+        color: #000;
+        font-weight: bold;
+        font-size:12.5px;
+        text-align: right;
+        padding: .5rem 1rem;
+        width: 100%;
+    }
+    .THIS .second_table table tr td:before , .THIS .search_details table tr td:before{
+        position: absolute;
+        top: 0;
+        left: 0px;
+        width: 45%;
+        padding:.5rem 1rem;
+        white-space: nowrap;
+        color: #000;
+        font-weight: normal;
+        font-size:13px;
+        text-align: left;
+    }
+    .THIS .second_table table tr td:nth-of-type(1):before ,
+    .THIS .search_details table tr td:nth-of-type(1):before {
+        content: "Chassis No";
+    }
+    .THIS .second_table table tr  td:nth-of-type(2):before ,
+    .THIS .search_details table tr td:nth-of-type(2):before{
+        content: "Engine No";
+    }
+    .THIS .second_table table tr  td:nth-of-type(3):before ,
+    .THIS .search_details table tr td:nth-of-type(3):before{
+        content: "Vehicle Color";
+    }
+    .THIS .second_table table tr  td:nth-of-type(4):before ,
+    .THIS .search_details table tr td:nth-of-type(4):before{
+        content: "Year Model";
+    }
+    .THIS .second_table table tr  td:nth-of-type(5):before ,
+    .THIS .search_details table tr td:nth-of-type(5):before{
+        content: "Status";
+    }    
+    /*Table css end*/
+    .THIS .search_heading {
+        padding: 0rem 0 .5rem;
+        visibility: hidden;
+    }
+    .THIS .profileText {
+        display: none;
+    }
+    .THIS .companylogo {
+        width: 90px;
+        margin: 0.5% 0 0 35%;
+        padding:0;
+    }
+    .THIS .profileimg {
+        margin: 1px 0 0;
+    }
+    .THIS.menudiv {
+        padding: .8rem 0;
+    } 
+    .THIS .notification_section {
+        padding: .7rem .5rem 0;
+    }
+}

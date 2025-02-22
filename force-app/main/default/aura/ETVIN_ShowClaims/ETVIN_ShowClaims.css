@@ -1,0 +1,138 @@
+.THIS .uploadSection{
+    text-align: right;
+}
+.THIS.noRecord{
+    text-align: center;
+}
+
+.THIS .headerTop{
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid #62cc8c;
+    padding: 0 2rem 2rem;
+}
+.THIS .headerTop h3{
+    font-size: 1rem;
+    font-weight: 600;
+    display: inline-block;
+}
+.THIS .headerTop button{
+    background: #62cc8c;
+    border: 1px solid #62cc8c;
+}
+.THIS .headerTop .backBtn{
+    width: 42%;
+    display: inline-block;
+}
+.THIS .tableshow{
+    overflow: hidden;
+}
+
+.THIS .slds-form-element__control input{
+    border: none;
+}
+.THIS .slds-modal__content .slds-form-element__control input{
+    border: 1px solid #ddd;
+}
+.THIS .footerBtns{
+    text-align: right;
+    padding: 2rem 2rem 0;
+    border-top: .5px solid #62cc8c;
+    margin: 2rem 0 0;
+}
+.THIS .slds-card__header{
+    display: none;
+}
+.THIS .vehiclepolicy{
+    padding: 0;
+}
+.THIS .slds-card__body .slds-form-element__label{
+    color: #62cc8c;
+    font-weight: 600;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+}
+.THIS .slds-card__body .slds-form-element__control{
+    text-align: left;
+    width: 100%;
+    padding: 0;
+}
+.THIS .slds-card__body .slds-table .slds-truncate{
+    text-align: left;
+}
+.THIS .slds-table th .slds-truncate span{
+    font-weight: 900;
+}
+.THIS .slds-card__body table, .THIS .slds-card__body table th, .THIS .slds-card__body table tr:hover{
+    border: none;
+} 
+.THIS .slds-card__body table tr:hover th{
+    box-shadow: none !important;
+}
+.THIS .slds-card__body table th.slds-text-title_caps{
+    border-bottom: 1px solid #62cc8c;
+}
+.THIS .slds-card__body table tbody{
+    padding: 0 1rem;
+    display: block;
+}
+.THIS .slds-card__body table tbody a{
+    color: #62cc8c;
+    font-weight: 600;
+}
+
+.THIS .slds-file-selector__button.slds-button_neutral{
+    color: #fff;
+    background: #c23934;
+}
+.THIS .slds-file-selector__button.slds-button_neutral svg, .THIS .slds-file-selector__button.slds-button_neutral:hover svg{
+    fill: #fff;
+} 
+
+.THIS .slds-modal__content .slds-form-element__label {
+    color: #62cc8c;
+    font-weight: 600;
+}
+.THIS .slds-button_neutral {
+    color: #62cc8c;
+    border: 1px solid #62cc8c;
+}
+.THIS .slds-button_brand {
+    background: #62cc8c;
+    border: 1px solid #62cc8c;
+}
+.THIS .slds-modal__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.THIS .cancelSaveBtnn{
+    text-align: right;
+    margin: 2rem 0 0;
+}
+.THIS .textarea-container .slds-textarea {
+    height: 100px;
+}
+.THIS .slds-modal__close svg {
+    color: #000;
+}
+
+.THIS .claimpolicy table, .THIS .claimpolicy table th, .THIS .claimpolicy table tr:hover{
+    border: none;
+} 
+.THIS .claimpolicy table tr:hover th{
+    box-shadow: none !important;
+}
+.THIS .claimpolicy table th.slds-text-title_caps{
+    border-bottom: 1px solid #62cc8c;
+}
+.THIS .claimpolicy table tbody{
+    padding: 0 1rem;
+    display: block;
+}
+.THIS .claimpolicy table tbody a{
+    color: #62cc8c;
+    font-weight: 600;
+}

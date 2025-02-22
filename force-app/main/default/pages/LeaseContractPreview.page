@@ -1,0 +1,475 @@
+<!--
+Name: LeaseContractPreview
+Controller: ContractPreviewController
+Author: Sreelakshmi SK
+Created Date: 25 May 2023
+Description: VF page to preview the LeaseContractPreview PDF
+
+updated : 26 Sept 2023--Srihari Koyila
+-->
+
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf"  standardStylesheets="false" applyHtmlTag="false" standardController="Customer_Quote__c" extensions="ContractPreviewController">
+    
+    <head>
+        <style>
+            @page {
+            size: A4;
+            margin:25mm 10mm 10mm;
+            @bottom-left {
+            content: element(footer);
+            }
+            @top-left {
+            content: element(header);
+            }
+            @bottom-right {
+            content: "Page " counter(page) " of " counter(pages);
+            font-size: 12px;
+            }
+            }
+            
+            
+            div.divFooter {
+            display: block;
+            padding: 5px;
+            position: running(footer);
+            }
+            div.divHeader {
+            margin:20px 0px;
+            display: block;
+            padding: 5px;
+            position: running(header);
+            align:right;
+            }
+            body {
+            font-size:14px;
+            font-family: Calibri, sans-serif;
+            }
+            table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            }
+            ul li, ol li{
+            margin-bottom:10px;
+            text-align: justify;
+            }
+        </style>
+        
+    </head>
+    <div class="divHeader">
+        <apex:image style="height: 60px;float:right" url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/logo.png')}"/>
+    </div>
+    <!--div styleClass="center_section" style="width: 30%;display: inline-block;float: left;text-align:center;">
+<apex:image style="height: 50px;" url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/logo.png')}"/>                
+</div-->
+    
+    <!-- Content for Lease Contract -->
+    
+    <body>
+        
+        <h4 style="padding: 40px;text-align: center; text-decoration: underline;">
+            LEASE AGREEMENT {!AccountName}
+        </h4>
+        <p>This vehicle lease agreement (the "Agreement") is entered into on <Strong style= "display: {!If(LA_AgreementDate =='undefined','none','') }">{!LA_AgreementDate}</Strong>.</p>
+        <h5 style="text-decoration: underline;">By and Between the following Parties:</h5>
+        <ol type="1">
+            <li>Emirates Public Transport &amp; Services Company, established under laws of UAE having its head office at Marrakech Street, Umm Ramool Area, P.O. Box - 5757, Dubai, United Arab Emirates, Represented by <Strong style= "display: {!If(ET_Solitation =='undefined','none','') }">{!ET_Solitation}</Strong><Strong style= "display: {!If(ET_ETRepresentative =='undefined','none','') }">{!ET_ETRepresentative}</Strong> as '<Strong style= "display: {!If(ET_Designation =='undefined','none','') }">{!ET_Designation}</Strong>' ("hereinafter referred to as Lessor").</li>
+            <li>{!Customer_Quote__c.Name}, a company registered in the United Arab Emirates, Commercial License number  <Strong style= "display: {!If(Licensenumber =='undefined','none','') }">{!Licensenumber}</Strong>, P.O box-<Strong style= "display: {!If(LA_PostOfBox =='undefined','none','') }">{!LA_PostOfBox}</Strong>, Dubai, United Arab Emirates whose principal place of business is at .<Strong style= "display: {!If(LA_POBusiness =='undefined','none','') }">{!LA_POBusiness}</Strong> Dubai, United Arab Emirates, represented by Mr. <Strong style= "display: {!If(LA_LARepresentative =='undefined','none','') }">{!LA_LARepresentative}</Strong> as <Strong style= "display: {!If(LA_Designation =='undefined','none','') }">{!LA_Designation}</Strong>  ("hereinafter referred to as Lessee").
+                <p>Lessor and the Lessee are hereinafter referred to as "Parties" and individually as "Party".</p>
+            </li>
+        </ol>
+        
+        
+        <h4 style="text-align: center; text-decoration: underline;" >RECITAL </h4>
+        
+        <ol>
+            <li><b>Whereas,</b> the Lessor is a Company working in the field of transport and leasing of vehicles and  has a number of vehicles licensed in accordance with applicable laws and regulations of United Arab Emirates.</li>
+            <li><b>Whereas,</b> the Lessee is  a Company which owns and operates in the field of in UAE.</li>
+            <li><b>Whereas,</b> the Lessee requires to lease a number of vehicles  without drivers and has agreed to lease the vehicles from the Lessor subject to the terms and conditions of this Agreement.</li>
+            <li><b>Whereas,</b> the Lessor has agreed to provide the services against the payment paid by the Lessee  on regular basis as per Agreement between the Parties.</li>
+        </ol>
+        
+        <p>The above Recital is an integral part of this Agreement and shall be read together with this Agreement.</p>
+        <p>Now therefore, for good and valuable consideration, the Parties agree as follows :-</p>
+        
+        <ol type="1">
+            <li><h5 style="text-decoration: underline;">DOCUMENT REQUIREMENTS</h5>
+                <ul >
+                    <li>By signing this Agreement, the Lessee shall provide the following documents: -
+                        <ol type="a" style="margin-top:10px">
+                            <li>Valid trade license.</li>
+                            <li>Valid POA for the authorized signatory.</li>
+                            <li>TRN certificate.</li>
+                            <li>Passport Copies of the owner/s and the authorised signatory.</li>
+                            <li>KYC documents and other required documents as per request of the Lessor.</li>
+                        </ol>
+                    </li>
+                    
+                    <li>Upon receiving the vehicle, the Lessee's authorized representative shall submit a copy of passport, visa copy, Emirates ID and a driving license for the Lessee's representative who will receive the vehicles.</li>
+                </ul>
+            </li>
+            <li ><h5 style="text-decoration: underline;">VEHICLE REQUIREMENTS BY THE LESSEE.</h5>
+                <ul>
+                    <li>The Lessor undertakes to provide vehicle leasing service along with all support and maintenance services for the leased vehicles. The Lessor shall provide the requested vehicles at the rates as stipulated in Schedule 1 of this Agreement.</li>
+                    <li>The Lessee may request to increase or add new vehicle as per requirement during the term  of this Agreement. Any new or additional vehicle requested by the Lessee shall be provided (subject to availability) on new prices based on the model and the term for the vehicle required under this Agreement.</li>
+                </ul>
+            </li>
+            <li ><h5 style="text-decoration: underline;">LEASE TERM</h5>
+                <ul>
+                    <li>The term of this Agreement shall be determined as stipulated in Schedule 1 of this Agreement. Any vehicle delivered under this Agreement shall complete a minimum period as determined  in Schedule 1 and the period shall start from the date of the delivery of each vehicle as per receiving documents against each vehicle. This Agreement is not subject for any suspension from the Lessee due to any reason whatsoever.</li>
+                    <li>Subject to mutual consent of the Parties, this Agreement may be further extended for the same terms or with modified terms, only upon mutual agreement in writing which shall be signed by the authorized representative of both Parties. Any request for renewal of this Agreement shall be done at least 60 days before the date of expiration of this Agreement.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">VEHICLE MAINTANENCE AND REPAIRS</h5>
+                <ul>
+                    <li>It is the Lessee’s responsibility to inform the Lessor at least 500 kilometers before the service due date or at least 72 hours in advance for any periodic maintenance or repair requirements. Lessee shall make the vehicle available to be serviced at the appropriate time within 24 hours’ notice from Lessor. In case of any damage or extra repair is required due to delay from the Lessee, the same shall be charged and paid by the Lessee.</li>
+                    <li>Any Additional fitting in the vehicles upon request of the Lessee which is done by the third party or the Lessor shall be on sole cost of the Lessee and all repairs and maintenance costs shall be paid by the Lessee. No repairs or replacement of parts to the vehicles should be carried out by the Lessee without prior written consent of the Lessor.</li>
+                    <li>If any of the warning-lights on the vehicle’s dashboard comes off, the Lessee or its employees or representatives must stop using the vehicle immediately, switch off the engine and notify the Lessor immediately. Any expenses, fees, losses or damages cost arising out of failure to comply with this clause, will be borne by the Lessee, including but not limited to any charges, penalties and the applicable administrative charges of the Lessor.</li>
+                    <li>Smoking in the Vehicles is strictly prohibited as it damages the vehicles and is a safety hazard while driving. Smoking in vehicles may result charges of up to AED 1000, determination of such amount shall be at the sole discretion of the Lessor’s staff while inspection of the vehicle. In addition, any cleaning or repair expenses or fees arising out of or required due to smoking in the vehicle shall be charged to the Lessee.</li>
+                    <li>Additional servicing and repairs that are required as a result of misuse or negligence by the Lessee or its appointed user/driver will be carried out and charged to the Lessee.</li>
+                    <li>The following maintenance and repairs shall be on account of the Lessor: -
+                        <ol>
+                            <li>Lessor shall be responsible for routine services/maintenances as per manufacture's   recommendations.</li>
+                            <li>Any preventative treatment checks or other work which Lessor, in its absolute discretion, deems necessary.</li>
+                            <li>All repairs required as a result of wear and tear in the normal use of the vehicle as Lessor deem fit in its absolute discretion.</li>
+                            <li>The replacement of tires as and when required in order to comply with any applicable law, but only to the extent that same resulted from normal wear and tear. The minimum expected tire life under normal wear and tear condition is deemed to be 40,000 kilometers.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">VEHICLE REPLACEMENT</h5>
+                <ul>
+                    <li>Subject to availability, the Lessor shall provide a replacement vehicle in case of breakdown or accidents only. The total replacement vehicle numbers shall not exceed the percentage as determined in as determined in Schedule 1. The replaced vehicle shall be of the same category or as agreed between the parties and the replacement vehicle shall only be provided if the vehicle is in custody of the Lessor for more than 24 hours for maintenance and the duration for repairs shall also be agreed between the Parties. The Lessee shall remove all personal and valuable items in the vehicle prior to exchanging. The Lessor shall not be responsible for personal or valuable belongings left in the vehicle. The cost of fuel incurred for the replacement services and also including the fuel cost incurred for filling the tank of the replaced vehicle shall be paid by the Lessee.</li>
+                    <li>Lessee undertakes to return replacement vehicle within 24 hours of notification of completion of the repair of the leased vehicle. In case of any delay for more than twenty-four (24) hours to return the vehicle by the Lessee, the Lessor may charge additional lease rent for each delayed day till the replacement vehicle is returned.</li>
+                    <li>If a vehicle driven by the Lessee is certified as total loss irrespective of fault, the vehicle will be terminated and new addendum shall be signed between the Lessor and Lessee on new lease rates considering the cost of the new vehicle for that particular vehicle.</li>
+                    <li>No free replacement vehicles shall be provided to the Lessee in case the vehicle is impounded by the Authorities due to any infringement of the law or traffic violation caused by the Lessee. The Lessee shall continue to be liable for the fee, fines and inbound charges during the period when the vehicle is impounded.</li>
+                    <li>No free replacement of any vehicles shall be provided to the Lessee in case there is a block fine caused by the Lessee. To provide replacement vehicle, block fine must be cleared. The Lessee shall continue to be liable for the fee during the period till the “lock” or/and block fine is cleared.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">ACCIDENT</h5>
+                <ul>
+                    <li>In the event of any accident or damage to the vehicle including missing parts, the Lessee shall obtain a Police report for the same which shall be handed over to the Lessor within 2 working days of the receipt of the report. Obtaining police report is mandatory otherwise, all repairs, damages and losses shall be paid by the Lessee.</li>
+                    <li>In case the Lessee is involved in an accident and not able to provide the police report to the Lessor, in that event the Lessee shall, in addition to the leasing fees, also pay for the actual repair costs, fees and expenses (including but not limited to towing charges and charges for any replacement vehicles), any other related expenses, fees, fines and charges and any third party claims for compensation relating to or in connection with the damage to the Vehicle.</li>
+                    <li>In case of an accident and no Police report is provided by the Lessee, in such case no replacement of vehicle shall be provided and the Lessee shall be liable to pay all costs (as stipulated in clause 6.2. However, in case the Lessee request for an additional replacement vehicle which falls within the same or similar category, the Vehicle shall be provided subject to availability along with additional leasing charges.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">MILEAGE</h5>
+                <ul>
+                    <li>The rates include the value of the monthly rent of the vehicle for limited mileage as stipulated in Schedule-1.</li>
+                    <li>The Lessor has the right to claim additional mileage charges from Lessee on annual basis or at the time of termination for the vehicles which are delivered under this Agreement for each additional KM at the rate as stipulated in Schedule-1.</li>
+                    <li>In case of any early termination for any reason, the Mileage will be calculated on pro-rata basis.</li>                    
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">LOSS OF ASSETS</h5>
+                <ul>
+                    <li>In case of loss of vehicles or assets, whether due to accident / theft/ hijacking or any other reason, this Agreement will remain in effect and the Lessor shall raise monthly invoices toward monthly charges until the Lessor receives final police report suitable for insurance claim. In case of loss of vehicles or assets, the Lessor has the right to claim for a compensation amount for the loss of vehicle or asset, the total outstanding amount and any other charges (as stipulated under this Agreement) related to the lost vehicle or assets and the Lessee is obligated to pay the claimed value within 7 days from receiving the invoice.
+                        <p>The Lessee shall support and provide all requisite details, information, reports and documents as requested by the Lessor in case of any claim (loss of vehicles or assets, whether due to accident / theft/ hijacking or any other reason, insurance claim, etc.) related to leased vehicles under this Agreement.</p></li>
+                    <li>Lessee shall use the vehicle diligently and shall avoid any misuse or use of the vehicle for any illegal purpose. All charges along with the rental duration and fines shall be charged to the Lessee and in case the vehicle is impounded due to misuse or illegal use of the vehicle by the Lessee.</li>
+                    <li>The Lessor reserves the right to charge the Lessee for any wear and tear cost incurred by the Lessor which maybe cosmetic or technical in nature.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">MODIFICATIONS</h5>
+                <ul>
+                    <li>Any modification in the vehicle shall be mentioned before placing the order and is subject to getting approval from traffic authorities. The Lessor shall charge from the Lessee an additional cost as stipulated in Schedule 1 as margin and all other costs related to such approvals and permits. The Lessor reserves the right to charge the Lessee the reasonable cost, if any, to remove the modification to bring the vehicle back into its original shape.</li>
+                    <li>The Lessor may make any modification in the vehicle subject to approval from the relevant authorities and any such request from the Lessee shall be mentioned before placing the order for such vehicle. The Lessee shall not make any modifications in the vehicle unless prior written approval is obtained from the Lessor. Any costs incurring due to modification will be charged to Lessee on actual basis.</li>                    
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">EXECUTION OF PURCHASE ORDERS</h5>
+                <ul>
+                    <li>Only on receipt of a valid Purchase Order from the Lessee, the Lessor will order the vehicle with the suppliers for the execution of this Agreement. Lessor shall provide the vehicles within 60 days subject to availability and confirmation from the supplier from the date of acceptance of the Purchase Order or any agreed extension thereto.</li>
+                    <li>Once Lessor has issued a Purchase Order on a vehicle to a supplier, any cancellation by the Lessee shall be considered as breach of this Agreement and the Lessee shall pay 12 months fee amount as damages for each cancelled/terminated vehicle. </li>
+                    <li>The Lessee shall have the vehicles picked-up/delivered within twenty-four (24) hours from the date and time, as agreed, failing which the Lessor reserves the right to charge the Lessee at a standard daily rate for each day of delay.  The invoice period shall start from the agreed start date or from the date of receipt of the vehicle/s whichever comes first and the same shall continue till the last day of this Agreement.</li>
+                    <li>The Lessor undertakes to handover and deliver the vehicle to the Lessee as per the mutually agreed delivery date. However, in case of any delay, the Lessor shall inform the Lessee and 7 days grace period shall be provided to the Lessor without any charges or liability.If agreed between the parties, Lessor may provide another vehicle similar to the requirements of the Lessee during the delay period which shall be charged as per agreed fee in clause 2.1.</li>
+                    <li>In case of any employee is provided by the Lessor under this Agreement, then the Lessee shall forward the stamped attendance sheet within 1st week for each month. The Lessor will submit the invoices within 7 days from the receipt of signed attendance and the payment should be made within 30 calendar days or as per the agreed credit period from the date of submission of the invoices.</li>
+                </ul>
+            </li>
+            <li style="page-break-before:always"><h5 style="text-decoration: underline;">SECURITY CHEQUE.</h5>
+                <ul>
+                    <li>Lessee shall provide Lessor with an open dated cheque amounting one-year rental value towards security deposit, and Lessor has the right to keep security cheque till the validity of this Agreement and return back to the Lessee after clearing of all the dues related to this Agreement.</li>                    
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">PAYMENT TERMS</h5>
+                <ul>
+                    <li>The pricing agreed for the leased vehicles are listed in clause 2 of this Agreement. Any decrease in the duration of the services or termination whether partially or fully due to any reason whatsoever may result in re- pricing of the services which shall be based on the actual duration of the services performed under this Agreement and in addition an early termination fee shall be paid by the Lessee.  </li>
+                    <li>Invoices shall be raised on monthly basis and the payment for the leased vehicles  shall be paid within  30 calendar days from the invoice receipt date. All the rental charges will be consolidated in single invoice or as agreed between the Parties. </li>
+                    <li>The Lessee on regular basis shall check and pay any and all fines for all vehicles leased under this Agreement. The Lessee shall clear the fines within 30 days from the date of occurrence of any fines. In case the fine amount is not paid by the Lessee within the stipulated time, and the same is paid by the Lessor then the latter shall charge the Lessee the due amount for fines and additionally charge an administrative fee as stipulated in Schedule 1. The Lessee shall clear the invoices for the fines within 30 days from the date of receipt of the invoice.</li>
+                    <li>Salik/Darb charges shall be paid by the Lessee based on actual consumption and the Lessor shall charge the consumed amount and additionally charge an administrative fee as stipulated in Schedule 1.</li>
+                    <li>Salik/Darb and invoice for fines shall be submitted in the following month for the previous month and it shall be payable within 7 days from the date of submission of the invoice to the Lessee. Expense wise consolidated invoice will be submitted monthly along with transaction data and summary.  Invoicing for the lease, salik, fines and any other charges will be submitted to the Lessee during the 1st week of each month for the previous month’s charges or as agreed between the Lessor and Lessee.	</li>
+                    <li>All other invoices including but not limited to for the excess kilometer, Premature/early termination fee, contract closing, maintenance, insurance, wear and tear etc will be invoiced accordingly and the payment should be released by the Lessee within 7 days from date of the submission of the invoice. Additional supporting document requirements for Lessee other than Lessor standards will be provided by the Lessor with an additional admin charge.</li>
+                    <li>In case the invoice details and value are correct, the Lessee is not entitled to request a reissuance of the invoice for any reason including but not limited to splitting the bill or changing its dates. The Lessee shall raise its objection or dispute only within 7 days from the date of receipt of any invoice. In case no objection or remarks are raised within the stipulated period, then the Lessee is not entitled to dispute the invoices afterwards and the payment shall be made without any delay as per agreed schedule 1. Where only part of an invoice is disputed, the undisputed amount shall be paid on the due date as agreed under this Agreement. All due payments pertaining to the leased vehicle shall be payable within 30 days irrespective of whether or not the Lessee has recovered payment from a third party or any of its customers. Any disputed amount shall be settled within 30 days from the date of notification of any dispute. In case the issue is not resolved in 30 days the same shall be raised to the higher management of the parties.  In case the dispute is not resolved within 7 days of the involvement of the higher management, then the amount shall be determined by the Lessor as per the proof furnished for the delivered services and the same shall be settled within 7 days from the date of receipt of the invoice.</li>
+                    <li>The Lessee irrevocably accepts to pay to the Lessor in accordance with the agreed payment terms, including all incidental charges including any and all traffic fines, Salik Charges, any misuse charges, taxes and other applicable charges irrespective of the time that may pass between the occurrence of the event and the notification of it.</li>
+                    <li>The Lessee acknowledge and approve that the Lessor has full right to file complain in Police and take necessary actions for recovery of the vehicles. The Lessor has full right to keep the second key for each leased vehicle which may be used for recovery of the vehicles  in case of any breach from the Lessee.  The Lessee affirms and agrees that they will not keep in vehicle nor claim for any goods, valuables, cash or other items if the vehicles are retrieved by the Lessor upon termination due to non-payment and therefore, the Lessee disclaims for any loss or damage may have suffered due to any such act of the Lessor.</li>
+                    <li>In case of any change in existing law or introduction of any new law relating to taxes, imposts, levies, duties, withholding taxes, charges or other assessments of this nature or any new guidelines or notifications which incurs additional cost including but not limited to increase in the Salik/toll cost or any other operational cost which impacts and is linked with annual inflation or other cost price indexes and comes into effect after the commencement of the Services  and during the term of this Agreement and increases Lessor's Operational costs in performing its obligations under this Agreement, then the Lessor shall be entitled to an equitable adjustment to the fees and the same shall be paid by the Lessee.</li>
+                    <li>The Lessor has right to inspect audited financial statements of Lessee; if required. The Lessor also has full right to make physical inspection of the leased assets anytime during the term of this Agreement for preparing internal inventory data or any other purpose, if required.</li>
+                    <li>The pricing agreed for this Agreement is based on the term agreed under this Agreement. However, the current price charged to the Lessee excludes any costs, costs related in procuring approval/permits from competent authorities, any additional cost for complying special and additional insurance requirements as required by authorities or as per need of the Services provided under this Agreement, etc. In case any letters, certificates or documents is required by the Lessee for procuring any pass or permits, the same shall be provided by the Lessor at the cost as stipulated in Schedule 1. </li>
+                    <li>Both Parties agree that the cost for all the Services or any incidental services including any additional requirements or introduction of new Services or any incidental services shall be agreed in writing before any such Service request is delivered. In case the cost is not agreed and the Services or any incidental services are delivered by the Lessor,  then the Lessor shall charge the cost an the actual cost and the same shall be paid by the Lessee.</li>
+                    <li>Any requirements or request for any kind of permits, passes, approvals  for   (driver &amp; vehicle) as per requirements for each Emirates shall be procured by the Lessor but the Lessor bears no responsibility in case the same is not issued by any agency or authority for any reason beyond sole control of the Lessor. In order to execute the work assigned by the Lessee, any fee to be paid to any agency or any authority shall be paid by the Lessee. For vehicles which are driven by the driver of the Lessee, then the Lessee shall be liable for any fines, penalties or any other charges incurred due to any violation or non compliance for the required permits.</li>
+                    <li><strong>Delay or Non-Payment: -</strong>
+                        <p><strong>A) In case of any non-payment or delay in payment beyond the agreed due date, the Lessor may take any or all from the below listed actions: -</strong></p>
+                        <ol>
+                            <li>Charge an amount as stipulated in Schedule 1 against the due payable amount on monthly basis as a penalty to be paid by the Lessee for each month of delay. Such charge as stipulated herein shall be considered as a minimum compensation for any such breach from the Lessee</li>
+                            <li>In case of Cheque return due to any reason whatsoever, the Lessee shall be charged and pay to the Lessor a minimum fee as stipulated in Schedule 1. </li>
+                            <li>In case payment is unpaid or delayed for more than the period as stipulated in schedule 1, then the Lessor has right to suspend the services by providing 1 week notice to suspend the services and the vehicle/s shall be returned to the Lessor during the suspension period and the rental charges shall be applicable during such suspended period and paid by the Lessee.</li>
+                            <li>In case payment is unpaid or delayed for more than for more than the period as stipulated in schedule 1, “to avoid any doubt partial payment shall be considered as non-payment”, the Lessor has the right to terminate the services without any court order and may take the possession of the vehicle anytime without serving any prior notice to the Lessee. </li>
+                        </ol>
+                        <p><strong>B) In such case of any termination due to any breach from the Lessee, the Lessee shall pay to the Lessor as following:</strong></p>
+                        <ul>
+                            <li>Subject to clause 12.2, all outstanding amount till date for the availed services together with the invoices for the duration of suspension of services.</li>
+                            <li>Early termination fee. (as stipulated in clause 16.1)</li>
+                            <li>All unpaid fines, charges and applicable taxes incurred due to fault or negligence of the Lessee.</li>
+                            <li>Any extra cost incurred due to misuse or extra usage of the vehicle.</li>
+                            <li>Any other charges as stipulated under this Agreement.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">TAXES</h5>
+                <ul>
+                    <li>The Lessee shall be responsible to pay to the Lessor for all direct or indirect taxes whether levied presently or imposed in the future by any government authority, related to the provided services.</li>
+                    <li>For avoidance of any doubt, the current prices exclude VAT and other applicable taxes. In case of any increase or decrease in the applicable taxes the same will be reflected in the invoices.</li>
+                    <li>All the additional charges shall be paid by the Lessee.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">INSURANCE</h5>
+                <ul>
+                    <li>The Lessor shall at its own expense provide comprehensive insurance for  the vehicle to cover all damages for the vehicles resulting from accidents as per the insurance policy and UAE law. In case of any additional requirement or any new insurance cover is required by the Lessee, the same shall be provided with an additional charge to be charged and paid by the Lessee.</li>
+                    <li>The Lessee shall notify the Lessor within 24 hours of any accident involving the vehicle and shall fully cooperate with the Lessor in the prosecution and defense of any and all claims arising out of the use of the vehicle.</li>
+                    <li>The Lessee shall also be liable for all legal costs and charges incurred by the Lessor in connection with any court or police proceeding relating to any accident or traffic offence involving the vehicle to the extent that the Lessee is found liable in such proceedings.</li>
+                    <li>The Lessee accepts liability for any claim for damage or accident that occurs when the driver of the leased vehicle has been under the influence of alcohol or drugs, or does not hold a valid UAE license. The Lessee shall pay all fines and all costs of repair in such cases.</li>
+                    <li>The Lessee shall be liable for to pay the deductible amount as stipulated in Schedule 1, in case of accident where the Lessee is in fault or in case of hit and run or any damage to the vehicles. Police report shall be submitted by the Lessee in all cases of accidents or any form of damage to the leased vehicles. </li>
+                    <li>The Lessee agrees and affirms, that the insurance policy provided by the Lessor is sufficient to cover the losses, claims and  damages which might be claimed under this Agreement.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">Limitation of Liability </h5>
+                <ul>
+                    <li>The Lessee hereby agrees that any and all liabilities incurred by the Lessee due to any breach or negligence in services under this Agreement shall be covered through the insurance policy (as stipulated in clause14). Furthermore, the Lessee affirms that total claim or losses incurred by the Lessee will be claimed as per applicable insurance policy.</li>
+                    <li>In all cases, the Lessor shall only be liable for the direct and actual damages or claims incurred by the Lessee due to any fault or negligence of the Lessor and the same shall not exceed 10% of the monthly invoice.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">EARLY TERMINATION FEE</h5>
+                <ul>
+                    <li>In case of any early termination whether partially or fully by the Lessee, the Lessee shall provide two (2) months notice period in writing from the date of notice before any such termination and pursuant to said termination notice an early termination fee shall be applicable as stipulated in Schedule 1.</li>
+                    <li>This Agreement may be terminated before the completion of the term by the Lessee by returning the vehicle and paying to Lessor charges as per clause 12.1 in addition to early termination fee and all rental installments then due along with any additional kilometer charge that may be payable. </li>
+                    <li>The early termination fee is not a penalty but rather a charge or fee to compensate the Lessor for failure of the Lessee to satisfy the service commitment on which the rate plan was priced.</li>
+                    <li>The Lessor may by a written termination notice and with immediate effect terminate this Agreement in the following events: -
+                        <ol style="margin-top:10px">
+                            <li>Failure of the Lessee to pay any outstanding dues or failure to perform any of the terms and conditions under this Agreement.</li>
+                            <li>The Lessee (i) becomes insolvent or bankrupt; (ii) is unable to pay its obligations as they mature; (iii) suffers dissolution or termination of its existence or the disposition of all or a substantial portion of its assets; (iv) makes an assignment for the benefit of creditors; (v) makes application for appointment of a receiver of the Lessee or of any of the Lessee's property; (vi) files, or has filed against it, a petition in any proceeding in bankruptcy or for reorganization, composition, arrangement or liquidation.</li>
+                        </ol>
+                    </li>
+                    <li>If the Lessor terminates this Agreement in accordance with clause 16.4, the Lessee must return the vehicle and pay to the Lessor applicable charges and fee as mentioned in clause 16.1 &amp; 16.2. </li>
+                    <li>If an event set out in clause 16 arises but the Lessor elects not to terminate this Agreement, the Lessee will still be responsible for the losses, damages, liabilities and claims arising as a direct result of the Lessee’s breach.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">TRAFFIC FINES &amp; PENALTIES</h5>
+                <ul>
+                    <li>The Lessee shall be responsible for all fines or other expenses incurred through traffic violations and all amount incurred by the Lessor against any fines due to fault of the Lessee’s or any third Party’s driver including but not block chain fines such as crossing red signals, fines for damaging public property, etc. In such case, the Lessee or Lessee’s driver shall inform the Lessor and upon Lessor’s request the drivers must present themselves and visit the authorities within 7 days from the date of receipt of any such request. For each driver who is unable to present themselves within the stipulated time frame, a penalty of AED 3000 will be charged from the Lessee to clear the file.</li>
+                    <li>All amount for rental and fines incurred during the period for the non-renewal of the Mulkiya will be charged from the Lessee in case the vehicle is not made available for renewal process. Also, AED 25 will be charged additionally for each day in case the delay in renewal process is caused due to negligence or fault of the Lessee. </li>
+                    <li>If the vehicle is seized because of the misuse of the Lessee’s driver, the rental amount of the seized vehicle shall be paid by the Lessee during the confiscation period.</li>
+                    <li>The Lessee shall request the Lessor to procure any and all permits for ( driver &amp; vehicle ) from government authorities as per requirements of each Oil and Gas site (on-shore and Off-shore) including NOC, LOA, CICPA Pass and other certification etc. in order to execute the work assigned by the Lessee and the fee for the same shall be paid by Lessee. However, the authorities may reject any such request and the Lessor shall not be held liable for any such rejection or non-issuance of  the permits in timely manner. The Lessee shall be liable for any fines, penalties or any other charges incurred due to any violation or non-compliance for the required permits. </li>
+                    <li>In order to execute the work assigned by the Lessee, any fee to be paid to any agency or any authority shall be paid by the Lessee. For vehicles which are  driven by the driver of the Lessee, then the Lessee shall be liable for any fines, penalties or any other charges incurred due to any violation or non-compliance for the required permits.</li>
+                    <li>In case of resignation or termination of any driver, in such case, the Lessee shall take  clearance from Lessor, else the Lessor will not be responsible for any traffic fines and lessee will not have any right to dispute further traffic fine invoices.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">PERMITTED USAGE OF VEHICLES</h5>
+                <ul>
+                    <li>The Lessee shall use the vehicle only as per the intended and agreed purpose of the lease of the vehicles and the leased vehicles shall be used for normal and ordinary course of its business and not in violation of any applicable rule, law and regulation. In case of any violation by the Lessee or its assigned drivers, the Lessor may terminate this Agreement or may impose fines on its sole discretion.</li>
+                    <li>The Lessee undertakes to ensure that the vehicle is not used :-
+                        <ol>
+                            <li>For towing or any other purpose other than for which it is designed for.</li>
+                            <li>By any driver without a valid driving license acceptable to the UAE traffic authorities.</li>
+                            <li>By any driver or authorized representative holding a driving license for less than One Full year.</li>
+                            <li>Outside the UAE without informing the Lessor in advance in writing and after getting the confirmation that the insurance cover has been extended to cover the country to be visited. Any additional insurance premium on this account shall be borne by the Lessee.</li>
+                            <li>To overload or exceed the number of passengers for which the vehicle is licensed. For subletting or use by third parties.</li>
+                            <li>Racing or other competitive sports.</li>
+                            <li>While under the influence of alcohol, drugs or any other intoxicating substances or for illegal transportation of alcohol or drugs.</li>
+                            <li>For third party hire without the written consent of the Lessor.</li>
+                            <li>For any activity which will render the Lessor’s insurance void or result in vehicle being impounded by the authorities or for the carriage of any illegal goods including but not limited to carriage of any explosive, inflammable or other hazardous goods or materials, or alcohol or drugs.</li>
+                        </ol>
+                    </li>
+                    <li>Any breach of clauses stated above will result of an excess payable amount as stipulated in Schedule 1 which shall be paid by the Lessee on the total repair cost.</li>
+                </ul>
+            </li>  
+            
+            <li><h5 style="text-decoration: underline;">INDEMNITY FROM THE LESSEE</h5>
+                <ul>
+                    <li>The Lessee shall indemnify the Lessor and keep Lessor indemnified against all losses (including loss of profits), costs, expenses, claims, proceedings, damages and all other liabilities suffered or incurred by the Lessor’s directly or indirectly, as a result of: -
+                        <ol>
+                            <li>A breach of or failure to comply with any of the Lessee’s duties under this Agreement or any other terms or conditions of this Agreement.</li>
+                            <li>For any breach as mentioned in clause 18.2.</li>
+                            <li>The impounding or confiscation of the vehicle by any competent authority or for any other reason within the Lessee’s control.</li>
+                            <li>Any act or omission on the part of the Lessee or the Lessee’s licensees, agents or employees to the extent not covered by applicable insurance.</li>
+                            <li>Violation of the law if it involves a criminal act or refusing to handover the leased or replaced vehicle.</li>
+                            <li>Imposition of any fines or penalties or any notices relating to any parking, speeding, drunken driving or other traffic offence in respect of which the Lessee will remain liable to the Lessor irrespective of the period of time that may pass between commitment of an offence and the notification of a fine and the Lessee will be charged an additional administration fee charges of AED 25 (twenty-five Dirhams) per fine.</li>
+                        </ol>
+                    </li>                    
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">RETURN OF VEHICLE</h5>
+                <ul>
+                    <li>Upon termination of this Agreement for any reason the Lessee shall immediately return the vehicle to the Lessor or allow its agent to repossess the vehicle. The Lessee shall be liable to pay for any additional charges incurred by the Lessor in such cases.</li>
+                    <li>The Lessee shall at its own expense, make the vehicle (including all keys, tools, spares, accessories as supplied with the vehicle upon its initial delivery), available to the Lessor for collection on the business day immediately following its termination or as advised by the Lessor.</li>
+                    <li>The Lessor reserves the right to charge Lessee for any repairs not considered as fair wear and tear.</li>
+                    <li>The Lessee shall remain liable to pay the rental to the Lessor until the date of return of the vehicle to the Lessor.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">NO ASSIGNMENT</h5>
+                <ul>
+                    <li>The Lessee shall not without Lessor’s prior written consent: -
+                        <ol>
+                            <li>Be entitled to create or permit in any way the vehicle to be alienated, pledged or encumbered.</li>
+                            <li>Be entitled to cede or assign all or any of its rights or obligations under this Agreement.</li>
+                            <li>Be entitled to sub‐let the vehicle or otherwise part with possession and control of it.</li>                            
+                        </ol>
+                    </li>                    
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">OWNERSHIP OF THE VEHICLE</h5>
+                <ul>
+                    <li>The title and ownership of the vehicles shall at all times be and remain in the name of the Lessor. The Lessee shall have no right of property therein, except the right to use the vehicles in accordance with the terms of this Agreement. </li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">WAIVER OR VARIATION</h5>
+                <ul>
+                    <li>No waiver or variation of any of the terms or conditions of this Agreement shall be effective unless recorded in writing and signed by authorized representatives of both Parties.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">Force Majeure</h5>
+                <ul>
+                    <li>Neither Party shall be liable for failure to perform its obligations caused by or resulting from force majeure, i.e flood, landslide, earthquake, storm, lightning, fire, explosion, riots, war or military operations, acts of God, National or local emergency ("Force Majeure Events"). An event shall be considered as Force Majeure only if the situation prevails for more than 3 months continuously and the same is notified by the suffering party in writing. The period of 3 months shall be considered from the date of the notice is received by the other party. All the invoices shall be paid during this period without any failure or deductions.</li>
+                    <li>If the Force Majeure Event continues for more than three  (3) months continuously  and restricts the business completely (not partially) , either party may terminate the individual part of the scope affected by the Force Majeure Event without liability to the other party, except to pay for the liabilities incurred till the termination date.</li>
+                    <li>In case of any early termination due to clause 24.2, the pricing shall be subject to clause 12.1.</li>
+                </ul>
+            </li>
+            <li style="page-break-before:always"><h5 style="text-decoration: underline;">GOVERNING LAW AND JURISDICTION</h5>
+                <ul>
+                    <li>This Agreement shall be governed and construed in accordance with the laws of UAE. The  Parties irrevocably submit to the exclusive jurisdiction of the competent court of Abu Dhabi in respect of any matter, claim or dispute arising under, out of or in connection with this Agreement (including as to its validity) or the legal relationships established by this Agreement.</li>
+                    <li>The authorized signatory of the Lessee affirms that in case of any breach or negligence on account of the Lessee, the authorized signatory of the Lessee and the Lessee’s company shall be jointly and severally liable towards and claims or damages suffered by the Lessor or any third party.</li>
+                </ul>
+            </li>
+            <li><h5 style="text-decoration: underline;">CORRESPONDENCES &amp; COMMUNICATIONS</h5>
+                <ul>
+                    <li>All notices or correspondences arising from or relating to this Agreement must be in writing and be sent by email or delivered to the Parties on the following addresses :-
+                        <ol>
+                            <li>a)	Emirates Public Transport &amp; Services Company, a company registered in the United Arab Emirates whose principal place of business at PO Box 5757, Dubai, United Arab Emirates, Represented by Mr.<Strong style= "display: {!If(ET_ETRepresentative =='undefined','none','') }">{!ET_ETRepresentative}</Strong> as <Strong style= "display: {!If(ET_Designation =='undefined','none','') }">{!ET_Designation}</Strong> ("Lessor").</li>
+                            <li>b)	<Strong style= "display: {!If(AccountName =='undefined','none','') }">{!AccountName}</Strong> L.L.C -, a company registered in the United Arab Emirates, Commercial License number <Strong style= "display: {!If(Licensenumber =='undefined','none','') }">{!Licensenumber}</Strong>, P.O box<Strong style= "display: {!If(LA_PostOfBox =='undefined','none','') }">{!LA_PostOfBox}</Strong>, Dubai, United Arab Emirates whose principal place of business is at warehouse no. 4 Park Island, Bur Dubai, Dubai, United Arab Emirates, Represented by Ms.<Strong style= "display: {!If(LA_LARepresentative =='undefined','none','') }">{!LA_LARepresentative}</Strong>} as ("Lessee"). </li>
+                        </ol>
+                    </li>                    
+                </ul>
+            </li>            
+        </ol>
+        
+        <p>The above terms and conditions have been understood and agreed by the Parties hereto, whose authorized representatives have signed below in acceptance.</p>
+        
+        <table style="width:100%">
+            <tr>
+                <th style="text-align: left;padding:10px">For &amp; On behalf of Emirates Transport</th>
+                <th style="text-align: left;padding:10px">For &amp; On behalf of <Strong style= "display: {!If(AccountName =='undefined','none','') }">{!AccountName}</Strong></th>
+            </tr>
+            <tr>
+                <td style="text-align: left;padding:10px">Name: <Strong style= "display: {!If(ET_ETRepresentative =='undefined','none','') }">{!ET_ETRepresentative}</Strong></td>
+                <td style="text-align: left;padding:10px">Name: <Strong style= "display: {!If(LA_LARepresentative =='undefined','none','') }">{!LA_LARepresentative}</Strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;padding:10px">Position: <Strong style= "display: {!If(ET_Designation =='undefined','none','') }">{!ET_Designation}</Strong></td>
+                <td style="text-align: left;padding:10px">Position: <Strong style= "display: {!If(LA_Designation =='undefined','none','') }">{!LA_Designation}</Strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;padding:10px">Date:<Strong style= "display: {!If(LA_AgreementDate =='undefined','none','') }">{!LA_AgreementDate}</Strong> </td>
+                <td style="text-align: left;padding:10px">Date: <Strong style= "display: {!If(LA_AgreementDate =='undefined','none','') }">{!LA_AgreementDate}</Strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;padding:10px;min-height:60px">Signature:</td>
+                <td style="text-align: left;padding:10px;min-height:60px">Signature:</td>
+            </tr>
+        </table>   
+        
+        <h3>Schedule – 1</h3>
+        <ol>
+            <li><strong>Ref. Clause 2.1:</strong>
+                <table style="margin-top:10px">
+                    <tr>
+                        <th style="padding:10px"><strong>Vehicle Type &amp; Model</strong></th>
+                        <th style="padding:10px"><strong>Quantity</strong></th>
+                        <th style="padding:10px"><strong>Service Type</strong></th>
+                        <th style="padding:10px"><strong>Monthly Rate Per Vehicle(X Years ) excluding VAT</strong></th>
+                    </tr>
+                    <apex:repeat var="QuoteItem" value="{!customerVehicleQuoteItemList}">
+                    <tr>
+                        <td style="padding:10px">{!QuoteItem.Name}</td>
+                        <td style="padding:10px">{!QuoteItem.Number_of_Vehicles__c}</td>
+                        <td style="padding:10px">{!QuoteItem.Service_Type__c}</td>
+                        <td style="padding:10px">AED {!QuoteItem.Monthly_Rate_with_VAT__c}</td>
+                    </tr> 
+                        </apex:repeat>
+                    
+                     <apex:repeat var="WorkForceQuoteItem" value="{!CustomerWorkForceItemList}">
+                    <tr>
+                        <td style="padding:10px">{!WorkForceQuoteItem.Name}</td>
+                        <td style="padding:10px">{!WorkForceQuoteItem.Total_Main_Vehicle__c}</td>
+                        <td style="padding:10px">{!WorkForceQuoteItem.Service_Type__c}</td>
+                        <td style="padding:10px">AED {!WorkForceQuoteItem.Monthly_Rate_with_VAT__c}</td>
+                    </tr> 
+                        </apex:repeat>
+                     <tr>
+                        <td style="padding:10px"></td>
+                        <td style="padding:10px"></td>
+                        <td style="padding:10px"></td>
+                       <td style="padding:10px">Total Contract value for 3 years<div>{!TotalContractvalue}</div></td>
+                     </tr>    
+                    
+                </table>   
+            </li>
+            <li><strong>Ref. Clause 3.1 </strong>
+                <p>The term of this Agreement {!ContractStartDate} years. Any vehicle delivered under this Agreement shall complete a minimum period of {!ContractEndtDate} years.</p>
+            </li>
+            <li><strong>Ref. clause 5.1 </strong>
+                <p>The total replacement vehicle numbers shall not exceed – % <Strong style= "display: {!If(LA_TVNExceed =='undefined','none','') }">{!LA_TVNExceed}</Strong> of the total delivered vehicles.</p>
+            </li>
+            <li><strong>Ref. clause 7.1 </strong>
+                <p><strong>Agreed limited mileage per year<Strong style= "display: {!If(LA_ALMPYear =='undefined','none','') }">{!LA_ALMPYear}</Strong> KM/Year.</strong></p>
+            </li>
+            <li><strong>Ref. Clause 7.2</strong>                
+                <p>The Lessor has the right to charge for each additional kilometer – AED <Strong style= "display: {!If(LA_LAKilometer =='undefined','none','') }">{!LA_LAKilometer}</Strong> (+ VAT) per additional KM.</p>
+            </li>
+            <li><strong>Ref. Clause 9.1</strong>
+                <p>The Lessor shall charge modification cost of AED <Strong style= "display: {!If(LA_CMCost =='undefined','none','') }">{!LA_CMCost}</Strong> (+ VAT) which shall be paid by the Lessee.</p>
+            </li>
+            <li><strong>Ref. Clause 12.3</strong>
+                <p>Administrative charges for fine payment to be paid by the Lessee - Due amount for fines and additionally an administrative fee not exceeding 10% (+ VAT) of the traffic fine amount.</p>
+            </li>
+            <li><strong>Ref. Clause 12.11</strong>
+                <p>Charges for providing letter or any document - Fee of AED 50 on all types of Letters/Certificates (+VAT).</p>
+            </li>
+            <li><strong>Ref. Clause 12.4</strong>
+                <p>Salik/Darb charges to be paid based on actual consumption and an administrative fee shall be charged not exceeding – 10% (+ VAT) of the monthly invoice amount for Salik/Darb.</p>
+            </li>
+            <li><strong>Ref. Clause 12.14 (A) (a)</strong>
+                <p>Charges for delay in payment - X% (based on simple interest calculation method) of the due payable amount on monthly for each month of delay. </p>
+            </li>
+            <li><strong>Ref. Clause 12.14 (A) (b)</strong>
+                <p>Fee for return cheque - AED XXX (+ VAT) on the returned cheque.</p>
+            </li>
+            <li><strong>Ref. Clause 12.14 (A) (c)</strong>
+                <p>In case payment is unpaid or delayed for more than XX days, then the Lessor has right to suspend the services by providing 1 week notice to suspend the services.</p>
+            </li>
+            <li><strong>Ref. Clause 12.14 (A) (d)</strong>
+                <p>In case payment is unpaid or delayed for more than for more than XX days, then the Lessor has the right to terminate.</p>
+            </li>
+            <li><strong>Ref. Clause 14.5</strong>
+                <p>The Lessee shall pay AED <Strong style= "display: {!If(LA_InCAccident =='undefined','none','') }">{!LA_InCAccident}</Strong> (+ VAT) as deductible amount in case of accident.</p>
+            </li>
+            <li><strong>Ref. Clause 16.1</strong>
+                <ul>
+                    <li>In case any vehicle is terminated in first year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of 6 months as early termination fee.</li>
+                    <li>In case any vehicle is terminated in the second year or third year after the completion of the first year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of 4 months as early termination fee.</li>
+                    <li>In case any vehicle is terminated in the fourth or fifth year and after the completion of the third year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of 3 months as early termination fee.</li>
+                </ul>
+            </li>
+            <li><strong>Ref clause 18.3</strong>
+                <p>In case of breach as stipulated in clause 18.2, a minimum, the Lessee shall be charged 10% (+ VAT) as excess payable on the repair cost.</p>
+            </li>
+        </ol>
+    </body>
+    
+</apex:page>

@@ -1,0 +1,4 @@
+<aura:component implements="lightning:isUrlAddressable,flexipage:availableForAllPageTypes">
+    <aura:attribute name="recId" type="String"></aura:attribute>
+    <c:disputeCreation></c:disputeCreation>
+</aura:component>

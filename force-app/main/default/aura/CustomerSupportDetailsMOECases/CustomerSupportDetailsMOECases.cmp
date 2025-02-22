@@ -1,0 +1,799 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" controller='ET_BusinessCommunityController' extends="c:ET_MOE_BilingualCommunity">
+    
+    <!-- Handling events -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:ServiceRequestEvent" action="{!c.handleApplicationEvent}" />
+    
+    <!-- Registering events -->
+    <aura:registerEvent name="appEvent" type="c:MyBusinessDetailPageEvent"/>
+    <aura:registerEvent name="Actionname" type="c:ETST_sendDataEvent"/>
+    <!-- Attributes to calculate Dashboard Values-->
+    <aura:attribute name="newCases" type="Integer" default="0" />
+    <aura:attribute name="escalatedCases" type="Integer" default="0" />
+    <aura:attribute name="onHoldCases" type="Integer" default="0" />
+    <aura:attribute name="invalidCases" type="Integer" default="0" />
+    <aura:attribute name="closedCases" type="Integer" default="0" />
+    <aura:attribute name="customerSupportDashboard" type="Boolean" default="true" />
+    <aura:attribute name="createRequest" type="Boolean" />
+    <aura:attribute name="reqHistory" type="Boolean" />
+    <aura:attribute name="escalation" type="Boolean" />
+    <aura:attribute name="feedback" type="Boolean" />
+    <aura:attribute name="confirmFlag" type="Boolean" default="false" />
+    <aura:attribute name="status" type="string" default=""/>
+    <aura:attribute name="caseCommentsRequired" type="Boolean" default="false" />
+    <aura:attribute name="comments" type="string" default="" />
+    <aura:attribute name="caseId" type="string" default=""/>
+    <aura:attribute name="isDisabled" type="boolean" default="false" />
+    
+    <!-- Attributes to show Case Table-->
+    <aura:attribute name="showCaseTable" type="Boolean" /> 
+    <aura:attribute name="newCase" type="Boolean" /> 
+    <aura:attribute name="clickedDashboard" type="String" default=""/> 
+    <aura:handler event="c:ETST_sendDataEvent" action="{!c.closeactionevt}"/>
+    <!--Attribute to get the selected case filters on All cases Page--> 
+    <aura:attribute name="caseRecord" type="case"  default="{'sobjectType':'Case',
+                                                            'Status':'New'
+                                                            }"/> 
+    
+    <!-- Attributes to store search filter values -->
+    <aura:attribute name="caseNumber" type="String" default=""/> 
+    <aura:attribute name="statusFilter" type="String" default=""/>
+    <aura:handler event="force:refreshView" action="{!c.doInit}"/>
+    <aura:attribute name="selectedLookUpSalesAgreementRecord" type="sObject" />
+    <aura:attribute name="selectedLookUpResourcesRecord" type="sObject" />
+    <aura:attribute name="selectedLookUpVehiclesRecord" type="sObject" />
+    <aura:attribute name="selectedLookUpStudentRecord" type="sObject" />
+    <aura:attribute name="searchText" type="string"/>
+    <aura:attribute name="isSchoolActivitiesDepartment" type="boolean" default="false"/>
+    <aura:attribute name="isSchoolServicesDepartment" type="boolean" default="false"/>
+    <aura:attribute name="isSpecialEducationDepartment" type="boolean" default="false"/>
+    <aura:attribute name="isPersonnelManagementDepartment" type="boolean" default="false"/>
+     <!-- Main school Contact -->
+    <aura:attribute name="isMainSchoolContact" type="boolean" default="false"/>
+    
+    <!-- Attributes to handle filter search -->
+    <!-- <aura:handler name="change" value="{!v.caseRecord}" action="{!c.handleSearch}"/> -->
+    <aura:handler name="change" value="{!v.caseNumber}" action="{!c.handleSearch}"/>
+    <aura:handler name="change" value="{!v.statusFilter}" action="{!c.handleSearch}"/>
+    <aura:handler name="change" value="{!v.selectedsAgreementRecord}" action="{!c.handleSearch}"/>
+    <aura:handler name="change" value="{!v.selectedLookUpResourcesRecord}" action="{!c.handleSearch}"/>
+    <aura:handler name="change" value="{!v.selectedLookUpVehiclesRecord}" action="{!c.handleSearch}"/>
+    <aura:handler name="change" value="{!v.selectedLookUpStudentRecord}" action="{!c.handleSearch}"/>
+    
+    <!-- Attributes to handle accordian-->
+    <aura:attribute name="activeSections" type="List" default="[]" />
+    <aura:attribute name="new" type="String" default="New" />
+    <aura:attribute name="inProgress" type="String" default="Pending Approval" />
+    <aura:attribute name="rejected" type="String" default="Rejected" />
+    <aura:attribute name="approved" type="String" default="Approved" />
+    <aura:attribute name="closed" type="String" default="Closed" />
+    <aura:attribute name="selectedStatus" type="String" default="" />
+    <aura:attribute name="finalListToAdd" type="list" default=""/>
+    
+    <aura:attribute name="caseList" type="Case[]" /> 
+    <aura:attribute name="currentData" type="Case[]" />
+    <!-- Attributes to show detail page modal popup -->
+    <aura:attribute name="showRecordDetailModal" type="Boolean" default="false"/>
+    <aura:attribute name="recordDetailId" type="String" />
+    <aura:attribute name="recordTypeName" type="String" />
+    <!--lightning:overlayLibrary aura:id="overlayLib"/-->
+    <aura:attribute name="showEseCase" type="String" default="false"/>
+    <aura:attribute name="buttonDisable" type="boolean" default="false"/>
+    <aura:attribute name="showSpinner" type="Boolean" default="false"/>
+    
+    <c:ET_MOE_LanguageSelectionCmp aura:id="langId"/>
+    <aura:if isTrue="{!v.newCase}">        
+        <!--###### MODAL BOX Start######--> 
+        <c:CaseB2BPopupMOE   aura:id="CaseB2BPopupMOE" newCase="{!v.newCase}"/>
+        
+        <div class="slds-backdrop slds-backdrop_open"></div>    
+    </aura:if>
+    <div class="menudiv">
+        <c:MenuItemsList />
+    </div>
+    
+    <div class="casesupmaindiv">
+        
+        <aura:if isTrue="{!v.customerSupportDashboard}">
+            
+            <div class="fivediv">
+                <article class="slds-card" style="text-align:center;">
+                   <a href="" id="newcase" onclick="{!c.handleNewCasesClick}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        {!v.newCases}
+                                    </div>
+                                    <h3 class="form-title">{!v.clNew}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a> 
+                    <a href="" id="escalatedcase" onclick="{!c.handleApprovalCasesClick}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <!-- <div class="leftsectiondiv">
+                                <img src="{!$Resource.customerCare}"/>
+                            </div>--> 
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        <img src="{!$Resource.pandingcase_img}"/>
+                                        {!v.escalatedCases}
+                                       
+                                    </div>
+                                    <h3 class="form-title">{!v.clInProgress}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                       <a href="" id="closedcase" onclick="{!c.handleClosedCasesClick}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <!-- <div class="leftsectiondiv">
+                                <img src="{!$Resource.customerCare}"/>
+                            </div>--> 
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        <img src="{!$Resource.closecase_img}"/>
+                                        {!v.closedCases}
+                                    </div>
+                                    <h3 class="form-title">{!v.clClosed}</h3>                            
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                <!--    <a href="" id="holdcase" onclick="{!c.handleOnHoldCasesClick}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                 <div class="leftsectiondiv">
+                                <img src="{!$Resource.customerCare}"/>
+                            </div> 
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        <img src="{!$Resource.rejectcase_img}"/>
+                                        {!v.onHoldCases}
+                                    </div>
+                                    <h3 class="form-title">{!v.clRejected}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>-->
+                    <!-- <a href="" id="invalidcase" onclick="{!c.handleInvalidCasesClick}">
+                        <div class="slds-col">
+                            <div class="form-box-row2" id="step-1">
+                                <div class="rightsectiondiv">
+                                    <div class="numberSize">
+                                        <img src="{!$Resource.approvedcase_img}"/>
+                                        {!v.invalidCases}
+                                    </div>
+                                    <h3 class="form-title">{!v.clApproved}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a> -->
+                    
+                 
+                </article>
+            </div>
+        </aura:if>
+         <div  class="slds-p-right_small slds-p-bottom_medium btncreatesection">
+            <lightning:button class="{!v.clLang =='ar' ? 'emmergencyButtonar emmergencyButton' : 'emmergencyButton'}" label="{!v.clCreateCase}" title="{!v.clCreateCase}"  onclick="{!c.createESECase}" />
+            <lightning:button class="{!v.clLang =='ar' ? 'emmergencyButtonar emmergencyButton' : 'emmergencyButton'}" label="{!v.clAllRequests}" title="{!v.clAllRequests}" onclick="{!c.showAllCasesAction}"/>
+            <lightning:button class="{!v.clLang =='ar' ? 'emmergencyButtonar emmergencyButton' : 'emmergencyButton'}" label="{!v.clDownload}" title="{!v.clDownload}" onclick="{!c.downloadCases}"/>
+        </div>
+        <aura:if isTrue="{!v.showCaseTable}">
+            <aura:if isTrue="{!v.caseList.length>0}"> 
+                <div style="padding:0px" class="{!v.clLang =='ar' ? 'serchboxtab_AR' : 'serchboxtab'}">
+                    <lightning:input type="search"
+                                     name="searchKey" value="{!v.searchText}" 
+                                     aura:id="searchKey"  onkeyup="{!c.searchRequest}" 
+                                     placeholder="{!v.clSearchCase}" />
+                </div>
+            </aura:if>
+            <div class="documentmain animated slideInDown">
+                <div class="tableshow">
+                    <div class="slds-grid">
+                        <div class="slds-col">
+                            <h3 class="Headingcontent"> {!v.selectedStatus} </h3>
+                            <!--  <aura:if isTrue="{!v.clickedDashboard =='All'}">
+                            <h3 class="Headingcontent"> All </h3>
+                        </aura:if>
+                        <aura:if isTrue="{!v.clickedDashboard =='New'}">
+                            <h3 class="Headingcontent"> New </h3>
+                        </aura:if>
+                        <aura:if isTrue="{!v.clickedDashboard =='Pending Approval'}">
+                            <h3 class="Headingcontent"> Pending Approval </h3>
+                        </aura:if>
+                        <aura:if isTrue="{!v.clickedDashboard =='Rejected'}">
+                            <h3 class="Headingcontent"> Rejected </h3>
+                        </aura:if>
+                        <aura:if isTrue="{!v.clickedDashboard =='Approved'}">
+                            <h3 class="Headingcontent"> Approved </h3>
+                        </aura:if>
+                        <aura:if isTrue="{!v.clickedDashboard =='Closed'}">
+                            <h3 class="Headingcontent"> Closed </h3>
+                        </aura:if>
+                        -->
+                            <div class="tableClass">
+                                <table class="slds-table slds-table_bordered " width="100%">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Sr. No.">{!v.clSrNo}</div>
+                                            </th>
+                                            <th class="" style="padding:0px 25px 0px 10px" scope="col">
+                                                <div class="slds-truncate" title="Case Number">{!v.clCaseCustomerCare}</div>
+                                                <lightning:buttonIcon iconName="utility:sort"
+                                                                      onclick="{!c.sortData}"
+                                                                      alternativeText=""
+                                                                      value="CaseNumber"
+                                                                      class="btnsorticon"/>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status">{!v.clCaseCustomerCareType}</div>
+                                            </th> 
+                                             <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status">{!v.clSubject}</div>
+                                            </th>
+                                             <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status">{!v.clDescriptionESECase}</div>
+                                            </th>
+                                           <!-- <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status">{!v.clNextActivity}</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Status">{!v.clRecentActivity}</div>
+                                            </th>
+                                             <th class="" scope="col">
+                                            <div class="slds-truncate" title="Sales Agreement">Sales Agreement</div>
+                                        </th>  
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Assigned Resources">{!v.clAssignedResources}</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Assigned Vehicles">{!v.clAssignedVehicles}</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Students">{!v.clStudent}</div>
+                                            </th>
+                                            
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Students">{!v.clAction}</div>
+                                            </th>-->
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.currentData}" var="case" indexVar="index">
+                                            <tr class="slds-hint-parent">
+                                                <td style="word-wrap: break-word;">
+                                                    {!index + 1}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!case.Id}" href="" onclick="{!c.handleCaseClick}">
+                                                        {!case.CaseNumber}
+                                                    </a>
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!case.RecordType.Name}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!case.Subject}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!case.Description}
+                                                </td>
+                                               <!-- <td style="word-wrap: break-word;">
+                                                    {!case.Status_Category__c}
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    {!case.Sub_Status__c}
+                                                </td>
+                                                <   <td style="word-wrap: break-word;">
+                                                    <a id="{!case.Sales_Agreement__c}" href=""
+                                                       onclick="{!c.handleSalesAgreementClick}">
+                                                        {!case.Sales_Agreement__r.Name}
+                                                    </a>
+                                                </td> 
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!case.Assigned_Resource__c}" href=""
+                                                       onclick="{!c.handleAssignedResourcesClick}">
+                                                        {!case.Assigned_Resource__r.Name}
+                                                    </a>
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!case.Assigned_Vehicle__c}" href=""
+                                                       onclick="{!c.handleAssignedVehiclesClick}">
+                                                        {!case.Assigned_Vehicle__r.Name}
+                                                    </a>
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <a id="{!case.ETST_Student__c}" href=""
+                                                       onclick="{!c.handleStudentClick}">
+                                                        {!case.ETST_Student__r.Name}
+                                                    </a>
+                                                </td>-->
+                                                <td class="buttongrp" width="200px">
+                                                    <!-- {!v.isSpecialEducationDepartment}
+                                                {!v.isSchoolServicesDepartment}
+                                                {!v.isSchoolActivitiesDepartment}
+                                                {!v.isPersonnelManagementDepartment} -->
+                                                    <!-- <aura:if isTrue="{!or(or(and(case.Status_Category__c=='Pending with Special Education',
+                                                                 case.RecordType.DeveloperName=='Handicap_Services_Transport_or_Nanny_Request',
+                                                                 (v.isSpecialEducationDepartment))),
+                                                                 and(case.Status_Category__c=='Pending with Department Of School Services',
+                                                                 case.RecordType.DeveloperName=='Handicap_Services_Transport_or_Nanny_Request',
+                                                                 (v.isSchoolServicesDepartment)))}"> -->
+                                                    
+                                                    <!--showing approve reject complete button from et_srcustomercasesprivateschoolcomponent for both govt and private flows so here we are commenting buttons-->
+                                                <!--
+                                                    <aura:if isTrue="{!or(and(v.isSpecialEducationDepartment, 
+                                                                     case.Status_Category__c=='Pending with Special Education',
+                                                                     case.Sub_Status__c==''),
+                                                                     or(and(v.isSchoolServicesDepartment, 
+                                                                     case.Status_Category__c=='Pending with Department Of School Services'),
+                                                                     or(and(v.isSchoolActivitiesDepartment, 
+                                                                     case.Status_Category__c=='Pending with Department Of School Activities'),
+                                                                     or(and(v.isPersonnelManagementDepartment, 
+                                                                     case.Status_Category__c=='Pending with Personnel Management'),
+                                                                     and(v.isMainSchoolContact, 
+                                                                     case.Status_Category__c=='Pending with Main School')))))}" >
+                                                        <lightning:button variant="neutral" 
+                                                                          label="{!v.clApprove}"
+                                                                          value="{!case.Id}"
+                                                                          title="{!v.clApprove}"
+                                                                          aura:id="Approve"
+                                                                          onclick="{!c.openConfirmModal}" />
+                                                    </aura:if> -->
+                                                    <!-- <aura:if isTrue="{!case.Status_Category__c=='Pending with Personnel Management'}">
+                                                    <lightning:button variant="neutral" 
+                                                                      label="{!v.clApprove}"
+                                                                      value="{!case.Id}"
+                                                                      title="{!v.clApprove}"
+                                                                      aura:id="Approve"
+                                                                      onclick="{!c.openConfirmModal}" />
+                                                </aura:if> -->
+                                                    <!-- <aura:if isTrue="{!or(and(case.Status_Category__c=='Pending with Special Education',
+                                                                 case.RecordType.DeveloperName=='Handicap_Services_Transport_or_Nanny_Request'),
+                                                                 or(case.Status_Category__c=='Pending with Department Of School Activities'),
+                                                                 or(case.Status_Category__c=='Pending with Department Of School Services'),
+                                                                 case.Status_Category__c=='Pending with Personnel Management')}"> -->
+                                                 <!--showing approve reject complete button from et_srcustomercasesprivateschoolcomponent for both govt and private flows so here we are commenting buttons-->
+                                                <!--    <aura:if isTrue="{!or(and(v.isSpecialEducationDepartment, 
+                                                                     case.Status_Category__c=='Pending with Special Education',
+                                                                     case.Sub_Status__c==''),
+                                                                     or(and(v.isSchoolServicesDepartment, 
+                                                                     case.Status_Category__c=='Pending with Department Of School Services'),
+                                                                     or(and(v.isSchoolActivitiesDepartment, 
+                                                                     case.Status_Category__c=='Pending with Department Of School Activities'),
+                                                                     or(and(v.isPersonnelManagementDepartment, 
+                                                                     case.Status_Category__c=='Pending with Personnel Management'),
+                                                                     and(v.isMainSchoolContact, 
+                                                                     case.Status_Category__c=='Pending with Main School')))))}">
+                                                        <lightning:button variant="neutral" 
+                                                                          label="{!v.clReject}"
+                                                                          value="{!case.Id}"
+                                                                          title="{!v.clReject}"
+                                                                          aura:id="Reject"
+                                                                          onclick="{!c.openConfirmModal}" />
+                                                        
+                                                    </aura:if>-->
+                                                    <!-- Complete button to Handicap Service MOE School Services -->
+                                               <!--showing approve reject complete button from et_srcustomercasesprivateschoolcomponent for both govt and private flows so here we are commenting buttons-->
+                                                 <!--   <aura:if isTrue="{!and(v.isSchoolServicesDepartment, 
+                                                                     case.Status_Category__c=='Pending with Department Of School Services',
+                                                                     case.RecordType.developername == 'Handicap_Services_Transport_or_Nanny_Request')}" >
+                                                        <lightning:button variant="neutral" 
+                                                                          label="{!v.clComplete}"
+                                                                          value="{!case.Id}"
+                                                                          title="{!v.clComplete}"
+                                                                          aura:id="complete"
+                                                                          onclick="{!c.openConfirmModal}" />
+                                                    </aura:if>-->
+                                                    <!-- Reply is not required as per latest discussion with Suhib 23/11/2020
+             <aura:if isTrue="{!and(case.Status_Category__c=='Pending with Department Of School Services',
+                                                                     case.RecordType.DeveloperName=='Teachers_Transportation_Request')}">                                                    <lightning:button variant="neutral" 
+                                                                      label="{!v.clReply}"
+                                                                      value="{!case.Id}"
+                                                                      title="{!v.clReply}"
+                                                                      aura:id="Reply"
+                                                                      onclick="{!c.openConfirmModal}" />
+                                                </aura:if> -->
+                                                    
+                                                </td> 
+                                            </tr>
+                                            
+                                            
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.showRecordDetailModal}">
+            <c:BusinessCommunityRecordDetailPopup showIFrame="{!v.showRecordDetailModal}"
+                                                  recordDetailId="{!v.recordDetailId}"
+                                                  recordTypeName="{!v.recordTypeName}"/>
+        </aura:if>
+    </div>
+    <!-- Vinod Changes - Start --> 
+    <div class="slds-m-around_xx-large">
+        <aura:if  isTrue="{!v.confirmFlag}" > 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open"> 
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeConfirmModal }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.clCaseApprovalProcess}</h2>
+                    </header>               
+                    <div class="slds-modal__content slds-p-around_medium bgImageDiv"  id="modal-content-id-1">
+                        
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                            {!v.clDOyouwantto}&nbsp;{!v.status}&nbsp;{!v.clthecase}</h2>
+                        <lightning:textarea aura:id="comment" name="comments" label="{!v.clComments}" required="{!v.caseCommentsRequired}" messageWhenValueMissing="Complete this field." value="{!v.comments}" class="commetuser" style="text-align:center;"/>
+                        
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="brand" 
+                                          label="{!v.clCancel}"
+                                          title="{!v.clCancel}"
+                                          aura:id="status"
+                                          onclick="{!c.closeConfirmModal}" class="btnsave"/>
+                        <lightning:button variant="brand" 
+                                          label="{!v.clSave}"
+                                          title="{!v.clSave}"
+                                          aura:id="status"
+                                          disabled="{!v.isDisabled}"
+                                          onclick="{!c.updateCase}" class="btnsave"/>
+                    </footer>
+                </div>
+            </section> 
+        </aura:if> 
+    </div>
+    <div class="footer_section">
+        <div class="social_links">
+            <a href="https://www.instagram.com/emiratestrans/" target="_blank"><img src="{!$Resource.ET_instagramimg}"  class=""/></a>
+            <a href="https://twitter.com/emiratestrans" target="_blank"><img src="{!$Resource.ET_twitterimg}" class=""/></a>
+            <a href="https://www.facebook.com/EmiratesTrans/" target="_blank"><img src="{!$Resource.ET_facebookimg}" class=""/></a>
+            <a href="https://www.linkedin.com/in/emirates-transport-9b0673103" target="_blank"><img src="{!$Resource.ET_linkedinimg}"  class=""/></a>
+        </div>
+        <div class="copytext">© 2021 Emirates Transport and Powered by Smaartt</div>
+    </div>
+    <!-- Vinod Changes - End -->
+    <!--
+    <aura:if isTrue="{!v.createRequest}">
+        <div class="documentmain animated slideInDown">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <h3 class="Headingcontent">Create Service Request</h3>
+                    <div class="slds-tile__detail">
+                        <div class="slds-grid slds-gutters">
+
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <lightning:select aura:id="select" name="select" label="Service Request Type">
+                                        <option value="">Select Service Type</option>
+                                        <option value="Online Services">Online Services</option>
+                                        <option value="Financial Services">Financial Services</option>
+                                        <option value="Amendment Request">Amendment Request</option>
+                                        <option value="Service Compliance">Service Compliance</option>
+                                        <option value="Service Quality">Service Quality</option>
+                                        <option value="Staff Behaviour">Staff Behaviour</option>
+                                        <option value="Theft And Non compliance">Theft And Non compliance</option>
+                                    </lightning:select>
+                                </div>
+                            </div>
+                            <div class="slds-col ">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input type="text" name="input2" value="{!v.custDoc.Issue_Date__c}"
+                                            onchange="{!c.validateIssueDate}" label="Email" autocomplete="off" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col ">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input type="text" name="input2" value="{!v.custDoc.Issue_Date__c}"
+                                            onchange="{!c.validateIssueDate}" label="Mobile Number"
+                                            autocomplete="off" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col ">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input type="text" name="input2" value="{!v.custDoc.Issue_Date__c}"
+                                            onchange="{!c.validateIssueDate}" label="Description of Request"
+                                            autocomplete="off" />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col ">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input type="DateTime" name="input2"
+                                            value="{!v.custDoc.Issue_Date__c}" onchange="{!c.validateIssueDate}"
+                                            label="Availabity Date and Time" autocomplete="off" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col ">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input type="text" name="input2" value="{!v.custDoc.Issue_Date__c}"
+                                            onchange="{!c.validateIssueDate}" label="Contact Person Name"
+                                            autocomplete="off" />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style=" text-align: right;">
+                <lightning:button class="actionButton" label="CANCEL" iconName="utility:reset_password"
+                    title="CANCEL" />
+                <lightning:button class="actionButton" label="CREATE" iconName="utility:search" title="CREATE" />
+            </div>
+        </div>
+    </aura:if>
+
+    <aura:if isTrue="{!v.reqHistory}">
+        <div class="documentmain animated slideInDown">
+            <div class="slds-grid slds-gutters ">
+                <div class="slds-col maincantentdiv" style="padding-top:0px">
+                    <h3 class="Headingcontent">Service Request History</h3>
+                    <div class="slds-tile__detail">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>SR Number</th>
+                                    <th>Service Type</th>
+                                    <th>Requested By</th>
+                                    <th>Date And Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SR564</td>
+                                    <td>Access Card</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:17</td>
+                                    <td>Open</td>
+                                </tr>
+                                <tr>
+                                    <td>SR565</td>
+                                    <td>Pet Registration</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:18</td>
+                                    <td>Open</td>
+                                </tr>
+                                <tr>
+                                    <td>SR566</td>
+                                    <td>Access Card</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:19</td>
+                                    <td>Open</td>
+                                </tr>
+                                <tr>
+                                    <td>SR567</td>
+                                    <td>Pet Registration</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:20</td>
+                                    <td>Open</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.escalation}">
+        <div class="documentmain animated slideInDown">
+            <div class="slds-grid slds-gutters ">
+                <div class="slds-col maincantentdiv" style="padding-top:0px">
+                    <h3 class="Headingcontent">Escalation</h3>
+                    <div class="slds-tile__detail">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>SR Number</th>
+                                    <th>Service Type</th>
+                                    <th>Requested By</th>
+                                    <th>Date And Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SR564</td>
+                                    <td>Access Card</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:17</td>
+                                    <td>Open</td>
+                                    <td>
+                                        <lightning:button class="actionButton" label="Escalate" title="Escalate" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SR565</td>
+                                    <td>Pet Registration</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:18</td>
+                                    <td>Open</td>
+                                    <td>
+                                        <lightning:button class="actionButton" label="Escalate" title="Escalate" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SR566</td>
+                                    <td>Access Card</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:19</td>
+                                    <td>Open</td>
+                                    <td>
+                                        <lightning:button class="actionButton" label="Escalate" title="Escalate" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SR567</td>
+                                    <td>Pet Registration</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:20</td>
+                                    <td>Open</td>
+                                    <td>
+                                        <lightning:button class="actionButton" label="Escalate" title="Escalate" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.feedback}">
+        <div class="documentmain animated slideInDown">
+            <div class="slds-grid slds-gutters ">
+                <div class="slds-col maincantentdiv" style="padding-top:0px">
+                    <h3 class="Headingcontent">Service Request Feedback</h3>
+                    <div class="slds-tile__detail">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>SR Number</th>
+                                    <th>Service Type</th>
+                                    <th>Requested By</th>
+                                    <th>Date And Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SR564</td>
+                                    <td>Access Card</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:17</td>
+                                    <td>Open</td>
+                                    <td>
+                                        <lightning:button class="actionButton" label="Feedback" title="Feedback" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SR565</td>
+                                    <td>Pet Registration</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:18</td>
+                                    <td>Open</td>
+                                    <td>
+                                        <lightning:button class="actionButton" label="Feedback" title="Feedback" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SR566</td>
+                                    <td>Access Card</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:19</td>
+                                    <td>Open</td>
+                                    <td>
+                                        <lightning:button class="actionButton" label="Feedback" title="Feedback" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SR567</td>
+                                    <td>Pet Registration</td>
+                                    <td>Shubham</td>
+                                    <td>January 20,2020 12:20</td>
+                                    <td>Open</td>
+                                    <td>
+                                        <lightning:button class="actionButton" label="Feedback" title="Escalate" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+-->
+     <aura:if isTrue="{!v.showEseCase}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open"> 
+            <div class="slds-modal__container outer-div">
+                <aura:if isTrue="{!v.showSpinner}">  
+                    <div class="slds-col spineerCls" style="position:center">
+                        <lightning:spinner class="spinner2" alternativeText="Loading"  variant="brand" />
+                    </div>
+                </aura:if>
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeEseCase }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create Case</h2>
+                </header>               
+                <div class="slds-modal__content slds-p-around_medium"  id="modal-content-id-1">
+                    <lightning:recordEditForm objectApiName="Case" aura:id="caseForm" onload=""
+                                              onsubmit="{!c.handleOnSubmit}" onsuccess="{!c.handleOnSuccess}" onerror="{!c.handleOnError}" recordTypeId="{!$Label.c.ESE_Issues_RecTypeId}">
+                        <div class="slds-grid slds-grid_horizontal">
+                            <div class="slds-col slds-size_12-of-12 slds-hide">
+                                <lightning:inputField fieldName="ETST_Complaint_Type__c" value="ESE Issue" disabled="true"/>
+                            </div>
+                        </div>
+                          <div class="slds-grid slds-grid_horizontal">
+                            <div class="slds-col slds-size_12-of-12">
+                                <lightning:inputField fieldName="Ticket_Type__c" class="ESEInput" required="true" />
+                            </div>
+                        </div>
+                        
+                        <div class="slds-grid slds-grid_horizontal">
+                            <div class="slds-col slds-size_12-of-12">
+                                <lightning:inputField fieldName="Subject" class="ESEInput" required="true" />
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-grid_horizontal">
+                            <div class="slds-col slds-size_12-of-12">
+                                <lightning:inputField fieldName="Description" class="ESEInput" required="true"/>
+                            </div>
+                        </div>
+                        <div class="slds-form-element__control" style="float: right;">  
+                            <lightning:button class="slds-m-top_small greenBtn" disabled="{!v.buttonDisable}" variant="brand" type="submit" name="SAVE" label="SAVE"/>
+                        </div>
+                    </lightning:recordEditForm>
+                    
+                    
+                </div>
+               
+            </div>
+        </section> 
+        <div class="slds-backdrop slds-backdrop_open"></div> 
+    </aura:if>
+
+    
+</aura:component>

@@ -1,0 +1,36 @@
+<aura:component controller="ETIN_BulkAddResUploadCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+     <aura:attribute name="ListOfInsurance" type="ETIN_Insurance__c[]"/> 
+    
+     <!-- Import attributes start  -->
+    <aura:attribute name="ShowModule" type="boolean" default="false"/>
+    <aura:attribute name="showcard" type="boolean" default="false"/>
+    <!-- Import attributes end  -->
+   
+    <div class="outer-div">
+       <aura:if isTrue="{!v.ShowModule}">
+          <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+        </aura:if>
+               
+      
+     <div>
+        <input type="file" accept=".csv" class="file" aura:id="file" onchange="{!c.showfiledata}"/>
+        <lightning:button label="Update Bulk Addition" onclick="{!c.updateRecords}" class="slds-button slds-button--brand btn_table"/>
+          
+    </div><br/>
+    <div>
+        
+        <aura:if isTrue = "{!v.showcard}">
+            <lightning:card>
+                <ui:scrollerWrapper class="scrllCustom" >
+                    <div id="divCSV" class="slds-scrollable" style=""/>
+                   
+                </ui:scrollerWrapper>
+                     
+            </lightning:card>
+        </aura:if>
+    </div>
+        </div>
+</aura:component>

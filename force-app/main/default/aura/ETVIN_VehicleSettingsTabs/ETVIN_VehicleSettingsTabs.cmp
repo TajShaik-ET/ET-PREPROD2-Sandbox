@@ -1,0 +1,16 @@
+<aura:component controller="ETVIN_VehicleInsuranceSettingsCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+
+    <div id="mainDiv" >
+         <lightning:tabset selectedTabId="" variant="scoped">
+             
+              <lightning:tab label="Claim Documents Master" id="one" class="SearchDetails topHeading">
+             
+                  <c:ETVIN_ShowVehicleInsurancePolicies aura:id="vehiclepolio" />   
+             </lightning:tab>
+               <lightning:tab label="Email Config" id="two" class="SearchDetails topHeading">
+            <c:ETVIN_VehicleSettings_ShowEmailConfig aura:id="emailConfig" />  
+             </lightning:tab>
+             
+        </lightning:tabset>
+    </div>
+</aura:component>

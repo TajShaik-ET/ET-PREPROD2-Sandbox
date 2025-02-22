@@ -1,0 +1,667 @@
+.THIS .c-container {
+    /*margin: 1% 0% 1% 1%;
+    width: 49%;
+    height: 400px;
+    box-shadow: 0 0 5px #eaeaea;*/
+    
+    box-sizing: border-box;
+    margin: 15px 0 0 0;
+    width: 31.33%;
+    background: #fff;
+    color: #fff;
+    border: 1px solid #ddd;
+    margin: 1%;
+    border-radius: 0px 0px 10px 10px;
+    transition: all .4s;
+}
+.THIS .c-container:hover{
+    box-shadow: 0 8px 6px -6px #333;
+    border-radius: 0px;
+}
+.THIS .c-container:hover img{
+    transform: scale(1.2);
+}
+.THIS .billingBreakDown{
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    display: block; 
+    box-shadow: 0px 0px 7px 0px #e6e3e3;
+}
+
+.THIS .slds-modal__container {
+    width: 60% !important;
+    max-width: 60% !important;
+}
+.THIS .slds-modal__content {
+    overflow-y: auto;
+}
+
+.THIS .slds-input{
+    width: 44px;
+    padding: 0px 0px;
+    text-align: center;
+}
+
+.THIS .slds-modal__close {
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.THIS .CarPricemain{
+    border-top: 1px solid #ddd;
+}
+.THIS .CarPrice{
+    padding: 5px 0px;
+    color: #7f7f7f;
+    width: 33.33%;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Cronos';
+    letter-spacing: .5px;
+}
+.THIS .CarPrice:nth-child(2){
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+
+@font-face {
+    font-family: 'Cronos';
+    src: url(/resource/ETST_Cronos); 
+}
+.THIS.searchmaindiv{
+    width: 100%;
+    height: 90.5vh;
+    padding: 4% 6% 0%;
+    position: relative;
+    display: block;
+    margin: auto;
+    background-image: url(/resource/ETCAR_bgimg);
+    background-size: cover;
+    background-position: center;
+    margin-top: -16px;
+}
+/*.THIS.searchmaindiv:after{
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: #000;
+opacity: 0;
+}*/
+.THIS.searchmaindiv .searchleftdiv{
+    width: 25%;
+    display: inline-block;
+    float: left;
+    background: #f4f4f5;
+    padding: 15px;
+    font-family: 'Cronos';
+    border: 0px solid #f4f4f5;
+    z-index: 1;
+    position: relative;
+}
+.THIS.searchmaindiv .searchleftdiv .internaldiv{
+    background: #fff;
+    padding: 15px;
+}
+.THIS.searchmaindiv .searchleftdiv h3{
+    color: #ff4b5a!important;
+    font-family: 'Cronos';
+    font-size: 18px;
+    padding: 0px;
+    background: transparent;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e6e3e3;
+    margin-bottom: 5px;
+    
+}
+.THIS.searchmaindiv .searchleftdiv .infolabel{
+    font-weight: 700!important;
+    font-size: 14px;
+    letter-spacing: .5px;
+    padding-bottom: 0px;
+}
+.THIS.searchmaindiv .searchleftdiv .infovalue{
+    font-size: 14px;
+    letter-spacing: .5px;
+    padding-bottom: 5px;
+    font-weight: 400!important;
+    line-height: 20px;
+}
+.THIS.searchmaindiv .searchleftdiv .infovalue .slds-form-element__static{
+    color: #9a9a9a;
+}
+.THIS.searchmaindiv .searchrightdiv{
+    width: 73%;
+    display: inline-block;
+    margin-left: 2%;
+    float: left;
+    background: #fff;
+    z-index: 1;
+    position: relative;
+}
+.THIS .filtermaindiv{
+    background: #f4f4f5;
+    padding: 15px;
+    display: block;
+    max-width: 100%;  
+}
+
+.THIS .btneditcar{
+    font-size: 14px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 5px 20px;
+    min-width: 100px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    background-color: #ff4b5a;
+    border-color: #ff4b5a;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-family: 'Cronos';
+    outline: none;
+    box-shadow: none;
+    height: 30px;
+}
+.THIS .btnedit{
+    font-size: 14px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 5px 20px;
+    min-width: 100px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    background-color: #ff4b5a;
+    border-color: #ff4b5a;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-family: 'Cronos';
+    outline: none;
+    box-shadow: none;
+    height: 30px;
+    width:100%;
+    margin-top:10px;
+}
+.THIS .btnedit:hover , .THIS .btneditcar:hover{
+    background-color: #14181c;
+    border-color: #14181c;
+    border: 0px solid #00c19e;
+}
+
+.THIS .paginator{
+    width: 100%;
+    position: relative;
+    clear:both;
+    margin-top:10px;
+}
+.THIS .searchitems{
+    /*float: left;
+    width: 100%;
+    position: relative;
+    clear: both;
+    margin-top:10px;*/
+    float: left;
+    width: 100%;
+    position: relative;
+    clear: both;
+    /* display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;*/
+}
+.THIS .imgmaindiv{
+    height: 124px;
+    width: 100%;
+    background-color: #fff;
+    overflow: hidden;
+}
+.THIS .imgmaindiv img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    max-width: 100%;
+    display: block;
+    transition: all .4s ease-in-out;
+}
+
+.THIS .carnamediv{
+    color: #333;
+    font-size: 18px;
+    letter-spacing: .5px;
+    font-family: 'Cronos';
+    text-align: center;
+}
+.THIS .cartypediv{
+    color: #888888;
+    letter-spacing: .5px;
+    font-family: 'Cronos';
+    font-size: 14px;
+    text-align: center;
+}
+.THIS .priceperday{
+    padding:0px;
+    /* background-color: #2291af; */
+    color: #ff4b5a;
+    font-family: 'Cronos';
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+.THIS .paddingtopbottomnone{
+    padding: .75rem .75rem 0rem ;
+}
+.THIS .contentdetails{
+    background:rgba(244, 244, 245, 0.28);    width: 100%;
+    border-radius: 0px 0px 5px 5px;
+}
+.THIS .slds-modal__header{
+    position: relative;
+    border-top-right-radius:.25rem;
+    border-top-left-radius:.25rem;
+    border-bottom: 2px solid #f2f2f2;
+    padding: 0rem;
+    text-align: center;
+    background: #fafafa; 
+}
+
+.THIS .slds-modal .slds-modal__title {
+    color: #333;
+    font-weight: 300!important;
+    text-align: center;
+    font-size: 16px;
+    font-size: 22px;
+    font-family: 'Cronos';
+    padding: 10px;
+}
+.THIS .slds-modal__content {
+    overflow-y: auto;
+    background: #fafafa;
+}
+.THIS .slds-modal__footer {
+    border-top: 0px solid rgb(242, 242, 242);
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    padding: .75rem 1rem;
+    background-color: #fafafa;
+    text-align: right;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+.THIS .cancel_btn{
+    font-size: 14px;
+    border: 0px solid #00c19e;    
+    background-color: #b0b1af;
+    border-radius: 5px;
+    color: #fff;
+    padding: 2px 10px;
+    min-width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    font-weight: normal!important;
+    text-transform: capitalize!important;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .cancel_btn:hover{
+    color: #fff;
+    background-color: #333333;
+}
+.THIS .slds-form-element__label:empty {
+    margin: 0;
+    display: none;
+}
+.THIS table tr th{
+    background: #b0b1af;color: #fff;padding: 8px;
+    font-family: 'Cronos';
+    font-size: 14px;
+    letter-spacing: .5px;
+}
+.THIS table tr td{
+    padding: 8px;
+    border-bottom:1px solid #f2f2f2;
+    font-family: 'Cronos';
+    font-size: 14px;
+    letter-spacing: .5px;
+}
+.THIS table tr td img{
+    width:50px;
+}
+.THIS .finaldetailsdiv{
+    padding:11px 20px!important;
+}
+.THIS .finaldetailsdiv h2{
+    padding: 10px 0px;
+    font-size: 18px;
+    color: #2a2a2a;
+    margin-bottom: 0px;
+    font-family: 'Cronos'!important;
+    text-transform: capitalize!important;
+}
+.THIS .nopadding{
+    padding: 0px!important;
+    background:#fcfcfc;
+}
+.THIS .finaltotal{
+    width: 100%;
+    padding: 10px;
+    font-family: 'Cronos'!important;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+.THIS .finaldetailsdiv table tr td{
+    padding:5px 10px
+}
+.THIS .finaldetailsdiv .carimgfinal{
+    text-align:center;    border-bottom: 1px solid #f2f2f2;
+}
+.THIS .finaldetailsdiv .carimgfinal img{
+    width:60%;
+    text-align:center;
+}
+.THIS .finaldetailsdiv .slds-form-element .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox_faux{
+    margin-right: 0px;
+}
+.THIS .paymentcontainsection{
+    display:flex;
+    float: left;
+    width: 98%;
+    Height:80%;
+    background: #fff;
+    margin-left: 2%;
+    padding-top: 15px;
+}
+.THIS .productdetaildiv{
+    width: 35%;
+    display: inline-block;
+    position: relative;
+    flex:1;
+}
+
+.THIS .paymentHeader{
+    font-family: 'Cronos';
+    font-size: 40px;
+    padding-bottom: 10px;
+    color: white;
+    /* left: 39px; */
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1;
+    text-align: center;
+}
+.THIS .onlinepaydiv{
+    width: 65%;
+    display: inline-block;
+    position: relative;
+    flex:1;
+    background: #f9f9f9;
+    margin-left: 15px;
+}
+@-webkit-keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+
+@-webkit-keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInDown {
+    -webkit-animation-name: slideInDown;
+    animation-name: slideInDown;
+}
+
+.THIS .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .searchrightdiv {
+        width: 100%!important;
+        margin-left: 0%!important;
+    }
+    .THIS.searchmaindiv {
+        width: 100%;
+        height: 100vh;
+        padding: 5% 6% 0%;
+        position: relative;
+        display: block;
+        margin: auto;
+        background-image: url(/resource/ETCAR_bgimg);
+        background-size: cover;
+        background-position: center;
+        margin-top: -16px;
+    }
+    .THIS .searchleftdiv {
+        width: 100%!important;
+    }
+    .THIS.searchmaindiv .searchleftdiv .internaldiv {
+        background: #fff;
+        padding: 15px;
+        position: relative;
+        display: flow-root;
+    }
+    .THIS .paymentcontainsection {
+        margin-left: 0%;width: 100%;
+    }
+    .THIS .searchleftdiv .infovalue {
+        display: inline-block;
+    }
+    .THIS .searchleftdiv .slds-col{
+        display: inline-block;
+        width: 50%;
+        float: left;
+    }
+    .THIS .btnedit{
+        width:auto!important;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS.searchmaindiv {
+        height: 94vh;
+        padding: 15% 1% 0%;
+        margin-top: -16px;
+    }
+    .THIS .searchrightdiv {
+        width: 100%!important;
+        margin-left: 0%!important;
+    }
+    .THIS .searchleftdiv {
+        width: 100%!important;
+    }
+    .THIS.searchmaindiv .searchleftdiv .internaldiv {
+        background: #fff;
+        padding: 15px;
+        position: relative;
+        display: flow-root;
+    }
+    .THIS .searchleftdiv .infovalue {
+        display: inline-block;
+    }
+    .THIS .searchleftdiv .slds-col{
+        display: inline-block;
+        width: 50%;
+        float: left;
+    }
+    .THIS .btnedit{
+        width:auto!important;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .slds-modal__container {
+        width: 90%!important;
+        max-width: 90%!important;
+        margin: auto;
+    }
+    .THIS.searchmaindiv {
+        padding: 1% 1% 0%;
+        margin-top: -16px;
+        position: inherit;
+        height: 100%;
+        background-image: none;
+    }
+    .THIS .c-container {
+        box-sizing: border-box;
+        width: 48%;
+        margin: 1% 1% 2%;
+    }
+    .THIS .searchleftdiv .slds-col{
+        display: inline-block;
+        width: 50%;
+        float: left;
+    }
+    .THIS.searchmaindiv .searchleftdiv .internaldiv {
+        background: #fff;
+        padding: 15px;
+        position: relative;
+        display: flow-root;
+    }
+    .THIS .onlinepaydiv{
+        margin-left: 0;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .THIS .paymentcontainsection {
+        margin-left: 0%;
+        width: 100%;
+        display: inline-block!important;
+    }
+    .THIS .onlinepaydiv {
+        width: 100%;
+        display: block;
+        flex: none;
+        margin-left: 0px;
+    }
+    .THIS .productdetaildiv {
+        width: 100%;
+        flex: none;
+        display: block;
+        float: left;
+    }
+    .THIS .finaldetailsdiv {
+        padding: 11px 0px!important;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .slds-modal__container {
+        width: 90%!important;
+        max-width: 90%!important;
+        margin: auto;
+    }
+    .THIS.searchmaindiv {
+        padding: 1% 1% 0%;
+        margin-top: -16px;
+        position: inherit;
+        height: 100%;
+        background-image: none;
+        
+    }
+    .THIS .c-container {
+        box-sizing: border-box;
+        width: 96%;
+        margin: 1% 2% 3%;
+    }
+    .THIS .searchleftdiv .slds-col{
+        display: inline-block;
+        width: 100%;
+        float: left;
+    }
+    .THIS.searchmaindiv .searchleftdiv .internaldiv {
+        background: #fff;
+        padding: 15px;
+        position: relative;
+        display: flow-root;
+    }
+    .THIS.paymentcontainsection {
+        display: block;
+    }
+    .THIS .onlinepaydiv {
+        width: 100%;
+        display: block;
+        flex: none;
+    }
+    .THIS .productdetaildiv {
+        width: 100%;
+        flex: none;
+        display: block;
+        float: left;
+    }
+    .THIS .finaldetailsdiv {
+        padding: 11px 0px!important;
+    }
+}

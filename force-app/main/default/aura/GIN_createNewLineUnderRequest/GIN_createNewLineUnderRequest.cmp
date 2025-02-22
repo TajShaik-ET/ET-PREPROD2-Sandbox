@@ -1,0 +1,143 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:appHostable" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+    <aura:attribute name="showInterestInsured" type="Boolean" default="False"/>
+    <aura:attribute name="showLocation" type="Boolean" default="False"/>
+    <aura:attribute name="showSumAssured" type="Boolean" default="False"/>
+    <aura:attribute name="showItemDesc" type="Boolean" default="False"/>
+    <aura:attribute name="showAddress" type="Boolean" default="False"/>
+    <aura:attribute name="ShowEEL" type="Boolean" default="False"/>
+    <aura:attribute name="ShowMoneyPolicy" type="Boolean" default="False"/>
+    <aura:attribute name="ShowWarnMsg" type="Boolean" default="False"/>
+    <aura:attribute name="ShowWC" type="Boolean" default="False"/>
+    
+    <aura:attribute name="record" type="Object"/>
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="Insurance_Policy__c,Insurance_Policy__r.Insurance_Type__c,Request_Type__c"
+                      targetFields="{!v.record}"
+                      recordUpdated="{!c.onForceLoad}"
+                      />
+    
+    
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .btnsend {
+        background: #fe864d;
+        border: 1px solid #fe864d;
+        outline: none;
+        box-shadow: none;
+        margin: 1rem;
+        }
+        .slds-border_bottom {
+        border-bottom: 1px solid #f2f2f2;
+        }
+        .slds-modal__close {
+        top: .5rem;
+        right: .5rem;
+        border: 1px solid #d4d4d4;
+        }
+        .slds-modal__close svg.slds-button__icon.slds-button_icon-inverse {
+        fill: #000;
+        }
+    </aura:html>
+    
+    
+    
+    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-border_bottom slds-hyphenate slds-align_absolute-center" style="border-bottom: 1px solid #f2f2f2;font-size: 16px;font-weight: 500!important;padding: 1rem;">
+        New Insurance Line Item
+    </h2>
+    
+    <lightning:recordEditForm
+                              onload=""
+                              recordId=""
+                              onsubmit="{!c.handleSubmit}"
+                              onsuccess="{!c.handleSuccess}"
+                              objectApiName="Insurance_Line_Item__c"
+                              onerror="{!c.handleError}"
+                              class="recEditForm"
+                              aura:id="lineForm">
+        
+        <div class="slds-border_bottom" >
+            
+            <div class="slds-form-element__control slds-m-around_medium">
+                
+                
+                <lightning:inputField fieldName="General_Insurance_Policy__c" value="{!v.record.Insurance_Policy__c}" class="slds-hide"/>
+                <lightning:inputField fieldName="Insurance_Request__c" value="{!v.recordId}" class="slds-hide"/>
+                <lightning:inputField fieldName="Action__c" value="{!v.record.Request_Type__c}" class="slds-hide"/>
+                
+                <aura:if isTrue="{!v.showInterestInsured}">
+                    <lightning:inputField fieldName="Interest_Insured__c" />
+                </aura:if>
+                 <aura:if isTrue="{!v.ShowMoneyPolicy}">
+                  <lightning:inputField fieldName="Employee__c"/>
+                  <lightning:inputField fieldName="Insurance_Limit__c"/>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.showLocation}">     
+                    <lightning:inputField fieldName="Location__c" />
+                </aura:if>
+                <aura:if isTrue="{!v.showAddress}"> 
+                    <lightning:inputField fieldName="Address__c" />
+                </aura:if>
+                
+                
+                <aura:if isTrue="{!v.showItemDesc}"> 
+                    <lightning:inputField fieldName="Desc_of_Items__c" />
+                </aura:if>
+                
+                <aura:if isTrue="{!v.ShowEEL}"> 
+                    <lightning:inputField fieldName="Deductible_E_E_L__c" />
+                </aura:if>
+                
+                <aura:if isTrue="{!v.ShowMoneyPolicy}"> 
+                    <!--lightning:inputField fieldName="Money_Policy_For__c" /-->
+                </aura:if>
+                
+                <aura:if isTrue="{!v.showSumAssured}"> 
+                    <lightning:inputField fieldName="Sum_Assured__c" />
+                </aura:if>
+                <aura:if isTrue="{!v.ShowWC}">
+                    <lightning:inputField fieldName="Employee__c"/>
+                  
+                   
+                </aura:if>
+                
+                <aura:if isTrue="{!!v.ShowWarnMsg}">
+                    <lightning:inputField fieldName="Comments__c" />
+                </aura:if>
+                
+                <aura:if isTrue="{!v.ShowWarnMsg}">
+                    <p class="warnMsg">No need to create line item for this request.</p>
+                </aura:if>
+                
+            </div>
+        </div>
+        <div class="slds-float--right " >
+            <aura:if isTrue="{!!v.ShowWarnMsg}">
+                <lightning:button variant="brand" 
+                                  label="Save"
+                                  title="Save"
+                                  type="submit"
+                                  class="btnsend" name="Save"  disabled="" />  
+            </aura:if>
+            <!--lightning:button variant="brand" 
+                          label="Save &amp; New"
+                          title="Save"
+                          type="submit"
+                          name="New"
+                          onclick="{!c.customHandleSubmit}" class="btnsend" disabled="" /--> 
+        </div>
+    </lightning:recordEditForm>
+</aura:component>

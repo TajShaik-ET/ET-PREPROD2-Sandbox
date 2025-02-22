@@ -1,0 +1,51 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:isUrlAddressable" access="global" >
+	    
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}" description=""/>
+    <aura:attribute name="selectedTabId" type="String" />
+    <aura:attribute name="recordId" type="String" />
+     <aura:attribute name="detailpage" type="boolean"  default="false"/>
+     <aura:attribute name="searchKeyWord" type="string"/>
+    
+    <div class="pageBgImg"></div>
+    <div aura:id="vehicleInsurance" class="bgetimgdiv">
+       
+        <div class="adecdashbord" style="margin-top:10px">
+            <c:ETVIN_DashboardComp  selectedTabId="{!v.selectedTabId}" detailpage="{!v.detailpage}"  aura:id="dashboardCmp" /> 
+        </div>
+        
+        <div class="mainsearchdiv">
+          
+            <div style="padding:0px" class="serchboxtab">
+                <lightning:input type="search"
+                                 name="searchKey" value="{!v.searchKeyWord}" 
+                                 aura:id="searchKey"  oncommit="{!c.sendToComponents}" onchange="{!c.sendToComponents}" 
+                                 placeholder="Search" />
+                
+
+            </div>
+            <div  class="tableshow">
+           
+		 <lightning:tabset selectedTabId="{!v.selectedTabId}"  class="tabdashdetail" >
+                    
+                    <lightning:tab label="Vehicle Policy" id="Vehiclepolicy" class="vehiclepolicy" >
+                        <c:ETVIN_ShowVehicleInsurancePolicies aura:id="vehiclepolicytab" recordId="{!v.recordId}" detailPage="{!v.detailpage}" /> 
+                    </lightning:tab> 
+                    <lightning:tab label="Claim Policy" id="Claimpolicy" class="claimpolicy" >
+                        <c:ETVIN_ShowClaims aura:id="claimstab"  recordId="{!v.recordId}" detailPage="{!v.detailpage}"/> 
+                    </lightning:tab> 
+                    <lightning:tab label="Correction Request" id="Correction" class="Correction" >
+                        <c:ETVIN_ShowCorrectionDetails aura:id="CorrectionDetails" recordId="{!v.recordId}" detailPage="{!v.detailpage}"/> 
+                    </lightning:tab> 
+                    <lightning:tab label="Cancellation Request" id="Cancellation" class="Correction" >
+                        <c:ETVIN_ShowCancellationDetails aura:id="Cancellation" recordId="{!v.recordId}" detailPage="{!v.detailpage}"/> 
+                    </lightning:tab> 
+                  
+                     <lightning:tab label="Available for Mulkiya" id="Mulkiya" >
+                         <c:ETVIN_ShowMulkiyaRequests aura:id="Mulkiya" recordId="{!v.recordId}" detailPage="{!v.detailpage}"/> 
+                     </lightning:tab>		
+           
+                </lightning:tabset>
+            </div>
+        </div>
+    </div>
+</aura:component>

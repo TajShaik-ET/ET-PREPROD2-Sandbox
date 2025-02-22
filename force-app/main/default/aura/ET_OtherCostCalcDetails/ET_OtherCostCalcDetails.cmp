@@ -1,0 +1,247 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,lightning:isUrlAddressable" controller='ET_OtherCostCalcDetailsController'>  
+    
+    <aura:attribute name="otherCostCalcDetails" type="List"/>
+    <aura:attribute name="workforceType" type="String"/>
+
+    <aura:attribute name="spcialRequirementLabelsLst" type="List"/>
+
+    <aura:attribute name="quoteId" type="Id"/>
+    <aura:attribute name="otherCost1" type="List"/>
+    <aura:attribute name="otherCost2" type="List"/>
+    <aura:attribute name="otherCost3" type="List"/>
+    <aura:attribute name="otherCost4" type="List"/>
+    <aura:attribute name="otherCost5" type="List"/>
+    <aura:attribute name="otherCost6" type="List"/>
+    <aura:attribute name="otherCost7" type="List"/>
+    <aura:attribute name="otherCost8" type="List"/>
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:attribute name="page" type="integer"/>
+    <aura:attribute name="lineNo" type="integer" default="1"/>
+    <aura:attribute name="noOfWorkforce" type="Integer" default="0"/>
+    <aura:attribute name="workforceSalary" type="Decimal" />
+    <aura:attribute name="workforceCategory" type="String" />
+    <aura:attribute name="totalLines" type="integer"/>
+    
+    <!--img src="{!$Resource.ET_Header}"/-->
+    
+    <!--<div class="slds-page-header" role="banner">
+        <div class="slds-align_absolute-center">
+            <lightning:button disabled="{!v.lineNo == 1}" variant="brand" label="First" onclick="{! c.navigateFirst }" />                        
+            <lightning:button disabled="{!v.lineNo == 1}" variant="brand" label="Previous" onclick="{! c.navigatePrevious }" />            
+            <lightning:button disabled="{!or(v.lineNo == v.totalLines,v.totalLines==0)}" variant="brand" label="Next" onclick="{! c.navigateNext }" />
+            <lightning:button disabled="{!or(v.lineNo == v.totalLines,v.totalLines==0)}" variant="brand" label="Last" onclick="{! c.navigateLast}" />            
+        </div>
+        
+    </div>-->
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <div class="slds-box slds-box_xx-small slds-align--absolute-center bgColor">
+        <p >Other Cost Calculation Details</p>
+    </div>
+    <table class="slds-table slds-table_cell-buffer  slds-table_bordered slds-table_striped vehicleCaclTable"> 
+        <tr>
+            <td style="width:100px">
+                <label>Line Number :</label>     
+            </td>
+            <td style="width:200px">
+                <div>{!v.lineNo}</div>
+            </td>
+            <td style="width:100px">
+                <label>No of Other Costs</label>   
+            </td>
+            <td style="width:200px">
+                <div>{!v.noOfWorkforce}</div>
+            </td>
+            <td style="width:100px">
+                <label>Other Cost Category 
+                </label>
+            </td>
+            <td style="width:200px">
+                <div>{!v.workforceCategory}</div>
+            </td>
+            
+        </tr> 
+    </table> 
+    <br/>
+    
+    <table class="slds-table slds-table_cell-buffer  slds-table_bordered slds-table_striped vehicleCaclTable">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Pricing Type">Pricing Type</div>
+                </th>
+                <aura:if  isTrue="{!and(v.otherCost1!=null,v.otherCost1!='')}">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                    </th>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost2!=null,v.otherCost2!='')}">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                    </th>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost3!=null,v.otherCost3!='')}">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                    </th>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost4!=null,v.otherCost4!='')}">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                    </th>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost5!=null,v.otherCost5!='')}">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                    </th>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost6!=null,v.otherCost6!='')}">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                    </th>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost7!=null,v.otherCost7!='')}">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                    </th>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost8!=null,v.otherCost8!='')}">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Pricing Policy">Pricing Policy</div>
+                    </th>
+                </aura:if>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="slds-hint-parent">   
+                <td data-label="Years">
+                    <div class="slds-truncate" title="Years">Years</div>
+                </td>
+                <aura:if  isTrue="{!and(v.otherCost1!=null,v.otherCost1!='')}">
+                    <td data-label="1">
+                        <div class="slds-truncate" title="1">1</div>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost2!=null,v.otherCost2!='')}">
+                    <td data-label="2">
+                        <div class="slds-truncate" title="2">2</div>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost3!=null,v.otherCost3!='')}">
+                    <td data-label="3">
+                        <div class="slds-truncate" title="3">3</div>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost4!=null,v.otherCost4!='')}">
+                    <td data-label="4">
+                        <div class="slds-truncate" title="4">4</div>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost5!=null,v.otherCost5!='')}">
+                    <td data-label="5">
+                        <div class="slds-truncate" title="5">5</div>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost6!=null,v.otherCost6!='')}">
+                    <td data-label="6">
+                        <div class="slds-truncate" title="6">6</div>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost7!=null,v.otherCost7!='')}">
+                    <td data-label="7">
+                        <div class="slds-truncate" title="7">7</div>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost8!=null,v.otherCost8!='')}">
+                    <td data-label="8">
+                        <div class="slds-truncate" title="8">8</div>
+                    </td>
+                </aura:if>
+            </tr>
+            <tr class="slds-hint-parent"> 
+                <td data-label="1">
+                    <aura:iteration items="{!v.spcialRequirementLabelsLst}" var="otLabel" indexVar="indx">
+                        <tr>
+                            <td data-label="Label">
+                                <div class="slds-truncate" title="{!otLabel}">{!otLabel}</div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </td>
+                <aura:if  isTrue="{!and(v.otherCost1!=null,v.otherCost1!='')}">
+                    <td>  
+                        <aura:iteration items="{!v.otherCost1}" var="ot1SpecReq" indexVar="indx">
+                            <tr>   
+                                <td><div class="slds-truncate">{!ot1SpecReq.ET_Cost__c}</div></td>
+                            </tr> 
+                        </aura:iteration>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost2!=null,v.otherCost2!='')}">
+                    <td>  
+                        <aura:iteration items="{!v.otherCost2}" var="ot2SpecReq" indexVar="indx">
+                            <tr>   
+                                <td><div class="slds-truncate">{!ot2SpecReq.ET_Cost__c}</div></td>
+                            </tr> 
+                        </aura:iteration>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost3!=null,v.otherCost3!='')}">
+                    <td>  
+                        <aura:iteration items="{!v.otherCost3}" var="ot3SpecReq" indexVar="indx">
+                            <tr>   
+                                <td><div class="slds-truncate">{!ot3SpecReq.ET_Cost__c}</div></td>
+                            </tr> 
+                        </aura:iteration>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost4!=null,v.otherCost4!='')}">
+                    <td>  
+                        <aura:iteration items="{!v.otherCost4}" var="ot4SpecReq" indexVar="indx">
+                            <tr>   
+                                <td><div class="slds-truncate">{!ot4SpecReq.ET_Cost__c}</div></td>
+                            </tr> 
+                        </aura:iteration>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost5!=null,v.otherCost5!='')}">
+                    <td>  
+                        <aura:iteration items="{!v.otherCost5}" var="ot5SpecReq" indexVar="indx">
+                            <tr>   
+                                <td><div class="slds-truncate">{!ot5SpecReq.ET_Cost__c}</div></td>
+                            </tr> 
+                        </aura:iteration>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost6!=null,v.otherCost6!='')}">
+                    <td>  
+                        <aura:iteration items="{!v.otherCost6}" var="ot6SpecReq" indexVar="indx">
+                            <tr>   
+                                <td><div class="slds-truncate">{!ot6SpecReq.ET_Cost__c}</div></td>
+                            </tr> 
+                        </aura:iteration>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost7!=null,v.otherCost7!='')}">
+                    <td>  
+                        <aura:iteration items="{!v.otherCost7}" var="ot7SpecReq" indexVar="indx">
+                            <tr>   
+                                <td><div class="slds-truncate">{!ot7SpecReq.ET_Cost__c}</div></td>
+                            </tr> 
+                        </aura:iteration>
+                    </td>
+                </aura:if>
+                <aura:if  isTrue="{!and(v.otherCost8!=null,v.otherCost8!='')}">
+                    <td>  
+                        <aura:iteration items="{!v.otherCost8}" var="ot8SpecReq" indexVar="indx">
+                            <tr>   
+                                <td><div class="slds-truncate">{!ot8SpecReq.ET_Cost__c}</div></td>
+                            </tr> 
+                        </aura:iteration>
+                    </td>
+                </aura:if>
+            </tr>
+        </tbody>
+    </table>
+            
+</aura:component>

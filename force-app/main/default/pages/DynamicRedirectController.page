@@ -1,0 +1,5 @@
+<apex:page controller="DynamicRedirectController">
+    <script>
+        window.location.href = "{!redirectURL}";
+    </script>
+</apex:page>

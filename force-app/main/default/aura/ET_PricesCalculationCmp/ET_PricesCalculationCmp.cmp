@@ -1,0 +1,861 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,lightning:isUrlAddressable" controller='ET_ProfitCalculationScreensController'>
+    <aura:handler value="{!this}" name="init" action="{!c.doinit}" />
+    <aura:attribute name="quoteId" type="Id"/>
+
+    <aura:attribute name="pricesCalculationObj" type="Object"/>
+
+    <table class="slds-table  slds-table_bordered" style="width:100%">
+
+
+
+        <tbody>
+            <tr class="slds-hint-parent red-color-class"> 
+                
+                <td data-label="Years" class="labelClass" >
+                    <div title="Years"><b>Years</b></div>
+                </td>
+                <td data-label="Vehicle/Manpower Number" class="customClass">
+                    <div  title="Vehicle Number"><b>Vehicle/Manpower Number</b></div>
+                </td>  
+                <td data-label="1" class="customClass">
+                    <div  title="1">Y1</div>
+                </td>
+                <td data-label="2" class="customClass">
+                        <div  title="2">Y2</div>
+                </td>
+                <td data-label="3" class="customClass">
+                        <div  title="3">Y3</div>
+                </td>
+                <td data-label="4" class="customClass"> 
+                    <div  title="4">Y4</div>
+                </td>
+                <td data-label="5" class="customClass">
+                    <div  title="5">Y5</div>
+                </td>
+                <td data-label="5" class="customClass">
+                    <div  title="6">Y6</div>
+                </td>
+                <td data-label="7" class="customClass">
+                    <div  title="7">Y7</div>
+                </td>
+                <td data-label="8" class="customClass">
+                    <div  title="8">Y8</div>
+                </td>
+            </tr>
+          
+                <tr >
+                    <td class="textWidth"> 
+                        <div  class="red-color-class"><b>Pricing Method</b></div>
+                    </td>								
+                    <td class="textWidth"> 
+                        <div  ><b>Per Unit</b></div>
+                    </td>
+                </tr>
+                <tr >
+                    <td class="textWidth"> 
+                        <div  class="red-color-class"><b>Pricing Type</b></div>
+                    </td>								
+                    <td class="textWidth"> 
+                        <div ><b>Annually</b></div>
+                    </td>
+                </tr>
+               
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.combinationPriceAnnualWiseLst))}">
+                
+                    <aura:iteration items="{!v.pricesCalculationObj.combinationPriceAnnualWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.combinationUniqueKey}</div> 
+                        </td>
+                        <td  class="customClass">
+                            <div >{!list.vehicleNumberInCombination}</div> 
+                        </td>
+                        <aura:iteration items="{!list.combinationPriceLstYearWise}" var="innerlist">
+                            <td class="customClass">
+                                <div  >{!innerlist.combinationCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+                </aura:if>
+                
+                <!--   vehicle Annually-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.vehicleAnnualWiseLst))}">
+                <tr>
+                    <td colspan="9">
+                        <div  class="slds-align--absolute-center red-color-class">Detailed Annual Vehicle Prices</div>
+                    </td>
+                </tr>
+                
+                    <aura:iteration items="{!v.pricesCalculationObj.vehicleAnnualWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass" >
+                            <div >{!list.vehicleUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.vehicleNumberInLineItem}</div> 
+                        </td>
+                        <aura:iteration items="{!list.vehicleLstYearWise}" var="innerlist">
+                            <td class="customClass">
+                                <div  >{!innerlist.vehicleCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+                
+                </aura:if>
+                <!-- fuel  Annually-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.vehicleAnnualWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div  class="slds-align--absolute-center red-color-class">Detailed Annual Fuel Prices</div>
+                        </td>
+                    </tr>
+               
+                    <aura:iteration items="{!v.pricesCalculationObj.vehicleAnnualWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass" >
+                            <div >{!list.vehicleUniqueKey}(Fuel)</div> 
+                        </td>
+                        <td class="customClass">
+                            <div  >{!list.vehicleNumberInLineItem}</div> 
+                        </td>
+                        <aura:iteration items="{!list.vehicleLstYearWise}" var="innerlist">
+                            <td class="customClass">
+                                <div  >{!innerlist.fuelCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+                </aura:if>
+
+                <!--  driver Annually-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.driverAnnualWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div  class="slds-align--absolute-center red-color-class">Detailed Annual Driver Prices</div>
+                        </td>
+                    </tr>
+               
+                    <aura:iteration items="{!v.pricesCalculationObj.driverAnnualWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass">
+                            <div  >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass">
+                                <div  >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+            </aura:if>
+
+                <!-- nanny Annually-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.nannyAnnualWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align--absolute-center red-color-class">Detailed Annual Nanny Prices</div>
+                        </td>
+                    </tr>
+                
+                    <aura:iteration items="{!v.pricesCalculationObj.nannyAnnualWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass">
+                            <div  >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass">
+                                <div  >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+            </aura:if>
+                <!-- supervisor Annually-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.supervisorAnnualWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div  class="slds-align--absolute-center red-color-class">Detailed Annual Supervisor Prices</div>
+                        </td>
+                    </tr>
+               
+                    <aura:iteration items="{!v.pricesCalculationObj.supervisorAnnualWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass">
+                            <div  >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass">
+                                <div  >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+            </aura:if>
+
+                 <!-- coordinator Annually-->
+                 <aura:if isTrue="{!not(empty(v.pricesCalculationObj.coordinatorAnnualWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div  class="slds-align--absolute-center red-color-class">Detailed Annual Coordinator Prices</div>
+                        </td>
+                    </tr>
+               
+                    <aura:iteration items="{!v.pricesCalculationObj.coordinatorAnnualWiseLst}" var="list">
+                        <tr>
+                        <td  class="labelClass">
+                            <div >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass">
+                            <div  >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass">
+                                <div  >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+                </aura:if>
+
+                 <!-- accountant Annually-->
+                 <aura:if isTrue="{!not(empty(v.pricesCalculationObj.accountantAnnualWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div  class="slds-align--absolute-center red-color-class">Detailed Annual Accountant/Cashier Prices</div>
+                        </td>
+                    </tr>
+                
+                    <aura:iteration items="{!v.pricesCalculationObj.accountantAnnualWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass">
+                            <div >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+                
+                </aura:if>
+
+
+                 <!-- other emp Annually-->
+                 <aura:if isTrue="{!not(empty(v.pricesCalculationObj.otherEmpAnnualWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div  class="slds-align--absolute-center red-color-class">Detailed Annual Other Employee Prices</div>
+                        </td>
+                    </tr>
+                 
+                    <aura:iteration items="{!v.pricesCalculationObj.otherEmpAnnualWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+                
+            </aura:if>
+
+
+            <br/>
+                <br/>
+            
+                <tr >
+                    <td class="textWidth"> 
+                        <div  class="red-color-class"><b>Pricing Method</b></div>
+                    </td>								
+                    <td class="textWidth"> 
+                        <div  ><b>Per Unit</b></div>
+                    </td>
+                </tr>
+                <tr >
+                    <td class="textWidth"> 
+                        <div class="red-color-class"><b>Pricing Type</b></div>
+                    </td>								
+                    <td class="textWidth"> 
+                        <div  ><b>Monthly</b></div>
+                    </td>
+                </tr>
+                    
+
+                <!--    combination monthly -->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.combinationPriceMonthWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div  class="slds-align--absolute-center red-color-class">Lump Sum Monthly Prices</div>
+                        </td>
+                    </tr>
+              
+                    <aura:iteration items="{!v.pricesCalculationObj.combinationPriceMonthWiseLst}" var="list">
+                    <tr>
+                       <td class="labelClass">
+                            <div  >{!list.combinationUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.vehicleNumberInCombination}</div> 
+                        </td>
+                        <aura:iteration items="{!list.combinationPriceLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.combinationCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+                </aura:if>
+
+                <!--   vehicle monthly-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.vehicleMonthWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align--absolute-center red-color-class">Detailed Monthly Vehicle Prices</div>
+                        </td>
+                    </tr>
+               
+                    <aura:iteration items="{!v.pricesCalculationObj.vehicleMonthWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.vehicleUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.vehicleNumberInLineItem}</div> 
+                        </td>
+                        <aura:iteration items="{!list.vehicleLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.vehicleCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+                </aura:if>
+
+                <!-- fuel  monthly-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.vehicleMonthWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align--absolute-center red-color-class">Detailed Monthly Fuel Prices</div>
+                        </td>
+                    </tr>
+              
+                    <aura:iteration items="{!v.pricesCalculationObj.vehicleMonthWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.vehicleUniqueKey}(Fuel)</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.vehicleNumberInLineItem}</div> 
+                        </td>
+                        <aura:iteration items="{!list.vehicleLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.fuelCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+                
+                </aura:if>
+                <!--  driver montly-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.driverMonthWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align--absolute-center red-color-class">Detailed Monthly Driver Prices</div>
+                        </td>
+                    </tr>
+                
+                    <aura:iteration items="{!v.pricesCalculationObj.driverMonthWiseLst}" var="list">
+                        <tr> 
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+              
+            </aura:if>
+                <!-- nanny monthly-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.nannyMonthWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align--absolute-center red-color-class">Detailed Monthly Nanny Prices</div>
+                        </td>
+                    </tr>
+               
+                    <aura:iteration items="{!v.pricesCalculationObj.nannyMonthWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+                </aura:if>
+                <!-- supervisor monthly-->
+                <aura:if isTrue="{!not(empty(v.pricesCalculationObj.supervisorMonthWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align--absolute-center red-color-class">Detailed Monthly Supervisor Prices</div>
+                        </td>
+                    </tr>
+                
+                    <aura:iteration items="{!v.pricesCalculationObj.supervisorMonthWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+                
+                </aura:if>
+                 <!-- coordinator monthly-->
+                 <aura:if isTrue="{!not(empty(v.pricesCalculationObj.coordinatorMonthWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align--absolute-center red-color-class">Detailed Monthly Coordinator Prices</div>
+                        </td>
+                    </tr>
+               
+                    <aura:iteration items="{!v.pricesCalculationObj.coordinatorMonthWiseLst}" var="list">
+                        <tr> 
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+              
+                </aura:if>
+
+
+                 <!-- accountant monthly-->
+                 <aura:if isTrue="{!not(empty(v.pricesCalculationObj.accountantMonthWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align--absolute-center red-color-class">Detailed Monthly Accountant/Cashier Prices</div>
+                        </td>
+                    </tr>
+                
+                    <aura:iteration items="{!v.pricesCalculationObj.accountantMonthWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+                
+                </aura:if>
+
+                 <!-- other emp monthly-->
+                 <aura:if isTrue="{!not(empty(v.pricesCalculationObj.otherEmpMonthWiseLst))}">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align--absolute-center red-color-class">Detailed Monthly Other Employee Prices</div>
+                        </td>
+                    </tr>
+                 
+                    <aura:iteration items="{!v.pricesCalculationObj.otherEmpMonthWiseLst}" var="list">
+                        <tr>
+                        <td class="labelClass">
+                            <div  >{!list.workforceUniqueKey}</div> 
+                        </td>
+                        <td class="customClass" >
+                            <div >{!list.numberOfWorkforce}</div> 
+                        </td>
+                        <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                            <td class="customClass" >
+                                <div >{!innerlist.workforceCost}</div> 
+                            </td>
+                        </aura:iteration>
+                    </tr>
+                    </aura:iteration>
+               
+
+            </aura:if>
+
+
+            <br/>
+                <br/>
+
+            <tr >
+                <td class="textWidth"> 
+                    <div  class="red-color-class"><b>Pricing Method</b></div>
+                </td>								
+                <td  class="textWidth"> 
+                    <div ><b>Comprehensive Price per Quotation</b></div>
+                </td>
+            </tr>
+            <tr >
+                <td  class="textWidth"> 
+                    <div  class="red-color-class"><b>Pricing Type</b></div>
+                </td>								
+                <td  class="textWidth"> 
+                    <div ><b>Annually/Monthly/Per Student/Per Route/Per KM/Per Ton</b></div>
+                </td>
+            </tr>
+            
+            <!--lumsum annally price utilization-->
+            <aura:if isTrue="{!not(empty(v.pricesCalculationObj.annuallyLumsumCostYearWiseLst))}">
+                    <tr>
+                        <td class="labelClass">
+                            <div  >Lump Sum Price Annually </div> 
+                        </td>
+                        <td class="customClass" >
+                            <div ></div> 
+                        </td>
+                        <aura:iteration items="{!v.pricesCalculationObj.annuallyLumsumCostYearWiseLst}" var="list">
+                           
+                            <td class="customClass" >
+                                <div >{!list.lumsumCost}</div> 
+                            </td>
+                         
+                        
+                        </aura:iteration>
+                    </tr>
+                    </aura:if>
+
+                     <!--lumsum monthly price utilization-->
+            <aura:if isTrue="{!not(empty(v.pricesCalculationObj.monthlyLumsumCostYearWiseLst))}">
+                <tr>
+                    <td class="labelClass">
+                        <div  >Lump Sum Price Monthly</div> 
+                    </td>
+                    <td class="customClass" >
+                        <div ></div> 
+                    </td>
+                    <aura:iteration items="{!v.pricesCalculationObj.monthlyLumsumCostYearWiseLst}" var="list">
+                        
+                        <td class="customClass" >
+                            <div >{!list.lumsumCost}</div> 
+                        </td>
+                      
+                    
+                    </aura:iteration>
+                </tr>
+                </aura:if>
+
+                 <!--lumsum per student price utilization-->
+            <aura:if isTrue="{!not(empty(v.pricesCalculationObj.perStudentLumsumCostYearWiseLst))}">
+                <tr>
+                    <td class="labelClass">
+                        <div  >Lump Sum Price Per Student </div> 
+                    </td>
+                    <td class="customClass" >
+                        <div ></div> 
+                    </td>
+                    <aura:iteration items="{!v.pricesCalculationObj.perStudentLumsumCostYearWiseLst}" var="list">
+                       
+                        <td class="customClass" >
+                            <div >{!list.lumsumCost}</div> 
+                        </td>
+                       
+                    
+                    </aura:iteration>
+                </tr>
+                </aura:if>
+
+                 <!--lumsum per route price utilization-->
+            <aura:if isTrue="{!not(empty(v.pricesCalculationObj.perRouteLumsumCostYearWiseLst))}">
+                <tr>
+                    <td class="labelClass">
+                        <div  >Lump Sum Price Per Route</div> 
+                    </td>
+                    <td class="customClass" >
+                        <div ></div> 
+                    </td>
+                    <aura:iteration items="{!v.pricesCalculationObj.perRouteLumsumCostYearWiseLst}" var="list">
+                       
+                        <td class="customClass" >
+                            <div >{!list.lumsumCost}</div> 
+                        </td>
+                        
+                   
+                    </aura:iteration>
+                </tr>
+                </aura:if>
+
+                 <!--lumsum per KM price utilization-->
+            <aura:if isTrue="{!not(empty(v.pricesCalculationObj.perKmLumsumCostYearWiseLst))}">
+                <tr>
+                    <td class="labelClass">
+                        <div  >Lump Sum Price Per KM</div> 
+                    </td>
+                    <td class="customClass" >
+                        <div ></div> 
+                    </td>
+                    <aura:iteration items="{!v.pricesCalculationObj.perKmLumsumCostYearWiseLst}" var="list">
+                        
+                        <td class="customClass" >
+                            <div >{!list.lumsumCost}</div> 
+                        </td>
+                       
+                   
+                    </aura:iteration>
+                </tr>
+                </aura:if>
+
+                 <!--lumsum per ton price utilization-->
+            <aura:if isTrue="{!not(empty(v.pricesCalculationObj.perTonLumsumCostYearWiseLst))}">
+                <tr>
+                    <td class="labelClass">
+                        <div  >Lump Sum Price Per Ton</div> 
+                    </td>
+                    <td class="customClass" >
+                        <div ></div> 
+                    </td>
+                    <aura:iteration items="{!v.pricesCalculationObj.perTonLumsumCostYearWiseLst}" var="list">
+                      
+                        <td class="customClass" >
+                            <div >{!list.lumsumCost}</div> 
+                        </td>
+                        
+                    
+                    </aura:iteration>
+                </tr>
+                </aura:if>
+
+                   <!--   vehicle price utilization-->
+                   <aura:if isTrue="{!not(empty(v.pricesCalculationObj.vehiclePriceUtilizationWiseLst))}">
+                       
+                   
+                        <aura:iteration items="{!v.pricesCalculationObj.vehiclePriceUtilizationWiseLst}" var="list">
+                            <tr>
+                            <td class="labelClass">
+                                <div  >{!list.vehicleUniqueKey}</div> 
+                            </td>
+                            <td class="customClass" >
+                                <div >{!list.vehicleNumberInLineItem}</div> 
+                            </td>
+                            <aura:iteration items="{!list.vehicleLstYearWise}" var="innerlist">
+                                <td class="customClass" >
+                                    <div >{!innerlist.vehicleCost}</div> 
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                        </aura:iteration>
+                    
+                    </aura:if>
+    
+                    <!-- fuel  price utilization-->
+                    <aura:if isTrue="{!not(empty(v.pricesCalculationObj.vehiclePriceUtilizationWiseLst))}">
+                   
+                        <aura:iteration items="{!v.pricesCalculationObj.vehiclePriceUtilizationWiseLst}" var="list">
+                            <tr>
+                            <td class="labelClass">
+                                <div  >{!list.vehicleUniqueKey}(Fuel)</div> 
+                            </td>
+                            <td class="customClass" >
+                                <div >{!list.vehicleNumberInLineItem}</div> 
+                            </td>
+                            <aura:iteration items="{!list.vehicleLstYearWise}" var="innerlist">
+                                <td class="customClass" >
+                                    <div >{!innerlist.fuelCost}</div> 
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                        </aura:iteration>
+                   
+                    </aura:if>
+                    <!--  driver price utilization-->
+                    <aura:if isTrue="{!not(empty(v.pricesCalculationObj.driverPriceUtilizationWiseLst))}">
+                   
+                        <aura:iteration items="{!v.pricesCalculationObj.driverPriceUtilizationWiseLst}" var="list">
+                            <tr>
+                            <td class="labelClass">
+                                <div  >{!list.workforceUniqueKey}</div> 
+                            </td>
+                            <td class="customClass" >
+                                <div >{!list.numberOfWorkforce}</div> 
+                            </td>
+                            <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                                <td class="customClass" >
+                                    <div >{!innerlist.workforceCost}</div> 
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                        </aura:iteration>
+                    
+                </aura:if>
+                    <!-- nanny price utilization-->
+                    <aura:if isTrue="{!not(empty(v.pricesCalculationObj.nannyPriceUtilizationWiseLst))}">
+                  
+                        <aura:iteration items="{!v.pricesCalculationObj.nannyPriceUtilizationWiseLst}" var="list">
+                            <tr>
+                            <td class="labelClass">
+                                <div  >{!list.workforceUniqueKey}</div> 
+                            </td>
+                            <td class="customClass" >
+                                <div >{!list.numberOfWorkforce}</div> 
+                            </td>
+                            <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                                <td class="customClass" >
+                                    <div >{!innerlist.workforceCost}</div> 
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                        </aura:iteration>
+                    
+                    </aura:if>
+                    <!-- supervisor price utilization-->
+                    <aura:if isTrue="{!not(empty(v.pricesCalculationObj.supervisorPriceUtilizationWiseLst))}">
+                  
+                        <aura:iteration items="{!v.pricesCalculationObj.supervisorPriceUtilizationWiseLst}" var="list">
+                            <tr>
+                            <td class="labelClass">
+                                <div  >{!list.workforceUniqueKey}</div> 
+                            </td>
+                            <td class="customClass" >
+                                <div >{!list.numberOfWorkforce}</div> 
+                            </td>
+                            <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                                <td class="customClass" >
+                                    <div >{!innerlist.workforceCost}</div> 
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                        </aura:iteration>
+                   
+                    </aura:if>
+                     <!-- coordinator price utilization-->
+                     <aura:if isTrue="{!not(empty(v.pricesCalculationObj.coordinatorPriceUtilizationWiseLst))}">
+                         
+                   
+                        <aura:iteration items="{!v.pricesCalculationObj.coordinatorPriceUtilizationWiseLst}" var="list">
+                            <tr>
+                            <td class="labelClass">
+                                <div  >{!list.workforceUniqueKey}</div> 
+                            </td>
+                            <td class="customClass" >
+                                <div >{!list.numberOfWorkforce}</div> 
+                            </td>
+                            <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                                <td class="customClass" >
+                                    <div >{!innerlist.workforceCost}</div> 
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                        </aura:iteration>
+                   
+                    </aura:if>
+    
+    
+                     <!-- accountant price utilization-->
+                     <aura:if isTrue="{!not(empty(v.pricesCalculationObj.accountantPriceUtilizationWiseLst))}">
+                     
+                        <aura:iteration items="{!v.pricesCalculationObj.accountantPriceUtilizationWiseLst}" var="list">
+                            <tr>
+                            <td class="labelClass">
+                                <div  >{!list.workforceUniqueKey}</div> 
+                            </td>
+                            <td class="customClass" >
+                                <div >{!list.numberOfWorkforce}</div> 
+                            </td>
+                            <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                                <td class="customClass" >
+                                    <div >{!innerlist.workforceCost}</div> 
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                        </aura:iteration>
+                    
+                    </aura:if>
+    
+                     <!-- other emp price utilization-->
+                     <aura:if isTrue="{!not(empty(v.pricesCalculationObj.otherEmpPriceUtilizationWiseLst))}">
+                   
+                        <aura:iteration items="{!v.pricesCalculationObj.otherEmpPriceUtilizationWiseLst}" var="list">
+                            <tr>
+                            <td class="labelClass">
+                                <div  >{!list.workforceUniqueKey}</div> 
+                            </td>
+                            <td class="customClass" >
+                                <div >{!list.numberOfWorkforce}</div> 
+                            </td>
+                            <aura:iteration items="{!list.workforceLstYearWise}" var="innerlist">
+                                <td class="customClass" >
+                                    <div >{!innerlist.workforceCost}</div> 
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                        </aura:iteration>
+                   
+    
+                </aura:if>
+
+            
+
+           
+
+
+
+        </tbody>
+    </table>
+</aura:component>

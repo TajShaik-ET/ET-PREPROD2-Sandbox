@@ -1,0 +1,61 @@
+<aura:component controller="ET_BusinessCommunityController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+	<aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="ESERequestList" type="ESE_Request_Line__c[]" />
+     <aura:handler name="init" value="{!this}" action="{!c.ESElineCase}" />
+     <aura:attribute name="showDetailLine" type="Boolean" />
+     
+    
+    
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_large">
+             <div class="slds-modal__container">
+                 <!-- Modal/Popup Box Header Starts here-->
+                 <header class="slds-modal__header">
+                     
+                     <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"> Hello</h2>
+                 </header>
+                 <!--Modal/Popup Box Body Starts here-->
+                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="File Name">Name</div>
+                </th>
+             <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="File Name">Trip Date</div>
+                </th>
+                
+            </tr>
+        </thead>
+          <tbody>
+            <aura:iteration  items="{!v.ESERequestList}" var="req">
+                    <tr class="slds-hint-parent">
+                        <td data-label="File Name">
+                            <div class="slds-truncate" title="File Name">{!req.Name}</div>  
+                        </td>
+                        <td data-label="File Name">
+                            <div class="slds-truncate" title="File Name">{!req.Trip_Date__c}</div>  
+                        </td>
+                         
+                         
+                       
+                       
+                    </tr>
+                </aura:iteration>
+        </tbody>
+          </table>
+                 </div>
+                 <!--Modal/Popup Box Footer Starts here-->
+                 
+                 <footer class="slds-modal__footer ">
+                     
+                     <lightning:button class="btn_close" variant="brand" name="Close" label="إغلاق" onclick="{!c.closeArabicCaseDetailsView}"/>
+                     
+                     
+                 </footer>
+                 
+             </div>
+         </section>
+    
+    
+</aura:component>

@@ -1,0 +1,112 @@
+.THIS .slds-carousel__stage {
+    margin: -12px -20px 0px;
+}
+.THIS .slds-carousel__autoplay{
+    display:none;
+}
+.THIS .slds-carousel__image{
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+}
+.THIS .slds-carousel__image img{
+    /*width: 100%;
+    height: 300px;
+    overflow: hidden;*/
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    filter: brightness(0.75);
+    transform: translate(-50%, -50%);
+}
+.THIS .slds-carousel__panel{
+    position:relative;
+}
+.THIS .slds-carousel__content{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: transparent;
+    width:100%;
+        overflow: hidden;
+}
+.THIS .slds-carousel__indicators {
+    align-self: center;
+    margin: .5rem 0;
+    margin-top: -30px;
+    z-index: 1;
+}
+.THIS .slds-carousel__content-title {
+    font-size: 46px;
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+}
+.THIS .slds-carousel__content p{
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.THIS .slds-carousel__indicator-action {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+.THIS .slds-carousel__indicator-action.slds-is-active, .THIS .slds-carousel__indicator-action.slds-is-active:hover {
+    background: #00c19e;
+    border-color: #00c19e;
+}
+
+@media only screen and (max-width: 1024px) {
+    .THIS .slds-carousel__stage {
+        margin: -12px -12px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .slds-carousel__content-title {
+        font-size: 32px;
+        letter-spacing: 6px;
+    }
+    .THIS .slds-carousel__content p {
+        font-size: 16px;
+    }
+    .THIS .slds-carousel__image img {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .slds-carousel__content-title {
+        font-size: 24px;
+        letter-spacing: 6px;
+    }
+    .THIS .slds-carousel__content p {
+        font-size: 14px;
+    }
+    .THIS .slds-carousel__image{
+        height: 300px!important;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .slds-carousel__content-title {
+        font-size: 24px;
+        letter-spacing: 4px;
+    }
+    .THIS .slds-carousel__content p {
+        font-size: 14px;
+    }
+    .THIS .slds-carousel__image{
+        height: 250px!important;
+    }
+}
+@media only screen and (max-width: 320px) {
+    .THIS .slds-carousel__image{
+        height: 200px!important;
+    }
+}

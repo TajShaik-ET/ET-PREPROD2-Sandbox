@@ -1,0 +1,23 @@
+.THIS .slider {
+    /*margin: 40px auto 0 auto;*/
+    max-width: 350px;
+    margin: 3rem;
+}
+
+.THIS .noUi-connect {
+    background: #000000;
+}
+
+.THIS .noUi-target,
+.THIS .noUi-handle {
+    box-shadow: none !important;    
+}
+
+.THIS .noUi-target {
+    background: #FFFFFF;
+    border: 1px solid rgb(216, 221, 230);
+    border-radius: .25rem;
+}
+.THIS.scrolldiv{
+    width: 100%;
+}

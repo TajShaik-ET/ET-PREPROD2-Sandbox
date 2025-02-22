@@ -1,0 +1,53 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="selectedTabId" type="String"/>
+    <div class="parentClass">
+        <!-- New Ticket Button -->
+        <!-- <div class="content_div" >
+            <lightning:button  variant="brand" class="btn_table btn_right"
+                              label="New Ticket" onclick="{!c.openRequestModal}"/>    
+        </div>
+        
+        <aura:if  isTrue="{!v.addRequestModal}" > 
+            <c:SS_AddSupportTicket   aura:id="SS_AddSupportTicket" addRequestModal="{!v.addRequestModal}" loaded="true"/> 
+            
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+        -->
+        
+        <div class="menudiv">
+            <c:MenuItemsList />
+        </div>
+        <!-- Dashboard Component -->
+        <div class="adecdashbord">
+            <c:SS_SupportTicketDashboard  selectedTabId="{!v.selectedTabId}"  aura:id="dashboardCmp" /> 
+        </div>
+        
+        <!--Tickets Requests with Different Status in Tabs -->
+        <div id="deliveryService" class="dashboardService">
+            
+            <lightning:tabset selectedTabId="{!v.selectedTabId}" class="tabdashdetail" >
+                <lightning:tab label="New" id="newRequests">
+                    <c:SS_SupportTicketDetails  status="New"   aura:id="newRequestsTab" />
+                </lightning:tab>
+                <lightning:tab label="Pending Approval" id="approvalRequests">
+                    <c:SS_SupportTicketDetails  status="Approval Pending"   aura:id="approvalRequestsTab" />
+                </lightning:tab>
+                <!--  <lightning:tab label="In Progress" id="inProgReqsts">
+                    <c:SS_SupportTicketDetails  status="In Progress"   aura:id="inProgReqstsTab" />
+                </lightning:tab>-->
+                <lightning:tab label="On Hold" id="onHoldReqsts">
+                    <c:SS_SupportTicketDetails  status="On Hold"   aura:id="onHoldReqstsTab" />
+                </lightning:tab>
+                
+                <lightning:tab label="Closed" id="closedReqsts">
+                    <c:SS_SupportTicketDetails  status="Closed"   aura:id="closedReqstsTab" />
+                </lightning:tab>
+                
+            </lightning:tabset> 
+        </div> 
+        
+        
+        
+    </div>
+    
+</aura:component>

@@ -1,0 +1,292 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" 
+                access="global" controller="ET_FinanceController" >
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="preparedBy" type="sObject" default="{}" description="Use,for store SELECTED sObject Record"/>
+    <aura:attribute name="validatedBy" type="sObject" default="{}" description="Use,for store SELECTED sObject Record"/>
+    <aura:attribute name="approvedBy" type="sObject" default="{}" description="Use,for store SELECTED sObject Record"/>
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+    <aura:attribute name="selectedZone" type="String"/>
+    <aura:attribute name="preparedDt" type="Date"/>
+    <aura:attribute name="validatedDt" type="Date"/>
+    <aura:attribute name="approvedDt" type="Date"/>
+    <aura:attribute name="zoneList" type="List"/>    
+    <aura:attribute name="selectedLocation" type="String"/>
+    <aura:attribute name="mandatoryFields" type="List" default="Zone,location,activity"/>
+    <aura:attribute name="invoiceList" type="List"/>
+    <aura:attribute name="activityList" type="List"/>
+    <aura:attribute name="invoicesDetails" type="List"/> 
+    <aura:attribute name="locationList" type="List"/>    
+    <aura:attribute name="selectedPaymentType" type="String"/>
+    <aura:attribute name="selectedActivity" type="String"/>
+    <aura:attribute name="selectedStartDate" type="datetime"/>
+    <aura:attribute name="selectedEndDate" type="datetime"/>
+    <aura:attribute name="hideCheckbox" type="Boolean" default="true"/>
+    <aura:attribute name="invoiceModal" type="Boolean" default="false"/>
+    <aura:attribute name="columns" type="List"/> 
+    <aura:attribute name="hideButton" type="Boolean" default="true"/>  <!-- added by Sreelakshmi SK 07/March/2023 -->
+    <h2 class="pageheading">Daily Finance Details</h2>
+    <div class="slds-box fonancemaindiv">
+        <!--aura:if isTrue="{! v.loaded }"-->
+        
+            <div class="slds-grid slds-gutters leftsectiondiv">
+                <h3 class="subheading searchheading">Search Details</h3>
+                <div class="slds-col">
+                    <span>
+                        <lightning:select aura:id="Zone" label="Zone" required="true" onchange="{!c.filterZones}" value="{!v.selectedZone}" class="Box" >
+                            <option value="" text="--None--" />
+                            <aura:iteration items="{!v.zoneList}" var="val">
+                                <option value="{!val}" text="{!val}" /> 
+                            </aura:iteration>
+                        </lightning:select>
+                    </span>
+                </div>
+                <div class="slds-col">
+                    <span>
+                        <lightning:select aura:id="location" label="Location" required="true"  value="{!v.selectedLocation}" class="Box" >
+                            <option value="" text="--None--" />
+                            <aura:iteration items="{!v.locationList}" var="val">
+                                <option value="{!val}" text="{!val}" /> 
+                            </aura:iteration>
+                        </lightning:select>
+                    </span>
+                </div>
+                <div class="slds-col">
+                    <span>
+                        <lightning:select aura:id="activity" label="Activity" required="true"  value="{!v.selectedActivity}" class="Box" >
+                            <option value="" text="--None--" />
+                            <aura:iteration items="{!v.activityList}" var="val">
+                                <option value="{!val}" text="{!val}" /> 
+                            </aura:iteration>
+                        </lightning:select>
+                    </span>
+                </div>
+                <div class="slds-col">
+                    <span>
+                        <lightning:select aura:id="paymentType" label="Payment Type" required="false"  value="{!v.selectedPaymentType}" class="Box" >
+                            <option value="" text="--None--" />
+                            <option value="Cash" text="Cash" />
+                            <option value="Online" text="Online" />
+                            <option value="Cheque" text="Cheque" />
+                        </lightning:select>
+                    </span>
+                </div>
+                <div class="slds-col startdatediv">
+                    <span><lightning:input type="datetime" aura:id="startDate" value="{!v.selectedStartDate}" label="From Date"                                        
+                                           class="filterlist" autocomplete="off"/></span>
+                </div>
+                <div class="slds-col enddatediv">
+                    <span> <lightning:input type="datetime" aura:id="endDate"  value="{!v.selectedEndDate}" label="To Date"                                        
+                                            class="filterlist" autocomplete="off"/></span>
+                </div>
+                <br></br>
+                <div class="slds-col btnright">
+                    <span> <lightning:button variant="brand" 
+                                             label="Get Details"
+                                             title="Get Details"
+                                             aura:id="buttonGet"
+                                             onclick="{!c.getInvoiceDetails}" class="btnsave"/></span>
+                <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="medium" class="slds-hide"/>
+                </div>
+            </div>
+            <aura:set attribute="else">
+                <lightning:spinner alternativeText="Loading" />
+            </aura:set>
+        <!--/aura:if-->
+        <div class="rightsectiondiv">
+            <div class="paymentdetails">
+                <h3 class="subheading">Receipt Details</h3>
+                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered tablesection">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="preapred by">Account Number</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="preapred by">Coordinator</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Preapred Date">Total Receipt Amount</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="validated By">Receipt Count</div>
+                            </th>
+                            <!--Hide School Name Coloumn...Sreelakshmi SK 30 Mar 2023-->
+                            <th class="" scope="col">
+                                 <div class="slds-truncate" title="validated By">School Name</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <aura:if isTrue="{!v.invoiceList.length>0}">
+                        <tbody>
+                            <aura:iteration items="{!v.invoiceList}" var="row" indexVar="indx">
+                            <aura:iteration items="{!row.value}" var="inv">
+                                <tr class="slds-hint-parent">
+                                    <td data-label="Opportunity Name" scope="row">
+                                     <div class="slds-truncate" title="Cloudhub">
+                                           
+                                         {!row.key}
+                                        </div>
+                                    </td>
+                                    <td data-label="Opportunity Name" >
+                                            {!inv.coordinatorName}
+                                    </td>
+                                    <td data-label="Account Name">
+                                        {!inv.totalAmount}
+                                    </td>
+                                    <td data-label="Close Date">
+                                        {!inv.invCount} 
+                                    </td>
+                                     <td data-label="Close Date">
+                                        {!inv.SchoolName} 
+                                    </td>
+                                   
+                                    <td data-label="Amount">
+                                        <lightning:buttonIcon iconName="utility:display_text"
+                                                              onclick="{! c.openInvoiceModal }"
+                                                              alternativeText="Open Inovice"
+                                                              value="{!inv}"
+                                                              class="btnsorticon"/>
+                                    </td>
+                                </tr>
+                                
+                                 
+                                
+                            </aura:iteration>                               
+                            </aura:iteration>
+                            
+                            
+                           
+                            <tr>
+                                <td colspan="6" valign="top" class="btnpaddingtd">
+                                  <!-- Aura if added by Sreelakshmi SK 07/March/2023 -->
+                                 <aura:if isTrue="{!v.hideButton}">
+                                    <lightning:button variant="brand"  
+                                                      label="Publish"
+                                                      title="Publish"
+                                                    
+                                                      onclick="{! c.publishFinDetails }" class=" btncancel"/>
+                                 </aura:if>
+                                </td>
+                                <lightning:spinner aura:id="mySpinner1" alternativeText="Processing.." title="Processing.." variant="brand" size="medium" class="slds-hide"/>
+                            </tr>
+                            
+                        </tbody>
+                    </aura:if>
+                </table>
+                <aura:if isTrue="{!v.invoiceList.length==0}">
+                    <h3 class="noresult"> No Results Found</h3>
+                </aura:if>
+            </div>
+            <!--h3 class="subheading">Process Details</h3>
+            <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered tablesection">
+                <thead>
+                    <tr class="slds-line-height_reset" >
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="preapred by">Preapred by</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Preapred Date">Preapred Date</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="validated By">Validated By</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Validated Date">Validated Date</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Apporved By">Apporved By</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Apporved Date">Apporved Date</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="slds-hint-parent" valign="top" >
+                        <td data-label="Opportunity Name" scope="row" valign="top">
+                            <div class="slds-truncate searchschool" title="Cloudhub" >
+                                <c:ET_Lookup studentType="" selectedRecord="{!v.preparedBy}" objectAPIName="User" label="Search" />  
+                            </div>
+                             
+                        </td>
+                        <td data-label="Account Name" valign="top">
+                            <lightning:input type="datetime" value="{!v.preparedDt}" name="input1" label="Enter a date/time value" class="dateandtimesec" autocomplete="off"/>
+                        </td>
+                        <td data-label="Close Date" valign="top">
+                            <div class="slds-truncate searchschool" title="Cloudhub" >
+                                <c:ET_Lookup studentType="" selectedRecord="{!v.validatedBy}" objectAPIName="User" label="Search" />  
+                            </div>
+                            
+                        </td>
+                        <td data-label="Prospecting" valign="top">
+                            <lightning:input type="datetime" name="input1" value="{!v.validatedDt}" label="Enter a date/time value" class="dateandtimesec" autocomplete="off"/>
+                        </td>
+                        <td data-label="Confidence" valign="top">
+                            <div class="slds-truncate searchschool" title="Cloudhub" >
+                                <c:ET_Lookup studentType="" selectedRecord="{!v.approvedBy}" objectAPIName="User" label="Search" />  
+                            </div>
+                            
+                        </td>
+                        <td data-label="Amount" valign="top">
+                            <lightning:input type="datetime" name="input1" value="{!v.approvedDt}" label="Enter a date/time value" class="dateandtimesec" autocomplete="off"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" valign="top" class="btnpaddingtd">
+                            <lightning:button variant="brand"  
+                                              label="
+"
+                                              title="Publish"
+                                              onclick="{! c.publishFinDetails }" class=" btncancel"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table-->
+            
+            
+        </div>
+        <aura:if isTrue="{!v.invoiceModal}" > 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+                <div class="slds-modal__container">
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Invoice Details</h2>
+                        
+                    </header>
+                    <!--###### MODAL BOX BODY Part Start######-->
+                    <div class="displaytable">
+                        <p><b>Zone:&nbsp;</b> {!v.selectedZone} &nbsp;&nbsp;&nbsp;
+                         <b>Location:&nbsp;</b> {!v.selectedLocation}
+                         <lightning:button class="downloadButton" label="Download" title="Download" 
+                                  onclick="{!c.downloadData}"/>
+                            </p><br/><br/>
+                        <lightning:datatable aura:id="dataTableID"
+                                             keyField="Id"
+                                             hideCheckboxColumn="{!v.hideCheckbox}"
+                                             columns="{!v.columns}"
+                                             data="{!v.invoicesDetails}"
+                                             />
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="{!$Label.c.ETST_Cancel}"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }" class="btncancel"/>
+                        <!--lightning:button variant="brand" 
+                                      label="{!$Label.c.ETST_Deactivate}"
+                                      title="Deactivate"
+                                      onclick="{!c.deactivateStudent}" class="btnsave"/-->
+                        
+                        
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+    </div>
+</aura:component>

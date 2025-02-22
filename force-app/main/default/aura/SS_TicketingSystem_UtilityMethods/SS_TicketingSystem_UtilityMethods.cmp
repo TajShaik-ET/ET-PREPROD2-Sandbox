@@ -1,0 +1,23 @@
+<aura:component controller="SS_TicketingSystem_Controller" implements="forceCommunity:availableForAllPageTypes" access="global" >
+	 <aura:method name="executeServerCall" action="{!c.executeServerCall}" > 
+        <aura:attribute name="component" type="Object" />
+        <aura:attribute name="backendMethod" type="String" />
+        <aura:attribute name="params" type="Map" />
+    </aura:method>
+
+    <aura:method name="showToast" action="{!c.showToast}" > 
+        <aura:attribute name="title" type="String" />
+        <aura:attribute name="message" type="String" />
+        <aura:attribute name="type" type="String" />
+        <aura:attribute name="mode" type="String" />
+    </aura:method>
+
+    <aura:method name="convertToUserFriendlyErrMsg" action="{!c.convertToUserFriendlyErrMsg}" > 
+        <aura:attribute name="rawErrorMessage" type="String" />
+    </aura:method>
+
+    <aura:method name="getWarningMessage" action="{!c.getWarningMessage}" > 
+        <aura:attribute name="method" type="String" />
+        <aura:attribute name="arguments" type="String" />
+    </aura:method>
+</aura:component>

@@ -1,0 +1,251 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" 
+                access="global" 
+                controller="ET_CreateMaintainanceController">
+    
+    <!-- Object Save Attribute -->
+    <aura:attribute name="maintenanceQuestionnaire" type="Maintenance_Questionnaire__c" default="{'sobjectType': 'Maintenance_Questionnaire__c'}"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="maintenanceRequestList" type="Maintenance_Request__c[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="hseFileManual" type="Object[]"/>
+    
+    <aura:html tag="style">
+        .slds-modal__container {
+        max-width: 90%;
+        min-width: 90%;
+        }
+        p{
+        font-size:14px;
+        padding-top:10px;
+        padding-bottom:5px;
+        }
+        table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+        }
+        th{
+        background: #f2f2f2;
+        }
+        th, td {
+        font-size:14px;
+        text-align: left;
+        padding: 4px 8px;
+        border: 1px solid #ccc;
+        }
+        input[type="text"]{
+        border: 1px solid #ccc;
+        padding: 4px ;
+        height:30px;
+        width: 100%; 
+        box-sizing: border-box;
+        -webkit-box-sizing:border-box;
+        -moz-box-sizing: border-box;
+        border-radius: 5px;
+        }
+        .savebtn{
+        background: #26196f;
+        border: none;
+        padding: 10px;
+        width: 100px;
+        color: #fff;
+        font-size: 14px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: "Times New Roman", Times, serif;
+        }
+        /*tr:nth-child(even){background-color: #f2f2f2}*/
+    </aura:html>
+    
+    <div class="slds"> 
+        <div class="slds-form-element" align="center"> 
+            <h2 class="slds-section-title--divider"><b>Maintenance Request</b></h2>
+        </div>
+    </div>
+    <br/> 
+    <body>
+        
+        <p>1) Fleet information for Light and Heavy vehicles and Equipment’s </p>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr class="">
+                        <th scope="col">
+                            <div class="slds-truncate" title="Team Role"><b>Sr. No.</b></div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Make/manufacturer type"><b>Make / manufacturer type</b></div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Model /Type"><b>Model / Type</b></div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Model Year"><b>Model Year</b></div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Chassis No"><b>Chassis No</b></div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Current KM/Hrs"><b>Current KM/Hrs</b></div>
+                        </th> 
+                        <th scope="col">
+                            <div class="slds-truncate" title="Location"><b>Location</b></div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Action"><b>Action</b></div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>    
+                    <aura:iteration items="{!v.maintenanceRequestList}" var="mainReq" indexVar="index">
+                        <tr>
+                            <td> 
+                                {!index + 1}
+                            </td>
+                            <td>
+                                <lightning:recordEditForm aura:id="form" objectApiName="Maintenance_Request__c" >
+                                    <lightning:inputField variant="label-hidden" aura:id="qtAccess" value="{!mainReq.Make_manufacturer_type__c}" fieldName="Make_manufacturer_type__c"></lightning:inputField>
+                                </lightning:recordEditForm>
+                            </td>
+                            <td>
+                                <lightning:recordEditForm aura:id="form" objectApiName="Maintenance_Request__c" >
+                                    <lightning:inputField variant="label-hidden" aura:id="qtAccess" value="{!mainReq.Model_Type__c}" fieldName="Model_Type__c"></lightning:inputField>
+                                </lightning:recordEditForm>
+                                <!--  <input type="text" id="fname" value="{!v.mainReq.Model_Type__c}"  name="Model_Type"/> -->
+                            </td>
+                            <td>
+                                <lightning:recordEditForm aura:id="form" objectApiName="Maintenance_Request__c" >
+                                    <lightning:inputField variant="label-hidden" aura:id="qtAccess" value="{!mainReq.Model_Year__c}" fieldName="Model_Year__c"></lightning:inputField>
+                                </lightning:recordEditForm>
+                            </td>
+                            <td>
+                                <lightning:recordEditForm aura:id="form" objectApiName="Maintenance_Request__c" >
+                                    <lightning:inputField variant="label-hidden" aura:id="qtAccess" value="{!mainReq.Chassis_No__c}" fieldName="Chassis_No__c"></lightning:inputField>
+                                </lightning:recordEditForm>
+                            </td>
+                            <td>
+                                <lightning:recordEditForm aura:id="form" objectApiName="Maintenance_Request__c" >
+                                    <lightning:inputField variant="label-hidden" aura:id="qtAccess" value="{!mainReq.Current_KM_Hrs__c}" fieldName="Current_KM_Hrs__c"></lightning:inputField>
+                                </lightning:recordEditForm>
+                            </td>
+                            <td>
+                                <lightning:recordEditForm aura:id="form" objectApiName="Maintenance_Request__c" >
+                                    <lightning:inputField variant="label-hidden" aura:id="qtAccess" value="{!mainReq.Location__c}" fieldName="Location__c"></lightning:inputField>
+                                </lightning:recordEditForm>
+                            </td>
+                            <td>
+                                <a onclick="{!c.removeRow}" data-record="{!index}">
+                                    <lightning:icon align="center" iconName="utility:delete" size="small" alternativeText="Delete"/>
+                                    <span class="slds-assistive-text">Delete</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <!-- </lightning:recordEditForm>-->
+                    </aura:iteration>
+                </tbody>
+            </table>
+            <br/>
+            <div class="slds-form-element" align="left"> 
+                <lightning:button class="customButton" label="Add Row" onclick="{!c.addRow}"/>
+            </div>
+        </div>
+        <p>2) Average  usage  P/Month ( kilometer or Hrs) </p>
+        <div style="overflow-x:auto;">
+            <table>
+                <tr>
+                    <th>Light vehicle </th>
+                    <th>Heavy vehicle</th>
+                    <th>Equipments</th>
+                </tr>
+                <tr>
+                    <td>
+                        <lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Light_vehicle__c}"/>
+                        <!--  <input type="text" id="fname" name="fname"/> -->
+                    </td>
+                    <td>
+                        <lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Heavy_vehicle__c}"/>
+                    </td>
+                    <td>
+                        <lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Equipments__c}"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p>3) Current location of workshop, No of Bays and Tools and Equipment’s </p>
+        <div style="overflow-x:auto;">
+            <table>
+                <tr>
+                    <th>Location</th>
+                    <th>No. Bays</th>
+                    <th>Tools And Equipment</th>
+                </tr>
+                <tr>
+                    <td>
+                        <lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Location__c}"/>
+                    </td>
+                    <td>
+                        <lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.No_Bays__c}"/>
+                    </td>
+                    <td>
+                        <lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Tools_Equipment__c}"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p>4) Current organization chart of Fleet management including management, supporting staff and Technicians.</p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Current_organization_chart_of_Fleet__c}"/></p>
+        <p>5) What is the operating system (software) used for the workshop operation and fleet maintenance/ store system? </p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Operating_system_software_used__c}"/></p>
+        <p>6) What are the procedures to follow for the accident repairs ? Name of the Insurance companies dealt by you? </p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Procedures_follow_for_accident_repairs__c}"/></p>
+        <p>7) Spare parts and Tyres currently using methods.<br/>
+            <p>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Are you using any replacement parts, Non genuine parts , OEM Parts ? </p>
+            <p>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; What are the TYRE brands /make  used for fleet? What is the duration of replacement KM vs fleet type.</p>
+        </p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Spare_parts_and_Tyres_currently_using__c}"/></p>
+        <p>8) What is the normal duty time currently following in your operation? </p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Normal_duty_time__c}"/></p>
+        <p>9) Kindly provide us your Workshop Safety and HSE policy manual to understand the various aspects of HSE procedures followed in your workshop .</p>
+        <!-- <p>   <lightning:input aura:id="file-input" type="file"
+                               files="{!v.hseFileManual}"
+                               onchange="{!c.onFileUploaded}"
+                               accept=""
+                               label=""
+                               name="file" multiple="true"/>
+        </p>--> 
+        
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Workshop_Safety_HSE_policy__c}"/></p>
+        <p>10) What is the service interval of the Lube service followed by the various categories of fleet </p>
+        <div style="overflow-x:auto;">
+            <table>
+                <tr>
+                    <th>Light vehicle(km)</th>
+                    <th>Heavy vehicle</th>
+                    <th>Equipments </th>
+                </tr>
+                <tr>
+                    <td><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Service_interval_Light_vehicle_km__c}"/></td>
+                    <td><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Service_interval_Heavy_vehicle__c}"/></td>
+                    <td><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Service_interval_Equipments__c}"/></td>
+                </tr>
+            </table>
+        </div>
+        <p>11) Kindly provide the details of warranty terms available with the dealer and its expiry dates ?</p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Warranty_terms_available__c}"/></p>
+        <p>12) Provide us the KPI details /control procedures being followed currently in your workshop and Service level achieved currently against your fleet? </p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.KPI_details__c}"/></p>
+        <p>13) What is the average percentage of availability % of vehicle/equipment on the road? Downtime %, Yearly accidental fleet % for last three years.</p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.percentage_of_availability_of_vehicle__c}"/></p>
+        <p>14) Do you have any service contract with outsourcing company for the maintenance of workshop Equipment’s /Tools ?   If so kindly share the contract copies with us so as to understand the scope of works undertaken by them .</p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Service_contract_to_outsourcing_company}"/></p>
+        <p>15) Details of persons who do the regular Maintenance and cleaning of the workshop including Equipment’s and Tools.</p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Details_of_persons_regular_Maintenance__c}"/></p>
+        <p>16) What are the criteria being followed by you  to scrap the vehicle ?  </p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Criteria_to_Scrap_Vehicle__c}"/></p>
+        <p>17) Kindly provide us the procedure to remove workshop scrap, used oil , etc. Who is the custodian of scrap materials ? Whether the contractor (ET)  or Company (Client)?</p>
+        <p><lightning:input name="input1" label="" value="{!v.maintenanceQuestionnaire.Procedure_to_remove_workshop_scrap__c}"/></p>
+        <p> <lightning:button label="Save"  onclick="{!c.saveRecord}" class="customButton"/></p>
+        <br/><br/>
+    </body>
+</aura:component>

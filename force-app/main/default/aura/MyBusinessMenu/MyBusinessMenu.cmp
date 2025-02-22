@@ -1,0 +1,53 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"
+                access="global" controller="ET_BusinessCommunityController">
+    
+    <aura:attribute name="imagelink" type="String" default="https://drec--drecpoc--c.visualforce.com/resource/1588142494000/DREC_livingRoom"/>
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+     <aura:attribute name="govtSchool" type="Boolean" default="false" />
+    <aura:registerEvent name="appEvent" type="c:MyBusinessEvent"/>
+    <aura:attribute name="selectedItem" type="String" /> 
+    <aura:attribute name="accountRec" type="Object" /> 
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+     <aura:if isTrue="{!v.loaded}">
+      <aura:if isTrue="{! notequals(v.accountRec.RecordType.DeveloperName,'Business_School') }">
+         <lightning:verticalNavigation
+                                  selectedItem="{! v.selectedItem }"
+                                  onselect="{! c.handleSelect }">
+        <lightning:verticalNavigationSection  label="MY BUSINESS" class="listviewdiv">
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Sales Agreement" name="Sales_Agreement" /> </B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Assigned Resources" name="Assign_Resources" /></B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Assigned Vehicles" name="Assign_Vehicles" /> </B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Invoices" name="Invoices" /></B>
+        </lightning:verticalNavigationSection>
+    </lightning:verticalNavigation>
+    </aura:if>
+    <aura:if isTrue="{! and(v.accountRec.RecordType.DeveloperName=='Business_School',
+                     v.accountRec.ETST_Account_Type__c=='Private School')}">
+		 <lightning:verticalNavigation
+                                  selectedItem="{! v.selectedItem }"
+                                  onselect="{! c.handleSelect }">
+        <lightning:verticalNavigationSection  label="MY BUSINESS" class="listviewdiv">
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Sales Agreement" name="Sales_Agreement" /> </B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Assigned Vehicles" name="Assign_Vehicles" /> </B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Assigned Resources" name="Assign_Resources" /></B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Students" name="students" /></B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Invoices" name="Invoices" /></B>
+       
+        </lightning:verticalNavigationSection>
+    </lightning:verticalNavigation>        
+    </aura:if>
+   <aura:if isTrue="{! and(v.accountRec.RecordType.DeveloperName=='Business_School',
+                     v.accountRec.ETST_Account_Type__c=='Government School')}">
+		 <lightning:verticalNavigation
+                                  selectedItem="{! v.selectedItem }"
+                                  onselect="{! c.handleSelect }">
+        <lightning:verticalNavigationSection  label="MY BUSINESS" class="listviewdiv">
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Sales Agreement" name="Sales_Agreement" /> </B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Assigned Vehicles" name="Assign_Vehicles" /> </B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Assigned Resources" name="Assign_Resources" /></B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Students" name="students" /></B>
+        </lightning:verticalNavigationSection>
+    </lightning:verticalNavigation>        
+    </aura:if>
+    </aura:if>
+</aura:component>

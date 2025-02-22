@@ -1,0 +1,20 @@
+<aura:component extends="c:ETST_BilingualCommunity" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes,force:appHostable" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+    <div class="parentClass">
+        <div class="myCaseBackBtn">
+            <lightning:button variant="brand" name="Back" label="{!v.clBack}" 
+                              onclick="{!c.cancelSave}" class="btn_table" />
+        </div>
+        <div class="mobilebackarrow">
+            <a href="" onclick="{!c.cancelSave}">
+                <!--<img src="{!$Resource.backarrow_img}" />-->
+                <span>&#10094;</span>
+            </a>
+        </div>
+        <h2 class="heading"> 3 Easy Steps to Register the Service</h2>
+        <div class="imageClass">
+            <img src="{!$Resource.helpdetail_img}"/>
+        </div>
+    </div>
+    <div class="cleardiv"></div>
+</aura:component>

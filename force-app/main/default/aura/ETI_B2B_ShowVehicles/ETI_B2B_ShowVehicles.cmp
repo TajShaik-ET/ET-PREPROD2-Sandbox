@@ -1,0 +1,72 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_B2B_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="emirate" type="String" />
+    <aura:attribute name="VehicleList" type="List" />
+    <aura:attribute name="VehicleColumns" type="List"/>
+    <aura:attribute name="tablelist" type="List"/>
+    <aura:attribute name="testObj1" type="String"/>
+    <aura:attribute name="vehicleWrapper" type="Object"/>
+    <aura:attribute name="selectedRowsList" type="List" />
+    <aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <aura:attribute name="reSchduleBooking" type="boolean" default="false"/>
+    <aura:attribute name="retestBooking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/>
+    <aura:attribute name="booking" type="ETI_Booking__c" default="[{'sObjectType':'ETI_Booking__c','Name':''}]"/>
+    <aura:attribute name="customerVehicleList" type="ET_Customer_Vehicle__c" default="[{'sObjectType':'ET_Customer_Vehicle__c','Name':''}]"/>
+    <aura:attribute name="bookingWrp" type="Object[]" />
+    <aura:attribute name="isOpenRequestForService" type="boolean" default="false"/> 
+    <aura:attribute name="lstViewChk" type="boolean" default="true"/>
+    <aura:attribute name="gridviewChk" type="boolean" default="false"/>
+    <aura:attribute name="isSelectAll" type="boolean" default="false"/>
+    <aura:attribute name="isSpea" type="boolean" default="false"/>
+	<aura:attribute name="showDetails" type="boolean" default="true" />
+    <aura:attribute name="showSearch" type="boolean" default="false" />
+    <aura:attribute name="searchKeyword" type="String" />
+    <aura:attribute name="myCartVehicleWrapper" type="Object"/>
+    <aura:attribute name="isShowBookingHistory" type="boolean" default="false" />
+    <aura:handler event="c:ETI_B2B_ShowDetails" action="{!c.showDetailsEvent}"/>
+
+    <!--Pagination-->
+    <aura:attribute name="allVehicleData" type="Object"/>
+    <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="totalPages" type="Integer" default="0"/>
+    <aura:attribute name="pageList" type="List"/>
+    <aura:attribute name="totalRecords" type="integer" default="0"/>
+    <aura:attribute name="recordStart" type="integer" default="0"/>
+    <aura:attribute name="recordEnd" type="integer" default="0"/>
+	<aura:attribute name="cartCount" type="integer" default="0"/>
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:registerEvent name="DataEvent" type="c:ETI_DataEvent"/>
+    <aura:handler name="init" value="{!this}" action="{!c.getVehicleDetails}"/>
+    <aura:attribute name="issearching" type="Boolean" default="false"/>
+    
+    <aura:if isTrue="{!v.showDetails}">
+        <aura:if isTrue="{!v.showSearch}">
+            <div class="cart_icon" > 
+                <aura:if isTrue="{!v.cartCount!=0}">
+                	<span>{!v.cartCount}</span>     
+                </aura:if>
+                <c:ETI_B2B_MyCart emirate="{!v.emirate}" cartCount="{!v.cartCount}" showDetails="{!v.showDetails}" vehicleWrapper="{!v.vehicleWrapper}" myCartVehicleWrapper="{!v.myCartVehicleWrapper}" booking="{!v.booking}" isOpenRequestForService="{!v.isOpenRequestForService}"/>
+  			</div>
+            <div class="slds-float_right">
+                <lightning:layoutItem size="12" class="searchBox">
+                    <lightning:input aura:id="searchField"
+                                     label="{!v.Search}" 
+                                     name="{!v.Search}"
+                                     value="{!v.searchKeyword}" variant="label-inline"/>
+                </lightning:layoutItem>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!not(empty(v.vehicleWrapper))}"> 
+            <c:ETI_B2B_ShowVehicleDetails vehicleWrapper="{!v.vehicleWrapper}" searchKeyword="{!v.searchKeyword}" />
+            <aura:set attribute="else">
+                <br></br> <br></br>
+                <div style="{!'position: relative;text-align: center; height: 95vh; background:' + v.backgroundColor + ' no-repeat;background-position: center;background-size: cover;'}">
+                    <div class="nochilddiv animated pulse infinite"> {!v.Add_your_Vehicles_Message} </div>
+                </div>
+                <br></br> <br></br>
+            </aura:set>
+        </aura:if>
+    </aura:if>
+</aura:component>

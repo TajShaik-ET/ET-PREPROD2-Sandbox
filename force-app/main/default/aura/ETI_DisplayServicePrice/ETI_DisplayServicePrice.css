@@ -1,0 +1,91 @@
+/*@font-face {
+font-family: 'Cronos';
+src: url(/resource/ETI_Cronos); 
+}
+.THIS {
+font-family: 'Cronos';
+letter-spacing: .5px;
+}*/
+.THIS .modalContainer{
+    width: 100%;
+    overflow: auto;
+}
+.THIS .slds-modal__container {
+    width: 100%;
+    max-width:70%;
+}
+.THIS .modalContainer table{
+    border: 1px solid #f2f2f2;
+}
+.THIS .modalContainer .slds-table_bordered tbody td{
+    border-top: 1px solid #f2f2f2;    
+    padding: .4rem!important;
+}
+.THIS .modalContainer .slds-table_bordered th {
+    padding: .5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: #d5d5d5;
+    color: #000;
+}
+.THIS .btn_table {
+    font-size: 14px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    background-color: #eb4026;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+}
+.THIS .btn_table:hover {
+    background-color: #333333;
+}
+.THIS .slds-truncate {
+    white-space: break-spaces!important;
+}
+@media only screen and (max-width: 768px) {
+    .THIS .slds-modal__container {
+        width: 100%;
+        max-width: 90%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .slds-modal__container {
+        width: 100%;
+        max-width: 90%;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .btn_table{
+        color: #fff;
+        background: #62cc8c;
+        border: 1px solid #62cc8c;
+        border-radius: 0px;
+        box-shadow: none;
+    }
+    .THIS .btn_table:hover , .THIS .btn_table:active , .THIS .btn_table:focus{
+        color: #62cc8c;
+        background: #fff;
+        border: 1px solid #62cc8c;
+    }
+    .THIS .btn_back{
+        color: #62cc8c;
+        background: #fff;
+        border: 1px solid #62cc8c;
+        border-radius: 0px;
+        box-shadow: none;
+    }
+    .THIS .btn_back:hover , .THIS .btn_back:active , .THIS .btn_back:focus{
+        color: #fff;
+        background: #62cc8c;
+        border: 1px solid #62cc8c;
+    }
+    .THIS .slds-modal__close {
+        top: .7rem;
+    }
+}

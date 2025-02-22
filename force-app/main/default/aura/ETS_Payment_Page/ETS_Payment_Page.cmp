@@ -1,0 +1,14 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<ltng:require scripts="https://paypage-uat.ngenius-payments.com/hosted-sessions/sdk.js" afterScriptsLoaded="{!c.afterScriptsLoaded}" /> 
+    <aura:attribute name="isSDKLoaded" type="Boolean" description="Flag to indicate jquery is loaded"/>
+    <aura:attribute name="processSDKRerendering" type="Boolean" description="Flag to indicate need to process the logic rerender since it is called many times during the component's lifecycle"/>
+    
+    <body>
+        <!--Your website code goes here-->
+        <!--below div will have payment form loaded -->
+        <div id="mount-id">
+           <lightning:button variant="brand" label="check out" title="Brand action" onclick="{! c.handleCheckOut }" />
+        </div>
+        <!--....-->
+    </body>
+</aura:component>

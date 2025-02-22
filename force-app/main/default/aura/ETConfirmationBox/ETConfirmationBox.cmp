@@ -1,0 +1,35 @@
+<aura:component implements="force:appHostable" controller="ET_Common_Util">
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="promptBody" type="string" default=""/>
+    <aura:attribute name="serverAction" type="string" default=""/>
+    <aura:attribute name="header" type="string" default=""/>
+    <aura:attribute name="actionName" type="string" default="Submit"/>
+    
+    <aura:method name="toggleSpinner" action="{!c.toggleSpinner}">
+    </aura:method>
+   <div>
+   </div>
+    <header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
+          <h2 class="slds-text-heading_medium" id="prompt-heading-id">{!v.header}</h2>
+    </header>
+   <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+       <div aura:id="spinner" class="slds-hide" style="height:6rem">
+           <div class="slds-spinner_container">
+               <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                   <span class="slds-assistive-text">Loading</span>
+                   <div class="slds-spinner__dot-a"></div>
+                   <div class="slds-spinner__dot-b"></div>
+               </div>
+           </div>
+       </div>
+       <p>{!v.promptBody}</p>
+    </div>
+    <footer class="slds-modal__footer slds-theme_default">
+        <button class="slds-button slds-button_brand"  onclick="{! c.closeModel }">Cancel</button>
+        <button class="slds-button slds-button_brand" onclick="{! c.cancelPayment }">{!v.actionName}</button>
+    </footer>
+   
+
+    
+</aura:component>

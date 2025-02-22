@@ -1,0 +1,359 @@
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf"
+           standardStylesheets="false" applyHtmlTag="false" controller="ETST_InvoiceController">
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.ETST_Invoice,'css/invoice.css')}"/>-->
+    <apex:pageBlock rendered="{!NOT($ObjectType.Invoice__c.accessible) }" >
+        <style type="text/css">
+            
+        </style>
+        <p> You dont have access to this record. Please contact Administrator </p>
+    </apex:pageBlock>
+    
+    <div style="padding: 0rem;">
+        <div style="position: relative;display: block;clear: both;width: 100%;font-size:13px;
+                    font-family:sans-serif;">
+            <div style="width: 33.33%;display: inline-block;float: left;">
+                <div style="padding-right:5%;">
+                  <!--  <strong> {!invoiceAddress.Line_1__c}</strong><br/>
+                    {!invoiceAddress.Line_2__c}<br/>
+                    {!invoiceAddress.Line_3__c}<br/>
+                    Tel : {!invoiceAddress.Line_4__c} Fax : {!invoiceAddress.Line_5__c}<br/>
+                    <strong>TRN: {!invoiceAddress.Line_6__c}</strong> -->
+                    <strong>United Arab Emirates The Emirates General Transport and Services Company</strong><br/>
+                    Head Office, Al Rashidiya, Al Ramool<br/>
+                    P.O Box 5757, Dubai, U.A.E<br/>
+                    Tel : 04-2854444 Fax : 04-2854584<br/>
+                    <strong>TRN: 100073675900003</strong>
+                </div>
+            </div>
+            <div styleClass="center_section" style="width: 33.33%;display: inline-block;float: left;text-align:center;">
+                <apex:image style="height: 50px;"
+                            url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/logo.png')}"/>                
+            </div>
+            <div style="width: 33.33%;display: inline-block;float: left;text-align:right;">
+                <div style="padding-left:5%;">
+                    <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/header1.PNG')}" style="width:200px;text-align:right" />
+                    P.O Box 5757, Dubai, U.A.E<br/>
+                    04-2854444 : <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/header2.PNG')}" style="height: 14px;text-align: right;margin-top:2px" /> 
+                    <br/>
+                    04-2854584 : <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/header3.PNG')}" style="height:14px;text-align:right;margin-right:2px" /><br/>
+                </div>
+            </div>  
+        </div>
+        <br/><br/><br/><br/>   
+       <div style="position: relative; display:block; clear: both; width: 100%; font-size:13px;">
+    <h3 style="float: none; display: block; margin: auto; width: 100%; text-align: center; font-weight:normal; margin-top:20px;">
+        <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c == 'Payment success'}">
+            <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/Incometext.PNG')}" style="height:19px;" />
+        </apex:outputText>
+        <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c == 'Payment Success-In Review'}">
+            <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/Incometext.PNG')}" style="height:19px;" />
+        </apex:outputText>
+        <apex:outputText rendered="{!AND(invoiceList[0].Service_Request__r.ETST_Status__c != 'Payment success', invoiceList[0].Service_Request__r.ETST_Status__c != 'Payment Success-In Review')}">
+            <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/Testing.png')}" style="height:26px;" />
+        </apex:outputText>
+    </h3>
+    <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c == 'Payment success'}">
+        <h2 style="float: none; display: block; margin: auto; width: 100%; text-align: center;">
+            Tax Invoice
+        </h2>
+    </apex:outputText>
+           <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c == 'Payment Success-In Review'}">
+        <h2 style="float: none; display: block; margin: auto; width: 100%; text-align: center;">
+            Tax Invoice
+        </h2>
+    </apex:outputText>
+         <apex:outputPanel rendered="{!AND(invoiceList[0].Service_Request__r.ETST_Status__c != 'Payment success', invoiceList[0].Service_Request__r.ETST_Status__c != 'Payment Success-In Review')}">
+    <h2 style="float: none; display: block; margin: auto; width: 100%; text-align: center;">
+        Proforma Invoice
+    </h2>
+</apex:outputPanel>
+
+
+    <!--<apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c!= 'Payment success'}">
+        <h2 style="float: none; display: block; margin: auto; width: 100%; text-align: center;">
+            Quotation
+        </h2>
+    </apex:outputText>-->
+    
+</div>
+
+        <div style="position: relative;display:block;clear: both;width: 100%;font-size:12px;font-family:sans-serif;margin-top:20px;">
+            <table style="width:100%;">                        
+                <tbody>
+                    <tr>
+                        <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c== 'Payment success'}">
+                            <td style="width:15%;"><strong>Invoice No </strong></td>
+                        </apex:outputText>
+                        
+                        <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c == 'Payment Success-In Review'}">
+                            <td style="width:15%;"><strong>Invoice No </strong></td>
+                        </apex:outputText>
+                        
+                        <apex:outputText rendered="{!AND(invoiceList[0].Service_Request__r.ETST_Status__c != 'Payment success', invoiceList[0].Service_Request__r.ETST_Status__c != 'Payment Success-In Review')}">
+                            <td style="width:15%;"><strong>Proforma Invoice No </strong></td>
+                        </apex:outputText>
+                       <!-- <td style="width:15%;"><strong>Proforma Invoice No </strong></td>-->
+                        <td style="width:25%;">: {!invoiceList[0].Name}</td>
+                        <td style="width:15%; ">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/invoiceno.PNG')}" style="height:14px;padding-right: 10px;float: right;"/></td>
+                        <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c== 'Payment success'}">
+                            <td style="width:15%;"><strong>Invoice Date </strong></td>
+                        </apex:outputText>
+                        
+                        <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c == 'Payment Success-In Review'}">
+                            <td style="width:15%;"><strong>Invoice Date </strong></td>
+                        </apex:outputText>
+                        
+                        <apex:outputText rendered="{!AND(invoiceList[0].Service_Request__r.ETST_Status__c != 'Payment success', invoiceList[0].Service_Request__r.ETST_Status__c != 'Payment Success-In Review')}">
+                            <td style="width:15%;"><strong>Proforma Invoice Date </strong></td>
+                        </apex:outputText>
+                       <!-- <td style="width:15%;"><strong>Proforma Invoice Date </strong></td>-->
+                        <td style="width:15%;">: <apex:outputText value="{0, date, dd-MM-yyyy}">
+                            <apex:param value="{!invoiceList[0].CreatedDate}" /> 
+                            </apex:outputText> </td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/invoicedate.PNG')}" style="height:14px;padding-right: 5px;float: right;"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width:15%;"><strong>Student Name</strong></td>
+                        <td style="width:25%;">: {!invoiceList[0].Service_Request__r.ETST_Student_Name__c}</td>
+                        <td style="width:15%; ">: <apex:image url="{!$Resource.studentname_img}" style="height:14px;padding-right: 10px;float: right;"/></td>
+                       <td style="width:15%;"><strong>Customer Ref</strong></td>
+                        <td style="width:30%;" colspan="5">: {!invoiceList[0].Service_Request__r.Name}</td>
+                        
+                    </tr>
+                  <!--  <tr>
+                        <td style="width:15%;"><strong>Customer Code </strong></td>
+                        <td style="width:25%;">: 562750</td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/customercode.PNG')}" style="height:12px;padding-right: 10px;float: right;"/></td>
+                        <td style="width:15%;"><strong>Agreement No </strong></td>
+                        <td style="width:15%;">: 213669</td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/agreementno.PNG')}" style="height:14px;padding-right: 5px;float: right;"/></td>
+                    </tr> -->
+                    <tr>
+                        <td style="width:15%;"><strong>School Name </strong></td>
+                        <td style="width:25%;">: {!schoolName}</td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/customername.PNG')}" style="height:14px;padding-right: 10px;float: right;"/></td>
+                        <td style="width:15%;"><strong>Address</strong></td>
+                        <td style="width:20%;">: {!address}</td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/address.PNG')}" style="height:14px;padding-right: 10px;float: right;"/></td>
+                        <!-- <td style="width:15%;"><strong>Activity </strong></td>
+                        <td style="width:15%;">: Rental</td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/activity.PNG')}" style="height:14px;padding-right: 5px;float: right;"/></td>
+                       -->
+                    </tr>
+                   <!-- <tr>
+                        <td style="width:15%;"><strong>Address</strong></td>
+                        <td style="width:25%;">: {!address}</td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/address.PNG')}" style="height:14px;padding-right: 10px;float: right;"/></td>
+                        <td style="width:15%;"><strong>For the Year </strong></td>
+                        <td style="width:15%;">: 2020</td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/fortheyear.PNG')}" style="height:12px;padding-right: 5px;float: right;"/></td>
+                    </tr> -->
+                  <!--  <tr>
+                        <td style="width:15%;"><strong>Customer TRN</strong></td>
+                        <td style="width:25%;">: </td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/customertrn.PNG')}" style="height:14px;padding-right: 10px;float: right;"/></td>
+                        <td style="width:15%;"><strong>For the Month </strong></td>
+                        <td style="width:15%;">: September</td>
+                        <td style="width:15%;">: <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/forthemonth.PNG')}" style="height:14px;padding-right: 5px;float: right;"/></td>
+                    </tr> -->
+                     
+                </tbody> 
+            </table> 
+        </div>
+        
+        <div style="position: relative;display:block;clear: both;width: 100%;font-size:11px;font-family:sans-serif;margin-top:20px;">
+            <table style="width:100%;border: trasprant;border-collapse: collapse;font-size:11px;">
+                <thead style="background:#f2f2f2;">
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table1.PNG')}" style="height:14px;"/>
+                        SI#
+                    </th>
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table2.PNG')}" style="height:14px;"/>
+                        Particulars
+                    </th>
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table3.PNG')}" style="height:14px;"/>
+                        Period From
+                    </th>
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table4.PNG')}" style="height:14px;"/>
+                        Period To
+                    </th>
+                   <!-- <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table5.PNG')}" style="height:14px;"/>
+                        Rent Type
+                    </th>
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table6.PNG')}" style="height:14px;"/>
+                        Qty
+                    </th> -->
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table7.PNG')}" style="height:14px;"/>
+                        Price
+                    </th>
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table8.PNG')}" style="height:14px;"/>
+                        Discount
+                    </th>
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table9.PNG')}" style="height:24px;"/>
+                        Taxable Amt (AED)
+                    </th>
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table10.PNG')}" style="height:24px;"/>
+                        VAT Rate
+                    </th>
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table11.PNG')}" style="height:14px;"/>
+                        VAT Amt (AED)
+                    </th>
+                    <th style="border: .5px solid #000000;padding:2px;text-align: center;font-weight:normal;">
+                        <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/table12.PNG')}" style="height:14px;"/>
+                        Amount (AED)
+                    </th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">1</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">Transportation Charges </td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;"><apex:outputText value="{0, date, dd-MMM-yyyy}">
+                        <apex:param value="{!invoiceList[0].Service_Request__r.ETST_Pick_Up_Start_Date__c}" /> 
+                        </apex:outputText></td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;"><apex:outputText value="{0, date, dd-MMM-yyyy}">
+                        <apex:param value="{!invoiceList[0].Service_Request__r.ETST_Pick_Up_End_Date__c}" /> 
+                        </apex:outputText></td>
+                      <!--  <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">With Driver +Fuel</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">1</td> -->
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">0.00</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">0</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">{!invoiceList[0].Total_Inv_Amount__c}</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">NA</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">0.00</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;" align="right"> {!invoiceList[0].Total_Inv_Amount__c}</td>
+                    </tr>
+                  <!--  <tr>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">2</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">Transportation Charges </td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">24-Sep-2020</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">24-Sep-2020</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">With Driver +Fuel</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;" >1</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">1,000.00</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">0</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">1,000.00</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">NA</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">0.00</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;" align="right"> 1,000.00</td>
+                    </tr> 
+                    <tr>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">3</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">Transportation Charges </td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">25-Sep-2020</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">25-Sep-2020</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">With Driver +Fuel</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">2</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">2,000.00</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">0</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">2,000.00</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">NA</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;text-align: center;">0.00</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;" align="right"> 2,000.00</td>
+                    </tr> -->
+                    <tr>
+                        <td style="border: .5px solid #000000;padding:2px 5px;" colspan="6" align="right">
+                            <span style="float:left;font-size:14px;font-weight:bold;">Total- (AED)</span>
+                            <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/total.PNG')}" style="height:16px;"/>
+                        </td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;" align="right"><strong>{!invoiceList[0].Total_Inv_Amount__c}</strong></td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;" align="right"></td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;" align="right">0.00</td>
+                        <td style="border: .5px solid #000000;padding:2px 5px;" align="right"> <strong>{!invoiceList[0].Total_Inv_Amount__c}</strong></td>
+                    </tr>
+                </tbody> 
+            </table> 
+        </div>
+        
+        <div style="position: relative;display:block;clear: both;width: 100%;font-size:12px;font-family:sans-serif;margin-top:20px;">
+            <div style="float:left;display: inline-block;width: 50%;margin-top: 30px;font-size:11px;margin-bottom: 0px;font-weight: normal;position: relative;">
+                <strong>
+                    Telephone : 04-2090975<br/><br/>
+                    Payment Due Date :  <strong><apex:outputText value="{0, date, dd-MM-yyyy}">
+                        <apex:param value="{!dueDate}" /> 
+                        </apex:outputText></strong><br/><br/>
+                   <apex:outputPanel rendered="{!!IF( OR(CONTAINS(schoolName,'Diyar'),CONTAINS(schoolName,'Aldar')), true, false)}">
+                    IBAN NO : AE060260001012002820201 With Emirates NBD
+                   </apex:outputPanel>
+                </strong>
+            </div>
+           
+            <div style="display: inline-block;width: 50%;margin-top: 20px;font-size:11px;margin-bottom: 0px;
+                        font-weight: normal;position: relative;text-align:right;">
+                <!--<apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/footer1.PNG')}" style="height:40px;float:right;margin-bottom:10px;"/>-->
+                <div style="display: block;width: 100%;margin-top: 10px;font-size:11px;margin-bottom: 0px;
+                            clear:both;position: relative;text-align:right;">
+                    <span><strong>04-2090975 : </strong></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/footer2.PNG')}" style="height:14px;float:right"/>
+                </div>
+                <div style="display: block;width: 100%;margin-top: 10px;font-size:11px;margin-bottom: 0px;
+                            clear:both;position: relative;text-align:right;">
+                    <strong><apex:outputText value="{0, date, dd-MM-yyyy}">
+                        <apex:param value="{!dueDate}" /> 
+                        </apex:outputText></strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                   <!-- <span><strong>30-09-2020 : </strong></span>&nbsp;&nbsp;&nbsp;&nbsp; -->
+                    <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/footer3.PNG')}" style="height:14px;float:right"/>
+                </div>
+            </div>
+        </div>
+        
+        <apex:outputpanel rendered="{!!IF(CONTAINS(schoolName,'Diyar'), true, false)}">
+        
+        <div style="position: relative;display:block;clear: both;width: 100%;font-size:12px;font-family:sans-serif;">
+            <div style="display: inline-block;width: 45%;margin-top: 100px;font-size:11px;margin-bottom: 0px;
+                        font-weight: normal;position: relative;text-align:right;float:right">
+                <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/footer4.PNG')}" style="height:18px;float:right;margin-bottom:0px;"/>
+                <div style="display: block;width: 100%;margin-top: 10px;font-size:13px;margin-bottom: 0px;
+                            clear:both;position: relative;text-align:right;">
+                    <span><strong>(For The Emirates General Transport and Services)
+                        </strong></span>
+                </div>
+                <div style="width: 100%;display: block;height: 50px;border-bottom: 2px dotted #000;">                    
+                </div>
+                <div style="display: block;width: 100%;margin-top: 10px;font-size:13px;margin-bottom: 0px;
+                            clear:both;position: relative;text-align:center;">
+                    <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/footer5.PNG')}" style="height:18px;margin:auto;display:block;margin-left:42%;"/>
+                    <span style="width: 100%;text-align: center;position: relative;margin: auto;display: block;"><strong>(Finance Manager)</strong></span>
+                </div>
+            </div>
+        </div>
+        
+            </apex:outputpanel>
+        <table class="detailList" cellpadding="1" cellspacing="0" border="0">
+            <tr>
+                <td colspan="2">
+                    <div style="border: 1px solid #ccc; padding: 3px; font-size:12px;font-family:sans-serif;margin-top:20px;"><!-- background-color: #f9f9f9; -->
+                        <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c == 'Payment success'}">
+                               <strong>Note:</strong> For bank transfers, please include the customer reference number in the remarks.
+                        </apex:outputText>
+                        <apex:outputText rendered="{!invoiceList[0].Service_Request__r.ETST_Status__c!= 'Payment success'}">
+                                <strong>Note:</strong> For bank transfers, please ensure that you include the customer reference number mentioned above in the transaction details. This will allow our accounts team to verify your payment.
+                        </apex:outputText>
+                                                
+                    </div>
+                </td>
+            </tr>
+            
+        </table>
+        <apex:outputPanel rendered="{!IF(CONTAINS(schoolName,'Diyar'), true, false)}">
+            <div style="position: relative;display:block;clear: both;width: 100%;font-size:12px;font-family:sans-serif;">
+            <div style="display: inline-block;width: 100%;margin-top: 100px;font-size:11px;margin-bottom: 0px;
+                        font-weight: normal;position: relative;">
+            <div style="display: block;width: 100%;margin-top: 10px;font-size:13px;margin-bottom: 0px;
+                            clear:both;position: relative;text-align:center;">
+                    <span><strong>This is a computer-generated document that is certified, official &amp; does not require any signature or stamp of
+Emirates Transport.
+                        </strong></span>
+                </div></div></div>
+        </apex:outputPanel>
+    </div>
+</apex:page>

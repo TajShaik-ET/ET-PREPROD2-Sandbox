@@ -1,0 +1,772 @@
+/*New css home page start*/
+.THIS.homecontainer{
+    /*margin-top: -4.5rem;*/
+}
+.THIS .menumaindiv{
+    position: relative;
+    z-index: 1;
+}
+.THIS .top_links_section {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0px;
+}
+.THIS .top_links_section .bg_newimg ,
+.THIS .exploreservices_section .bg_newimg{
+    width: 100%;
+}
+.THIS .business_link_section{
+    position: absolute;
+    width: 90%;
+    display: block;
+    margin: 0 5%;
+    bottom: 0%;
+    text-align: center;
+    z-index: 1;
+}
+.THIS .business_link_section .business_link {
+    width: 20%;
+    display: inline-block;
+    background: transparent;
+    padding: 1rem 0;
+    cursor: pointer;
+    transition: all .4s;
+}
+.THIS .business_link_section .business_link:hover{
+    background:#8e6b1a!important;
+}
+.THIS .business_link_section .business_link img{
+    width:50px;
+    height: 50px;
+    margin-bottom: 1rem;
+}
+.THIS .business_link_section .business_link .centerimg{
+    width: 35px!important;
+}
+.THIS .business_link_section .business_link h4 {
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+.THIS .centerbox{
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+}
+.THIS .insight_section {
+    position: relative;
+    background: #fff;
+    display: block;
+    width: 100%;
+    padding: 5%;
+    overflow: hidden;
+}
+.THIS .insight_section img.Insights_img_new {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+}
+.THIS .all_insights {
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+    margin-top: 2rem;
+}
+.THIS .insight_section p.heading_new {
+    font-size: 34px;
+    font-weight: bold;
+    color: #000000;
+    padding: 1rem 0 0.5rem;
+    border-bottom: 2px solid #000;
+    display: inline;
+}
+.THIS .insight_section .listbox_new {
+    position: relative;
+    display: inline-block;
+    width: 20%;
+}
+.THIS .insight_section .listbox_new label.righttext {
+    display: block;
+    color: #00C198;
+    font-size: 60px;
+    font-weight: bold;
+    float: left;
+    width: 100%;
+}
+.THIS .insight_section .listbox_new label.lefttext {
+    color: #000000;
+    font-size: 16px;
+}
+
+.THIS .exploreservices_section {
+    position: relative;
+    display: block;
+    clear: both;
+    width: 100%;
+}
+.THIS .exploreservices_section .sub_heading{
+    position: absolute;
+    top: 13%;
+    left: 5%;
+    font-size: 28px;
+    color: #fff;
+    line-height: 1;
+}
+.THIS .exploreservices_section p.heading_new {
+    position: absolute;
+    top: 18%;
+    left: 5%;
+    font-size: 56px;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+}
+.THIS .allservices_new{
+    position: absolute;
+    z-index: 1;
+    right: 0%;
+    top: 50%;
+    width: 40%;
+    transform: translate(0%, -50%);
+}
+.THIS .allservices_new .servicedetail_new {
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+    padding: 4.5rem 0 1.5rem;
+    background: #000;
+    cursor: pointer;
+}
+.THIS .allservices_new .service_white{
+    background: #fff;
+}
+.THIS .servicedetail_new .lefttext img{
+    width: 70px;
+    height: 48px;
+}
+.THIS .servicedetail_new .righttext {
+    font-size: 16px;
+    padding: 2rem 0;
+    color: #fff;
+    font-weight: bold;
+}
+.THIS .servicedetail_new .text_black{
+    font-size: 16px;
+    padding: 2rem 0;
+    font-weight: bold;
+    color: #000;
+}
+.THIS .emirates_transport_section {
+    position: relative;
+    display: block;
+    width: 100%;
+    background: #fafafa;
+    padding: 5%;
+}
+.THIS .emirates_transport_section  h1 {
+    text-align: center;
+    color: #000000;
+    font-size: 32px;
+    font-weight: bold;
+}
+.THIS .et_news {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin-top: 2rem;
+}
+.THIS .news_item {
+    position: relative;
+    display: inline-block;
+    width: 31.33%;
+    margin: 1%;
+    /*background: #fff;
+    box-shadow: 0px 0px 20px #dcdcdc;*/
+    border-radius: 10px;
+    box-shadow: 1px 10px 6px -5px #9c9c9c;
+}
+.THIS .news_item img.news_img {
+    width: 35%;
+    position: relative;
+    display: inline-block;
+    float: left;
+    /*margin-top:1rem; 
+    margin-left:4%;
+    margin-bottom:1rem;
+    border-radius: 10px;*/
+    object-fit: cover;
+    height:90px;
+}
+.THIS .news_item .news_heading {
+    position: relative;
+    color: #000;
+    padding: 1rem;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+    max-width: 61%;
+    line-height: 1.2;
+    height: 55px;
+    margin: 0 auto;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.THIS .news_item .news_date {
+    color: #B0B0B0;
+    padding: 0rem 1rem 0rem;
+    font-size: 12px;
+    text-align: right;
+}
+/*footer css start*/
+.THIS .footer_section {
+    background: #000;
+    padding: 1rem 5%;
+    position: relative;
+    display: flow-root;
+}
+.THIS .footer_section .copytext {
+    font-size: 12px;
+    color: #fff;
+    float: right;
+    padding-top: 4px;
+}
+.THIS .footer_section .social_links {
+    position: relative;
+    width: 50%;
+    display: inline-block;
+}
+.THIS .footer_section .social_links a {
+    padding: 0 1rem;
+}
+.THIS .footer_section .social_links a img{
+    width: 20px;
+    height: 20px;
+}
+/*footer css end*/
+/*New css home page end*/
+
+/*old css Start*/
+.THIS .dashboardmenu{
+    width: 100%;
+    margin: auto;
+    float: left;
+    display: inline-block;
+    margin-bottom: .5rem;
+}
+.THIS.serachbox{
+    display: inline-block;
+    width: 38%;
+    background: #ccc;
+    background: hsl(0 0% 0% / 0.1);
+    margin: 4.4rem .6%;
+    height: 40px;
+    text-align: center;
+    line-height: 40px
+}
+.THIS .statusdiv{
+    text-align: center;
+    width: 14%;
+    height: 155px;
+    margin: 1% 0% 1% 1%;
+    vertical-align: middle;
+    position: relative;
+    display: inline-block;
+    /* background:#ffffff;*/
+    padding:30px 10px;
+    background: hsl(0 0% 0% / 0.1);
+    /* border-radius: 10px;*/
+}
+/*.THIS .statusdiv:hover{
+transform: scale(1.1);
+}*/
+.THIS .slds-text-heading_large , .THIS .slds-text-heading--large {
+    font-size: 2.5rem;color: #FFF;
+    font-weight:600;
+}
+.THIS .slds-text-heading_large a, .THIS .slds-text-heading--large a{
+    font-size: 2.5rem;    
+    color: #967000;    
+}
+.THIS .slds-text-heading_large a:hover, .THIS .slds-text-heading--large a:hover{
+    font-size: 2.5rem;
+    color: #967000; 
+    text-decoration: none;
+}
+.THIS .slds-tabs_default__nav, .THIS .slds-tabs--default__nav {
+    border-bottom: 1px solid #f2f2f2;
+}
+.THIS .statusdiv:first-child {
+    margin: 1% 0% 1% 0%;
+}
+.THIS .headspan{
+    position: absolute;
+    font-size: 12px;
+    bottom: 0;
+    left: 0;
+    color: rgb(255 255 255 / 0.8);
+    background: rgb(0 0 0 / 27%);
+    padding: .5rem .1rem;
+    height: 46px;
+    overflow: hidden;
+    width: 100%;
+    line-height: 30px;
+}
+.THIS .valuespan{
+    padding-top:2px;
+}
+
+.THIS .statusdiv a{
+    text-decoration: none;
+    color: #555;
+}
+.THIS .statusdiv a:hover{
+    text-decoration: none;
+    color: #555;
+}
+.THIS.serachbox span{
+    float: left;
+    padding-left: 15px;
+}
+.THIS .serachbtn{
+    float: right;
+    margin: auto;
+    padding: 0px 16px;
+    line-height: 40px;
+    color: #fff;
+    background: #806100;
+    border: none;
+    outline: none;
+}
+.THIS .dashboardmenu .slds-grid .slds-col {
+    width: 19%;
+    display: inline-block;
+    margin: 0% .5% 1% .5%;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 1rem;
+    transition: .4s all;
+    box-shadow: 0 8px 6px -6px #9c9c9c;
+}
+.THIS .dashboardmenu .slds-grid .slds-col:hover{
+    background:#2e2a2b!important;
+}
+.THIS .dashboardmenu .slds-grid .slds-col:hover .leftsectiondiv img {
+    filter: grayscale(1);
+}
+.THIS .dashboardmenu .slds-grid .slds-col:hover .numberSize ,
+.THIS .dashboardmenu .slds-grid .slds-col:hover .form-title{
+    color:#fff;
+}
+.THIS .dashboardmenu .slds-grid .slds-col .rightsectiondiv {
+    display: inline-block;
+    width: 100%;
+    float: left;
+    padding: 0;
+    height: 100%;
+}
+.THIS .dashboardmenu .slds-grid .slds-col .numberSize img {
+    float: left;
+    width: 36px;
+    height: 36px;
+}
+.THIS .dashboardmenu .slds-grid .slds-col .numberSize {
+    text-align: right;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 28px;
+    padding-bottom: 5px;
+}
+.THIS .dashboardmenu .slds-grid{
+    width: 100%;
+    display: inline-block;
+    position:relative;
+    clear: both;
+    margin-top: 2rem;
+}
+.THIS .dashboardmenu .slds-grid .slds-col .form-title {
+    color: #000;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 0 0 0;
+}
+
+/*old css end*/
+.THIS .explore_service {
+    position: relative;
+    display: flex;
+    margin-top: 0rem;
+}
+.THIS .explore_service .left_div {
+    position: relative;
+    width: 50%;
+    background: #f0f0f0;
+    display: flex;
+    float: left;
+}
+.THIS .explore_service .left_div:before {
+    content: "";
+    position:absolute ;
+    top: 0%;
+    left:0%;
+    bottom:0%;
+    right:0%;
+    background-color: rgba(0,0,0,0.5);;
+}
+.THIS .explore_service .left_div img{
+    width: 100%;
+    height: 100%;
+}
+.THIS .explore_service .right_div{
+    position: relative;
+    width: 50%;
+    padding: 3rem 2em 3.5rem 4rem;
+    background: rgb(142, 107, 26);
+    display: list-item;
+    float: left;
+    overflow: hidden;
+}
+.THIS .explore_service .right_div .items{
+    font-size: 14px;
+    padding: .76rem 0rem;
+    position: relative;
+    font-weight: bold;
+    color: #fff;
+    border-bottom: 1px solid #ccc;
+    width: 300px;
+    display: table;
+    cursor: pointer;
+    line-height:24px;
+}
+.THIS .explore_service .right_div .items img{
+    width: 24px;
+    height: 24px;
+    filter: revert;
+    float: left;
+    display: inline-block;
+    position: relative;
+}
+.THIS .explore_service .right_div .items img.imginvers{
+    filter: invert(1)!important;
+}
+.THIS .explore_service .right_div .items span{
+    float: left;
+    display: inline-block; 
+    padding-left: 10px;
+}
+.THIS .explore_service .right_div .topheading{
+    color: #fff;
+    font-size: 28px;
+    float: right;
+    font-weight: bold;
+    padding-right: 3rem;
+    width: 100%;
+    text-align: right;
+    padding-bottom: 1rem;
+}
+.THIS .explore_service .right_div img{
+    position: absolute;
+    right: 0;
+    top: 0%;
+    width: 73%;
+}
+.THIS .explore_service .right_div a{
+    display: block;
+    position: relative;
+    clear: both;
+    width: 45%;
+    color: #000;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f28b65;
+}
+.THIS .explore_service .right_div a:last-child{
+    padding: 1rem 0 0 0;
+    border-bottom: 0px solid #f28b65;
+}
+.THIS .subtext {
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    display: block;
+    left: 50%;
+    top: 50%;
+    font-size: 32px;
+    font-weight: bold;
+    /* text-align: center; */
+    transform: translate(-50%, -50%);
+}
+.THIS a.etmoto_btn {
+    position: absolute;
+    top: 63%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000;
+    padding: .5rem 1rem;
+    color: #fff;
+    border: 1px solid #fff;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS.homecontainer{
+        margin-top: 0rem;
+    }
+    .THIS .allservices_new .servicedetail_new {
+        padding: 2rem 0 0rem;
+    }
+    .THIS .insight_section img.Insights_img_new {
+        width: 55%;
+    }
+    .THIS .news_item .news_heading{
+        height:47px;
+        padding: 0rem 0rem 0 1rem;
+        line-height: inherit;
+    }
+    .THIS .insight_section .listbox_new {
+        width: 23%;
+    }
+}
+@media only screen and (max-width: 992px) {
+    .THIS .business_link_section .business_link {
+        width: 25%;
+        padding: 1rem 0;
+    }
+    .THIS .insight_section img.Insights_img_new {
+        width: 60%;
+    }
+    .THIS .insight_section .listbox_new {
+        width: 25%;
+    }
+    .THIS .allservices_new {
+        width: 50%;
+    }
+    .THIS .exploreservices_section p.heading_new {
+        top: 21%;
+    }
+    .THIS .servicedetail_new .righttext ,
+    .THIS .servicedetail_new .text_black{
+        padding: 1rem 0 2rem;
+    }
+    .THIS .news_item .news_heading {
+        height: 36px;
+        font-size: 14px;
+    }
+    .THIS .subtext {
+        font-size: 24px;
+    }
+    .THIS .dashboardmenu .slds-grid .slds-col {
+        min-height: 105px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .exploreservices_section p.heading_new {
+        font-size: 42px;
+    }
+    .THIS .insight_section {
+        padding: 8% 5%;
+    }
+    .THIS .insight_section img.Insights_img_new {
+        width: 78%;
+    }
+    .THIS .emirates_transport_section {
+        padding: 4rem 5%;
+    }
+    .THIS .insight_section .listbox_new label.righttext {
+        font-size: 48px;
+    }
+    .THIS .insight_section .listbox_new {
+        width: 31.33%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .insight_section {
+        position: inherit;
+    }
+    .THIS .insight_section img.Insights_img_new{
+        display: none;
+    }
+    .THIS .insight_section .listbox_new label.righttext {
+        font-size: 52px;
+    }
+    .THIS .servicedetail_new .lefttext img {
+        width: 70px;
+        height: 48px;
+    }
+    .THIS .allservices_new .servicedetail_new {
+        padding: 1rem 0 0;
+    }
+    .THIS .servicedetail_new .righttext, 
+    .THIS .servicedetail_new .text_black {
+        padding: 1rem 0 1rem;
+        font-size: 14px;
+    }
+    .THIS .news_item .news_heading{
+        font-size: 13px;
+        height: 54px;
+    }
+    .THIS .footer_section {
+        padding: 1rem 5%;
+    }
+    .THIS .business_link_section .business_link h4 {
+        font-size: 12px;
+    }
+    .THIS .insight_section .listbox_new {
+        width: 31.33%;
+    }
+    .THIS .business_link_section .business_link {
+        width: 25%;
+        padding: .5rem 0;
+    }
+    .THIS .explore_service {
+        display: block;
+    }
+    .THIS .explore_service .left_div ,
+    .THIS .explore_service .right_div{
+        width: 100%;
+    }
+    .THIS .news_item {
+        width: 48%;
+        margin: 1%;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .THIS .business_link_section .business_link {
+        width: 25%;
+        padding: .5rem 0;
+        text-transform: capitalize;
+        background: #85735b;
+        min-height: 90px;
+        float: left;
+    }
+    .THIS .business_link_section .business_link img {
+        width: 36px;
+        height: 36px;
+        margin-bottom: .5rem;
+    }
+    .THIS .business_link_section .business_link .centerimg {
+        width: 26px!important;
+        height: 36px!important;
+    }
+    .THIS .business_link_section .business_link h4 {
+        font-size: 12px;
+    }
+    .THIS .insight_section {
+        padding: 18% 5% 5%;
+        position: inherit;
+        overflow: hidden;
+    }
+    .THIS .insight_section p.heading_new {
+        font-size: 24px;
+    }
+    .THIS .insight_section .listbox_new label.righttext {
+        font-size: 36px;
+    }
+    .THIS .insight_section .listbox_new label.lefttext {
+        font-size: 14px;
+        font-weight: bold;
+        font-weight: bold;
+        min-height: 40px;
+        display: block;
+    }
+    .THIS .insight_section .listbox_new {
+        margin-bottom: 2rem;
+        min-height: 210px;
+        float: left;
+        padding: 1rem;
+    }
+    .THIS .insight_section .listbox_new .casesimg {
+        width: 64px;
+        height: 64px;
+        margin: 1rem 0;
+    }
+    .THIS .allservices_new {
+        width: 90%;
+        right: 5%;
+        top: 100%;
+    }
+    .THIS .allservices_new .servicedetail_new {
+        width: 25%;
+        padding: 1rem 0 0;
+        border-right: 1px solid #000;
+        height: 115px;
+        display: inline-block;
+        float: left;
+    }
+    .THIS .servicedetail_new .lefttext img {
+        width: 36px;
+        height: 36px;
+    }
+    .THIS .servicedetail_new .righttext, 
+    .THIS .servicedetail_new .text_black {
+        padding: 1rem 0.5rem;
+        font-size: 12px;
+    }
+    .THIS .exploreservices_section .sub_heading {
+        font-size: 16px;
+    }
+    .THIS .exploreservices_section p.heading_new {
+        font-size: 24px;
+        top: 24%;
+    }
+    .THIS .emirates_transport_section {
+        padding: 3rem 5%;
+    }
+    .THIS .emirates_transport_section h1 {
+        font-size: 24px;
+    }
+    .THIS .et_news {
+        margin-top: 1rem;
+    }
+    .THIS .news_item {
+        width: 100%;
+        margin: 0%;
+        margin-bottom: 1rem;
+    }
+    .THIS .news_item .news_heading{
+        font-size: 15px; 
+    }
+    .THIS .business_link_section {
+        top: 70%;
+        z-index: 0;
+    }
+    .THIS .footer_section .social_links {
+        width: 100%;
+        text-align: center;
+    }
+    .THIS .footer_section .copytext {
+        float: none;
+        padding-top: 1rem;
+        text-align: center;
+    }
+    .THIS .footer_section {
+        padding: 1rem 5%;
+    }
+    .THIS .business_link_section .business_link h4 {
+        font-size: 10px;
+    }
+    .THIS .news_item .news_heading {
+        font-size: 13px;
+        height: 60px;
+    }
+    .THIS .subtext {
+        font-size: 20px;
+        top: 45%;
+    }
+    .THIS .explore_service .right_div{
+        padding: 3rem 2em;
+    }
+    .THIS .explore_service .right_div .topheading {
+        font-size: 24px;
+        padding-right: 0rem;
+    }
+    .THIS .dashboardmenu .slds-grid .slds-col{
+        width: 48%;
+        margin: 0% 1% 3% 1%;
+    }
+}
+/*End New CSS*/

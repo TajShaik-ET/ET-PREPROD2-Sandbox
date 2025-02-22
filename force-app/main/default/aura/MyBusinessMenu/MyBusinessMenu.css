@@ -1,0 +1,94 @@
+.THIS .listviewdiv{
+    background: #a77a26;
+    padding: 10px;
+    height: 370px;
+}
+.THIS .listviewdiv h2{
+    text-align: left;
+    font-weight: 500;
+    padding: 7px 5px;
+    font-size: 18px;
+    color: #fafafa;
+    border-bottom: 1px solid rgb(255 255 255 / 26%);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+.THIS .lightningVerticalNavigationSection div[role=list] {
+    list-style: none;
+}
+.THIS .slds-nav-vertical__action {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: .5rem;
+    color: #ffffff;
+    /*  border-top: 1px solid transparent;
+    border-bottom: 1px solid #f2f2f2; */
+    border-radius: 0;
+    cursor: pointer;
+    transition: all .4s;
+}
+.THIS .slds-nav-vertical__action:hover , .THIS .slds-nav-vertical__action:active , 
+.THIS .slds-nav-vertical__action:focus{
+    text-decoration: none;
+    color: #666!important;
+    box-shadow: none;
+    transition: all .4s;
+}
+.THIS .slds-nav-vertical__item:hover:before, .THIS .slds-nav-vertical__item.slds-is-active:before {
+    background: #FFF;
+}
+.THIS .slds-nav-vertical__item.slds-is-active .slds-nav-vertical__action {
+    font-weight: bold;
+    box-shadow: none!important;
+}
+.THIS .slds-nav-vertical__action lightning-icon{
+    display:none;
+}
+
+.THIS .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.THIS .animated.delay-1s {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+@-webkit-keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+@media only screen and (max-width: 768px){
+    .THIS .listviewdiv {
+        height: auto;
+    }
+}

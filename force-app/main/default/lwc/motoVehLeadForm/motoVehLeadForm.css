@@ -1,0 +1,18 @@
+.SpinnerHolder{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+
+}
+:host {
+    --slds-c-button-brand-color-background: #dc452e;
+  --slds-c-button-brand-color-background-active: #dc452e;
+  --slds-c-button-brand-color-border: #dc452e;
+  --slds-c-button-brand-text-color: #fff;
+  --slds-c-button-brand-color-background-hover: #eb4026; 
+  --slds-c-button-brand-color-border-hover: #eb4026;
+  --sds-c-button-radius-border: 20px;
+}

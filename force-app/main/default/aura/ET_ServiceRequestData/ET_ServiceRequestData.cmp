@@ -1,0 +1,99 @@
+<aura:component controller="ET_ServiceRequestController">
+     <!--SK-->
+     <aura:attribute name="OpprecordTypeName" type="String" />
+     <aura:registerEvent name="OpprecordTypeNameEvent" type="c:ET_SetOppRecordTypeEvt"/>
+     <aura:method name="opprecTypeDataCmp" action="{!c.getOpprecordTypeName}" access="PUBLIC"> 
+         <aura:attribute name="OpprecordTypeName" type="String" />
+     </aura:method>
+    <aura:attribute name="isSysAdmin" type="Boolean" default="true"/>
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    <!-- <aura:attribute name="opportunityRecordId" type="String" />
+      <aura:attribute name="serviceRequestRecordId" type="String" /> -->
+    <aura:method  name="existingSelectedTab" action="{!c.setSelectedTab}">
+        <aura:attribute name="selectedTab" type="Text" />
+        <aura:attribute name="selected" type="boolean" />
+    </aura:method>
+    
+    <aura:attribute name="isVehicleDisabled" type="boolean" default="false"/>
+    <aura:attribute name="isDriverDisabled" type="boolean" default="false"/>
+    <aura:attribute name="isNannyDisabled" type="boolean" default="false"/>
+    <aura:attribute name="isCoordinatorDisabled" type="boolean" default="false"/>
+    <aura:attribute name="isAccountantDisabled" type="boolean" default="false"/>
+    <aura:attribute name="isSupervisorDisabled" type="boolean" default="false"/>
+    <aura:attribute name="isOtherEmpDisabled" type="boolean" default="false"/>
+    <aura:attribute name="isOtherCostDisabled" type="boolean" default="false"/>
+    <!--<aura:attribute name="oppRecordType" type="String"/> -->
+    <aura:registerEvent name="opportunityRecordTypeEvent" type="c:ET_SetOppRecordTypeEvt"/>
+    
+    <aura:registerEvent name="tabVisibilityEvent" type="c:ET_ControlTabsVisibility" />
+    <aura:attribute name="vehicle" type="boolean" default ="false" />
+    
+    <aura:attribute name="options" type="List" default="[
+                                                        {'label': 'Vehicles', 'value': 'Vehicles'},
+                                                        {'label': 'Vehicle Fuel', 'value': 'Vehicle Fuel'},
+                                                        {'label': 'Drivers', 'value': 'Drivers'},
+                                                        {'label': 'School Bus Nannies', 'value': 'School Bus Nannies'},
+                                                        {'label': 'Supervisors', 'value': 'Supervisors'},
+                                                        {'label': 'Coordinators', 'value': 'Coordinators'},
+                                                        {'label': 'Accountant/Cashier', 'value': 'Accountant/Cashier'},
+                                                        {'label': 'Other Employees', 'value': 'Other Employees'},
+                                                        {'label': 'Other Cost', 'value': 'Other Cost'}
+                                                        ]"/>
+    
+    <aura:attribute name="value" type="List" default="option1"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    
+    <!--onchange="{! c.handleChange }"	-->
+    
+    <!-- <lightning:input type="text" name="input1" label="Enter a date" />-->
+    
+    <br/>
+    
+    <div class="slds-grid slds-wrap slds-grid--pull-padded" style="margin: 5px 0;">
+        <div class="slds-col--padded slds-size--12-of-12 serviceReqHeader">
+            <label class="slds-form-element__label slds-p-left_x-small"><b>Service Requirement</b></label>
+        </div>
+        
+        <div class="slds-col--padded slds-size--12-of-12 serviceReqValue">
+            <div class="slds-grid slds-wrap slds-grid--pull-padded slds-box">
+                <div class="slds-col">
+                    <lightning:input type="checkbox" label="Vehicle" name="Vehicle" aura:id="Vehicle" onchange="{!c.updateSelectedTabs}" checked="{!v.vehicle}" 
+                                     disabled="{!or( v.isVehicleDisabled, AND(v.isPricingTeam, v.isSysAdmin))}"/>
+                </div>
+                <div class="slds-col"> 
+                    <lightning:input type="checkbox" label="Drivers" name="Drivers" aura:id="Drivers" onchange="{!c.updateSelectedTabs}" 
+                                     disabled="{!or( v.isDriverDisabled, AND(v.isPricingTeam, v.isSysAdmin))}"/>
+                </div>
+                <!--SK-->
+                <div class="slds-col" aura:id="Oppleasediv1">
+                    <lightning:input type="checkbox" label="School Bus Nannies" name="School Bus Nannies" aura:id="School_Bus_Nannies" onchange="{!c.updateSelectedTabs}"
+                                     disabled="{!or( v.isNannyDisabled, AND(v.isPricingTeam, v.isSysAdmin))}"/>
+                </div>
+                <div class="slds-col" aura:id="Oppleasediv2">
+                    <lightning:input type="checkbox" label="Supervisors" name="Supervisors" aura:id="Supervisors" onchange="{!c.updateSelectedTabs}" 
+                                     disabled="{!or( v.isSupervisorDisabled, AND(v.isPricingTeam, v.isSysAdmin))}"/>
+                </div>
+                <div class="slds-col" aura:id="Oppleasediv3">
+                    <lightning:input type="checkbox" label="Coordinators" name="Coordinators" aura:id="Coordinators" onchange="{!c.updateSelectedTabs}" 
+                                     disabled="{!or( v.isCoordinatorDisabled, AND(v.isPricingTeam, v.isSysAdmin))}"/>
+                </div>
+                <div class="slds-col" aura:id="Oppleasediv4">
+                    <lightning:input type="checkbox" label="Accountant/Cashier" name="Accountant/Cashier" aura:id="Accountant" onchange="{!c.updateSelectedTabs}"
+                                     disabled="{!or( v.isAccountantDisabled, AND(v.isPricingTeam, v.isSysAdmin))}"/>
+                </div>
+                <div class="slds-col" aura:id="Oppleasediv5">
+                    <lightning:input type="checkbox" label="Other Employees" name="Other Employees" aura:id="Other_Employees" onchange="{!c.updateSelectedTabs}" 
+                                     disabled="{!or( v.isOtherEmpDisabled, AND(v.isPricingTeam, v.isSysAdmin))}"/>
+                </div>
+                <div class="slds-col" aura:id="Oppleasediv6">
+                    <lightning:input type="checkbox" label="Other Cost" name="Other Cost" aura:id="Other_Cost" onchange="{!c.updateSelectedTabs}" 
+                                     disabled="{!or( v.isOtherCostDisabled, AND(v.isPricingTeam, v.isSysAdmin))}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    
+    
+    
+</aura:component>

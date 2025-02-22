@@ -1,0 +1,372 @@
+.THIS html {
+    scroll-behavior: smooth;
+}
+.THIS .cancel_btn {
+    font-size: 14px;
+    border: 0px solid #00c19e;
+    background-color: #b0b1af;
+    border-radius: 5px;
+    color: #fff;
+    padding: 2px 10px;
+    min-width: 75px;
+    height: 30px;
+    border-radius: 5px;
+    font-weight: normal!important;
+    text-transform: capitalize!important;
+    line-height: 2!important;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    margin-top: 8px;
+    outline: none;
+}
+.THIS .cancel_btn:hover {
+    color: #fff;
+    background-color: #333333;
+}
+.THIS.parentClass{
+    padding :2rem 3rem 0rem;
+    height: calc(100vh - 38px)!important;
+    background-image: url(/resource/homepagebg_img);
+    z-index: 1;
+    background-size: cover;
+    background-position: top;
+    position: absolute;
+    overflow: auto;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+}
+.THIS .content_div{
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    position: relative;
+    height: auto;
+    display: flow-root;
+    border-radius: 5px;
+}
+.THIS .btn_table{
+    font-size: 14px;
+    background: #967000;
+    border: 1px solid #967000;
+    padding: 2px 15px;
+    color: #ffffff;
+    margin-left: 5px;
+}
+.THIS .btn_table:hover{
+    background: #00c19e;
+    border: 1px solid #00c19e;
+    padding: 2px 15px;
+    color: #fff;
+}
+
+
+.THIS .slds-tabs_default__link, .THIS .slds-tabs--default__link {
+    font-size: 14px; 
+    font-weight:700;
+    color:#967000;
+}
+.THIS .slds-tabs_default__item, .THIS .slds-tabs--default__item {
+    width: 10%;
+    text-align: center;
+}
+
+.THIS .slds-tabs_default__content,.THIS  .slds-tabs--default__content {
+    padding: 1rem;
+}
+/*.THIS .slds-tabs_default, .THIS .slds-tabs--default {
+background-color: hsl(0 0% 0% / 0.1);
+
+}*/
+.THIS .slds-tabs_default__item:last-child {
+    display: none;
+}
+.THIS .slds-tabs_default__item.slds-is-active::after{
+    border-bottom: 4px solid #00c19e;
+}
+.THIS .slds-tabs_default__item.slds-is-active a{
+    color:#555;text-decoration:none;
+}
+.THIS .slds-tabs_default__item.slds-is-active a:hover{
+    color:#555;text-decoration:none;
+}
+.THIS .slds-tabs_default__item:hover::after{
+    border-bottom: 4px solid #00c19e;
+}
+
+.THIS h1.mainheading{
+    font-size: 24px!important;
+    display: inline-block;
+    position: relative;
+}
+.THIS .content_div {
+    border-bottom: 2px solid #f2f2f2;
+    width:100%; position:relative;   
+}
+.THIS #Dashboard{
+    padding:0px;
+}
+.THIS .btn_right{
+    float: right;
+}
+.THIS .slds-tabs_default__nav , .THIS .mobilebackarrow , .THIS .ticketstext{
+    display:none;
+}
+
+.THIS .myCaseBackBtn{
+    text-align: right;
+}
+.THIS .slds-tabs_default, .THIS .slds-tabs--default{
+    background-color: transparent;
+}
+.THIS .slds-tabs_default__content, .THIS .slds-tabs--default__content {
+    padding: 1rem 0rem;
+}
+.THIS .animated {
+    -webkit-animation-duration: .75s;
+    animation-duration: .75s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+.THIS .slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+@-webkit-keyframes slideInUp {
+    from {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInUp {
+    -webkit-animation-name: slideInUp;
+    animation-name: slideInUp;
+}
+
+@-webkit-keyframes bounceInDown {
+    from,
+    60%,
+    75%,
+    90%,
+    to {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -3000px, 0);
+        transform: translate3d(0, -3000px, 0);
+    }
+    
+    60% {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 25px, 0);
+        transform: translate3d(0, 25px, 0);
+    }
+    
+    75% {
+        -webkit-transform: translate3d(0, -10px, 0);
+        transform: translate3d(0, -10px, 0);
+    }
+    
+    90% {
+        -webkit-transform: translate3d(0, 5px, 0);
+        transform: translate3d(0, 5px, 0);
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes bounceInDown {
+    from,
+    60%,
+    75%,
+    90%,
+    to {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -3000px, 0);
+        transform: translate3d(0, -3000px, 0);
+    }
+    
+    60% {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 25px, 0);
+        transform: translate3d(0, 25px, 0);
+    }
+    
+    75% {
+        -webkit-transform: translate3d(0, -10px, 0);
+        transform: translate3d(0, -10px, 0);
+    }
+    
+    90% {
+        -webkit-transform: translate3d(0, 5px, 0);
+        transform: translate3d(0, 5px, 0);
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .bounceInDown {
+    -webkit-animation-name: bounceInDown;
+    animation-name: bounceInDown;
+}
+.THIS .animated.delay-1s {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+.THIS.showmobilefooter{
+    display:none;
+}
+@media only screen and (max-width: 768px){
+    .THIS .slds-tabs_default__link, .THIS .slds-tabs--default__link {
+        font-size: 16px!important;
+    }
+    .THIS.parentClass{    
+        height:calc(100vh - 38px)!important
+    }
+    /*.THIS .btnsorticon lightning-primitive-icon {
+    display: none;
+}*/
+}
+@media only screen and (max-width: 767px){
+    .THIS .slds-tabs_default__link, .THIS .slds-tabs--default__link {
+        font-size: 15px!important;
+    }
+    /*.THIS .btnsorticon lightning-primitive-icon {
+    display: none;
+}*/
+    .THIS #deliveryService table tr th {
+        padding: 10px 15px;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .THIS .slds-tabs_default__link, .THIS .slds-tabs--default__link {
+        font-size: 14px!important;
+    }
+}
+
+@media only screen and (max-width: 480px){
+    .THIS.parentClass{
+        background-image: url(/resource/ET_mycases_bgimg);
+        height: calc(100vh - 0px)!important;
+        margin-top: -48px;
+    }
+    .THIS .slds-tabs_default__link, .THIS .slds-tabs--default__link {
+        font-size: 14px!important;
+    }
+    .THIS .mainheading {
+        display: block!important;
+    }
+    .THIS .slds-tabs_default__item{
+        width: 100%;
+        padding: 0;
+    }
+    .THIS .slds-tabs_default__nav{
+        display:none!important;
+    }
+    .THIS .btn_table {
+        padding: 2px 10px;
+    }
+    .THIS #None__item{
+        display:none;
+    }
+    .THIS.parentClass{ 
+        padding: 0rem;
+    }
+    .THIS .slds-tabs_default, .THIS .slds-tabs--default {
+        background-color: transparent;
+        margin: 5%;
+        width: 90%;
+        margin-bottom: 5rem;
+    }
+    .THIS .slds-tabs_default__content, .THIS .slds-tabs--default__content {
+        padding: 0rem;
+    }
+    .THIS .myCaseBackBtn {
+        text-align: left;
+    }
+    .THIS .cancel_btn{
+        margin-left: 8%;
+    }
+    .THIS .myCaseBackBtn{
+        display:none;
+    }
+    .THIS .mobilebackarrow{
+        position: relative;
+        padding: 1rem 1rem 0rem;
+        display: inline-block;
+        margin-left: 0rem;
+        margin-top: 3rem;
+    }
+    .THIS .mobilebackarrow img{
+        filter: invert(1);
+    }
+    .THIS .mobilebackarrow span{
+        padding: .0rem .5rem;
+        font-size: 30px;
+        position: absolute;
+        display: inline-block;
+        color: #fff;
+        z-index: 100;
+    }
+    .THIS .ticketstext{
+        font-size: 18px;
+        font-weight: bold;
+        display: block;
+        padding: 1rem 1rem 0rem;
+        color: #000;
+    }  
+    .THIS.showmobilefooter{
+        display:block;
+    }
+}

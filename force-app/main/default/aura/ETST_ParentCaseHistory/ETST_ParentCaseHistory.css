@@ -1,0 +1,215 @@
+.THIS .backbtnlink{
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    font-size: 16px;
+    color: #000;
+    /*font-family: 'Cronos';
+    letter-spacing: 1px;*/
+    text-decoration: none;
+    background: #f1f1f1;
+    padding: 1px 15px;
+    
+}
+.THIS .backbtnlink .slds-icon-text-default{
+    fill: #fff;transform: rotate(180deg);
+}
+.THIS.casesection{
+    position: relative;
+    height: 100%;
+    margin: auto;
+    display: block;
+    clear: both;
+    width: 80%;
+    padding-top: 50px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.THIS .slds-box {
+    padding: 30px 15px 15px 15px;
+    border-radius: 0 0 10px 10px;
+    width: 48%;
+    margin: 1% 1% 2% 1%;
+    float: left;
+    border: 1px solid #ddd;
+    text-align: left;
+    /*font-family: 'Cronos';*/
+    font-size: 14px;
+    transition: .4s;
+    position: relative;
+    cursor: pointer;
+    color:#333;
+    line-height: 1.5rem;
+    background:rgb(242 242 242 / 0.70);
+}
+.THIS .slds-box:hover{    
+    box-shadow: 0 8px 6px -6px #9e9e9e;
+    border-radius:0px;
+    background: rgb(242 242 242 / 0.70);
+}
+.THIS .strongtext{
+    width: 25%;
+    position: relative;
+    display: inline-block;
+}
+.THIS .creatdate{
+    position: absolute;
+    width: 90%;
+    left: 0;
+    top: -17px;
+    background: #ff4b5a;
+    PADDING: 5px;
+    color: #fff;
+    margin: 0 5%;
+    border-radius: 0px 10px 0px 10px;
+    text-align: center;
+}
+.THIS .detailscol{
+    position: relative;
+}
+.THIS .headtxt {
+    font-size: 14px;
+    font-weight: bold;
+    float: left;
+    width: 110px;
+}
+.THIS .headtxtdyn {
+    font-size: 14px;
+}
+.THIS .Padbottomnon {
+    border-bottom: 1px solid #e5e9f2;
+    width: 100%;
+    display: block;
+}
+.THIS .desctxt {
+    height: 80px;
+    overflow: hidden;
+}
+.THIS .firstrow {
+    background-color: #00c19e;
+    color: #fff;
+}
+.THIS.sortdiv{
+    margin: 0% 2%;
+    background: #f7f7f7;
+    border-radius: 5px;
+    border: 1px solid #e2e2e2;
+}
+.THIS.sortdiv .slds-form-element__label {    
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 0rem;
+    padding-top: 0rem;
+}
+.THIS.sortdiv input[type=text] {
+    height: 44px;
+    margin: 0;
+    padding: 0 15px;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+.THIS .btnserach{
+    font-size: 14px;
+    background: #f2f2f2;
+    border: 1px solid #00c19e;
+    padding: 3px 15px;
+    color: #00c19e;
+    margin-left: 5px;
+}
+.THIS .btnserach:hover{
+    background: #00c19e;
+    border: 1px solid #00c19e;
+    color: #fff;
+}
+.THIS .cancel_btn {
+    font-size: 14px;
+    border: 0 solid #00c19e;
+    background-color: #b0b1af;
+    border-radius: 5px;
+    color: #fff;
+    padding: 0px 15px;
+    min-width: 100px;
+    height: 30px;
+    text-align: center;
+    border-radius: 0;
+    font-weight: normal!important;
+    text-transform: capitalize!important;
+    line-height: 2!important;
+    transition: all .4s;
+    margin-top: 23px;
+    position: absolute;
+    top: 0;
+    right: 25px;
+    text-decoration: none;
+}
+.THIS .cancel_btn:hover {
+    color: #fff;
+    background-color: #333333;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .headtxt {
+        width: 90px;
+    }
+    .THIS .btnserach {
+        padding: 0px 15px;
+    }
+    .THIS.casesection {
+        width: 100%;padding-top: 70px;
+    }
+    
+}
+@media only screen and (max-width: 768px) {
+    .THIS .headtxt {
+        width: 90px;
+    }
+    .THIS .btnserach {
+        padding: 0px 15px;
+    }
+    .THIS .slds-box {        
+        width: 48%;
+    }
+    .THIS .strongtext {
+        width: 45%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .headtxt {
+        width: 90px;
+    }
+    .THIS .btnserach {
+        padding: 0px 15px;
+    }
+    .THIS .slds-box {
+        width: 100%;
+        margin: 1% 0% 4% 0%;
+    }
+    .THIS .strongtext {
+        width: 30%;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .slds-box {
+        margin: 1% 0% 7% 0%;
+    }
+    .THIS .strongtext {
+        width: 45%;
+    }
+    .THIS .detailscol{
+        display:block;
+    }
+}

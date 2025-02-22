@@ -1,0 +1,3 @@
+<aura:component implements= "force:hasSObjectName,lightning:isUrlAddressable,forceCommunity:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId" access="global">
+    <c:generateContract></c:generateContract>
+</aura:component>

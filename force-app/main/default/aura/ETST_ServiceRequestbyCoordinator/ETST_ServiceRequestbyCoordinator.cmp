@@ -1,0 +1,33 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+    <aura:attribute name="serviceRecord" type="ET_Service_Request__c"  
+    default="{'sObjectType':'ET_Service_Request__c', 'Name':'','ETST_Country__c':'','ETST_Emirates__c':'','ETST_Dropoff_Street__c':'','ETST_Location__Latitude__s':'','ETST_Dropoff_Location__Latitude__s':'','ETST_Dropoff_Emirate__c':'','ETST_Dropoff_Location__Longitude__s':'','ETST_Location__Longitude__s':'','ETST_State_or_Province__c':'','ETST_Street_Number__c':'','ETST_Area_Zone__c':'','ETST_Pick_Up_From__c':'','ETST_Service_Type__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Drop_Off_To__c':'','ETST_Drop_of_Time__c':'','ETST_Cancellation_Effective_Date__c':'','ETST_Reason_for_Cancellation__c':'',
+    'ETST_Cancellation_Reason_Comments__c':'','ETST_Location__Latitude__s':'','ETST_Location__Longitude__s':'','ETST_Transport_Type__c':'','ETST_Student__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Pick_Up_End_Date__c':'','ETST_Fare_Charges__c':''}" />
+   <aura:attribute name="studentRecord" type="ETST_Student__c"  
+    default="{'sObjectType':'ETST_Student__c', 'ETST_School_Name__c':'','ETST_Status__c':''}" />
+   <aura:attribute name="isProcessed" type="boolean" default="true"/>
+   <aura:attribute name="isClose" type="boolean" default="false"/>
+        
+       <force:recordData aura:id="recordLoader"
+        recordId="{!v.recordId}"
+        layoutType="FULL"
+        fields="ETST_School__c,ETST_Status__c"
+        targetFields="{!v.studentRecord}"
+        targetError="{!v.recordLoadError}"
+        recordUpdated="{!c.recordUpdate}"
+        />
+    <aura:if isTrue="{!v.isProcessed}">
+        <header class="slds-modal__header ">
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Service</h2>
+        </header>
+        <div aura:id="cmpBody">
+            {!v.body}
+        </div> 
+        <!--c:ETST_AddStudentService
+                aura:id = "studentDetailsCmp"
+                serviceRecord = "{!v.serviceRecord}" 
+                studentRecord= "{!v.studentRecord}"   
+                renewServiceModal= "false"
+                coordinatorRequest = "true"
+                isProcessed ="{!v.isProcessed}"  /-->
+    </aura:if>
+    </aura:component>

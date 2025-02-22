@@ -1,0 +1,17 @@
+.THIS .icn svg{
+    fill: rgb(194, 57, 52);
+}
+.THIS.slds-grid .slds-grid_pull-padded-medium{
+    float: right !important;
+    margin-top: -1rem;
+}
+.THIS .slds-grid .slds-grid_pull-padded-medium{
+    float: right;
+    margin-top: -1rem;
+}
+.THIS .modalInnerSection{
+    margin-bottom: 15px;
+}
+.THIS .saveCombinationBtn{
+    margin: 1rem 0;
+}

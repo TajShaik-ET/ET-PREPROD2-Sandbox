@@ -1,0 +1,38 @@
+.THIS.bgColor {
+    background-color:rgb(142, 107, 26);
+    color: white;
+    padding: 10px;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid rgb(142, 107, 26);
+    border-bottom: none;
+}
+ .THIS.vehicleCaclTable{
+    border: 1px solid rgb(217, 219, 221); 
+}
+
+ .THIS.vehicleCaclTable th{
+    background-color: rgb(142, 107, 26);
+    color: white;
+    padding: 10px;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid rgb(142, 107, 26);
+    border-bottom: none;
+}
+.THIS .innerTableHeader{
+    background-color: #f2f2f2;
+}
+.THIS .innerTableHeader td div{
+    color: #000;
+    font-size: 16px;
+}
+.THIS .totalCost{
+    background-color: #BDBDBD;
+}
+.THIS .totalCost td div{
+    font-size: 16px;
+    color: #000;
+}

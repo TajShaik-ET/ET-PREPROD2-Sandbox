@@ -1,0 +1,668 @@
+.THIS .inverse-background {
+}
+.THIS #commentssec textarea{
+    height: 100px;
+    resize: none;
+}
+.THIS .slds-modal__body{
+    height: auto;
+    width: 100%;
+}
+.THIS .slds-modal__body{
+    height: auto;
+    width: 100%;
+    /*direction:rtl;*/
+}
+.THIS .slds-modal__bodyrtl{
+    height: auto;
+    width: 100%;
+    direction:rtl;
+}
+.THIS .main_student_div{
+    /* background: #fff;*/
+    width: 100%;
+    position: relative;
+    border-radius: 0;
+    margin-bottom: -16px;
+    min-height: 75vh;
+}
+.THIS .dobdiv_AR .slds-input-has-icon .slds-input__icon {
+    display: none;
+}
+.THIS .dobdiv .slds-input-has-icon .slds-input__icon {
+    display: none;
+}
+.THIS .main_div_content{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+.THIS .slds-grid label {
+    display: none!important;
+}
+.THIS .slds-modal__header {
+    position: relative;
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    border-bottom: 1px solid #f2f2f2;
+    padding: 1rem;
+    text-align: center;
+}
+.THIS .slds-modal__header h2{
+    text-align: center;
+    font-size: 26px;
+    /* font-family: 'Cronos';*/
+}
+.THIS .slds-form-element__row .slds-form-element__label {
+    font-size: 13px!important;
+    font-weight: bold!important;
+    color: #555;
+}
+.THIS .slds-modal__close .slds-button_icon-inverse {
+    color: rgb(0, 193, 158);
+    width: 20px!important;
+    height: 20px;
+}
+.THIS .slds-modal__close {
+    background: #fff;
+    border-radius: 50%;    line-height: inherit;
+}
+.THIS .bgimgcont {
+    position: absolute;
+    height: 70%!important;
+    width: 55%!important;
+    margin: auto;
+}
+.THIS .slds-form-element__control {
+    margin-bottom: 8px;
+    margin-top: 8px;
+}
+.THIS .refound{
+    padding-top: 17px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.THIS .slds-modal__close .slds-button_icon-inverse {
+    width: .875rem;
+}
+.THIS .slds-input{
+    height: 44px;
+    margin: 0;
+    padding: 0 5px 0 15px;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+.THIS .main_div_content .MS-controls {
+    display: block;
+    clear: both;
+    height: auto;
+}
+.THIS .animated {
+    -webkit-animation-duration: .75s;
+    animation-duration: .75s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.THIS .pulse {
+    -webkit-animation-name: pulse;
+    animation-name: pulse;
+}
+.THIS .infinite {
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+}
+
+.THIS .nochilddiv{
+    position: relative;
+    font-size: 28px;
+    /*font-family: 'Cronos';
+    font-weight: 600; */
+    letter-spacing: 0px;
+    text-align: center;
+    display:inline-block;
+    padding-top: 150px;
+    color:#000;    
+}
+.THIS .btnswitch{
+    margin-left: 10.5rem;
+    background-color: #fff;
+    border: 3px solid #fff!important;
+    display: inline-block;
+    background: #fff!important;
+    
+    position: relative;
+    border-radius: 30px;
+}
+.THIS .btnsorticon{
+    padding: 0px 5px!important;
+    margin:2px;
+    line-height: 1.5;
+}
+.THIS .btnsorticon1{
+    background: #fff;
+    color: #62cc8c;
+    border-radius: 30px;
+    padding: 0px 20px!important;
+    margin: 0px;
+    outline: none;
+    box-shadow: none;
+}
+.THIS .btnrenewed{
+    background: #fff;
+    color: #62cc8c;
+}
+.THIS .btnsorticon_active{
+    background: #62cc8c!important;
+    color: #fff!important;
+}
+.THIS .btnrenewed:active , .THIS .btnrenewed:focus ,
+.THIS .btnsorticon1:active , .THIS .btnsorticon1:focus{
+    background: #62cc8c!important;
+    color: #fff!important;
+}
+@-webkit-keyframes pulse {
+    from {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+    
+    50% {
+        -webkit-transform: scale3d(1.05, 1.05, 1.05);
+        transform: scale3d(1.05, 1.05, 1.05);
+    }
+    
+    to {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@keyframes pulse {
+    from {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+    
+    50% {
+        -webkit-transform: scale3d(1.05, 1.05, 1.05);
+        transform: scale3d(1.05, 1.05, 1.05);
+    }
+    
+    to {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+.THIS .slds-spinner_container {
+    background-color: transparent;
+    width:200px;
+    height:100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* Popup Css Start*/
+.THIS .popup_outer{
+    padding:0px;
+    position:relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.THIS .popup_outer .slds-modal__body, .THIS .popup_outer .slds-modal__bodyrtl{
+    display:flex;
+    width:100%;
+    height: calc(100% - 33px);
+}
+.THIS .image_section{
+    padding:10px 15px;
+    position:relative;
+    width:30%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(98,204,140,0.4) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(98,204,140,0.4) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(98,204,140,0.4) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#6662cc8c',GradientType=0 ); /* IE6-9 */
+}
+.THIS .image_section h1{
+    margin:10px 0 0 0;
+    text-align:center;
+    color:#000;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 600;
+}
+.THIS .form_section{
+    padding:0px 20px;
+    position:relative;
+    width:70%;
+    height:calc(100% - -1px);
+    overflow: auto;
+}
+.THIS .popup_outer .slds-modal__header{ 
+    border: 0px !important;
+}
+.THIS .form_row{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.THIS .half_part {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.THIS .popup_outer input[type=text], .THIS .popup_outer input[type=password], 
+.THIS .popup_outer textarea, .THIS .popup_outer textarea.form-control, .THIS .popup_outer select {
+    border:1px solid #ccc !important;
+    border-radius:4px !important;
+}
+.THIS .popup_outer .slds-form-element__label{
+    font-weight:bold;
+    font-size: 13px;
+}
+.THIS .popup_outer h2{
+    color:#62CC8C;
+    font-size:20px;
+    margin:15px 0;
+}
+.THIS .popup_outer .slds-modal__footer{
+    border:0px !important;
+}
+.THIS .popup_outer .slds-modal__footer button{
+    height: 39px;
+    line-height: 40px;
+    text-transform: uppercase;
+    min-width: 115px;
+}
+.THIS .popup_outer .slds-modal__footer .btncancel{
+    border:1px solid #62CC8C;
+    color:#62CC8C;
+    background:#fff;
+}
+.THIS .popup_outer .slds-modal__footer .btnsave{
+    border:1px solid #62CC8C;
+    color:#fff;
+    background:#62CC8C;
+}
+.THIS .note_text{
+    padding:10px;
+    border:1px solid #EB4026;
+    color:#EB4026;
+    font-weight:bold;
+    border-radius: 4px;
+    font-size: 12px;
+    margin: 15px 0;
+}
+.THIS .form_section .slds-checkbox_toggle{
+    padding:15px 0;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"]:checked + .slds-checkbox_faux_container .slds-checkbox_faux{
+    background-color:green;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"] + .slds-checkbox_faux_container .slds-checkbox_on{
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    color: #fff;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"] + .slds-checkbox_faux_container .slds-checkbox_off{
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    color: #fff;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"] + .slds-checkbox_faux_container{
+    position: relative;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"]:checked + .slds-checkbox_faux_container .slds-checkbox_faux::after{
+    border:0px;
+}
+.THIS .slds-lookup .slds-form-element__label:empty{
+    display:none;
+}
+.THIS .slds-lookup input[type=text]{
+    border: 1px solid #ccc!important;
+    border-radius: 4px!important;
+}
+.THIS .searchsection{    
+    width: 83%;
+    display: inline-block;
+    position: relative;
+}
+.THIS .searchsection .slds-form-element__control{    
+    margin: 0 0 8px 0;
+}
+.THIS .slds-lookup .slds-input-has-icon--right{
+    border-bottom: 0px solid #ddd!important;
+}
+.THIS .slds-lookup .pillSize {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 0 .5rem 0 .5rem;
+    border: 1px solid #ccc;
+    height: 38px;
+}
+.THIS .search_schooldiv{
+    width:98%;
+    margin:0% 1%;
+    position: relative;
+    display: block;
+}
+.THIS .bank_detailsdiv{
+    display: block;
+    position: relative;
+    clear: both;
+    width: 100%;
+}
+.THIS .bank_detailsdiv h2{
+    font-size: 16px;
+    font-weight: bold;
+    padding: .5rem;
+}
+.THIS .bank_detailsdiv .half_part {
+    max-width: 50%;
+    position: relative;
+    width: 48%;
+    min-height: 1px;
+    padding-right: 0;
+    padding-left: 0;
+    display: inline-block;
+    float: left;
+    margin: 0% 1%;
+}
+.THIS .bank_detailsdiv .slds-form-element__label{
+    color: #000;
+    font-weight: bold;
+    font-size: 0.75rem;
+    width: 35%;
+    float: left;
+    display: inline-block;
+}
+.THIS .search_schooldiv label{
+    color: #000;
+    font-weight: bold;
+    font-size: 0.75rem;
+    width: 17%;
+    float: left;
+    display: inline-block;
+}
+.THIS .bank_detailsdiv .slds-form-element__control {
+    width: 65%;
+    display: inline-block;
+    position: relative;
+    margin: 0 0 8px 0;
+}
+.THIS .bank_detailsdiv  input[type=text], .THIS .bank_detailsdiv input[type=password], 
+.THIS .bank_detailsdiv textarea, .THIS .bank_detailsdiv textarea.form-control, 
+.THIS .bank_detailsdiv select, .THIS .bank_detailsdiv input[type=tel], 
+.THIS .bank_detailsdiv input[type=email] {
+    height: 38px;
+    border: 1px solid #ccc!important;
+    border-radius: 4px!important;
+}
+.THIS .slds-modal__content{
+    min-height: 200px;
+}
+.THIS .changeschool_note{
+    position: relative;
+    width: 100%;
+    clear: both;
+    padding: .5rem;
+    color: #000;
+}
+/* Popup Css End*/
+/*owl_carousel slider css start*/
+.THIS.owl_carousel_section{
+    display:none;
+}
+/*owl_carousel slider css end*/
+
+@media only screen and (max-width: 1024px) {
+    .THIS .main_student_div{
+        width: 100%;
+    }
+    .THIS .main_div_content{
+        width: 96%;
+        margin: auto;
+    }
+    .THIS.margtopcontent{
+        padding:10rem;
+    }
+    .THIS .btnswitch {
+        margin-left: 1.5rem;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .main_student_div{
+        width: 100%;
+    }
+    .THIS .nochilddiv{
+        font-size: 24px;
+    } 
+    .THIS .btnswitch {
+        margin-left: 3rem;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .main_student_div{
+        width: 100%;
+    }
+    .THIS .nochilddiv{
+        font-size: 20px;
+    }
+    /* Popup css start*/
+    .THIS .image_section{
+        width:100%;
+        margin-bottom:15px;
+        background:#fff;    
+        padding-top: 0px;
+    }
+    .THIS .image_section h1{
+        color:#62CC8C;
+    }
+    .THIS .half_part {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .THIS .image_section img{
+        max-width:100px; 
+    }
+    .THIS .popup_outer .slds-modal__body{
+        flex-direction: column;
+    }
+    .THIS .form_section{
+        width:100%;
+        padding-top: 120px;
+    }
+    .THIS .popup_outer .slds-form-element__label{
+        color:#9F9F9F;
+    }
+    .THIS .note_text{
+        padding:10px 0;
+        border:0px;
+    }
+    .THIS .popup_outer .slds-modal__header {  
+        padding: 5px 0px;
+    }
+    .THIS .popup_outer .image_section{
+        position: fixed; 
+        z-index: 2;
+        border-radius:35px 35px 0 0;
+        padding-top:10px;
+        top: 0;
+    }
+    .THIS .popup_outer .slds-modal__close{
+        position: fixed;
+    }
+    /*Popup css End*/
+}
+@media only screen and (max-width: 480px) {
+    .THIS .image_section {
+        background: #FEFEF3;
+    }
+    .THIS .image_section h1{
+        color:#545434;
+    }
+    .THIS .refound {
+        padding-top: 10px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .THIS .main_student_div{
+        width: 100%;
+    }
+    .THIS .nochilddiv{
+        font-size: 18px;
+    }
+    .THIS .nochilddiv {
+        font-size: 22px;
+        text-align: center;
+        display: inline-block;
+        padding-top: 60%;
+        color: #fff;
+        width: 70%;
+    }
+    .THIS .btnswitch {
+        position: absolute;
+        margin: 1.5rem 1rem .5rem;
+        right: 0;
+        z-index: 1;
+    }
+    .THIS .btnsorticon{
+        height:35px;
+    }
+    .THIS .btnsorticon1{
+        height: 30px;
+        margin-left: 5px;
+    }
+    
+    /*popuup css start*/
+    .THIS .popup_mobileview{
+        top: auto;
+        position: relative;
+        height: 100%;
+        bottom: 0;
+        padding: 30px 0;
+        left: auto;
+        right: 0;
+        background: transparent;
+        width: auto !important;
+    }  
+    .THIS .popup_outer .slds-modal__body { 
+        height: calc(100% - 33px);
+    }
+    .THIS .popup_outer { 
+        padding: 10px 0 !important;
+        border-radius: 35px 0px 0 0 !important;
+        max-height: 480px;
+        overflow: scroll !important;
+    }
+    .THIS .popup_outer .image_section {
+        background: #fff;
+    }
+    
+    .THIS .popup_mobileview .form_section .slds-grid{
+        display: flex;
+    }
+    .THIS .search_schooldiv {
+        width: 100%;
+        margin: 0% 0%;
+    }
+    .THIS .bank_detailsdiv .slds-form-element__label, .THIS .search_schooldiv label {    
+        width: 100%;
+        margin-bottom: .5rem;
+    }
+    .THIS .searchsection {
+        width: 100%;
+    }
+    .THIS .bank_detailsdiv .half_part {
+        max-width: 100%;
+        width: 100%;
+        margin: 0%;
+    }
+    .THIS .bank_detailsdiv .slds-form-element__control {
+        width: 100%;
+        margin: 0 0 8px 0;
+    }
+    /*popuup css end*/
+    .THIS .changeschool_note {
+        padding: 0rem;
+    }
+    .THIS .bank_detailsdiv h2 {
+        padding: .5rem 0rem;
+    }
+    .THIS .slds-modal__content {
+        min-height: 300px;
+        max-height: 400px;
+        overflow: auto;
+    }
+    .THIS.btnswitch{
+        position: absolute;
+        right: 10px;
+        top: 80px;
+        z-index: 1;
+    }
+    .THIS .btnrenewed:active, .THIS .btnrenewed:focus, .THIS .btnsorticon1:active,
+    .THIS .btnsorticon1:focus , .THIS .btnsorticon_active{
+        background: #000!important;
+        color: #fff!important;
+    }
+    /*owl_carousel slider css start*/
+    .THIS.owl_carousel_section{
+        display:block;
+        padding: 66px 1rem 0;
+    }
+    /*owl_carousel slider css end*/
+    .THIS .slds-lookup input[type=text]{
+        border: 0px solid #ccc!important;
+        border-radius: 0px!important;
+        border-bottom: 1px solid #ccc!important;
+    }
+    .THIS .popup_outer input[type=text], .THIS .popup_outer input[type=password], 
+    .THIS .popup_outer textarea, .THIS .popup_outer textarea.form-control, .THIS .popup_outer select {
+        border:none!important;
+        border-radius:0px !important;
+        border-bottom:1px solid #ccc !important;
+    }
+    .THIS .slds-modal__container.animated.slideInUp.popup_mobileview {
+        min-height: calc(100vh - 20px);
+    }
+    .THIS .slds-modal__content.slds-p-around_medium.popup_outer {
+        border-radius: 0 !important;
+        min-height: calc(100vh - 100px);
+        position: fixed;
+        bottom: 0;
+    }
+}
+@media only screen and (max-width: 320px) {
+    .THIS .btnswitch {
+        margin: 1rem .5rem .5rem;
+    }
+    .THIS .btnsorticon1{
+        height: 36px;
+    }
+}
+.THIS .hide {
+    display: none;
+}

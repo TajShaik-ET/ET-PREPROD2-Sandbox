@@ -1,0 +1,91 @@
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf" title="Payment Receipt"
+           controller="ETC_ReceiptPageController">
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.ETST_Invoice,'css/invoice.css')}"/>
+<apex:pageBlock rendered="{!NOT($ObjectType.Invoice__c.accessible) }" >
+<style type="text/css">
+
+</style>
+<p> You dont have access to this record. Please contact Administrator </p>
+</apex:pageBlock>
+-->
+
+    <div style="padding: 0rem;">
+        <div style="position: relative;display: block;clear: both;width: 100%;font-size:13px;
+                    font-family:sans-serif;">
+            <div style="width: 33.33%;display: inline-block;float: left;">
+                <div style="padding-right:5%;">
+                    <strong>United Arab Emirates The Emirates General Transport and Services Company</strong><br/>
+                    Head Office, Al Rashidiya, Al Ramool<br/>
+                    P.O Box 5757, Dubai, U.A.E<br/>
+                    Tel : 04-2854444 Fax : 04-2854584<br/>
+                    <strong>TRN: 100073675900003</strong>
+                </div>
+            </div>
+            <!-- div styleClass="center_section" style="width: 33.33%;display: inline-block;float: left;text-align:center;">
+<apex:image style="height: 50px;"
+url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/logo.png')}"/>                
+</div>
+< div style="width: 33.33%;display: inline-block;float: left;text-align:right;">
+<div style="padding-left:5%;">
+<apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/header1.PNG')}" style="width:200px;text-align:right" />
+P.O Box 5757, Dubai, U.A.E<br/>
+04-2854444 : <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/header2.PNG')}" style="height: 14px;text-align: right;margin-top:2px" /> 
+<br/>
+04-2854584 : <apex:image url="{!URLFOR($Resource.Invoicepdf, 'Invoicepdf/header3.PNG')}" style="height:14px;text-align:right;margin-right:2px" /><br/>
+</div>
+</div -->  
+        </div>
+        <br/><br/><br/><br/><br/><br/><br/>    
+        <div style="position: relative;display:block;clear: both;width: 100%;font-size:13px;">
+            <br/><br/><br/>
+            <h2 style="float: none;display: block;margin: auto;width: 100%;text-align: center;">
+                Payment Receipt 
+            </h2> 
+        </div><br/><br/><br/>
+        <div style="position: relative;display:block;clear: both;width: 100%;font-size:12px;font-family:sans-serif;margin-top:20px;">
+            <table style="width:100%;">                        
+                <tbody>
+                    <tr>
+                        <td style="width:15%;"><strong>Receipt No </strong></td>
+                        <td style="width:25%;">: {!receiptList[0].Name}</td>
+                        <td style="width:15%;"><strong>Receipt Date </strong></td>
+                        <td style="width:15%;">: <apex:outputText value="{0, date, dd-MM-yyyy}">
+                            <apex:param value="{!receiptList[0].CreatedDate}" /> 
+                            </apex:outputText> </td>
+                        <td style="width:15%;"><strong>Customer Ref</strong></td>
+                        <td style="width:30%;" colspan="5">: {!receiptList[0].ET_Service_Request__r.Name}</td>
+                    </tr> 
+                </tbody> 
+            </table> 
+        </div>
+        
+        <div style="position: relative;display:block;clear: both;width: 100%;font-size:11px;font-family:sans-serif;margin-top:20px;">
+            <table style="width:100%;border: trasprant;border-collapse: collapse;font-size:11px;">
+                <thead style="background:#f2f2f2;">
+                    <th>
+                        Receipt Number
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Payment Mode
+                    </th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> {!receiptList[0].Name}</td>
+                        <td> {!receiptList[0].ETC_Vehicle_Bookings_Total__c}</td>
+                        <td> {!receiptList[0].Payment_Mode__c}</td>
+                    </tr>
+                    
+                </tbody> 
+            </table> 
+            <h2><br/><br/>
+                *This is a system generated  receipt no signature is required.
+            </h2>
+        </div>
+        
+        
+    </div>
+</apex:page>

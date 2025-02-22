@@ -1,0 +1,107 @@
+.THIS .outer-div {
+    position: relative;
+}
+
+.THIS .spinner2 {
+    position: absolute;
+}
+.THIS .spinner2::after {
+    position: absolute;
+    content: 'Please wait...';
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+}
+.THIS .slds-pill{
+    background: #c6f4ea;
+}
+.THIS .errortext{
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0rem;
+    background: #f2f2f2;
+    padding: 0.5rem;
+    border-radius: 5px;
+    text-align: center;
+}
+.THIS .slds-pill {
+    background: #c6f4ea;
+    padding: 0.5rem;    
+    margin: 0.2rem 0.5rem 0.2rem 0;
+}
+
+
+.THIS .serachdiv {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+}
+.THIS .serachdiv .slds-col {
+    width: 23.95%;
+    flex: none;
+}
+.THIS .serachdiv .slds-col label.slds-form-element__label.slds-m-right_xxx-small {
+    display: none;
+}
+.THIS .addserachdiv {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+}
+.THIS .addserachdiv .slds-combobox_container{
+    padding:0px!important;
+}
+.THIS .addserachdiv label.slds-form-element__label.slds-no-flex {
+    color: #000 !important;
+}
+.THIS .addserachdiv .btnright{
+    text-align: end;
+}
+.THIS .showtableserach {
+    position: relative;
+    border: 1px solid #ccc;
+    padding: 0.25rem;
+    margin-top: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+    min-height: 50px;
+    max-height: 300px;
+    overflow: auto;
+}
+@media only screen and (max-width:1280px) {
+    .THIS .serachdiv .slds-col {
+        width: 23.5%;
+    }
+}
+@media only screen and (max-width:992px) {
+    .THIS .serachdiv .slds-col {
+        width: 31.75%;
+    }
+}
+@media only screen and (max-width:767px) {
+    .THIS .serachdiv .slds-col {
+        width: 48.25%;
+    }
+}
+@media only screen and (max-width:560px) {
+    .THIS .serachdiv .slds-col {
+        width: 100%;
+    }
+}

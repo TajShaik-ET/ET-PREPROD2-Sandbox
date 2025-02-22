@@ -1,0 +1,66 @@
+<apex:page sidebar="false"  controller="ETST_UploadParentsandStudentsClass" showHeader="false">
+    <apex:form >
+        <apex:sectionHeader title="Upload Parent and Student details from CSV file"/>
+        <apex:pagemessages />
+        <apex:pageBlock title="Upload Parent Details">
+            <!--  Component to allow user to upload file from local machine -->
+            <center>
+                <apex:inputFile value="{!csvFileBody}" filename="{!nameFile}" />
+                <apex:commandButton action="{!ReadFile}" value="Upload File" id="theButton" style="width:70px;"/>
+                <!-- <apex:commandButton value="Insert Parents" action="{!insertParents}" rendered="{!NOT(ISNULL(uploadedAccounts))}"/> -->
+                <br/> <br/> <font color="red"> <b>Note: Please use the standard template to upload Parents. <a href="{!parentTemplateUrl}" target="_blank"> Click here </a> to download the template. </b> </font>
+            </center>  
+            
+        </apex:pageBlock>
+        <!-- After the user clicks the 'Upload File' button, this section displays the inserted data -->
+        <apex:pageBlock title="Upload Student Details">
+            <!--  Component to allow user to upload file from local machine -->
+            <center>
+                <apex:inputFile value="{!studentCSVFileBody}" filename="{!studentCSVFileName}" /> 
+                <apex:commandButton action="{!readStudentFile}" value="Upload File" id="theButton" style="width:70px;"/>
+                <br/> <br/> <font color="red"> <b>Note: Please use the standard template to upload Students. <a href="{!studentTemplateUrl}" target="_blank"> Click here </a> to download the template. </b> </font>
+            </center>  
+        </apex:pageBlock>
+        <apex:pageBlock title="Uploaded data Result" rendered="{!NOT(ISNULL(uploadedAccounts))}">
+            <!-- Parent Details -->
+            <apex:pageblocktable value="{!uploadedAccounts}" var="acc" rendered="{!NOT(ISNULL(uploadedAccounts))}">
+                <p> Uploaded Successfully!</p> 
+                <br/> <br/>
+                <apex:column headerValue="First Name">
+                    <apex:outputField value="{!acc.firstName}"/>
+                </apex:column>
+                <apex:column headerValue="Last Name">
+                    <apex:outputField value="{!acc.lastName}"/>
+                </apex:column>
+                <apex:column headerValue="Emirates Id">
+                    <apex:outputField value="{!acc.ETSALES_Emirates_Passport__c}"/>
+                </apex:column>  
+                <apex:column headerValue="DOB">
+                    <apex:outputField value="{!acc.ETST_Date_of_Birth__c}"/>
+                </apex:column>
+                <apex:column headerValue="Email">
+                    <apex:outputField value="{!acc.PersonEmail}"/>
+                </apex:column>
+            </apex:pageblocktable> 
+        </apex:pageBlock>
+        <apex:pageBlock title="Uploaded data Result" rendered="{!NOT(ISNULL(uploadedStudents))}">
+            <!-- Student Details -->
+            <apex:pageblocktable value="{!uploadedStudents}" var="std" rendered="{!NOT(ISNULL(uploadedStudents))}">
+                <p> Please Verify the Uploaded Records!</p> 
+                <br/> <br/>
+                <apex:column headerValue="First Name">
+                    <apex:outputField value="{!std.ETST_First_Name__c}"/>
+                </apex:column>
+                <apex:column headerValue="Last Name">
+                    <apex:outputField value="{!std.Name}"/>
+                </apex:column>
+                <apex:column headerValue="Student EId">
+                    <apex:outputField value="{!std.ETST_Emirates_Id__c}"/>
+                </apex:column>
+                <apex:column headerValue="Parent EId">
+                    <apex:outputField value="{!std.ETST_ParentEID__c}"/>
+                </apex:column>
+            </apex:pageblocktable>          
+        </apex:pageBlock>       
+    </apex:form>   
+</apex:page>

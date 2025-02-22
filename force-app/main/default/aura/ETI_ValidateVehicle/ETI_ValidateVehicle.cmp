@@ -1,0 +1,146 @@
+<aura:component controller="ETI_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+	<aura:attribute name="recordId" type="String" />
+    <aura:attribute name="PlateType" type="list"/>
+    <aura:attribute name="Platesource" type="list"/>
+    <aura:attribute name="Platecolor" type="list"/> 
+    <aura:attribute name="IsSpinner" type="Boolean" default="false" />
+    <aura:attribute name="errorServiceType" type="boolean" default="false"/> 
+    <aura:attribute name="errorChassis" type="boolean" default="false"/>
+    <aura:attribute name="errorPlateColor" type="boolean" default="false"/>
+    <aura:attribute name="errorPlateType" type="boolean" default="false"/>
+    <aura:attribute name="errorPlateSource" type="boolean" default="false"/>
+    <aura:attribute name="isMessgeExist" type="boolean" default="false"/> 
+    <aura:attribute name="errorType" type="String" />
+    <aura:attribute name="errorMessage" type="String" />
+    <aura:attribute name="customerVehicle" type="ET_Customer_Vehicle__c" default="{'sObjectType':'ET_Customer_Vehicle__c'}"/>
+    <aura:attribute name="verifiedVehicleInfo" type="Object" />
+    <aura:attribute name="ChooseDataInfo" type="String[]" default="Plate Combination,Chassis No"/>
+	<aura:html tag="style">
+        .cuf-content {
+            padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+            padding: 0rem !important;
+        }       
+        .closeIcon {
+        	display:none !important;
+        }
+        .slds-modal__content{
+            overflow-y:hidden !important;
+            height:unset !important;
+            max-height:unset !important;
+        }
+    </aura:html>
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+	<aura:if isTrue="{!v.IsSpinner}">
+        <div class="slds-spinner_container">
+            <lightning:spinner variant="brand"  size="large" />
+        </div>
+    </aura:if>   
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Customer Vehicle</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col" style="max-width: 100%">
+                        <aura:if isTrue="{!v.isMessgeExist}" >
+                            <c:ETI_MessageComponent message="{!v.errorMessage}" type="{!v.errorType}" />
+                            <br></br>
+                        </aura:if>
+                    </div>
+                </div>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col dropdownlistveh" style="max-width:50%;">
+                        <lightning:select label="Selected Type" aura:id="selectedType" value="{!v.customerVehicle.Selected_Type__c}"  
+                                          name="SelectedType" class="{!v.errorServiceType?'slds-form-element slds-has-error':''}" 
+                                          onchange="{!c.clearValidationError}" > 
+                            <option value="">--None--</option>
+                            <aura:iteration items="{!v.ChooseDataInfo}" var="type">
+                                <option value="{!type}" name="{!type}">{!type}</option>
+                            </aura:iteration>
+                        </lightning:select>
+                        <aura:if isTrue="{!v.errorServiceType}">
+                            <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">This field is required</div>
+                        </aura:if> 
+                    </div>
+                    <div class="slds-col" style="max-width:50%;">
+                        <lightning:input aura:id='chassisNo' Name="Chassis No" label ="Chassis No" value="{!v.customerVehicle.Chassis_No__c}" 
+                                         onblur="{!c.clearValidationError}"/>
+                    </div>
+                </div>
+                <aura:if isTrue="{!v.customerVehicle.Registration_Type__c == 'Registered'}">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col" style="max-width:50%;">
+                            <lightning:input type="text" aura:id='plateNo' value="{!v.customerVehicle.Plate_No__c}" Name="Plate No" label ="Plate No" onblur="{!c.clearValidationError}" maxlength="5" minlength="1"/>
+                        </div>
+                        <div class="slds-col dropdownlistveh" style="max-width:50%;">
+                            <lightning:select label="Plate Source" aura:id="plateSource" name="Plate Source"  
+                                              value="{!v.customerVehicle.Plate_Source__c}" class="{!v.errorPlateSource?'slds-form-element slds-has-error':''}">      
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.Platesource}" var="Psource">
+                                    <option value="{!Psource.value}"  name="{!Psource.label}">{!Psource.label}</option>
+                                </aura:iteration>
+                            </lightning:select>
+                            <aura:if isTrue="{!v.errorPlateSource}">
+                                <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">This field is required</div>
+                            </aura:if> 
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col dropdownlistveh" style="max-width:50%;">
+                            <lightning:select label="Plate Type" aura:id="plateType" name="Plate Type" onchange="{!c.clearPlateTypeError}"
+                                              value="{!v.customerVehicle.Plate_Type__c}" class="{!v.errorPlateType?'slds-form-element slds-has-error':''}">      
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.PlateType}" var="PType">
+                                    <option value="{!PType.value}" name="{!PType.label}" >{!PType.label}</option>
+                                </aura:iteration>
+                            </lightning:select>
+                            <aura:if isTrue="{!v.errorPlateType}">
+                                <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">This field is required</div>
+                            </aura:if> 
+                        </div>
+                        <div class="slds-col dropdownlistveh" style="max-width:50%;">
+                            <lightning:select label="Plate Color" aura:id="plateColor" name="Plate Color" onchange="{!c.clearPlateColorError}"
+                                              value="{!v.customerVehicle.Plate_Color__c}" class="{!v.errorPlateColor?'slds-form-element slds-has-error':''}">      
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.Platecolor}" var="Pcolor">
+                                    <option value="{!Pcolor.value}" name="{!Pcolor.label}">{!Pcolor.label}</option>  
+                                </aura:iteration>
+                            </lightning:select>
+                            <aura:if isTrue="{!v.errorPlateColor}">
+                                <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">This field is required</div>
+                            </aura:if> 
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col" style="max-width:50%;">
+                            <lightning:input aura:id='vehicleMake' value="{!v.customerVehicle.Vehicle_Make__c}" Name="Vehicle Make" label ="Vehicle Make" disabled="{!and(v.customerVehicle.Is_Verified__c,v.showHistory)}"/>
+                        </div>
+                        <div class="slds-col" style="max-width:50%;">
+                            <lightning:input aura:id='vehicleModel' value="{!v.customerVehicle.Vehicle_Model__c}" Name="Vehicle Model" label ="Vehicle Model" />
+                        </div>
+                    </div>
+                </aura:if>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col" style="max-width:50%;">
+                        <lightning:input type="text" aura:id='vehicleYear' value="{!v.customerVehicle.Vehicle_Year__c}" Name="Year" label ="Year" maxlength="4" minlength="4" onblur="{!c.validateYear}"/>
+                    </div>
+                    <aura:if isTrue="{!v.customerVehicle.Registration_Type__c == 'Registered'}">
+                        <div class="slds-col" style="max-width:50%;">
+                            <lightning:input aura:id='regExDate' type="date" value="{!v.customerVehicle.Registration_Expiry_Date__c}" Name="Registration Expiry Date" 
+                                             label ="Registration Expiry Date" />
+                        </div>
+                    </aura:if>
+                </div>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning:button label="Cancel" onclick="{!c.handleCancel}" class="slds-m-top_medium" />
+                <lightning:button label="Update" onclick="{!c.handleUpdateVehicle}"
+                                  variant="brand" class="slds-m-top_medium"/>
+            </footer>
+        </div>
+    </section>
+</aura:component>

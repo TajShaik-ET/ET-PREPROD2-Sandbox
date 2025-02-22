@@ -1,0 +1,248 @@
+<aura:component controller="ETVIN_VehicleTheftCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String"  />
+    <aura:attribute name="files" type="ContentDocument[]"/> 
+    
+    <aura:attribute name="theftReportData" type="Object" />
+    <aura:attribute name="theftReportColumns" type="List" />
+    <aura:attribute name="VehicleTheftPopup" type="boolean" default="false" />
+    
+    
+    <aura:attribute name="NOCReportData" type="Object" />
+    <aura:attribute name="NOCReportColumns" type="List" />
+    <aura:attribute name="VehicleNOCPopup"  type="boolean" default="false" />
+    
+    <aura:attribute name="ProfCertData" type="Object" />
+    <aura:attribute name="ProfCertColumns" type="List" />
+    
+     <aura:attribute name="cancellLetterData" type="Object" />
+    <aura:attribute name="cancellLetterColumns" type="List" />
+    
+    <aura:attribute name="DocOptions" type="List" />
+    <aura:attribute name="selectedDocValue" type="String" />
+    
+
+    
+     <div class="">
+       <lightning:accordion
+        allowMultipleSectionsOpen="true"
+        onsectiontoggle="" activeSectionName="" > <!-- {! c.handleSectionToggle } -->
+           <lightning:accordionSection name="A" label="Vehicle Theft Report">
+               <!-- Theft Creation start --> 
+               <div class="slds-page-header" style="border-radius: 0px; border-right: 0px;border-left: 0px;border-top: 0px;  
+                                                    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.1);">  
+                   Vehicle Theft Report Details  
+                   <div class="slds-col slds-float_right">
+                       <div class="slds-form-element">
+                           <aura:if isTrue="true"> <!-- {!!not(empty(v.theftReportData))} -->
+                               <lightning:button label="Create Theft Report" class="slds-button_brand" onclick="{!c.createNewTheftReport}" ></lightning:button>
+                           </aura:if>
+                       </div>
+                   </div>
+               </div> 
+               <aura:if isTrue="{!!not(empty(v.theftReportData))}">
+                   <P class="slds-align_absolute-center" style="margin-top: 27px;">No records to display </P>
+               </aura:if><br/>
+               <aura:if isTrue="{!not(empty(v.theftReportData))}">
+                   <lightning:datatable data="{!v.theftReportData}" keyField="id" columns="{!v.theftReportColumns }"  onrowaction="{! c.handleTheftRowAction }" hideCheckboxColumn="true" style="" ></lightning:datatable>
+               </aura:if>
+               <br/> <br/>
+               <!-- Theft creation popup - start -->
+                     <!--###### MODAL BOX Start######--> 
+             <aura:if isTrue="{!v.VehicleTheftPopup}">  
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeVehicleTheftReport}"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Vehicle Theft Report</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            
+                         
+                                <div style="padding-left: 11px;margin-top: 10px;" class="slds-border_bottom">
+                                    <lightning:recordEditForm
+                                                              onload=""
+                                                              recordId=""
+                                                              onsubmit="{!c.handleSubmitTheftRepo}"
+                                                              onsuccess="{!c.handleSuccessTheftRepo}"
+                                                              objectApiName="Vehicle_Theft_Report__c" aura:id="CorrForm" onerror="{!c.handleErrorCorrReq}" recordTypeId="" class="recEditForm">
+                                        <lightning:messages />
+                                       <div class="slds-grid">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning:inputField fieldName="Cancel_Request__c" value="{!v.recordId}" required="true"/>
+                                            </div>
+                                           
+                                        </div>
+                                       
+
+                                        
+                                        <div class="slds-m-top_medium slds-float--right">
+                                            
+                                            <lightning:button class="btn_table" disabled="" variant="brand" type="submit" name="save" label="Submit"/>
+                                        </div>
+                                    </lightning:recordEditForm>
+                                </div>
+                                                 
+                        </div>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                 
+                 <!-- Model box end -->
+                </aura:if>
+                <!-- Theft creation popup - end -->
+               
+               <!-- Theft Creation End -->  
+               
+           </lightning:accordionSection>
+           
+           
+           <lightning:accordionSection name="B" label="Vehicle NOC Report">
+               <!-- NOC Creation start --> 
+               <div class="slds-page-header" style="border-radius: 0px; border-right: 0px;border-left: 0px;border-top: 0px;  
+                                                    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.1);">  
+                   Vehicle NOC Report Details  
+                   <div class="slds-col slds-float_right">
+                       <div class="slds-form-element">
+                           <lightning:button label="Create NOC Report" class="slds-button_brand" onclick="{!c.createNewNOCReport}" ></lightning:button>
+                       </div>
+                   </div>
+               </div> 
+               <aura:if isTrue="{!!not(empty(v.NOCReportData))}">
+                   <P class="slds-align_absolute-center" style="margin-top: 27px;">No records to display </P>
+               </aura:if><br/>
+               <aura:if isTrue="{!not(empty(v.NOCReportData))}">
+                   <lightning:datatable data="{!v.NOCReportData}" keyField="id" columns="{!v.NOCReportColumns }"  onrowaction="{! c.handleNOCRowAction }" hideCheckboxColumn="true" style="" ></lightning:datatable>
+               </aura:if>
+               <br/> <br/>
+                  <!--###### MODAL BOX Start######--> 
+             <aura:if isTrue="{!v.VehicleNOCPopup}">  
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeVehicleNOCReport}"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Vehicle NOC Report</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            
+                         
+                                <div style="padding-left: 11px;margin-top: 10px;" class="slds-border_bottom">
+                                    <lightning:recordEditForm
+                                                              onload=""
+                                                              recordId=""
+                                                              onsubmit="{!c.handleSubmitNOCRepo}"
+                                                              onsuccess="{!c.handleSuccessNOCRepo}"
+                                                              objectApiName="ETVIN_Vehicle_NOC_Report__c" aura:id="CorrForm" onerror="{!c.handleErrorCorrReq}" recordTypeId="" class="recEditForm">
+                                        <lightning:messages />
+                                       <div class="slds-grid">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning:inputField fieldName="Correction_Cancel_Request__c" value="{!v.recordId}" required="true"/>
+                                            </div>
+                                           
+                                        </div>
+                                       
+
+                                        
+                                        <div class="slds-m-top_medium slds-float--right">
+                                            
+                                            <lightning:button class="btn_table" disabled="" variant="brand" type="submit" name="save" label="Submit"/>
+                                        </div>
+                                    </lightning:recordEditForm>
+                                </div>
+                                                 
+                        </div>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                 
+                 <!-- Model box end -->
+                </aura:if>
+               <!-- NOC Creation End -->
+           </lightning:accordionSection>
+            
+            <lightning:accordionSection name="C" label="Transfer Profession Certificate">
+                
+                <!-- Transfer profession Cert Start-->
+                <div class="slds-page-header" style="border-radius: 0px; border-right: 0px;border-left: 0px;border-top: 0px;  
+                                                     box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.1);">  
+                    Transfer Profession Certificate Details  
+                    <div class="slds-col slds-float_right">
+                        <div class="slds-form-element">
+                            <lightning:button label="Create Profession Certificate" class="slds-button_brand" onclick="{!c.createProfessionCert}" ></lightning:button>
+                        </div>
+                    </div>
+                </div> 
+                
+                <aura:if isTrue="{!!not(empty(v.ProfCertData))}">
+                    <P class="slds-align_absolute-center" style="margin-top: 27px;">No records to display </P>
+                </aura:if><br/>
+                <aura:if isTrue="{!not(empty(v.ProfCertData))}">
+                    <lightning:datatable data="{!v.ProfCertData}" keyField="id" columns="{!v.ProfCertColumns }"  onrowaction="{! c.handleProfCertRowAction }" hideCheckboxColumn="true" style="" ></lightning:datatable>
+                </aura:if>
+                <br/> <br/>
+                
+                <!-- Transfer profession Cert End--> 
+         
+            </lightning:accordionSection>
+           
+           <lightning:accordionSection name="D" label="Cancellation Letter">
+               
+               <!-- Cancellation letter Start--> 
+               <div class="slds-page-header" style="border-radius: 0px; border-right: 0px;border-left: 0px;border-top: 0px;  
+                                                    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.1);">  
+                   Cancellation letter Details  
+                   <div class="slds-col slds-float_right">
+                       <div class="slds-form-element">
+                           <lightning:button label="Create Cancellation Letter" class="slds-button_brand" onclick="{!c.createCancelLetter}" ></lightning:button>
+                       </div>
+                   </div>
+               </div> 
+               <aura:if isTrue="{!!not(empty(v.cancellLetterData))}">
+                   <P class="slds-align_absolute-center" style="margin-top: 27px;">No records to display </P>
+               </aura:if><br/>
+               <aura:if isTrue="{!not(empty(v.cancellLetterData))}">
+                   <lightning:datatable data="{!v.cancellLetterData}" keyField="id" columns="{!v.cancellLetterColumns}"  onrowaction="{! c.handleCancelLetterRowAction }" hideCheckboxColumn="true" style="" ></lightning:datatable>
+               </aura:if>
+               <br/> <br/>
+               <!-- Cancellation letter End-->
+
+               
+           </lightning:accordionSection>
+           
+           <lightning:accordionSection name="E" label="Cancel Theft Report Letter">
+              
+               <!-- Cancellation letter Start--> 
+               <div class="slds-page-header" style="border-radius: 0px; border-right: 0px;border-left: 0px;border-top: 0px;  
+                                                    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.1);">  
+                   Cancel Theft Report Details 
+                   <div class="slds-col slds-float_right">
+                       <div class="slds-form-element">
+                           <lightning:button label="Create Cancel theft Report" class="slds-button_brand" onclick="{!c.createCancelTheft}" ></lightning:button>
+                       </div>
+                   </div>
+               </div> 
+                <P class="slds-align_absolute-center" style="margin-top: 27px;">No records to display </P>
+               
+           </lightning:accordionSection>
+           
+           
+         </lightning:accordion>
+          
+                       
+         <br/><br/>
+           
+        
+     </div>
+       
+</aura:component>

@@ -1,0 +1,112 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                access="global" controller="ET_CaseManagement" extends="c:ETST_BilingualCommunity" >
+    <aura:attribute name="totalRecords" type="Integer"/>
+    <aura:attribute name="RecordsCount" type="Integer"/>
+    <aura:attribute name="corousalSize" type="Integer" default="4"/>
+    <aura:attribute name="start" type="Integer" default="0"/>
+    <aura:attribute name="currentData" type="list"/>
+    <aura:attribute name="status" type="String"/>
+    <aura:attribute name="deliveryData" type="list"/>
+    <aura:attribute name="fileredData" type="list"/>
+    <aura:attribute name="workOrderId" type="Id"/>
+    <aura:attribute name="searchText" type="string"/> 
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+    <aura:attribute name="service" type="String"/>
+    <!-- Related Pages Attributes -->
+    <aura:attribute name="ticketId" type="String"/>
+    <aura:attribute name="isCancelModal" type="boolean"/>
+    <aura:attribute name="isReopenModal" type="boolean"/>
+    <aura:attribute name="isAddCommentModal" type="boolean"/>
+    <aura:attribute name="isViewCommentsModal" type="boolean"/>
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:if isTrue="{! v.loaded }">
+        <aura:if isTrue="{!v.deliveryData.length>0}"> 
+            <div style="padding:0px" class="{!v.clLang=='ar' ? 'serchboxtab_AR' : 'serchboxtab'}">
+                <lightning:input type="search"
+                                 name="searchKey" value="{!v.searchText}" 
+                                 aura:id="searchKey"  onkeyup="{!c.searchRequest}" placeholder="{!v.clSearchRequests}" />
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.currentData.length>0}"> 
+            <div class="{!v.clLang=='ar' ? 'tablemaindiv_AR' : 'tablemaindiv'}">
+                <table style="width:100%" > 
+                    <tr> 
+                        <th width="140px">{!v.clCaseNumber}
+                            <lightning:buttonIcon iconName="utility:sort"
+                                                  onclick="{! c.sortData }"
+                                                  alternativeText=""
+                                                  value="CaseNumber"
+                                                  class="{!v.clLang=='ar' ? 'btnsorticon_AR' : 'btnsorticon'}"/>
+                        </th> 
+                        <th width="250px">{!v.clDescription}</th> 
+                        <th width="120px" align="center">{!v.clStatus}</th> 
+                        <th width="120px" align="center">{!v.clSolution}</th> 
+                        <th width="150px" align="center">{!v.clRaisedDate}</th>
+                    </tr> 
+                    <aura:iteration items="{!v.currentData}" var="item">
+                        <tr> 
+                            <td>{!item.CaseNumber}</td> 
+                            <td>{!item.Description}</td> 
+                            <td>{!item.Status}</td>
+                            <td>{!item.Solution__c}</td>
+                            <td><lightning:formattedDateTime value="{!item.CreatedDate}"  
+                                                             year="numeric" month="numeric" day="numeric"   hour="2-digit" minute="2-digit"
+                                                             timeZone="Asia/Dubai" hour12="true"/></td>                           
+                        </tr>
+                    </aura:iteration>                    
+                </table> 
+                
+            </div>
+            <div class="tabmobileview animated slideInUp">
+                <aura:iteration items="{!v.currentData}" var="item">
+                    <div class="newcasesdiv">
+                        <div class="caseno">Ticket {!item.CaseNumber}</div> 
+                        <!-- <td>{!item.Description}</td> -->
+                        <div  class="casestatus">{!item.Status}</div>
+                        <!--<td>{!item.Solution__c}</td>-->
+                        <div class="casesdate"><lightning:formattedDateTime value="{!item.CreatedDate}"  
+                                                                            year="numeric" month="numeric" day="numeric"   hour="2-digit" minute="2-digit"
+                                                                            timeZone="Asia/Dubai" hour12="true"/></div>
+                    </div>
+                </aura:iteration> 
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.currentData.length==0}"> 
+            <div class="textcenter">
+                <p class="noresult">No Results</p>
+                <!--img src="{!$Resource.ETDM_NoDataFound}" class="noresultsimg" /-->
+            </div>
+        </aura:if>
+        <aura:set attribute="else">
+            <lightning:spinner alternativeText="Loading" />
+        </aura:set>
+    </aura:if>
+    <div class="btnbotdiv">
+        <aura:if isTrue="{!v.start!=0}"> 
+            <!--lightning:button  variant="brand" label="Prev" onclick="{!c.getPreviousList}" class="btn_table"/-->                                          
+            <a  href="javascript:void(0);"   onclick="{!c.getPreviousList}" class="btnnext txtleft">&#10094;&#10094; {!v.clPrevious}</a> 
+        </aura:if>
+        <aura:if isTrue="{!lessthan(v.start+v.corousalSize,v.totalRecords)}">
+            <a  href="javascript:void(0);"  onclick="{!c.getNextList}" class="btnnext txtright">{!v.clNext} &#10095;&#10095;</a> 
+            <!--lightning:button  variant="brand" label="Next" onclick="{!c.getNextList}" 
+            class="btn_table slds-float_right"/--> 
+        </aura:if>
+    </div>
+    <!-- Ticket Reopen Page -->
+    
+    <!--aura:if  isTrue="{!v.isAddCommentModal}" > 
+        <c:ET_ticketAddCommentPage ticketId="{!v.ticketId}" isAddCommentModal="{!v.isAddCommentModal}" aura:id="feedbackPage" />
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if-->
+    
+    <!-- View Comments Page -->
+    <!--aura:if  isTrue="{!v.isViewCommentsModal}" > 
+        <c:ticketViewCommentsPage ticketId="{!v.ticketId}" isViewCommentsModal="{!v.isViewCommentsModal}" aura:id="feedbackPage" />
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if-->
+    <!--aura:if  isTrue="{!v.isCancelModal}" > 
+        <c:ticketClosePage ticketId="{!v.ticketId}" isCancelModal="{!v.isCancelModal}" aura:id="feedbackPage" />
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if-->
+</aura:component>

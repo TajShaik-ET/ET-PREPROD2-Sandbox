@@ -1,0 +1,726 @@
+<aura:component controller="CICO_InspectionCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <ltng:require afterScriptsLoaded="{!c.doInitCanvas}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="imgUrl" type="string"/>
+    <aura:attribute name="CI_Imgurl" type="string"/>  
+    <aura:attribute name="signUrl" type="string"/>  
+    <aura:attribute name="uploadedDocs" type="Object[]"/>
+    <aura:attribute name="uploadedImgList" type="Object[]"/>
+    <aura:attribute name="ChildAssetList" type="Object"/>
+    <aura:attribute name="ChildAssetFromOracle" type="Object"/>
+    <aura:attribute name="CheckInSuccessId" type="string"/>
+    <aura:attribute name="uploadedDiagram" type="Object[]"/>
+    <aura:attribute name="recordId" type="string"/>
+    
+    <aura:attribute name="FormStatus" type="string"/>
+    
+    <aura:attribute name="corousalSize" type="Integer" default="3"/>
+    <aura:attribute name="start" type="Integer" default="0"/>
+    <aura:attribute name="carouselImgList" type="Object[]"/>
+    <aura:attribute name="noofUploadImg" type="Integer"/>
+    
+    <aura:attribute name="assetType" type="string" default="--None--"/> 
+    <aura:attribute name="filesList" type="Object[]"/>
+    
+    <aura:attribute name="corousalSizeCI" type="Integer" default="3"/>
+    <aura:attribute name="startCI" type="Integer" default="0"/>
+    <aura:attribute name="carouseFileList" type="Object[]"/>
+    <aura:attribute name="noofRecCI" type="Integer"/>
+    <aura:attribute name="checkOutInfo" type="Object"/>
+    <aura:attribute name="sliderVal" type="Integer" default="0"/>
+    <aura:attribute name="value" type="Integer" default="50"/>
+    <aura:attribute name="recordStatus" type="string"/>
+    
+    <aura:attribute name="toggleSpinner" type="boolean" default="false"/>
+    <aura:attribute name="callOnce" type="boolean" default="true"/>
+    <aura:attribute name="checkOutSavedFiles" type="Object[]"/>
+    <aura:attribute name="checkOutSavedFilesCaruosel" type="Object[]"/>
+    <aura:attribute name="childAssetSavedList" type="Object[]"/>
+    <aura:attribute name="readMode" type="boolean" default="false"/>
+    <aura:attribute name="isSendEmailModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="checkInDate" type="string"/>
+    <aura:attribute name="showReplacement" type="boolean" default="false"/>
+    <aura:attribute name="showRentalInfo" type="boolean" default="true"/>
+    <aura:attribute name="showDriver" type="boolean" default="false"/>
+    <aura:attribute name="showInternalNo" type="boolean" default="false"/>
+    <aura:attribute name="timer" type="Integer"/>
+    <aura:attribute name="preSettings" type="Object"/>
+    <aura:attribute name="Guage" type="Object"/>
+    <aura:attribute name="callonForceLoad" type="boolean" default="true"/>
+    <aura:attribute name="checkInFor" type="string" />
+    <aura:attribute name="customerName" type="string" />
+    <aura:attribute name="customerEmail" type="string" />
+    <aura:attribute name="referenceNo" type="string"/>
+    <aura:attribute name="assignedDriver" type="string" />
+    
+    <aura:attribute name="startSaved" type="Integer" default="0"/>
+    <aura:attribute name="noofUploadImgSaved" type="Integer"/>
+    <aura:attribute name="showCustomInfo" type="boolean" default="false"/>
+    <aura:attribute name="driverName" type="string" />
+    <aura:attribute name="driverId" type="string" />
+    <aura:attribute name="assetList" type="List" default="[]"/>
+    <aura:attribute name="vehicleId" type="string"/>
+    <aura:attribute name="callOnlyLoad" type="boolean" default="true"/>
+    <aura:attribute name="callAssetOnce" type="boolean" default="true"/>
+    <aura:attribute name="vehicleInternalNo" type="string" />
+    <aura:attribute name="showOracleChildAssets" type="boolean" default="false"/>
+    <aura:attribute name="COAssCount" type="integer" default="0" />
+    <aura:attribute name="lastKmReading" type="integer" />
+    <aura:attribute name="plateNumber" type="string" />
+    <aura:attribute name="chassisNumber" type="string" />
+    <aura:attribute name="internalNo" type="string" />
+    <aura:attribute name="inspectionName" type="string" />
+    <aura:attribute name="inspectionId" type="string" />
+    <aura:attribute name="showInspectedBy" type="boolean" default="true"/>
+    
+    
+    <aura:attribute name="record" type="Object"/>
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="Check_in_fuel_reading__c,Inspected_By__c,Inspected_By__r.Name,Check_Out__c,New_Driver__c,Reference_Number__c,New_Driver__r.Name,Check_In_for__c,Rental_Status__c,Replacement_Option__c,Internal_No__c,Internal_No__r.Asset_Type__c,Internal_No__r.Name"
+                      targetFields="{!v.record}"
+                      recordUpdated="{!c.onForceLoad}"
+                      />
+    
+    <aura:attribute name="showModalbox" type="boolean" default="false"/>
+    <aura:attribute name="showModalbox2" type="boolean" default="false"/>
+    
+    <aura:attribute name="vehicleMasterList" type="Object[]"/>    
+    
+    <aura:attribute name="plateSourceOptions" type="List" default="[
+                                                                   {'label': 'Abu Dhabi', 'value': 'Abu Dhabi'},
+                                                                   {'label': 'Ajman', 'value': 'Ajman'},
+                                                                   {'label': 'Dubai', 'value': 'Dubai'},
+                                                                   {'label': 'Fujairah', 'value': 'Fujairah'},
+                                                                   {'label': 'Ras Al Khaimah', 'value': 'Ras Al Khaimah'},
+                                                                   {'label': 'Sharjah', 'value': 'Sharjah'},
+                                                                   {'label': 'Umm Al Quwain', 'value': 'Umm Al Quwain'}                                                               
+                                                                   ]"/>
+    
+    
+    <aura:registerEvent name="goToListView" type="c:CICO_CheckInFormEvent"/>
+    <!--ltng:require scripts="{!$Resource.CICO_pureknob}" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    <ltng:require scripts="{!$Resource.CICO_CanvasGuage}" afterScriptsLoaded=""/-->
+    <ltng:require scripts="{!$Resource.CICO_guagemini}" afterScriptsLoaded="{!c.scriptsLoaded2}"/>
+    
+    
+    <div class="mainDivForm outer_div">
+        <aura:if isTrue="{!v.toggleSpinner}">
+            <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+        </aura:if>
+        <div aura:id="backBtn">
+            <lightning:button label="Back" onclick="{!c.goToListView}" iconName="utility:chevronleft" class="btnback"/>
+            
+            <aura:if isTrue="{!v.recordStatus == 'Check In'}">
+                <!--lightning:buttonIcon  iconName="utility:print" onclick="{!c.printPDF}" class="slds-float_right btnprint" /-->
+                <lightning:buttonIcon  iconName="utility:email" onclick="{!c.sendEmailModelOpen}" class="slds-float_right btnprint" />
+            </aura:if>
+        </div>
+        
+        
+        <lightning:recordEditForm
+                                  onload="{!c.onloadHandler}"
+                                  recordId="{!v.recordId}"
+                                  onsubmit="{!c.handleSubmit}"
+                                  onsuccess="{!c.handleSuccess}"
+                                  objectApiName="CICO_Check_In__c"
+                                  onerror="{!c.handleError}"
+                                  class="recEditForm"
+                                  aura:id="CheckInForm">
+            
+            <div class="checkin_checkout_details">
+                <!--lightning:messages /-->
+                <div class="left_checkin_div">
+                    <lightning:inputField fieldName="Internal_No__c" aura:id="internalNo" required="true" onchange="{!c.showRelatedDataHandler}" class="internalNo_div" /><!-- value="{!v.internalNo}" -->
+                    <lightning:buttonIcon iconName="utility:description" disabled="{!v.readMode}" variant="brand" alternativeText="Settings" iconClass="dark" title="Settings" onclick="{!c.openSearchModel}" class="description_icon"/>
+                     <lightning:input label="Plate No" value="{!v.plateNumber}" disabled="true"/>
+                     <lightning:input label="Chassis No" value="{!v.chassisNumber}" disabled="true"/>
+                    <aura:if isTrue="{!v.showCustomInfo}">
+                        <lightning:inputField fieldName="Customer_Name__c" disabled="true" value="{!v.customerName}"/>
+                        <lightning:inputField fieldName="Customer_Email__c" disabled="{!v.readMode}" value="{!v.customerEmail}"/>
+                    </aura:if>
+                    <lightning:input  label="Last Check Out Location" value="{!v.checkOutInfo.Check_Out_Location__r.Name}" disabled="true"/>
+                    <lightning:input type="datetime" label="Last Check Out Date" value="{!v.checkOutInfo.Check_Out_Date__c}" disabled="true" class="datetime"/>
+                    <lightning:input label="Last Check Out Reading" value="{!v.checkOutInfo.Check_Out_Reading__c}" disabled="true"/>
+                   
+                    <!--div style="{!(v.checkInFor!= 'Maintenance')?'display:block':'display:none'}"-->
+                    
+                    <label style="color: #222f5d;font-weight: bold;">Last Check out Fuel Reading</label>
+                    <div class="canvas_div"> <canvas aura:id="checkOut" ></canvas></div>
+                    <lightning:slider label="Last Check Out Fuel Reading" step="5" value="{!v.checkOutInfo.Check_Out_fuel_reading__c}" disabled="true" class="range_in"/> 
+                    <!--/div-->
+                    
+                </div>            
+                <div class="right_checkout_div">
+                    <lightning:inputField aura:id="checkInFor" value="{!v.checkInFor}" fieldName="Check_In_for__c" onchange="{!c.showRelatedDataHandler}" disabled="{!v.readMode}" required="true"/>
+                  
+                     <lightning:inputField fieldName="Reference_Number__c" aura:id="refNo" disabled="true" value="{!v.referenceNo}"/>
+                    <aura:if isTrue="{!v.showCustomInfo}">
+                        
+                        <lightning:inputField fieldName="Assigned_Driver_ID__c" disabled="true" value="{!v.assignedDriver}" />
+                    </aura:if> 
+                    <!--Vehicle Asset type -->
+                    <lightning:combobox name="general" label="Asset Type" placeholder="--None--" options="{!v.assetList}" onchange="{!c.assetTypeHandler}" disabled="{!v.readMode}" value="{!v.assetType}"/>
+                    
+                    
+                    <aura:if isTrue="{!v.showRentalInfo}">
+                        <lightning:inputField aura:id="field" fieldName="Rental_Status__c" disabled="{!v.readMode}" required="false" onchange="{!c.rentalStatusChange}"/>
+                        <aura:if isTrue="{!v.showReplacement}">
+                            
+                            <lightning:inputField aura:id="field" fieldName="Replacement_Option__c" disabled="{!v.readMode}" required="true" onchange="{!c.ReplacementChange}"/>
+                            
+                            <aura:if isTrue="{!v.showInternalNo}"> 
+                                <!--label style="color: #222f5d;font-weight: bold;"><abbr class="slds-required" title="required">* </abbr>New Internal No.</label-->  
+                                <lightning:inputField aura:id="ReplcInterNo" fieldName="Replacement_Internal_No__c" disabled="{!v.readMode}" required="true" variant="" class="internalNo_div2"/>
+                                <lightning:buttonIcon iconName="utility:description" disabled="{!v.readMode}" variant="brand" alternativeText="Settings" iconClass="dark" title="Settings" onclick="{!c.openSearchModel2}" class="description_icon"/>
+                            </aura:if>  
+                            <aura:if isTrue="{!v.showDriver}"> 
+                                <lightning:inputField aura:id="field" fieldName="New_Driver__c" disabled="{!v.readMode}" required="true" value="{!v.driverId}" class="slds-hide"/>
+                                <div class="checkout_search">
+                                    <c:CICO_customLkup custmPlaceholder="Search Driver..." Label="New Driver" disable="{!v.readMode}" selectRecordId="{!v.driverId}" selectRecordName="{!v.driverName}" />
+                                </div>
+                            </aura:if>
+                            
+                        </aura:if>
+                    </aura:if>
+                    <lightning:inputField aura:id="checkInloc" fieldName="Check_in_Location__c" disabled="{!v.readMode}" required="true"/>
+                    
+                    <!--lightning:inputField fieldName="Check_Out_fuel_reading__c"/-->
+                    <lightning:inputField aura:id="chknDate" fieldName="Check_In_Date__c" disabled="false" required="true" value="{!v.checkInDate}"  class="datetime" onchange="{!c.DateValidation}"/>
+                    <lightning:inputField aura:id="field" fieldName="Check_Out__c" value="{!v.checkOutInfo.Id}" disabled="{!v.readMode}" class="slds-hide"/> <!-- -->
+                    <lightning:inputField aura:id="chkInReading" fieldName="Checkin_Reading__c" disabled="{!v.readMode}" required="true" onkeypress="{!c.lengthValidation}"/>
+                    
+                    <!--div style="{!(v.checkInFor!= 'Maintenance')?'display:block':'display:none'}"-->
+                    
+                    <label style="color: #222f5d;font-weight: bold;" required="true"><abbr class="slds-required" title="required">* </abbr>Check in Fuel Reading</label>
+                    <div class="canvas_div"><canvas aura:id="CheckIn" ></canvas></div>
+                    <!--lightning:slider label="Check Out Fuel Reading"  step="5" value="{!v.sliderVal}" onchange="{!c.sliderHandler}" disabled="{!v.readMode}" class="range_out"/--> 
+                    
+                    
+                    <div class="slds-form-element range">                        
+                        <div class="slds-form-element__control range__slider">
+                            <input type="range" aura:id="vol" value="{!v.sliderVal}" name="vol" step="5" min="0" max="100" class="range__slider" disabled="{!v.readMode}"/>
+                            <p class="rangeDisplay" aura:id="rangeVal">{!v.sliderVal}%</p>
+                        </div>
+                        <p aura:id="fuelWarn" class="fuelWarnError"><lightning:icon iconName="utility:warning" variant="warning" size="xx-small"/>Checkin fuel reading is lessthan checkout reading</p>
+                    </div>
+                    <!--/div-->
+                </div>
+            </div>
+            <div style="background-color: #444444">
+                <div id="some_element"/>
+            </div>
+            
+            <div class="checkin_checkout_images">
+                <!-- ***Check In Vehicle Info ***start --> 
+                <div class="left_section">
+                    <P>Last Check Out Marking</P>
+                    <div class="slds-m-bottom_x-small">
+                        <img aura:id="CI_Imgurl" src="{!v.CI_Imgurl}" width="500" height="400" style=""/>
+                        
+                        <!--canvas aura:id="ci_MarkedDiagram" width="500" height="400" ></canvas-->
+                        
+                        <aura:if isTrue="{!not(empty(v.carouseFileList))}">   
+                            <div class="uploadimgs_div">
+                                <ul>
+                                    <aura:iteration items="{!v.carouseFileList}" var="img"  indexVar="index">
+                                        <li style="color:black">
+                                            <a href="javascript:void(0)" data-filename="{!img}" data-index="{!index}" onclick="{!c.showImg}">
+                                                <img width="100" height="100" src="{!img}" />
+                                            </a>
+                                        </li> 
+                                    </aura:iteration>
+                                </ul>
+                            </div>
+                            <div class="MS-controls ">
+                                <aura:if isTrue="{!v.startCI!=0}">                                           
+                                    <a href="" class="btnback btnprev" title="pre" onclick="{!c.getPreviousListCI}"><lightning:icon iconName="utility:chevronleft" alternativeText="Previous" title="Previous" /></a>
+                                </aura:if>
+                                <aura:if isTrue="{!lessthan(v.startCI+v.corousalSizeCI,v.noofRecCI)}">  
+                                    
+                                    <a  href=""  class="btnback btnnext" title="next" onclick="{!c.getNextListCI}"><lightning:icon iconName="utility:chevronright" alternativeText="Next" title="Next" /></a>
+                                </aura:if>
+                            </div>
+                            
+                            
+                        </aura:if>  
+                        
+                    </div>
+                </div> 
+                <!-- ***Check In Vehicle Info ***End -->
+                
+                <!-- ***vehicle Diagram and Img upload***start -->
+                <div class="right_section">
+                    <p>Check In Marking</p>
+                    <div class="left_imagediv">
+                        <div class="slds-m-bottom_x-small">
+                            <img aura:id="customImg" src="{!v.imgUrl}" width="500" height="400" style="display:none"/>
+                            <aura:if isTrue="{!(v.recordStatus=='New' ||v.recordStatus=='Draft')?'true':'false'}">  
+                                
+                                <button type="button" aura:id="backBtnCanvas" class="undobtn" ><img src="{!$Resource.undo_img}" /></button>
+                                <button type="button" aura:id="nxtBtn" class="redobtn"><img src="{!$Resource.redo_img}" /></button>
+                                <lightning:button label="Clear" onclick="{!c.erase}" iconName="utility:close" class="clearbtn"/>
+                            </aura:if>
+                            <br></br><br></br>
+                            <canvas aura:id="canvasDia" width="500" height="400" style="{!(v.recordStatus=='New'||v.recordStatus=='Draft')?'display:block':'display:none'}"></canvas>
+                            
+                            <aura:if isTrue="{!v.readMode}">
+                                <img  src="{!v.imgUrl}" width="500" height="400"/>
+                            </aura:if>   
+                            
+                        </div>
+                        
+                        <div class="slds-m-bottom_x-small">                            
+                            <!--<lightning:input aura:id="Images" 
+                                             type="file"
+                                             files="{!v.uploadedDocs}"
+                                             onchange="{!c.OnUpload}"
+                                             accept="image/*"
+                                             label="Capture"
+                                             name="Capture" 
+                                             multiple="false"
+                                             disabled=""
+                                             />-->
+                            <div class="image-upload">
+                                
+                                <aura:if isTrue="{!!v.readMode}">
+                                    <label for="file-input">
+                                        <img src="{!$Resource.ETimage_upload}"/>
+                                    </label>                                
+                                    <!--<input id="file-input" type="file" files="{!v.uploadedDocs}"
+                                             onchange="{!c.OnUpload}" />-->
+                                    <lightning:input aura:id="Images" 
+                                                     type="file"
+                                                     files="{!v.uploadedDocs}"
+                                                     onchange="{!c.OnUpload}"
+                                                     accept="image/*"
+                                                     label=""
+                                                     name="Capture" 
+                                                     multiple="false"
+                                                     disabled="" class="imgupload" title="Upload Images"
+                                                     />
+                                </aura:if>
+                            </div>
+                            
+                            
+                            <!-- saved Salesforce files **start** -->
+                            <div class="uploadimgs_div">
+                                <ul>
+                                    <aura:iteration items="{!v.checkOutSavedFilesCaruosel}" var="img"  indexVar="index">
+                                        
+                                        <li style="color:black"><img width="100" height="100" src="{!img.value}" />&nbsp;
+                                            <aura:if isTrue="{!!v.readMode}">
+                                                <a href="javascript:void(0)" data-filename="{!img.id}" data-index="{!index}" onclick="{!c.deleteFile}">
+                                                    <lightning:button label="Remove" iconName="utility:delete" class="deletebtn"/>
+                                                </a>
+                                            </aura:if>
+                                        </li> 
+                                    </aura:iteration> 
+                                </ul>
+                            </div>  
+                            <div class="MS-controls ">
+                                <aura:if isTrue="{!v.startSaved!=0}">                                           
+                                    <a href="" class="btnperv btn_left"  title="pre" onclick="{!c.getPreviousSavedList}"><lightning:icon iconName="utility:chevronleft" alternativeText="Previous" title="Previous" /></a>
+                                </aura:if>
+                                <aura:if isTrue="{!lessthan(v.startSaved+v.corousalSize,v.noofUploadImgSaved)}">  
+                                    <!--<a  href="" class="btnnext btn_right"  title="next" onclick="{!c.getNextList}">{!$Label.c.ETST_Next} &#62;&#62;</a>-->
+                                    <a  href="" class="btnnext btn_right"  title="next" onclick="{!c.getNextSavedList}"><lightning:icon iconName="utility:chevronright" alternativeText="Next" title="Next" /></a>
+                                </aura:if>
+                            </div>
+                            
+                            <!-- saved Salesforce files **end** -->
+                            
+                            <!--input type="file" accept="image/*" capture="camera" onChange="{!c.OnUpload}" multiple="multiple" /-->
+                            <div class="uploadimgs_div">
+                                <ul>
+                                    <aura:iteration items="{!v.carouselImgList}" var="img"  indexVar="index">
+                                        <li style="color:black"><img width="100" height="100" src="{!img.strBase64Data}" />&nbsp;
+                                            <a href="javascript:void(0)" data-filename="{!img.strFileName}" data-index="{!index}" onclick="{!c.removeImg}">
+                                                <lightning:button label="Remove" iconName="utility:delete" class="deletebtn"/>
+                                            </a>
+                                        </li> 
+                                    </aura:iteration>   
+                                </ul>
+                            </div>
+                            
+                            <div class="MS-controls ">
+                                <aura:if isTrue="{!v.start!=0}">                                           
+                                    <a href="" class="btnperv btn_left"  title="pre" onclick="{!c.getPreviousList}"><lightning:icon iconName="utility:chevronleft" alternativeText="Previous" title="Previous" /></a>
+                                </aura:if>
+                                <aura:if isTrue="{!lessthan(v.start+v.corousalSize,v.noofUploadImg)}">  
+                                    <!--<a  href="" class="btnnext btn_right"  title="next" onclick="{!c.getNextList}">{!$Label.c.ETST_Next} &#62;&#62;</a>-->
+                                    <a  href="" class="btnnext btn_right"  title="next" onclick="{!c.getNextList}"><lightning:icon iconName="utility:chevronright" alternativeText="Next" title="Next" /></a>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***vehicle Diagram and Img upload***End -->                
+            </div>
+            
+            <div class="static_values_check">
+                <p>Last Check Out Accessories </p>
+                <aura:if isTrue="{!not(empty(v.checkOutInfo))}"> 
+                    <!--ui:inputCheckbox aura:id="COAccesories" label="Cassette"  value="{!v.checkOutInfo.Cassette__c}" disabled="true"/>
+                    <ui:inputCheckbox aura:id="COAccesories" label="Cassette Player"  value="{!v.checkOutInfo.Cassette_Player__c}" disabled="true"/-->
+                    <ui:inputCheckbox aura:id="COAccesories" label="Radio"  value="{!v.checkOutInfo.Radio__c}" disabled="true"/>
+                    <ui:inputCheckbox aura:id="COAccesories" label="Tool Kit"  value="{!v.checkOutInfo.Emer_Tool_Kit__c}" disabled="true"/>
+                    <ui:inputCheckbox aura:id="COAccesories" label="Fire Ext In"  value="{!v.checkOutInfo.Fire_Ext_In__c}" disabled="true"/>
+                    <ui:inputCheckbox aura:id="COAccesories" label="First Aid Box"  value="{!v.checkOutInfo.First_Aid_Box__c}" disabled="true"/>
+                    <!--ui:inputCheckbox aura:id="COAccesories" label="Microphone"  value="{!v.checkOutInfo.Microphone__c}" disabled="true"/-->
+                    <ui:inputCheckbox aura:id="COAccesories" label="Reflec Train"  value="{!v.checkOutInfo.Reflec_Trian__c}" disabled="true"/>
+                    <ui:inputCheckbox aura:id="COAccesories" label="Spare Wheel"  value="{!v.checkOutInfo.Spare_Wheel__c}" disabled="true"/>
+                    <!--ui:inputCheckbox aura:id="COAccesories" label="Video"  value="{!v.checkOutInfo.Video__c}" disabled="true"/-->
+                    <ui:inputCheckbox aura:id="COAccesories" label="Wheel Cap"  value="{!v.checkOutInfo.Wheel_Cap__c}" disabled="true"/>
+                    
+                    <aura:set attribute="else">
+                        <div id="no-records" class="slds-align_absolute-center"><strong> No data to display</strong></div>
+                    </aura:set>
+                    
+                </aura:if>
+                <p>Check In Accessories </p>
+                <!--lightning:inputField aura:id="CIAccesories" fieldName="Cassette__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/>
+                <lightning:inputField aura:id="CIAccesories" fieldName="Cassette_Player__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/-->
+                 <lightning:inputField aura:id="CIAccesories" fieldName="Radio__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/>
+                <lightning:inputField aura:id="CIAccesories" fieldName="Emer_Tool_Kit__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/>
+                <lightning:inputField aura:id="CIAccesories" fieldName="Fire_Ext_In__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/>
+                <lightning:inputField aura:id="CIAccesories" fieldName="First_Aid_Box__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/>
+                <!--lightning:inputField aura:id="CIAccesories" fieldName="Microphone__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/-->
+                <lightning:inputField aura:id="CIAccesories" fieldName="Reflec_Trian__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/>
+                <lightning:inputField aura:id="CIAccesories" fieldName="Spare_Wheel__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/>
+                <!--lightning:inputField aura:id="CIAccesories" fieldName="Video__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/-->
+                <lightning:inputField aura:id="CIAccesories" fieldName="Wheel_Cap__c" disabled="{!v.readMode}" onchange="{!c.checkInAccessoriesHandler}"/>
+                <p aura:id="AccWarnMsg" class="fuelWarnError"><lightning:icon iconName="utility:warning" variant="warning" size="xx-small"/> Checkin accessories less than Checkout</p>
+            </div>
+            
+            
+            
+            <!-- *** dynamic value - Check out Read only*** -->
+            <div class="checkin_checkout_table">
+                <div class="left_section">
+                    <P>Last Check Out Child Assets</P>
+                    <aura:if isTrue="{!not(empty(v.ChildAssetList))}">                    
+                        <table class="slds-var-m-around_medium">
+                            <tr>
+                                <th>Asset Name&nbsp;</th>                           
+                                <th>Issued&nbsp;</th>
+                                
+                            </tr>                        
+                            <aura:iteration items="{!v.ChildAssetList}" var="Child"  >
+                                <tr>
+                                    <td>{!Child.Asset_Description__c}&nbsp;</td>
+                                    <td><ui:outputCheckbox value="{!Child.Issued__c	}"/>&nbsp;</td>
+                                    
+                                </tr>                            
+                            </aura:iteration>                        
+                        </table>  
+                        <aura:set attribute="else">
+                            <div id="no-records" class="slds-align_absolute-center"><strong> No assets found in last check out</strong></div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+                <div class="right_section">
+                    <!-- *** dynamic value - Check in- Editable*** -->
+                    <P>Check In Child Assets</P>
+                    <aura:if isTrue="{!not(empty(v.ChildAssetFromOracle)) || not(empty(v.childAssetSavedList)) }">
+                        
+                        <table class="slds-var-m-around_medium checkout_table">
+                            <tr>
+                                <th>Asset Name&nbsp;</th>                           
+                                <th>Received&nbsp;</th>
+                                
+                            </tr>
+                            <aura:iteration items="{!v.childAssetSavedList}" var="childSf" indexVar="index">
+                                <tr>
+                                    <td> <ui:outputText value="{!childSf.Asset_Description__c}"/>&nbsp;</td>
+                                    <td><ui:outputCheckbox value="{!childSf.Received__c}"/>&nbsp;
+                                        <aura:if isTrue="{!!v.readMode}">
+                                            <a href="javascript:void(0)" data-filename="{!childSf.Id}" data-index="{!index}" onclick="{!c.deleteChildAsset}" class="delete_atag">
+                                                <lightning:button label="Remove" iconName="utility:delete" class="deletebtn"/>
+                                            </a>
+                                        </aura:if>
+                                    </td>                                   
+                                </tr>                            
+                            </aura:iteration>
+                            <aura:if isTrue="{!!v.showOracleChildAssets}">
+                                <aura:if isTrue="{!!v.readMode}">        <!-- {!!v.readMode} -->                     
+                                    <aura:iteration items="{!v.ChildAssetFromOracle}" var="Child"  >
+                                        
+                                        <lightning:recordEditForm aura:id="NewChildAsset"  objectApiName="CICO_Child_Asset__c" onsuccess="{!c.childAssetSuccess}" onsubmit="{!c.childAssetSubmit}" onerror="{!c.childAssetErr}">
+                                            <lightning:messages />
+                                            
+                                            <tr>
+                                                <td> <lightning:inputField fieldName="Asset_Description__c" value="{!Child.Asset_Description__c}"  variant="label-hidden" style="display:none"/><!--  -->
+                                                    <ui:outputText value="{!Child.Asset_Description__c}"/>
+                                                </td>
+                                                <td> <lightning:inputField aura:id="CheckBox" fieldName="Received__c" disabled="{!v.readMode}" variant="label-hidden"/> </td>
+                                                
+                                            </tr>
+                                            
+                                            <lightning:inputField fieldName="Check_In__c" value="{!v.CheckInSuccessId}" class="slds-hide"/>
+                                        </lightning:recordEditForm>
+                                    </aura:iteration>
+                                </aura:if>
+                            </aura:if>
+                            <!-- This block is for check in without check out record, -->
+                            <aura:if isTrue="{!v.showOracleChildAssets}">
+                                <aura:if isTrue="{!!v.readMode}">        <!-- {!!v.readMode} -->                     
+                                    <aura:iteration items="{!v.ChildAssetFromOracle}" var="Child"  >
+                                        
+                                        <lightning:recordEditForm aura:id="NewChildAsset"  objectApiName="CICO_Child_Asset__c" onsuccess="{!c.childAssetSuccess}" onsubmit="{!c.childAssetSubmit}" onerror="{!c.childAssetErr}">
+                                            <lightning:messages />
+                                            
+                                            <tr>
+                                                <td> <lightning:inputField fieldName="Asset_Description__c" value="{!Child.AssetDescription}"  variant="label-hidden" style="display:none"/><!--  -->
+                                                    <ui:outputText value="{!Child.AssetDescription}"/>
+                                                </td>
+                                                <td> <lightning:inputField aura:id="CheckBox" fieldName="Received__c" disabled="{!v.readMode}" variant="label-hidden"/> </td>
+                                                
+                                            </tr>
+                                            
+                                            <lightning:inputField fieldName="Check_In__c" value="{!v.CheckInSuccessId}" class="slds-hide"/>
+                                        </lightning:recordEditForm>
+                                    </aura:iteration>
+                                </aura:if>
+                            </aura:if>
+                        </table>
+                        
+                        <aura:set attribute="else">
+                            <div id="no-records" class="slds-align_absolute-center"><strong> No assets found in check in</strong></div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+            
+            
+            <!--*** comment field *** -->
+            <div class="comments_div">
+                <lightning:inputField fieldName="Comments__c" disabled="{!v.readMode}"/>
+            </div>
+            
+            <aura:if isTrue="{!v.showInspectedBy}"> 
+                <lightning:inputField aura:id="field" fieldName="Inspected_By__c" disabled="{!v.readMode}"  value="{!v.inspectionId}" class="slds-hide"/>
+                <div class="checkout_search search_driver_bottom">
+                    <c:CICO_customLkup custmPlaceholder="Search Driver..." Label="Inspected By" disable="{!v.readMode}" selectRecordId="{!v.inspectionId}" selectRecordName="{!v.inspectionName}" />
+                   
+                </div>
+                 <div class="checkout_search search_driver_bottom" style="display: flex; margin-top: 0.5rem;">
+                 <lightning:inputField fieldName="Vehicle_Handover_Name__c" disabled="{!v.readMode}"/>
+                 <lightning:inputField fieldName="Vehicle_Handover_Number__c" disabled="{!v.readMode}"/>
+                </div>
+                
+            </aura:if>
+            
+            <div class="detail_signature">
+                <label class="txtsign">Signature</label>
+                <aura:if isTrue="{!!v.readMode}">
+                    <div class="leftdiv_signature">
+                        <lightning:button label=""  onclick="{!c.eraseSign}" iconName="utility:close" class="clearbtnsign"/>
+                        <img aura:id="signImg" src="{!v.signUrl}" width="500" height="100" style="display:none"/>
+                        <canvas aura:id="canvasSign" width="500" height="100" />                       
+                    </div> 
+                    <aura:set attribute="else">
+                        <img aura:id="signImg" src="{!v.signUrl}" width="500" height="100"/>
+                    </aura:set>
+                </aura:if>
+                <aura:if isTrue="{!!v.readMode}">
+                    <div class="right_allbtn">
+                        <lightning:button class="slds-m-top_small rejbtn slds-no-print" variant="brand" type="submit" onclick="{!c.customHandleSubmit}" name="Draft" label="Draft" />
+                        <lightning:button class="slds-m-top_small appbtn slds-no-print" variant="brand" type="submit" onclick="{!c.customHandleSubmit}" name="Check In" label="Check In" />
+                    </div>
+                    
+                </aura:if>
+            </div>
+        </lightning:recordEditForm> 
+    </div>
+    <lightning:button label="Back"  onclick="{!c.goToListView}" iconName="utility:chevronleft" class="btnbackbottom"/>
+    
+    <aura:if isTrue="{!v.isSendEmailModalOpen}">
+        
+        <!-- Modal/Popup Box starts here-->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box Header Starts here-->
+                <!--header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Send Email</h2>
+                </header-->
+                <!--Modal/Popup Box Body Starts here-->
+                <div class="slds-modal__content" id="modal-content-id-1">
+                    <c:CICO_CheckInSendEmail recordId="{!v.recordId}" isCommunity="true" closePopup="{!c.closeEmailPopup}"/>
+                    
+                </div>
+                <!--Modal/Popup Box Footer Starts here-->                
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showModalbox}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Vehicle Internal No. Search</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning:combobox name="plateSource" aura:id="plateSource" label="Plate Source" value="" placeholder="Select Source" options="{! v.plateSourceOptions }" onchange="{! c.handleChangeSearch }"/>
+                    <lightning:input
+                                     aura:id="plateNumber"
+                                     name="plateNumber"
+                                     label="Plate Number"
+                                     type="search"
+                                     oncommit="{!c.handleChangeSearch}" 
+                                     onchange="{!c.handleChangeSearch}"
+                                     />
+                    <lightning:input
+                                     aura:id="plateColorCode"
+                                     name="plateColorCode"
+                                     label="Plate Color Code"
+                                     type="search"
+                                     oncommit="{!c.handleChangeSearch}" 
+                                     onchange="{!c.handleChangeSearch}"
+                                     />
+                    <lightning:input
+                                     aura:id="plateType"
+                                     name="plateType"
+                                     label="Plate Type"
+                                     type="search"
+                                     oncommit="{!c.handleChangeSearch}" 
+                                     onchange="{!c.handleChangeSearch}"
+                                     />
+                    
+                    <lightning:button variant="brand" 
+                                      label="Search"
+                                      title="Search"
+                                      onclick="{! c.searchHandler }" class="searchpopup_btn"/>
+                    
+                    
+                    <aura:if isTrue="{!not(empty(v.vehicleMasterList))}">
+                        <div class="masterlist_table">
+                            <table>
+                                <tr>
+                                    <th>Internal No.</th>
+                                    <th>Description</th>
+                                    
+                                </tr>  
+                                <aura:iteration items="{!v.vehicleMasterList}" var="item">
+                                    <tr data-id="{!item.Id}" onclick="{!c.autoPopulateIntNo}">
+                                        <td>{!item.Name}</td>
+                                        <td>{!item.Description__c}</td>
+                                    </tr>
+                                </aura:iteration>
+                            </table>
+                        </div>
+                        <aura:set attribute="else">
+                            <p class="nodata_div">No records to display</p>
+                        </aura:set>
+                    </aura:if>
+                    
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <!--footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    
+                    
+                </footer-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <aura:if isTrue="{!v.showModalbox2}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel2 }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Vehicle Internal No. Search</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning:combobox name="plateSource" aura:id="plateSource" label="Plate Source" value="" placeholder="Select Source" options="{! v.plateSourceOptions }" onchange="{! c.handleChangeSearch }"/>
+                    <lightning:input
+                                     aura:id="plateNumber"
+                                     name="plateNumber"
+                                     label="Plate Number"
+                                     type="search"
+                                     oncommit="{!c.handleChangeSearch}" 
+                                     onchange="{!c.handleChangeSearch}"
+                                     />
+                    <lightning:input
+                                     aura:id="plateColorCode"
+                                     name="plateColorCode"
+                                     label="Plate Color Code"
+                                     type="search"
+                                     oncommit="{!c.handleChangeSearch}" 
+                                     onchange="{!c.handleChangeSearch}"
+                                     />
+                    <lightning:input
+                                     aura:id="plateType"
+                                     name="plateType"
+                                     label="Plate Type"
+                                     type="search"
+                                     oncommit="{!c.handleChangeSearch}" 
+                                     onchange="{!c.handleChangeSearch}"
+                                     />
+                    
+                    <lightning:button variant="brand" 
+                                      label="Search"
+                                      title="Search"
+                                      onclick="{! c.searchHandler }" class="searchpopup_btn"/>
+                    
+                    
+                    <aura:if isTrue="{!not(empty(v.vehicleMasterList))}">
+                        <div class="masterlist_table">
+                            <table>
+                                <tr>
+                                    <th>Internal No.</th>
+                                    <th>Description</th>
+                                    
+                                </tr>  
+                                <aura:iteration items="{!v.vehicleMasterList}" var="item">
+                                    <tr data-id="{!item.Id}" onclick="{!c.autoPopulateIntNo2}">
+                                        <td>{!item.Name}</td>
+                                        <td>{!item.Description__c}</td>
+                                    </tr>
+                                </aura:iteration>
+                            </table>
+                        </div>
+                        <aura:set attribute="else">
+                            <p class="nodata_div">No records to display</p>
+                        </aura:set>
+                    </aura:if>
+                    
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <!--footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    
+                    
+                </footer-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,294 @@
+<aura:component  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" controller='ET_BusinessCommunityController' extends="c:ET_MOE_BilingualCommunity">
+    
+    
+    
+    <aura:attribute name="isViewFileModal" type="boolean"/>
+    <aura:attribute name="openModal" type="String"/>
+    <aura:attribute name="ticketId" type="String"/>
+    <aura:attribute name="isGovDepartment" type="boolean" default="false" />
+     <aura:attribute name="isESEuser" type="boolean" default="false" />
+    <aura:attribute name="ishumid" type="boolean" default="false" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" /> 
+    <aura:attribute name="files" type="ContentDocument[]"/>  
+    <aura:attribute name="accept" type="List" default="['.jpg', '.jpeg','.pdf','.csv','.xlsx']"/>  
+    <aura:attribute name="multiple" type="Boolean" default="true"/>      
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    
+    <aura:attribute name="userParentProfileWrap" type="ET_BusinessCommunityController.ResultWrapper"/>
+    
+    
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" 
+             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <!--_____________________________________________________Arabic View___________________________________________________-->
+        
+        <aura:if  isTrue="{!v.clLang =='ar'}">
+            <div class="slds-modal__container" >
+                
+                
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_large slds-hyphenate">تفاصيل الملف الذي تم تحميله</h2>
+                    
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_large" id="modal-content-id-1">
+                    <!-- Iterate the history and show the content -->
+                     <div style ="direction: rtl;">
+                    <lightning:card>
+                        <div class="slds">  
+                            <lightning:notificationsLibrary aura:id="notifLib"/>
+                            <div class="contentbox" > 
+                                
+                                <div class="slds-page-header header">عدد الملفات المرفوعة ({!v.files.length})</div>  
+                                <div class="slds-grid">  
+                                    <div style="width:100%">  
+                                        <center>
+                                            
+                                           <aura:if isTrue="{!(v.isGovDepartment || v.isESEuser )}">
+                                                <lightning:fileUpload label="" multiple="{!v.multiple}"   
+                                                                      accept="{!v.accept}" recordId="{!v.ticketId}"   
+                                                                      onuploadfinished="{!c.UploadFinished}" /> 
+                                                
+                                            </aura:if>
+                                           
+                                        </center>
+                                    </div>  
+                                </div><br/> 
+                                <div class="slds-form--compound" style="position:relative">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">  
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Title">عنوان</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="File Type">نوع الملف</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Created By">انشأ من قبل</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Created Date">تاريخ الإنشاء</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Title">أجراءات</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:if isTrue ="{!not(empty(v.files))}">
+                                                <aura:iteration items="{!v.files}" var="filedata">  
+                                                    <tr>  
+                                                        <th scope="row">
+                                                            <div class="sldstruncate" title="{!filedata.Title}">
+                                                                <a href="" id="{!filedata.Id}" onclick="{!c.previewFileAction}">{!filedata.Title}</a>
+                                                            </div>
+                                                        </th>
+                                                        
+                                                        <td>
+                                                            <div class="sldstruncate" title="{!filedata.FileType}">
+                                                                {!filedata.FileType}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            
+                                                            <a id="{!filedata.CreatedBy.Name}" href="">
+                                                                {!filedata.CreatedBy.Name}
+                                                            </a>
+                                                            
+                                                            
+                                                        </td> 
+                                                        <td>
+                                                            <div class="sldstruncate" title="{!filedata.CreatedDate}">
+                                                                <lightning:formattedDateTime value="{!filedata.CreatedDate}"/>
+                                                            </div>
+                                                        </td>
+                                                          <aura:if isTrue="{!v.ishumid}">
+                                                               <td><a href="javascript:void(0)" id="{!filedata.Id}" onclick="{!c.delFilesAction}">
+                                                            <lightning:button class="deletButton"  iconName='action:delete' label="يمسح" title="يمسح" variant="brand"></lightning:button></a>
+                                                        </td>
+                                                        </aura:if>
+                                                       
+                                                    </tr>  
+                                                </aura:iteration>  
+                                                
+                                                <aura:set attribute="else">
+                                                    <div class="error" >
+                                                       لم يتم تحميل أي ملفات مع هذا السجل !!
+                                                    </div>
+                                                </aura:set>
+                                                
+                                            </aura:if>
+                                        </tbody>  
+                                    </table>  
+                                    <aura:if isTrue="{!v.Spinner}">
+                                        <div class="slds-spinner_container">
+                                            <div class="slds-spinner slds-spinner--medium" aria-hidden="false" role="alert">
+                                                <div class="slds-spinner__dot-a"></div>
+                                                <div class="slds-spinner__dot-b"></div>
+                                            </div>
+                                        </div>
+                                    </aura:if>
+                                </div>
+                            </div>  
+                            <br/>
+                            <br/>
+                            
+                        </div>  
+                    </lightning:card>               
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <div class="slds-float_left">
+                        <lightning:button class="btn_close" variant="brand" name="Close" label="يغلق"
+                                          onclick="{!c.closeModel}" />
+                    </div>
+                </footer>
+            </div>
+            <!--________________________________________________English View_________________________________________________-->
+            <aura:set attribute="else"> 
+                <div class="slds-modal__container" >
+                    
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_large slds-hyphenate">Uploaded File Details</h2>
+                        
+                    </header>
+                    <!--###### MODAL BOX BODY Part Start######-->
+                    <div class="slds-modal__content slds-p-around_large" id="modal-content-id-1">
+                        <!-- Iterate the history and show the content -->
+                        <lightning:card>
+                            <div class="slds">  
+                                <lightning:notificationsLibrary aura:id="notifLib"/>
+                                <div class="contentbox" > 
+                                    
+                                    <div class="slds-page-header header">FilesCount : ({!v.files.length})</div>
+                                    <div class="slds-grid">  
+                                        <div style="width:100%">  
+                                            <center>
+                                               <aura:if isTrue="{!(v.isGovDepartment || v.isESEuser )}">
+                                                    <lightning:fileUpload label="" multiple="{!v.multiple}"   
+                                                                          accept="{!v.accept}" recordId="{!v.ticketId}"   
+                                                                          onuploadfinished="{!c.UploadFinished}" /> 
+                                                    
+                                                </aura:if>
+                                                
+                                            </center>
+                                        </div>  
+                                    </div><br/> 
+                                    <div class="slds-form--compound" style="position:relative">
+                                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">  
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    
+                                                    <th class="slds-text-title_caps" scope="col">
+                                                        <div class="slds-truncate" title="Title">Title</div>
+                                                    </th>
+                                                    <th class="slds-text-title_caps" scope="col">
+                                                        <div class="slds-truncate" title="File Type">File Type</div>
+                                                    </th>
+                                                    <th class="slds-text-title_caps" scope="col">
+                                                        <div class="slds-truncate" title="Created By">Created By</div>
+                                                    </th>
+                                                    <th class="slds-text-title_caps" scope="col">
+                                                        <div class="slds-truncate" title="Created Date">Created Date</div>
+                                                    </th>
+                                                     <aura:if isTrue="{!v.ishumid}">
+                                                     <th class="slds-text-title_caps" scope="col">
+                                                        <div class="slds-truncate" title="Title">Action</div>
+                                                    </th>
+                                                    </aura:if>
+                                                  
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <aura:if isTrue ="{!not(empty(v.files))}">
+                                                    <aura:iteration items="{!v.files}" var="filedata">  
+                                                        <tr>  
+                                                            <th scope="row">
+                                                                <div class="sldstruncate" title="{!filedata.Title}">
+                                                                    <a href="" id="{!filedata.Id}" onclick="{!c.previewFileAction}">{!filedata.Title}</a>
+                                                                </div>
+                                                            </th>
+                                                            
+                                                            <td>
+                                                                <div class="sldstruncate" title="{!filedata.FileType}">
+                                                                    {!filedata.FileType}
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                
+                                                                <a id="{!filedata.CreatedBy.Name}" href="">
+                                                                    {!filedata.CreatedBy.Name}
+                                                                </a>
+                                                                
+                                                                
+                                                            </td> 
+                                                            <td>
+                                                                <div class="sldstruncate" title="{!filedata.CreatedDate}">
+                                                                    <lightning:formattedDateTime value="{!filedata.CreatedDate}"/>
+                                                                </div>
+                                                            </td>
+                                                            <aura:if isTrue="{!v.ishumid}">
+                                                                <td><a href="javascript:void(0)" id="{!filedata.Id}" onclick="{!c.delFilesAction}">
+                                                                    <lightning:button class="deletButton" iconName='action:delete' label="Delete" title="Delete" variant="brand"></lightning:button></a>
+                                                                </td>
+                                                            </aura:if>
+                                               
+                                                          
+                                                        </tr>  
+                                                    </aura:iteration>  
+                                                    
+                                                    <aura:set attribute="else">
+                                                        <div class="error" >
+                                                            No files have been uploaded with this record !!
+                                                        </div>
+                                                    </aura:set>
+                                                    
+                                                </aura:if>
+                                            </tbody>  
+                                        </table>  
+                                        <aura:if isTrue="{!v.Spinner}">
+                                            <div class="slds-spinner_container">
+                                                <div class="slds-spinner slds-spinner--medium" aria-hidden="false" role="alert">
+                                                    <div class="slds-spinner__dot-a"></div>
+                                                    <div class="slds-spinner__dot-b"></div>
+                                                </div>
+                                            </div>
+                                        </aura:if>
+                                    </div>
+                                </div>  
+                                <br/>
+                                <br/>
+                                
+                            </div>  
+                        </lightning:card>               
+                        
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <div class="slds-float_right">
+                            <lightning:button class="btn_close" variant="brand" name="Close" label="Close"
+                                              onclick="{!c.closeModel}" />
+                        </div>
+                    </footer>
+                </div>
+                
+            </aura:set>
+            
+        </aura:if>
+        
+    </section>   
+    
+</aura:component>

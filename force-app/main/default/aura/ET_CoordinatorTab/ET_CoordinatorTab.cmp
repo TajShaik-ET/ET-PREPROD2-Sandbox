@@ -1,0 +1,53 @@
+<aura:component extends="c:ET_ParentTab" controller="ET_ServiceRequestController">
+    <aura:attribute name="backgroundColor" type="String" />
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+   <aura:attribute name="lineNumber" type="Integer"  />
+   <aura:attribute name="numberOfLines" type="Integer" default="0"/>
+   <aura:attribute name="multipleFields" type="List" />
+    
+    <aura:attribute name="coordinatorMasterDataMap" type="Map"/>
+    
+    <aura:attribute name="editableCoordinatorFieldsforPricingTeam" type="Object"/>
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+	<aura:attribute name="alterRatesWithServiceWrp" type="Object" />
+    <aura:handler name="alterRateEvent" event="c:ET_AlterRatesEvent" action="{!c.handleAlterRateEvent}"/>
+    <aura:registerEvent name="alterRateDataEvent" type="c:ET_AlterRatesEvent"/>
+   <aura:attribute name="additionalFieldsToDisplay" type="List" default=""/>
+   <aura:attribute  name="coordinatorRecords" type="Map" />
+   <aura:attribute name="priceLabel" type="String" default="Price Utilization" />
+   <aura:attribute name="workingDaysPerWeek" type="List" default="1,2,3,4,5,6,7,Multiple"/>
+   <aura:attribute name="workingMonthsPerYear" type="List" default="1,2,3,4,5,6,7,8,9,10,11,12,Multiple"/>
+   <aura:attribute name="commoncoordinatorDetails" type="Opportunity" default="{'sObjectType':'Opportunity'}"/>
+    <aura:attribute name="quoteId" type="String"/>
+   <aura:handler name="refreshEvent" event="c:ET_doNotAllowChildRefresh" action="{!c.doRefresh}" />
+  <!-- <aura:handler name="refreshEvent" event="c:ET_doNotAllowChildRefresh" action="{!c.doRefresh}" /> -->
+   <aura:handler name="notifyRequirementTab" event="c:ET_NotifyRequirementTabCmpOnDelete" action="{!c.handleNotifyCoordinatorTabEvent}"/>
+   <aura:method name="getData" action="{!c.getData}" access="public">
+  </aura:method>
+    <aura:handler name="change" value="{!v.quoteId}" action="{!c.onQuoteIdChange}"/>	
+
+   <aura:html tag="style">
+    #mainCoordinatorTabDivId {
+        --backgroundColor: {!v.backgroundColor};
+    }
+    </aura:html>
+
+    <aura:if isTrue="{!v.commonFieldsToBePopulateLst.length > 0 ? true : false}">
+        <h3 class="slds-section-title--divider serviceReqHeader"><b>Coordinator Common Information</b></h3>
+        <c:ET_ServiceRequestCommonData aura:id="serviceRequestCommonCmpCoordinator" fieldsWithMultipleValueLst="{!v.commonFieldsToBePopulateLst}" showRequestforTargetPrice="false" />
+    </aura:if>
+
+    <div class=" " id="mainCoordinatorTabDivId">
+        <!-- Body Content Here -->
+        <div aura:id="cmpBody">
+            {!v.body}
+        </div>           
+        
+        <div class="slds-align_absolute-center">
+            <lightning:button  variant="brand" label="Add Coordinator" title="Add Coordinator" onclick="{! c.handleAddMore }"
+                              disabled="{! v.isPricingTeam}"/>&nbsp;
+        </div>
+        
+        
+    </div>
+</aura:component>

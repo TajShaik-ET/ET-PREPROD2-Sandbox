@@ -1,0 +1,11 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+    
+    <lightning:card>
+        
+        <div class="customTxt">Employee Family Insurance</div>
+        
+    </lightning:card>
+    
+    
+</aura:component>

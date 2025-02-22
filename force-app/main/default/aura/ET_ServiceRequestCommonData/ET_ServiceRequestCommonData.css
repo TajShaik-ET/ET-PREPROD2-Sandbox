@@ -1,0 +1,28 @@
+.THIS .slds-checkbox {
+    display: inline !important;
+}
+.THIS .slds-checkbox__label{    
+    padding-right: 20px;
+    
+}
+.THIS .contractLabelcls{
+    padding-right: 10px;
+    
+}
+.THIS .slds-select_container{
+    width: 200px;
+    
+}
+.THIS .customInputcls {
+    width: 230px;
+    
+}
+.THIS #mainTabDivId .slds-size--3-of-12{
+    margin: .5rem 0; 
+}
+.THIS.contractYrSectn .slds-form-element__control label, .THIS.contractYrSectn .slds-select_container select{
+    cursor: pointer;
+}
+.THIS.slds-box{
+    border-radius: 0;
+}

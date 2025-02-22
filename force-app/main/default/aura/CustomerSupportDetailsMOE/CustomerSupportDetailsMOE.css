@@ -1,0 +1,536 @@
+.THIS .documentmain{
+    position: relative;
+    width: 100%;
+    display: block;
+    clear: both;
+}
+.THIS .serchboxtab{
+    display: inline-block;
+    float: right;   
+    margin: 1rem;
+}
+.THIS .serchboxtab .slds-input , .THIS .serchboxtab .slds-input:focus{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #989898;
+    border-radius: 0px;
+    outline: none;
+    color: #989898;
+    box-shadow:none;
+}
+.THIS .serchboxtab_AR{
+    display: inline-block;
+    float: right;   
+    margin: 1rem;
+}
+.THIS .serchboxtab_AR .slds-input{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #989898;
+    border-radius: 0px;
+    outline: none;
+    color: #989898;
+    box-shadow:none;
+    direction:rtl;
+}
+.THIS .serchboxtab .slds-input::-webkit-input-placeholder { /* Edge */
+    color:  #989898;
+}
+
+.THIS .serchboxtab .slds-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:  #989898;
+}
+
+.THIS .serchboxtab .slds-input::placeholder {
+    color:  #989898;
+}
+.THIS .serchboxtab .slds-button_icon{
+    color: #989898!important;
+}
+.THIS .serchboxtab .slds-input-has-icon .slds-input__icon {
+    width: 1rem;
+    height: 1rem;
+    fill: #989898;
+    left:0px;
+}
+.THIS .btnsorticon{
+    border: none;
+    display: inline-block;
+    text-align: right;
+    font-size: 10px;
+    width: auto;
+    position: absolute;
+    top: 5px;
+    right: 6px;
+}
+.THIS .btnsorticon:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.THIS .btnsorticon lightning-primitive-icon{
+    color: #575757 !important;
+}
+.THIS.casesupmaindiv{
+    /*min-height:86.2vh;*/
+    min-height:calc(100vh - 86px);
+    height:100%;
+}
+.THIS .actionButton {
+    background-color: #624500;
+    color: white;
+    border: 1px solid #624500;
+    box-shadow: none;
+    font-size: 14px;
+    transition:0.4s;
+    line-height: 18px;
+    padding: 5px 10px;
+}
+.THIS .tableClass{
+    min-height:50px;
+    overflow:auto;
+    width: 100%;
+    position: relative;
+    max-height: 320px;
+}
+.THIS .actionButton:hover {
+    background-color: #fff;
+    color: #624500;
+    border: 1px solid #624500;
+    box-shadow: none;
+    transition:0.4s;
+}
+
+.THIS .emmergencyButton {
+    background-color: rgb(98 204 140);
+    color: white;
+    border: 1px solid rgb(98 204 140);
+    box-shadow: none;
+    font-size: 12px;
+    transition:0.4s;
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 0px;
+    text-transform: uppercase;
+}
+.THIS .emmergencyButtonar{
+    float: right;
+    margin-right: 0px !important;
+    margin-left: 3px !important;
+}
+.THIS .emmergencyButton:hover {
+    background-color: #fff;
+    color: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    box-shadow: none;
+    transition:0.4s;
+}
+.THIS .maincantentdiv{
+    padding: 15px;
+    overflow: auto;
+}
+.THIS .Headingcontent{
+    font-size: 18px;
+    color: rgb(98 204 140);
+    text-transform: uppercase;
+    text-align: center;
+    /* padding-bottom: 8px; */
+    /* padding-top: 8px; */
+   /* display: inline-block; */
+    padding-left:1rem;
+}
+.THIS .subheading{
+    font-size: 14px;
+    font-weight: 600;
+}
+.THIS .slds-gutters .slds-col {
+    padding-right: .75rem;
+    padding-left: .75rem;
+    width: 50%;padding-bottom: 1.50rem;
+}
+.THIS .textColor {
+    color:  #624500;font-size: 14px; /* #8a1538; */
+}
+.THIS table {
+    width: 100%;
+}
+.THIS table tr th {
+    text-align: left;
+    padding: 10px 5px;
+    border-bottom: 1px solid rgb(98 204 140);
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #fff!important;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    border-top: 1px solid #f1f1f1;
+}
+.THIS table tr td {
+    text-align: left;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    color:black;
+}
+.THIS input[type=text], .THIS input[type=password], .THIS textarea, .THIS textarea.form-control, .THIS select, .THIS input[type=tel], .THIS input[type=email] , .THIS .uiInput--default input{
+    height: 38px;
+    margin: 0;
+    padding: 0 15px 0 15px;
+    vertical-align: middle;
+    background: transparent;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #fff;
+    border-radius: 0px;
+    box-shadow: none;
+    transition: all .3s;
+    border: none;
+    border-bottom: 1px solid #fff;
+}
+.THIS .uiInput--input.input:focus {
+    outline: 0;
+    border-color: transparent;
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom: 1px solid #fff;
+}
+.THIS .cassnos input[type=text]{
+    padding: 0 15px 0 15px;
+}
+.THIS .slds-form-element__label {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+    color: rgb(224 223 223);
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 0px;
+    font-weight: normal;
+    position: absolute;
+    bottom: -24px;
+}
+.THIS.documenttable , .THIS.documentmain{
+    /* padding: 30px;
+    background: #fafafa;
+    border:4px solid #fff;*/
+}
+.THIS.documenttable table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.THIS.documenttable table tr th {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+    font-weight: 600;    text-transform: uppercase;
+    background:#f1f1f6;
+}
+.THIS .documenttable table tr td {
+    text-align: center;
+    padding: 5px;font-size: 12px;
+}
+.THIS.uiInput--default .form-element__label , .THIS .form-element__label{
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 5px;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.6);
+}
+.THIS.uiInput--datetime .form-element , .THIS .uiInput--default input{
+    position: relative;
+    margin-top: 5px!important;
+}
+.THIS .uiInput--datetime .datePicker-openIcon {
+    bottom: 14px!important;
+}
+.THIS .btncreatesection{
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+    padding: 1rem 5%;
+}
+.THIS .btncreatesectionar{
+    display: inline-block;
+}
+/* css for custom dashboard component*/
+.THIS .form-box-row2{
+    padding: 0rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    position: relative;
+    background: rgb(255 255 255 / 0.5);
+    opacity: 1;
+    transition:.4s all;
+    height: auto;
+    overflow: hidden;
+}
+/*.THIS .form-box-row2:hover{
+transform:scale(1.05);
+transition:.4s all;
+background: #fff;
+}*/
+.THIS .form-title{
+    color: #9c9c9c;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 0 0 0rem;
+}
+
+.THIS .numberSize{
+    text-align: right;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 28px;
+    padding-bottom: 5px;
+}
+.THIS .numberSize img{
+    float: left;
+    width: 36px;
+    height: 36px;
+}
+.THIS .slds-card {
+    background:transparent;
+    border: 0px solid #E0E0E0;
+}
+.THIS .rightsectiondiv{
+    display: inline-block;
+    width: 100%;
+    float: left;
+    padding: 0rem;
+    height: 100%;
+    background: rgb(255 255 255 / 0.5);
+}
+.THIS .leftsectiondiv{
+    display: inline-block;
+    width: 35%;
+    float:left;
+    height: 100%;
+    background:#f2f2f2;
+    position: relative;
+}
+.THIS .leftsectiondiv img{
+    /*width: 100%;
+    height: 100%;
+    padding: 24px;*/
+    position: absolute;
+    width: 50px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.THIS .slds-card .slds-col{
+    width: 19%;
+    display: inline-block;
+    margin: 0% .5% 1% .5%;
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 8px 6px -6px #9c9c9c;
+}
+.THIS .slds-card .slds-col2{
+    width: 30%;
+    display: inline-block;
+    margin: 1% 2% 2% 1%;
+}
+.THIS .filtersection .slds-accordion__section{
+    padding:0.75rem 0px;
+}
+.THIS .tableshow{
+    position: relative;
+    clear: both;
+    padding: 1rem 0rem;
+    margin: 1rem .5rem;
+    background: #fff;
+    border-radius: 10px;
+}
+.THIS .fivediv{
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+}
+.THIS .tableshow .slds-grid .slds-col{
+    overflow: auto;
+}
+
+.THIS .redirect {
+    background-color: #0176d3;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 30px;
+    }
+.THIS .update {
+    background-color:rgb(166 235 24 / 99%);
+    color: #5b451c;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 30px;
+    }
+.THIS .addFine {
+    background-color:rgb(234, 0, 30);
+    color: white;
+    border: 1px solid rgb(98 204 140);
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 30px;
+    }
+.THIS .approve:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.THIS .approve {
+    background-color: rgb(71 212 127);
+    color: white;
+    border: 1px solid #fff;
+    box-shadow: none;
+    font-size: 12px;
+    transition: .4s;
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    text-transform: capitalize;
+}
+
+.THIS .approve:hover {
+    background-color: #fff;
+    color: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    box-shadow: none;
+    transition:0.4s;
+}
+.THIS .reject {
+     background-color: rgb(250 66 90 / 93%);
+    color: #fff;
+    border: 1px solid #fff;
+    box-shadow: none;
+    font-size: 12px;
+    transition: .4s;
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    text-transform: capitalize;}
+
+.THIS .reject:hover {
+    background-color: #fff;
+    color: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    box-shadow: none;
+    transition:0.4s;
+}
+
+.THIS .EditRecord {
+       background-color: #107cad;
+    color: #fff;
+    border: 1px solid #fff;
+    box-shadow: none;
+    font-size: 12px;
+    transition: .4s;
+    line-height: 14px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    text-transform: capitalize;}
+
+.THIS .EditRecord:hover {
+    background-color: #fff;
+    color: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    box-shadow: none;
+    transition:0.4s;
+}
+
+.THIS .EditRecord:hover::before {
+    transform: translateX(0);
+}
+
+
+@media only screen and (max-width: 1024px){
+    .THIS .tableshow .slds-col{
+        overflow: auto;
+    }
+}
+
+@media only screen and (max-width: 768px){
+    .THIS .slds-grid {
+        display: block;
+    }
+    .THIS .slds-gutters .slds-col {
+        display: inline-block;
+    }
+    .THIS .form-title {
+        font-size: 10px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .numberSize {
+        font-size: 20px;
+    }
+    .THIS .form-title {
+        padding: .5rem 0;
+        position: relative;
+        display: block;
+        width: 100%;
+        clear: both;
+    }
+    .THIS .form-box-row2 {
+        height: 65px;
+    }
+    .THIS .numberSize img {
+        float: left;
+        width: 32px;
+        height: 32px;
+    }
+    .THIS table tr th {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .THIS .slds-card .slds-col {
+        width: 48%;
+        display: inline-block;
+        margin: 1%;
+    }
+    .THIS .form-box-row2 {
+        height: auto;
+    }
+    .THIS .form-title {
+        font-size: 9px;padding:.5rem 0 0;
+    }
+    .THIS .fivediv .slds-card{
+        text-align: left!important;
+    }
+    .THIS .slds-gutters .slds-col {
+        width: 100%;
+        margin: 0% 0% 1% 0%;
+        display: block;
+    }
+    .THIS .emmergencyButton {
+        font-size: 12px;
+    }
+    .THIS.casesupmaindiv {
+        min-height: calc(100vh - 80px);
+    }
+    .THIS .tableshow {
+        margin: 1rem 0rem;
+    }
+    .THIS .serchboxtab {
+        margin: 1rem 0rem;
+        width: 100%;
+    }  
+    
+}

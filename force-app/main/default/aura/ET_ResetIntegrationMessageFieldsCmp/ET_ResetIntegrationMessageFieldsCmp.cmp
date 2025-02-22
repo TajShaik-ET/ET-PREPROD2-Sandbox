@@ -1,0 +1,6 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader,force:hasSObjectName,force:appHostable" 
+                controller="ET_ResetIntegrationController"  access="global" >
+    <!-- Handle component initialization in a client-side controller -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" description="Initialization process on component load" /> 
+    
+</aura:component>

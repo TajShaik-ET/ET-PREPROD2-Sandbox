@@ -1,0 +1,35 @@
+.THIS.centerdiv{
+    padding: 4.7% 0% 8%;
+}
+.THIS .padbottom{
+    padding-bottom:0px;padding-top: 0px;
+}
+.THIS .Drop-Address-listbox{
+    position: relative;
+    margin-top: -12px;
+}
+.THIS .datepickdiv{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.THIS .mainlocationdiv .slds-grid{
+    display:block;
+}
+.THIS .mainlocationdiv .slds-grid .slds-size_1-of-2{
+    width:100%;
+}
+.THIS .flightNo{
+    width: 50%;
+}
+.THIS .addModifyModal{
+    width: 80% !important;
+}
+.THIS .addModifyModal h2{
+    font-weight: 400;
+}
+
+.THIS .addModifyModal .modal-footer{
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}

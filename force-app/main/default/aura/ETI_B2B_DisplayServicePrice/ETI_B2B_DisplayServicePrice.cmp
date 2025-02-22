@@ -1,0 +1,168 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_B2B_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="displayprice1" type="boolean" />
+    <aura:attribute name="Afterbooking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/>
+    <aura:attribute name="bookingData" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/>
+    <aura:attribute name="feeDetails" type="ETI_Service_Line_Item__c" default="[{'sobjectType':'ETI_Service_Line_Item__c', 'Test__c':'' }]"/>
+    <aura:attribute name="bookingFeeDetails" type="Map" />
+    <aura:attribute name="paymentvehicleid" type="Id"/>
+    <aura:attribute name="totalamount" type="Integer"/>
+    <aura:attribute name="bookingWrp" type="Object[]"/>
+    <aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <aura:attribute name="isInspectionFeeExist" type="boolean" default="false"/>
+    <aura:attribute name="isTearmAndCondition" type="boolean" default="false"/>
+    <aura:attribute name="isFeeExist" type="boolean" default="false"/>
+    <aura:attribute name="isSpea" type="boolean" default="false"/>
+    <aura:attribute name="subtotalPrice" type="Decimal" />
+    <aura:attribute name="isNavigateToHome" type="boolean" default="false" />
+    <!--Configurable Button for Payment at Premises -->
+    <aura:attribute name="displaySettings" type="ETI_Display_Service_Settings__c" />
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>  
+    
+    <aura:if isTrue="{!v.IsSpinner}">
+        <lightning:spinner variant="brand"  size="large" />
+    </aura:if>
+    <aura:if isTrue="{!v.isInspectionFeeExist}">
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header modalHeader" style="text-align: center;">
+                    
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closePaymentDetail}"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.PAYMENT_DETAILS}</h2>
+                </header>
+                <!--###### MODAL BOX BODY  Start######-->
+                <!--aura:if isTrue="{!v.isFeeExist}"-->
+                    <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Chassis No">{!v.Chassis_No}/{!v.Plate_Details}</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Service Type">{!v.Service_Type}</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Service Type">{!v.Service}</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Amount">{!v.AMOUNT_AED}</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Action">{!v.Action}</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.bookingFeeDetails.chassisNo}" var="service" indexVar="ivar">
+                                    <aura:iteration items="{!service.typeList}" var="type" indexVar="ivar1">
+                                        <aura:iteration items="{!type.serviceItems}" var="serviceItem" indexVar="ivar2">
+                                            <tr class="slds-hint-parent">
+                                                <td data-label="Chassis No/Plate Details" >
+                                                    <aura:if isTrue="{!and(ivar1==0, ivar2==0)}">
+                                                    	<div class="slds-truncate" title="Chassis No">{!service.chassisNo}</div>
+                                                    </aura:if>
+                                                </td><!--colspan="{!type.serviceItems.length}" or(and(ivar1==0,ivar2==0),-->
+                                                <td data-label="Service Type" >
+                                                    <aura:if isTrue="{!ivar2==0}" >
+                                                        <div class="slds-truncate" title="Service Type">{!type.serviceType}</div>
+                                                    </aura:if>
+                                                </td>
+                                                <td data-label="Service Name">
+                                                    <div class="slds-truncate" title="Service Name">{!serviceItem.Service_Name__c}</div>
+                                                </td>
+                                                <td data-label="Total Fee">                  
+                                                    <aura:if isTrue="{!serviceItem.Fee_Integration_Status__c!='E'}">
+                                                        <div class="slds-truncate" title="Total Fee">{!serviceItem.Total_Fee__c}</div>
+                                                        <aura:set attribute="else">
+                                                            <div class="slds-truncate" title="Error Message">{!serviceItem.Fee_Integration_Message__c}</div>
+                                                        </aura:set>
+                                                    </aura:if> 
+                                                </td>
+                                                <td data-label="Remove">
+                                                    <aura:if isTrue="{!v.feeDetails.length!=1}">
+                                                        <div class="slds-truncate" title="Remove">
+                                                            <lightning:buttonIcon value="{!serviceItem.Id}" iconName="utility:close" variant="bare" onclick="{!c.removeBooking}" alternativeText="Settings" title="Close" />
+                                                        </div>
+                                                    </aura:if>
+                                                </td>
+                                            </tr>
+                                        </aura:iteration>
+                                    </aura:iteration>
+                                </aura:iteration> 
+                                <aura:if isTrue="{!v.isFeeExist}">
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate" title="Cloudhub"></div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="slds-truncate" title="4/14/2015"></div>
+                                        </td>
+                                        <td data-label="SubTotal">
+                                            <div class="slds-truncate" title="SubTotal">{!v.SubTotal_AED}</div>
+                                        </td>
+                                        <td data-label="SubTotal">
+                                            <div class="slds-truncate" title="SubTotal">
+                                                {!v.subtotalPrice}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </aura:if>
+                            </tbody>
+                        </table>
+                        <aura:if isTrue="{!v.isFeeExist}">
+                            <div class="slds-col slds-size_1-of-2" style="padding-left:0px;">
+                                <div class="slds-show">
+                                    <c:ETI_TermsandConditions aura:id="termsandconditioncheckboxParent" placeOfVisibility="Vehicle Registration" isCheckbox="{!v.isTearmAndCondition}"/>
+                                </div>
+                                <p aura:id="TC" class="slds-hide" style="color:red">Please agree the Terms and Conditions</p>
+                                <div class="slds-form-element__help slds-hide" aura:id="termsandconditioncheckboxError" style="color:red">This field is required</div>
+                            </div>
+                        </aura:if>
+                    </div>
+                    <!--aura:set attribute="else">
+                        <p style="text-align: center;padding: 30px;font-size: 14px;background-color: white;">
+                            <b>Unexpected error occurred while processing your request, Please contact our customer service team.</b>
+                        </p>
+                    </aura:set-->
+                <!--/aura:if-->
+                <!--###### MODAL BOX FOOTER  Start ######-->
+                <footer class="slds-modal__footer modalFooter">
+                    <aura:if isTrue="{!and(v.isFeeExist,v.subtotalPrice!=0)}">
+                        <!--aura:if isTrue="{!v.displaySettings.ETI_Is_Enabled__c}">
+                              </aura:if-->
+                        <aura:if isTrue="{!v.feeDetails[0].Service_Name__c!='SPEA Inspection'}">
+                            <lightning:button variant="neutral"
+                                              aura:id="Premises"
+                                              label="{!v.Payment_at_Premises}"
+                                              title="{!v.Payment_at_Premises}"
+                                              onclick="{!c.cardPayment}" class="btn_table"/>
+                        </aura:if>
+                        <lightning:button variant="neutral" 
+                                          aura:id="card"
+                                          label="{!v.Pay_by_Card}"
+                                          title="{!v.Pay_by_Card}"
+                                          onclick="{!c.cardPayment}" class="btn_table"/>
+                        <aura:set attribute="else">
+                            <lightning:button variant="neutral" 
+                                              label="{!v.Close}"
+                                              title="{!v.Close}"
+                                              onclick="{! c.closePaymentDetail }" class="btn_back"/>
+                        </aura:set>
+                    </aura:if>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <!--###### MODAL BOX Part END Here ######-->
+    
+</aura:component>

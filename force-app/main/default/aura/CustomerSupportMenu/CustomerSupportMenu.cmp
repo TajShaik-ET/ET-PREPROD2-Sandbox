@@ -1,0 +1,19 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes">
+    
+    <aura:attribute name="imagelink" type="String" default="https://drec--drecpoc--c.visualforce.com/resource/1588142494000/DREC_livingRoom"/>
+   
+    <aura:registerEvent name="appEvent" type="c:ServiceRequestEvent"/>
+       <aura:attribute name="selectedItem" type="String" /> 
+    
+    <lightning:verticalNavigation
+                                  selectedItem="{! v.selectedItem }"
+                                  onselect="{! c.handleSelect }">
+        <lightning:verticalNavigationSection  label="CUSTOMER SUPPORT" class="listviewdiv animated slideInLeft">
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Create Service Request" name="Create_Service_Request" /> </B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Service Request History" name="Service_Request_History" /></B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs" label="Escalate" name="Escalate" /> </B>
+            <B> <lightning:verticalNavigationItemIcon  iconName="utility:breadcrumbs"  label="Service Request Feedback" name="Service_Request_Feedback" /></B>
+        </lightning:verticalNavigationSection>
+    </lightning:verticalNavigation>
+ 
+</aura:component>

@@ -1,0 +1,86 @@
+.THIS div#Vehicle{
+    background-color: var(--backgroundColor);
+            }
+            
+            .THIS div#Drivers{
+                background-color: var(--backgroundColor);
+                        }
+                        
+                        .THIS .proceedBtn {
+                            margin-top: 1rem;
+                        }
+                        
+                        .THIS .slds-box{
+                            border-radius: 0 !important;
+                        }
+                        
+                        .THIS.serviceReqHeader{
+                            text-transform: uppercase; 
+                            padding: 16px 30px;
+                            background: #fff;
+                            border: 1px solid rgb(217, 219, 221);
+                            border-bottom: none; 
+                            border-radius:10px 10px 0 0;
+                        }
+                        .THIS.serviceReqHeader b{
+                            font-size:13px;
+                            color:#00C299;
+                        }
+                        .THIS.slds-box{
+                            border-radius:0 0 10px 10px !important;
+                            background: #fff;
+                            padding: 30px;
+                        }
+                        .THIS .slds-spinner_container {  
+                            z-index: 10000;
+                            position: fixed;   
+                        }
+                        /*  New Css  */
+                        .THIS .slds-tabs_scoped__content{
+                            border-radius:0 0 10px 10px !important;
+                            background: #fff;
+                            padding: 30px;
+                        }
+                        .THIS .slds-select_container .slds-select, .THIS .slds-input{
+                            min-height:36px;
+                        }
+                        .THIS .slds-tabs_scoped__item:first-child .slds-tabs_scoped__link{
+                            border-radius: 10px 0px 0 0 !important;
+                        }
+                        .THIS .slds-tabs_scoped__nav{
+                            border-radius:10px 10px 0 0;
+                        }
+                        .THIS .slds-tabs_scoped__link{
+                            font-size:13px;
+                            padding: 10px 25px;
+                            height: auto;
+                        }
+                        .THIS .slds-tabs_scoped__overflow-button{
+                            font-size:13px;
+                            padding:10px 25px 7px 25px;
+                            height: auto;
+                        }
+                        .THIS .slds-form-element__label{
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: #000;
+                            margin-bottom: 7px;
+                        }
+                        .THIS .slds-form-element{
+                            margin-bottom:15px;
+                        }
+                        .THIS .slds-checkbox {
+                            display: inline !important;
+                        }
+                        .THIS .slds-checkbox__label{    
+                            padding-right: 20px;
+                            
+                        }
+                        .THIS .contractLabelcls{
+                            padding-right: 10px;
+                            
+                        }
+                        .THIS .checklabel .slds-form-element__control.slds-grow {
+                            padding-left: 30%;
+                            margin-top: -1rem;
+                        }

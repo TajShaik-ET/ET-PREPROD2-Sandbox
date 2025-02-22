@@ -1,0 +1,51 @@
+<!--
+  @description       : 
+  @author            : Srihari.Koyila@Smaartt.com
+  @group             : 
+  @last modified on  : 03-04-2024
+  @last modified by  : Srihari.Koyila@Smaartt.com
+-->
+<template>
+    <lightning-input placeholder="Enter Username or Email to fetch portal users" onchange={InputHandler}></lightning-input>
+    <lightning-button label="Search" onclick={OnclickHandler}></lightning-button>
+    <template lwc:if={dynamicHide}>
+        <lightning-card>
+            <template for:each={arrayUSRrecs} for:item="MTDrec" for:index="index1">
+                <div key={MTDrec.Id} class="slds-box slds-box_small slds-m-around_small">
+                    <lightning-record-view-form record-id={MTDrec.Id} object-api-name="User">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col">
+                                <lightning-output-field field-name="Name" value={MTDrec.Name}></lightning-output-field>
+                            </div>
+                            <div class="slds-col">
+                                <lightning-output-field field-name="Email" value={MTDrec.Email}></lightning-output-field>
+                            </div>
+                            <div class="slds-col">
+                                <lightning-output-field field-name="Username" value={MTDrec.Username}></lightning-output-field>
+                            </div>
+                            <div class="slds-col">
+                                <lightning-output-field field-name="ProfileId" value={MTDrec.ProfileId}></lightning-output-field>
+                            </div>
+                            <div class="slds-col">
+                                <lightning-output-field field-name="License_Name__c" value={MTDrec.License_Name__c}></lightning-output-field>
+                            </div>
+                            <div class="slds-col">
+                                <lightning-output-field field-name="LastLoginDate" value={MTDrec.LastLoginDate}></lightning-output-field>
+                            </div>
+                            <div class="slds-col">
+                                <lightning-output-field field-name="LastPasswordChangeDate" value={MTDrec.LastPasswordChangeDate}></lightning-output-field>
+                            </div>
+                        </div>
+                        <!-- Add other fields as needed -->
+                    </lightning-record-view-form>
+                    <lightning-button label="Reset Password" title="Reset Password"
+                    onclick={handleButtonClick} data-index={index1}></lightning-button>
+                </div>
+            </template>
+        </lightning-card>
+    </template>
+    <template lwc:else>
+        <div class="slds-align_absolute-center" style="margin-top: 29px;font-weight: bold;">No
+            records found.</div>
+    </template>
+</template>

@@ -1,0 +1,223 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" controller="ETDI_General_Services">
+    
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+    </aura:html>
+    
+    <aura:attribute name="etdiPostServices" type="Map"/>
+    <aura:attribute name="newCourse" type="Map"/>
+    <aura:attribute name="selectedService" type="String"/>
+    <aura:attribute name="selectedCourseValue" type="String"/>
+    <aura:attribute name="oldLicenseType" type="String"/>
+    <aura:attribute name="changeInstructorReason" type="String"/>
+    <aura:attribute name="changeOnlineReason" type="String"/>
+    <aura:attribute name="cancelClassReason" type="String"/>
+    <aura:attribute name="cancelExamReason" type="String"/>
+    <aura:attribute name="pendingClassObj" type="Object"/>
+    <aura:attribute name="pendingClassesSerializeString" type="String"/>
+    <aura:attribute name="pendingClassColumns" type="List"/>
+    <aura:attribute name="pendingExamsObj" type="Object"/>
+    <aura:attribute name="pendingExamColumns" type="List"/>
+    <aura:attribute name="pendingExamsSerializeString" type="String"/>
+    <aura:attribute name="selectedPendingClassIds" type="List"/>
+    <aura:attribute name="selectedPendingClasses" type="List"/>
+    <aura:attribute name="selectedPendingExamIds" type="List"/>
+    <aura:attribute name="selectedPendingExams" type="List"/>
+    <aura:attribute name="instructorScheduleMap" type="Map"/>
+    <aura:attribute name="instructorScheduleTimeSlots" type="List"/>
+    <aura:attribute name="instructorId" type="String" /> 
+    <aura:attribute name="selectedInstructorDate" type="String"/>
+    <aura:attribute name="selectedInstructorTime" type="String"/>
+    <aura:attribute name="examValuesMap" type="Map"/>
+    <aura:attribute name="examTypeValues" type="List"/>
+    <aura:attribute name="selectedExamName" type="String"/>
+    <aura:attribute name="selectedExamID" type="String"/>
+    <aura:attribute name="todayDate" type="Date"/>
+    <aura:attribute name="examDate" type="Date"/>
+    <aura:attribute name="dateErrorMessage" type="String"/>
+    <aura:attribute name="case" type="Case" default="{'sobjectType':'Case', 
+                                                     'AccountId': '',
+                                                     'CaseNumber': '',
+                                                     'Origin': '',
+                                                     'Status': '', 
+                                                     'RecordTypeId': '',
+                                                     'ETDI_Services__c':''}"/>
+    <!--all handlers-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <header>
+        <div class="modal-header slds-modal__header slds-size_1-of-1">
+            <h4 class="title slds-text-heading--medium">ETDI Services</h4>
+        </div>
+    </header>
+    <div style="width:60%;margin:auto;margin-bottom:15px">                                       
+        <div class="slds-form-element textboxdiv">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Choose Service</label>
+            <div>
+                <lightning:select value="" aura:id="selectETDI" label="Choose Service" variant="label-hidden" onchange="{! c.onChange }">
+                    <aura:iteration items="{!v.etdiPostServices}" var="inv" indexVar="key">
+                        <option text="{!inv.value}" value="{!inv.key}" selected="{!inv.key == v.selectedService}" />
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+        </div>
+    </div>  
+    <aura:if isTrue="{!v.selectedService eq 'Course Change'}">
+        <div style="width:60%;margin:auto;margin-bottom:15px">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">License Type</label>
+            <div class="slds-form-element textboxdiv">
+                <lightning:input name="remarks" value="{!v.oldLicenseType}" label="" disabled = 'true'/>
+                <div>
+                    <label class="slds-form-element__label slds-text-title_bold" for="select-01">Choose License</label>
+                    <lightning:select value="{!v.selectedCourseValue}" aura:id="selectCourse" label="Choose Service" variant="label-hidden" onchange="{! c.onChange }">
+                        <aura:iteration items="{!v.newCourse}" var="inv" indexVar="key">
+                            <option text="{!inv.value}" value="{!inv.key}" selected="{!inv.key == v.selectedCourseValue}" />
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.selectedService eq 'Instructor Change'}">
+        <div style="width:60%;margin:auto;margin-bottom:15px">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Reason</label>
+            <div class="slds-form-element textboxdiv">
+                <lightning:input name="remarks" value="{!v.changeInstructorReason}" label=""/>
+            </div>
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.selectedService eq 'Class Booking'}">
+        <div style="width:60%;margin:auto;margin-bottom:15px">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Choose Date</label>
+            <lightning:select value="{!v.selectedInstructorDate}" aura:id="selectDate" label="Choose Date" variant="label-hidden" onchange="{! c.handleClassBookingSlots }">
+                <aura:iteration items="{!v.instructorScheduleMap}" var="dat" indexVar="key">
+                    <option text="{!dat.key}" value="{!dat.key}" selected="{!dat.key == v.selectedInstructorDate}" />
+                </aura:iteration>
+            </lightning:select>
+        </div>
+        <div style="width:60%;margin:auto;margin-bottom:15px">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Choose Time</label>
+            <lightning:select value="{!v.selectedInstructorTime}" aura:id="selectTime" label="Choose Time" variant="label-hidden">
+                <aura:iteration items="{!v.instructorScheduleTimeSlots}" var="inv" indexVar="key">
+                    <option text="{!inv}" value="{!inv.key}" selected="{!inv == v.selectedInstructorTime}" />
+                </aura:iteration>
+            </lightning:select>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.selectedService eq 'Exam Booking'}">
+        <div style="width:60%;margin:auto;margin-bottom:15px">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Choose Exam</label>
+            <div class="slds-form-element textboxdiv">                
+                <lightning:select value="{!v.selectedExamID}" aura:id="selectExam" label="Choose Exam" variant="label-hidden">
+                    <aura:iteration items="{!v.examValuesMap}" var="inv" indexVar="key">
+                        <option text="{!inv.key}" value="{!inv.value}" selected="{!inv.key == v.selectedExamName}"/>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+        </div>
+        <div style="width:60%;margin:auto;margin-bottom:15px">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Choose Date</label>
+            <div>
+                <lightning:input aura:id="examDateField" label="" type="date" value="{!v.examDate}"  autocomplete="off" dateStyle="short" placeholder="dd-mm-yyyy"/>
+                <p aura:id="examDateErr" style="color:red" class="slds-hide">{!v.dateErrorMessage}</p>
+                <!-- ui:inputDate aura:id="examdate" value="{!v.examDate}" displayDatePicker="true" format="DD-MM-YYYY" onchange="{c.dateValidationCheck}"/ -->
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.selectedService eq 'Change to Online Lecture'}">
+        <div style="width:60%;margin:auto;margin-bottom:15px">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Reason</label>
+            <div class="slds-form-element textboxdiv">
+                <lightning:textArea name="reason" value="{!v.changeOnlineReason}" label=""/>
+            </div>
+        </div>
+    </aura:if>  
+    <aura:if isTrue="{!v.selectedService eq 'Cancel Class'}">
+        <div style="width:60%;margin:auto;margin-bottom:15px">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Reason</label>
+            <div class="slds-form-element textboxdiv">
+                <lightning:input name="reason" value="{!v.cancelClassReason}" label="" required="true"/>
+            </div>
+        </div>
+        <div class="slds-align_absolute-center">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Pending Classes</label>
+        </div>
+        <div class="slds-form-element textboxdiv">
+            <aura:if isTrue="{!not(empty(v.pendingClassObj))}">
+                <lightning:datatable
+                                     keyField="id"
+                                     data="{! v.pendingClassObj }"
+                                     columns="{! v.pendingClassColumns }"
+                                     hideCheckboxColumn="false"
+                                     onrowselection="{! c.handleSelect }"/>
+                <aura:set attribute="else">
+                    <div class="slds-align_absolute-center">
+                        <h1>No Bookings available to cancel</h1>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+    </aura:if>   
+    <aura:if isTrue="{!v.selectedService eq 'Cancel Exam'}">
+        <div style="width:60%;margin:auto;margin-bottom:15px">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Reason</label>
+            <div class="slds-form-element textboxdiv">
+                <lightning:input name="reason" value="{!v.cancelExamReason}" label="" required="true"/>
+            </div>
+        </div>
+        <div class="slds-align_absolute-center">
+            <label class="slds-form-element__label slds-text-title_bold" for="select-01">Pending Exams</label>
+        </div>
+        <div class="slds-form-element textboxdiv">
+            <aura:if isTrue="{!not(empty(v.pendingExamsObj))}">
+                <lightning:datatable
+                                     keyField="id"
+                                     data="{! v.pendingExamsObj }"
+                                     columns="{! v.pendingExamColumns }"
+                                     hideCheckboxColumn="false"
+                                     onrowselection="{! c.handleSelectExam }"/>
+                <aura:set attribute="else">
+                    <div class="slds-align_absolute-center">
+                        <h1>No exams available to cancel</h1>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+    </aura:if>
+    <footer>
+        <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+            <aura:if isTrue="{!v.selectedService eq 'Course Change'}">
+                <lightning:button variant="Brand" class="slds-button" label="Submit" onclick="{!c.handleSubmit}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.selectedService eq 'Instructor Change'}">
+                <lightning:button variant="Brand" class="slds-button" label="Submit" onclick="{!c.handleSubmitInstructor}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.selectedService eq 'Class Booking'}">
+                <lightning:button variant="Brand" class="slds-button" label="Submit" onclick="{!c.handleSubmitClassBooking}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.selectedService eq 'Exam Booking'}">
+                <lightning:button variant="Brand" class="slds-button" label="Submit" onclick="{!c.handleExamBooking}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.selectedService eq 'Change to Online Lecture'}">
+                <lightning:button variant="Brand" class="slds-button" label="Submit" onclick="{!c.handleOnlineLecture}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.selectedService eq 'Cancel Class'}">
+                <lightning:button variant="Brand" class="slds-button" label="Submit" onclick="{!c.handleClassCancellation}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.selectedService eq 'Cancel Exam'}">
+                <lightning:button variant="Brand" class="slds-button" label="Submit" onclick="{!c.handleExamCancellation}"/>
+            </aura:if>
+        </div>
+    </footer>
+</aura:component>

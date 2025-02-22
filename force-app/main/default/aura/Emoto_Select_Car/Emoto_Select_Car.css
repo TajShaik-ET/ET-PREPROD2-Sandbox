@@ -1,0 +1,11 @@
+.THIS {
+}
+.THIS .slds-modal__container {
+    width: 95%!important;
+    max-width: 95%!important;
+    margin:auto
+}
+.THIS .modal-body{
+    height : 90% !important;
+    max-height: 90% !important;
+}

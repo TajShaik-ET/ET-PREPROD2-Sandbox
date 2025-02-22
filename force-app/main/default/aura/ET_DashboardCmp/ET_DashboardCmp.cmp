@@ -1,0 +1,69 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" 
+                access="global" controller="ET_CaseManagement" extends="c:ETST_BilingualCommunity" >
+    <aura:attribute name="totalCount" type="Integer" />
+    <aura:attribute name="newCount" type="Integer" />
+    <aura:attribute name="inprogressCount" type="Integer" default="0"/>
+    <aura:attribute name="cancelledCount" type="Integer" default="0"/>
+    <aura:attribute name="onHoldCount" type="Integer" default="0"/>
+    <aura:attribute name="selectedTabId" type="String"/>
+    <aura:attribute name="service" type="String"/>
+    <aura:attribute name="loaded" type="boolean"/>
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <!--div class="owl_carousel_section">
+        <c:ET_owl_carousel_custome_cmp />
+    </div-->
+    <div class="dashboard_main">
+        <div class="{!v.clLang=='ar' ? 'slds-grid_AR' : 'slds-grid'}">
+            <div class="slds-col statusdiv divdelreq" >
+                <div class="numberSize">
+                    <img src="{!$Resource.total_img}"/>
+                    <div class="slds-text-heading_large valuespan " >{!v.totalCount}</div>
+                </div>
+                <span class="headspan totalcount">{!v.clTotal}</span>
+            </div>
+            <div class="slds-col statusdiv divactive animated bounceInDown" >
+                <a href="" data-record="activeDeliveries" onclick="{!c.setTabId}">
+                    <div class="numberSize">
+                        <img src="{!$Resource.newcase_img}"/>                        
+                        <div class="slds-text-heading_large valuespan" >
+                            {!v.newCount}</div>
+                    </div>
+                    <span class="headspan">{!v.clNew}</span>
+                </a>
+            </div>
+            <div class="slds-col statusdiv divdelivered animated bounceInDown" >
+                <a href="" data-record="CompletedDeliveries" onclick="{!c.setTabId}">
+                    <div class="numberSize">
+                        <img src="{!$Resource.inprogress_img}"/>  
+                        <div class="slds-text-heading_large valuespan" >
+                            {!v.inprogressCount}</div>
+                    </div>
+                    <span class="headspan">{!v.clInprogress}</span>                    
+                </a>
+            </div>
+            <div class="slds-col statusdiv divcancelled animated bounceInDown" >
+                <a href="" data-record="CancelledDeliveries" onclick="{!c.setTabId}">
+                    <div class="numberSize">
+                        <img src="{!$Resource.closecase_img}"/>                        
+                        <div class="slds-text-heading_large valuespan" >
+                            {!v.cancelledCount}</div>
+                    </div>
+                    <span class="headspan">{!v.clClosed}</span>
+                </a>
+            </div>
+            <div class="slds-col statusdiv divhold animated bounceInDown">
+                <a href="" data-record="OnHoldDeliveries" onclick="{!c.setTabId}">                    
+                    <div class="numberSize">
+                        <img src="{!$Resource.onhold_img}"/> 
+                        <div class="slds-text-heading_large valuespan" >
+                            {!v.onHoldCount}</div>
+                    </div>
+                    <span class="headspan">{!v.clOnHold}</span>
+                </a>
+            </div>
+            
+        </div>
+    </div> 
+    
+</aura:component>

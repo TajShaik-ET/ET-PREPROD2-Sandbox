@@ -1,0 +1,1242 @@
+.THIS .hidden {
+    display: none;
+}
+.THIS .slds-form-element__row {
+    /*display: block; */
+}
+
+.THIS .slds-form-element__row .slds-form-element__label {
+    font-size: 14px!important;
+    font-weight: bold!important;
+    color: #555;
+    letter-spacing: 0.5px;
+}
+.THIS .slds-input-has-icon--right{
+    border-bottom: 1px solid #ddd
+}
+.THIS .slds-input-has-icon--left{
+    border-bottom: 1px solid #ddd
+}
+.THIS .slds-grid label{
+    visibility: hidden;display:block;
+}
+.THIS .pricelistnotfound{
+    text-align: center;
+    padding-top:75px;
+    font-size: 18px;
+    font-weight: bold;
+    /*font-family: 'Cronos';
+    letter-spacing: 1px;*/
+    color: red;
+    padding-bottom:75px;
+}
+.THIS input[type="text"], .THIS input[type="password"], .THIS textarea, .THIS textarea.form-control ,
+.THIS select , .THIS input[type="tel"] , .THIS input[type="email"]{
+    height: 38px;
+    margin: 0;
+    padding: 0 .5rem 0 .5rem;
+    vertical-align: middle;
+    background: transparent!important;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    /*font-family: 'Cronos';*/
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow:none!important;
+    transition: all .3s;
+    border-radius: 0px;
+}
+
+.THIS .slds-form-element__control {
+    margin: 0px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+}
+.THIS .Address-listbox , .THIS .Drop-Address-listbox{
+    position: sticky;
+    margin-top: -18px;
+    /* width: 100%; */
+    margin-left: .25rem;
+    margin-right: .25rem;
+    z-index: 10;
+    margin-bottom: 24px;
+}
+.THIS .locatioblink {
+    position: absolute;
+    top: 30px;
+    right: 5px;
+    cursor: pointer;
+}
+.THIS .locatioblink .slds-icon-text-default {
+    fill: #555;
+    width: 24px;
+    height: 42px;
+    text-align: center;
+    margin: auto;
+    padding-left: 5px;
+}
+.THIS .picklocatioblink {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    cursor: pointer;
+}
+.THIS .picklocatioblink .slds-icon-text-default {
+    fill: #555;
+    width: 24px;
+    height: 42px;
+    text-align: center;
+    margin: auto;
+    padding-left: 5px;
+    direction:rtl;
+}
+.THIS .picklocatioblink_AR {
+    position: absolute;
+    top: 30px;
+    left: 5px;
+    cursor: pointer;
+}
+.THIS .picklocatioblink_AR .slds-icon-text-default {
+    fill: #555;
+    width: 24px;
+    height: 42px;
+    text-align: center;
+    margin: auto;
+    padding-left: 5px;
+    direction:rtl;
+}
+.THIS .slds-modal__container{
+    animation: popup 0.7s;
+}
+.THIS.rtlDiv{
+    direction:rtl;
+}
+.THIS .slds-size_1-of-2, .THIS .slds-size--1-of-2 {
+    position: relative;
+    width: 50%;
+    display: inline-block;
+    float:left; 
+}
+.THIS .btncancel{
+    font-size: 14px;
+    margin-top: 3px;
+    background: #fff;
+    border: 1px solid #00c19e;
+    color: #00c19e;
+}
+.THIS .slds-form-element_compound .slds-form-element__row .slds-form-element__label {
+    font-size:14px!important;
+    /*font-family: 'Cronos';*/
+    font-weight: bold!important;
+}
+.THIS .no-padding{
+    padding:0px;
+}
+.THIS .checkboxsame{
+    display: inline-block!important;margin-right: 6px;
+}
+
+
+/*.THIS .checkbox-highlight input[type="checkbox"]:before {
+  background-color: #2196f3;
+  border-color: #2196f3;
+}
+
+.THIS .checkbox-highlight input[type="checkbox"]:checked + label:before {
+  background-color: #2196f3;
+  border-color: #2196f3;
+}
+
+.THIS .checkbox-highlight input[type="checkbox"]:checked + label:after {
+  border-color: #fff;
+}
+
+.THIS .checkbox-highlight input[type="checkbox"]:focus + label:before {
+  box-shadow: 0 0 3px rgba(33, 150, 243, 0.5);
+}
+*/
+.THIS .form-element__label{
+    display: block;
+    height: 30px;
+}
+.THIS .spansameloc{
+    position: absolute;
+}
+.THIS .bgimgcont{
+    position: absolute;
+    height: 94%;
+    top: 3%;
+    left: 3%;
+    right: 3%;
+    bottom:3%;
+    opacity: .1;
+    z-index: 0;
+    width: 75%;
+    margin: auto;
+}
+.THIS .checkboxsame{
+    border: 1px solid #ccc;
+}
+.THIS .form-element__label {
+    display: block;
+    height: auto;
+}
+/*@font-face {
+font-family: 'Cronos';
+src: url(/resource/ETST_Cronos); 
+}*/
+.THIS .fareprice{
+    font-size: 17px;
+    color: #ff0404;
+    font-weight: 700;
+    letter-spacing: 1px; 
+    /*float: left;
+    margin: auto;
+    display: inline-block;
+    font-family: 'Cronos';*/
+}
+.THIS .btnsave{
+    font-size: 14px;
+    margin-top: 8px;
+    margin-left: 10px;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    background-color: #eb4026;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .btnsave:hover{
+    background-color: #333333;
+}
+.THIS .btn_back {
+    font-size: 14px;
+    margin-top: 8px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    background-color: #b0b1af;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+}
+.THIS .btn_back:hover{
+    background-color: #333333;
+}
+.THIS.margtopcontentpopup{
+    padding: 0% 0% 0%;
+    position: relative;
+    overflow:hidden;
+    width:100%;    
+    margin-top: 0px;  
+    border: none!important;
+    box-shadow: none;
+}
+.THIS.margtopcontentserv{
+    padding: 5% 10% 10%;
+    background-image: url(/resource/homepagebg_img);
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    overflow:hidden;
+    height:100vh;
+    width:100%;
+    margin:0%;
+    margin-top: 0px;
+    top:0px;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    /*overflow:auto*/
+}
+.THIS.margtopcontentserv:before {
+    background-color: rgba(0, 0, 0, 0.5);
+    content: '';
+    left: 0;
+    top: 0;
+    display: block;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+}
+.THIS .fielddiv{
+    /*padding: 10px 30px;     
+    width: 80%;
+    margin: auto;*/
+    background: #fff;
+    border: 0px solid #fff;
+    border-radius: 10px;
+}
+.THIS.margtopcontentpopup .fielddiv {
+    padding: 0px;
+    background: #fff;
+    border: 0px solid #fff;
+    width: 100%;
+    margin: auto;
+}
+.THIS.margtopcontentpopup .fielddiv .slds-modal__header{
+    display:none;
+}
+.THIS.margtopcontentpopup .fielddiv .footerdivcont {
+    border: none;
+}
+.THIS.margtopcontentpopup .picklocatioblink , .THIS.margtopcontentpopup .locatioblink{
+    position: absolute;
+    top: 25px;
+    right: 5px;
+    cursor: pointer;
+}
+.THIS.margtopcontentpopup  .slds-select_container:after {
+    border-top: 5px solid #888;
+    bottom: calc((1.75rem / 2) - -1px);
+}
+.THIS.margtopcontentpopup  .slds-select_container:before {
+    display:none;
+}
+.THIS.margtopcontentpopup .slds-form-element__control {
+    margin-bottom: 20px;    
+}
+.THIS.margtopcontentserv .slds-modal__header {
+    position: relative;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-bottom: 1px solid #f2f2f2;
+    padding: 0rem 0rem 1rem 0rem;
+    text-align: center;
+    background: #fff;    margin-bottom: .5rem;
+}
+.THIS.margtopcontentserv .slds-text-heading_medium {
+    color: #333;
+    font-weight: 300!important;
+    text-align: center;
+    font-size: 16px;
+    font-size:26px;
+    /*font-family: 'Cronos';*/
+}
+.THIS.margtopcontentserv .slds-modal__close {
+    position: absolute;
+    display:flex; 
+    right:.5rem;
+    border:1px solid #000;
+    opacity:0.5;
+    transition:ease-in-out 0.5s;
+    line-height: 1;
+    border-radius:100%;
+    top: .5rem;
+    width: 2rem;
+    height: 2rem;
+    font-size: .875rem;
+    font-weight: 300;
+    border-radius: 100%;
+    z-index: 4;
+    color: #fff; 
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+.THIS.margtopcontentserv .slds-button_icon-inverse {
+    /*color: #333;
+    display: block;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;*/
+}
+.THIS .footerdivcont{ 
+    box-shadow: none;
+    background: transparent;
+    padding: .75rem 1rem; 
+    text-align: right;
+    float: right;    
+    width: 100%;
+    margin-top:10px;
+}
+.THIS .footerdivcont_AR{ 
+    box-shadow: none;
+    background: transparent;
+    padding: .75rem 1rem; 
+    text-align: left;
+    float: left;    
+    width: 100%;
+    margin-top:10px;
+}
+
+.THIS .slds-button.slds-button_brand.btnsave {
+    color: #fff;
+    background: #62cc8c;
+}
+.THIS.margtopcontentserv .slds-select_container:after {
+    border-top: 5px solid #888;
+    bottom: calc((1.75rem / 2) - -1px);
+}
+.THIS.margtopcontentserv .slds-select_container:before {
+    display:none;
+}
+.THIS.margtopcontentserv .slds-has-error .slds-select , .THIS.margtopcontentserv .slds-select:focus {
+    background-color: transparent;
+}
+.THIS.margtopcontentserv .slds-select:active {
+    background-color: transparent!important;    border-bottom: 1px solid #ddd;
+}
+.THIS .empaddress{
+    padding-top: 10px;
+    /*font-family: 'Cronos';*/
+    font-size: 20px;
+    color: #62cc8c;
+    margin-bottom: 15px;
+    display: block;
+    clear: both;
+}
+.THIS .locationimgpos{
+    position: absolute;
+    top: 32px;
+    left: 0px;
+    width: 28px;
+}
+.THIS #pick-uplocation input[type=text], .THIS #drop-offlocation input[type=text]{
+    padding-left:5px;
+    padding-right:30px;
+}
+/*
+.THIS.margtopcontentserv .slds-modal__body{
+min-height: 100px;
+max-height: 310px;
+height: auto;
+overflow-x: hidden;
+}
+.THIS.margtopcontentserv .slds-modal__bodyrtl{
+min-height: 200px;
+max-height: 310px;
+height: auto;
+direction:rtl;
+} */
+.THIS.margtopcontentserv .slds-modal__body{
+    min-height: 100px;
+    /*max-height: 380px;
+    max-height: calc(100vh - 86px);*/
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.THIS.margtopcontentserv .slds-modal__bodyrtl{
+    min-height: 100px;
+    /* max-height: 310px; */
+    height: auto;
+    direction:rtl;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+.THIS .slds-has-error .slds-form-element__help {
+    color: rgb(194, 57, 52);
+    /*position: absolute;
+    bottom: -18px;*/
+}
+.THIS .Pick_Upstartdate .slds-has-error .slds-form-element__help, 
+.THIS .Pick_Upenddate .slds-has-error .slds-form-element__help{
+    bottom: 0px;left:8px;
+}
+.THIS .spacebottom{
+    margin-bottom: 0px;
+    margin-left: 5px;
+    background-color: transparent;
+    border-color: transparent;
+    color: #ff4b5a;
+    padding: 0px;
+    line-height: 15px;
+    text-decoration: underline;
+    outline: none;
+    box-shadow: none;
+    font-size: 12px;
+    position: absolute;
+    top: 0px;
+    right: 68px;
+}
+.THIS .spacebottom_AR{
+    margin-bottom: 0px;
+    margin-left: 5px;
+    background-color: transparent;
+    border-color: transparent;
+    color: #ff4b5a;
+    padding: 0px;
+    line-height: 15px;
+    text-decoration: underline;
+    outline: none;
+    box-shadow: none;
+    font-size: 12px;
+    position: absolute;
+    top: 0px;
+    left: 90px;
+}
+.THIS .spacebottom1{
+    margin-bottom: 0px;
+    margin-left: 20px;
+    background-color: transparent;
+    border-color: transparent;
+    color: #ff4b5a;
+    padding: 0px;
+    line-height: 15px;
+    text-decoration: underline;
+    outline: none;
+    box-shadow: none;
+    font-size: 12px;
+    position: absolute;
+    top: 0px;
+    right: 10px;
+}
+.THIS .spacebottom1_AR{
+    margin-bottom: 0px;
+    margin-left: 20px;
+    background-color: transparent;
+    border-color: transparent;
+    color: #ff4b5a;
+    padding: 0px;
+    line-height: 15px;
+    text-decoration: underline;
+    outline: none;
+    box-shadow: none;
+    font-size: 12px;
+    position: absolute;
+    top: 0px;
+    right: 250px;
+}
+.THIS .sameaddresscheck{
+    display:inline-block;
+    font-size:12px;
+    position: static;    
+}
+.THIS .searchlocationdiv {
+    position: sticky;
+    margin-bottom: 10px;
+    width: 100%;
+    top: 0px;
+}
+.THIS .searchlocationdiv .slds-form-element__label{
+    display:none;
+}
+.THIS .searchlocationdiv .slds-form-element__control{
+    margin: 0px;
+    display: block;
+}
+.THIS .searchlocationdiv .slds-form-element__control input[type=text]{
+    background: #fff!important;
+    border: 1px solid #ddd;
+    border-radius: 20px!important;
+}
+.THIS .searchlocationdiv .slds-form-element{
+    padding:0px; 
+}
+.THIS .searchlocationdiv .btn_table{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 0;
+    height: 37px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    min-width: auto;
+}
+.THIS .searchlocationdiv .btn_table_AR{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 0;
+    height: 37px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    min-width: auto;
+}
+.THIS .pickupdatails , .THIS .dropdatails {
+    position:relative;
+}
+.THIS .pickupdatails span , .THIS .dropdatails span{
+    position: absolute;
+    top: 0px;
+    right: -12px;
+    color: #ff4b5a;
+    cursor: pointer;
+    height: 38px;
+    line-height: 38px;
+    padding: 0px 15px 0px 5px;
+    text-decoration: underline;
+}
+.THIS .animated {
+    -webkit-animation-duration: .75s;
+    animation-duration: .75s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+.THIS .slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+@-webkit-keyframes slideInUp {
+    from {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInUp {
+    -webkit-animation-name: slideInUp;
+    animation-name: slideInUp;
+}
+
+.THIS .Pick_Upstartdate .slds-input-has-icon_right .slds-button_icon-bare{
+    display: none;   
+}
+.THIS .arabic_AR{
+    /*flex-direction: row-reverse;*/
+}
+.THIS .updatestudent{
+    text-align:center;
+    font-size:18px;
+    padding:2rem 0rem;
+}
+.THIS .slds-modal__content {
+    min-height: 200px!important;
+}
+.THIS .checkbox_custom span.slds-checkbox_faux {
+    border: 1px solid #ccc!important;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .fielddiv {
+        padding:0px;
+        background: #fff;
+        border: 0px solid #fff;
+        width: 96%;
+        margin: auto;
+    }
+    .THIS .sameaddresscheck {
+        vertical-align: -webkit-baseline-middle;
+    }
+    .THIS.margtopcontentserv {
+        height: 100%;
+    }
+    .THIS.margtopcontentpopup .sameaddresscheck {
+        vertical-align: -webkit-baseline-middle;
+        display: block;
+        padding-top: 5px;
+        font-size: 14px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .fielddiv {
+        width: 100%;
+    }
+    .THIS.margtopcontentserv {
+        padding: 2%;
+    }
+    .THIS .checkboxsame{
+        display: inline-block!important;
+    } 
+    .THIS.margtopcontentserv {
+        padding: 1%;
+        height: 100%;
+    }
+    .THIS.margtopcontentpopup .slds-form-element__row {
+        display: block;
+    }
+    .THIS.margtopcontentpopup .slds-size_1-of-2, .THIS.margtopcontentpopup .slds-size--1-of-2 {
+        position: relative;
+        width: 100%;
+        display: inline-block;
+        float: left;
+    }
+    .THIS .fielddiv {
+        margin-top: 10%;
+    }
+    .THIS .slds-form-element__row {
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .THIS.margtopcontentserv {
+        padding:1%;
+        height: 100%;
+    }
+    .THIS .sameaddresscheck {
+        vertical-align: -webkit-baseline-middle;
+        display: block;
+        padding-top: 5px;
+        font-size: 14px;
+    }
+    .THIS .pickupdatails span, .THIS .dropdatails span {
+        font-size: 11px;
+    }
+    .THIS .spacebottom {
+        font-size: 11px;
+        right: 76px;
+    }
+    .THIS .spacebottom {
+        right: 50px;
+        background-image: url(/resource/curentlocation_img);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 28px;
+        height: 28px;
+        font-size: 0;
+        top: -3px;
+        margin: auto;
+        display: inline-block;
+    }
+    .THIS .spacebottom1{
+        font-size: 0;
+    }
+    .THIS .picklocatioblink {
+        right: 10px;
+        top: -10px;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .THIS .slds-size_1-of-2, .THIS .slds-size--1-of-2 {
+        position: relative;
+        width: 100%;
+        display: inline-block;
+        float: left;
+    } 
+    .THIS .slds-form-element_compound .slds-form-element__row .slds-form-element__label {
+        font-size: 12px!important;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .fielddiv {
+        border: 0 solid #fff;
+        background: #fff !important;
+        border-top-left-radius: 35px;
+        border-top-right-radius: 35px;
+        position: fixed;
+        bottom: 0px;
+    }
+    .THIS .slds-modal__header h2 {
+        color: #62cc8c!important;
+        text-align: center!important;
+        font-size: 20px!important;
+    }
+    .THIS .checkboxsame{
+        display: inline-block!important;
+    } 
+    .THIS .fielddiv {
+        padding: 5px;
+    }
+    .THIS .slds-size_1-of-2, .THIS .slds-size--1-of-2 {
+        position: relative;
+        width: 100%;
+        display: inline-block;
+        float: left;
+    }
+    .THIS .pickupdatails span, .THIS .dropdatails span {
+        font-size: 11px;
+    }
+    .THIS .spacebottom {
+        font-size: 11px;
+        right: 76px;
+        top: 0px;
+    }
+    .THIS .slds-form-element_compound .slds-form-element__row .slds-form-element__label {
+        font-size: 12px!important;
+    }
+    .THIS .btnsave{
+        background: #eb4026;
+        padding: 15px 30px!important;
+        border-radius: 5px;
+        float: none;
+        margin: auto!important;
+    }
+    .THIS.margtopcontentserv{
+        background-image: url(/resource/ET_userbg_img);
+        background-size: cover;
+        background-position: center;
+        padding: 0%;
+        height: 100vh;
+        width: 100%;
+        margin: auto;
+        height: calc(100vh)!important;
+        position: fixed;
+        z-index: 11;
+    }
+    .THIS.margtopcontentserv .slds-modal__body {
+        min-height: 100px;
+        /*max-height: 450px;*/
+        max-height:100%;
+        height: auto;
+    }
+    .THIS .picklocatioblink .slds-icon-text-default {
+        fill: #555;
+        width: 24px;
+    }
+    .THIS #pick-uplocation input[type=text], 
+    .THIS #drop-offlocation input[type=text] {
+        padding-right: 70px;
+    }
+    .THIS .spacebottom {
+        right: 40px;
+        background-image: url(/resource/curentlocation_img);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 22px;
+        height: 22px;
+        font-size: 0;
+        top: 40px;
+        margin: auto;
+        display: inline-block;
+    }
+    .THIS .spacebottom1{
+        font-size: 0;
+    }
+    .THIS .picklocatioblink {
+        right: 10px;
+        top: 30px;
+    }
+    
+    .THIS .uiInput--checkbox input[type=checkbox], .THIS input.uiInput--checkbox[type=checkbox] {
+        height: 18px;
+        margin: 0 6px 10px 0;
+        width: 18px;
+    }
+    .THIS .btn_back{
+        border-radius: 5px;
+        margin: 0px 5px;
+    }
+    .THIS .btnsave{
+        background: #eb4026;
+        border-radius: 5px;
+        padding: 10px 10px!important;
+    }
+    .THIS .locationmap .slds-modal__content{
+        border-top-left-radius: 35px;
+        border-top-right-radius: 35px;
+    }
+    .THIS.margtopcontentserv:before {
+        background-color: rgb(0 0 0 / 50%);
+    }
+}
+@media only screen and (max-width: 320px) {
+    
+    .THIS .slds-form-element_compound .slds-form-element__row .slds-form-element__label {
+        font-size: 12px!important;
+    }
+    .THIS.margtopcontentserv .slds-modal__body {
+        min-height: 100px;
+        max-height: 310px;
+        height: auto;
+    }
+}
+/*------------ Popup Css Start -------------------*/
+.THIS .popup_outer{
+    padding:0px;
+    position:relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.THIS .popup_outer .slds-modal__body, .THIS .popup_outer .slds-modal__bodyrtl{
+    display:flex;
+    width:100%;
+    min-height:340px;
+    height: calc(100% - 30px);
+    max-height: calc(100vh - 110px);
+}
+.THIS .image_section{
+    padding:10px 15px;
+    position:relative;
+    /*width:30%;*/
+    width:25%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(98,204,140,0.4) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(98,204,140,0.4) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(98,204,140,0.4) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#6662cc8c',GradientType=0 ); /* IE6-9 */
+}
+.THIS .fare_section{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    padding:15px 30px;
+    background:#F9F9F9;
+}
+.THIS .image_section h1{
+    margin:10px 0 0 0;
+    text-align:center;
+    color:#000;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 600;
+}
+.THIS .form_section{
+    padding:20px 20px 0px;
+    position:relative;
+    /*width:70%;
+    padding-left: 50px;*/
+    height:auto;
+    overflow: auto;
+    width:75%;
+}
+.THIS .form_section1{
+    padding:0px 0px 0px;
+    position:relative;
+    width:100%;
+    height:auto;
+    overflow: auto;
+    padding-left: 0px;
+}
+.THIS .popup_outer .slds-modal__header{ 
+    border: 0px !important;
+    margin:0px;
+}
+.THIS .form_row{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.THIS .half_part {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.THIS .popup_outer input[type=text], .THIS .popup_outer input[type=password], 
+.THIS .popup_outer textarea, .THIS .popup_outer textarea.form-control, .THIS .popup_outer select {
+    border:1px solid #ccc !important;
+    border-radius:4px !important;
+}
+.THIS .popup_outer .slds-form-element__label{
+    font-weight:bold;
+    font-size: 13px;
+}
+.THIS .popup_outer h2{
+    color:#62CC8C;
+    font-size:20px;
+    margin:15px 0;
+}
+.THIS .popup_outer .slds-modal__footer{
+    border:0px !important;
+}
+.THIS .popup_outer .slds-modal__footer button{
+    height: 39px;
+    line-height: 40px;
+    text-transform: uppercase;
+    min-width: 115px;
+}
+.THIS .popup_outer .slds-modal__footer .btncancel{
+    border:1px solid #62CC8C;
+    color:#62CC8C;
+    background:#fff;
+}
+.THIS .popup_outer .slds-modal__footer .btnsave{
+    border:1px solid #62CC8C;
+    color:#fff;
+    background:#62CC8C;
+}
+.THIS .note_text{
+    padding:10px;
+    border:1px solid #EB4026;
+    color:#EB4026;
+    font-weight:bold;
+    border-radius: 4px;
+    font-size: 12px;
+    margin: 15px 0;
+}
+
+.THIS .form_section .slds-checkbox_toggle{
+    padding:15px 0;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"]:checked + .slds-checkbox_faux_container .slds-checkbox_faux{
+    background-color:green;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"] + .slds-checkbox_faux_container .slds-checkbox_on{
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    color: #fff;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"] + .slds-checkbox_faux_container .slds-checkbox_off{
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    color: #fff;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"] + .slds-checkbox_faux_container{
+    position: relative;
+}
+.THIS .slds-checkbox_toggle [type="checkbox"]:checked + .slds-checkbox_faux_container .slds-checkbox_faux::after{
+    border:0px;
+}
+.THIS .form_section .slds-form-element__control{
+    margin-bottom:10px;
+}
+.THIS .mb-2{ 
+    margin-bottom: 20px;
+}
+.THIS .slds-datepicker tbody > tr > td {
+    padding: 0px !important;
+}
+.THIS .location_icon textarea{
+    height: 60px;
+    padding-right: 40px;
+    line-height: 24px;
+}
+.THIS #Addservicediv{
+    background: none;
+    height: auto;
+    padding: 0px;
+    padding-top: 0px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 5%;
+}
+.THIS .form_section .slds-dropdown-trigger_click .slds-dropdown{
+    top: auto !important;
+    bottom: 10px;
+}
+.THIS .Pick_Upstartdate_AR .slds-input-has-icon_right .slds-button_icon-bare{
+    display: none;   
+}
+@media(max-width:767px){
+    .THIS .image_section{
+        width:100%;
+        margin-bottom:15px;
+        background:#fff;    
+        padding-top: 0px;
+    }
+    .THIS .image_section h1{
+        color:#62CC8C;
+    }
+    .THIS .half_part {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .THIS .image_section img{
+        max-width:100px; 
+    }
+    .THIS .popup_outer .slds-modal__body{
+        flex-direction: column;
+    }
+    .THIS .form_section{
+        width:100%;
+        padding-top: 120px;
+        padding-left: 20px;
+    }
+    .THIS .popup_outer .slds-form-element__label{
+        /*color:#9F9F9F;*/
+    }
+    .THIS .note_text{
+        padding:10px 0;
+        border:0px;
+    }
+    .THIS .popup_outer .slds-modal__header {  
+        padding: 5px 0px;
+    }
+    .THIS .popup_outer .image_section{
+        position: fixed; 
+        z-index: 2;
+        border-radius:35px 35px 0 0;
+        padding-top:10px;
+        top: 0;
+    }
+    .THIS .popup_outer .slds-modal__close{
+        position: fixed;
+    }
+    .THIS .fare_section{
+        flex-direction:column;
+    }
+    .THIS .fareprice { 
+        margin-top: 10px;
+    }
+    .THIS .location_icon textarea { 
+        padding-right: 65px;
+    }
+    .THIS .arabic_AR{
+        flex-direction: column-reverse;
+    }
+}
+@media(max-width:480px){
+    .THIS .popup_mobileview{
+        top: auto;
+        position: relative;
+        height: calc(100% - 40px);
+        bottom: 0;
+        padding: 30px 0 0 0;
+        left: auto;
+        right: 0;
+        background: #FEFEF3!important;
+        width: auto!important;
+        margin-top: 40px;
+        border-radius: 35px 35px 0 0;
+        z-index: 11;
+    }  
+    .THIS .add_service.popup_mobileview{ 
+        position: absolute;
+        height: 97%;
+        width: 100% !important;
+    }
+    .THIS .popup_outer .slds-modal__body { 
+        /*height: calc(100% - 33px);*/
+        height: auto;
+        max-height: 100%;	
+    }
+    .THIS .popup_outer .slds-modal__body .form_section{
+        padding-top: 90px;
+        padding-bottom: 20px;
+    }
+    .THIS .popup_outer .slds-modal__footer{
+        position: fixed;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+    }
+    .THIS .popup_outer { 
+        padding: 10px 0 !important;
+        border-radius: 35px 35px 0 0 !important;
+        max-height: 480px;
+        overflow: scroll !important;
+    }
+    .THIS .popup_mobileview .form_section .slds-grid{
+        display: flex;
+    }
+    .THIS .slds-modal__content .form_section .slds-input{
+        border:1px solid #ddd !important;
+    }
+    .THIS .image_section{
+        background:#FEFEF3;
+    }
+    .THIS.margtopcontentserv .slds-text-heading_medium {
+        color: #545434;
+        font-weight: bold!important;
+        text-align: center;
+        font-size: 20px!important;
+    }
+}
+.THIS .mt50{
+    margin-top:50px;
+}
+.THIS.margtopcontentserv .slds-modal__bodyrtl .spacebottom1{ 
+    left: 0;
+    right:auto !important; 
+    margin-left: 0px;
+    margin-right: 20px;
+}
+.THIS.margtopcontentserv .slds-modal__bodyrtl .spacebottom{ 
+    left: 89px; 
+    right:auto !important;
+}
+.THIS.margtopcontentserv .slds-modal__bodyrtl .checkboxsame { 
+    margin-right: 0px;
+    margin-left: 6px;
+}
+.THIS .tccheckbox{
+    display: inline-block;
+    position: absolute;
+    left: -4px;
+}
+.THIS .tccheckbox_AR{
+    display: inline-block;
+    position: absolute;
+    right: 78px;
+}
+.THIS.termandcondition{
+    position: relative;
+    width: 100%;
+    clear: both;
+}
+.THIS .slds-modal__container {
+    margin: 0 auto;
+    width: 50%;
+    min-width: 96%!important;
+    max-width: 96%!important;
+}
+.THIS.termandcondition a {
+    color: rgb(0, 112, 210)!important;
+}
+.THIS .slds-checkbox .slds-checkbox_faux, .THIS .slds-checkbox .slds-checkbox--faux {
+    border: 1px solid rgb(204 204 204)!important;
+}
+.THIS.termandcondition a:hover , .THIS .termandcondition a:active{
+    color: rgb(0, 112, 210)!important;
+}
+@media only screen and (max-width: 580px) {
+    .THIS.termandcondition .slds-modal__container{
+        background: #FEFEF3;
+        border-top-left-radius: 35px;
+        border-top-right-radius: 35px;
+        min-width: 100%!important;
+        max-width: 100%!important;
+    }
+    .THIS.termandcondition .slds-modal__header{
+        border-bottom: 1px solid #f2f2f2;
+    }
+    .THIS.termandcondition .slds-modal__header h2 {
+        color: #545434!important;
+        text-align: center!important;
+        font-size: 20px!important;
+        display:block!important;
+        padding: 1rem;
+    }
+    .THIS .btn_table{
+        background: #eb4026;
+        border-radius: 5px;
+    }
+    .THIS #personal .slds-modal__content {
+        background: #FEFEF3!important;
+    }
+    .THIS.termandcondition .slds-backdrop {
+        background: rgb(0 0 0 / 0%)!important;
+    }
+}
+/*------------ Popup Css End -------------------*/

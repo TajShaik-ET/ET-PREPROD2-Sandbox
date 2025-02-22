@@ -1,0 +1,475 @@
+<apex:page applyBodyTag="false" standardController="Contract_Pdf_Header__c" extensions="PRI_customerQuoteContractController" showHeader="false" sidebar="false" renderAs="pdf"  standardStylesheets="false" applyHtmlTag="false">
+    
+    <html>
+        <head>
+            <style>
+                @page {
+                size: A4;
+                margin:25mm 10mm;
+                @bottom-left {
+                content: element(footer);
+                }
+                @top-left {
+                content: element(header);
+                }
+                @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-size: 12px;
+                }
+                }
+                @page:first {
+                @bottom-left {
+                content: element(footer);
+                }
+                @top-left {
+                content: element(header);
+                }
+                } 
+                
+                div.divFooter {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                div.divHeader {
+                margin:20px 0px;
+                display: block;
+                padding: 5px;
+                position: running(header);
+                }
+                
+                table{
+                width: 100%;
+                }
+                div.divFooter {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .termNCondition{
+                //page-break-before: always;
+                } 
+                .topContact{
+                font-size: 10px;
+                float: right;
+                margin: 1rem;
+                line-height: 24px;
+                }
+                .headerRight img{
+                float: right;
+                margin: 0 5px;
+                }
+                .grey40{
+                color: rgb(88 89 91);
+                }
+                .heading{
+                color:#000;
+                margin:0px;
+                padding:13px 15px;
+                font-size:28px;
+                display:inline-block;
+                float: left;
+                text-transform: capitalize;
+                border-left:2px solid #939393;
+                margin-top:-10px;
+                }
+                h6{
+                color:rgb(88 89 91);
+                margin:0px;
+                padding:0px;
+                }
+                .leftsection .value{
+                color:rgb(88 89 91);
+                font-size:13px;
+                }
+                .leftsection p{
+                margin:0px 0 10px 0;
+                }
+                .leftsection .info{
+                color:#b3b2b2;
+                width:150px;
+                font-size:13px;
+                display:inline-block;
+                }
+                .rightsection {
+                color:rgb(88 89 91);
+                font-size:13px;
+                }
+                .subject{
+                color:#b3b2b2;
+                font-size:13px;
+                }
+                .workorder{
+                color:rgb(88 89 91);
+                font-size:13px;
+                }
+                .order_table, .STATable{
+                border-collapse: collapse;
+                }
+                .order_table tr th{
+                background:#f2f2f2;
+                padding:10px;
+                font-size:13px;
+                color:#000;
+                border: 1px solid #ccc;
+                font-weight: 300;
+                }
+                .order_table tr td{
+                border: 1px solid #ccc;
+                padding:10px;
+                font-size:13px;
+                color:#000;    
+                vertical-align: middle;
+                }
+                .border_bottom{
+                border-bottom:1px solid #dadada;
+                }
+                .order_table .values{
+                width:130px;
+                font-size:13px;
+                display:inline-block;
+                }
+                .subheading{
+                color:#878787;
+                font-size:15px;
+                margin-bottom:10px;
+                }
+                .subtext{
+                font-size:10px;
+                color:#878787;
+                }
+                .order_table .label_text{
+                float: left;
+                display: block;
+                width: 100%;
+                font-size:11px;
+                }
+                .order_table .label_value{
+                float: left;
+                padding: 10px 5px;
+                display: block;
+                width: 95%;
+                border-radius: 5px;
+                color: #000;
+                font-size:11px;
+                background:#f7f6f9;
+                }
+                body {
+                font-family: Arial, sans-serif;
+                }
+                .section {
+                margin: 14px;
+                }
+                .title {
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 16px;
+                text-decoration: underline;
+                }
+                .content {
+                margin-left: 0px;
+                line-height: 22px;
+                font-size:14px;
+                }
+                .definition {
+                font-weight: bold;
+                }
+                p {
+                margin: 0 0 8px 0;
+                line-height: 22px;
+                font-size:14px;
+                }
+                .numbers{
+                margin-right: 5px;
+                }
+                .textCenter{
+                text-align: center;
+                }
+                .STATable tr th, .STATable tr td{
+                padding: 5px 10px;
+                border: .5px solid #000;
+                font-size:14px;
+                vertical-align: top;
+                }
+                .left_margin{
+                margin-left:20px;
+                }
+                .article_table{
+                font-size:14px;
+                }
+                .article_table tr td, .content ol li{
+                vertical-align: top;
+                margin: 0 0 8px 0;
+                line-height: 22px;
+                font-size:14px;
+                }
+				.indent-aligned {
+            padding-left: 2px; /* Adjust the left padding for indentation */
+            text-align: left; /* Align text to the left to avoid wide gaps */
+            margin-left: 2px; /* Additional margin if needed */
+        }
+            </style>
+        </head>
+        <body>
+            <div class="divHeader">
+                <table>
+                    <tr>
+                        <td>
+                            <img src="{!$Resource.logoET}" alt="ETLogo" width="160" style="float: right;"/> 
+                        </td>
+                    </tr>      
+                </table> 
+            </div>
+            <apex:pageBlock >
+                <div class="section" style="text-align: justify">
+                    <div class="title" style="text-align:center">LEASE AGREEMENT – {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Name}</div>
+                    <div class="content">
+                        <p>
+                            This vehicle lease agreement (the “Agreement”) is entered into on 	 {!Contract_Pdf_Header__c.Effective_Date__c} (“Effective date”).
+                        </p>
+                        <p>
+                            <strong>  By and Between the following Parties:</strong> 
+                        </p>
+                        <p class="left_margin">
+                            <strong class="numbers"> (1) </strong> Emirates Public Transport and Services Company, established under laws of UAE having its head office at Marrakech Street, Umm Ramool Area, P.O. Box - 5757, Dubai, United Arab Emirates, represented by Mr. {!Contract_Pdf_Header__c.ET_Representative__c}  as ‘{!Contract_Pdf_Header__c.ET_Rep_Designation__c}’ <strong> (“hereinafter referred to as Lessor”)</strong>.
+                        </p>
+                        <p>
+                            <strong>AND</strong></p>
+                        
+                        <p class="left_margin">
+                            <strong class="numbers"> (2) </strong> {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Name}, a company registered in the United Arab Emirates, Commercial License number <Strong style= "display: {!If(Licensenumber =='undefined','none','') }">{!Licensenumber}</Strong>, P.O box {!Contract_Pdf_Header__c.P_O_Box__c}, {!Contract_Pdf_Header__c.Account_Emirate__c}, United Arab Emirates whose principal place of business is at {!Contract_Pdf_Header__c.Customer_Business_Location__c}, {!Contract_Pdf_Header__c.Account_Emirate__c}, United Arab Emirates, represented by Mr. {!Contract_Pdf_Header__c.Lessee_Rep__c}  as ‘{!Contract_Pdf_Header__c.Lessee_Rep_Designation__c}’ <strong>  (“hereinafter referred to as Lessee”)</strong>.
+                        </p> 
+                        <p class="left_margin"> Lessor and the Lessee are hereinafter referred to as “Parties” and individually as “ Party”.  </p>
+                        
+                    </div>
+                </div>
+                <!-- RECITAL -->
+                <div class="section" style="text-align: justify">
+                    <div class="title textCenter">RECITAL</div>
+                    <div class="content left_margin">
+                        <p class="article">
+                            <strong class="numbers"> a)  Whereas,</strong> the Lessor is a Company working in the field of transport and leasing of vehicles and  has a number of vehicles licensed in accordance with applicable laws and regulations of United Arab Emirates.
+                        </p>
+                        <p class="article">
+                            <strong class="numbers"> b)  Whereas,</strong> the Lessee requires to lease a number of vehicles {!Driver} and {!Fuel} and has agreed to lease the vehicles from the Lessor subject to the terms and conditions of this Agreement.
+                        </p>
+                        <p class="article">
+                            <strong class="numbers"> c)  Whereas,</strong> the Lessor has agreed to provide the Services against the payment paid by the Lessee  on regular basis as per Agreement between the Parties.
+                        </p>
+                        <p>
+                            The above Recital is an integral part of this Agreement and shall be read together with this Agreement.
+                        </p> 
+                        <p>
+                            Now, therefore, for good and valuable consideration, the Parties agree as follows: 
+                        </p>
+                    </div>
+                </div>
+                <!-- Article 1 -->
+                <div class="section">
+                    <apex:pageBlockTable value="{!contractDetails}" var="article">
+                        <apex:column >
+                            <div>
+                                <h4>{!article.articleLineNo}.  <u>{!article.Name}</u></h4>
+                            </div>
+                            <table class="article_table">
+                                <apex:repeat value="{!article.subCaluses}" var="subClause">
+                                    <tr class="left_margin"><td style="padding-left:20px;padding-right:5px;padding-bottom:8px">{!subClause.Name}</td><td style="text-align: justify">{!subClause.Description}</td></tr>
+                                </apex:repeat>
+                            </table>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </div>
+                <!-- Additional Text for Article 25 -->
+                <div class="section" style="text-align: justify">
+                    <div class="title">25.	 CORRESPONDENCES and COMMUNICATIONS</div>
+                    <div class="content left_margin">
+                        <p class="article">
+                            <strong class="numbers">25.1 </strong> All notices or correspondences arising from or relating to this Agreement must be in writing and be sent by email or delivered to the Parties at the following address: -
+                        </p>
+                        <p class="article left_margin">
+                            <strong class="numbers"> a) </strong> Emirates Public Transport and Services Company, a company registered in the United Arab Emirates whose principal place of business is at PO Box 5757, Dubai, United Arab Emirates, Represented by Mr. {!Contract_Pdf_Header__c.ET_Representative__c} as ‘{!Contract_Pdf_Header__c.ET_Rep_Designation__c}  (“Lessor”).
+                        </p>
+                        <p class="article left_margin">
+                            <strong class="numbers"> b) </strong> {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Name} L.L.C  -, a company registered in the United Arab Emirates, Commercial License number <Strong style= "display: {!If(Licensenumber =='undefined','none','') }">{!Licensenumber}</Strong> , P.O box {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Station_Code__c}, Dubai, United Arab Emirates whose principal place of business is at  {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Station__c}, Dubai , United Arab Emirates, Represented by Ms.{!Contract_Pdf_Header__c.Lessee_Rep__c} as (“Lessee”).
+                        </p>
+                        <p class="article left_margin">
+                            The above terms and conditions have been understood and agreed by the Parties hereto, whose authorized representatives have signed below in acceptance.                        </p>
+                    </div>
+                </div>
+                
+                <div style="position: relative;display:block;clear: both;width: calc( 100% - 50px)%; font-family:sans-serif;margin: 20px 0px 0 55px; text-align: justify">
+                    <table class="STATable" style="width:100%;border: trasprant;border-collapse: collapse;">
+                        <thead style="background:#f2f2f2;">
+                            <tr>
+                                <th><strong>On behalf of Emirates Transport</strong></th>
+                                <th><strong>On behalf of</strong> {!Contract_Pdf_Header__c.Customer_Quote__r.Account_Name__r.Name}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Name: {!Contract_Pdf_Header__c.ET_Representative__c}</td>
+                                <td>Name: {!Contract_Pdf_Header__c.Lessee_Rep__c}</td>
+                            </tr>
+                            <tr>
+                                <td>Position: {!Contract_Pdf_Header__c.ET_Rep_Designation__c}</td>
+                                <td>Position: {!Contract_Pdf_Header__c.Lessee_Rep_Designation__c}</td>
+                            </tr>
+                            <tr>
+                                <td style="height:150px"><strong>Seal and Signature:</strong></td>
+                                <td style="height:150px"><strong>Seal and Signature:</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Date :</td>
+                                <td>Date :</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+                <p class="title">Schedule – 1</p>
+                <div class="content" style="text-align: justify" >
+                    <ol>
+                         <li>
+							<strong>Ref. Clause 2.1</strong>
+                        <table class="STATable" border="1" cellspacing="0" cellpadding="5">
+                            <tr>
+                                <th style="padding:10px"><strong>Vehicle Type &amp; Model</strong></th>
+                                <th style="padding:10px"><strong>Quantity</strong></th>
+                                <th style="padding:10px"><strong>Mileage/Year in KM</strong></th>
+                                <th style="padding:10px"><strong>Service Type</strong></th>
+                                <th style="padding:10px"><strong>Monthly Rate Per Vehicle({!Contract_Pdf_Header__c.Sh1_Clause3_1_Agreement_YearsMonths__c} Year(s) ) excluding VAT</strong></th>
+                            </tr>
+                            <apex:repeat var="Veh" value="{!VehiclList}">
+                                <tr>
+                                    <td>{!Veh.Remarks__c} </td>
+                                    <td>{!Veh.Number_of_Vehicles__c}</td>
+                                    <td><apex:outputText value="{0, number, ###,###,###,###.##}">
+    <apex:param value="{!Contract_Pdf_Header__c.Sh1_Clause7_1_KM_Reading__c}"/></apex:outputText></td>
+                                    <td>{!Driver} and {!Fuel}</td>
+                                    <td>AED &nbsp; <apex:outputText value="{0, number, ###,###,###,###.##}">
+    <apex:param value="{!Veh.Vehicle_Monthly_Cost__c}"/></apex:outputText></td>
+                                </tr>
+                            </apex:repeat>
+                            <tr>
+                                <td style="padding:10px"></td>
+                                <td style="padding:10px"></td>
+                                <td style="padding:10px"></td>
+                                <td style="padding:10px"></td>
+                                <td style="padding:10px">Total Contract value for {!Contract_Pdf_Header__c.Sh1_Clause3_1_Agreement_YearsMonths__c} {!contractType}<div>AED <apex:outputText value="{0, number, ###,###,###,###.##}">
+    <apex:param value="{!TotalContractvalue}"/></apex:outputText></div></td>
+                            </tr>    
+                        </table> 
+                        </li>
+                        <li>                           
+                            <strong>Ref. Clause 3.1</strong>
+                            <p>The term of this Agreement {!Contract_Pdf_Header__c.Sh1_Clause3_1_Agreement_YearsMonths__c} {!contractType}. Any vehicle delivered under this Agreement shall complete a minimum period of {!Contract_Pdf_Header__c.Sh1_Clause3_1_Minimum_Period__c} {!contractType}.</p>
+                        </li> 
+                        <li>  
+                            <strong>Ref. clause 4.4</strong>
+                            Smoking in vehicles shall be charged up to <strong>AED 1000</strong>.
+                        </li> 
+                        <li>  
+                            <strong>Ref. clause 5.1</strong>
+                            The total replacement vehicle numbers shall not exceed – {!Contract_Pdf_Header__c.Sh1_Clause5_1_Vehicle_Percentage__c} % of the total delivered vehicles.
+                        </li> 
+                        <li> 
+                            <strong>Ref. clause 7.1</strong>
+                            Agreed limited mileage {!Contract_Pdf_Header__c.Sh1_Clause7_1_KM_Reading__c} KM/Year.
+							
+                                                  
+					</li>  
+                        <li>    
+                            <strong>Ref. Clause 7.2</strong>
+                            The Lessor has the right to charge for each additional kilometer – AED (+ VAT) per additional KM.
+							 <table class="STATable" border="1" cellspacing="0" cellpadding="5">
+                                <tr>
+                                    <th style="padding:10px"><strong>Vehicle Name</strong></th>
+                                    <th style="padding:10px"><strong>Extra KM Charge</strong></th>
+                                </tr>
+                                <apex:repeat var="Veh" value="{!VehiclList}">
+                                    <tr>
+                                        <td>{!Veh.Remarks__c} </td>
+                                        <td>{!Veh.Extra_Miles__c}</td>
+                                        
+                                    </tr>
+                                </apex:repeat>
+                                <tr>
+                                    <td style="padding:10px"></td>
+                                    <td style="padding:10px"></td>
+                                </tr>    
+                            </table> 
+
+                        </li> 
+                        <li>   
+                            <strong>Ref. Clause 9.1</strong>
+                            The Lessor shall charge modification or branding cost of AED {!Contract_Pdf_Header__c.Sh1_Clause9_1_Branding_Charge__c}  (+ VAT) which shall be paid by the Lessee.
+                        </li>
+						<li> 
+                            <strong>Ref. Clause 12.3</strong>
+                            Administrative charges for fine payment to be paid by the Lessee - Due amount for fines and additionally an administrative fee not exceeding 10% (+ VAT) of the traffic fine amount. 
+                        </li> 
+						<li> 
+                            <strong>Ref. Clause 12.4</strong>
+                            Salik/Darb charges to be paid based on actual consumption and an administrative fee shall be charged not exceeding – 10% (+ VAT) of the monthly invoice amount for Salik/Darb.
+                        </li> 
+                        <li>    
+                            <strong>Ref. Clause 12. 2</strong>
+                            The invoices for the leased vehicles  shall be paid within {!Contract_Pdf_Header__c.Sh1_Clause12_2_Calendar_Days__c} calendar days from date of receipt of the invoice. 
+                        </li> 
+                        <li> 
+                            <strong>Ref. Clause 12.11 (A) (a)</strong>
+                            Charges for delay in payment – {!Contract_Pdf_Header__c.Sh1_Clause12_11Aa_Payment_Percentage__c}%  (based on simple interest calculation method) of the due payable amount on monthly for each month of delay. 
+                        </li> 
+                        <li> 
+                            <strong>Ref. Clause 12.11 (A) (b)</strong>
+                            Fee for return cheque – AED {!Contract_Pdf_Header__c.Sh1_Clause12_Ab_Return_Cheque_Amount__c}  (+ VAT) on the returned cheque.   
+                        </li> 
+                        <li> 
+                            <strong>Ref. Clause 12.11 (A) (c)</strong>
+                            In case payment is unpaid or delayed for more than {!Contract_Pdf_Header__c.Sh1_Clause12_11Ac_Delayed_Days__c}  days, then the Lessor has right to suspend the Services by providing 1 week notice to suspend the Services.
+                        </li> 
+                        <li> 
+                            <strong>Ref. Clause 12.11 (A) (d)</strong>
+                            In case payment is unpaid or delayed for more than for more than {!Contract_Pdf_Header__c.Sh1_Clause12_11Ad_Delayed_Days__c}  days, then the Lessor has the right to terminate.                               
+                        </li> 
+                        <li> 
+                            <strong>Ref. Clause 14.4</strong>
+                            The Lessee shall pay AED {!Contract_Pdf_Header__c.Sh1_Clause14_4_Insurance_Excess_Charge__c}  (+ VAT) as deductible amount in case of accident 
+                        </li> 
+                        <li> 
+                            <strong>Ref. Clause 15.1</strong>
+                            <p><span class="indent-aligned">a) In case any vehicle is terminated in the first year from the date of delivery of vehicle, the lessee shall pay the rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1_Rental_Months__c} months as early termination fee.</span><br/>
+						       <span class="indent-aligned">b) In case any vehicle is terminated in the second year or third year after the completion of the first year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1b_Rental_Months__c} months as early termination fee.</span><br/>
+                               <span class="indent-aligned">c) In case any vehicle is terminated in the fourth or fifth year and after the completion of the third year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1c_Rental_Months__c} months as early termination fee.</span><br/>
+							<apex:outputPanel rendered="{!NOT(ISNULL(Contract_Pdf_Header__c.Early_termination_Fee_After_Issue_LPO__c))}">
+            				   <span class="indent-aligned">d) In case any vehicle is terminated after issuing LPO, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Early_termination_Fee_After_Issue_LPO__c} months as early termination fee.</span>
+        </apex:outputPanel>
+</p>
+                        </li> 
+                        <li> 
+                            <strong>Ref. Clause 16.1</strong>
+                            For each driver who is unable to present themselves within the stipulated time frame, a penalty of AED 3000 and any additional charges as imposed by the competent authorities will be charged from the Lessee to clear the file.                               
+                        </li> 
+                        <li> 
+                            <strong>Ref. Clause 16.2</strong>
+                            AED 25 will be charged additionally for each day in case the delay in renewal process is caused due to negligence or fault of the Lessee.                               
+                        </li> 
+                        <li> 
+                            <strong>Ref. Clause 16.4</strong> 
+                            Charges for providing letter or any document – Fee of AED 50 (+VAT). on all types of Letters/Certificates.                               
+                        </li> 
+                        <li> 
+                            <strong>Ref clause 17.3</strong>
+                            In case of breach as stipulated in clause 17.3, the Lessee shall be charged 10% (+ VAT) as excess payable on the repair cost 
+                        </li> 
+                        <li> 
+                            <strong>Ref clause 18.1 (f)</strong>
+                            Administration fee charges - AED 25 (+ VAT) per fine.                               
+                            
+                        </li>
+                    </ol>
+                </div> 
+            </apex:pageBlock>
+        </body>
+    </html>
+</apex:page>

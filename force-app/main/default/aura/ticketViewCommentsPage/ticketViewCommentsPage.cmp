@@ -1,0 +1,41 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <aura:attribute name="isViewCommentsModal" type="boolean"/>
+    <aura:attribute name="ticketId" type="String"/>
+    <aura:attribute name="comments" type="list"/>
+    <aura:attribute name="mandatoryFields" type="List" default="comments"/>
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <c:SS_TicketingSystem_UtilityMethods aura:id="SS_TicketingSystem_UtilityMethods"/>
+    
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" 
+             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" >
+        <div class="slds-modal__container" >
+            <!-- ###### MODAL BOX HEADER Start ######-->
+            <header class="slds-modal__header">
+                <lightning:buttonIcon iconName="utility:close"
+                                      onclick="{! c.closeModel }"
+                                      alternativeText="close"
+                                      variant="bare-inverse"
+                                      class="slds-modal__close"/>
+                <h2 id="modal-heading-01" class="slds-text-heading_large slds-hyphenate">View Comments History</h2>
+                
+            </header>
+            <!--###### MODAL BOX BODY Part Start######-->
+            <div class="slds-modal__content slds-p-around_large" id="modal-content-id-1">
+				<!-- Iterate the history and show the content -->
+                <aura:if isTrue ="{!not(empty(v.comments))}">
+                    <aura:iteration items="{!v.comments}" var="cmnt">
+                       <b># {!cmnt.source} </b> : {!cmnt.createdByName} - {!cmnt.createdDate} - {!cmnt.message} <br/><br/>
+                    </aura:iteration>
+                    <aura:set attribute="else">
+                        No Comments Yet.
+                    </aura:set>
+                </aura:if>
+            </div>
+            <footer class="slds-modal__footer">
+            </footer>
+        </div>
+    </section>
+</aura:component>

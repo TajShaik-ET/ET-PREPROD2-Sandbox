@@ -1,0 +1,51 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" controller="ETST_GetRelatedrResources" access="global" >
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="ResourceList" type="SALine_Assigned_Resource__c[]" />
+    <aura:handler name="init" value="{!this}" action="{!c.myAction}" />
+    <lightning:card iconName="standard:work_capacity_usage" title="Related Resources">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="File Name">Resource Name</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="File Name">Employee ID
+                        </div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="File Name">Type</div>
+                    </th>
+                    <th class="slds-text-title_cap" scope="col">
+                        <div class="slds-truncate" title="File Name">Raise Case</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <aura:iteration  items="{!v.ResourceList}" var="con">
+                    <tr class="slds-hint-parent">
+                        <td data-label="Resource Name">
+                            <div class="slds-truncate" title="File Name">
+                                <a  href="{!'/one/one.app?#/sObject/'+ con.Id + '/view'}" target="_blank">{!con.Name}</a></div>  
+                        </td>
+                        <td data-label="Employee ID">
+                            <div class="slds-truncate" title="File Name">
+                                {!con.Employee_ID__c}
+                            </div>  
+                        </td>
+                        <td data-label="Employee Type">
+                            <div class="slds-truncate" title="File Name">{!con.Employee_Type__c}</div>  
+                        </td>
+                        <td data-label="Action">
+                             <div class="slds-truncate" title="File Name">
+                           
+                            <ui:button label="Case" press="{!c.gotoURL}"/>
+                            </div>
+                        </td> 
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </lightning:card>
+    
+</aura:component>

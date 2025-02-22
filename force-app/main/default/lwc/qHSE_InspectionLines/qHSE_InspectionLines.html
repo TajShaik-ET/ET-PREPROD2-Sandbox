@@ -1,0 +1,68 @@
+<template >
+    <div style="border-style: solid;border-width: 1px; margin-bottom:5px;margin-top:5px; border-radius: 25px; padding:20px;" class="--slds-c-button-radius-border">
+    <lightning-record-edit-form object-api-name={inspectionLineObject} data-id="inspectionLines" record-id={inspectionLineId} >
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input-field field-name={inspectionLineFields.ET_Vehicle_Master} class="inputCss"></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input-field  data-id="Requirement" field-name={inspectionLineFields.Requirement} required class="inputCss"></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input-field  data-id="Description" field-name={inspectionLineFields.Description} required class="inputCss"></lightning-input-field>
+                </div>                           
+            </div>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input-field  data-id="Severity" field-name={inspectionLineFields.Severity} required class="inputCss"></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input-field  data-id="Classification" field-name={inspectionLineFields.Classification} required class="inputCss"></lightning-input-field>
+                </div> 
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input-field  data-id="Target_Date" field-name={inspectionLineFields.Target_Date} required class="inputCss"></lightning-input-field>
+                </div>              
+            </div>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input-field  data-id="Proof" field-name={inspectionLineFields.Proof} required class="inputCss"></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input-field field-name={inspectionLineFields.Root_Cause}  class="inputCss"></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input-field field-name={inspectionLineFields.Corrective_Action}></lightning-input-field>
+                </div>
+            </div>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-input-field field-name={inspectionLineFields.Additional_Notes} class="inputCss"></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-file-upload 
+                        name="fileUploader"
+                        accept={acceptedFormats}
+                        record-id={inspectionLineId}
+                        >
+                    </lightning-file-upload>
+                    <!-- <c-et_-v-r-t-s_-file-upload upload-disabled="false" record-id="a8U8E0000006gsmUAA" style="width:100%;"></c-et_-v-r-t-s_-file-upload> -->
+                </div>
+                
+            </div>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3"></div>
+                <div class="slds-col slds-size_1-of-3 slds-p-right_small" style="padding-top: 25px;">
+                    <lightning-button-icon 
+                                icon-name="utility:delete" title="Delete" variant="brand" tooltip="To remove inpsection lines" style="padding-left: 15px;"
+                                onclick ={handleTermsDelete}>
+                    </lightning-button-icon>
+                </div>
+            </div>
+            <div class="slds-hide">
+                <lightning-input-field field-name={inspectionLineFields.Status} class="inputCss" value="In Progress"></lightning-input-field>
+                <lightning-input-field data-id="inspectionId"  field-name={inspectionLineFields.QHSE_Inspection}></lightning-input-field>
+                <lightning-button variant="brand" type="submit" label="Save"> </lightning-button>
+            </div>
+    </lightning-record-edit-form>
+</div>
+</template>

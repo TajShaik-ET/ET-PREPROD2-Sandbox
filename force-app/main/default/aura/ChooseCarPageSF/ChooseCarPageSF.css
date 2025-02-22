@@ -1,0 +1,933 @@
+.THIS.imgBackground {
+    background: url(/resource/homepagebg_img) no-repeat;
+    background-size: cover; 
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.THIS .c-container {
+    /*margin: 1% 0% 1% 1%;
+    width: 49%;
+    height: 400px;
+    box-shadow: 0 0 5px #eaeaea;*/
+    
+    box-sizing: border-box;
+    margin: 15px 0 0 0;
+    width: 31.33%;
+    background: #fff;
+    box-shadow: 0px 3px 6px rgba(0,0,0,0.19);
+    color: #fff;
+    border: 1px solid #ddd;
+    margin: 1%;
+    border-radius:10px;
+    overflow:hidden;
+    transition: all .4s;
+}
+
+.THIS .c-container:hover{
+    box-shadow: 0 8px 6px -6px rgba(0,0,0,0.1);
+}
+.THIS .c-container:hover img{
+    transform: scale(1.2);
+}
+
+.THIS .slds-spinner_container {  
+  z-index: 10000;
+  position: fixed;   
+}
+.THIS .billingBreakDown{
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    display: block; 
+    box-shadow: 0px 0px 7px 0px #e6e3e3;
+}
+
+.THIS .slds-modal__container {
+    width: 60% !important;
+    max-width: 60% !important;
+}
+.THIS .slds-modal__content {
+    overflow-y: auto;
+}
+
+.THIS .slds-input{
+    width: 44px;
+    padding: 0px 0px;
+    text-align: center;
+    border:1px solid #D0D0D0 !important
+}
+.THIS .slds-textarea{
+    border:1px solid #D0D0D0;
+}
+.THIS .slds-input-has-icon .slds-input__icon path{
+    fill:#62CC8C;
+}
+.THIS .slds-modal__close {
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.THIS .CarPricemain{
+    border-top: 1px solid #ddd;
+}
+.THIS .CarPrice{
+    padding: 5px 0px;
+    color: #7f7f7f;
+    width: 33.33%;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Cronos';
+    letter-spacing: .5px;
+}
+.THIS .CarPrice:nth-child(2){
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+
+@font-face {
+    font-family: 'Cronos';
+    src: url(/resource/ETST_Cronos); 
+}
+
+.THIS.searchmaindiv{
+    width: 100%;
+    padding: 0 0 30px 0;
+    position: relative;
+    display: inline-block;
+    margin: auto;
+    z-index:1;
+ 	width: 100%;
+  /*background-image:url(/resource/homepagebg_img);
+    background-size: cover;
+    background-position: center;
+  	margin-top: -16px;
+    height: 90.5vh; 
+    height: 100vh;*/
+}
+.THIS.searchmaindiv:after{
+     /*content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+   background: #000;
+    opacity: .6;*/
+}
+.THIS.searchmaindiv .searchleftdiv{
+    width: 25%;
+    display: inline-block;
+    float: left;
+    /*background: #f4f4f5;*/
+    padding: 15px;
+    font-family: 'Cronos';
+    border: 0px solid #f4f4f5;
+    background:rgba(255,255,255,0.75);
+    border-radius: 10px;
+    z-index: 1;
+    position: relative;
+}
+.THIS.searchmaindiv .searchleftdiv .internaldiv{ 
+    padding: 15px;
+}
+.THIS.searchmaindiv .searchleftdiv h3{
+    color: #62CC8C!important;
+    font-family: 'Cronos';
+    font-size: 18px;
+    padding: 0px;
+    background: transparent;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e6e3e3;
+    margin-bottom: 5px;
+    
+}
+.THIS.searchmaindiv .searchleftdiv .infolabel{
+    font-weight: 700!important;
+    font-size: 14px;
+    letter-spacing: .5px;
+    padding-bottom: 0px;
+ 	color: #62CC8C;
+    margin-top: 10px;
+}
+.THIS.searchmaindiv .searchleftdiv .infovalue{
+    font-size: 14px;
+    letter-spacing: .5px;
+    padding-bottom: 5px;
+    font-weight: 400!important;
+    line-height: 20px;
+}
+.THIS.searchmaindiv .searchleftdiv .infovalue .slds-form-element__static{
+    color: #000;
+    margin-bottom:10px;
+}
+.THIS.searchmaindiv .searchrightdiv{
+    width: 100%;
+    display: inline-block; 
+    float: left;
+    /*background: #fff;*/
+    z-index: 1;
+    position: relative;
+}
+.THIS .filtermaindiv{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.THIS .btneditcar{
+    font-size: 14px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 5px 20px;
+    min-width: 100px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    background-color: #62CC8C;
+    border-color: #62CC8C;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-family: 'Cronos';
+    outline: none;
+    box-shadow: none;
+    height: 30px;
+}
+.THIS .btnedit{
+    font-size: 14px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+    border: 0px solid #eb4026;
+    color: #fff;
+    padding: 5px 20px;
+    min-width: 100px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    background-color: #eb4026;
+    border-color: #eb4026;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-family: 'Cronos';
+    outline: none;
+    box-shadow: none;
+    height: 30px;
+    width:140px;
+    text-transform: uppercase;
+    margin-top:10px;
+}
+.THIS .btnedit:hover , .THIS .btneditcar:hover{
+    background-color: #14181c;
+    border-color: #14181c;
+    border: 0px solid #00c19e;
+}
+
+.THIS .paginator{
+    width: 100%;
+    position: relative;
+    clear:both;
+    margin-top:10px;
+    height: 30px;
+}
+.THIS .searchitems{
+    /*float: left;
+    width: 100%;
+    position: relative;
+    clear: both;
+    margin-top:10px;*/
+    float: left;
+    width: 100%;
+    position: relative;
+    clear: both;
+    /* display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;*/
+    background: rgba(244,244,245,0.26);
+}
+.THIS .imgmaindiv{
+    height: 150px;
+    width: 100%;
+    background-color: #fff;
+    overflow: hidden;
+}
+.THIS .imgmaindiv img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    max-width: 100%;
+    display: block;
+    transition: all .4s ease-in-out;
+}
+.THIS .container{
+    margin:0 auto;
+    width:100%;
+    max-width:1000px;
+}
+.THIS .carnamediv{
+    color: #000;
+    font-weight:600;
+    font-size: 20px;  
+    text-align: center;
+}
+.THIS .cartypediv{
+    color: #000;  
+    font-size: 15px;
+    display: flex;
+    padding:10px 15px;
+    justify-content: space-between;
+}
+.THIS .selected_box{
+    margin-top:10px;
+    font-weight:600;
+    background: rgba(98, 204, 140, 0.1);
+}
+.THIS .cartypediv .btneditcar{
+    margin:0px;
+}
+.THIS .priceperday{
+    padding:0px;
+    /* background-color: #2291af; */
+    color: #62CC8C;
+    font-family: 'Cronos';
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+.THIS .paddingtopbottomnone{
+    padding: .75rem .75rem 0rem ;
+}
+.THIS .contentdetails{
+    background:rgba(244, 244, 245, 0.28);    
+    width: 100%;
+    border-radius: 5px 5px;
+}
+.THIS .slds-modal__header{
+    position: relative;
+    border-top-right-radius:.25rem;
+    border-top-left-radius:.25rem;
+    border-bottom: 2px solid #f2f2f2;
+    padding: 0rem;
+    text-align: center;
+    background: #fafafa; 
+}
+
+.THIS .slds-modal .slds-modal__title {
+    color: #333;
+    font-weight: 300!important;
+    text-align: center;
+    font-size: 16px;
+    font-size: 22px;
+    font-family: 'Cronos';
+    padding: 10px;
+}
+.THIS .slds-modal__content {
+    overflow-y: auto;
+    background: #fafafa;
+}
+.THIS .slds-modal__footer {
+    border-top: 0px solid rgb(242, 242, 242);
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    padding: .75rem 1rem;
+    background-color: #fafafa;
+    text-align: right;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+.THIS .cancel_btn{
+    font-size: 14px;
+    border: 1px solid #62cc8c;    
+    background-color: transparent;
+    color: #62cc8c;
+    padding: 2px 10px;
+    min-width: 100px;
+    height: 30px;
+    border-radius: px;
+    font-weight: normal!important;
+    text-transform: capitalize!important;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .cancel_btn:hover{
+    color: #fff;
+    background-color: #333333;
+    border: 1px solid #000;
+}
+.THIS .slds-form-element__label:empty {
+    margin: 0;
+    display: none;
+}
+.THIS table tr th{
+    background: #f7f7f7;
+    color: #62CC8C;
+    padding: 8px;
+    font-family: 'Cronos';
+    font-size: 14px;
+    letter-spacing: .5px;
+}
+.THIS table tr td{
+    padding: 8px;
+    border-bottom:1px solid #f2f2f2;
+    font-family: 'Cronos';
+    font-size: 14px;
+    letter-spacing: .5px;
+    font-weight: 600;
+}
+.THIS table tr td div{
+    font-weight: 100;
+}
+
+.THIS table tr td img{
+    width:50px;
+}
+.THIS .finaldetailsdiv{
+    padding:11px 20px!important;
+}
+.THIS .finaldetailsdiv h2{
+    padding: 10px 0px;
+    font-size: 18px;
+    color: #2a2a2a;
+    margin-bottom: 0px;
+    font-family: 'Cronos'!important;
+    text-transform: capitalize!important;
+}
+.THIS .nopadding{
+    padding: 0px!important;
+    background:#fcfcfc;
+}
+.THIS .finaltotal{
+    width: 100%;
+    padding: 10px;
+    font-family: 'Cronos'!important;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+.THIS .finaldetailsdiv table tr td{
+    padding:5px 10px
+}
+.THIS .finaldetailsdiv .carimgfinal{
+    text-align:center;    border-bottom: 1px solid #f2f2f2;
+}
+.THIS .finaldetailsdiv .carimgfinal img{
+    width:60%;
+    text-align:center;
+}
+.THIS .finaldetailsdiv .slds-form-element .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox_faux{
+    margin-right: 0px;
+}
+.THIS .paymentcontainsection{
+    display:flex;
+}
+.THIS .productdetaildiv{
+    width: 35%;
+    display: inline-block;
+    position: relative;
+    flex:1;
+}
+.THIS .onlinepaydiv{
+    width: 65%;
+    display: inline-block;
+    position: relative;
+    flex:1;
+    background: #f9f9f9;
+}
+@-webkit-keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+
+@-webkit-keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInDown {
+    -webkit-animation-name: slideInDown;
+    animation-name: slideInDown;
+}
+
+.THIS .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.THIS .homePrev{
+    padding: 0 1rem;
+}
+.THIS .homePrev .home{
+    float: left;
+}
+.THIS .homePrev .prev{
+    float: right;
+}
+
+.THIS span.slds-checkbox_faux {
+    border: 1px solid #62CC8C !important;
+}
+.THIS span.slds-checkbox_faux:after {
+    border-color: #62cc8c !important;
+}
+
+.THIS .detailIcons, .THIS .detailIcons:hover{
+        filter: invert(1);
+    width: 12px;
+    margin: 6px;
+}
+.THIS .c-container:hover img.detailIcons{
+    transform: inherit;
+}
+.THIS .cartypediv i{
+	font-style:normal;
+}
+.THIS .mobileView, .THIS.mobileView{
+	display:none;
+} 
+.THIS h2{ 
+    font-size: 18px;
+    text-align: center;
+    margin: 20px 0 0px 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    }
+.THIS .width100, .THIS.width100{
+    width:100%;
+}
+.THIS .total_price{
+    width: 100%;
+    text-align: left;
+    font-weight: 600;
+    margin: 1rem;
+}
+.THIS .total_price span{
+    width: 50%;
+    display: inline-block;
+}
+.THIS .total_price span.amount{
+    width: 45%;
+    text-align: right;
+    color: #eb4026 !important;
+}
+
+@media only screen and (max-width: 1024px) {
+    .THIS.searchmaindiv {
+        padding: 1% 1% 0%;
+        position: inherit;
+    }
+    .THIS .searchrightdiv {
+        width: 100%!important;
+        margin-left: 0%!important;
+    }
+    .THIS .searchleftdiv {
+        width: 100%!important;
+        padding: 15px 0 !important;
+    }
+    .THIS.searchmaindiv .searchleftdiv .internaldiv {
+        background: #fff;
+        padding: 15px;
+        position: relative;
+        display: flow-root;
+    }
+    .THIS .searchleftdiv .infovalue {
+        display: inline-block;
+    }
+    .THIS .searchleftdiv .slds-col{
+        display: inline-block;
+        width: 50%;
+        float: left;
+    }
+    .THIS .btnedit{
+        width:auto!important;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS.searchmaindiv {
+        padding: 5% 1% 0%;
+        margin-top: -16px;
+    }
+    .THIS .searchrightdiv {
+        width: 100%!important;
+        margin-left: 0%!important;
+    }
+    .THIS .searchleftdiv {
+        width: 100%!important;
+    }
+    .THIS.searchmaindiv .searchleftdiv .internaldiv {
+        background: #fff;
+        padding: 15px;
+        position: relative;
+        display: flow-root;
+    }
+    .THIS .searchleftdiv .infovalue {
+        display: inline-block;
+    }
+    .THIS .searchleftdiv .slds-col{
+        display: inline-block;
+        width: 50%;
+        float: left;
+    }
+    .THIS .btnedit{
+        width:auto!important;
+    }
+    .THIS .paginator {
+        height: 30px;
+    }
+    .THIS .actionButton {
+        padding: 5px 10px;
+    }
+    .THIS .priceSection {
+        width: 40%;
+    }
+    
+}
+@media only screen and (max-width: 767px) {
+    .THIS .slds-modal__container {
+        width: 90%!important;
+        max-width: 90%!important;
+        margin: auto;
+    }
+    .THIS.searchmaindiv {
+        padding: 1% 1% 0%;
+        margin-top: -16px;
+        position: inherit;
+        height: 100%;
+    }
+    .THIS .c-container {
+        box-sizing: border-box;
+        width: 48%;
+        margin: 1% 1% 2%;
+    }
+    .THIS .searchleftdiv .slds-col{
+        display: inline-block;
+        width: 50%;
+        float: left;
+    }
+    .THIS.searchmaindiv .searchleftdiv .internaldiv {
+        background: #fff;
+        padding: 15px;
+        position: relative;
+        display: flow-root;
+    }
+    
+    .THIS .priceSection {
+        width: 50%;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .THIS .paymentcontainsection {
+        display: block;
+    }
+    .THIS .onlinepaydiv {
+        width: 100%;
+        display: block;
+        flex: none;
+    }
+    .THIS .productdetaildiv {
+        width: 100%;
+        flex: none;
+        display: block;
+        float: left;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .slds-modal__container {
+        width: 90%!important;
+        max-width: 90%!important;
+        margin: auto;
+        margin-top: 7%;
+    }
+    .THIS.searchmaindiv {
+        padding: 1% 1% 0%;
+        margin-top: -16px;
+        position: inherit;
+        height: 100%;
+    }
+    .THIS .c-container {
+        box-sizing: border-box;
+        width: 98%;
+        margin: 1% 1% 2%;
+        border-radius: 4px;
+        border: 0px;
+    } 
+    .THIS .btneditcar{
+        background:#62CC8C;
+    }
+    .THIS .priceperday{
+        color: #54cc59;
+    	text-shadow: none !important;
+        padding: 0 12px;
+    	text-align: left;
+    }
+    .THIS .imgmaindiv img{
+        width:100%;
+        height:100%;
+        object-fit:cover;
+    }
+    .THIS .cartypediv{
+        color:#000;
+        display:flex;
+        justify-content:space-between;
+        margin: 5px 0;
+    }
+    .THIS .cartypediv img{
+        display:none;
+    }
+    .THIS .cartypediv i{
+        display:none;
+    }
+    .THIS .contentdetails{
+        background:#fff;
+    }
+    .THIS .searchleftdiv .slds-col{
+        display: inline-block;
+        width: 100%;
+        float: left;
+    }
+    .THIS.searchmaindiv .searchleftdiv .internaldiv {
+        background: #fff;
+        padding: 15px;
+        position: relative;
+        display: flow-root;
+    }
+    .THIS .paymentcontainsection {
+        display: block;
+    }
+    .THIS .onlinepaydiv {
+        width: 100%;
+        display: block;
+        flex: none;
+    }
+    .THIS .productdetaildiv {
+        width: 100%;
+        flex: none;
+        display: block;
+        float: left;
+    }
+    .THIS .priceSection {
+        width: 100%;
+    }
+    .THIS .filterTop {
+        width: 100%;
+        margin: 1%;
+    }
+    .THIS .paddinglr.filterTop{
+        padding: 0;
+    }
+    
+    .THIS .paddinglr.filterTop .actionButton{
+        width: 100%;
+    }
+    .THIS .paginator {
+        height: auto;
+    }
+    
+    .THIS .filtermaindiv {
+        background:none !important;
+    }
+    .THIS .slds-form-element__legend{
+        color:#000;
+    }
+    .THIS .slds-radio .slds-form-element__label{ 
+        font-size:16px;
+    }
+    .THIS .webView{
+        display: none !important;
+    }
+    .THIS.mobileView.width100 {
+ 		position: relative;
+    	z-index: 1;
+        padding: 0 20px;
+    }
+    .THIS .mobileView, .THIS.mobileView{
+        display:inline-block;
+    }
+    .THIS .edit_info{
+        display:flex;
+        width:100%; 
+        margin:15px 0;
+        align-items: center;
+    }
+    .THIS .edit_icon{
+        margin-left:15px;
+    }
+    .THIS .detail_car{
+        background:#fff;
+        padding:10px;
+        display:flex;
+        flex: 1;
+        color: #000;
+        justify-content: space-around;
+        font-size: 14px;
+    }
+    .THIS .edit_info .slds-button{
+        background:#62CC8C;
+        border-color:#62CC8C;
+        margin-left: 20px;
+        min-width: 83px;
+        font-size: 16px;
+    }
+    .THIS .filterTop .slds-form-element__control span{
+        margin-right:20px;
+    }
+    .THIS .slds-modal .slds-modal__title{
+        color:#62CC8C;
+    }
+    .THIS table tr th{
+        background:#62CC8C;
+        color: #fff;
+    }
+    .THIS .slds-input{
+        border-color:#62CC8C;
+        border-radius:0px;
+    }
+    .THIS .cancel_btn{
+        border:1px solid #62cc8c;
+        color:#62cc8c;
+        background:none;
+    }
+    .THIS .description_details{
+        text-align:left;
+    }
+    .THIS .description_details p{
+        text-align:left;
+        width:100%;
+    }
+    .THIS .slds-modal__footer .slds-button{
+        height:auto;
+        padding:5px 20px; 
+        margin:0;
+        margin-right:5px;
+        margin-left:5px;
+        line-height: 29px;
+		border: 1px solid #62CC8C;
+    }
+    .THIS .title_text{
+        color:#000;
+        width:100%;
+        margin:0 0 0 0;
+        font-size: 14px;
+    }
+    .THIS .description_details p.mobileView{
+        font-size: 14px;
+    }
+    .THIS .slds-modal__content table tr td { 
+    	border-bottom: 1px solid #9f9f9f;
+    }
+    .THIS .slds-modal__header, .THIS .slds-modal__content, .THIS .slds-modal__footer{
+        background:#fff;
+    }
+    .THIS .slds-modal__footer{
+        padding: 0 0 15px 0;
+    }
+    .THIS .slds-modal__footer .btn_outer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .THIS .total_price{ 
+        display:flex;
+        justify-content:space-between; 
+        padding:15px 10px;
+        border-top:1px solid #9f9f9f;
+        color:#000;
+    }
+    .THIS .slds-modal__content table tr:last-child td{
+        border:0px;
+    }
+    .THIS .total_price span:nth-child(2){
+        color:green;
+        
+    }
+    .THIS span.slds-checkbox_faux {
+        width: 1rem;
+        height: 1rem;
+    }
+    .THIS .slds-input {
+        width: 30px;
+        height: 30px;
+    }
+    .THIS .total_price {
+        padding: 15px 30px;
+        width: 90%; 
+    }
+    .cChooseCarPageSF .slds-modal .slds-modal__title {
+        font-size: 18px;
+    }
+    .cChooseCarPageSF .slds-modal__header {
+        border-top-right-radius: 1rem;
+        border-top-left-radius: 1rem;
+    }
+    .cChooseCarPageSF .slds-modal__footer {
+        border-bottom-right-radius: 1rem;
+        border-bottom-left-radius: 1rem;
+    }
+    
+}

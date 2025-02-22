@@ -1,0 +1,69 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"  access="global" >
+    <aura:attribute name="booking" type="ETI_Booking__c" default="[{'sObjectType':'ETI_Booking__c','Name':''}]"/>
+    <aura:attribute name="Chassisno" type="String" /> 
+    <aura:attribute name="userdata" type="String" /> 
+    <aura:attribute name="VehicleInfoData" type="ET_Customer_Vehicle__c" default="{'sObjectType':'ET_Customer_Vehicle__c'}" />
+    <aura:attribute name="verifiedVehicleInfo" type="ET_Customer_Vehicle__c" default="{'sObjectType':'ET_Customer_Vehicle__c'}"/>
+    <aura:attribute name="VehicleInfoDataList" type="List" />
+    <aura:attribute name="isfeebackModal" type="boolean" default="false"/>                 
+    <aura:attribute name="isOpenRequestForService" type="boolean" default="false"/> 
+    <aura:attribute name="selectedTabId" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="showHistory" type="Boolean" default="false"/>
+    <aura:attribute name="selectedEmirate" type="String" />
+    <aura:attribute name="PlateType" type="list"/>
+    <aura:attribute name="Platesource" type="list"/>
+    <aura:attribute name="Platecolor" type="list"/> 
+    <aura:attribute name="showReg" type="boolean" default="true"/> 
+    <aura:attribute name="errorReg" type="boolean" default="false"/> 
+    <aura:attribute name="errorChassis" type="boolean" default="false"/>
+    <aura:attribute name="errorPlateColor" type="boolean" default="false"/>
+    <aura:attribute name="errorPlateType" type="boolean" default="false"/>
+    <aura:attribute name="errorPlateSource" type="boolean" default="false"/>
+    <aura:attribute name="isMessgeExist" type="boolean" default="false"/> 
+    <aura:attribute name="errorType" type="String" />
+    <aura:attribute name="errorMessage" type="String" />
+    <aura:attribute name="IsSpinner" type="Boolean" default="false" />
+    <aura:attribute name="hideReqForServiceBtn" type="boolean" default="false"/>
+    <aura:attribute name="isAgreedtoAddDuplicate" type="boolean" default="false"/>
+    <aura:attribute name="ChooseDataInfo" type="String[]" default="Plate Combination,Chassis No"/>
+    <aura:attribute name="selectedValue" type="String"/>
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    
+    <aura:if isTrue="{!v.IsSpinner}">
+        <div class="slds-spinner_container">
+            <lightning:spinner variant="brand"  size="large" />
+        </div>
+    </aura:if> 
+    <div class="bgimage"></div>
+    <div class="bgetimgdiv">
+        <div aura:id="vehicleService" class="mainsearchdiv">
+            <div class="pageBody">
+                <aura:if isTrue="{!v.showHistory}">
+                    <lightning:tabset selectedTabId="{!v.selectedTabId}" variant="scoped">
+                        <lightning:tab label="{!v.Vehicle_Details}" id="Vehicle" class="vehicleDetails">
+                            <c:ETI_VehicleAfterCreateDetails recordId="{!v.recordId}" booking="{!v.booking}" showHistory="{!v.showHistory}" isOpenRequestForService="{!v.isOpenRequestForService}" IsSpinner="{!v.IsSpinner}" selectedEmirate="{!v.selectedEmirate}"/>
+                        </lightning:tab> 
+                        
+                        <lightning:tab label="{!v.Booking_History}" id="bookingHistory" class="bookingHistory">
+                            <c:ETI_BookingHistory aura:id="bookings" vehId="{!v.recordId}"/>
+                        </lightning:tab>
+                    </lightning:tabset>
+                </aura:if>
+                <aura:if isTrue="{!!v.showHistory}">
+                    <div class="mainsearchdivnew">
+                        <c:ETI_VehicleAfterCreateDetails recordId="{!v.recordId}" booking="{!v.booking}" showHistory="{!v.showHistory}" isOpenRequestForService="{!v.isOpenRequestForService}" IsSpinner="{!v.IsSpinner}"/>
+                    </div>
+                </aura:if>
+            </div>
+        </div>
+    </div>
+    <aura:if isTrue="{!v.isOpenRequestForService}">
+        <c:ETI_RequestForService booking="{!v.booking}" tableDisplay="True" emirate="{!v.selectedEmirate}" />
+    </aura:if>
+    <aura:if  isTrue="{!v.isfeebackModal}" > 
+        <c:ETI_FeedBackPage isfeebackModal="{!v.isfeebackModal}" aura:id="feedbackPage" />
+    </aura:if> 
+</aura:component>

@@ -1,0 +1,1904 @@
+.THIS.radiodiv{
+    display: block;
+    width: 84%;
+    margin: auto;
+    background: #f9f9f9;
+    padding: 2%;
+}
+.THIS .searchsection .slds-form-element{
+    width: 60%;
+    float: left;
+    display: inline-block;
+}
+.THIS .searchsection .slds-form-element__control{
+    width: 100%;
+}
+.THIS .searchsection .noTxt{
+    display: inline-block;
+    float: right;
+    margin-top: 10px;
+}
+
+.THIS input[type=text]::placeholder , .THIS textarea::placeholder{
+    color: #bbbbbb;
+    opacity: 1; /* Firefox */
+}
+
+.THIS input[type=text]:-ms-input-placeholder , .THIS textarea:-ms-input-placeholder{ /* Internet Explorer 10-11 */
+    color:  #bbbbbb;
+}
+
+.THIS input[type=text]::-ms-input-placeholder , .THIS textarea::-ms-input-placeholder{ /* Microsoft Edge */
+    color:  #bbbbbb;
+}
+.THIS .btn_right{
+    float: right;
+}
+.THIS .btn_left{
+    float: left;
+}
+.THIS .div_right{
+    text-align: right;
+}
+.THIS .slds-form-element__control .slds-radio{
+    display : inline-block !important;
+}
+.THIS .slds-required{
+    display: none;
+}
+.THIS .errormessage{
+    color:rgb(194, 57, 52)!important;
+}
+/* remove the "or drop files" label from the right of the lightning:input type file */
+.THIS .slds-file-selector__dropzone .slds-file-selector__text{
+    display: none;
+}
+
+/* remove the "Upload Files" text from the button of the lightning:input type file */
+.THIS .slds-file-selector__dropzone .slds-file-selector__button{
+    font-size: 0;
+}
+.THIS .slds-button__icon .slds-button__icon_left{
+    width: 40px;
+    height: 40px;
+    
+}
+/* insert the text "New Exam" into the button of the lightning:input type file */
+.THIS .slds-file-selector__dropzone .slds-file-selector__button:after{
+    content: 'Upload Image';
+    font-size: .8125rem;
+    color: rgba(27, 82, 151, 1.0);
+}
+/*.THIS .slds-input{
+width: 250px;
+}
+.THIS .slds-select{
+width: 250px;
+}
+.THIS .slds-input-has-icon_right{
+width: 250px;
+}
+.THIS .bgImageDiv{
+background-image: url('https://etservices--community--c.visualforce.com/resource/1583389466000/ETSTPopupLogo');
+background-repeat: no-repeat;  
+background-position: center;
+background-origin: content-box;
+background-repeat: no-repeat;
+background-size: cover;
+min-height:70vh;
+font-family: 'Noto Sans', sans-serif; 
+padding-top: 0px;
+padding-bottom: 0px;
+}*/
+
+.THIS .field__input{ 
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+    
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    font-family: inherit;
+    font-size: 1em;
+}
+/*
+.THIS  .field__input:focus::-webkit-input-placeholder{
+color: token(fieldPlaceholderColor);
+}
+.THIS .cETST_StudentsTab{
+padding:0px 10px;
+}
+.THIS  .field__input:focus::-moz-placeholder{
+color: token(fieldPlaceholderColor);
+opacity: 1;
+}
+*/
+/*
+.THIS .slds-input-has-icon--right{
+border-bottom: 1px solid #ddd
+}
+.THIS .slds-input-has-icon--left{
+border-bottom: 1px solid #ddd
+} */
+.THIS .slds-modal__body{
+    /*  min-height: 100px;
+    max-height: 310px;
+    height: auto;
+    overflow-x: hidden; */
+    width:100%;
+    height:auto;
+    margin-top: 10px;
+}
+.THIS .slds-modal__bodyrtl{
+    /* min-height: 200px;
+    max-height: 310px;
+    height: auto;
+    overflow-x: hidden; */
+    width:100%;
+    height:auto;
+    direction:rtl;    
+    text-align:right !important;
+    /*margin-top: 10px;*/
+}
+.THIS  .a-field{
+    display: inline-block;
+}
+
+.THIS .a-field__input{ 
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.THIS  .a-field__input:focus{
+    outline: none;
+}
+.THIS  .a-field{
+    position: relative;
+    box-sizing: border-box;
+    font-size: 1em;
+    padding-top: 1em;  
+}
+
+
+.THIS  .a-field__input{
+    height: 40px;
+    padding: 0 15px 0 1em;
+    border-bottom: 2px solid #D1C4E9;  
+}
+
+.THIS  .a-field__input::-webkit-input-placeholder{
+    opacity: 0;
+    transition: opacity .2s ease-out;
+}
+
+.THIS  .a-field__input::-moz-placeholder{
+    opacity: 0;
+    transition: opacity .2s ease-out;
+}
+
+.THIS  .a-field__input:not(:placeholder-shown) ~ .a-field__label-wrap .a-field__label{
+    opacity: 0;
+    bottom: 15px;
+}
+
+.THIS  .a-field__input:focus::-webkit-input-placeholder{
+    opacity: 1;
+    transition-delay: .2s;
+}
+
+.THIS  .a-field__input:focus::-moz-placeholder{
+    opacity: 1;
+    transition-delay: .2s;
+}
+
+.THIS  .a-field__label-wrap{
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;	
+    
+    pointer-events: none;
+    cursor: text;
+    
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.THIS  .a-field__label{
+    position: absolute;
+    left: 1em;
+    bottom: calc(50% - .5em);
+    
+    line-height: 1;
+    font-size: 1em;
+    
+    pointer-events: none;
+    transition: bottom .2s cubic-bezier(0.9,-0.15, 0.1, 1.15), opacity .2s ease-out;
+    will-change: bottom, opacity;
+}
+
+.THIS  .a-field__input:focus ~ .a-field__label-wrap .a-field__label{
+    opacity: 1;
+    bottom: 40px;
+}
+
+
+.THIS  .a-field_a1 .a-field__input{
+    transition: #673AB7 .2s ease-out;
+    will-change: #673AB7;
+}
+
+.THIS  .a-field_a1 .a-field__input:focus{
+    border-color: #673AB7;
+}
+
+
+
+.THIS  .a-field_a2 .a-field__label-wrap::after{
+    content: "";
+    box-sizing: border-box;
+    width: 0;
+    height: 2px;
+    background-color: #673AB7;
+    
+    position: absolute;
+    bottom: 0;
+    left: 0;  
+    
+    will-change: width;
+    transition: width .285s ease-out;
+}
+
+.THIS  .a-field_a2 .a-field__input:focus ~ .a-field__label-wrap::after{
+    width: 100%;
+}
+
+
+
+.THIS  .a-field_a3{
+    padding-top: 1.5em;
+}
+
+.THIS  .a-field_a3 .a-field__label-wrap::after{
+    content: "";
+    box-sizing: border-box;
+    width: 100%;
+    height: 0;
+    
+    opacity: 0;
+    border: 2px solid #673AB7;
+    
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    
+    will-change: opacity, height;
+    transition: height .2s ease-out, opacity .2s ease-out;
+}
+
+.THIS .a-field_a3 .a-field__input:focus ~ .a-field__label-wrap::after{
+    height: 100%;
+    opacity: 1;
+}
+
+.THIS .a-field_a3 .a-field__input:focus ~ .a-field__label-wrap .a-field__label{
+    bottom: calc(40px + .5em);
+}
+
+
+.THIS .body{
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+    margin: 0;
+    min-height: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.THIS .slds-text-heading_medium{
+    margin:0px;padding-right: 10px;text-align:left;
+}
+
+
+
+.THIS .desktop_display ul{
+    text-align: center;
+    width: 100%;
+    margin: auto;
+    position: relative;
+    display: block;
+}
+
+.THIS .information{
+    display: inline-block;
+    position: relative;
+    width: 25%;
+    text-transform: uppercase;
+    float:none!important;
+    height: 42px;
+}
+.THIS .information a{
+    /*line-height: 48px;*/
+    background: transparent;
+    padding: 0px 10px;
+    width: 100%;
+    display: block;
+    z-index: 10000;
+    position: relative;
+    color: #000;
+    margin-bottom: 10px;
+    transition: .4s;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default;
+    z-index:0;
+}
+.THIS .information:before{
+    content: '';
+    width: 50%;
+    height: 1px;
+    background: #aaa;
+    z-index: 1;
+    position: absolute;
+    top: 37%;
+    right:0px;
+    z-index: -1;
+}
+.THIS .information:after{
+    content: '';
+    width: 50%;
+    height: 1px;
+    background: #aaa;
+    z-index: 1;
+    position: absolute;
+    top: 37%;
+    left: 0;
+    z-index: -1;
+}
+.THIS .information:first-child:after,
+.THIS .information:last-child:before{
+    display:none;
+}
+.THIS .information .slds-icon-text-default {
+    margin-right: 0;
+    fill: #62cc8c;
+    transition: .4s;
+    width: 10px;
+}
+/*.THIS .information a:hover{
+background: #fafafa;
+color: #000;
+margin-bottom: 10px;
+-webkit-transition: .4s;
+transition: .4s;    
+text-decoration: none;
+}
+.THIS .information a:hover .slds-icon-text-default {
+fill: #000;
+-webkit-transition: .4s;
+transition: .4s; 
+width: 24px;
+}*/
+.THIS .information .activetab{
+    background: #e1e1e1;
+    color: #000;
+    margin-bottom: 10px;
+    transition: .4s;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    margin: auto;
+}
+.THIS .information .activetab .slds-icon-text-default {
+    fill: #62cc8c;
+    transition: .4s;
+    width: 10px;
+}
+.THIS .information .activetab span{
+    position: absolute;
+    display: block;
+    top: 2.5rem;
+    /* left: -1rem; */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, 100%);
+}
+.THIS .information span{
+    position: absolute;
+    display: block;
+    top: 2.5rem;
+    /* left: -1rem; */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, 100%);
+}
+
+.THIS .slds-modal__close {
+    position: absolute;
+    right: 0rem;
+    top: 0rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: .875rem;
+    font-weight: 300;
+    border-radius: 100%;
+    z-index: 4;
+    color: #fff;
+    line-height: 3rem;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.THIS .slds-modal__close .slds-button_icon-inverse{
+    color:rgb(0, 193, 158);width: 20px;
+    height: 20px;    outline: none;
+    box-shadow: none;
+    border: none!important;
+}
+.THIS .slds-grid label{
+    visibility: visible;
+    display:block;
+}
+.THIS .slds-modal__header {
+    position: relative;
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    border-bottom: 1px solid #f2f2f2;
+    padding: 1rem;
+    text-align: center;
+}
+.THIS .slds-modal__footer {
+    border-top: 1px solid #f2f2f2;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    padding: .75rem 1rem;
+    background-color: #ffffff;
+    text-align: right;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+.THIS input[type="text"], .THIS input[type="password"], .THIS textarea, .THIS textarea.form-control ,
+.THIS select , .THIS input[type="tel"] , .THIS input[type="email"]{
+    height: 38px;
+    margin: 0;
+    padding: 0 .5rem 0 .5rem;
+    vertical-align: middle;
+    background: transparent!important;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    /*font-family: 'Cronos'; */
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow:none!important;
+    transition: all .3s;
+    border-radius: 0px!important;
+}
+
+.THIS .slds-modal__container{
+    animation: popup 0.7s;
+}
+.THIS .btnsave{
+    font-size: 14px;
+    margin-top: 8px;
+    margin-left: 10px;
+    border: 0px solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    background: #eb4026;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 1.2;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .btnsave:hover{
+    background-color: #333333;
+}
+.THIS .btncancel{
+    font-size: 14px;
+    margin-top: 3px;
+    background: #fff;
+    border: 1px solid #00c19e;
+    color: #00c19e;
+}
+.THIS .profilediv{
+    height: 150px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    display: block;
+    margin-top: .4rem;
+    background: rgba(0, 193, 158, 0.2);
+    text-align: center;
+    width: 260px;
+    display: inline-block;
+    margin: auto;
+}
+.THIS .profilediv img{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    margin: 12px;
+    
+}
+.THIS .uploadbtn{
+    display: block;
+    text-align: center;
+}
+.THIS .slds-form-element__control {
+    margin-bottom: 5px;
+    display: inline-block;
+    width: 75%;
+}
+.THIS .martop{
+    margin-top: 10px;
+}
+
+
+
+.THIS .slds-progress__item.slds-is-completed .slds-progress__marker_icon{
+    border-color: #32bb05;
+    color: #ffffff;
+    background: #32bb05;
+}
+.THIS .slds-is-active {
+    background: transparent!important;
+    border: none;
+}
+.THIS .slds-progress__item.slds-has-error .slds-progress__marker{
+    background: rgb(194, 57, 52);
+    color: #fff;
+}
+.THIS.btndivadd{
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    height: auto;
+    clear: both;
+    padding: 0px 0px 10px 0px;
+    border-bottom:1px solid #ddd;
+}
+.THIS.btndivadd h2{
+    display: inline-block;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+    padding: 8px 0px;
+}
+.THIS .item{
+    width: 31%;
+    padding: 2%;
+    margin: 80px 1% 2%;
+    border: 1px solid #f2f2f2;
+    display: inline-block;
+    float: left;
+    position: relative;
+    border-radius: 0px;
+    background-color: #f2f2f2;
+    height: 300px;
+    -webkit-transition: .4s;
+    transition: .4s;
+    outline: 2px dotted #fff;
+    outline-offset: -15px;
+}
+.THIS .item:hover{
+    background:#fff;
+    border: 1px solid #ddd;
+    -webkit-transition: .4s;
+    transition: .4s;
+    -webkit-box-shadow: 0 8px 6px -6px #9E9E9E;
+    -moz-box-shadow: 0 8px 6px -6px #9E9E9E;
+    box-shadow: 0 8px 6px -6px #9E9E9E;
+    outline: 2px dotted #ddd;
+    outline-offset: -15px;
+}
+.THIS .item:hover img{
+    transform: rotate(5deg) scale(1.3);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.THIS .item .picture{
+    width: 130px;
+    height: 130px;
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+    border-radius: 50%;
+    border: 5px solid #f2f2f2;
+    float: left;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #f2f2f2;
+}
+.THIS .item .picture img{
+    width: 100%;
+    height: 100%;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.THIS .item .team-content{
+    padding-left: 0;
+    margin-top:60px;
+    text-align: center;
+    min-height: 150px;
+    max-height: 150px;
+    overflow: auto;
+    height: auto;
+}
+.THIS .item .btn_div{
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 25px;
+    padding: 0px;
+}
+.THIS .item .team-content .name{
+    font-size: 18px;
+    text-decoration: none;
+    padding-bottom: 2px;
+    display: block;    color: #00c19e;
+    text-transform: uppercase;
+    position: relative;
+}
+.THIS .item .team-content .name:after{
+    content:'';
+    position:abslute;
+}
+.THIS .item .team-content .studclass{
+    color: #555;
+    min-height: 24px;
+    line-height: 24px;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+.THIS .item .team-content .studadd{
+    color: #555;
+    min-height: 24px;
+    line-height: 24px;
+}
+.THIS .item .team-content .status{
+    font-size: 10px;
+    background: #00c19e;
+    padding: 3px 5px;
+    border-radius: 5px;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 5px;
+    width:141px;
+    margin: auto;
+}
+.THIS .item .team-content .end_date{
+    font-size: 12px;
+    padding: 3px 5px;
+    min-height: 24px;
+    line-height: 24px;
+    border-radius: 5px;
+    color: #555;
+    margin-bottom: 5px;
+}
+.THIS .item .team-content .studadd{
+    padding-bottom: 3px;
+}
+.THIS .slds-button_icon-border{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #00c19e;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.THIS .slds-button_icon-border svg{
+    width: 20px;
+    height: 20px;
+    color: #00c19e;
+}
+.THIS .slds-button_icon-border:hover{
+    background:#00c19e;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.THIS .slds-button_icon-border:hover svg{
+    color:#fff;
+}
+.THIS .main_div_content .MS-controls{
+    display: block;
+    clear: both;
+}
+.THIS .our-team .student_id{
+    position: absolute;
+    left: -1px;
+    top: 44px;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    background: #ec1d27;
+    padding: 5px;
+}
+.THIS .btnnext , .THIS .btnperv{
+    font-size: 14px;
+    margin-top: 3px;
+    padding: 2px 15px!important;
+    color: #00c19e;
+    line-height: 1.875rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.THIS .btn_div li{
+    display: inline-block;
+    padding-right: 5px;
+}
+.THIS .Address-listbox{
+    position: sticky;
+    margin-top: -11px;
+    /* width: 100%; */
+    margin-left: .25rem;
+    margin-right: .25rem;
+    z-index: 10;
+}
+.THIS .uiInput--checkbox input[type=checkbox]:checked, .THIS input.uiInput--checkbox[type=checkbox]:checked {
+    background-color: rgb(0, 193, 158);
+    border-color: rgb(0, 193, 158);
+}
+.THIS .animated , .THIS.animated{
+    -webkit-animation-duration: .75s;
+    animation-duration: .75s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+@keyframes bounceIn {
+    from,
+    20%,
+    40%,
+    60%,
+    80%,
+    to {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(0.3, 0.3, 0.3);
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+    
+    20% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1);
+    }
+    
+    40% {
+        -webkit-transform: scale3d(0.9, 0.9, 0.9);
+        transform: scale3d(0.9, 0.9, 0.9);
+    }
+    
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03, 1.03, 1.03);
+        transform: scale3d(1.03, 1.03, 1.03);
+    }
+    
+    80% {
+        -webkit-transform: scale3d(0.97, 0.97, 0.97);
+        transform: scale3d(0.97, 0.97, 0.97);
+    }
+    
+    to {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+@-webkit-keyframes bounceInLeft {
+    from,
+    60%,
+    75%,
+    90%,
+    to {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(-3000px, 0, 0);
+        transform: translate3d(-3000px, 0, 0);
+    }
+    
+    60% {
+        opacity: 1;
+        -webkit-transform: translate3d(25px, 0, 0);
+        transform: translate3d(25px, 0, 0);
+    }
+    
+    75% {
+        -webkit-transform: translate3d(-10px, 0, 0);
+        transform: translate3d(-10px, 0, 0);
+    }
+    
+    90% {
+        -webkit-transform: translate3d(5px, 0, 0);
+        transform: translate3d(5px, 0, 0);
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes bounceInLeft {
+    from,
+    60%,
+    75%,
+    90%,
+    to {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(-3000px, 0, 0);
+        transform: translate3d(-3000px, 0, 0);
+    }
+    
+    60% {
+        opacity: 1;
+        -webkit-transform: translate3d(25px, 0, 0);
+        transform: translate3d(25px, 0, 0);
+    }
+    
+    75% {
+        -webkit-transform: translate3d(-10px, 0, 0);
+        transform: translate3d(-10px, 0, 0);
+    }
+    
+    90% {
+        -webkit-transform: translate3d(5px, 0, 0);
+        transform: translate3d(5px, 0, 0);
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+@-webkit-keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInDown {
+    -webkit-animation-name: slideInDown;
+    animation-name: slideInDown;
+}
+@keyframes slideInLeft {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+.THIS .slideInLeft , .THIS.slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft;
+}
+@-webkit-keyframes slideInUp {
+    from {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS .slideInUp {
+    -webkit-animation-name: slideInUp;
+    animation-name: slideInUp;
+}
+
+.THIS .animated.delay-1s {
+    -webkit-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+}
+.THIS .animated.delay-2s {
+    -webkit-animation-delay: 2s;
+    animation-delay: 2s;
+}
+.THIS .bounceInLeft {
+    -webkit-animation-name: bounceInLeft;
+    animation-name: bounceInLeft;
+}
+.THIS .bounceIn {
+    -webkit-animation-duration: 0.75s;
+    animation-duration: 0.75s;
+    -webkit-animation-name: bounceIn;
+    animation-name: bounceIn;
+}
+.THIS .bgimgcont{
+    position: absolute;
+    width: 60%;
+    opacity: .2;
+    left: 22%;
+    top: 25%;
+}
+.THIS .uploadimg{
+    font-weight: 700;
+    font-size: 15px;
+    display: block;
+    width: 100%;
+    clear: both;
+}
+.THIS .slds-form-element__label:empty {
+    display: none;
+    margin: 0;
+}
+.THIS .slds-file-selector__dropzone .slds-file-selector__button {
+    font-size: 0;
+    background: #dadada;
+}
+
+.THIS .leftdivlink{
+    width: 100%;
+    display: inline-block;
+    left:0px;
+    vertical-align: top;
+    margin-bottom: 1.5rem;
+}
+.THIS .rightdivlink{
+    width: 100%;
+    margin-left: 0%;
+    display: inline-block;padding: 10px 30px;
+    background: #fff;
+    border: 0px solid #fff;
+    position: relative;
+    border-radius: 10px;
+}
+/*.THIS.margtopcontent{
+padding: 2% 20% 0%;
+background-image: url(/resource/homepagebg_img);    
+min-height:100%;
+height: calc(100% - 100px);
+background-size: cover;
+background-position: center;
+position: absolute;
+overflow: auto;
+left: -3%;
+top: 0px;
+bottom: 0px;
+right: 0px;
+width: 105.6%;
+}*/
+.THIS.margtopcontent{
+    background: transparent;
+    /*background-image: url(/resource/homepagebg_img);*/
+    min-height: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    overflow: hidden;
+    left: 0%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    padding: 2% 10% 0%;
+    box-shadow: none;
+}
+.THIS.margtopcontent .slds-modal__header {
+    position: relative;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-bottom: 1px solid #f2f2f2;
+    padding: 0rem 0rem .5rem 0rem;
+    text-align: center;
+    background: #fafafa;    margin-bottom: 1rem;
+}
+.THIS.margtopcontent .slds-text-heading_medium {
+    color: #333;
+    font-weight: 300!important;
+    text-align: center;
+    font-size: 16px;
+    font-size:20px;
+    /*font-family: 'Cronos'; */
+}
+.THIS.margtopcontent .slds-modal__close {
+    position: absolute;
+    right: 0;
+    top: .5rem;
+    width: 2rem;
+    height: 2rem;
+    font-size: .875rem;
+    font-weight: 300;
+    border-radius: 100%;
+    z-index: 4;
+    color: #fff;
+    line-height: 1.6rem;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+.THIS.margtopcontent .slds-button_icon-inverse {
+    color: #333;
+    width: 2rem;
+    height: 2rem;
+    top: 1rem;
+    right:2rem;
+    display: block;
+    outline: none;margin:auto;
+    box-shadow: none;    border: 0px solid #000;
+}
+/*.THIS.bgImageDiv:before{
+background-color: rgba(0, 0, 0, 0.7);
+content: '';
+left:0px;
+top:0px;
+display: block;
+height: 100%;
+position: absolute;
+width: 100%;
+}
+.THIS.margtopcontent .backgroungimg{
+width: 100%;
+position: absolute;
+left: 0;
+right: 0;
+top:0px;
+height: 564px;
+object-fit: cover;filter: brightness(0.5);
+}*/
+.THIS .footerdivcont{
+    padding: 0;
+    box-shadow: none;
+    background: transparent;float: right;
+}
+.THIS .footerdivcont_AR{
+    padding: 0;
+    box-shadow: none;
+    background: transparent;float: left;
+}
+.THIS.margtopcontent .slds-select_container:after {
+    border-top: 5px solid #888;
+    bottom: calc((1.75rem / 2) - -1px);
+}
+.THIS.margtopcontent .slds-select_container:before {
+    display:none;
+}
+.THIS.margtopcontent .slds-has-error .slds-select , .THIS.margtopcontent .slds-select:focus {
+    background-color: transparent;
+}
+.THIS.margtopcontent .slds-select:active {
+    background-color: transparent!important;    border-bottom: 1px solid #ddd;
+}
+.THIS.margtopcontent .typesofschool {
+    display: inline-block;
+    position: relative;
+    float: left;
+    padding-right: 20px;
+    color: #888;
+    font-size: 14px;
+    /*font-family: 'Cronos'; */
+    padding-left: 7px;
+}
+.THIS.margtopcontent .typesofschool_AR {
+    display: inline-block;
+    position: relative;
+    float: right;
+    padding-right: 20px;
+    color: #888;
+    font-size: 14px;
+    /*font-family: 'Cronos'; */
+    padding-left: 7px;
+}
+.THIS #medcondition textarea{
+    height: 80px!important;
+    margin-top: 3px!important;
+}
+.THIS [lightning-radioGroup_radioGroup-host] {
+    /*font-family: 'Cronos'; */
+    letter-spacing: 0.5px;
+}
+.THIS .teltextno .dashicon{
+    float: left;
+    padding-top: 0px;
+    font-size: 24px;
+    color: rgb(136, 136, 136);
+    padding:0rem 0.3rem;
+}
+.THIS .teltextno_AR .dashicon_AR{
+    float: right;
+    padding-top: 0px;
+    font-size: 24px;
+    color: rgb(136, 136, 136);
+    padding:0rem 0.3rem;
+}
+.THIS .phonetextno .dashicon{
+    float: left;
+    padding-top: 0px;
+    font-size: 24px;
+    color: rgb(136, 136, 136);
+    padding: 0.3rem;
+}
+.THIS .teltextno .teltextuae{
+    float: left;
+    padding-top: 9px;
+    padding-left:0rem;
+    /*font-family: 'Cronos'; */
+    font-size: 14px;
+    font-weight: 300;
+    color: #000;
+    height: 38px;
+    border-bottom: 0px solid #dedede;
+}
+.THIS .teltextno_AR .teltextuae{
+    float: right;
+    padding-top: 9px;
+    padding-left:0rem;
+    /*font-family: 'Cronos'; */
+    font-size: 14px;
+    font-weight: 300;
+    color: #000;
+    height: 38px;
+    border-bottom: 0px solid #dedede;
+}
+.THIS .phonetextno .teltextuae{
+    float: left;
+    padding-top: 9px;
+    /*font-family: 'Cronos'; */
+    padding-left:0rem;
+    font-size: 14px;
+    font-weight: 300;
+    color: #000;
+    height: 38px;
+    border-bottom:0px solid #dedede;
+}
+.THIS .teltextno .textboxwidth{
+    float: left;
+    width: 26.5%;    
+}
+.THIS .teltextno_AR .textboxwidth_AR{
+    float: right;
+    width: 26.5%;  
+}
+.THIS .teltextno .lasttextno{
+    float: left;
+    width: 11%;    
+}
+.THIS .teltextno_AR .lasttextno_AR{
+    float: right;
+    width: 11%;    
+}
+.THIS .lasttextno .slds-form-element__help{
+    position: absolute;
+    white-space: pre;
+    bottom: -18px;
+}
+.THIS .lasttextno_AR .slds-form-element__help{
+    position: absolute;
+    white-space: pre;
+    bottom: -18px;
+}
+.THIS .phonetextno .phonetextwidth{
+    float: left;
+    width: 34%;
+}
+.THIS .phonetextno .phonetextwidthno{
+    float: left;
+    width: 75%;
+}
+.THIS .phonetextno .phonetextwidthno_AR input{
+    text-align:right;
+}
+.THIS .phonetextwidthno .slds-form-element__label,
+.THIS .textboxwidth .slds-form-element__label,
+.THIS .lasttextno .slds-form-element__label{
+    display:none!important;
+}
+.THIS .phonetextwidthno .slds-form-element__control,
+.THIS .textboxwidth .slds-form-element__control,
+.THIS .lasttextno .slds-form-element__control
+{
+    width:100%!important;
+}
+.THIS .slds-form-element__control{
+    position:initial;
+}
+.THIS .dateofbirthicon .slds-input__icon--left {
+    margin-top: -1rem;
+}
+.THIS .dateofbirthicon .slds-input__icon--right {
+    margin-top: -1rem;
+}
+.THIS .slds-spinner_container {
+    background-color: transparent;
+    width:200px;
+    height:100px;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.THIS .mobile_display{
+    display:none;
+}
+.THIS .personallabel{
+    display:none;
+}
+.THIS .slds-radio [type=radio]:checked~.slds-radio--faux, 
+.THIS .slds-radio [type=radio]:checked+.slds-radio__label .slds-radio_faux{
+    background-color: #62cc8c;
+}
+.THIS .slds-radio [type=radio]:checked+.slds-radio__label .slds-radio_faux:after{
+    background-color: #fff;
+}
+.THIS input[type=text], .THIS input[type=password], .THIS textarea, 
+.THIS textarea.form-control, .THIS select, .THIS input[type=tel], .THIS input[type=email] {    
+    border: 1px solid #ccc!important;
+    border-radius: 4px!important;
+}
+.THIS .custom_label{
+    font-size: 0.75rem;
+    padding-right: 0.5rem;
+    padding-top: 0.70rem;
+    margin-bottom: 0.125rem;
+    color: #000  ;
+    display:inline-block;
+    width: 25%;
+    float: left;
+    font-weight: bold;
+}
+
+.THIS .custom_label_AR {
+    font-size: 0.75rem;
+    padding-left: 0.5rem;
+    padding-top: 0.70rem;
+    margin-bottom: 0.125rem;
+    color: #000  ;
+    display:inline-block;
+    width: 25%;
+    float: right;
+    font-weight: bold;
+} 
+.THIS .slds-grid__label custom{
+    float: left;
+}
+.THIS .slds-grid__label custom_AR{
+    float: right;
+}
+
+.THIS .rightdivlink .slds-gutters .slds-col{
+    padding:.5rem;
+}
+.THIS .radiodiv{
+    margin-bottom:1rem;
+}
+.THIS .slds-datepicker{
+    position:fixed !important;
+}
+.THIS .searchsection .slds-modal__body{
+    margin-top: 0px!important;
+}
+.THIS .searchsection .slds-modal__body .slds-form-element__control{
+    height: 38px;
+    margin: 0;
+    padding: 0 .5rem 0 .5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.THIS .searchsection .slds-modal__body .slds-form-element__control .slds-lookup__search-input,
+.THIS .searchsection .slds-modal__body .slds-form-element__control .slds-input-has-icon--right{
+    border:none!important;
+}
+.THIS::-webkit-clear-button {
+    display: none; 
+    -webkit-appearance: none; 
+}
+.THIS label.slds-form-element__label.slds-no-flex {
+    display: none;
+}
+.THIS label.slds-form-element__label {
+    display: none!important;
+}
+.THIS .slds-dropdown-trigger.slds-dropdown-trigger_click.slds-size_1-of-1 {
+    display: block;
+}
+.THIS .dobdiv_AR .slds-input-has-icon_right .slds-button_icon-bare{
+    display: none;   
+}
+.THIS lightning-calendar{
+    position:absolute;
+    z-index:1000!important;
+}
+.THIS.showmobilefooter{
+    display:none;
+}
+.THIS .schoolpopup_new .slds-modal__body .slds-form-element__control {
+    height: 38px;
+    margin: 0;
+    padding: 0 .5rem 0 .5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+.THIS .schoolpopup_new_AR .slds-form-element__control{
+    height: 38px;
+    margin: 0;
+    padding: 0 ;
+    border: 0px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+.THIS .schoolpopup_new button.slds-button.slds-button_brand.btnsave,
+.THIS .schoolpopup_new_AR button.slds-button.slds-button_brand.btnsave{
+    margin-left: 0;
+}
+.THIS .schoolpopup_new .slds-lookup__menu , .THIS .schoolpopup_new_AR .slds-lookup__menu{
+    margin-top: -10px !important;
+}
+.THIS .popup_back{
+    position: fixed;
+    width: 107.5%;
+    left: -30px;
+    top: -16px;
+}
+.THIS .popup_back_AR{
+    position: fixed;
+    width: 107.5%;
+    right: -30px;
+    top: -16px;
+}
+.THIS .schoolpopup_new , .THIS .schoolpopup_new_AR {
+    min-height: 250px;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .item {
+        width: 48%;
+    }
+    .THIS .bgimgcont{
+        top: 35%;
+    }
+    .THIS .teltextno .textboxwidth {
+        width: 27%;
+    }
+    .THIS .teltextno_AR .textboxwidth_AR {
+        width: 27%;
+        direction:rtl;
+    }
+    .THIS .phonetextno .phonetextwidth {
+        width: 40%;
+    }
+    .THIS .phonetextno .phonetextwidthno {
+        width: 75%;
+    }
+    .THIS .phonetextno .phonetextwidthno_AR {
+        width: 75%;
+        direction:rtl;
+    }
+    .THIS .lasttextno .slds-form-element__help {
+        position: absolute;
+        white-space: pre;
+        bottom: -16px;
+    }
+    .THIS.margtopcontent {
+        padding: 2% 5% 0%;
+    }
+    .THIS .leftdivlink {
+        margin-top: 1rem;
+    }
+    .THIS .popup_back , .THIS .popup_back_AR {
+        width: 106.8%;
+    }
+}
+@media only screen and (max-width: 922px) {
+    .THIS .popup_back , .THIS .popup_back_AR {
+        width: 108.8%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .slds-modal__container {
+        width: 80%;margin: auto;
+    }
+    .THIS .bgimgcont{
+        top: 40%;
+    }
+    .THIS.margtopcontent {
+        padding: 5%;
+    }
+    .THIS .leftdivlink{
+        width:100%;
+    }
+    .THIS .rightdivlink {
+        width: 100%;
+    }
+    .THIS .slds-gutters{
+        display:block;
+    }
+    .THIS .slds-col{
+        width: 100%;
+        float: left;
+    }
+    .THIS .teltextno .textboxwidth {
+        width: 28.5%;
+    }
+    .THIS .teltextno_AR .textboxwidth_AR {
+        width: 28.5%;
+        direction:rtl;
+    }
+    .THIS .lasttextno .slds-form-element__help {
+        position: absolute;
+        white-space: pre;
+        bottom: -20px;
+    }
+    .THIS.margtopcontent {
+        padding: 2% 1% 0%;
+    }
+    .THIS .schoolpopup_new , .THIS .schoolpopup_new_AR{
+        min-height:250px;
+    }
+    .THIS .popupmain , .THIS .popupmain_AR{
+        width: 100%!important;
+        margin: auto;
+        margin-top: 100px!important;
+        position:relative;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .THIS .slds-modal__container {
+        width: 94%;
+        margin: auto;
+    }
+    .THIS .bgimgcont{
+        display:none;
+    }
+    .THIS .slds-gutters{
+        display:block;
+    }
+    .THIS .slds-col{
+        width: 100%;
+        float: left;
+    }
+    .THIS .lasttextno .slds-form-element__help {
+        position: absolute;
+        white-space: pre;
+        bottom: -16px;
+    }
+    .THIS.margtopcontent {
+        padding: 0% 1% 0%;
+        width: 100%;
+        margin: auto;
+        position: inherit;
+        overflow: auto;
+    }
+    .THIS .leftdivlink {
+        margin-top: 0rem;
+    }
+}
+@media only screen and (max-width: 600px){
+    .THIS .leftdivlink {
+        width: 100%;
+    }
+    .THIS .rightdivlink {
+        width: 100%;    margin-left: 0px;
+    }
+    .THIS .slds-gutters{
+        display:block;
+    }
+    .THIS .slds-col{
+        width: 100%;
+        float: left;
+    }
+    .THIS .lasttextno .slds-form-element__help {
+        position: absolute;
+        white-space: pre;
+        bottom: -16px;
+    }
+    .THIS .teltextno .textboxwidth {
+        width: 27.6%;
+    }
+    .THIS .teltextno_AR .textboxwidth_AR {
+        width: 27.6%;
+    }
+    .THIS .slds-modal__body {
+        margin-top: 20px;
+    }
+}
+@media (min-width: 481px){    
+    .THIS  .page{
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+}
+
+@media only screen and (max-width: 480px) {
+    .THIS .profilediv {
+        width: 190px;
+    }
+    .THIS .rightdivlink {
+        padding: 5px;
+    }
+    .THIS.margtopcontent {
+        padding: 1%;
+    }
+    .THIS .slds-gutters{
+        display:block;
+        margin: auto;
+    }
+    .THIS .slds-col{
+        width: 100%;
+        float: left;
+    }
+    .THIS.margtopcontent {
+        left: 0%;
+        width: 100%;
+    }
+    .THIS.margtopcontent .typesofschool {
+        display: block;
+        width: 100%;
+    }
+    .THIS .radiobuttonmob .slds-form-element__control{
+        margin:5px;
+    }
+    .THIS .teltextno .slds-form-element__control{
+        margin:0px;
+    }
+    .THIS .teltextno_AR .slds-form-element__control{
+        margin:0px;
+    }
+    .THIS .phonetextno .slds-form-element__control{
+        margin:0px;
+    }
+    .THIS .lasttextno .slds-form-element__help{
+        position: relative;
+        white-space: pre-wrap;
+        bottom: 0px;
+    }
+    .THIS .dobdiv label{
+        display:block!important;
+        visibility:visible!important;
+        font-size: 0.8125rem!important;
+        padding-left: 7px;
+        padding-top: 0px;
+    } 
+    .THIS .desktop_display{
+        display:none;
+    }
+    
+    .THIS .mobile_display{
+        display:block;
+    }
+    .THIS .mobile_display ul{
+        position: relative;
+        width: 80%;
+        margin: auto;
+        padding: 2rem 0rem 1rem;
+        display: flex;
+        margin-bottom: 2rem;
+    }
+    .THIS.margtopcontent .slds-button_icon-inverse{
+        color: #000;
+    }
+    .THIS.margtopcontent .slds-modal__close {
+        right: 1rem;
+        top: 1rem;
+        background: transparent;
+    }
+    .THIS.margtopcontent {
+        background-image: url(/resource/myprofile_img);
+        padding-bottom: 6rem; 
+        margin-top: -48px;
+        height: 100vh;
+        z-index:100;
+        background: #fff;
+        max-width:100%!important;
+        min-width:100%!important;
+    }
+    .THIS .rightdivlink {
+        background: transparent;
+        border: 0px solid #fff;
+        position: relative;
+        padding:1rem!important;
+        width: 100%;
+        margin: auto 0%;
+    }
+    .THIS.margtopcontent .slds-modal__header {
+        border-bottom: 0px solid #f2f2f2;
+        padding: 0 0 0rem 0;
+        text-align: center;
+        background: transparent!important;
+        margin-bottom: 0rem;
+    }
+    .THIS.margtopcontent .slds-text-heading_medium{
+        display:none;
+    }
+    .THIS #medcondition textarea {
+        line-height: initial;
+    }
+    .THIS .mobile_display .information {
+        width: 20%!important;
+        text-align: center;
+    }
+    .THIS .mobile_display .information .activetab {
+        background: #545434;
+        color: #fff;
+        margin-bottom: 10px;
+        transition: .4s;
+        width: 48px;
+        height: 48px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 20px;
+        margin: auto;
+        float: initial;
+        box-shadow: 0 8px 6px -6px #9c9c9c;
+    }
+    .THIS .mobile_display .information a {
+        background: #fff;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+        color: #000;
+        border-radius: 50%;
+        text-align: center;
+        margin: auto;
+        box-shadow: 0 8px 6px -6px #9c9c9c;
+    }
+    .THIS .mobile_display .information img{
+        padding-bottom: 14px;
+        width: 24px;
+        transform: rotate(180deg);
+    }
+    .THIS .personallabel{
+        display:block;
+        color: #62cc8c;
+        text-align: center;
+        font-size: 20px;
+    }
+    .THIS .dobdiv .slds-input {
+        background-color: transparent;
+        border: 0px solid rgba(255, 255, 255, 0);
+        width: 100%;
+        transition: border 0.1s linear,background-color 0.1s linear;
+        display: inline-block;
+        padding: 0 1rem 0 0.75rem;
+        line-height: 1.875rem;
+        min-height: calc(1.875rem + (1px * 2));
+        border: 0px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        border-radius: 0px;
+    }
+    .THIS .footerdivcont {
+        float: none;
+        text-align: center;
+    }
+    .THIS .btnsave{
+        background: #eb4026;
+        padding: 15px 30px!important;
+        border-radius: 5px;
+        margin: 1rem .5rem 0rem!important;
+    }
+    .THIS .teltextno .lasttextno {
+        width: 14%;
+    }
+    .THIS .teltextno_AR .lasttextno_AR {
+        width: 14%;
+        direction:rtl;
+    }
+    .THIS .slds-form-element__control {
+        margin-bottom: 5px;
+        display: inline-block;
+        width: 98%;
+    }
+    .THIS .rightdivlink .slds-gutters .slds-col {
+        padding: 0rem;
+    }
+    .THIS .radiodiv {
+        margin-bottom: 0rem;
+    }
+    .THIS .information:before ,
+    .THIS .information:after{
+        display:none;
+    }
+    .THIS .information span ,
+    .THIS .information .activetab span{
+        transform: translate(-50%, -50%);
+    }
+    .THIS .leftdivlink {
+        margin-bottom: 0rem;
+    }
+    .THIS .slds-form-element__control .slds-radio {
+        margin-bottom: 0px!important;
+    }
+    .THIS .slds-grid label {
+        padding: .25rem!important;
+        min-height: 1rem;
+        width:100%;
+        display:block;
+    }
+    .THIS .custom_label{
+        padding:.5rem .25rem!important;
+        min-height: 1rem;
+        width:100%;
+        display:block;
+    }
+    .THIS .phonetextno .phonetextwidthno {
+        width: 100%;
+    }
+    .THIS .phonetextno .mobilesecondno{
+        width: 98%;
+    }
+    .THIS .phonetextno .mobilesecondno_AR{
+        width: 98%;
+        direction:rtl;
+    }
+    .THIS .teltextno .textboxwidth {
+        width: 36%;
+    }
+    .THIS .teltextno_AR .textboxwidth_AR {
+        width: 37%;
+        direction:rtl;
+        float:right;
+    }
+    .THIS .slds-checkbox .slds-checkbox__label {
+        min-height: 1rem!important;
+    }
+    .THIS .textarea-container {
+        margin-bottom: 1rem;
+    }
+    .THIS .slds-modal__body {
+        margin-top: 2rem;
+    }
+    .THIS.showmobilefooter{
+        display:block;
+    }
+    .THIS .popupmain{
+        margin-top: 70px!important;
+        position:relative;
+    }
+    .THIS .popupmain_AR{
+        margin-top: 55px!important;
+        position:relative;
+    }
+    .THIS .schoolpopup_new , .THIS .schoolpopup_new_AR {
+        min-height: 250px;
+        padding: 1rem;
+    }
+    .THIS input[type=text], .THIS input[type=password], .THIS textarea, 
+    .THIS textarea.form-control, .THIS select, .THIS input[type=tel], 
+    .THIS input[type=email] {
+        border: 0px solid #ccc!important;
+        border-bottom: 1px solid #ccc!important;
+        border-radius: 0px!important;
+        font-size:14px;
+    }
+    .THIS .searchsection .slds-modal__body .slds-form-element__control {
+        border: 0px solid #ccc;
+        border-radius: 0px;
+        border-bottom: 1px solid #ccc;
+    }
+    .THIS span.info_name {
+        position: relative!important;
+        clear: both;
+        padding-top: 0rem;
+        font-weight: bold;
+    }
+    .THIS .radio_group{
+        margin:10px 0 25px;
+    }
+}
+@media only screen and (max-width: 320px){
+    .THIS .teltextno .textboxwidth {
+        width: 35.5%;
+    }
+    .THIS .teltextno_AR .textboxwidth_AR {
+        width: 35.5%;
+        direction:rtl;
+    }
+    .THIS .rightdivlink {
+        background: transparent;
+        border: 0px solid #fff;
+        position: relative;
+        padding:1rem!important;
+        width: 100%;
+        margin: auto 0%;
+    }
+}
+
+/*** iPhone and iOS Form Input Zoom Fixes ***/
+/* Fix Input Zoom on devices older than iPhone 5: */
+@media screen and (device-aspect-ratio: 2/3) {
+    .THIS select, .THIS textarea, .THIS input[type="text"], .THIS input[type="password"],
+    .THIS input[type="datetime"], .THIS input[type="datetime-local"],
+    .THIS input[type="date"], .THIS input[type="month"], .THIS input[type="time"],
+    .THIS input[type="week"], .THIS input[type="number"], .THIS input[type="email"]
+    { font-size: 14px!important; }
+}
+
+/* Fix Input Zoom on iPhone 5, 5C, 5S, iPod Touch 5g */
+@media screen and (device-aspect-ratio: 40/71) {
+    .THIS select, .THIS textarea, .THIS input[type="text"], .THIS input[type="password"],
+    .THIS input[type="datetime"], .THIS input[type="datetime-local"],
+    .THIS input[type="date"], .THIS input[type="month"], .THIS input[type="time"],
+    .THIS input[type="week"], .THIS input[type="number"], .THIS input[type="email"]
+    { font-size: 14px!important; }
+}
+
+/* Fix Input Zoom on iPhone 6, iPhone 6s, iPhone 7  */
+@media screen and (device-aspect-ratio: 375/667) {
+    .THIS select, .THIS textarea, .THIS input[type="text"], .THIS input[type="password"],
+    .THIS input[type="datetime"], .THIS input[type="datetime-local"],
+    .THIS input[type="date"], .THIS input[type="month"], .THIS input[type="time"],
+    .THIS input[type="week"], .THIS input[type="number"], .THIS input[type="email"]
+    { font-size: 14px!important; }
+}
+
+/* Fix Input Zoom on iPhone 6 Plus, iPhone 6s Plus, iPhone 7 Plus, iPhone 8, iPhone X, XS, XS Max  */
+@media screen and (device-aspect-ratio: 9/16) {
+    .THIS select, .THIS textarea, .THIS input[type="text"], .THIS input[type="password"],
+    .THIS input[type="datetime"], .THIS input[type="datetime-local"],
+    .THIS input[type="date"], .THIS input[type="month"], .THIS input[type="time"],
+    .THIS input[type="week"], .THIS input[type="number"], .THIS input[type="email"],
+    .THIS input[type="tel"]{ font-size: 14px!important; }
+}

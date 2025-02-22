@@ -1,0 +1,14 @@
+.containers{
+    background-color: #3d424a;
+}
+.faq-body{
+ width: 77.3%;
+    margin: 0px auto;
+    padding: 84px 0px;
+}
+.faq-page {
+  max-width: 600px;
+  margin: 0 auto;
+  direction: rtl;
+  
+}

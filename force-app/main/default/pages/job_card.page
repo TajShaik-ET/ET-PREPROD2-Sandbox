@@ -1,0 +1,310 @@
+<!-- PDF page to display the  JobCard details |Author:Shiju kooriyil|drafted on 24 march 2023  -->
+<apex:page standardController="ETT_Job_Card__c" extensions="JobCardController" renderAs="pdf" applyBodyTag="false">
+    <head> 
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+        <style>
+            *{
+            margin:0px;
+            padding:0px;
+            font-family: 'Noto Sans', sans-serif;
+            }
+            body{
+            margin:0px;
+            padding:0px;
+            font-size:14px;
+            font-family: 'Noto Sans', sans-serif;
+            }
+            @page{ 
+            size: A4;
+            padding:0px; 
+            margin:0px;
+            /*background:#faf492;*/
+            } 
+            .datalist td{
+            padding:5px;
+            border:1px solid #222;
+            border-right:1px solid #222;
+            border-bottom:0px;
+            border-collapse:collapse;
+            min-height:17px;
+            }
+            .datalist tr td:last-child{
+            	border-right:1px solid #222;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <table style="width:100%;" cellspacing="0" cellpadding="0">
+            <tr>
+                <td style="padding:20px 0px 10px 0; text-align:center; color:#000;font-size:28px; font-weight:bold; text-decoration:underline;
+                           line-height:28px;">
+                   JOB CARD
+                </td> 
+            </tr> 
+            <tr>
+                <td style="padding:20px 20px 15px 20px;font-size:13px;">
+                    <table class="datalist" style="width:100%;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="90"><b>Job Card No :</b></td>
+                            <td>{!ETT_Job_Card__c.Name}</td>
+                            <td><b>Job Type : </b></td>
+                            <td>{!ETT_Job_Card__c.ETT_Job_Type__c}</td>
+                            <td><b>Party type :</b></td>
+                            <td>{!ETT_Job_Card__c.Customer_Type__c}</td>
+                            <td><b>Job Date :</b></td>
+                            <!--<td style="border-right:1px solid #222;">26-05-22</td>-->
+                            <td><apex:outputText value="{0,date,dd-MM-yy}" style="text-transform: uppercase">
+                                <apex:param value="{!ETT_Job_Card__c.CreatedDate}"/>
+                                <apex:param value="U"/>
+                                </apex:outputText></td>
+                        </tr>
+                        
+                        <tr>
+                            <td><b>Party Name : </b></td>
+                            <td colspan="3">{!ETT_Job_Card__c.Customer__r.Name}</td>
+                            <td><b>Tyre Make :</b></td>
+                            <td colspan="3" style="border-right:1px solid #222;">{!TyreMake}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><b>Tyre Size :</b></td>
+                            <td>{!TyreSize}</td>
+                            <td><b>O.Pattern :</b></td>
+                            <td>{!OPattern}</td>
+                            <td><b>Serial # :</b></td>
+                           <td>{!SerialNo}</td>
+                            <td><b>PR - LI - SI :</b></td>
+                            <!--<td style="border-right:1px solid #222;">{!ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Ply_Rate__c} - {!ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Load_Index__c} - {!ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Speed_Index__c}</td> -->
+                            <td style="border-right:1px solid #222;">
+                                <apex:outputText value="{!IF(AND(NOT(ISBLANK(ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Ply_Rate__c)), NOT(ISBLANK(ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Load_Index__c))), ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Ply_Rate__c + ' - ', ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Ply_Rate__c)}"/>
+                            	<apex:outputText value="{!IF(AND(NOT(ISBLANK(ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Load_Index__c)), NOT(ISBLANK(ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Speed_Index__c))), ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Load_Index__c + ' - ', ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Load_Index__c)}"/>
+                                <apex:outputText value="{!IF(AND(NOT(ISBLANK(ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Speed_Index__c))), ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Speed_Index__c,ETT_Job_Card__c.ETT_Tyre_Master__r.ETT_Speed_Index__c)}"/>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><b>Coll. Card# :</b></td>
+                            <td colspan="3">{!CollCard}</td>
+                           <!-- <td>{!CollCard}</td> -->
+                            <td colspan="2"><b>Coll. Date :</b></td>
+                           <!-- <td><b>Coll. Date :</b></td> -->
+                           <td colspan="2"><apex:outputText value="{0,date,dd-MM-yy}" style="text-transform: uppercase">
+                                <apex:param value="{!CollDate}"/>
+                                <apex:param value="U"/>
+                                </apex:outputText></td>
+                           <!-- <td colspan="3" style="border-right:1px solid #222;"></td> -->
+                            
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="4"><b>Initial Inspection :</b></td>
+                            <td colspan="3" rowspan="4"> </td>
+                            <td colspan="2"><b>Life</b></td>
+                            <td>{!ETT_Job_Card__c.ETT_Inspection_Card__r.Tyre_Life__c} </td>
+                            <td style="border-right:1px solid #222;"><b>Finance No &amp; Signature</b></td> 
+                        </tr>
+                        <tr>  
+                            <td colspan="2"><b>No. Of Crown Cuts</b></td>
+                            <td>{!crownCut}</td>
+                            <td rowspan="3" style="border-right:1px solid #222;"> </td> 
+                        </tr>
+                        <tr>  
+                            <td colspan="2"><b>No. Of Sidewall Cuts</b></td>
+                            <td>{!sidewallcut}</td>  
+                        </tr>
+                        <tr>  
+                            <td colspan="2"><b>No. Of Thorough Cuts</b></td>
+                            <td> </td> 
+                        </tr>
+                        
+                        
+                        
+                        <tr>
+                            <td rowspan="3"><b>Buffing :</b></td>
+                            <td colspan="3" rowspan="3"> </td>
+                            <td colspan="2"><b>Tread pattern</b></td>
+                            <td> </td> 
+                            <td rowspan="3" style="border-right:1px solid #222;"> </td> 
+                        </tr>
+                        <tr>  
+                            <td colspan="2"><b>Tread Width</b></td>
+                            <td> </td>
+                        </tr>
+                        <tr>  
+                            <td colspan="2"><b>Tread Length</b></td>
+                            <td> </td>  
+                        </tr> 
+                        
+                        
+                        <tr>
+                            <td style="min-height:70px;"><b>Skiving : </b></td>
+                            <td colspan="6"> </td>
+                            <td style="border-right:1px solid #222;"> </td>  
+                        </tr> 
+                        
+                        
+                        
+                        
+                        <tr>
+                            <td rowspan="6"><b>Repair :</b></td>
+                            <td colspan="3" rowspan="6"> </td>
+                            <td colspan="2"><b>Patch Size</b></td>
+                            <td>Qty</td> 
+                            <td rowspan="6" style="border-right:1px solid #222;"> </td>  
+                        </tr>
+                        <tr>  
+                            <td colspan="2"> </td>
+                            <td> </td>
+                        </tr>
+                        <tr>  
+                            <td colspan="2"> </td>
+                            <td> </td>  
+                        </tr> 
+                        
+                        <tr>  
+                            <td colspan="2"> </td>
+                            <td> </td>
+                        </tr>
+                        <tr>  
+                            <td colspan="2"> </td>
+                            <td> </td>  
+                        </tr> 
+                        <tr>  
+                            <td colspan="2"> </td>
+                            <td> </td>  
+                        </tr> 
+                        
+                        
+                        <tr>
+                            <td style="min-height:45px;"><b>Cementing :</b></td>
+                            <td colspan="6"> </td>
+                            <td style="border-right:1px solid #222;"> </td>  
+                        </tr> 
+                        
+                        
+                        
+                        
+                        <tr>
+                            <td rowspan="3"><b>Filling :</b></td>
+                            <td colspan="3" rowspan="3"> </td>
+                            <td><b>GC Weight</b></td>
+                            <td><b>Item - SS</b></td>
+                            <td><b>Qty(kg)</b></td> 
+                            <td rowspan="3" style="border-right:1px solid #222;"> </td>  
+                        </tr>
+                        <tr>  
+                            <td rowspan="2"> </td>  
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                        <tr>  
+                            <td> </td>
+                            <td> </td>  
+                        </tr>
+                        
+                        
+                        
+                        <tr>
+                            <td rowspan="2"><b>Tread Preparation :</b></td>
+                            <td colspan="4" rowspan="2"> </td>
+                            <td colspan="2"><b>Tread Weight</b></td> 
+                            <td rowspan="2" style="border-right:1px solid #222;"> </td>  
+                        </tr>
+                        <tr>    
+                            <td colspan="2"></td> 
+                        </tr>
+                        
+                        
+                        
+                        
+                        <tr>
+                            <td rowspan="2"><b>Building :</b></td>
+                            <td colspan="3" rowspan="2"> </td> 
+                            <td colspan="2"><b>Item - CG</b></td>
+                            <td><b>Qty(kg)</b></td> 
+                            <td rowspan="2" style="border-right:1px solid #222;"> </td>  
+                        </tr>
+                        <tr>  
+                            <td colspan="2"> </td> 
+                            <td> </td>
+                        </tr>
+                        
+                        
+                        
+                        <tr>
+                            <td style="min-height:30px;"><b>Envelopong :</b></td>
+                            <td colspan="6"> </td>
+                            <td style="border-right:1px solid #222;"> </td>   
+                        </tr> 
+                        
+                        
+                        
+                        <tr>
+                            <td><b>Curing :</b></td>
+                            <td colspan="6" style="padding:0px; text-align:center;">
+                                <table style="width:100%;" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td style="border-top:0px; border-left:0px; width: 70px;"><b>Date</b></td>
+                                        <td style="border-top:0px;"><b>Temperature</b></td>
+                                        <td style="border-top:0px;"><b>Starting Time</b></td> 
+                                        <td style="border-top:0px;"><b>Ending Time</b></td>
+                                        <td style="border-top:0px;"><b>Total Hours</b></td>
+                                        <td style="border-top:0px;"><b>Valve No</b></td>
+                                        <td style="border-top:0px;"><b>Round No</b></td> 
+                                        <td style="border-top:0px;"><b>Chamber</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-left:0px;"> </td>
+                                        <td> </td>
+                                        <td> </td> 
+                                        <td> </td>
+                                        <td style=""> </td>
+                                        <td> </td>
+                                        <td> </td> 
+                                        <td> </td>
+                                    </tr>
+                                </table>
+                            </td>  
+                            <td style="border-right:1px solid #222;"> </td>  
+                        </tr>
+                 
+                        
+                        
+                        
+                        
+                        <tr>
+                            <td><b>Final Inspection :</b></td>
+                            <td colspan="6"> </td>
+                            <td style="border-right:1px solid #222;"> </td>   
+                        </tr> 
+                        
+                         
+                        
+                        <tr>
+                            <td style="min-height:25px;border-bottom:1px solid #222;"><b>Painting :</b></td>
+                            <td style="border-bottom:1px solid #222;" colspan="6"> </td>
+                            <td style="border-bottom:1px solid #222;border-right:1px solid #222;"> </td>   
+                        </tr> 
+                        
+                        
+                    </table>
+                </td>
+            </tr>
+            
+            <tr>
+                <td style="padding:0 40px 0px 40px;font-size:13px;">
+                    <table style="width:100%;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td style="width:75%;"><b>Factory Supervisor : </b></td>
+                            <td><b>Quality Officer :</b></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+    </body> 
+</apex:page>

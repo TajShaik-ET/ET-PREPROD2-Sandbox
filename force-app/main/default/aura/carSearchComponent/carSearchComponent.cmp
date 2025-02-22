@@ -1,0 +1,95 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <!-- filter attributes -->
+    <aura:attribute name="CarModels" type="List" />
+    <aura:attribute name="CarTypes" type="List" />
+    <aura:attribute name="segments"  type="List" default="['']" />
+    <aura:attribute name="segmentMap" type="Map" />
+    <aura:attribute name="vehTypesMap" type="Map"/>
+    
+    <!-- active section names-->
+    <aura:attribute name="carTypesSection" type="String" default="none"/>
+    <aura:attribute name="carModelsSection" type="String" default="none"/>
+    
+    <!-- filter attributes  -->
+    <aura:attribute name="segValue" type="List"/>
+    <aura:attribute name="typeValue" type="List"/>
+    <aura:attribute name="modelValue" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <c:ETCAR_UtillityMethods aura:id="ETCAR_UtillityMethods"/>
+    <!-- Register Event -->
+    <aura:registerEvent name="carFiltersEvent" type="c:ETC_handleFiltersEvent"/>
+    
+    <div class="filtermaindiv">
+        <div class="filtersec ">
+            <div class="filterTop">
+                <aura:if isTrue ="{!v.segments.length > 0}">
+                    <lightning:radioGroup name="vehicleSegment"
+                                          id="vehicleSegment"
+                                          aura:id="vehicleSegment"
+                                          label="Vehicle Segment"
+                                          options="{! v.segments }"
+                                          value="{! v.segValue }"
+                                          onchange = "{!c.onSegmentSelection}"
+                                          />
+                </aura:if>
+            </div>
+            <div class="fillterOuter">
+                <div class="fillter_section"> 
+                <div class="filterTop">
+                    <label>Car Type</label>
+                    <lightning:accordion
+                                         allowMultipleSectionsOpen="true"
+                                         activeSectionName ="{!v.carTypesSection}"
+                                         >
+                        <lightning:accordionSection name="carTypes" label="Car Types">
+                            <aura:if isTrue ="{!v.CarTypes.length > 0}">
+                                
+                                <aura:set attribute="body">
+                                    <lightning:checkboxGroup name="types"
+                                                             label=""
+                                                             aura:id="types"
+                                                             options="{! v.CarTypes }"
+                                                             value="{! v.typeValue }"
+                                                             style="line-height:250%;"
+                                                             onchange = "{!c.onCarTypeSelection}"
+                                                             />
+                                </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+                    </lightning:accordion>
+                </div>
+            </div>
+                <div class="fillter_section">
+                    <div class="filterTop">
+                        <label>Model</label>
+                        <lightning:accordion
+                                             allowMultipleSectionsOpen="true"
+                                             activeSectionName ="{!v.carModelsSection}"
+                                             >
+                            <lightning:accordionSection name="carModel" label="Car Model">
+                                <aura:if isTrue ="{!v.CarModels.length > 0}">
+                                    
+                                    <aura:set attribute="body">
+                                        <lightning:checkboxGroup name="models"
+                                                                 label=""
+                                                                 aura:id="models"
+                                                                 options="{! v.CarModels }"
+                                                                 value="{! v.modelValue }"
+                                                                 style="line-height:250%;"
+                                                                 />
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </lightning:accordionSection>
+                        </lightning:accordion>
+                    </div>  
+                </div>
+                <div class="paddinglr filterTop webView">
+                    <lightning:button class="actionButton" label="Search"  title="Search"  onclick="{!c.onsearchCars}"/>
+                <lightning:button variant="neutral" class="clear_btn" label="Clear Filters" title="Clear Filters" onclick="{! c.handleClearFilters }"/>
+                </div> 
+ 				
+            </div>
+        </div>
+    </div>
+</aura:component>

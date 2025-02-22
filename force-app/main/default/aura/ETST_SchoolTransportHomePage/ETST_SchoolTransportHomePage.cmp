@@ -1,0 +1,316 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <!--<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+  -->
+    
+    <ltng:require styles="{!join(',', 
+                          $Resource.ETSchoolTransportBootstrap + '/css/open-iconic-bootstrap.min.css', 
+                          $Resource.ETSchoolTransportBootstrap + '/css/animate.css',
+                          $Resource.ETSchoolTransportBootstrap + '/css/owl.carousel.min.css',
+                          $Resource.ETSchoolTransportBootstrap + '/css/owl.theme.default.min.css',
+                          $Resource.ETSchoolTransportBootstrap + '/css/aos.css',
+                          $Resource.ETSchoolTransportBootstrap + '/css/ionicons.min.css',
+                          $Resource.ETSchoolTransportBootstrap + '/css/style.css')}" 
+                  
+                  
+                  scripts="{!join(',',
+                           $Resource.ETSchoolTransportBootstrap + '/js/jquery.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/jquery-migrate-3.0.1.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/popper.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/bootstrap.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/jquery.easing.1.3.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/jquery.waypoints.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/jquery.stellar.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/owl.carousel.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/jquery.magnific-popup.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/aos.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/jquery.animateNumber.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/scrollax.min.js',
+                           $Resource.ETSchoolTransportBootstrap + '/js/main.js')}" 
+                  
+                  afterScriptsLoaded="{!c.scriptsLoaded}" 
+                  />  
+    
+     <!--<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Modist</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+            
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown04">
+                            <a class="dropdown-item" href="shop.html">Shop</a>
+                            <a class="dropdown-item" href="product-single.html">Single Product</a>
+                            <a class="dropdown-item" href="cart.html">Cart</a>
+                            <a class="dropdown-item" href="checkout.html">Checkout</a>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+    END nav -->
+    
+    <div class="hero-wrap js-fullheight" style="background-image: url('/resource/1583752707000/ETSchoolTransportBootstrap/images/ETTransportMain.jpg');">
+        <div class="overlay">
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+                <h3 class="v"></h3>
+                <h3 class="vr"></h3>
+                <div class="col-md-11 ftco-animate text-center">
+                    <h1>Bus Services</h1>
+                    <h2><span>Emirates Transport</span></h2>
+                </div>
+                <div class="mouse">
+                    <a href="#" class="mouse-icon">
+                        <div class="mouse-wheel"><span class="ion-ios-arrow-down" ></span></div>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="goto-here"></div>
+    
+    <section class="ftco-section ftco-product">
+        <div class="container">
+            <div class="row justify-content-center mb-3 pb-3">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    <h1 class="big"></h1>
+                    <h2 class="mb-4">Your Student Details</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-slider owl-carousel ftco-animate">
+                        <div class="item">
+                            <div class="product">
+                                <a href="#" class="img-prod"><img class="img-fluid" src="/resource/1583752707000/ETSchoolTransportBootstrap/images/product-1.jpg" alt="Colorlib Template"/>
+                                    <span class="status">30%</span>
+                                </a>
+                                <div class="text pt-3 px-3">
+                                    <h3><a href="#">Young Woman Wearing Dress</a></h3>
+                                    <div class="d-flex">
+                                        <div class="pricing">
+                                            <p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
+                                        </div>
+                                        <div class="rating">
+                                            <p class="text-right">
+                                                <span class="ion-ios-star-outline"></span>
+                                                <span class="ion-ios-star-outline"></span>
+                                                <span class="ion-ios-star-outline"></span>
+                                                <span class="ion-ios-star-outline"></span>
+                                                <span class="ion-ios-star-outline"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="ftco-section ftco-section-more img" style="background-image: url(/resource/1583752707000/ETSchoolTransportBootstrap/images/SchoolBus.jpg);">
+        <div class="container">
+            <div class="row justify-content-center mb-3 pb-3">
+                <div class="col-md-12 heading-section ftco-animate">
+                    <h2><span>School Services</span></h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="ftco-section testimony-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center mb-3 pb-3">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    <h1 class="big">Testimony</h1>
+                </div>
+            </div>    		
+            <div class="row justify-content-center">
+                <div class="col-md-8 ftco-animate">
+                    <div class="row ftco-animate">
+                        <div class="col-md-12">
+                            <div class="carousel-testimony owl-carousel ftco-owl">
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4" style="background-image: url(/resource/1583752707000/ETSchoolTransportBootstrap/images/person_1.jpg)">
+                                            <span class="quote d-flex align-items-center justify-content-center">
+                                                <i class="icon-quote-left"></i>
+                                            </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Customer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4" style="background-image: url(/resource/1583752707000/ETSchoolTransportBootstrap/images/person_2.jpg)">
+                                            <span class="quote d-flex align-items-center justify-content-center">
+                                                <i class="icon-quote-left"></i>
+                                            </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Customer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4" style="background-image: url(/resource/1583752707000/ETSchoolTransportBootstrap/images/person_3.jpg)">
+                                            <span class="quote d-flex align-items-center justify-content-center">
+                                                <i class="icon-quote-left"></i>
+                                            </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Customer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4" style="background-image: url(/resource/1583752707000/ETSchoolTransportBootstrap/images/person_1.jpg)">
+                                            <span class="quote d-flex align-items-center justify-content-center">
+                                                <i class="icon-quote-left"></i>
+                                            </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Customer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4" style="background-image: url(/images/person_1.jpg)">
+                                            <span class="quote d-flex align-items-center justify-content-center">
+                                                <i class="icon-quote-left"></i>
+                                            </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Customer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="ftco-section ftco-counter img" id="section-counter" style="background-image: url(/images/bg_4.jpg);">
+        <div class="container">
+            <div class="row justify-content-center py-5">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
+                            <div class="block-18 text-center">
+                                <div class="text">
+                                    <strong class="number" data-number="10000">0</strong>
+                                    <span>Happy Customers</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
+                            <div class="block-18 text-center">
+                                <div class="text">
+                                    <strong class="number" data-number="100">0</strong>
+                                    <span>Branches</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
+                            <div class="block-18 text-center">
+                                <div class="text">
+                                    <strong class="number" data-number="1000">0</strong>
+                                    <span>Partner</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
+                            <div class="block-18 text-center">
+                                <div class="text">
+                                    <strong class="number" data-number="100">0</strong>
+                                    <span>Awards</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="ftco-section bg-light ftco-services">
+        <div class="container">
+            <div class="row justify-content-center mb-3 pb-3">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    <h1 class="big">Services</h1>
+                    <h2>We want you to express yourself</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-center d-flex align-self-stretch ftco-animate">
+                    <div class="media block-6 services">
+                        <div class="icon d-flex justify-content-center align-items-center mb-4">
+                            <span class="flaticon-002-recommended"></span>
+                        </div>
+                        <div class="media-body">
+                            <h3 class="heading">Refund Policy</h3>
+                            <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
+                        </div>
+                    </div>      
+                </div>
+                <div class="col-md-4 text-center d-flex align-self-stretch ftco-animate">
+                    <div class="media block-6 services">
+                        <div class="icon d-flex justify-content-center align-items-center mb-4">
+                            <span class="flaticon-001-box"></span>
+                        </div>
+                        <div class="media-body">
+                            <h3 class="heading">Premium Packaging</h3>
+                            <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
+                        </div>
+                    </div>    
+                </div>
+                <div class="col-md-4 text-center d-flex align-self-stretch ftco-animate">
+                    <div class="media block-6 services">
+                        <div class="icon d-flex justify-content-center align-items-center mb-4">
+                            <span class="flaticon-003-medal"></span>
+                        </div>
+                        <div class="media-body">
+                            <h3 class="heading">Superior Quality</h3>
+                            <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
+                        </div>
+                    </div>      
+                </div>
+            </div>
+        </div>
+    </section>
+</aura:component>

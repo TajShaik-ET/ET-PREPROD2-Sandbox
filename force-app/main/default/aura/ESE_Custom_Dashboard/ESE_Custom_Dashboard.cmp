@@ -1,0 +1,137 @@
+<aura:component controller="ESE_ViewDashboardCtrl"  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global"  >
+<!--Chartjs chartJs_v3_9_0 -->
+    <!--ltng:require scripts="{!$Resource.Chartjs}"
+                  afterScriptsLoaded="{!c.scriptsLoaded}" /-->
+     <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="schoolList" type="List"/>  
+    <aura:attribute name="schoolNames" type="List"/>  
+    <aura:attribute name="stationCodeList" type="List"/>  
+    <aura:attribute name="showAll" type="Boolean" default="true"/>
+    <aura:attribute name="MrngTripCount" type="String" default="0"/>
+    <aura:attribute name="EvngTripCount" type="String" default="0"/>
+    <aura:attribute name="selectedSchName" type="String" default="All"/>
+    <aura:attribute name="selectedSchList" type="List" />
+    <aura:attribute name="selectedCode" type="String" />
+    <aura:attribute name="avgSeatsOcc" type="String" default="0" /> 
+    <aura:attribute name="tripsStartedB46Am" type="String" default="0" /> 
+    <aura:attribute name="kgStuTripMoreThan45" type="String" default="0" /> 
+    <aura:attribute name="TripsDuration60_75" type="String" default="0" /> 
+    <aura:attribute name="TripsDurationMore75" type="String" default="0" /> 
+    <aura:attribute name="totalStudentReg" type="String" default="0" />
+    <aura:attribute name="totalStudents" type="String" default="0" />
+    <aura:attribute name="noOfBuses" type="String" default="0" />
+     <aura:attribute name="routesHaveStudMore" type="String" default="0" />
+    <aura:handler event="aura:waiting" action="{!c.waiting}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.doneWaiting}"/>
+    <aura:attribute name="HideSpinner" type="Boolean" default="true"/>
+    <aura:attribute name="fromDate" type="String"/>
+    <aura:attribute name="toDate" type="String"/>
+    
+    
+    <div class="chart_details">  
+        <aura:if isTrue="{!!v.HideSpinner}">
+        <lightning:spinner variant="brand" alternativeText="Loading" size="medium" />
+        </aura:if>
+        <div class="slds-grid slds-gutters topSection">
+            <div class="slds-col">
+                <lightning:select class="selectionItem" name="select" aura:id="selectResource" label="School Name" value="{!v.selectedSchName}" onchange="{!c.schoolChangeHandler}">
+                    <option text="All"></option>
+                    <aura:iteration items="{!v.schoolNames}" var="val">
+                        <option text="{!val}"></option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <div class="slds-col">
+                <lightning:select class="selectionItem" name="select" aura:id="selectResource" label="Station Code" value="{!v.selectedCode}" onchange="{!c.stationCodeChangeHandler}">
+                    <option text="All"></option>
+                    <aura:iteration items="{!v.stationCodeList}" var="val">
+                        <option text="{!val}"></option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <div class="slds-col">
+              <lightning:input type="date" name="input1" value="{!v.fromDate}" label="From Date" onchange="{!c.dateChangeHandelr}"/>
+            </div>
+            <div class="slds-col">
+              <lightning:input type="date" name="input1" value="{!v.toDate}" label="To Date" onchange="{!c.dateChangeHandelr}"/>
+            </div>
+        </div>
+        <div class="slds-grid slds-gutters margin-bottom">
+            <div class="slds-col chartSection">
+                <span class="chartSName">Trips started before 6AM/تبدأ الرحلة قبل الساعة 6 صباحا</span>
+                <span class="number"> {!v.tripsStartedB46Am}</span>
+                <span class="report"><a href="{!$Label.c.ESE_TripStartedB46Am}" target="_blank">View Report</a></span>
+            </div>
+             <div class="slds-col chartSection">
+                <span class="chartSName">KG Students Trips More Than 45/رحلات طلاب رياض الأطفال أكثر من 45</span>
+                <span class="number"> {!v.kgStuTripMoreThan45}</span>
+                <span class="report"><a href="{!$Label.c.ESE_KGStuTrips}" target="_blank">View Report</a></span>
+
+            </div> 
+            <div class="slds-col chartSection">
+                <span class="chartSName">Trips Duration  60-75 min/مدة الرحلات 60-75 دقيقة</span>
+                <span class="number"> {!v.TripsDuration60_75}</span>
+                <span class="report"><a href="{!$Label.c.ESE_TripDuration60to75}" target="_blank">View Report</a></span>
+
+            </div> 
+            <div class="slds-col chartSection">
+                <span class="chartSName">Trips Duration More Than 75 min/مدة الرحلات أكثر من 75 دقيقة</span>
+                <span class="number"> {!v.TripsDurationMore75}</span>
+                <span class="report"><a href="{!$Label.c.ESE_TripsMorethen75}" target="_blank">View Report</a></span>
+
+            </div> 
+
+            
+        </div> 
+        <div class="slds-grid slds-gutters margin-bottom">
+            <div class="slds-col chartSection">
+                <span class="chartSName">Morning Trips Count</span>
+                <span class="number"> {!v.MrngTripCount}</span>
+                <span class="report"><a href="{!$Label.c.ESE_ExecutedTrips}" target="_blank">View Report</a></span>
+
+            </div>
+            <div class="slds-col chartSection">
+                <span class="chartSName">Evening Trips Count</span>
+                <span class="number">{!v.EvngTripCount}</span>
+                <span class="report"><a href="{!$Label.c.ESE_ExecutedTrips}" target="_blank">View Report</a></span>
+
+            </div>
+              <div class="slds-col chartSection">
+                <span class="chartSName">Average Seats Occupied</span>
+                <span class="number"> {!v.avgSeatsOcc} %</span>
+                <span class="report"><a href="{!$Label.c.ESE_AvgSeatsOccupied}" target="_blank">View Report</a></span>
+
+            </div>                    
+
+            
+        </div> 
+         <div class="slds-grid slds-gutters margin-bottom">
+            <div class="slds-col chartSection">
+                <span class="chartSName">Total Student Registration for Transport</span>
+                <span class="number"> {!v.totalStudentReg}</span>
+                <span class="report"><a href="{!$Label.c.ESE_TotalStudRegistration}" target="_blank">View Report</a></span>
+
+            </div>
+            
+             <div class="slds-col chartSection">
+                <span class="chartSName">Total Students/مجموع الطلاب</span>
+                <span class="number"> {!v.totalStudents}</span>
+                <span class="report"><a href="{!$Label.c.ESE_TotalStudents}" target="_blank">View Report</a></span>
+
+            </div>
+             <div class="slds-col chartSection">
+                <span class="chartSName">No. of Buses / عدد الحافلات</span>
+                <span class="number"> {!v.noOfBuses}</span>
+                <span class="report"><a href="{!$Label.c.ESE_No_of_Buses}" target="_blank">View Report</a></span>
+
+            </div>
+             
+             
+        </div>
+           
+
+        
+        
+    </div>
+</aura:component>

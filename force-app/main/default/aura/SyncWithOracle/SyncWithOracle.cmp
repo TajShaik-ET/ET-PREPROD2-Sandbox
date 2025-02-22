@@ -1,0 +1,17 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" 
+                controller="syncWithOracleBtnCtrl" >
+    
+    <aura:attribute name="Name" type="String" />   
+    <aura:attribute name="IntegrationStatus" type="String" />  
+    <aura:attribute name="CustomerAccountId" type="String" />  
+    <aura:attribute name="showSpinner" type="Boolean" default="false" />
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>	
+    <!--  <aura:if isTrue="{! v.showSpinner }">
+        <lightning:spinner alternativeText="Loading" />
+    </aura:if> -->
+    
+    <div style="font-size: 17px;margin-top: 53px;">
+     Your request is in progress, please close this window and check the status in Account.
+    
+    </div>
+</aura:component>

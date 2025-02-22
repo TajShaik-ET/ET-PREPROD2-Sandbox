@@ -1,0 +1,29 @@
+<aura:component controller="ETDIBookingRequest" implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+	<aura:attribute name="accounts" type="List" />
+    <aura:attribute name="key" type="String" /> 
+     
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />        
+    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center" style="position: relative;display: block;text-align: center;margin: 0.2rem;">Training Certificate Download</h2>
+    <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
+        <thead>
+            <tr class="slds-text-heading_label">              
+                <th scope="col"><div class="slds-truncate" title="Name">Employee Name</div></th>
+                <th scope="col"><div class="slds-truncate" title="Type">Employee Id</div></th>         
+                <th>
+                    <a href="javascript:void(0)"  onclick="{!c.showTraineeCertificate}"><lightning:icon iconName="utility:download" class="slds-icon slds-icon_small" size="small" alternativeText="add"/></a>
+                </th>     
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.accounts}" var="account">
+                <tr>  
+                    <td><div class="slds-truncate" title="{!account.Name}">{!account.Employee__r.Name}</div></td>
+                    <td><div class="slds-truncate" title="{!account.Type}">{!account.Employee__r.ETIN_Employee_Id__c}</div></td>  
+                    
+                    <td>
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>    
+</aura:component>

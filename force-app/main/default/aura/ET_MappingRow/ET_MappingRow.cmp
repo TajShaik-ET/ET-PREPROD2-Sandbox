@@ -1,0 +1,252 @@
+<aura:component controller="ET_SaveCombinationCntrl">
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+
+    <aura:attribute name="vehicleNames" type="List" />
+    <aura:attribute name="driverNames" type="List" />
+    <aura:attribute name="supervisorNames" type="List" />
+    <aura:attribute name="nannyNames" type="List" />
+    <aura:attribute name="coordinatorNames" type="List" />
+    <aura:attribute name="accountantNames" type="List" />
+    <aura:attribute name="otherEmpNames" type="List" />
+    
+    <aura:attribute name="data" type="Map" /> 
+    <aura:attribute name="serviceRequestRecordId" type="Id"/>
+    <aura:attribute name="index" type="Integer" default="0" />
+    <aura:attribute name="mapping" type="ET_Request_Mapping__c" default="{'sObjectType':'ET_Request_Mapping__c'}" />
+    
+    <aura:attribute name="isSupervisorRequired" type="Boolean"/>
+    <aura:attribute name="isCoordinatorRequired" type="Boolean" />
+    <aura:attribute name="isAccountantRequired" type="Boolean" />
+    <aura:attribute name="isOtherEmployeeRequired" type="Boolean" />
+    <aura:attribute name="isVehicleTabSelected" type="Boolean" />
+    <aura:attribute name="isDriverTabSelected" type="Boolean" />
+    <aura:attribute name="isNanyTabSelected" type="Boolean" />
+    <aura:attribute name="isEmployeeTabSelected" type="Boolean" default="false"/>
+
+
+    <aura:attribute name="vehicleDetailsMap" type="Map" /> 
+    <aura:attribute name="vehicleNameAndAvailableNumberMap" type="Map" />
+    <aura:attribute name="isDisable" type="Boolean" default="false" />
+    <aura:attribute name="showError" type="Boolean" default="false" />
+    <aura:attribute name="errorMessage" type="String" default="" />
+  
+    <aura:attribute name="auraIdLst" type="List" default="['nannyNumber','selectNany','accountantNumber','selectAccountant','coordinatorNumber','selectCoordinator','supervisorNumber','selectVehicle','vehicleNumber','selectDriver','driversNumber','selectSupervisor','otherEmpNumber','selectEmp']"/>
+    <aura:attribute name="isCombinationSaved" type="Boolean" default="false"/>
+    
+    <aura:attribute name="currentSelectedVehicleAvailaleNumber" type="Integer"/>
+    <aura:attribute name="currentSelectedDriverAvailaleNumber" type="Integer"/>
+    <aura:attribute name="currentSelectedNannyAvailaleNumber" type="Integer"/>
+    <aura:attribute name="currentSelectedSupervisorAvailaleNumber" type="Integer"/>
+    <aura:attribute name="currentSelectedCoordinatorAvailaleNumber" type="Integer"/>
+    <aura:attribute name="currentSelectedAccountantAvailaleNumber" type="Integer"/>
+    <aura:attribute name="currentSelectedOtherEmpAvailaleNumber" type="Integer"/>
+
+    <aura:attribute name="vehicleKey" type="String"/>
+    <aura:attribute name="driverKey" type="String"/>
+    <aura:attribute name="supervisorKey" type="String"/>
+    <aura:attribute name="coordinatorKey" type="String"/>
+    <aura:attribute name="otherEmpKey" type="String"/>
+    <aura:attribute name="nannyKey" type="String"/>
+    <aura:attribute name="accountantKey" type="String"/>
+    <aura:attribute name="existingMappingRowData" type="ET_Request_Mapping__c"/>
+    
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+	
+	<!-- <aura:attribute name="existingDataComponent"     -->
+    <aura:registerEvent name="sendDataToModal" type="c:ET_sendDataToMappingModalEvt"/>
+
+    <aura:method name="updateAvailableNumberMessages" action="{!c.updateAvailableNumberMessages}" description="" />
+
+   <!--  <aura:registerEvent name="updateCalculations" type="c:ET_UpdateMappingCalculations" />-->
+   <div class="slds-box modalInnerSection" >
+    <aura:if isTrue="{!v.showError}">
+       <div class="slds-box">
+       
+            <!-- Show the message to ui -->
+            <div class="slds-notify slds-notify_toast slds-theme_error">
+                <div class="slds-notify__content">
+                    <p class="slds-align_absolute-center">{!v.errorMessage}</p>                
+                </div>
+            </div>
+
+       </div>
+     </aura:if>
+       
+       <aura:if isTrue="{!v.existingMappingRowData == null}">
+           <div class="slds-box">
+               <aura:if isTrue="{!v.isVehicleTabSelected}">
+                   Available <b>VEHICLE</b> Number to choose for <b>{!v.vehicleKey}</b>  ==> <b>{!v.currentSelectedVehicleAvailaleNumber}</b>
+                   <br/>
+               </aura:if>
+               <aura:if isTrue="{!v.isDriverTabSelected}">
+                   Available <b>DRIVER</b> Number to choose for    <b>{!v.driverKey}</b> ==> <b>{!v.currentSelectedDriverAvailaleNumber}</b>
+                   <br/>
+               </aura:if>
+               <aura:if isTrue="{!v.isNanyTabSelected}">
+                   Available <b>NANNY</b> Number to choose for    <b>{!v.nannyKey}</b> ==> <b>{!v.currentSelectedNannyAvailaleNumber}</b>
+                   <br/>
+               </aura:if>
+               <aura:if isTrue="{!v.isSupervisorRequired}">
+                   Available <b>SUPERVISOR</b> Number to choose for    <b>{!v.supervisorKey}</b> ==> <b>{!v.currentSelectedSupervisorAvailaleNumber}</b>
+                   <br/>
+               </aura:if>
+               <aura:if isTrue="{!v.isCoordinatorRequired}">
+                   Available <b>CO-ORDINATOR</b> Number to choose for    <b>{!v.coordinatorKey}</b> ==> <b>{!v.currentSelectedCoordinatorAvailaleNumber}</b>
+                   <br/>
+               </aura:if>
+               <aura:if isTrue="{!v.isAccountantRequired}">
+                   Available <b>ACCOUNTANT/CASHIER</b> Number to choose for    <b>{!v.accountantKey}</b> ==> <b>{!v.currentSelectedAccountantAvailaleNumber}</b>
+                   <br/>
+               </aura:if>
+               <aura:if isTrue="{!v.isOtherEmployeeRequired}">
+                   Available <b>OTHER EMPLOYEE</b> Number to choose for    <b>{!v.otherEmpKey}</b> ==> <b>{!v.currentSelectedOtherEmpAvailaleNumber}</b>
+                   <br/>
+               </aura:if>
+           </div>
+       </aura:if>
+           
+       <aura:if isTrue="{! not(v.loaded) }">
+           <lightning:spinner alternativeText="Loading" variant="brand" />
+       </aura:if>
+     
+       <aura:if isTrue="{!not(v.isPricingTeam)}">   
+           <div>
+               <a onclick="{!c.handleRemove}">
+                   <!--    name="{!index}" -->
+                   <lightning:icon class="icn" size="medium" iconName="utility:delete" alternativeText="delete" style="float: right;" />
+               </a>
+           </div>
+       </aura:if>
+
+    <div class="slds-grid slds-wrap slds-grid--pull-padded vehicleDetls" >
+        <aura:if isTrue="{!v.isVehicleTabSelected}">
+            <div class="slds-col--padded slds-size--3-of-12">
+                <!-- required="true" -->
+                <lightning:select name="Vehicle" label="Vehicle"  value="{!v.mapping.ET_Vehicle_Unique_key__c}" disabled="{!v.isDisable}"
+                    onchange="{!c.onChangeVehicle}" aura:id="selectVehicle">
+                    <!--value="{!v.commonVehicleDetails.ET_Working_Days_Per_Week__c}" aura:Id="ET_Working_Days_Per_Week__c" onchange="{!c.updateCommonFields}" -->
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.vehicleNames}" var="item">
+                        <!-- {!item.label} -->
+                        <option value="{!item.value}">{!item.value}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+       
+            <div class="slds-col--padded slds-size--2-of-12">
+                <lightning:input type="number" name="Number of vehicles" aura:id="vehicleNumber" label="Number of vehicles" 
+                value="{!v.mapping.ET_Number_of_Vehicles__c}"  disabled="{!v.isDisable}" />
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.isDriverTabSelected}">
+            <div class="slds-col--padded slds-size--3-of-12">
+                <lightning:select name="Driver" label="Driver"   disabled="{!v.isDisable}"
+                    aura:id="selectDriver"  value="{!v.mapping.ET_Driver_Unique_Id__c}" onchange="{!c.onChangeDriver}">
+                    <!--value="{!v.commonVehicleDetails.ET_Working_Days_Per_Week__c}" aura:Id="ET_Working_Days_Per_Week__c" onchange="{!c.updateCommonFields}" -->
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.driverNames}" var="item">
+                        <option value="{!item.value}">{!item.value}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <div class="slds-col--padded slds-size--2-of-12">
+                <lightning:input type="number" name="Number of Drivers" label="Number of Drivers" aura:id="driversNumber" disabled="{!v.isDisable}" 
+                value="{!v.mapping.ET_Number_of_Drivers__c}"  />
+            </div>
+        </aura:if>
+   <!-- </div>
+    <div class="slds-grid slds-wrap slds-grid-pull-padded" > -->
+        <aura:if isTrue="{!v.isSupervisorRequired}">
+            <div class="slds-col--padded slds-size--3-of-12">
+                <lightning:select name="Supervisor" label="Supervisor"   disabled="{!v.isDisable}" onchange="{!c.onChangeSupervisor}"
+                    aura:id="selectSupervisor"  value="{!v.mapping.ET_Supervisor_Unique_Key__c}" >
+                    <!--value="{!v.commonVehicleDetails.ET_Working_Days_Per_Week__c}" aura:Id="ET_Working_Days_Per_Week__c" onchange="{!c.updateCommonFields}" -->
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.supervisorNames}" var="item">
+                        <option value="{!item.value}">{!item.value}</option>
+                    </aura:iteration>  
+                </lightning:select>
+            </div>
+            <div class="slds-col--padded slds-size--2-of-12">
+                <lightning:input type="number" name="Number of Supervisor"  aura:id="supervisorNumber" label="Number of Suprvisor"  disabled="{!v.isDisable}"
+                value="{!v.mapping.ET_Number_of_Supervisors__c}"/>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.isCoordinatorRequired}">
+            <div class="slds-col--padded slds-size--3-of-12">
+                <lightning:select name="Coordinator" label="Coordinator"   disabled="{!v.isDisable}" onchange="{!c.onChangeCoordinator}"
+                    aura:id="selectCoordinator"  value="{!v.mapping.ET_Coordinator_Unique_Key__c}">
+                    <!--value="{!v.commonVehicleDetails.ET_Working_Days_Per_Week__c}" aura:Id="ET_Working_Days_Per_Week__c" onchange="{!c.updateCommonFields}" -->
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.coordinatorNames}" var="item">
+                        <option value="{!item.value}">{!item.value}</option>
+                    </aura:iteration> 
+                </lightning:select>
+            </div>
+            <div class="slds-col--padded slds-size--2-of-12">
+                <lightning:input type="number" name="Number of Coordinator"  aura:id="coordinatorNumber" label="Number of Coordinator"  disabled="{!v.isDisable}"
+                value="{!v.mapping.ET_Number_of_Coordinators__c}"/>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.isAccountantRequired}">
+            <div class="slds-col--padded slds-size--3-of-12">
+                <lightning:select name="Accountant" label="Accountant/Cashier"   disabled="{!v.isDisable}" onchange="{!c.onChangeAccountant }"
+                    aura:id="selectAccountant"  value="{!v.mapping.ET_Accountant_Unique_Key__c}">
+                    <!--value="{!v.commonVehicleDetails.ET_Working_Days_Per_Week__c}" aura:Id="ET_Working_Days_Per_Week__c" onchange="{!c.updateCommonFields}" -->
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.accountantNames}" var="item">
+                        <option value="{!item.value}">{!item.value}</option>
+                    </aura:iteration> 
+                </lightning:select>
+            </div>
+            <div class="slds-col--padded slds-size--2-of-12">
+                <lightning:input type="number" name="Number of Accountant/Cashier" aura:id="accountantNumber"  label="Number of Accountact/Cashier"  disabled="{!v.isDisable}"
+                value="{!v.mapping.ET_Number_of_Accountants__c}"/>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.isNanyTabSelected}">
+            <div class="slds-col--padded slds-size--3-of-12">
+                <lightning:select name="schoolBusNanny" label="School Bus Nanny"  value="{!v.mapping.ET_Nanny_Unique_Key__c}"  disabled="{!v.isDisable}" onchange="{!c.onChangeNanny}"
+                    aura:id="selectNanny">
+                    <!--value="{!v.commonVehicleDetails.ET_Working_Days_Per_Week__c}" aura:Id="ET_Working_Days_Per_Week__c" onchange="{!c.updateCommonFields}" -->
+                    <option value="">choose one...</option>
+                   <aura:iteration items="{!v.nannyNames}" var="item">
+                        <option value="{!item.value}">{!item.value}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <div class="slds-col--padded slds-size--2-of-12">
+                <lightning:input type="number" name="Number of Nannies" label="Number of Nannies" aura:id="nannyNumber"   disabled="{!v.isDisable}"
+                value="{!v.mapping.ET_Number_of_Nannies__c}"/>
+            </div>
+
+        </aura:if> 
+    
+        <aura:if isTrue="{!v.isOtherEmployeeRequired}">
+            
+                <div class="slds-col--padded slds-size--3-of-12">
+            
+                    <lightning:select name="emp" label="Other Employee"  value="{!v.mapping.ET_Other_Employee_Unique_Key__c}"  disabled="{!v.isDisable}" onchange="{!c.onChangeOtherEmp}"
+                        aura:id="selectEmp">
+                        <!--value="{!v.commonVehicleDetails.ET_Working_Days_Per_Week__c}" aura:Id="ET_Working_Days_Per_Week__c" onchange="{!c.updateCommonFields}" -->
+                        <option value="">choose one...</option>
+                       <aura:iteration items="{!v.otherEmpNames}" var="item">
+                            <option value="{!item.value}">{!item.value}</option>
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+                <div class="slds-col--padded slds-size--2-of-12">
+                    <lightning:input type="number" name="Number of Other Employees" label="Number of Other Employees" aura:id="otherEmpNumber"   disabled="{!v.isDisable}"
+                    value="{!v.mapping.ET_Number_of_Other_Employees__c}"/>
+                </div>
+        </aura:if>
+        
+    </div>
+    
+      <div class="slds-grid slds-grid_pull-padded-medium saveCombinationBtn">
+       <lightning:button variant="brand" label="Save Combination" title="Save Combination"  disabled="{!v.isDisable}"
+            onclick="{! c.saveCombination }"  />
+      </div>
+    </div>
+</aura:component>

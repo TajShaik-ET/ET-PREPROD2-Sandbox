@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="handle Car Models" >
+    <aura:attribute name="carModels" type="String" default =""/>
+    <aura:attribute name="priceLowToHigh" type="Boolean"/>
+    <aura:attribute name="priceHighToLow" type="Boolean"/>
+</aura:event>

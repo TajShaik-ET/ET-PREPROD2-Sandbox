@@ -1,0 +1,9 @@
+<apex:page showHeader="false" standardStylesheets="false" sidebar="false" docType="html-5.0" applyBodyTag="False" applyHtmlTag="False">
+    <apex:includeLightning />
+    <div id="LightningComponent" />
+    <script>
+    $Lightning.use("c:FeedbackPageApp", function (){
+            $Lightning.createComponent("c:surveyPage", {},"LightningComponent") ;
+        });
+    </script>
+</apex:page>

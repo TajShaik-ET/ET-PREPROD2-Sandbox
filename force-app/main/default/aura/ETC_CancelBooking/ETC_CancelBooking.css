@@ -1,0 +1,9 @@
+.THIS .addModifyModal{
+    width: 80% !important;
+}
+.THIS .addModifyModal h2{
+    font-weight: 400;
+}
+.THIS.curr {
+    font-weight: bold; 
+}

@@ -1,0 +1,432 @@
+.THIS.casesupmaindiv{
+    min-height:87.2vh;
+    height:100%;
+}
+.THIS .mybussinessdiv{
+    padding:0px;
+    position: relative;
+    display: block;
+    clear: both;
+}
+.THIS .actionButton {
+    background-color: #624500;
+    color: white;
+    border: 1px solid #624500;
+    box-shadow: none;
+    font-size: 14px;
+    transition:0.4s;
+    line-height: 18px;
+    padding: 5px 10px;
+}
+.THIS .tableClass{
+    min-height:300px;
+    overflow:auto;
+    width: 100%;
+    position: relative;
+    max-height: 320px;
+}
+.THIS .actionButton:hover {
+    background-color: #fff;
+    color: #624500;
+    border: 1px solid #624500;
+    box-shadow: none;
+    transition:0.4s;
+}
+
+.THIS .emmergencyButton {
+    background-color: Red;
+    color: white;
+    border: 1px solid Red;
+    box-shadow: none;
+    font-size: 14px;
+    transition:0.4s;
+    line-height: 18px;
+    padding: 5px 10px;
+    white-space: inherit;
+}
+.THIS .emmergencyButton:hover {
+    background-color: #fff;
+    color: Red;
+    border: 1px solid Red;
+    box-shadow: none;
+    transition:0.4s;
+}
+.THIS .maincantentdiv{
+    padding: 15px;
+    overflow: auto;
+}
+.THIS .Headingcontent{
+    font-size: 28px;
+    color: rgb(60 60 60);
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+.THIS .subheading{
+    font-size: 14px;
+    font-weight: 600;
+}
+.THIS .slds-gutters .slds-col {
+    padding-right: .75rem;
+    padding-left: .75rem;
+    width: 50%;padding-bottom: .50rem;
+}
+.THIS .textColor {
+    color:  #624500;font-size: 14px; /* #8a1538; */
+}
+.THIS table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.THIS table tr th {
+    text-align: center;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;font-size: 12px;
+    font-weight: 600;
+    background:#f1f1f6;
+}
+.THIS table tr td {
+    text-align: center;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    color:black;
+}
+.THIS input[type=text], .THIS input[type=password], .THIS textarea, .THIS textarea.form-control, .THIS select, .THIS input[type=tel], .THIS input[type=email] , .THIS .uiInput--default input{
+    height: 44px;
+    margin: 0;
+    padding: 0 15px;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+.THIS .slds-form-element__label {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 5px;font-weight: normal;
+}
+.THIS.documenttable , .THIS.documentmain{
+    /* padding: 30px;
+    background: #fafafa;
+    border:4px solid #fff;*/
+}
+.THIS.documenttable table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.THIS.documenttable table tr th {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+    font-weight: 600;    text-transform: uppercase;
+    background:#f1f1f6;
+}
+.THIS .documenttable table tr td {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+}
+.THIS.uiInput--default .form-element__label , .THIS .form-element__label{
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 5px;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.6);
+}
+.THIS.uiInput--datetime .form-element , .THIS .uiInput--default input{
+    position: relative;
+    margin-top: 5px!important;
+}
+.THIS .uiInput--datetime .datePicker-openIcon {
+    bottom: 14px!important;
+}
+/*
+.THIS.animated {
+-webkit-animation-duration: 1s;
+animation-duration: 1s;
+-webkit-animation-fill-mode: both;
+animation-fill-mode: both;
+}
+.THIS .animated.delay-1s {
+-webkit-animation-delay: 1s;
+animation-delay: 1s;
+}
+@-webkit-keyframes zoomInUp {
+from {
+opacity: 0;
+-webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+-webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+60% {
+opacity: 1;
+-webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+-webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+}
+}
+
+@keyframes zoomInUp {
+from {
+opacity: 0;
+-webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+-webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+60% {
+opacity: 1;
+-webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+-webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+}
+}
+
+.THIS.zoomInUp {
+-webkit-animation-name: zoomInUp;
+animation-name: zoomInUp;
+}
+
+@-webkit-keyframes slideInDown {
+from {
+-webkit-transform: translate3d(0, -15%, 0);
+transform: translate3d(0, -15%, 0);
+visibility: visible;
+}
+
+to {
+-webkit-transform: translate3d(0, 0, 0);
+transform: translate3d(0, 0, 0);
+}
+}
+
+@keyframes slideInDown {
+from {
+-webkit-transform: translate3d(0, -15%, 0);
+transform: translate3d(0, -15%, 0);
+visibility: visible;
+}
+
+to {
+-webkit-transform: translate3d(0, 0, 0);
+transform: translate3d(0, 0, 0);
+}
+}
+
+.THIS.slideInDown {
+-webkit-animation-name: slideInDown;
+animation-name: slideInDown;
+}
+*/
+/* css for custom dashboard component*/
+.THIS .form-box-row2{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px;
+    position: relative;
+    background-color: transparent;
+    background: transparent;
+    opacity: 1;
+    height: 120px;
+    transition:.4s all;
+    overflow: hidden;
+}
+/*.THIS .form-box-row2:hover{
+transform:scale(1.05);
+transition:.4s all;
+background: #fff;
+}*/
+.THIS .leftsectiondiv{
+    display: inline-block;
+    width: 35%;
+    float:left;
+    height: 100%;
+}
+.THIS .activeSchoolbgimg{
+    background-image: url(/resource/ET_bgschool);    
+    background-size: cover;
+    background-position: center;
+}
+.THIS .activeStudentbgimg{
+    background-image: url(/resource/ET_bgstudent);    
+    background-size: cover;
+    background-position: center;
+}
+.THIS .agreementbgimg{
+    background-image: url(/resource/ET_bgagreement);    
+    background-size: cover;
+    background-position: center;
+}
+.THIS .resourcesbgimg{
+    background-image: url(/resource/ET_Vechicle);    
+    background-size: cover;
+    background-position: center;
+}
+.THIS .activevehiclebgimg{
+    background-image: url(/resource/banner1);    
+    background-size: cover;
+    background-position: center;
+}
+.THIS .invoicebgimg{
+    background-image: url(/resource/ET_inovices);    
+    background-size: cover;
+    background-position: center;
+}
+.THIS .rightsectiondiv{
+    display: inline-block;
+    width: 65%;
+    float: left;
+    padding: 1rem 0rem;
+    height: 100%;
+    background: rgb(255 255 255 / 0.6);
+}
+.THIS .form-title{
+    color: #555;
+    text-align: center;
+    text-transform: none;
+    font-size: 10px;
+    padding: 0.7rem 0 1rem;
+    letter-spacing: .5px;
+}
+
+.THIS .numberSize{
+    text-align: center;
+    color: #00c19e;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: initial;  
+}
+
+.THIS .slds-card {
+    background:transparent;
+    border: 0px solid #E0E0E0;
+}
+.THIS .slds-card .slds-col{
+    width: 24%;
+    display: inline-block;
+    margin: 0% 1% 1% 0%;
+}
+.THIS .menumaindiv{
+    width:100%;
+    display:block;
+    position:relative;
+    padding-bottom:3rem;
+    float: left;
+}
+.THIS .menudiv{
+    width: 25%;
+    float: right;
+    padding:0px;
+}
+.THIS .servicesdiv {
+    width: 100%;
+    margin: .5%;
+    padding: 0;
+    text-align: center;
+    transition: all .5s;
+    border-right: 1px solid #f2f2f2;
+    background: transparent;
+    border: none;
+}
+.THIS .servicesdiv a {
+    color: #fff;
+}
+.THIS .servicesdiv a img {
+    filter: invert(1);
+}
+@media only screen and (max-width: 1024px){
+    .THIS .menudiv {
+        width: 40%;
+        float: right;
+    }
+}
+@media only screen and (max-width: 992px){
+    .THIS .menudiv {
+        width: 40%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .rightsectiondiv {
+        padding: 1rem;
+    }
+    .THIS .slds-card .slds-col {
+        width: 49%;
+        margin: 0% 1% 2% 0%;
+    }
+    .THIS .menudiv {
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .THIS .rightsectiondiv {
+        padding: 0rem 0 1rem;
+    }
+    .THIS .form-title {
+        padding: 0 1rem 1rem;
+    }
+    .THIS .form-box-row2 {
+        height: 120px;
+    }
+    .THIS .slds-grid{
+        display:block;
+    }
+    .THIS .slds-gutters .slds-col {
+        padding-right: .75rem;
+        padding-left: .75rem;
+        width: 100%;
+        padding-bottom: .50rem;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .slds-card .slds-col {
+        width: 100%;
+        display: inline-block;
+        margin: 0% 1% 2% 0%;
+    }
+    .THIS .slds-grid{
+        display:block;
+    }
+    .THIS .slds-gutters .slds-col {
+        padding-right: .75rem;
+        padding-left: .75rem;
+        width: 100%;
+        padding-bottom: .50rem;
+    }
+    .THIS .Headingcontent {
+        font-size: 18px;
+        color: rgb(60 60 60);
+        text-transform: uppercase;
+        text-align: center;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+    .THIS .menudiv {
+        width: 50%;
+    }
+}

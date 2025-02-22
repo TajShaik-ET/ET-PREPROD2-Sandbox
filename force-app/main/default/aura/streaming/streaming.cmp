@@ -1,0 +1,3 @@
+<aura:component implements = "flexipage:availableForAllPageTypes">
+    <c:ETI_Streaming channel ='/event/receipt_event__e' onMessage ='{!c.handleMessage}'/>	
+</aura:component>

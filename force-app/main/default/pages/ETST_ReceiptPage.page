@@ -1,0 +1,65 @@
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf"
+           standardStylesheets="false" applyHtmlTag="false" controller="ETST_ReceiptPageController">
+    
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.ETST_Invoice,'css/invoice.css')}"/>-->
+    
+    <div style="padding: 0rem;border: 1px solid #1d1d1f;position: relative;display: block;
+                border-top-left-radius: 20px;border-bottom-right-radius: 20px;width: 99%;overflow: hidden;">
+        <div style="width: 98%;text-align: center;margin: 0% 1% ;border-bottom: 1px solid #ddd;padding: .5% 0%;">
+           <!-- <img src="{!$Resource.ETST_Logo}" style="padding:0;width:150px;"/> -->
+            <apex:image style="height: 100px;" url="{!URLFOR($Resource.ETST_Invoice, 'images/logo.png')}"/>
+        </div>
+        <div style="position: relative;display: block;clear: both;padding:0px 15px 10px;color:#1d1d1f;">
+            <p style="margin: 0px;font-family:sans-serif;text-align:right;font-weight:700;">
+                {!receiptList[0].CreatedDate} 
+            </p> 
+        </div>
+        <div style="position: relative;display: block;clear: both;padding:10px;background:#1d1d1f;color:#fff;">
+            <h2 style="margin: 0px;font-family:sans-serif;text-align:center;">
+                Thank You for Your Purchase
+            </h2> 
+        </div>
+        <table style="width:96%;border: trasprant;border-collapse: collapse;font-size:18px;margin:4.5% 2% 7%;font-family:sans-serif;font-weight: 700;">
+            <thead style="background:#1d1d1f">
+                <th colspan="2" style="border: 1px solid #1d1d1f;padding:10px;text-align: center;font-size:20px;color:#fff;">
+                    This is your reciept for  <span style="text-transform:Uppercase">{!receiptList[0].ET_Service_Request__r.ETST_Student_Name__c}</span>
+                </th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c;">School Name</td>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c;">{!receiptList[0].ET_Service_Request__r.ETST_Student__r.ETST_School__r.Name}</td>
+                </tr>
+                <tr>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c;">Receipt No</td>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c;">{!receiptList[0].Name}</td>
+                </tr> 
+                <tr>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c;">Amount</td>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c;">{!receiptList[0].ET_Amount__c} AED</td>
+                </tr>
+                <tr>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c;">VAT</td>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c;">0 AED</td>
+                </tr>
+               <!-- <tr>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c;" >KG-1</td>
+                    <td style="border: 2px solid #dcdcdc;padding:10px;text-align: center;color:#6d6d6c" > 907.00 AED</td>
+                </tr> -->
+            </tbody> 
+        </table> 
+        <div style="position: relative;display: block;clear: both;padding:15px;background:#cccccc;color:#1d1d1f;">
+            <h2 style="margin: 0px;font-family:sans-serif;text-align:center;font-size:20px;padding-bottom:10px;">
+                {!receiptList[0].Payment_Mode__c} Payment 
+            </h2>
+            <h2 style="margin: 0px;font-family:sans-serif;text-align:center;font-size:20px;">
+             <!--   VISA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 443959xxxxxx3674 -->
+            </h2> 
+        </div> 
+        <div style="position: relative;display: block;clear: both;padding:60px 10px 20px;color:#000;">
+            <p style="margin: 0px;font-family:sans-serif;text-align:center;font-size:12px;">
+                This is automated email, Please do not reply. For any other query, Please email us at info@et.ae
+            </p>
+        </div> 
+    </div>
+</apex:page>

@@ -1,0 +1,797 @@
+<aura:component controller="ET_EmployeeHomeCntrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="showEmpHome" type="boolean" />
+    <aura:attribute name="selectedTab" type="string" default="ETdI"/>
+    <aura:attribute name="showDriverForm" type="boolean" default="false"/>
+    <aura:attribute name="showSchoolForm" type="boolean" default="false"/>
+    <aura:attribute name="showMonitoringForm" type="boolean" default="false"/>
+    <aura:attribute name="showEtdiBkngReq" type="boolean" default="false"/>
+    <aura:attribute name="showEtdiTrainerSch" type="boolean" default="false"/>
+    <aura:attribute name="showEtdiAdqcc" type="boolean" default="false"/>
+    <aura:attribute name="showEtdiRta" type="boolean" default="false"/>
+    <aura:attribute name="showNoTaskMsg" type="boolean" default="false"/>    
+    
+    <aura:handler event="c:ET_EmployeeTabNavigation" action="{!c.handleEvent}"/>
+    <aura:attribute name="showHome" type="boolean" default="true" />
+    <aura:attribute name="showTask" type="boolean" />
+    <aura:attribute name="showLeave" type="boolean" />
+    <aura:attribute name="showSalary" type="boolean" />
+    <aura:attribute name="showInsurance" type="boolean" />
+    <aura:attribute name="showSupport" type="boolean" />
+    <aura:attribute name="currentUser" type="User" default="{'sObjecttype': 'User'}" />
+    <aura:attribute name="FormVisibility" type="String" />
+    <lightning:navigation aura:id="navService"/> 
+    <aura:attribute name="isAccessAllowed" type="Boolean" default="false"/>
+    <aura:attribute name="showVRTSCREEN" type="boolean" default="false"/>
+    <aura:attribute name="showQHSECREEN" type="boolean" default="false"/>
+    <aura:attribute name="currentUserInsurance" type="ETIN_Insurance__c" default="{'sObjecttype': 'ETIN_Insurance__c'}" />
+    
+    
+    
+    
+    <div class="ET_tasksection">
+        <div class="left_menu">
+            <c:ET_Menu_list_Home/>
+        </div>
+        <aura:if isTrue="{!v.showHome}">
+            <div id="ET_home" class="right_Info_section">
+                <h3 class="topheading">Welcome {!v.currentUser.Name},</h3>
+                <div class="Home_main">
+                    <div class="Home_left">
+                        <div class="profile_info">
+                            <div class="profile_left">
+                                <div class="prfile_innerdiv">
+                                    <div class="profile_imgdiv">
+                                        <!--img src="{!$Resource.img_profilenew}" alt=""/-->
+                                        <img src="{!v.currentUser.SmallPhotoUrl}"/>
+                                        <label class="username">{!v.currentUser.Name} </label>
+                                        <a class="viewprofilebtn" onclick="{!c.handleClick}">View Profile</a>
+                                    </div>
+                                    <div class="profile_details_div">
+                                        <div class="profile_text">
+                                            <label class="pro_label">Emirates Id</label>
+                                            <label class="pro_value">{!v.currentUser.Account.ET_Emirates_Id__c} </label>
+                                        </div>
+                                        <div class="profile_text">
+                                            <label class="pro_label">Preferred Loaction</label>
+                                            <label class="pro_value">{!v.currentUser.Account.ET_Preferred_Location__c}</label>
+                                        </div>
+                                        <!--div class="profile_text">
+                                            <label class="pro_label">Employee Number</label>
+                                            <label class="pro_value">{!v.currentUser.EmployeeNumber}</label>
+                                        </div>
+                                        <div class="profile_text">
+                                            <label class="pro_label">Location</label>
+                                            <label class="pro_value">{!v.currentUser.Country}</label>
+                                        </div-->
+                                        <div class="profile_text">
+                                            <label class="pro_label">Email</label>
+                                            <label class="pro_value">{!v.currentUser.Email}</label>
+                                        </div>
+                                        <div class="profile_text">
+                                            <label class="pro_label">Phone</label>
+                                            <label class="pro_value">{!v.currentUser.Account.Phone}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile_right">
+                                <div><span>0</span><span>Tasks</span></div>
+                                <div><span>0</span><span>Leaves</span></div>
+                                <div><span>0</span><span>Requests</span></div>
+                            </div>
+                        </div>
+                        <!--div class="sub_heading" >Action Required</div>
+                    <div class="box_div">
+                        <table>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th width="110px;"></th>
+                            </tr>
+                            <tr>
+                                <td>#9847893</td>
+                                <td>HR Policy</td>
+                                <td>Submitted</td>
+                                <td>23/12/22</td>
+                                <td><a class="uploadbtn">Upload</a></td>
+                            </tr>
+                            <tr>
+                                <td>#9847893</td>
+                                <td>Salary Dispute</td>
+                                <td>Rejected</td>
+                                <td>23/12/22</td>
+                                <td><a class="uploadbtn_disable">Upload</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="sub_heading" >Payslips</div>
+                    <div class="box_div">
+                        <lightning:tabset>
+                            <lightning:tab label="Sep 2022">
+                                <div class="payment_div">
+                                    <div class="payment_inner">
+                                        <label>Gross Pay</label>
+                                        <div>5,000 AED</div>
+                                    </div>
+                                    <div class="payment_inner">
+                                        <label>Take Home</label>
+                                        <div>4,500 AED</div>
+                                    </div>
+                                    <div class="payment_inner">
+                                        <label>Deductions</label>
+                                        <div>0 AED</div>
+                                    </div>
+                                    <div class="payment_inner"><lightning:button label="Download Payslip"  class="slds-button_brand btn_red " ></lightning:button></div>
+                                </div>
+                            </lightning:tab>
+                            <lightning:tab label="Oct 2022" >
+                                <div class="payment_div">
+                                    <div class="payment_inner">
+                                        <label>Gross Pay</label>
+                                        <div>5,000 AED</div>
+                                    </div>
+                                    <div class="payment_inner">
+                                        <label>Take Home</label>
+                                        <div>4,000 AED</div>
+                                    </div>
+                                    <div class="payment_inner">
+                                        <label>Deductions</label>
+                                        <div>1000 AED</div>
+                                    </div>
+                                    <div class="payment_inner"><lightning:button label="Download Payslip"  class="slds-button_brand btn_red " ></lightning:button></div>
+                                </div>
+                            </lightning:tab>
+                            <lightning:tab label="Nov 2022">
+                                <div class="payment_div">
+                                    <div class="payment_inner">
+                                        <label>Gross Pay</label>
+                                        <div>6,000 AED</div>
+                                    </div>
+                                    <div class="payment_inner">
+                                        <label>Take Home</label>
+                                        <div>5,500 AED</div>
+                                    </div>
+                                    <div class="payment_inner">
+                                        <label>Deductions</label>
+                                        <div>500 AED</div>
+                                    </div>
+                                    <div class="payment_inner"><lightning:button label="Download Payslip"  class="slds-button_brand btn_red " ></lightning:button></div>
+                                </div>
+                            </lightning:tab>
+                            <lightning:tab label="Dec 2022">
+                                <div class="payment_div">
+                                    <div class="payment_inner">
+                                        <label>Gross Pay</label>
+                                        <div>5,000 AED</div>
+                                    </div>
+                                    <div class="payment_inner">
+                                        <label>Take Home</label>
+                                        <div>4,500 AED</div>
+                                    </div>
+                                    <div class="payment_inner">
+                                        <label>Deductions</label>
+                                        <div>0 AED</div>
+                                    </div>
+                                    <div class="payment_inner"><lightning:button label="Download Payslip"  class="slds-button_brand btn_red " ></lightning:button></div>
+                                </div>
+                            </lightning:tab>
+                        </lightning:tabset>
+                    </div-->                    
+                    </div>
+                    <div class="Home_right">
+                        <div class="box_div">
+                            <div class="sub_heading"><img src="{!$Resource.img_notification}" alt=""/>Notifications</div>
+                            <p class="notification_info">Notification are not available</p>
+                            <!--ul class="notification_info">
+                                <li>
+                                    <p class="notice_info">Please submit your investment proof</p>
+                                    <label class="notice_ord">#9847893</label>
+                                    <span class="notice_time">4m ago</span>
+                                </li>
+                                <li>
+                                    <p class="notice_info">Please submit your investment proof</p>
+                                    <label class="notice_ord">#9847893</label>
+                                    <span class="notice_time">7m ago</span>
+                                </li>
+                                <li>
+                                    <p class="notice_info">Please submit your investment proof</p>
+                                    <label class="notice_ord">#9847893</label>
+                                    <span class="notice_time">15m ago</span>
+                                </li>
+                                <li>
+                                    <p class="notice_info">Please submit your investment proof</p>
+                                    <label class="notice_ord">#9847893</label>
+                                    <span class="notice_time">20m ago</span>
+                                </li>
+                            </ul-->
+                            <!--a class="viewall_btn">View all</a-->
+                        </div>
+                        <div class="box_div">
+                            <div class="sub_heading">Company News</div>
+                            <ul class="company_info">
+                                <li>
+                                    <div class="left_img_new">
+                                        <img src="{!$Resource.comp_img1}" alt=""/>
+                                    </div>                                
+                                    <div class="right_comp_info">
+                                        <p class="company_info">Emirates Transport celebrate the 51st National Day</p>
+                                        <span class="company_time">7m ago</span>
+                                    </div>                                
+                                </li>
+                                <li>
+                                    <div class="left_img_new">
+                                        <img src="{!$Resource.comp_img2}" alt=""/>
+                                    </div>                                
+                                    <div class="right_comp_info">
+                                        <p class="company_info">Emirates Transport concludes its participant in EdEx MENA 2022</p>
+                                        <span class="company_time">7m ago</span>
+                                    </div>                                
+                                </li>
+                                <li>
+                                    <div class="left_img_new">
+                                        <img src="{!$Resource.comp_img3}" alt=""/>
+                                    </div>                                
+                                    <div class="right_comp_info">
+                                        <p class="company_info">Emirates Transport and Dahua Technology Middle East explore tech partnership opportunities</p>
+                                        <span class="company_time">7m ago</span>
+                                    </div>                                
+                                </li>
+                            </ul>
+                            <a class="viewall_btn">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.showTask}">
+            <div id="ET_tasks" class="right_Info_section">
+                <h3 class="topheading">Tasks</h3>
+                <aura:if isTrue="{!v.showNoTaskMsg}">
+                    <div style="font-size: 18px;text-align: center;margin-top: 38px;font-style: italic;">No tasks are assigned to you.</div>
+                </aura:if>
+                <lightning:tabset selectedTabId="{!v.selectedTab}" onselect="{!c.handleSelectTab}" class="toptab" >
+                    <aura:if isTrue="{!v.showEmpHome}">
+                        <aura:if isTrue="{!v.showDriverForm}">
+                            <lightning:tab label="Driver Checklist" id="DriverForm" class="" >  
+                                <c:ET_driverCheckListForm_Home currentUser="{!v.currentUser}"/>
+                            </lightning:tab> 
+                        </aura:if>
+                        <aura:if isTrue="{!v.showVRTSCREEN}">
+                            <lightning:tab label="VRTS" id="VRTS" class="">                         
+                                <c:eT_VRTS/>                                 
+                            </lightning:tab>
+                        </aura:if> 
+                        <!--<lightning:tab label="School Visit Form" id="SchoolForm" class="" > 
+                            <aura:if isTrue="{!v.showSchoolForm}"> 
+                                <c:ET_schoolVisitForm_Home />
+                            </aura:if>
+                        </lightning:tab> 
+                         <lightning:tab label="Field Monitoring Form" id="monitoringForm" class="" > 
+                            <aura:if isTrue="{!v.showMonitoringForm}"> 
+                                <c:ET_fieldMonitoringForm_Home />
+                            </aura:if>
+                        </lightning:tab> -->
+                        <aura:if isTrue="{!v.showEtdiBkngReq}"> 
+                            <lightning:tab label="ETDI Booking Request" id="ETdI" class="" >                         
+                                <c:eTDI_Booking_Request/>                                   
+                            </lightning:tab> 
+                        </aura:if> 
+                        <aura:if isTrue="{!v.showEtdiTrainerSch}">
+                            <lightning:tab label="Trainer Schedules" id="Trainer" class="" >                         
+                                <c:eTDI_TrainerScreen/>                                 
+                            </lightning:tab>
+                        </aura:if> 
+                        <!--<aura:if isTrue="{!v.showEtdiAdqcc}">-->
+                        <lightning:tab label="ADQCC" id="Adqcc" class="" >                         
+                            <c:eTDT_Adqcc/>                                 
+                        </lightning:tab>
+                        <lightning:tab label="RTA" id="rta" class="" >                         
+                            <c:eTDI_RTA/>                                 
+                        </lightning:tab>
+                        <!-- </aura:if> -->
+                        <aura:if isTrue="{!v.showQHSECREEN}">
+                            <lightning:tab label="QHSE" id="QHSE" class="">                         
+                                <c:qHSE_InspectionMain/>                                 
+                            </lightning:tab>
+                        </aura:if> 
+                    </aura:if>  
+                </lightning:tabset>  
+            </div>
+        </aura:if>
+        <!--aura:if isTrue="{!v.showLeave}">
+            <div id="ET_leaves" class="right_Info_section">
+                <h3 class="topheading">Leaves</h3>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.showSalary}">
+            <div id="ET_salary" class="right_Info_section">
+                <h3 class="topheading">Salary</h3>
+            </div>
+        </aura:if
+        added SrihariKoyila on 08-02-23 -->
+        <aura:if isTrue="{!v.showInsurance}">
+            <div id="ET_insurance" class="right_Info_section">
+                <h3 class="topheading">Insurance</h3>
+                <div class="Home_main">
+                    <div class="Home_left">
+                        <div class="profile_info">
+                            <div class="profile_left">
+                                <div class="prfile_innerdiv">
+                                    <!--div class="profile_imgdiv">
+                                        
+                                        <label class="username">{!v.currentUserInsurance.Name} </label>
+                                    </div-->
+                                    
+                                    <div class="profile_details_div">
+                                        <div class="profile_text">
+                                            <label class="pro_label">Member Name</label>
+                                            <label class="pro_value">{!v.currentUserInsurance.Member_Name__c}</label>
+                                        </div>
+                                        <div class="profile_text">
+                                            <label class="pro_label">Relation</label>
+                                            <label class="pro_value">{!v.currentUserInsurance.Relation__c}</label>
+                                        </div>
+                                        <div class="profile_text">
+                                            <label class="pro_label">Insurance Company</label>
+                                            <label class="pro_value">{!v.currentUserInsurance.Insurance_Company__r.Name}</label>
+                                        </div>
+                                        <div class="profile_text">
+                                            <label class="pro_label">Plan</label>
+                                            <label class="pro_value">{!v.currentUserInsurance.Plan__c}</label>
+                                        </div>
+                                        <div class="profile_text">
+                                            <label class="pro_label">Card Number</label>
+                                            <label class="pro_value">{!v.currentUserInsurance.Card_Number__c} </label>
+                                        </div>
+                                        
+                                        <div class="profile_text">
+                                            <label class="pro_label">Effective Date</label>
+                                            <label class="pro_value">{!v.currentUserInsurance.Effective_Date__c}</label>
+                                        </div>
+                                        <div class="profile_text">
+                                            <label class="pro_label">Expiry Date</label>
+                                            <label class="pro_value">{!v.currentUserInsurance.Expiry_Date__c}</label>
+                                        </div>
+                                        
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.showSupport}">
+            <div id="ET_support" class="right_Info_section">
+                <h3 class="topheading">Support</h3>
+            </div>
+        </aura:if>
+        <!--div id="ET_leaves" class="right_Info_section">
+            <h3 class="topheading">Leaves</h3>
+            <div class="leaves_top_status">
+                <div class="leaves_status">
+                    <span>20</span>
+                    <span>Total</span>
+                </div>
+                <div class="leaves_status">
+                    <span>12</span>
+                    <span>Approved</span>
+                </div>
+                <div class="leaves_status">
+                    <span>08</span>
+                    <span>Pending</span>
+                </div>
+                <div class="leaves_status">
+                    <span>17</span>
+                    <span>Taken</span>
+                </div>
+                <div class="leaves_status">
+                    <span>01</span>
+                    <span>Rejected</span>
+                </div>
+            </div>
+            <div class="Home_main">
+                <div class="leaves_section">
+                    <div class="leaves_filter_main"> 
+                        <div class="btn_search"> 
+                            <lightning:button label="New Leave Request" class="slds-button_brand btn_red " ></lightning:button>
+                            <ui:inputSelect class="single" aura:id="InputSelectSingle" change="{!c.onSingleSelectChange}">
+                                <ui:inputSelectOption text="Any"/>
+                                <ui:inputSelectOption text="Open" value="true"/>
+                                <ui:inputSelectOption text="Closed"/>
+                                <ui:inputSelectOption text="Closed Won"/>
+                                <ui:inputSelectOption text="Prospecting"/>
+                                <ui:inputSelectOption text="Qualification"/>
+                                <ui:inputSelectOption text="Needs Analysis"/>
+                                <ui:inputSelectOption text="Closed Lost"/>
+                            </ui:inputSelect> 
+                            <div class="search_div">
+                                <lightning:input type="text" name="input1" label="" placeholder="Search Request" />
+                                <img src="{!$Resource.img_search}" class="search_icon" alt=""/> 
+                            </div>                      
+                        </div>
+                    </div>
+                    <div class="">
+                        <lightning:tabset>
+                            <lightning:tab label="All">
+                                <div class="box_div">
+                                    <table>
+                                        <tr>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Leave Type</th>
+                                            <th>No of Days</th>
+                                            <th>Status</th>
+                                            <th>Approved by</th>
+                                            <th width="100px">Action</th>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </lightning:tab>
+                            <lightning:tab label="Planned" >
+                                <div class="box_div">
+                                    <table>
+                                        <tr>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Leave Type</th>
+                                            <th>No of Days</th>
+                                            <th>Status</th>
+                                            <th>Approved by</th>
+                                            <th width="100px">Action</th>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </lightning:tab>
+                            <lightning:tab label="Unplanned">
+                                <div class="box_div">
+                                    <table>
+                                        <tr>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Leave Type</th>
+                                            <th>No of Days</th>
+                                            <th>Status</th>
+                                            <th>Approved by</th>
+                                            <th width="100px">Action</th>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </lightning:tab>
+                            <lightning:tab label="Sick">
+                                <div class="box_div">
+                                    <table>
+                                        <tr>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Leave Type</th>
+                                            <th>No of Days</th>
+                                            <th>Status</th>
+                                            <th>Approved by</th>
+                                            <th width="100px">Action</th>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </lightning:tab>
+                            <lightning:tab label="Vacation">
+                                <div class="box_div">
+                                    <table>
+                                        <tr>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Leave Type</th>
+                                            <th>No of Days</th>
+                                            <th>Status</th>
+                                            <th>Approved by</th>
+                                            <th width="100px">Action</th>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>23/12/22</td>
+                                            <td>01/101/23</td>
+                                            <td>Vacation</td>
+                                            <td>10</td>
+                                            <td>Pending</td>
+                                            <td>Approver Name</td>
+                                            <td><a class="uploadbtn">Upload</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </lightning:tab>
+                        </lightning:tabset>
+                    </div>                    
+                </div>
+            </div>
+        </div-->
+        <!--div id="ET_salary" class="right_Info_section">
+            <h3 class="topheading">Salary</h3>
+            <div class="Home_main">
+                <div class="leaves_section">
+                    <lightning:tabset selectedTabId="Salary_Structure">
+                        <lightning:tab label="Salary Structure" id="Salary_Structure">
+                            <div class="box_div">
+                                <div class="btn_top_div">
+                                    <lightning:button label="New Request" class="slds-button_brand btn_white " ></lightning:button>
+                                    <lightning:button label="Download" class="slds-button_brand btn_red " ></lightning:button>
+                                </div>
+                                <div class="salary_inner">
+                                    <div class="salary_left">
+                                        <img src="{!$Resource.img_salaryicon}" class="salary_icon" alt=""/>
+                                    </div>
+                                    <div class="salary_right">
+                                        <div class="monthly">Monthly CTC: 5,000 AED</div>
+                                        <div class="yearly">Yearly CTC: 60,000 AED</div>
+                                        <div class="salary_status_info_div">
+                                            <div class="salary_status_info blue_border">
+                                                <label>Earnings</label>
+                                                <label>4,500 AED</label>
+                                            </div>
+                                            <div class="salary_status_info red_border">
+                                                <label>Deductions</label>
+                                                <label>500 AED</label>
+                                            </div>
+                                            <div class="salary_status_info">
+                                                <label>Reimbursements</label>
+                                                <label>0.00 AED</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="earnings_details">
+                                    <div class="sub_heading">Earnings</div>
+                                    <div class="earnings_details_inner">
+                                        <span class="earnings_text">Earnings</span>
+                                        <span class="earnings_value">2,000 AED</span>
+                                    </div>
+                                    <div class="earnings_details_inner">
+                                        <span class="earnings_text">House Rent Allowance</span>
+                                        <span class="earnings_value">1,000 AED</span>
+                                    </div>
+                                    <div class="earnings_details_inner">
+                                        <span class="earnings_text">Other Allowance</span>
+                                        <span class="earnings_value">1,500 AED</span>
+                                    </div>
+                                    <div class="sub_heading">Deductions</div>
+                                    <div class="earnings_details_inner">
+                                        <span class="earnings_text">EPF - Employer Contribution</span>
+                                        <span class="earnings_value">500 AED</span>
+                                    </div>
+                                    <hr></hr>
+                                    <div class="earnings_details_inner">
+                                        <span class="earnings_monthly">Monthly CTC</span>
+                                        <span class="earnings_monthly">4500 AED</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning:tab>
+                        <lightning:tab label="Payslips" id="Payslips">
+                            <div class="box_div">
+                                Payslips !
+                            </div>
+                        </lightning:tab>
+                        <lightning:tab label="Annual Earnings" id="Annual_Earnings">
+                            <div class="box_div">
+                                AnnualEarnings !
+                            </div>
+                        </lightning:tab>
+                        <lightning:tab label="EPF" id="EPF">
+                            <div class="box_div">
+                                EPF !
+                            </div>
+                        </lightning:tab>
+                    </lightning:tabset>
+                    
+                </div>
+            </div>
+        </div-->
+        <!--div id="ET_support" class="right_Info_section">
+            <h3 class="topheading">Support</h3>
+            <div class="Home_main">
+                <div class="leaves_section">
+                    <div class="support_filter_main"> 
+                        <div class="btn_innerfilter"> 
+                            <lightning:button label="New Request" class="slds-button_brand btn_red " ></lightning:button>
+                            <lightning:button label="Download" class="slds-button_brand btn_white " ></lightning:button>
+                        </div>
+                        <div class="btn_search"> 
+                            <ui:inputSelect class="single" aura:id="InputSelectSingle" change="{!c.onSingleSelectChange}">
+                                <ui:inputSelectOption text="Any"/>
+                                <ui:inputSelectOption text="Open" value="true"/>
+                                <ui:inputSelectOption text="Closed"/>
+                                <ui:inputSelectOption text="Closed Won"/>
+                                <ui:inputSelectOption text="Prospecting"/>
+                                <ui:inputSelectOption text="Qualification"/>
+                                <ui:inputSelectOption text="Needs Analysis"/>
+                                <ui:inputSelectOption text="Closed Lost"/>
+                            </ui:inputSelect> 
+                            <div class="search_div">
+                                <lightning:input type="text" name="input1" label="" placeholder="Search Request" />
+                                <img src="{!$Resource.img_search}" class="search_icon" alt=""/> 
+                            </div>                      
+                        </div>
+                    </div>
+                    <div class="box_div">
+                        <table>
+                            <tr>
+                                <th>Request No</th>
+                                <th>Category</th>
+                                <th>Subject</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Date</th>
+                                <th width="100px">Action</th>
+                            </tr>
+                            <tr>
+                                <td>12345</td>
+                                <td>Visa</td>
+                                <td>Visa Renewal</td>
+                                <td>Submitted</td>
+                                <td>Medium</td>
+                                <td>10/01/2023</td>
+                                <td><a class="uploadbtn">action</a></td>
+                            </tr>
+                            <tr>
+                                <td>12345</td>
+                                <td>Visa</td>
+                                <td>Visa Renewal</td>
+                                <td>Submitted</td>
+                                <td>Medium</td>
+                                <td>10/01/2023</td>
+                                <td><a class="uploadbtn">action</a></td>
+                            </tr>
+                            <tr>
+                                <td>12345</td>
+                                <td>Visa</td>
+                                <td>Visa Renewal</td>
+                                <td>Submitted</td>
+                                <td>Medium</td>
+                                <td>10/01/2023</td>
+                                <td><a class="uploadbtn">action</a></td>
+                            </tr>
+                            <tr>
+                                <td>12345</td>
+                                <td>Visa</td>
+                                <td>Visa Renewal</td>
+                                <td>Submitted</td>
+                                <td>Medium</td>
+                                <td>10/01/2023</td>
+                                <td><a class="uploadbtn">action</a></td>
+                            </tr>
+                            <tr>
+                                <td>12345</td>
+                                <td>Visa</td>
+                                <td>Visa Renewal</td>
+                                <td>Submitted</td>
+                                <td>Medium</td>
+                                <td>10/01/2023</td>
+                                <td><a class="uploadbtn">action</a></td>
+                            </tr>
+                            <tr>
+                                <td>12345</td>
+                                <td>Visa</td>
+                                <td>Visa Renewal</td>
+                                <td>Submitted</td>
+                                <td>Medium</td>
+                                <td>10/01/2023</td>
+                                <td><a class="uploadbtn">action</a></td>
+                            </tr>
+                            <tr>
+                                <td>12345</td>
+                                <td>Visa</td>
+                                <td>Visa Renewal</td>
+                                <td>Submitted</td>
+                                <td>Medium</td>
+                                <td>10/01/2023</td>
+                                <td><a class="uploadbtn">action</a></td>
+                            </tr>
+                            <tr>
+                                <td>12345</td>
+                                <td>Visa</td>
+                                <td>Visa Renewal</td>
+                                <td>Submitted</td>
+                                <td>Medium</td>
+                                <td>10/01/2023</td>
+                                <td><a class="uploadbtn">action</a></td>
+                            </tr>
+                        </table>
+                    </div>                   
+                </div>
+            </div>
+        </div-->
+    </div>
+</aura:component>

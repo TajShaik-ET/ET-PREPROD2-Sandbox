@@ -1,0 +1,176 @@
+<apex:page standardController="ETT_Goods_Issue_Note__c" renderAs="pdf" applyBodyTag="false" extensions="ETT_Goods_Note_Issue_Details">
+    <head>
+        <style type="text/css" media="print">
+            @page {
+                margin: 10mm;
+                size: A4;
+            }
+            body {
+                font-family: 'Open Sans', sans-serif;
+                font-size: 12px;
+                margin: 0;
+                padding: 0;
+            }
+            .header {
+                width: 100%;
+                margin-bottom: 20px;
+                text-align: center;
+                border-bottom: 2px solid #000;
+                padding-bottom: 10px;
+            }
+            .header img {
+                width: 180px;
+                height: 120px;
+            }
+            .company-details {
+                text-align: right;
+                font-size: 10px;
+                color: #555;
+            }
+            h1, h2 {
+                margin: 0;
+                padding: 0;
+                color: #333;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            h2 {
+                font-size: 18px;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+            }
+            .content-table, .child-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            .content-table th, .content-table td, .child-table th, .child-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+                font-size: 12px;
+            }
+            .content-table th {
+                background-color: #f7f7f7;
+            }
+            .child-table th {
+                background-color: #f0f0f0;
+                text-align: center;
+            }
+            .child-table td {
+                text-align: right;
+            }
+            .child-table td:first-child, .child-table td:nth-child(2), .child-table td:nth-child(3), .child-table td:nth-child(4) {
+                text-align: left;
+            }
+            .totals-row th {
+                background-color: #fff;
+                font-size: 14px;
+                text-align: right;
+            }
+            .footer {
+                text-align: center;
+                font-size: 10px;
+                color: #777;
+                border-top: 1px solid #ddd;
+                padding-top: 10px;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+            @page {
+                @bottom-right {
+                    content: "Page " counter(page) " of " counter(pages);
+                    font-size: 12px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header Section -->
+        <div class="header" id="header">
+            <table style="width: 100%; border:none;">
+                <tr>
+                    <td style="border:none;">
+                        <apex:image url="{!$Resource.ETT_Logo}" width="180" height="120"/>
+                    </td>
+                    <td style="border:none;text-align:center;">
+                        <h1>Goods Issue Note</h1>
+                    </td>
+                    <td style="border:none;">
+                        <div class="company-details">
+                            Toll Free: 800 6006<br/>
+                            P.O. Box : 5757, Dubai, UAE<br/>
+                            Tel: 04-233 0680, Fax: 04-2872475<br/>
+                            retreadenquiries@et.ae<br/>
+                            www.et.gov.ae
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Goods Note Issue Details -->
+        <div class="content">
+            <h2>Goods Note Details:</h2>
+            <table class="content-table">
+                <tr>
+                    <th>Name :</th>
+                    <td>{!goodsNoteIssue.Name}</td>
+                </tr>
+                <tr>
+                    <th>Issue Type :</th>
+                    <td>{!goodsNoteIssue.Issue_Type__c}</td>
+                </tr>
+                <tr>
+                    <th>Transaction Date :</th>
+                    <td>{!goodsNoteIssue.Transaction_Date__c}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Child Records (ETT_Goods_Issue_Lines__c) -->
+        <div class="content">
+            <h2>Issued Line Items:</h2>
+            <table class="child-table">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Item Code</th>
+                        <th>Product Name</th>
+                        <th>Process Name</th>
+                        <th>Main Stock Price (AED)</th>
+                        <th>Issued Quantity</th>
+                        <th>Total Price (AED)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!goodsIssueLines}" var="line">
+                        <tr>
+                            <td>{!line.Name}</td>
+                            <td>{!line.Item_Code__c}</td>
+                            <td>{!line.Tool_Material_Name__r.Name}</td>
+                            <td>{!line.Process_Name__c}</td>
+                            <td>{!line.Tool_Material_Name__r.Main_Stock_Average_Price__c}</td>
+                            <td>{!line.Issued_Quantity__c}</td>
+                            <td>{!line.Total_Price__c}</td>
+                        </tr>
+                    </apex:repeat>
+                    <tr class="totals-row">
+                        <th colspan="5">Total:</th>
+                        <td>{!totalIssuedQuantity}</td>
+                        <td>{!totalPrice}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer" id="footer">
+            <p>This is a system-generated document. For any inquiries, contact us at www.et.gov.ae</p>
+        </div>
+    </body>
+</apex:page>

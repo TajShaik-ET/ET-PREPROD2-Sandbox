@@ -1,0 +1,326 @@
+<template>
+    <lightning-record-edit-form object-api-name={workforceQuoteItem}  onerror={handleError} onsuccess={handleSuccess}>
+         <!-- Label Line -->
+        <template if:true={isLabelLine}>
+            <div class="slds-grid infoTabs">
+                <!-- <div class="slds-col" style="min-width:70px;max-width:70px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.LABEL_NO_OF_MONTHS}
+                    ></lightning-input-field> 
+                </div> -->
+                <div class="slds-col" style="min-width:90px;max-width:90px">
+                    
+                </div>
+                <div class="slds-col" style="min-width:90px;max-width:90px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.LABEL_REMARKS}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.LABEL_NUMBER_OF_WORKFORCE}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:110px;max-width:110px">
+                    
+                </div>
+                <div class="slds-col" style="min-width:70px;max-width:70px">
+                   
+                </div>
+                <div class="slds-col" style="min-width:120px;max-width:120px"> 
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.LABEL_WORKFORCE_MONTHLY_PRICE}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:120px;max-width:120px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.LABEL_MONTHLY_RATE_ALL_UNIT_WITH_VAT}
+                    ></lightning-input-field>
+                </div>
+
+                <template if:false={isMonthlyContract}>
+                    <div class="slds-col" style="min-width:110px;max-width:110px">
+                        <lightning-input-field  variant="label-hidden"
+                            field-name={customerQuoteWorkforceFields.LABEL_TOTAL_RATE_ALL_UNITS}
+                        ></lightning-input-field>
+                    </div>
+                </template>
+                
+                <div class="slds-col" style="min-width:110px;max-width:110px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.LABEL_TYPE}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col slds-hide" style="min-width:100px;max-width:100px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.LABEL_DELIVERY_DAYS}
+                    ></lightning-input-field>
+                </div>
+
+                <div class="btn_div">
+                    <div class="slds-col" style="padding-top: 24px;">
+                    </div>
+                    <div class="slds-col" style="padding-top: 24px;">
+                    </div>
+                </div>
+                <div class="slds-hide">
+                    <lightning-input-field field-name={customerQuoteWorkforceFields.LABEL_ROW} value={checkBoxFlag}></lightning-input-field>
+                    <lightning-input-field field-name={customerQuoteWorkforceFields.NAME} value="Label Row" ></lightning-input-field>
+                </div>
+            </div>
+        </template>
+
+        <!-- CheckBoxes Line -->
+        <template if:true={isCheckboxLine}>
+            <div class="slds-grid infoTabs">
+                <!-- <div class="slds-col" style="min-width:70px;max-width:70px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.IS_NO_OF_MONTHS}
+                    ></lightning-input-field>
+                </div> -->
+                <div class="slds-col" style="min-width:90px;max-width:90px">
+                    
+                </div>
+                <div class="slds-col" style="min-width:90px;max-width:90px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.IS_REMARKS}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.IS_NUMBER_OF_WORKFORCE}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:120px;max-width:120px">
+                    
+                </div>
+                <div class="slds-col" style="min-width:70px;max-width:70px">
+                   
+                </div>
+                <div class="slds-col" style="min-width:110px;max-width:110px"> 
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.IS_WORKFORCE_MONTHLY_PRICE}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:120px;max-width:120px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.IS_MONTHLY_RATE_ALL_UNIT_WITH_VAT}
+                    ></lightning-input-field>
+                </div>
+
+                <template if:false={isMonthlyContract}>
+                    <div class="slds-col" style="min-width:110px;max-width:110px">
+                        <lightning-input-field  variant="label-hidden"
+                            field-name={customerQuoteWorkforceFields.IS_TOTAL_RATE_ALL_UNITS}
+                        ></lightning-input-field>
+                    </div>
+                </template>
+                
+                <div class="slds-col" style="min-width:110px;max-width:110px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.IS_TYPE}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col slds-hide" style="min-width:100px;max-width:100px">
+                    <lightning-input-field  variant="label-hidden"
+                        field-name={customerQuoteWorkforceFields.IS_DELIVERY_DAYS}
+                    ></lightning-input-field>
+                </div>
+
+                <div class="btn_div">
+                    <div class="slds-col" style="padding-top: 24px;">
+                    </div>
+                    <div class="slds-col" style="padding-top: 24px;">
+                    </div>
+                </div>
+                <div class="slds-hide">
+                    <lightning-input-field field-name={customerQuoteWorkforceFields.CHECKBOX_ROW} value={checkBoxFlag}></lightning-input-field>
+                    <lightning-input-field field-name={customerQuoteWorkforceFields.NAME} value="CheckBox Row" ></lightning-input-field>
+                </div>
+            </div>
+        </template>
+
+        <!-- Workforce Line -->
+        <template if:true={isActualValuedLine}>
+            
+            <div class="slds-grid infoTabs">
+
+                <template if:true={isMonthlyContract}>
+                    <div class="slds-col slds-hide" style="min-width:70px;max-width:70px">
+                        <lightning-input-field 
+                            data-id="numberOfMonths"
+                            field-name={customerQuoteWorkforceFields.NO_OF_MONTHS}
+                            value={calculatedCost.numberOfMonths} 
+                            onchange={calculateCost}
+                        ></lightning-input-field>
+                    </div>
+                </template>
+                <template if:false={isMonthlyContract}>
+                    <div class="slds-col slds-hide" style="min-width:70px;max-width:70px">
+                        <lightning-input-field 
+                            data-id="numberOfYears"
+                            field-name={customerQuoteWorkforceFields.NO_OF_YEARS}
+                            value={lineitem.ContractPeriodInYears} 
+                            disabled="true"
+                            onchange={calculateCost}
+                        ></lightning-input-field>
+                    </div>
+                </template>
+
+                <div class="slds-col" style="min-width:90px;max-width:90px">
+                    <lightning-input-field 
+                        field-name={customerQuoteWorkforceFields.NAME} 
+                        value={lineitem.Name} 
+                        disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:90px;max-width:90px">
+                    <lightning-input-field class="slds-col" 
+                        data-id="REMARKS" 
+                        field-name={customerQuoteWorkforceFields.REMARKS}
+                        value={lineitem.Name}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field 
+                        data-id="noOfVehicle"
+                        field-name={customerQuoteWorkforceFields.NUMBER_OF_VEHICLE}
+                        value={lineitem.NumberOfWorker} 
+                        onchange={calculateCost}
+                    ></lightning-input-field>
+                </div>
+                <!-- <div class="slds-col slds-size_1-of-13">
+                    <lightning-input-field class="slds-col" 
+                        field-name={customerQuoteWorkforceFields.TOTAL_VEHICLE_COST} 
+                        value={lineitem.TotalWorkforceCost} 
+                        disabled="true" 
+                    ></lightning-input-field>
+                </div> -->
+                <div class="slds-col" style="min-width:110px;max-width:110px">
+                    <lightning-input-field class="slds-col" 
+                        data-id="monthlyVehiclePrice"  
+                        field-name={customerQuoteWorkforceFields.VEHICLE_MONTHLY_PRICE} 
+                        value={lineitem.monthlyVehiclePrice} 
+                        disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:70px;max-width:70px">
+                    <lightning-input-field class="slds-col"
+                        data-id="extraCost"
+                        field-name={customerQuoteWorkforceFields.EXTRA_COST}
+                        value={calculatedCost.extraCost}
+                        onkeypress={checkPositiveValue}
+                        onchange={calculateCost} 
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:120px;max-width:120px">
+                    <lightning-input-field class="slds-col"
+                        data-id="monthlyVehicleCost" 
+                        field-name={customerQuoteWorkforceFields.VEHICLE_MONTHLY_COST} 
+                        value={calculatedCost.monthlyVehicleCost} 
+                        disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <!-- <div class="slds-col slds-size_1-of-13">
+                    <lightning-input-field class="slds-col" 
+                        data-id="vatRate" 
+                        field-name={customerQuoteWorkforceFields.VAT}
+                        onchange={calculateCost}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-13">
+                    <lightning-input-field class="slds-col" 
+                        data-id="vatPerUnit" 
+                        field-name={customerQuoteWorkforceFields.VAT_PER_UNIT} 
+                        value={calculatedCost.vatPerUnit} 
+                        disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-13">
+                    <lightning-input-field class="slds-col" 
+                        data-id="monthRateWithVat" 
+                        field-name={customerQuoteWorkforceFields.MONTHLY_RATE_WITH_VAT} 
+                        value={calculatedCost.monthRateWithVat} 
+                        disabled="true"
+                    ></lightning-input-field>
+                </div> -->
+                <div class="slds-col" style="min-width:120px;max-width:120px">
+                    <lightning-input-field class="slds-col" 
+                        data-id="monthRateAllUnits" 
+                        field-name={customerQuoteWorkforceFields.MONTHLY_RATE_ALL_UNITS_WITH_VAT} 
+                        value={calculatedCost.monthRateAllUnits} 
+                        disabled="true"
+                    ></lightning-input-field>
+                </div>
+
+                <template if:false={isMonthlyContract}>
+                    <div class="slds-col" style="min-width:110px;max-width:110px">
+                        <lightning-input-field class="slds-col" 
+                            data-id="totalRateAllUnits" 
+                            field-name={customerQuoteWorkforceFields.TOTAL_RATE_ALL_UNITS} 
+                            value={calculatedCost.totalRateAllUnits} 
+                            disabled="true"
+                        ></lightning-input-field>
+                    </div>
+                </template>
+                
+                <div class="slds-col" style="min-width:110px;max-width:110px">
+                    <lightning-input-field class="slds-col" 
+                        data-id="workforceType" 
+                        field-name={customerQuoteWorkforceFields.TYPE} 
+                        value={lineitem.workforceType} 
+                        disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col slds-hide" style="min-width:100px;max-width:100px">
+                    <lightning-input-field class="slds-col" 
+                        data-id="DELIVERY_DAYS" 
+                        field-name={customerQuoteWorkforceFields.DELIVERY_DAYS} 
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-hide" style="min-width:100px;max-width:100px">
+                    <lightning-input-field class="slds-col" 
+                        data-id="OPPORTUNITY" 
+                        field-name={customerQuoteWorkforceFields.OPPORTUNITY} 
+                        value={lineitem.quote.Opportunity.Id}
+                        disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-hide" style="min-width:90px;max-width:90px">
+                    <lightning-input-field class="slds-col" 
+                        data-id="QUOTE" 
+                        field-name={customerQuoteWorkforceFields.QUOTE} 
+                        value={lineitem.quote.Id}
+                        disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:100px;max-width:200px">
+                    <lightning-input type="text" label="Quote Opp Number" value={numberQuoteOpp} read-only="true"></lightning-input>
+                </div>
+                <!--<div class="slds-col" style="min-width:90px;max-width:90px">
+                    <lightning-input type="text" label="Opportunity Number" value={lineitem.oppoNumber} read-only="true"></lightning-input> {lineitem.quoteNumber}
+                </div> -->
+                <!-- <div class="slds-col slds-size_1-of-13">
+                    <lightning-input-field class="slds-col" 
+                        data-id="EXPECTED_MOB" 
+                        field-name={customerQuoteWorkforceFields.EXPECTED_MOB} 
+                    ></lightning-input-field>
+                </div> -->
+                <div class="slds-col slds-size_1-of-13 slds-p-right_small" style="padding-top: 25px;">
+                    <lightning-button variant="brand" class="slds-m-top_small" onclick={handleWorkforceDelete}  label="Delete" ></lightning-button>
+                </div>
+                <div class="slds-hide">
+                    <lightning-input-field data-id="LineNumber" value={lineitem.LineNumber} field-name={customerQuoteWorkforceFields.LINE_NUM}></lightning-input-field>
+                    <lightning-input-field data-id="serviceType" value={lineitem.serviceType} field-name={customerQuoteWorkforceFields.SERVICE_TYPE}></lightning-input-field>
+                    <lightning-input-field data-id="ContractPeriodInYears" value={lineitem.ContractPeriodInYears} field-name={customerQuoteWorkforceFields.CONTRACT_PERIODE}></lightning-input-field>
+                    <lightning-button variant="brand" type="submit" label="Save"> </lightning-button>
+                </div>
+            </div>
+        </template>
+
+        <div class="slds-hide">
+            <lightning-input-field data-id="customerQuoteId" value={customerQuoteId} field-name={customerQuoteWorkforceFields.CUSTOMER_QUOTE}></lightning-input-field>
+            <lightning-button variant="brand" type="submit" label="Save"> </lightning-button>
+        </div>
+    </lightning-record-edit-form>
+</template>

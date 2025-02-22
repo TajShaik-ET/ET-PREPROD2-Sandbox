@@ -1,0 +1,287 @@
+<apex:page applyBodyTag="false" showHeader="false" renderAs="pdf" standardController="Addendum__c" extensions="ET_AddendumPDFPageController">
+    
+    <head>
+        <style type="text/css" media="print">
+            @page{
+            size:A4;
+            font-family: Arial, sans-serif;
+            margin: 20px; 
+            }
+            body {
+            font-family: Arial, sans-serif;
+            margin: 0px;
+            font-size: 14px; 
+            }
+            h2, h3, h4 { 
+            font-weight: bold;
+            margin: 0px;
+            }
+            .section {
+            margin-bottom: 20px;
+            }
+            ul {
+            list-style-type: disc;
+            margin-left:15px;
+            }
+            .alphaList{
+            list-style-type:lower-alpha;
+            }
+            ul li{
+            line-height:22px;
+            margin-bottom:15px; 
+            }
+            .orderlist{
+            margin-left:20px;
+            }
+            .orderlist li{
+            margin-bottom:15px;  
+            line-height:22px;
+            }
+            table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            } 
+            th, td { 
+            padding: 8px;
+            }
+            .tableBorder{
+            margin-bottom:20px;
+            }
+            .tableBorder td{
+            border:1px solid #000; 
+            }
+            .tableBorder th {
+            background-color: #f9f9f9;
+            border:1px solid #000; 
+            font-weight: bold; 
+            }
+            .footer-section {
+            margin-top: 40px;
+            }
+            .footer-section table {
+            width: 100%;
+            }
+            .footer-section td {
+            text-align: left;
+            padding: 5px;
+            }
+            .signature-section {
+            margin-top: 30px; 
+            }
+            .signature-section td {   
+            padding:10px;
+            font-weight:bold;
+            border-bottom:1px solid #000;  
+            }
+            .signature-box p {
+            margin: 25px 0;
+            }
+            font-weight: bold; 
+            }
+            .section {
+            margin: 14px;
+            }
+            div.divHeader {
+            margin:20px 0px;
+            display: block;
+            padding: 5px;
+            position: running(header);
+            }
+            table {
+            page-break-inside: avoid;
+            }
+            
+            tr {
+            page-break-inside: avoid;
+            }
+            
+            
+            .page-break {
+            page-break-before: always;
+            }	
+        </style>
+    </head>
+    <body>
+        <div class="divHeader">
+            <table>
+                <tr>
+                    <td>
+                        <img src="{!$Resource.logoET}" alt="ETLogo" width="160" style="float: right;"/> 
+                    </td>
+                </tr>      
+            </table> 
+        </div>
+        <apex:pageBlock >
+            <table>
+                <tr>
+                    <td>
+                        
+                        <h2 style="text-align:center; font-size:14px; text-decoration:underline; line-height:22px;">Addendum No 1 {!Addendum__c.Name} for Agreement No {!Addendum__c.Contract__r.Name} 
+                            <br/>Leasing of vehicles without fuel and drivers (Renewal) </h2>
+                        
+                        <div class="section">
+                            <p style="margin-top:25px;">This addendum (“Addendum -{!Addendum__c.Name}”) has been made on <span class="highlight"><apex:outputText value="{0,date,dd-MMM-yyyy}">
+                                <apex:param value="{!Addendum__c.Effective_Date__c}" />
+                                </apex:outputText></span> between:</p>
+                            
+                            <p style="text-decoration:underline;"> By and between the following Parties: </p>
+                            <ol class="orderlist">
+                                <li><strong>The First Party (Lessor):</strong> Emirates Public Transport and Services Company, established as per
+                                    decree of Federal Law No. 22 of 2019 in UAE whose principal place of business is at Marrakech Street, Umm Ramool Area, 
+                                    P.O. Box - 5757, Dubai, United Arab Emirates, represented by Mr. Alexander Erwin Rentier, Chief Executive Officer 
+                                    (“hereinafter referred to as Lessor”). </li> 
+                                <li>
+                                    <strong>The Second Party (Lessee):</strong> {!Addendum__c.Customer_Quote__r.Account_Name__r.Name}, a company established as {!Addendum__c.Trade_License__c}  in UAE, 
+                                    whose principal place of business is at {!Addendum__c.Account_Emirate__c} P.O. Box {!Addendum__c.P_O_Box__c}, United Arab Emirates, represented by Mr.{!Addendum__c.Company_s_Representative__c} 
+                                    as {!Addendum__c.Customer_Designation__c} ("hereinafter referred to as Lessee").
+                                    <br/><br/>
+                                    Lessor and the Lessee are hereinafter referred to as “Parties” and individually as “Party.”
+                                </li>
+                            </ol>  
+                        </div>
+                        
+                        <h4 style="text-align:center; font-size:14px; text-decoration:underline;">Recital</h4>
+                        <ul>
+                            <li>
+                                Whereas the two parties had entered into an agreement dated on (<apex:outputText value="{0,date,dd-MMM-yyyy}">
+                                <apex:param value="{!Addendum__c.Effective_Date__c}" />
+                                </apex:outputText>)
+                                for leasing vehicles without fuel and drivers, hereinafter referred to as the Main Agreement.
+                            </li>
+                            <li>
+                                The Parties agreed that this Addendum -1 shall be effective until <span class="highlight">{!Addendum__c.Number_of_Year_Month__c} {!Addendum__c.Duration_Type__c}</span>.
+                            </li>
+                            <li>
+                                Whereas, the Parties wish to amend the term of the Main Agreement through this “Addendum -{!Addendum__c.Name}.”
+                            </li>
+                        </ul>
+                        
+                        <p>NOW THEREFORE, the Parties hereby agree to amend the following:</p>
+                        <p>
+                            Referring to the Lessee’s request, the Parties hereby mutually agree to extend the contract for
+                            <span class="highlight">{!Addendum__c.Number_of_Year_Month__c} {!Addendum__c.Duration_Type__c}</span> period starting  <span class="highlight"><apex:outputText value="{0,date,dd-MMM-yyyy}">
+                            <apex:param value="{!Addendum__c.Mobilization_Date__c}" />
+                            </apex:outputText></span>
+                            according to the quote submitted by the Lessor and prices are shown below:
+                        </p>
+                        
+                        <table class="tableBorder">
+                            <thead>
+                                <tr>
+                                    <th>Sr No</th>
+                                    <!--th>Vehicle Type</th-->
+                                    <th>Model</th>
+                                    <th>Mobilization Date</th>
+                                    <th>Annual Milage</th>
+                                    <th>Extra KM Price</th>
+                                    <th>Monthly Cost Per Year</th>
+                                    <th>Qty</th>
+                                    <th>Total Monthly Rate Ex VAT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:variable var="srNo" value="{!1}" />
+                                <apex:repeat var="Veh" value="{!vehicleList}">
+                                    <tr>
+                                        <td>{!srNo}</td>
+                                        <!--td>{!Veh.Name} </td-->
+                                        <td>{!Veh.Remarks__c} </td>
+                                        <td><apex:outputText value="{0,date,dd-MMM-yyyy}">
+                                            <apex:param value="{!Addendum__c.Mobilization_Date__c}" />
+                                            </apex:outputText>
+                                        </td>
+                                        <td>
+                                            <apex:outputText value="{0,number,#}">
+                                                <apex:param value="{!Veh.ET_Total_Annual_Mileage__c}" />
+                                            </apex:outputText>
+                                        </td>
+                                        <td> 
+                                            {!Veh.Extra_Miles__c}
+                                        </td>
+                                        <td>AED &nbsp; 
+                                            <apex:outputText value="{0, number, ###,###,###,###.##}">
+                                                <apex:param value="{!Veh.Vehicle_Monthly_Cost__c}"/>
+                                            </apex:outputText>
+                                        </td>
+                                        <td>{!Veh.Number_of_Vehicles__c}</td>
+                                        <td>AED &nbsp; 
+                                            <apex:outputText value="{0, number, ###,###,###,###.##}">
+                                                <apex:param value="{!Veh.Vehicle_Monthly_Cost__c}"/>
+                                            </apex:outputText>
+                                        </td>
+                                    </tr>
+                                    <apex:variable var="srNo" value="{!srNo + 1}" />
+                                </apex:repeat>
+                                <tr>
+                                    <td colspan="9" style="text-align:center;"><strong>Total Amount without VAT (AED) <apex:outputText value="{0, number, ###,###,###,###.##}">
+                                        <apex:param value="{!totalContractValue}"/>
+                                        </apex:outputText></strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        
+                        
+                        <h4 style="text-align:center; font-size:14px; text-decoration:underline; margin-top:30px;">Clause (1) Early Termination Fee</h4>
+                        <p>
+                            In case of any early termination, whether partially or fully by the Lessee for the above referred vehicle, 
+                            an early termination fee shall be applicable as follows:
+                        </p>
+                        <ul>
+                            <li>
+                                In case any vehicle is terminated, the Lessee shall provide {!Addendum__c.Number_of_Year_Month__c} month notice period in writing from the date of 
+                                the notice before any such termination and shall also pay a rental fee of ({!Addendum__c.Number_of_Year_Month__c}) months as an early termination fee.
+                                <!--<ul>
+<li>This Addendum shall be binding upon and inure to the benefit of the Parties, their successors and permitted assigns.</li>
+<li>Lessee shall use the vehicle only as per the intended and agreed purpose of the lease of the vehicle.</li>
+<li> All terms and conditions of the main agreement shall remain valid, effective, and applicable unless agreed herein under in this addendum {!Addendum__c.Name}.</li>
+</ul>-->
+                            </li>
+                        </ul>
+                        
+                        <!-- Article 1 -->
+                        <div class="section">
+                            <apex:pageBlockTable value="{!contractDetails}" var="article">
+                                <apex:column >
+                                    <div>
+                                        <h4>{!article.articleLineNo}.  <u>{!article.Name}</u></h4>
+                                    </div>
+                                    <table class="article_table">
+                                        <apex:repeat value="{!article.subCaluses}" var="subClause">
+                                            <tr class="left_margin"><td style="padding-left:20px;padding-right:5px;padding-bottom:8px">{!subClause.Name}</td><td style="text-align: justify">{!subClause.Description}</td></tr>
+                                        </apex:repeat>
+                                    </table>
+                                </apex:column>
+                            </apex:pageBlockTable>
+                        </div>
+                        
+                        <!-- Article end -->
+                        <table class="tableBorder">
+                            <tr>
+                                <td class="signature-box" style="width:50%;">
+                                    <p><strong>For and on behalf of Emirates Transport</strong></p>
+                                    <p>Name: Mr. Alexander Erwin Rentier</p>
+                                    <p>Position: Chief Executive Officer</p>
+                                    <p>Date:</p>
+                                    <p>Signature:</p>
+                                    <p>Stamp:</p>
+                                </td>
+                                <td class="signature-box">
+                                    <p><strong>For and on behalf of {!Addendum__c.Customer_Quote__r.Account_Name__r.Name}</strong></p>
+                                    <p>Name: {!Addendum__c.Company_s_Representative__c}</p>
+                                    <p>Position: {!Addendum__c.Customer_Designation__c}</p>
+                                    <p>Date:</p>
+                                    <p>Signature:</p>
+                                    <p>Stamp:</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </apex:pageBlock>
+    </body>
+    
+</apex:page>

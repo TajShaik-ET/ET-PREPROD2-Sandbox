@@ -1,0 +1,115 @@
+<template>
+		<div class="backgroundImage">
+				<img src={backgroundImage} />
+		</div>
+		<div>
+				<div>
+						<div class="topbtndiv">
+								<button onclick={navigateHome} class="backbtn">{BACK}</button>
+								<div class="slds-form_horizontal slds-p-around_medium filtersection">
+										<div class="filterdiv">
+											<template if:true={lang_en}>
+												<lightning-combobox
+																						name="filter"
+																						label={Sort_By}
+																						value={filterValue}
+																						options={options}
+																						onchange={handleChange}>
+																					</lightning-combobox>
+											</template>
+											<template if:false={lang_en}>
+												<lightning-combobox
+																						name="filter"
+																						label={Sort_By}
+																						value={filterValue}
+																						options={options_AR}
+																						onchange={handleChange}>
+																					</lightning-combobox>
+											</template>
+										</div>
+								</div>
+						</div>
+						<div class="profile_container">
+								<div if:true={showMessage} class="nodata">
+										<p>{NO_SERVICES}</p>
+								</div>
+								<template if:true={filteredRecords}>
+										<template for:each={filteredRecords} for:item="req">
+												<div key={req.Id} class="bgmainsection">
+														<div class="profiletop">
+																<div class="leftsec">
+																		<div class="profileno">{req.Name}</div>
+																		<div class="profileName">{req.ETST_Student_Name__c}</div>
+																</div>
+																<div class="rightsec">
+																		<img src={busImage} />
+																</div>
+														</div>
+														<div class="detailsec">
+																<div class="detailsec_left">
+																	<div class="headingtxt">{SERVICE_TYPE}</div> 
+																		<div class="headingvalue">
+																				{req.ETST_Service_Type__c}&nbsp;
+																		</div>
+																</div>
+																<div class="detailsec_right">
+																		 <div class="headingtxt">{TRANSPORT_TYPE}</div>
+																		<div class="headingvalue">
+																				{req.ETST_Transport_Type__c}&nbsp;
+																		</div>
+																</div>
+														</div>
+														<div class="detailsec">
+																<div class="detailsec_left">
+																		<div class="headingtxt">{START_DATE}</div> 
+																		<div class="headingvalue">
+																				{req.ETST_Pick_Up_Start_Date__c}&nbsp;
+																		</div>
+																</div>
+																<div class="detailsec_right">
+																		<div class="headingtxt">{END_DATE}</div> 
+																		<div class="headingvalue">
+																				{req.ETST_Pick_Up_End_Date__c}&nbsp;
+																		</div>
+																</div>
+														</div>
+														<div class="detailsec">
+																<div class="detailsec_left">
+																	 <div class="headingtxt">{PAYMENT}</div> 
+																		<div class="headingvalue amounts">
+																				{req.ETST_Fare_Charges__c}&nbsp;
+																		</div>
+																</div>
+																<div class="detailsec_right">
+																		 <div class="headingtxt">{REFUND}</div> 
+																		<div class="headingvalue amounts">
+																				{req.ETST_Refund_Amount__c}&nbsp;
+																		</div>
+																</div>
+														</div>
+														<div class="detailsec">
+																<div class="detailsec_left">
+																		<div class="headingtxt">{STATUS}</div> 
+																		<div class="headingvalue">{req.ETST_Status__c}</div>
+																</div>
+																<div class="detailsec_right">
+																		<!--div if:true={showPayButton}>
+																				 <lightning-button
+															 variant="success"
+															 label="Pay Now"
+															 onclick={handlePaynow}
+															 class="slds-m-left_x-small floatright" 
+															 name={req.Id}
+															 ></lightning-button> 
+																				<a href="" onclick={handlePaynow} name={req.Id} class="paynow">Pay Now</a>
+																		</div-->
+																</div>
+														</div>
+												</div>
+										</template>
+								</template>
+						</div>
+						<template if:true={errors}> <p>{errors} - error</p> </template>
+				</div>
+		</div>
+</template>

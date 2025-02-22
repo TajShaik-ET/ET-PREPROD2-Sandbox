@@ -1,0 +1,503 @@
+<aura:component extends="c:ETST_BilingualCommunity" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes,force:appHostable" access="global">
+    <aura:attribute name="recordId" type="Id" /> 
+    <aura:attribute name="lang" type="String" /> 
+    <aura:attribute name="lat" type="String" /> 
+    <aura:attribute name="lon" type="String" /> 
+    <aura:attribute name="searchText" type="String" /> 
+    <aura:attribute name="requestId" type="Id" />
+    <aura:attribute name="mapLoaded" type="Boolean" default="true" />
+    <aura:attribute name="vfUrl" type="String" />
+    <aura:attribute name="locType" type="String" />
+    <aura:attribute name="currentSchoolName" type="String" /> 
+    <aura:attribute name="newSchoolName" type="String" /> 
+    <aura:attribute name="prefixURL" type="String" default="/sfc/servlet.shepherd/version/download/"/>
+    <aura:attribute name="documentId" type="String" />
+    <aura:attribute name="imageURL" type="String" />
+    <aura:attribute name="disabled" type="Boolean" default="false"/> 
+    <aura:attribute name="openpickupMap" type="Boolean" default="false"/> 
+    <aura:attribute name="errors" type="string" />
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="serviceInfo" type="string" default="" />
+    <aura:attribute name="isfeebackModal" type="boolean" default="false"/>
+    <aura:attribute name="studentRecord" type="ETST_Student__c"  
+                    default="{'sObjectType':'ETST_Student__c', 'Name':'','ETST_School__c':''}" />
+    <aura:attribute name="serviceRecord" type="ET_Service_Request__c" />
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="showPayment" type="Boolean" default="true" />
+    <aura:attribute name="showSupportButton" type="Boolean" default="true" />
+    <aura:attribute name="showNote" type="Boolean" default="false" />
+    <aura:attribute name="showPInfoSave" type="Boolean" default="true" />
+    <aura:attribute name="PersonalIfoforGov" type="Boolean" default="false" />
+    
+    
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      layoutType="FULL"
+                      fields="Name,ETST_Student_School__c,ETST_School_Name__c,ETST_School_Name__r.ETST_Account_Type__c"
+                      targetFields="{!v.studentRecord}"
+                      targetError="{!v.recordLoadError}"
+                      recordUpdated="{!c.onForceLoad}"
+                      />
+    <div class="bgimage"></div>
+    <div class="profilePagesec">        
+        <div class="bgstuddetdiv desktopview">
+            <a onclick="{!c.openModel}"> 
+                <div class="linkpicture" >
+                    <aura:if isTrue="{!v.documentId==null}">
+                        <img class="img-fluid" src="{!$Resource.ETST_DefaultPhoto}"/>
+                        <aura:set attribute="else">
+                            <img class="img-fluid" src="{!v.imageURL}" />
+                            <img  src="{!$Resource.camera_img}" class="cameraimg"/>
+                        </aura:set>
+                        <img  src="{!$Resource.camera_img}" class="cameraimg"/>
+                    </aura:if>                    
+                </div>
+            </a>
+            <div class="studentnametext">{!v.studentRecord.ETST_First_Name__c}&nbsp;{!v.studentRecord.Name}</div>
+            <div class="studentclasstext">{!v.studentRecord.ETST_Student_School__c}</div>
+            <!--<a href="" class="backbtnlink" onclick="{!c.cancelSave}"><lightning:icon iconName="utility:macros" alternativeText="Back" title="Back" /> Back</a>-->
+            <a href="" class="backbtnlink" onclick="{!c.cancelSave}">{!v.clBack}</a>
+            <!-- Added condition to hide support in student section Sreelakshmi SK 5/6/23 -->
+            <aura:if isTrue="{!v.showSupportButton}">
+            <a onclick="{!c.openFeedbackModal}" class="supporttnlink">
+                {!v.clSupport}
+                </a></aura:if>
+        </div>
+        <div class="bgstuddetdiv mobileview">
+            <a href="" onclick="{!c.cancelSave}" class="backarrow">
+                <!--<img src="{!$Resource.backarrow_img}" />-->
+                <span>&#10094;</span>
+            </a>
+            <div class="linkpicturemob" >
+                <aura:if isTrue="{!v.documentId==null}">
+                    <img class="img-fluid" src="{!$Resource.ETST_DefaultPhoto}"/>
+                    <aura:set attribute="else">
+                        <img class="img-fluid" src="{!v.imageURL}" />
+                    </aura:set>
+                </aura:if>
+            </div>            
+            <div class="studentnametextmob">{!v.studentRecord.ETST_First_Name__c}&nbsp;{!v.studentRecord.Name}</div>
+            <div class="studentclasstextmob">{!v.studentRecord.ETST_Student_School__c}</div>        
+        </div>
+        <div class="linksmaindiv desktopviewlinks">             
+            <!--
+            <ul>
+                <li>
+                    <a onclick="{!c.cancelSave}"><lightning:icon iconName="utility:home" alternativeText="Home" class="atagsideimg" />{!v.clHome}</a>
+                </li>
+                <li>
+                    <a onclick="{!c.openModel}"><lightning:icon iconName="utility:edit" alternativeText="Change Image" class="atagsideimg" />{!v.clChangeImage}</a>
+                </li>
+                <li id="profilelistview">
+                    <a onclick="{!c.openModel}"> 
+                        <div class="linkpicture" >
+                            <aura:if isTrue="{!v.documentId==null}">
+                                <img class="img-fluid" src="{!$Resource.ETST_DefaultPhoto}"/>
+                                <aura:set attribute="else">
+                                    <img class="img-fluid" src="{!v.imageURL}" />
+                                </aura:set>
+                                
+                            </aura:if>
+                            
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#paymentshis" class=""><lightning:icon iconName="utility:currency" alternativeText="Payment" class="atagsideimg" />{!v.clPayment}</a>
+                </li>
+                <li>
+                    <a onclick="{!c.openFeedbackModal}" class="lastatagbor"><lightning:icon iconName="utility:case" alternativeText="Report an Issue" class="atagsideimg" />{!v.clSupport}</a> 
+                </li>
+            </ul>-->
+            <aura:if isTrue="{!v.isfeebackModal}" > 
+                <c:ETST_ParentFeedbackPage studentRecord="{!v.studentRecord.Id}" isfeebackModal="{!v.isfeebackModal}" aura:id="feedbackPage" />
+            </aura:if>
+        </div>
+        <!--<div class="linksmaindiv mobileviewlinks">
+            <ul>
+                <li>
+                    <a onclick="{!c.cancelSave}"><lightning:icon iconName="utility:home" alternativeText="Home" class="atagsideimg" />{!v.clHome}</a>
+                </li>
+                <li>
+                    <a onclick="{!c.openModel}"><lightning:icon iconName="utility:edit" alternativeText="Change Image" class="atagsideimg" />Profile</a>
+                </li>
+                <li>
+                    <a onclick="{!c.openFeedbackModal}" class="lastatagbor"><lightning:icon iconName="utility:case" alternativeText="Report an Issue" class="atagsideimg" />{!v.clSupport}</a> 
+                </li>
+            </ul>
+            <aura:if isTrue="{!v.isfeebackModal}" > 
+                <c:ETST_ParentFeedbackPage studentRecord="{!v.studentRecord.Id}" isfeebackModal="{!v.isfeebackModal}" aura:id="feedbackPage" />
+            </aura:if>
+        </div>-->
+        <!--<div class="picturediv">
+        <div class="picture" >
+            <aura:if isTrue="{!v.documentId==null}">
+                <img class="img-fluid" src="/resource/1584167987000/ETSTStudentImage" />
+                <aura:set attribute="else">
+                    <img class="img-fluid" src="{!v.imageURL}" />
+                </aura:set>
+            </aura:if>
+        </div>
+    </div>-->
+        <aura:if isTrue="{!v.isModalOpen}">
+            
+            <!-- Modal/Popup Box starts here-->
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container animated slideInUp">
+                    <!-- Modal/Popup Box Header Starts here-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Upload Student Photo</h2>
+                    </header>
+                    <!--Modal/Popup Box Body Starts here-->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <div aura:id="uploadImage" id="uploadImage"  style="height: 250px;text-align: center;">
+                            
+                            <!--<p class="uploadimg">{!$Label.c.ETST_Upload_Your_Student_Photo}</p>-->
+                            <lightning:fileUpload label=""
+                                                  name="fileUploader"
+                                                  multiple="false"
+                                                  disabled="false"
+                                                  accept=".png,.jpg,.jpeg"
+                                                  recordId="{!v.recordId}"
+                                                  onuploadfinished="{!c.handleUploadFinished}" class="uploadbtn"/>
+                            <div aura:id="showImage" class="slds-hide">
+                                <div class="profiledivupload">
+                                    <img src="{!v.imageURL}" class="profileimg"/>
+                                </div>                   
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--Modal/Popup Box Footer Starts here-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="brand"
+                                          label="{!v.clSubmit}"
+                                          title="Close"
+                                          onclick="{!c.submitDetails}" class="btn_table"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+        
+        <lightning:accordion activeSectionName="A" class="accordionMainSection">
+            <lightning:accordionSection name="A" label="{!v.clPersonalInfo}">
+                <!-- show note to not edit.... Sreelakshmi SK 5/6/23 -->
+                
+                <aura:if isTrue="{!v.showNote}">
+                    <aura:if isTrue="{!v.clLang!='ar'}">
+                    <p style="padding: 10px;"><b>NOTE:</b> Contact your school in case of data correction</p>
+                        <aura:set attribute="else">
+                            <p style="padding: 10px;"><b>ملحوظة:</b> تواصل مع المدرسة في حال البيانات بحاجة للتصحيح</p>
+                        </aura:set>
+                    </aura:if>
+                    </aura:if>
+                    
+                <div class="colnew secondcontentdiv">
+                    <!--<h3 class="contentheading">{!v.clPersonalInfo}</h3>-->
+                    <lightning:card variant="Narrow" title="" class="detailsheading">
+                        <aura:if isTrue="{!v.showSpinner}">
+                            <lightning:spinner />
+                        </aura:if>
+                        
+                        <lightning:recordEditForm aura:id="StudentDetailsEditForm" 
+                                                  recordId="{!v.recordId}"
+                                                  objectApiName="ETST_Student__c"
+                                                  onload="{!c.onLoadActions}"
+                                                  onsubmit="{!c.onSubmit}"
+                                                  onerror="{!c.onError}"
+                                                  onsuccess="{!c.onSuccess}">
+                            <!-- the messages component is for error messages -->
+                            <lightning:messages />
+                            
+                            <!--  <div class="formdetails">
+                                <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_First_Name__c" required="true" variant="label-stacked"/> 
+                                <lightning:inputField aura:id="formFieldstoValidate" fieldName="Name" required="true" variant="label-stacked"/> 
+                                <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Student_Id__c" required="true" variant="label-stacked"/> 
+                                <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Date_of_Birth__c" required="true" variant="label-stacked" dateStyle="short" />
+                                <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Emirates_Id__c" required="true" variant="label-stacked"/>
+                                <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Gender__c" required="true" variant="label-stacked"/>
+                                <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Phone__c" required="true" variant="label-stacked" />
+                                <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Division__c" required="true" variant="label-stacked" />
+                                <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Grade__c" required="true" variant="label-stacked" />
+                            </div> -->
+                            
+                            <div class="formdetails">
+                                <aura:if isTrue="{!!v.PersonalIfoforGov}">
+                                <!--lightning:inputField aura:id ='ETST_School__c' fieldName="ETST_School_Name__c" required="true" onchange="{!c.onSchoolChangeAction}"/-->    
+                                <!--  <lightning:inputField aura:id="formFieldstoValidate" fieldName="Name" required="true" />  -->     
+                                <!--<lightning:input aura:id="formFieldstoValidate" value="{!v.studentRecord.ETST_School_Name__c}" required="true" variant="label-stacked" label="School Name" /> -->
+                                <div>
+                                    <div class="cust_input">
+                                        <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clFirstName}</strong></label><lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_First_Name__c" required="true" variant="label-hidden" /> 
+                                    </div>
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clLastName}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="Name" required="true" variant="label-hidden"/> 
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clStudentId}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Student_Id__c" required="true" variant="label-hidden"/> 
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clDateofBirth}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Date_of_Birth__c" required="true" variant="label-hidden" dateStyle="short" />
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clEmiratesId}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Emirates_Id__c" required="true" variant="label-hidden"/>
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clGender}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Gender__c" required="true" variant="label-hidden"/>
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clPhone}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Phone__c" required="true" variant="label-hidden" />
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clDivision}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Division__c" required="true" variant="label-hidden" />
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clGrade}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Grade__c" required="true" variant="label-hidden" />
+                                </div>
+                                    
+                                    <aura:set attribute="else">
+                                        
+                                        <div>
+                                    <div class="cust_input">
+                                        <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clFirstName}</strong></label><lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_First_Name__c" required="true" variant="label-hidden" disabled="true" /> 
+                                    </div>
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clLastName}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="Name" required="true" variant="label-hidden" disabled="true"/> 
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clStudentId}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Student_Id__c" required="true" variant="label-hidden" disabled="true"/> 
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clDateofBirth}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Date_of_Birth__c" required="true" variant="label-hidden" dateStyle="short" disabled="true"/>
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clEmiratesId}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Emirates_Id__c" required="true" variant="label-hidden" disabled="true"/>
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clGender}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Gender__c" required="true" variant="label-hidden" disabled="true"/>
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clPhone}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Phone__c" required="true" variant="label-hidden" disabled="true" />
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clDivision}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Division__c" required="true" variant="label-hidden" disabled="true"/>
+                                </div>
+                                <div class="cust_input">
+                                    <label for="formFieldstoValidate"><span class="reqtext">*</span><strong>{!v.clGrade}</strong></label> <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Grade__c" required="true" variant="label-hidden" disabled="true"/>
+                                </div>
+    
+  									</aura:set>
+                                    
+                                </aura:if>
+                            </div>
+                            
+                            <!--
+     <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Date_of_Birth__c" required="true" dateStyle="short"/> 
+                    <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Emirates_Id__c" required="true" />
+                    <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Gender__c" required="true" />
+                    <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Phone__c" required="true"/>
+                    <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Division__c" required="true" />
+                    <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Grade__c" required="true" />
+                    <lightning:inputField aura:id="formFieldstoValidate" fieldName="ETST_Blood__c" required="true"/>
+                    -->
+                            <div class="slds-float--right group_btns">
+                                <!--lightning:buttonIcon iconName="utility:back"
+                                              onclick="{!c.cancelSave}"
+                                              alternativeText="back"
+                                              variant="bare-inverse"
+                                              class="slds-float_left btnupdateback"/> 
+                        <lightning:buttonIcon iconName="utility:record_create"
+                                              type="submit"
+                                              alternativeText="Save"
+                                              variant="bare-inverse"
+                                              class="slds-float_right btnupdateback"/--> 
+                                <aura:if isTrue="{!v.showPInfoSave}">
+                                    <lightning:button variant="brand" disabled ="{!v.disabled}" label="{!v.clSave}" type="submit" class="btn_table" /></aura:if>
+                                <br></br><br></br>
+                            </div>
+                        </lightning:recordEditForm>
+                    </lightning:card>
+                </div>
+            </lightning:accordionSection>
+            <lightning:accordionSection name="B" label="{!v.clServiceInfo}">
+                <div class="colnew firstcontentdiv">
+                    <!--  <h3 class="contentheading">{!$Label.c.ETST_Service_Info}</h3> 
+                    <h3 class="contentheading">{!v.clServiceInfo}</h3> -->
+                    <aura:if isTrue="{!v.requestId!=null}">
+                        <div aura:id="editDiv" class="userservicedetrtl userservicedet">
+                            <lightning:recordViewForm recordId="{!v.requestId}" aura:id="editForm"  
+                                                      objectApiName="ET_Service_Request__c">
+                                
+                                <lightning:messages />
+                                <div class="cust_input_detail">
+                                    <label for="formFieldstoValidate"><strong>{!v.clServiceRequest}</strong></label> <lightning:outputField fieldName="Name"  variant="label-hidden" />
+                                </div>
+                                <div class="cust_input_detail">
+                                    <label for="formFieldstoValidate"><strong>{!v.clServiceType}</strong></label> <lightning:outputField fieldName="ETST_Service_Type__c"  variant="label-hidden" />
+                                </div>
+                                <div class="cust_input_detail">
+                                    <label for="formFieldstoValidate"><strong>{!v.clPickupStartDate}</strong></label> <lightning:outputField fieldName="ETST_Pick_Up_Start_Date__c"  variant="label-hidden" />
+                                </div>
+                                <div class="cust_input_detail">
+                                    <label for="formFieldstoValidate"><strong>{!v.clPickupEndDate}</strong></label> <lightning:outputField fieldName="ETST_Pick_Up_End_Date__c"  variant="label-hidden" />
+                                </div>
+                                <div class="pickup_location_div">
+                                    <div class="cust_input_detail">
+                                        <label for="formFieldstoValidate"><strong>{!v.clPickUpFrom}</strong></label> <lightning:outputField fieldName="ETST_Pick_Up_From__c"  variant="label-hidden"/>
+                                        <aura:if isTrue="{!v.serviceRecord.ETST_Transport_Type__c!='Drop off only'}" >
+                                            <div class="change_address1">                                    
+                                                <lightning:button onclick="{! c.changeLoc }"
+                                                                  label="{!v.clUpdate}"
+                                                                  value="pick"
+                                                                  class="btnsorticon"/>
+                                            </div>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                                <div class="drop_location_div">
+                                    <div class="cust_input_detail">
+                                        <label for="formFieldstoValidate"><strong>{!v.clDropOffTo}</strong></label>  <lightning:outputField fieldName="ETST_Drop_Off_To__c" variant="label-hidden" />                                    
+                                        <aura:if isTrue="{!v.serviceRecord.ETST_Transport_Type__c!='Pick up only'}" >
+                                            <div class="change_address1">
+                                                <lightning:button onclick="{! c.changeLoc }"
+                                                                  label="{!v.clUpdate}"
+                                                                  value="drop"
+                                                                  class="btnsorticon"/>
+                                            </div>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                                <div class="cust_input_detail">
+                                    <label for="formFieldstoValidate"><strong>{!v.clTransportType}</strong></label> <lightning:outputField fieldName="ETST_Transport_Type__c"  variant="label-hidden" />
+                                </div>
+                                <div class="cust_input_detail">
+                                    <label for="formFieldstoValidate"><strong>{!v.clStatus}</strong></label> <lightning:outputField fieldName="ETST_Status__c"  variant="label-hidden" />
+                                </div>
+                                <div class="cust_input_detail">
+                                    <label for="formFieldstoValidate"><strong>{!v.clPayee}</strong></label> <lightning:outputField fieldName="ETST_Payee__c"  variant="label-hidden" />
+                                </div>
+                                <div class="cust_input_detail">
+                                    <label for="formFieldstoValidate"><strong>{!v.clFareCharges}</strong></label> <lightning:outputField fieldName="ETST_Fare_Charges__c"  variant="label-hidden" />
+                                </div>
+                                <!--  <lightning:outputField fieldName="Name" /> 
+                                <lightning:outputField fieldName="ETST_Service_Type__c" /> 
+                                <lightning:outputField fieldName="ETST_Pick_Up_Start_Date__c" />                      
+                                <lightning:outputField fieldName="ETST_Pick_Up_End_Date__c" />
+                                <div class="pickup_location_div">
+                                    <lightning:outputField fieldName="ETST_Pick_Up_From__c" />
+                                    <aura:if isTrue="{!v.serviceRecord.ETST_Transport_Type__c!='Drop off only'}" >
+                                        <div class="change_address1">                                    
+                                            <lightning:button onclick="{! c.changeLoc }"
+                                                              label="Update"
+                                                              value="pick"
+                                                              class="btnsorticon"/>
+                                        </div>
+                                    </aura:if>
+                                </div>
+                                <div class="drop_location_div">
+                                    <lightning:outputField fieldName="ETST_Drop_Off_To__c" />                                    
+                                    <aura:if isTrue="{!v.serviceRecord.ETST_Transport_Type__c!='Pick up only'}" >
+                                        <div class="change_address1">
+                                            <lightning:button onclick="{! c.changeLoc }"
+                                                              label="Update"
+                                                              value="drop"
+                                                              class="btnsorticon"/>
+                                        </div>
+                                    </aura:if>
+                                </div>
+                                <lightning:outputField fieldName="ETST_Transport_Type__c" />
+                                <lightning:outputField fieldName="ETST_Status__c" />
+                                <lightning:outputField fieldName="ETST_Payee__c" />
+                                <lightning:outputField fieldName="ETST_Fare_Charges__c" /> -->
+                                
+                            </lightning:recordViewForm>
+                            
+                        </div> 
+                        <aura:set attribute="else">
+                            <p class="noservice">{!v.clPleasesubscribeaservice}</p>
+                        </aura:set>
+                    </aura:if>     
+                </div>
+            </lightning:accordionSection>
+            <!--lightning:accordionSection name="C" label="Bus Information"><div class="colnew thirdcontentdiv">
+                 <div class="servicehead firstinfopad">Bus No</div>
+                <div class="servicetext"></div>
+                <div class="servicehead">Driver Name</div>
+                <div class="servicetext"></div>
+                <div class="servicehead">Nanny Name</div>
+                <div class="servicetext"></div>
+                <div class="servicehead">Driver Mobile No.</div>
+                <div class="servicetext"></div>
+                
+                </div></lightning:accordionSection-->
+            <!-- Added condition to hide Payment info Sreelakshmi SK 5/6/23-->
+            <aura:if isTrue="{!v.showPayment}">
+            <lightning:accordionSection name="D" label="{!v.clPaymentsInfo}" class="lastpayment">
+                <c:ETST_PaymentHistory aura:id="cETST_PaymentHistory" />
+                </lightning:accordionSection></aura:if>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+        </lightning:accordion>
+    </div>
+    <!--div class="showmobilefooter">
+        <c:ET_MobileFooter />
+    </div-->
+    <aura:if  isTrue="{!v.openpickupMap}" >  
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" 
+                 aria-modal="true" aria-describedby="modal-content-id-1" 
+                 class="slds-modal slds-fade-in-open slds-modal_small locationmap">
+            <div class="slds-modal__container">
+                <!--header class="slds-modal__header">
+                                                    <lightning:buttonIcon iconName="utility:close"
+                                                                          onclick="{!c.closePickupModel}"
+                                                                          alternativeText="close"
+                                                                          variant="bare-inverse"
+                                                                          class="slds-modal__close"/>
+                                                    <h1 class="slds-text-heading-medium">{!$Label.c.ETST_Confirmation}</h1>
+                                                </header-->
+                <div class="slds-modal__content slds-p-around--medium" style="height:410px">
+                    <div class="searchlocationdiv"> 
+                        <lightning:input type="text" autocomplete="off" placeholder="{!v.clSearchLocation}" 
+                                         label="" 
+                                         aura:id="searchText" required="false" onkeyup="{!c.getSearchResultbyEnter}"
+                                         value="{!v.searchText}" id="searchText" />
+                        <p aura:id="invalidLoc" style="color:rgb(194, 57, 52);padding-top:5px;" class="slds-hide">Could not find the location!</p>
+                        <lightning:button variant="brand"  label="{!v.clSearch}" onclick="{!c.getSearchResult}" class="{!v.clLang == 'ar' ? 'btn_table_AR' : 'btn_table'}" />
+                    </div> 
+                    <aura:if isTrue="{! v.mapLoaded }">
+                        <iframe aura:id="vfFrame" src="{!v.vfUrl}" 
+                                width="100%" frameBorder="0" height="330px" />
+                        <aura:set attribute="else">
+                            <lightning:spinner alternativeText="Loading"/>
+                        </aura:set>
+                    </aura:if>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" 
+                                      label="{!v.clClose}"
+                                      title="Enter Address Manually"
+                                      onclick="{!c.closePickupModel}" class="btn_table"/>
+                    <lightning:button variant="brand" 
+                                      label="{!v.clUpdateLocation}"
+                                      title="Update Location"
+                                      onclick="{!c.updateLocationController}" class="btn_table"/>
+                    
+                </footer>
+                
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div> 
+    </aura:if>     
+</aura:component>

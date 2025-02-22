@@ -1,0 +1,9 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" >
+    
+    <aura:attribute name="recordId" type="String" />
+    <c:ETConfirmationBox promptBody="Are you sure, Do want to cancel the payment ?" 
+                         recordId = "{!v.recordId}"
+                         serverAction="voidPayment"
+                         header = "Cancel Payment"
+                         actionName = "Make Void"/>
+</aura:component>

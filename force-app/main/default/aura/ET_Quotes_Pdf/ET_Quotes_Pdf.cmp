@@ -1,0 +1,409 @@
+<aura:component  controller="ET_QuotesPdfCtlr" implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <aura:attribute name="show" type="Boolean" default="False"/>
+    <aura:attribute name="showInputDetails" type="Boolean" default="true"/>
+    <aura:attribute name="showPdfPage" type="Boolean" default="False"/>
+    <aura:attribute name="nameStr" type="String"/>
+    <aura:attribute name="servChargeVal" type="String"/>
+    <aura:attribute name="nameStr2" type="String"/>
+    <aura:attribute name="nameStr3" type="String"/>
+    <aura:attribute name="nameStr4" type="String"/>
+    <aura:attribute name="nameStr5" type="String"/>
+    <aura:attribute name="nameStr6" type="String"/>
+    <aura:attribute name="nameStr62" type="String"/>
+    <aura:attribute name="nameStr63" type="String"/>
+    <aura:attribute name="nameStr64" type="String"/>
+    <aura:attribute name="nameStr65" type="String"/>
+    <aura:attribute name="nameStr66" type="String"/>
+    
+    <aura:attribute name="vfUrl" type="String"/> 
+    
+    <aura:attribute name="selecteditem1" type="Boolean" default="False"/>
+    <aura:attribute name="selecteditem2" type="Boolean" default="False"/>
+    <aura:attribute name="selecteditem3" type="Boolean" default="False"/>
+    <aura:attribute name="selecteditem4" type="Boolean" default="False"/>
+    <aura:attribute name="selecteditem5" type="Boolean" default="False"/>
+    <aura:attribute name="selecteditem6" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxservcharge" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxInsurancecharge" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxservchargeAED" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxDeliveryDays" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxQuotationDays" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxpenaltyMonths" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxpenaltyMonths2" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxpenaltyMonths3" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxpenaltyMonths4" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxpenaltyMonths5" type="Boolean" default="False"/>
+    <aura:attribute name="CKboxpenaltyMonths6" type="Boolean" default="False"/>
+    
+    <aura:attribute name="stages" type="String[]" default="Any,Open,Closed,Closed Won"/>
+    <aura:handler name="init" value="{!this}" action="c.doInit" />
+    
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .slds-modal__container{
+        max-width: 60rem !important;
+        width:60% !important;
+        
+        }
+    </aura:html>
+    
+    <!--Pdf opened -->
+    
+    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center" style="position: relative;display: block;text-align: center;margin: 0.2rem;">Quote Preview</h2>   
+    <div class="">
+        
+        
+        <!--Popup window code -->
+        <!--aura:if isTrue="{!v.showInputDetails}">
+            <div >
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div>
+                        <div>
+                            <div class="slds-col slds-size_1-of-1 name">
+                                <lightning:input type="text" name="nameStr" label="Name" value="{!v.nameStr}"/>
+                            </div> 
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center" style="position: relative;display: block;text-align: left;margin: 0.2rem;">Choose required terms and conditions</h2> 
+                            <div class="slds-modal__content slds-p-around_medium">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span><lightning:input type="checkbox" label="Service Charge of fils" checked="{!v.CKboxservcharge}"/></span>
+                                </div>
+                                
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxservcharge}">
+                                        <lightning:input type="text" name="servCharg" value="{!v.servChargeVal}"/>
+                                        </aura:if></span>
+                                </div>
+                                
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                            </div> 
+                            
+                            
+                            <div class="slds-modal__content slds-p-around_medium aaa">
+                              <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span><lightning:input type="checkbox" label="Insurance Excess Charge AED" checked="{!v.CKboxInsurancecharge}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxInsurancecharge}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr2}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                             </div> 
+                            
+                             <div class="slds-modal__content slds-p-around_medium">
+                             <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span><lightning:input type="checkbox" label="Service Charge of AED" checked="{!v.CKboxservchargeAED}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxservchargeAED}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr3}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                           </div>
+                            <div class="slds-modal__content slds-p-around_medium">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span> <lightning:input type="checkbox" label="Delivery of the Vehicles Days" checked="{!v.CKboxDeliveryDays}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxDeliveryDays}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr4}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                            </div>
+                           <div class="slds-modal__content slds-p-around_medium">
+                          <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span><lightning:input type="checkbox" label="Quotation Validity Days" checked="{!v.CKboxQuotationDays}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxQuotationDays}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr5}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                              </div>
+                              <div class="slds-modal__content slds-p-around_medium">
+                          <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span> <lightning:input type="checkbox" label="Pre mature penalty Months - 1st Year" checked="{!v.CKboxpenaltyMonths}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxpenaltyMonths}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr6}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                            
+                             </div>
+                             <div class="slds-modal__content slds-p-around_medium">
+                          <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span> <lightning:input type="checkbox" label="Pre mature penalty Months - 2nd Year" checked="{!v.CKboxpenaltyMonths2}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxpenaltyMonths2}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr62}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                            
+                             </div>
+                            <div class="slds-modal__content slds-p-around_medium">
+                          <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span> <lightning:input type="checkbox" label="Pre mature penalty Months - 3rd Year" checked="{!v.CKboxpenaltyMonths3}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxpenaltyMonths3}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr63}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                            
+                             </div>
+                            <div class="slds-modal__content slds-p-around_medium">
+                          <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span> <lightning:input type="checkbox" label="Pre mature penalty Months - 4th Year" checked="{!v.CKboxpenaltyMonths4}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxpenaltyMonths4}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr64}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                            
+                             </div>
+                            <div class="slds-modal__content slds-p-around_medium">
+                          <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span> <lightning:input type="checkbox" label="Pre mature penalty Months - 5th Year" checked="{!v.CKboxpenaltyMonths5}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxpenaltyMonths5}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr65}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                            
+                             </div>
+                            <div class="slds-modal__content slds-p-around_medium">
+                          <div class="slds-grid slds-gutters">
+                                <div class="slds-col leftLabel">
+                                    <span> <lightning:input type="checkbox" label="Pre mature penalty Months - 6th Year" checked="{!v.CKboxpenaltyMonths6}"/></span>
+                                </div>
+                                <div class="slds-col rightInput">
+                                    <span> <aura:if isTrue="{!v.CKboxpenaltyMonths6}">
+                                    <lightning:input name="servCharg" value="{!v.nameStr66}"/>
+                                </aura:if></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                 <div class="slds-col">
+                                    <span></span>
+                                </div>
+                                <div class="slds-col">
+                                    <span></span>
+                                </div>
+                            </div>
+                            
+                             </div>
+
+                           
+                        </div>
+                        
+                    </div>  
+                </div>  
+            </div>          
+        </aura:if-->
+        <!-- Open Pdf Page -->
+        <aura:if isTrue="{!v.showPdfPage}">
+            <div class="slds-form-element__control outer-div" style="height:375;">
+                
+                <aura:if isTrue="{!v.disabled}">
+                    <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+                </aura:if>
+                <div style="padding:10px;">
+                    <iframe aura:id="pdfIframe" src="{!v.vfUrl}" width="100%" height="500px" frameBorder="0"/>
+
+                    <!--iframe src="{!v.vfUrl}" width="100%" height="500px" frameBorder="0"/-->
+                </div>
+                
+            </div>
+        </aura:if> 
+    </div>
+    
+    <div class="slds-m-top_medium slds-float--right" style="position: sticky;display: block;text-align: right;width: 100%;background: #fff;margin-top: -6px;padding: 1rem;border-radius: 5px;bottom:0%;">
+        <aura:if isTrue="{!v.showPdfPage}">
+            <div class="button-container slds-float_right">
+            <lightning:button variant="brand" 
+                              label="Save"
+                              title="Save"
+                              onclick="{!c.handleSave}" disabled="{!v.disabled}"/>
+            <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>
+            
+            
+            <lightning:button variant="brand" 
+                              label="Cancel"
+                              title="Cancel"
+                              onclick="{!c.handleCancel}" disabled="{!v.disabled}"/>
+            </div>
+            <!--lightning:button  class="slds-float_left" variant="brand" 
+                              label="Previous"
+                              title="Previous"
+                              onclick="{!c.previousButtonCtrl}" disabled="{!v.disabled}"/-->
+            
+        </aura:if>
+        
+        <!--aura:if isTrue="{!v.showInputDetails}">  
+            <lightning:button variant="brand" 
+                              label="Next"
+                              title="Next"
+                              onclick="{!c.nextButtonCtrl}"/>
+            
+        </aura:if-->
+        
+        
+    </div>
+    
+</aura:component>

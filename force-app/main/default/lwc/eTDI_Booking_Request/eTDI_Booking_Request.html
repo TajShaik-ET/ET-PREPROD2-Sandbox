@@ -1,0 +1,252 @@
+<template>
+
+	<div class="slds-float_right">
+		<lightning-button label="New Request" onclick={handleNewReq} variant="brand" class="darkBtn"></lightning-button>
+	</div>
+	<div style="margin-top: 44px;">
+		<template if:true={BRRecordList}>
+			<lightning-datatable key-field="id" data={BRRecordList} columns={columns} hide-checkbox-column=true>
+			</lightning-datatable>
+		</template>
+		<template if:false={hasBrRecordData}>
+			<div class="slds-align_absolute-center" style="margin-top: 29px;font-weight: bold;">No records found.</div>
+		</template>
+	</div>
+	<div>
+		<template if:true={showModal}>
+			<section aria-modal="true" class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container " id="MyModal">
+					<header class="slds-modal__header">
+						<h2 class="slds-text-heading_small">New Booking Request</h2>
+
+					</header>
+					<div class="slds-modal__content">
+
+						<!-- <div class="slds-p-horizontal_medium">
+							<lightning-combobox name="Branch" label="Branch" value={value} options={Branches}
+								onchange={handleBranchSelect} placeholder="Select a Branch" class="inputCss">
+							</lightning-combobox>
+						</div>
+
+						<div class="slds-p-horizontal_medium">
+							<lightning-combobox name="Depot" label="Depot" value={value} options={depotNames}
+								onchange={handleDepotSelect} placeholder="Select a Depot" class="inputCss">
+							</lightning-combobox>
+						</div> -->
+
+						<!-- <div class="slds-p-horizontal_medium">
+							<lightning-combobox name="Program Name" label="Program Name" value={value} options={programNames}
+								onchange={handleProgramSelect} placeholder="Select a Program Name" class="inputCss"> </lightning-combobox>
+						</div> -->
+
+						<lightning-record-edit-form data-id="bkngReqForm" object-api-name={ObjectApiName}
+							onsuccess={handleSuccess} onsubmit={handleOnSubmit} onerror={handleOnError} density="comfy">
+							<div class="slds-m-horizontal_medium">
+								<template if:true={showSpinner}>
+									<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+								</template>
+
+
+
+								<!-- <lightning-combobox name="Program Name" label="Program Name"
+									value={value} options={programNames} onchange={handleProgramSelect}
+									placeholder="Select a Program Name" required="true"> </lightning-combobox> -->
+
+								<lightning-input-field class="inputCss programName" field-name="Program_Name__c"
+									required="true" onchange={handleProgramSelect}></lightning-input-field>
+
+
+								<lightning-combobox class="inputCss" name="Branch" label="Branch" value={value}
+									options={Branches} onchange={handleBranchSelect} placeholder="Select a Branch"
+									required="true">
+								</lightning-combobox>
+
+
+
+								<lightning-combobox class="inputCss" name="Depot" label="Depot" value={value}
+									options={depotNames} onchange={handleDepotSelect} placeholder="Select a Depot"
+									required="true">
+								</lightning-combobox>
+
+
+
+								<lightning-input-field class="inputCss" value={ReqDate} data-id="form"
+									field-name="Requested_Date__c" required="true"></lightning-input-field>
+								<!-- <lightning-input-field class="inputCss"
+									field-name="Location__c"></lightning-input-field> -->
+								<!-- <lightning-combobox class="inputCss" name="Slot" label="Slot" value={value}
+									options={availableSlot} onchange={handleSlotSelect} placeholder="Select a Slot" required="true">
+								</lightning-combobox> -->
+								<lightning-input-field class="inputCss" field-name="Language__c">
+								</lightning-input-field>
+
+								<lightning-combobox class="inputCss" name="Exam Required?" label="Exam Required?"
+									value={value} options={availableOptions} onchange={handleExamReq}
+									placeholder="Choose Yes or No" required="true">
+								</lightning-combobox>
+								<div>
+									<template for:each={selectedEmployees} for:item="emp">
+										<lightning-pill class="customPill" label={emp.Name} key={emp.Id} name={emp}
+											onremove={onEmpRemove}>
+											<lightning-icon icon-name="utility:user" alternative-text="Account">
+											</lightning-icon>
+										</lightning-pill>
+									</template>
+
+								</div>
+								<div class="slds-grid slds-gutters">
+									<template if:false={isExternal}>
+										<div class="slds-col">
+											<lightning-input type="search" value={searchValue} label="Employee"
+												class="inputCss" placeholder="Search for the Employee"
+												onchange={searchKeyword}></lightning-input>
+										</div>
+										<div class="slds-col" style="margin-top: 23px;">
+											<lightning-button label="Search" class="darkBtn"
+												onclick={handleSearchKeyword} variant="brand">
+											</lightning-button>
+
+
+										</div>
+									</template>
+
+									<!--div class="slds-col" style="margin-top: 23px;">
+										<lightning-button class="addClass" label="Add" variant="brand" onclick={addemployees} ></lightning-button>
+
+								    </div-->
+								</div>
+								<!--newly added by Sudheer-->
+								<div class="slds-col" style="margin-top: 23px;">
+									<label>
+                						<input type="checkbox" onchange={handleIsExternalChange} /> Is External Training
+            						</label>
+								</div>
+							<!--	<lightning-input label="" name="Upload" accept=".csv" onchange={handleUploadFile}
+									type="file" multiple="false"></lightning-input>-->
+								<template if:true={isExternal}>
+									<template if:true={extractedData.length}>
+										<table
+											class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+											<thead>
+												<tr class="slds-line-height_reset">
+													<th scope="col" style="width: 40px;">
+														<div class="slds-truncate">
+															<lightning-input type="checkbox" onchange={handleSelectAll}
+																label="" checked={areAllSelected}></lightning-input>
+														</div>
+													</th>
+													<th scope="col">
+														<div class="slds-truncate" title="Name">Name</div>
+													</th>
+													<th scope="col">
+														<div class="slds-truncate" title="Traffic File">Traffic File
+														</div>
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												<template for:each={extractedData} for:item="item">
+													<tr key={item.name}>
+														<td>
+															<lightning-input type="checkbox" data-id={item.id}
+																onchange={handleCheckboxChange1}></lightning-input>
+														</td>
+														<td>
+															<div class="slds-truncate">{item.name}</div>
+														</td>
+														<td>
+															<div class="slds-truncate">{item.trafficFile}</div>
+														</td>
+													</tr>
+												</template>
+											</tbody>
+										</table>
+
+									</template>
+									<template if:false={extractedData.length}>
+										<div class="slds-text-body_small slds-text-color_error">No data available from
+											the uploaded file.</div>
+									</template>
+								</template>
+							</div>
+
+							<div class="slds-m-horizontal_medium">
+						<lightning-input label="" name="Upload" accept=".csv" onchange={handleUploadFile} type="file"
+							multiple="false"></lightning-input>
+						<div if:true={showFileName} class="slds-text-body_small slds-text-color_error">
+							{fileName}
+						</div>
+						<div style="margin-bottom:5px">
+							<b>Note:</b> Please use the standard template to upload data. <a
+								onclick={DownloadTemplate}>Click here</a> to download the template.
+						</div>
+					</div>
+
+							<template if:false={isExternal}>
+								<template if:true={data}>
+									<div>
+										<lightning-datatable key-field="id" data={data} columns={previewColumns}
+											hide-checkbox-column> </lightning-datatable>
+									</div>
+								</template>
+							</template>
+							<template if:true={hasEmployees}>
+
+								<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+									<thead>
+										<tr class="slds-line-height_reset">
+											<th></th>
+											<th class="" scope="col">
+												<div class="slds-truncate" title="Employee Name">Employee Name</div>
+											</th>
+											<th class="" scope="col">
+												<div class="slds-truncate" title="Employee Id">Employee Id</div>
+											</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<template for:each={AccountRecord} for:item="acc">
+
+											<tr class="slds-hint-parent" key={acc.Id}>
+												<td>
+													<input type="checkbox" name={acc.Id}
+														onchange={handleCheckboxChange}>
+												</td>
+												<td>
+													<div class="slds-truncate">{acc.Name}</div>
+												</td>
+												<td>
+													<div class="slds-truncate">{acc.ETIN_Employee_Id__c}</div>
+												</td>
+
+											</tr>
+										</template>
+									</tbody>
+
+								</table>
+							</template>
+							<footer class="slds-modal__footer">
+								<div class="slds-text-align_center">
+
+									<lightning-button class="darkBtn" label="Save" variant="brand" type="submit">
+									</lightning-button>
+									<lightning-button class="lightBtn slds-m-left_x-small" label="Cancel"
+										variant="brand-outline" onclick={cancel}></lightning-button>
+
+								</div>
+
+							</footer>
+						</lightning-record-edit-form>
+					</div>
+
+
+				</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+
+		</template>
+
+
+	</div>
+</template>

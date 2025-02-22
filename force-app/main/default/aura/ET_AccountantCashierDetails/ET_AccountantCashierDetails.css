@@ -1,0 +1,29 @@
+.THIS .slds-checkbox {
+    display: inline !important;
+}
+.THIS .slds-checkbox__label{    
+    padding-right: 20px;
+
+}
+.THIS .contractLabelcls{
+    padding-right: 20px;
+
+}
+
+.THIS .text_right{
+    text-align:right;
+}
+.THIS .btnsave, .THIS .slds-button_brand, .THIS .slds-button--brand, .THIS .text_right button{
+    background-color: #00c099 !important;
+    border-color:#00c099 !important;
+    border-radius:5px;
+    color:#fff;
+} 
+/*.THIS .slds-select_container{
+    width: 200px;
+
+}
+.THIS .customInputcls {
+    width: 230px;
+
+}*/

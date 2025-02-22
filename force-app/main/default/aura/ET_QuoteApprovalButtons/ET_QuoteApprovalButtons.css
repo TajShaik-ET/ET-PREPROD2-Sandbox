@@ -1,0 +1,12 @@
+.THIS .slds-button_success{
+    background-color: #00c099!important;
+    border-color: #00c099!important;
+    border-radius: 5px;
+    color: #fff;
+    padding: 5px 15px;
+    min-width:200px;
+    font-size: 12px;
+}
+.THIS.slds-align_absolute-right{
+    text-align:right;
+}

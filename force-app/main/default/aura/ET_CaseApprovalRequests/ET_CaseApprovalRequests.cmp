@@ -1,0 +1,204 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" 
+                access="global" controller="ET_BusinessCommunityController" >
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="schoolsList" type="List"/>
+    <aura:attribute name="caseIds" type="List"/> 
+    <aura:attribute name="status" type="String"/>
+    <aura:attribute name="selectedSchool" type="String"/>
+    <aura:attribute name="payeeList" type="List"/>
+    <aura:attribute name="selectedPayee" type="String"/>
+    <aura:attribute name="statusList" type="List"/>
+    <aura:attribute name="confirmFlag"  type="Boolean" default="false"/>
+    <aura:attribute name="selectedStatus" type="String"/>
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="currentData" type="Object"/>
+    <aura:attribute name="enableInfiniteLoading" type="Boolean" default="false"/> 
+    <aura:attribute name="hideCheckbox" type="Boolean" default="false"/>
+    <aura:attribute name="loadMoreStatus" type="String" default="Loading .... "/>
+    <aura:attribute name="pageNo" type="Integer" default="1"/>
+    <aura:attribute name="loadOffset" type="Integer" default="1"/><!--Set when to trigger loading of more rows-->
+    <aura:attribute name="filterBySchool" type="Boolean"/>
+    <aura:attribute name="filterByPayee" type="Boolean"/>
+    <aura:attribute name="filterByStatus" type="Boolean"/>
+    <aura:attribute name="sortBy" type="String"/>
+    <aura:attribute name="sortDirection" type="String"/> 
+    <aura:attribute name="searchText" type="String" access="public"/>
+    <aura:attribute name="currentApprover" type="String" access="public"/>
+    <aura:attribute name="currentrecType" type="String" access="public"/>
+    <aura:attribute name="ccmRemarks" type="String" access="public"/>
+    <aura:attribute name="Solution" type="String" access="public"/>
+    <aura:attribute name="caseCommentsRequired" type="Boolean" default="false"/>
+    <aura:attribute name="comments" type="string" default=""/>
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+  
+     
+    
+    <lightning:layout horizontalAlign="spread" aura:id="mainLayout" class="mainLayout">
+        <!--lightning:layoutItem padding="around-small">
+            
+            <div class="quicklinks">
+                <p>{!$Label.c.ETST_Filters}</p>
+                <div class="filtercontectdiv">
+                    <div class="mainfilterdiv">
+                        <lightning:input type="checkbox" aura:id="School" value="1" label="{!$Label.c.ETST_School}"                                        
+                                         onchange="{!c.setFilterRequests}" class="filterlist"/>
+                        <aura:if isTrue="{!v.filterBySchool}">  
+
+                            <lightning:select aura:id="filter" label="Filter By:" value="{!v.selectedSchool}" onchange="{!c.filterRequests}" class="Box" >
+                            	<option value="">All</option>
+                                <option value="Private School" text="Private School"></option>
+                                <option value="Government School" text="Government School"></option>
+                                <option value="University" text="University"></option>
+                        </lightning:select>
+                        </aura:if>
+                    </div>
+                    <div class="mainfilterdiv">
+                        <lightning:input type="checkbox" aura:id="Payee" value="2" label="Payee"                                      
+                                         onchange="{!c.setFilterRequests}" class="filterlist"/>
+                        <aura:if isTrue="{!v.filterByPayee}">  
+                            <lightning:select aura:id="filter" label="Filter By:" onchange="{!c.filterRequests}"  value="{!v.selectedPayee}"  class="Box" >
+                                <option value="" text="All" />
+                                 <aura:iteration items="{!v.payeeList}" var="val">
+                                    <option value="{!val}" text="{!val}" /> 
+                                </aura:iteration>
+                            </lightning:select>
+                        </aura:if>
+                    </div>
+                    <div class="mainfilterdiv">
+                        <lightning:input type="checkbox" aura:id="Status" value="3" label="{!$Label.c.ETST_Status}"                                         
+                                         onchange="{!c.setFilterRequests}" class="filterlist"/>
+                        <aura:if isTrue="{!v.filterByStatus}">  
+                            <lightning:select aura:id="filter" label="{!$Label.c.ETST_Filter_By}" onchange="{!c.filterRequests}" value="{!v.selectedStatus}" class="Box" >
+                                <option value="" text="All" />
+                                <aura:iteration items="{!v.statusList}" var="val">
+                                    <option value="{!val}" text="{!val}" /> 
+                                </aura:iteration>
+                            </lightning:select>
+                        </aura:if>
+                    </div>
+				</div>            
+            </div>
+            </lightning:layoutItem-->
+        <lightning:layoutItem padding="around-small" class="servicesdiv">
+            <div class="serviceheaddiv">
+                <p class="serheading">{!$Label.c.ET_CaseRequests}</p>         
+                <div class="serchboxtab">
+                	<lightning:input type="search"
+                                 name="searchKey" value="{!v.searchText}" 
+                                 aura:id="searchKey"  onkeyup="{!c.searchRequest}" placeholder="Search Requests" />
+            	</div> 
+                
+            </div> 
+            <aura:if isTrue="{! v.loaded }">
+            <aura:if isTrue="{!not(empty(v.currentData))}">  
+                
+                <!--Lightning data table markup-->
+                <div class="displaytable">
+                    <lightning:datatable aura:id="dataTableID"
+                                         keyField="Id"
+                                         hideCheckboxColumn="{!v.hideCheckbox}"
+                                         columns="{!v.columns}"
+                                         data="{!v.currentData}"
+                                         enableInfiniteLoading="{!v.enableInfiniteLoading}"
+                                         loadMoreOffset="{!v.loadOffset}"
+                                         onloadmore="{!c.handleLoadMore}"
+                                         onrowselection="{! c.updateSelectedRecords }"
+                                         sortedBy="{!v.sortBy}"
+                                         sortedDirection="{!v.sortDirection}"
+                                         onsort="{!c.handleSort}"/>
+                </div>
+                <br/>
+                <!--
+                 <aura:if isTrue="{!or(and(v.currentApprover=='Pending with Branch Manager',
+                                  or(v.currentrecType=='Request_for_the_awareness_sessions',
+                                  v.currentrecType!='Growth_Request')),
+                                  v.currentApprover=='Pending with School Transportation Manager')}">  
+                  <lightning:button variant="brand" class="slds-float_right btnclass"
+                          label="Complete" value="Complete" onclick="{!c.openConfirmModal}"/>
+                  <lightning:button variant="brand" class="slds-float_right btnclass"
+                          label="Send"  value="Send" onclick="{!c.openConfirmModal}"/>
+                </aura:if>
+                 <aura:if isTrue="{!and(v.currentApprover=='Pending with School Transportation Manager',
+                                  v.currentrecType=='Growth_Request')}">  
+                  <lightning:button variant="brand" class="slds-float_right btnclass"
+                          label="Complete" value="Complete" onclick="{!c.openConfirmModal}"/>
+                  <lightning:button variant="brand" class="slds-float_right btnclass"
+                          label="Reject"  value="Reject" onclick="{!c.openConfirmModal}"/>
+                </aura:if> 
+                <aura:if isTrue="{!or(or(or(or(or(
+                                 v.currentApprover=='Pending with Branch Manager',
+                                 v.currentApprover=='Pending with Routes Efficient and Design Director'),
+                                 v.currentApprover=='Pending with First Transport Specialist'),
+                                 v.currentApprover=='Pending with Statistics Coordinator'),
+                                 v.currentApprover=='Pending with Head of Safety Unit'),
+                                 v.currentApprover=='Pending with Students Safety Specialist')}">
+                  <lightning:button variant="brand" class="slds-float_right btnclass"
+                          label="Reject" value="Reject" onclick="{!c.openConfirmModal}"/>
+                   <lightning:button variant="brand" class="slds-float_right btnclass"
+                          label="Approve" value="Approve" onclick="{!c.openConfirmModal}"/>
+                  
+                </aura:if>
+                <aura:if isTrue="{!v.currentApprover=='Pending with Safety and Health Specialist'}">
+                 <lightning:button variant="brand" class="slds-float_right btnclass"
+                          label="Reply" value="Reply" onclick="{!c.openConfirmModal}"/>
+                     <lightning:button variant="brand" class="slds-float_right btnclass"
+                          label="Approve" value="Approve" onclick="{!c.openConfirmModal}"/>
+                  
+                </aura:if> -->
+                <aura:set attribute="else">
+                    <p style="color:red;text-align: center;font-size: 21px;">{!$Label.c.ETST_No_data_found}</p>  
+                  
+                </aura:set> 
+               
+            </aura:if>
+             <aura:set attribute="else">
+                        <lightning:spinner alternativeText="Loading" />
+                    </aura:set>
+                </aura:if> 
+        </lightning:layoutItem>
+    </lightning:layout>
+    <aura:if  isTrue="{!v.confirmFlag}" > 
+         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeConfirmModal }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                     <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        Case Approval Process</h2>
+                    
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+           <div class="slds-modal__content slds-p-around_medium bgImageDiv"  id="modal-content-id-1">
+               <aura:if  isTrue="{!or(or(v.status=='Approve',v.status=='Reject'),v.status=='Reply')}" >  
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        Do you want to {!v.status} the case?</h2>
+                    </aura:if>
+                    <aura:if  isTrue="{!v.status=='Send'}" >  
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        Do you want to Send it to Next Level Approval?</h2>
+                  </aura:if>
+              <!-- <aura:if  isTrue="{!v.status=='Complete'}" >  
+                    <lightning:textarea   name="input3" label="CCM Remarks" required="true"
+                                     value="{! v.ccmRemarks }"/>
+                   <lightning:textarea    name="input3" label="Solution" required="true" 
+                                     value="{! v.Solution }"/>
+               </aura:if> -->
+               	<lightning:textarea name="comments" label="Comments" required="{!v.caseCommentsRequired}" value="{!v.comments}"/>
+                </div>
+                   <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" 
+                                      label="Save"
+                                      title="Save"
+                                      aura:id="status"
+                                      onclick="{!c.changeStatus}" class="btnsave"/>
+                </footer>
+             </div>
+        </section>
+    </aura:if>
+</aura:component>

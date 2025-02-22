@@ -1,0 +1,28 @@
+.THIS.backbtnlink{
+    position: relative;
+    /* left: 0; */
+    /* top: 11.5rem; */
+    font-size: 14px;
+    color: #fff;
+    letter-spacing: 1px;
+    text-decoration: none;
+    background: #eb4026;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-top: 2rem;
+    margin-left: .5rem;
+    display: inline-block;
+}
+.THIS.backarrow{
+    display:none;
+}
+@media only screen and (max-width: 480px) {
+    .THIS.backarrow{
+        display:block;
+        position: absolute;
+        left: 1.5rem;
+    }
+    .THIS.backbtnlink{
+        display:none;
+    }
+}

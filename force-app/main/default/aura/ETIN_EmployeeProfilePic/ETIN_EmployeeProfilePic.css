@@ -1,0 +1,39 @@
+.THIS .photoWrapper{
+    width: 7rem;
+    height: 7rem;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.THIS{
+    /* background-color: token(colorBackgroundBrandPrimary); */
+   background-color: rgb(215, 223, 225); 
+    min-height: 8rem;
+}
+
+.THIS .slds-select{
+    color: black;
+}
+
+
+
+.THIS .slds-text-heading_medium{
+    /* font-size: 1.5rem;
+    line-height: 1.5rem;
+    font-weight: 500; */
+}
+
+.THIS .slds-text-heading_small{
+    font-weight: 300;
+}
+
+.THIS .slds-dl_horizontal__label,.THIS .slds-dl--horizontal__label{
+    font-weight: 300;
+}
+
+.THIS .separator{
+    width: 98%;
+    margin-left: 1%;
+    border-bottom: 1px solid white;
+}

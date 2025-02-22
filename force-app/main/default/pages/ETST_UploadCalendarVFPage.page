@@ -1,0 +1,32 @@
+<apex:page sidebar="false"  controller="ETST_UploadCalendarClass" showHeader="false">
+    <apex:form >
+        <apex:sectionHeader title="Upload Calendar from CSV file"/>
+        <apex:pagemessages />
+        <apex:pageBlock title="Upload Calendar Details">
+            <!--  Component to allow user to upload file from local machine -->
+            <center>
+                <apex:inputFile value="{!contentFile}" filename="{!nameFile}" />
+                <apex:commandButton action="{!ReadFile}" value="Upload File" id="theButton" style="width:70px;" rendered="{!ISNULL(uploadedCalendars)}"/>
+                <apex:commandButton value="Insert Calendar" action="{!insertCalendar}" rendered="{!NOT(ISNULL(uploadedCalendars))}"/>
+                <br/> <br/> <font color="red"> <b>Note: Please use the standard template to upload Calendar. <a href="https://etservices--community.lightning.force.com/sfc/servlet.shepherd/version/download/0697E000000asrfQAA" target="_blank"> Click here </a> to download the template. </b> </font>
+            </center>  
+            
+        </apex:pageBlock>      
+        <apex:pageBlock title="Uploaded data Result" rendered="{!NOT(ISNULL(uploadedCalendars))}">
+            <!-- Calendar Details -->
+            <apex:pageblocktable value="{!uploadedCalendars}" var="rec" rendered="{!NOT(ISNULL(uploadedCalendars))}">
+                <p> Uploaded Successfully!</p> 
+                <br/> <br/>
+                <apex:column headerValue="School Id">
+                    <apex:outputField value="{!rec.ETST_School_Id__c}"/>
+                </apex:column>
+                <apex:column headerValue="Academic Start">
+                    <apex:outputField value="{!rec.ETST_Academic_Start_Date__c}"/>
+                </apex:column>
+                <apex:column headerValue="Academic End">
+                    <apex:outputField value="{!rec.ETST_Academic_End_Date__c}"/>
+                </apex:column>  
+            </apex:pageblocktable>    
+        </apex:pageBlock>       
+    </apex:form>   
+</apex:page>

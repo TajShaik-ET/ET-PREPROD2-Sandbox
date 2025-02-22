@@ -1,0 +1,331 @@
+.THIS .btbupdate{
+    color: white;
+    box-shadow: none;
+    font-size: 14px;
+    transition: .4s;
+    background: rgb(98 204 140);
+    border: 1px solid rgb(98 204 140);
+    color: #fff;
+    border-radius: 0;
+    box-shadow: none;
+    text-transform: uppercase;
+    transition: all .4s;
+}
+.THIS .btbupdate:hover{
+    background: #fff;
+    border: 1px solid rgb(98 204 140);
+    color: rgb(98 204 140);
+    box-shadow: none;
+    transition: .4s;
+}
+.THIS .actionButton {
+    background-color: #624500;
+    color: white;
+    border: 1px solid #624500;
+    box-shadow: none;
+    font-size: 14px;
+    transition:0.4s;
+    line-height: 18px;
+    padding: 5px 10px;
+}
+.THIS .actionButton:hover {
+    background-color: #fff;
+    color: #624500;
+    border: 1px solid #624500;
+    box-shadow: none;
+    transition:0.4s;
+}
+
+.THIS .emmergencyButton {
+    background-color: Red;
+    color: white;
+    border: 1px solid Red;
+    box-shadow: none;
+    font-size: 14px;
+    transition:0.4s;
+    line-height: 18px;
+    padding: 5px 10px;
+}
+.THIS .emmergencyButton:hover {
+    background-color: #fff;
+    color: Red;
+    border: 1px solid Red;
+    box-shadow: none;
+    transition:0.4s;
+}
+.THIS .maincantentdiv{
+    padding: 15px;
+    overflow: auto;
+}
+.THIS .Headingcontent{
+    font-size: 28px;
+    color: rgb(60 60 60);
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+.THIS .subheading{
+    font-size: 14px;
+    font-weight: 600;
+}
+.THIS .slds-gutters .slds-col {
+    padding-right: .75rem;
+    padding-left: .75rem;
+    width: 50%;padding-bottom: .50rem;
+}
+.THIS .textColor {
+    color:  #624500;font-size: 14px; /* #8a1538; */
+}
+.THIS table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.THIS table tr th {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+    font-weight: 600;    text-transform: uppercase;
+    background:#f1f1f6;
+}
+.THIS table tr td {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+}
+.THIS input[type=text], .THIS input[type=password], .THIS textarea.form-control, .THIS select, .THIS input[type=tel], .THIS input[type=email] , .THIS .uiInput--default input ,
+.THIS .slds-faux-input{
+    margin: 0;
+    padding: 0 15px;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+
+.THIS textarea{
+    margin: 0;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: all .3s;
+}
+.THIS .slds-form-element__label {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+    color: rgba(0, 0, 0);
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 5px;font-weight: normal;
+}
+.THIS.documenttable , .THIS.documentmain{
+    padding: 30px;
+    background: #fafafa;
+    border:4px solid #fff;
+}
+.THIS.documenttable table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.THIS.documenttable table tr th {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+    font-weight: 600;    text-transform: uppercase;
+    background:#f1f1f6;
+}
+.THIS .documenttable table tr td {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;font-size: 14px;
+}
+.THIS.uiInput--default .form-element__label , .THIS .form-element__label{
+    font-size: 14px;
+    padding-right: .5rem;
+    padding-top: 0;
+    margin-bottom: 5px;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.6);
+}
+.THIS.uiInput--datetime .form-element , .THIS .uiInput--default input{
+    position: relative;
+    margin-top: 5px!important;
+}
+.THIS .uiInput--datetime .datePicker-openIcon {
+    bottom: 14px!important;
+}
+.THIS.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.THIS .animated.delay-1s {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+@-webkit-keyframes zoomInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+        transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+        transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    }
+}
+
+@keyframes zoomInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+        transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+        transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    }
+}
+
+.THIS.zoomInUp {
+    -webkit-animation-name: zoomInUp;
+    animation-name: zoomInUp;
+}
+@-webkit-keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -15%, 0);
+        transform: translate3d(0, -15%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -15%, 0);
+        transform: translate3d(0, -15%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.THIS.slideInDown {
+    -webkit-animation-name: slideInDown;
+    animation-name: slideInDown;
+}
+
+/* css for custom dashboard component*/
+.THIS .form-box-row2{
+    padding: 1.5rem 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    position: relative;
+    background-color: #ffffff;
+    background: #f2f2f2;
+    opacity: 1;
+    border: 1px solid rgb(220, 220, 220);
+    
+    /* -webkit-box-shadow: 5px 5px 10px 0px rgb(218, 218, 218);
+    -moz-box-shadow: 5px 5px 10px 0px rgb(218, 218, 218);
+    box-shadow: 5px 5px 10px 0px rgb(218, 218, 218); */
+    transition:.4s all;
+}
+.THIS .form-box-row2:hover{
+    transform:scale(1.05);
+    transition:.4s all;
+    background: #fff;
+}
+.THIS .form-title{
+    color: #555;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-size: 14px;
+    height: 46px;
+}
+
+.THIS .numberSize{
+    text-align: center;
+    color: #00c19e;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 67px;
+    line-height: initial;  
+}
+
+.THIS .slds-card {
+    background:transparent;
+    border: 0px solid #E0E0E0;
+}
+.THIS .slds-card .slds-col{
+    width: 47%;
+    display: inline-block;
+    margin: 1% 2% 2% 1%;
+}
+.THIS .slds-card .slds-col2{
+    width: 30%;
+    display: inline-block;
+    margin: 1% 2% 2% 1%;
+}
+.THIS .slds-modal__header{
+    border-bottom: 2px solid #f2f2f2;
+}
+.THIS .modal-header .title {
+    color: #000!important;
+}
+.THIS lightning-input-field{
+    padding: 0px!important;
+    margin: 0px!important;
+}
+@media only screen and (max-width: 480px) {
+    .THIS .slds-grid {
+        display: block;
+    }
+    .THIS .slds-gutters .slds-col {
+        width: 100%;
+        padding-bottom: 0.5rem;
+    }
+    .THIS .slds-pill_container{
+        border: 1px solid #ececec;
+    }
+}

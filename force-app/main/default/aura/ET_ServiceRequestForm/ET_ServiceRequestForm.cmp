@@ -1,0 +1,236 @@
+<aura:component controller="ET_ServiceRequestController"  implements= "lightning:isUrlAddressable,forceCommunity:availableForAllPageTypes,force:hasSObjectName,force:lightningQuickAction,flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId" access="global" >
+    <!--Taj-->
+    <lightning:messageChannel type="ET_CommunicateChange__c" onMessage="{!c.handlechangeInTabs}" />
+    <aura:attribute name="selectedTabs" type="String" />
+    <aura:attribute name="skipSalesUser" type="Boolean" default="false" />
+    <aura:attribute name="hideDeleteQuote" type="Boolean" default="false" />
+    <aura:attribute name="quoteDetail" type="Quote" />
+    <aura:attribute name="validateNotificationSent" type="Boolean" default="false" />
+    <aura:attribute name="isSalesUser" type="Boolean" default="false" />
+
+    <aura:attribute name="sobjecttype" type="String" default="{!v.sObjectName}"/>
+    <aura:attribute name="backgroundColor" type="String" default="#FFFFFF"/>
+    <aura:attribute name="disableSaveButton" type="boolean" default="true"/>
+    <aura:attribute name="disableCustomizePricingBttn" type="boolean" default="true"/>
+    <aura:attribute name="atleastOneTabIsSelected" type="Boolean" default="false"/>
+    <aura:attribute name="disableQuoteBttn" type="boolean" default="true"/>
+    <aura:attribute name="requirementVisibility" type="boolean" default="false"/>
+    <aura:attribute name="quoteId" type="String" description="Based on quote Id control the Buttons Visibility"/>
+    <aura:attribute name="totalProjectQuoteId" type="String" />
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    <!-- Added by Arun for system admin custom permission -->
+      <aura:attribute name="isSysAdmin" type="Boolean" default="false"/>
+
+    <aura:attribute name="changesAllowedInQuotation" type="Boolean" default="false"/>
+    <aura:attribute name="quotationStatus" type="String"/>
+    <aura:attribute name="opportunityRecordId" type="Id"/>
+    <aura:attribute name="opportunityStatus" type="String"/>
+    <aura:attribute name="serviceRequestRecordId" type="Id"/>
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    
+    <aura:dependency resource="markup://force:navigateToSObject" type="EVENT"/>
+    <!--<aura:attribute name="tabDetailsGotSaved" type="boolean" defalut="false"/> -->
+    <!--E6D193-->
+    <!--    <aura:registerEvent name="getData" type="c:ET_getData" />   -->
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:handler name="alterRateWrpEvent" event="c:ET_AlterRatesEvent" action="{!c.handleAlterRateEvent}"/>
+    
+    <!--<aura:attribute name="opportunityRecordId" type="Id"/>
+    <aura:attribute name="pricingServiceRequestRecordId" type="Id"/> -->
+    <aura:html tag="style">
+        #mainDivId {
+        --backgroundColor: {!v.backgroundColor};
+        }
+    </aura:html>
+    <!--  <article class="slds-card">	-->
+    <aura:if isTrue="{! not(v.loaded) }">
+        <lightning:spinner alternativeText="Loading" variant="brand" />
+    </aura:if>
+    <div class="firstBody">
+        <div class="mainDivClass bg_image" aura:id="mainDivAuraId" id="mainDivId">
+            <div class="slds-col slds-align_absolute-center slds-text-heading_large formHeader">Pricing Request Form</div>
+            <div id="mainBody" class="mainBodyClass">
+                
+                <c:ET_ServiceRequestWrapper aura:id="bodyComponent" disableSaveButton="{!v.disableSaveButton}"
+                    disableQuoteBttn="{!v.disableQuoteBttn}" atleastOneTabIsSelected="{!v.atleastOneTabIsSelected}"
+                    backgroundColor="{!v.backgroundColor}" requirementVisibility="{!v.requirementVisibility}"
+                    disableCustomizePricingBttn="{!v.disableCustomizePricingBttn}" quoteId="{!v.quoteId}"
+                    totalProjectQuoteId="{!v.totalProjectQuoteId}" isPricingTeam="{!v.isPricingTeam}"
+                    opportunityStatus="{!v.opportunityStatus}" quoteDetail="{!v.quoteDetail}"
+                    oppId = "{!v.opportunityRecordId}"/>
+                <br/>
+                <div id="mainFooter">
+                    <div class="slds-align_absolute-center">
+                        <lightning:buttonGroup>
+                             <!--Taj Commented-->
+                             <!--<lightning:button variant="brand" label="Go to opportunity" title="Go to opportunity"  onclick="{! c.handleCancelClick }"  />&nbsp;
+                            <aura:if isTrue ="{! and ( not(empty(v.opportunityStatus)) , v.opportunityStatus == 'Approved')}">
+                                <aura:if isTrue="{! and(v.isPricingTeam,empty(v.quoteId))}">
+                                    <lightning:button variant="brand" label="Reject Request" title="Reject Request"  onclick="{! c.rejectServiceRequest }"  />&nbsp;
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue ="{! or (not(v.isPricingTeam), v.isSysAdmin )}">
+                                <aura:if isTrue ="{! empty(v.opportunityStatus)}">
+                                    <lightning:button variant="brand" label="Save" title="Save" disabled="{!or(v.disableSaveButton, !v.atleastOneTabIsSelected)}" onclick="{! c.handleSave }" />&nbsp;
+                                    <lightning:button aura:id="submitBtn" class="slds-button slds-button_brand" label="Submit For Approval" title = "Submit To Head of sales for Approval" 
+                                              onclick="{!c.submitForApproval}"/>&nbsp;
+                                </aura:if>
+                                <aura:if isTrue="{! or ( v.opportunityStatus == 'Rejected', v.opportunityStatus == 'Rejected by Pricing Team' ) }">
+                                    <lightning:button variant="brand" label="Save" title="Save" disabled="{!or(v.disableSaveButton, !v.atleastOneTabIsSelected)}" onclick="{! c.handleSave }" />&nbsp;
+                                    <lightning:button aura:id="submitBtn" class="slds-button slds-button_brand" label="Submit For Approval" title = "Submit To Head of sales for Approval" 
+                                              onclick="{!c.submitForApproval}"/>&nbsp;
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{! empty(v.quoteId)}">
+                                <aura:if isTrue ="{! and(v.isPricingTeam , v.opportunityStatus == 'Approved' )}">
+                                    <lightning:button variant="brand" label="Save" title="Save" disabled="{!or(v.disableSaveButton, !v.atleastOneTabIsSelected)}" onclick="{! c.handleSave }" />&nbsp;
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{! and(v.isPricingTeam,not(empty(v.quoteId)))}">
+                                <lightning:button variant="brand" label="Delete Quotation" title="Delete Quotation"  onclick="{! c.deleteAlterRates }"  />&nbsp;
+                            </aura:if>
+                            <aura:if isTrue="{! and(v.changesAllowedInQuotation ,and(v.isPricingTeam,not(empty(v.quoteId))))}">
+                                <lightning:button variant="brand" label="Save Alter Rates" title="Save Alter Rates"  onclick="{! c.handleAlterRatesSave }" />&nbsp;
+                            </aura:if>
+                            <aura:if isTrue ="{! not(v.isPricingTeam)}">
+                                <lightning:button variant="brand" label="Customize Pricing"  title="Customize Pricing" onclick="{! c.handleCustomizePricing }" />&nbsp;&nbsp;
+                            </aura:if>
+                            <aura:if isTrue ="{!v.isPricingTeam}">
+                                <aura:if isTrue="{! or( v.changesAllowedInQuotation , empty(v.quoteId)) }">
+                                    <lightning:button variant="brand" label="Customize Pricing"  title="Customize Pricing" onclick="{! c.handleCustomizePricing }" />&nbsp;&nbsp;
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue ="{! and ( not(empty(v.opportunityStatus)) , v.opportunityStatus == 'Approved')}">
+                                <aura:if isTrue="{! and(v.isPricingTeam,empty(v.quoteId))}">
+                                    <lightning:button variant="success" label="Intiate Quotation" title="Intiate Quotation" onclick="{! c.handleQuoteButton }"  type="submit"/>&nbsp;
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{! and(v.isPricingTeam,not(empty(v.quoteId)))}">
+                                <lightning:button variant="success" label="Open Quotation" title="Open Quotation" onclick="{! c.handleOpenQuoteButton }"/>&nbsp;
+                            </aura:if> 
+                              <aura:if isTrue="{! and(v.changesAllowedInQuotation ,and(v.isPricingTeam,not(empty(v.quoteId))))}">
+                                <lightning:button variant="success" label="Submit for Approval" title="Submit for Approval" onclick ="{!c.handleQuoteSubmit}" />&nbsp;
+                            </aura:if> 
+                            
+                            <aura:if isTrue="{! and(v.isPricingTeam,not(empty(v.totalProjectQuoteId)))}">
+                                <lightning:button variant="success" label="Total Project" title="Total Project" onclick="{! c.handleTotalProject }"  type="submit"/>&nbsp;
+                            </aura:if>--> 
+                             
+                             <!--Previous Commented-->
+                            <!--<lightning:button aura:id="submitBtn" class="slds-button slds-button_brand" title="Submit to Head of Sales"
+                                              label="Submit for Approval"  
+                                              onclick="{!c.submitForApproval}"/>
+                            
+                            <lightning:button variant="brand" label="Go to opportunity" title="Go to opportunity"  onclick="{! c.handleCancelClick }"  />&nbsp;
+                            <aura:if isTrue="{! empty(v.quoteId)}">
+                                <lightning:button variant="brand" label="Reject Request" title="Reject Request"  onclick="{! c.rejectServiceRequest }"  />&nbsp;
+                            </aura:if>
+
+                            <lightning:button variant="brand" label="Save" title="Save" disabled="{!or(v.disableSaveButton, !v.atleastOneTabIsSelected)}" onclick="{! c.handleSave }" />&nbsp;
+                            
+                            <aura:if isTrue="{! not(empty(v.quoteId))}">
+                                <lightning:button variant="brand" label="Delete Alter Rates" title="Delete Alter Rates"  onclick="{! c.deleteAlterRates }"  />&nbsp;
+                                <lightning:button variant="brand" label="Save Alter Rates" title="Save Alter Rates"  onclick="{! c.handleAlterRatesSave }" />&nbsp;
+                            </aura:if>
+                            <lightning:button variant="brand" label="Customize Pricing"  title="Customize Pricing" onclick="{! c.handleCustomizePricing }" />&nbsp;&nbsp;
+                            
+                            
+                            <aura:if isTrue="{! empty(v.quoteId)}">
+                                <lightning:button variant="success" label="Intiate Quotation" title="Intiate Quotation" onclick="{! c.handleQuoteButton }" type="submit"/>&nbsp;
+                            </aura:if> 
+                            
+                            <aura:if isTrue="{! not(empty(v.totalProjectQuoteId))}">
+                                <lightning:button variant="success" label="Total Project" title="Total Project" onclick="{! c.handleTotalProject }"  type="submit"/>&nbsp;
+                            </aura:if> 
+                            
+                            <aura:if isTrue="{! not(empty(v.quoteId))}">
+                                <lightning:button variant="success" label="Open Quotation" title="Open Quotation" onclick="{! c.handleOpenQuoteButton }"/>&nbsp;
+                            </aura:if>  
+                            <aura:if isTrue="{! not(empty(v.quoteId))}">
+                                <lightning:button variant="success" label="Submit for Approval" title="Submit for Approval" onclick ="{!c.handleQuoteSubmit}" />&nbsp;
+                            </aura:if> -->
+
+                            <!--<aura:if isTrue="{!and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser)}">
+                                1111 Condtion matched Condtion matched Condtion matched Condtion matched Condtion <br />
+                            </aura:if>
+                            Opty:{!v.opportunityStatus} Pricing:{!v.isPricingTeam} Sales: {!v.isSalesUser} Quote:
+                            {!v.quoteId}
+                            Tabs:{!v.selectedTabs} Skip:{!v.skipSalesUser} <br /> <br />-->
+                            <lightning:button variant="brand" label="Go to opportunity" title="Go to opportunity"
+                                onclick="{! c.handleCancelClick }" />&nbsp;
+                            <aura:if
+                                isTrue="{!or(or(or(v.opportunityStatus == 'Rejected', v.opportunityStatus == 'Rejected by Pricing Team'), empty(v.opportunityStatus)), v.opportunityStatus == 'Approved')}">
+                                <aura:if isTrue="{!or(not(v.isPricingTeam), v.isSysAdmin)}">
+                                    <lightning:button variant="brand" label="Save" title="Save"
+                                        disabled="{!or(v.disableSaveButton, !v.atleastOneTabIsSelected)}"
+                                        onclick="{! c.handleSave }" />&nbsp;
+                                </aura:if>
+                            </aura:if>
+                            <aura:if
+                                isTrue="{!or(or(v.opportunityStatus == 'Rejected', v.opportunityStatus == 'Rejected by Pricing Team'), empty(v.opportunityStatus))}">
+                                <aura:if isTrue="{! or (not(v.isPricingTeam), v.isSysAdmin )}">
+                                    <lightning:button aura:id="submitBtn" class="slds-button slds-button_brand" label="Submit For Approval"
+                                        title="Submit To Head of sales for Approval" onclick="{!c.submitForApproval}" />&nbsp;
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{!and(not(empty(v.opportunityStatus)), v.opportunityStatus == 'Approved')}">
+                                <aura:if isTrue="{!empty(v.quoteId)}">
+                                    <aura:if isTrue="{!or(v.isPricingTeam, and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser))}">
+                                        <lightning:button variant="success" label="Initiate Quotation" title="Initiate Quotation"
+                                            onclick="{!c.handleQuoteButton }" type="submit" />&nbsp;
+                                        <lightning:button variant="brand" label="Reject Request" title="Reject Request"
+                                            onclick="{!c.rejectServiceRequest }" />&nbsp;
+                                    </aura:if>
+                                </aura:if>
+                                <aura:if isTrue="{!v.isSalesUser}">
+                                    <lightning:button variant="success" label="Request Initiate Quotation" title="Request Initiate Quotation"
+                                        onclick="{!c.requestInitiateQuotation}" type="submit" />&nbsp;
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{!or(v.changesAllowedInQuotation, empty(v.quoteId)) }">
+                                <aura:if
+                                    isTrue="{!or(v.isPricingTeam, and(and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser),!v.validateNotificationSent))}">
+                                    <lightning:button variant="brand" label="Customize Pricing"
+                                        title="Customize Pricing" onclick="{! c.handleCustomizePricing }" />&nbsp;&nbsp;
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{!not(empty(v.quoteId))}">
+                                <!--<aura:if isTrue="{!v.isPricingTeam}"> hideDeleteQuote:{!v.hideDeleteQuote}-->
+                                    <aura:if isTrue="{!or(v.isPricingTeam, and(and(and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser),!v.hideDeleteQuote),!v.validateNotificationSent))}">
+                                        <lightning:button variant="brand" label="Delete Quotation" title="Delete Quotation" onclick="{! c.deleteAlterRates }" />&nbsp;
+                                </aura:if>
+                                <aura:if isTrue="{!or(v.isPricingTeam, and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser))}">
+                                    <lightning:button variant="success" label="Open Quotation" title="Open Quotation"
+                                        onclick="{! c.handleOpenQuoteButton }" />&nbsp;
+                                </aura:if>
+                                <aura:if isTrue="{!and(and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser),!v.validateNotificationSent)}">
+                                    <lightning:button variant="success" label="Validate Quotation" title="Validate Quotation" onclick="{!c.validateQuotation}" />&nbsp;
+                                </aura:if>
+                                <aura:if isTrue="{!not(empty(v.totalProjectQuoteId))}">
+                                    <aura:if
+                                        isTrue="{! and(v.isPricingTeam, and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser))}">
+                                        <lightning:button variant="success" label="Total Project" title="Total Project"
+                                            onclick="{! c.handleTotalProject }" type="submit" />&nbsp;
+                                    </aura:if>
+                                </aura:if>
+                                <aura:if isTrue="{!v.changesAllowedInQuotation}">
+                                    <aura:if
+                                        isTrue="{!or(v.isPricingTeam, and(and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser),!v.validateNotificationSent))}">
+                                        <lightning:button variant="brand" label="Save Alter Rates"
+                                            title="Save Alter Rates" onclick="{! c.handleAlterRatesSave }" />&nbsp;
+                                    </aura:if>
+                                    <aura:if isTrue="{!v.isPricingTeam}">
+                                        <lightning:button variant="success" label="Submit for Approval"
+                                            title="Submit for Approval" onclick="{!c.handleQuoteSubmit}" />&nbsp;
+                                    </aura:if>
+                                </aura:if>
+                            </aura:if>
+                        </lightning:buttonGroup>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- </article>	-->
+</aura:component>

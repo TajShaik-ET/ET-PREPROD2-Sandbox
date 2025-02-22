@@ -1,0 +1,175 @@
+<aura:component
+                implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,force:lightningQuickAction"
+                controller="ET_B2BController"
+                access="global"
+                >
+    <aura:attribute name="Invoices" type="boolean" />
+    <aura:attribute name="AccountId" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="complaintAgainstType" type="String" />
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    
+    <aura:attribute name="AssignedResource" type="boolean" />
+    <aura:attribute name="AssignedVehicle" type="boolean" />
+    <aura:attribute name="SalesAggrement" type="boolean" />
+    <aura:attribute name="AssignedStud" type="boolean" />
+    <aura:attribute name="Others" type="boolean" />
+    <lightning:notificationsLibrary aura:id="notifLib" />
+    <lightning:overlayLibrary aura:id="cmp1" />
+    
+    <aura:registerEvent name="Actionname" type="c:ETST_sendDataEvent" />
+    
+    
+    <lightning:recordEditForm
+                              objectApiName="Case"
+                              aura:id="caseForm"
+                              onsubmit="{!c.handleOnSubmit}"
+                              onsuccess="{!c.handleOnSuccess}"
+                              onerror="{!c.handleOnError}"
+                              recordTypeId="0123z0000010YImAAM"
+                              >
+        <div class="documentmain">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <!--<h3 class="Headingcontent">Create Complaint</h3>-->
+                    <div class="slds-tile__detail">
+                        <aura:if isTrue="{! v.loaded }">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <lightning:select
+                                                          name="mySelect"
+                                                          label=""
+                                                          aura:id="mySelect"
+                                                          value="{!v.complaintAgainstType}"
+                                                          >
+                                            <option>None</option>
+                                            <option value="General">General</option>
+                                            <option value="Complain Against Existing Service"
+                                                    >Complain Against Existing Service</option
+                                                >
+                                        </lightning:select>
+                                    </div>
+                                </div>
+                            </div>
+                            <aura:if isTrue="{!v.complaintAgainstType=='General'}">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col ">
+                                        <span style="color:#000;">Location</span><B />
+                                        <lightning:inputField
+                                                              aura:id="InvoiceId"
+                                                              variant="label-hidden"
+                                                              fieldName="City__c"
+                                                              class="insidepadding"
+                                                              />
+                                    </div>
+                                    
+                                    <div class="slds-col ">
+                                        <span style="color:#000;">Workshops</span><B />
+                                        <lightning:inputField
+                                                              class="insidepadding"
+                                                              variant="label-hidden"
+                                                              fieldName="MRO_Workshops__c"
+                                                              value=""
+                                                              />
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-grid_horizontal">
+                                    <div class="slds-col slds-size_12-of-12">
+                                        <span style="color:#000;">Internal Vehicle number/fleet information</span>
+                                        <lightning:inputField
+                                                              variant="label-hidden"
+                                                              fieldName="Internal_Vehicle_number_fleet_informatio__c"
+                                                              />
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-grid_horizontal">
+                                    <div class="slds-col slds-size_12-of-12">
+                                        <lightning:inputField
+                                                              fieldName="Description"
+                                                              class="insidepadding"
+                                                              />
+                                    </div>
+                                </div>
+                                <aura:set attribute="else">
+                                    <aura:if
+                                             isTrue="{!v.complaintAgainstType=='Complain Against Existing Service'}"
+                                             >
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col ">
+                                                <span style="color:#000;">Location</span><B />
+                                                <lightning:inputField
+                                                                      aura:id="InvoiceId"
+                                                                      variant="label-hidden"
+                                                                      fieldName="City__c"
+                                                                      class="insidepadding"
+                                                                      />
+                                            </div>
+                                            
+                                            <div class="slds-col ">
+                                                <span style="color:#000;">Workshops</span><B />
+                                                <lightning:inputField
+                                                                      class="insidepadding"
+                                                                      variant="label-hidden"
+                                                                      fieldName="MRO_Workshops__c"
+                                                                      value=""
+                                                                      />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col slds-size_12-of-12">
+                                                <span style="color:#000;"
+                                                      >Internal Vehicle number fleet informat</span
+                                                    ><B />
+                                                <lightning:inputField
+                                                                      variant="label-hidden"
+                                                                      fieldName="Internal_Vehicle_number_fleet_informatio__c"
+                                                                      />
+                                            </div>
+                                            
+                                            <div class="slds-col slds-size_12-of-12">
+                                                <span style="color:#000;">Resource</span><B />
+                                                <lightning:inputField
+                                                                      variant="label-hidden"
+                                                                      fieldName="MROResource__c"
+                                                                      />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="slds-grid slds-grid_horizontal">
+                                            <div class="slds-col slds-size_12-of-12">
+                                                <lightning:inputField
+                                                                      fieldName="Description"
+                                                                      class="insidepadding"
+                                                                      />
+                                            </div>
+                                        </div>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                            <aura:set attribute="else">
+                                <lightning:spinner alternativeText="Loading" />
+                            </aura:set>
+                        </aura:if>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control" style="float: right;">
+                                        <lightning:button
+                                                          class="slds-m-top_small btbupdate"
+                                                          variant="brand"
+                                                          type="submit"
+                                                          name="SAVE"
+                                                          label="SAVE"
+                                                          />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </lightning:recordEditForm>    
+</aura:component>

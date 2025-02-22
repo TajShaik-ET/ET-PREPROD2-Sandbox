@@ -1,0 +1,16 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <ltng:require styles="{!$Resource.ETCAR_sliderExternalScrcipt + '/nouislider.css'}" 
+                  scripts="{!$Resource.ETCAR_sliderExternalScrcipt + '/nouislider.js'}"
+                  afterScriptsLoaded="{!c.jsLoaded}" />
+    
+    <aura:registerEvent name="rangeChange" type="c:ETCAR_RangeChangeEvent"/>
+    
+    <aura:attribute name="min" type="String" default="10"/>
+    <aura:attribute name="max" type="String" default="1000"/>
+    <aura:attribute name="step" type="String" default="10"/>
+    
+    <div class="scrolldiv">
+        <div aura:id="slider" class="slider"/>
+    </div>
+</aura:component>

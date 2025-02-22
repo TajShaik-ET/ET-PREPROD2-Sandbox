@@ -1,0 +1,7 @@
+<aura:event type="APPLICATION">
+    <aura:attribute name="customerSupportDashboard" type="Boolean"/>
+    <aura:attribute name="createRequest" type="Boolean"/>
+    <aura:attribute name="reqHistory" type="Boolean"/>
+    <aura:attribute name="escalation" type="Boolean" />   
+    <aura:attribute name="feedback" type="Boolean" />  
+</aura:event>

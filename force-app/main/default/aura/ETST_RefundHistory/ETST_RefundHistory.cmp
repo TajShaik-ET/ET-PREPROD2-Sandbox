@@ -1,0 +1,58 @@
+<aura:component implements="force:hasRecordId,forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="selectedTabId" type="String"/>
+    <aura:attribute name="backgroundImageURL" type="String" default=""/>
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:attribute name="refundHistList" type="List"/>
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:html tag="style">
+    #Students {
+    --backgroundColor: {!v.backgroundColor};
+    }
+    </aura:html>
+   
+    <div aura:id="transportService" style="height: 40px;" >
+         <aura:iteration items="{!v.refundHistList}" var="item">
+            <div class="slds-box">
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon firstrow">
+                        <span class="headtxt">{!$Label.c.ETST_Transaction_ID}</span>
+                        <span class="headtxtdyn">: {!item.Name} </span>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <span class="headtxt">{!$Label.c.ETST_Transaction_Type}</span>
+                        <span class="headtxtdyn">: {!item.ETST_Refund_Status__c } </span>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <span class="headtxt">{!$Label.c.ETST_Transaction_Date}</span>
+                        <span class="headtxtdyn">: <lightning:formattedDateTime value="{!item.CreatedDate}"  
+                        year="numeric" month="numeric" day="numeric"  
+                        timeZone="Asia/Dubai" hour12="false"/> </span>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <span class="headtxt">{!$Label.c.ETST_Refund}</span>
+                        <span class="headtxtdyn">: {!item.ETST_Refund_Percentage__c} </span>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <span class="headtxt">{!$Label.c.ETST_Student_Name}</span>
+                        <span class="headtxtdyn">: {!item.ETST_Transport_Request__r.ETST_Student__r.Name} </span>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <span class="headtxt">{!$Label.c.ETST_Refund_Amount}</span>
+                        <span class="headtxtdyn">: {!item.ETST_Refund_Amount__c}  </span>
+                    </lightning:layoutItem>
+                </lightning:layout>                   
+            </div>
+        </aura:iteration>
+    </div>
+</aura:component>

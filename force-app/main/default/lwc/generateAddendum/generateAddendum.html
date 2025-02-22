@@ -1,0 +1,212 @@
+<template>
+	<lightning-card title="Addendum Creation">
+		<template if:true={SPNR}>
+			<lightning-spinner variant="brand"></lightning-spinner>
+		</template>
+		<template if:false={SPNR}>
+			<div class="accordion_main_sec">
+				<lightning-accordion allow-multiple-sections-open active-section-name="A">
+
+					<lightning-accordion-section name="A" label="Addendum Information">
+						<lightning-record-edit-form object-api-name={contractHeaderObject}
+							data-id="contractHeaderSection" onsuccess={handleSuccess} onerror={handleError}>
+							<div class="slds-grid fieid_data" style="flex-wrap: wrap;">
+								<template if:true={showShcHead}>
+									<div class="slds-col slds-size_1-of-1 slds-m-top_medium slds-m-bottom_medium">
+										<div class="slds-text-heading_small">Header Information</div>
+									</div>
+								</template>
+								<div class="slds-col slds-size_1-of-3">
+									<lightning-input-field class="slds-col" required data-id="ET_Rep_Salutation"
+										field-name={contractHeader.ET_Rep_Salutation}></lightning-input-field>
+								</div>
+								<div class="slds-col slds-size_1-of-3">
+									<lightning-input-field class="slds-col" data-id="ET_Representative" required
+										field-name={contractHeader.ET_Representative}></lightning-input-field>
+								</div>
+								<div class="slds-col slds-size_1-of-3">
+									<lightning-input-field class="slds-col"  data-id="ET_Rep_Designation" required
+										field-name={contractHeader.ET_Rep_Designation}></lightning-input-field>
+								</div>
+								<div class="slds-col slds-size_1-of-3">
+									<lightning-input-field class="slds-col" required data-id="Customer_Salutation"
+										field-name={contractHeader.Customer_Salutation}></lightning-input-field>
+								</div>
+								
+                                <div class="slds-col slds-size_1-of-3"> 
+									<lightning-input-field class="slds-col" required data-id="Company_s_Representative" field-name={contractHeader.Company_s_Representative}>
+									</lightning-input-field>
+								</div>
+								<div class="slds-col slds-size_1-of-3">
+									<lightning-input-field class="slds-col" required data-id="Customer_Designation"
+										field-name={contractHeader.Customer_Designation}></lightning-input-field>
+								</div>
+                                <div class="slds-col slds-size_1-of-3"> 
+									<lightning-input-field class="slds-col" required data-id="Account_Emirate" value={emirate} field-name={contractHeader.Account_Emirate}>
+									</lightning-input-field>
+								</div>
+                                <div class="slds-col slds-size_1-of-3"> 
+									<lightning-input-field class="slds-col" required data-id="Trade_License" value={tradeLicense} field-name={contractHeader.Trade_License}>
+									</lightning-input-field>
+								</div>
+                                <div class="slds-col slds-size_1-of-3"> 
+									<lightning-input-field class="slds-col" required data-id="P_O_Box" field-name={contractHeader.P_O_Box}>
+									</lightning-input-field>
+								</div>
+                                <div class="slds-col slds-size_1-of-3">
+                                    <template if:true={showShcHead}>
+                                        <c-reusable-Custom-Lookup-Field required label="Contract" disable-input={disabled} required-input="true"
+                                        data-id="CONTRACT" selected-ids={contractId} icon-name="custom:custom31"
+                                        filters={filterCondition} onselectedrecordevent={getContractDetail}
+                                        object-api-name="Contract_Pdf_Header__c"
+                                        onkeychangeevent={SearchKeyHandler}></c-reusable-Custom-Lookup-Field>
+                                    </template>
+                                </div>
+								<div class="slds-col slds-hide slds-size_1-of-3"> 
+									<lightning-input-field class="slds-col" value={contractId} required data-id="CONTRACT" field-name={contractHeader.CONTRACT}>
+									</lightning-input-field>
+								</div>
+                                
+                                <div class="slds-col slds-size_1-of-3"> 
+									<lightning-input-field class="slds-col" onchange={checkAddendumType} required data-id="Addendum_Type" field-name={contractHeader.Addendum_Type}>
+									</lightning-input-field>
+								</div>
+								<template if:true={showRenewal}>
+									<template if:true={showShcHead}>
+										<div class="slds-col slds-size_1-of-1 slds-m-top_medium slds-m-bottom_medium">
+											<div class="slds-text-heading_small">Renewal Information</div>
+										</div>
+									</template>
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" value={effectiveDate} required data-id="Effective_Date"
+											field-name={contractHeader.Effective_Date}></lightning-input-field>
+									</div>
+									<div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Duration_Type"
+											field-name={contractHeader.Duration_Type}></lightning-input-field>
+									</div>
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Number_of_Year_Month"
+											field-name={contractHeader.Number_of_Year_Month}></lightning-input-field>
+									</div>
+                                    
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Number_of_Vehicles"
+											field-name={contractHeader.Number_of_Vehicles}></lightning-input-field>
+									</div>
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Mobilization_Date"
+											field-name={contractHeader.Mobilization_Date}></lightning-input-field>
+									</div>
+                                    
+									
+								</template>
+								<template if:true={showAdditional}>
+									<template if:true={showShcHead}>
+										<div class="slds-col slds-size_1-of-1 slds-m-top_medium slds-m-bottom_medium">
+											<div class="slds-text-heading_small">Additional Information</div>
+										</div>
+									</template>
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" value={effectiveDate} required data-id="Effective_Date"
+											field-name={contractHeader.Effective_Date}></lightning-input-field>
+									</div>
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Duration_Type"
+											field-name={contractHeader.Duration_Type}></lightning-input-field>
+									</div>
+									<div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Number_of_Year_Month"
+											field-name={contractHeader.Number_of_Year_Month}></lightning-input-field>
+									</div>
+									
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Number_of_Vehicles"
+											field-name={contractHeader.Number_of_Vehicles}></lightning-input-field>
+									</div>
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Mobilization_Date"
+											field-name={contractHeader.Mobilization_Date}></lightning-input-field>
+									</div>
+									
+								</template>
+
+								<template if:true={showExtension}>
+									<template if:true={showShcHead}>
+										<div class="slds-col slds-size_1-of-1 slds-m-top_medium slds-m-bottom_medium">
+											<div class="slds-text-heading_small">Extension Information</div>
+										</div>
+									</template>
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" value={effectiveDate} required data-id="Effective_Date"
+											field-name={contractHeader.Effective_Date}></lightning-input-field>
+									</div>
+									<div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Duration_Type"
+											field-name={contractHeader.Duration_Type}></lightning-input-field>
+									</div>
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Number_of_Year_Month"
+											field-name={contractHeader.Number_of_Year_Month}></lightning-input-field>
+									</div>
+                                    
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Number_of_Vehicles"
+											field-name={contractHeader.Number_of_Vehicles}></lightning-input-field>
+									</div>
+                                    <div class="slds-col slds-size_1-of-3">
+										<lightning-input-field class="slds-col" required data-id="Mobilization_Date"
+											field-name={contractHeader.Mobilization_Date}></lightning-input-field>
+									</div>
+                                    
+									
+								</template>
+							</div>
+							<div class="slds-grid slds-hide">
+								<lightning-button variant="brand" type="submit" label="Save"> </lightning-button>
+							</div>
+							<div class="slds-grid slds-hide">
+								<lightning-input-field value={recordId} field-name={contractHeader.CUSTOMER_QUOTE}></lightning-input-field>
+                                <lightning-input-field value={RecordsData.ETSALES_Sector__c} field-name={contractHeader.SECTOR}></lightning-input-field>
+								
+							</div>
+						</lightning-record-edit-form>
+					</lightning-accordion-section>
+                    <template if:true={showContract}>
+					<lightning-accordion-section name="B" label="Contract Articles">
+						<div class="slds-scrollable_x">
+							<template for:each={contractLines} for:item="contractLine">
+								<c-generate-contract-lines key={contractLine.Id} article={contractLine}></c-generate-contract-lines>
+							</template>
+							<template if:true={isAddition}>
+								<template for:each={additionalArtiles} for:item="additionalArtile">
+									<c-generate-contract-lines key={additionalArtile.Id} article={additionalArtile}></c-generate-contract-lines>
+								</template>
+							</template>
+							<template if:false={isAddition}>
+								<div>
+									<lightning-button-icon icon-name="utility:add" title="Add" variant="brand"
+										tooltip="To add more Contract Articles" style="padding-left: 15px;"
+										onclick={handleAddClause}>
+									</lightning-button-icon>
+								</div>
+							</template>
+						</div>
+					</lightning-accordion-section>
+                    </template>
+				</lightning-accordion>
+			</div>
+		</template>
+		<div class="slds-grid">
+			<div class="slds-col slds-size_1-of-2 slds-p-right_small">
+				<lightning-button variant="brand" class="slds-m-top_small slds-float_right" label="Cancel"
+					onclick={handleCancel}></lightning-button>
+			</div>
+			<div class="slds-col slds-size_1-of-2">
+				<lightning-button variant="brand" onclick={handleSaveClick} class="slds-m-top_small slds-float_left"
+					label="Save"></lightning-button>
+			</div>
+		</div>
+	</lightning-card>
+
+</template>

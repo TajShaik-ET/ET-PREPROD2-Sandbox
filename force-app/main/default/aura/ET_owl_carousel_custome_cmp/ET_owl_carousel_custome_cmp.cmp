@@ -1,0 +1,25 @@
+<aura:component >
+    <ltng:require styles="/resource/owl_carousel_min_css" 
+                  scripts='/resource/owl_carousel_jquery_js,/resource/owl_carousel_min_js,/resource/owl_carousel_custome_js'
+                  afterScriptsLoaded="" />
+    <div class="container-fluid services_slider">
+        <div id="owl-demo-2" class="owl-carousel owl-theme" >
+            <article class="thumbnail items" itemscope="" >
+                <div class="caption">
+                    <p itemprop="text" class="flex-text text-muted">Our Services</p>
+                </div>
+            </article>
+            <article class="thumbnail items" itemscope="" >
+                <div class="caption">
+                    <p itemprop="text" class="flex-text text-muted">Student Profile</p>
+                </div>
+            </article>
+            <article class="thumbnail items" itemscope="" >
+                <div class="caption">
+                    <p itemprop="text" class="flex-text text-muted">My Cases</p>
+                </div>
+            </article>
+        </div>
+        <!-- #owl-demo-2 -->
+    </div>
+</aura:component>

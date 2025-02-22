@@ -1,0 +1,48 @@
+.THIS {
+    margin: 8px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.THIS .right {
+    text-align: right;
+}
+
+.THIS .centered {
+    color: #999999;
+    font-size: 0.9rem;
+    text-align: center;
+    align-self: center;
+    padding: 0 12px;
+}
+.THIS .slds-button_icon-border {
+    line-height: 1;
+    vertical-align: middle;
+    color: rgb(255, 255, 255);
+    border: 1px solid #EB4026;
+    transition: border .15s linear;
+    border-color: #EB4026;
+    background: #EB4026;
+}
+.THIS .slds-button:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.THIS .slds-button:active {
+    color: rgb(255, 255, 255);
+}
+.THIS .slds-button:hover, .THIS .slds-button:focus {
+    color: #fff;
+}
+@media(max-width:480px){
+    .THIS .slds-button_icon-border{
+        border-color: #EB4026;
+        background: #EB4026;
+    }
+}

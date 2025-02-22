@@ -1,0 +1,97 @@
+<apex:page applyHtmlTag="false" applyBodyTag="false" docType="html-5.0" 
+           controller="ETST_GoogleMap_Controller" showHeader="false"  standardStylesheets="false">
+    <head>
+        <style type="text/css">
+            body{margin:0px}
+            #map{ width:100%; height: 328px; }
+        </style>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2LttXno-y_ZRfIlOgKRBQcxS4p8_L6b0"></script>
+        
+        <script type="text/javascript">
+            
+        var map; //Will contain map object.
+        var marker = false; ////Has the user plotted their location marker? 
+        
+        //Function called to initialize / create the map.
+        //This is called when the page has loaded.
+        function initMap() {
+           
+            //The center location of our map.
+            //var centerOfMap = new google.maps.LatLng(25.204849, 55.270782); 
+            var centerOfMap = new google.maps.LatLng({!latit}, {!longit});
+            //Map options.
+            var options = {
+                center: centerOfMap, //Set center.
+                zoom: 14 //The zoom value.
+            };
+            
+            //Create the map object.
+            map = new google.maps.Map(document.getElementById('map'), options);
+            marker = new google.maps.Marker({
+                        position: centerOfMap,
+                        map: map,
+                        draggable: true //make it draggable
+                    });
+            //Listen for any clicks on the map.
+            google.maps.event.addListener(map, 'click', function(event) {   
+              
+                //Get the location that the user clicked.
+                var clickedLocation = event.latLng;
+                //If the marker hasn't been added.
+                if(marker === false){
+                    //Create the marker.
+                      marker = new google.maps.Marker({
+                      position: clickedLocation,
+                      map: map,
+                      draggable: true //make it draggable
+                    });
+                  
+                } else{
+                    //Marker has already been added, so just change its location.
+                    marker.setPosition(clickedLocation);
+                }
+                //Listen for drag events!
+                //Get the marker's location.
+                markerLocation();
+            });
+            google.maps.event.addListener(marker, 'dragend', function(event){
+               
+                markerLocation();
+            });
+        }
+        
+        //This function will get the marker's current location and then add the lat/long
+        //values to our textfields so that we can save the location.
+        function markerLocation(){
+           
+            //Get location.
+            var currentLocation = marker.getPosition();
+            //Add lat and lng values to a field that we can save.
+            //document.getElementById('lat').value = currentLocation.lat(); //latitude
+            //document.getElementById('lng').value = currentLocation.lng(); //longitude
+            var baseUrl = "{!LEFT($Api.Partner_Server_URL_390,FIND('/services', $Api.Partner_Server_URL_390))}";
+            parent.postMessage(currentLocation.lat()+'~'+currentLocation.lng(), baseUrl);
+        }
+        
+        
+        //Load the map when the page has finished loading.
+        google.maps.event.addDomListener(window, 'load', initMap);
+        </script>
+        <title>Save Marker</title>
+    </head>
+    <body>
+        <!--h1 style="margin:0px;">Select a location!</h1>
+        <p style="margin-top:0px;">Click on a location on the map to select it. Drag the marker to change location.</p-->
+        
+        <!--map div-->
+        <div id="map"></div>
+        
+        <!--our form>
+        <h2>Chosen Location</h2>
+        <form method="post">
+            <input type="text" id="lat" readonly="yes"/><br/>
+            <input type="text" id="lng" readonly="yes"/>
+        </form-->
+        
+    </body>
+</apex:page>

@@ -1,0 +1,62 @@
+.slds-listbox__item {
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.slds-pill {
+    display: inline-flex;
+    align-items: center;
+    margin: 0.2rem;
+    background: #f4f6f9;
+    padding: 0.2rem 0.5rem;
+    border-radius: 1rem;
+}
+
+.slds-pill__label {
+    margin-right: 0.5rem;
+}
+
+.slds-button_icon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.lookup-container {
+    position: relative;
+    width: 100%;
+}
+
+.slds-listbox {
+    position: absolute;
+    background: white;
+    border: 1px solid #d8dde6;
+    width: 100%;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.slds-listbox__item {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.slds-listbox__item:hover {
+    background: #f4f6f9;
+}
+
+.slds-pill {
+    display: inline-flex;
+    align-items: center;
+    margin: 0.2rem;
+    padding: 0.2rem 0.5rem;
+    background-color: #f4f6f9;
+    border-radius: 1rem;
+}
+
+.slds-pill__remove {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}

@@ -1,0 +1,540 @@
+/*@font-face {
+font-family: 'Cronos';
+src: url(/resource/ETI_Cronos); 
+}
+.THIS {
+font-family: 'Cronos';
+letter-spacing: .5px;
+}*/
+.THIS .btn_right{
+    float: right;
+}
+.THIS .btn_left{
+    float: left;
+}
+.THIS .div_right{
+    text-align: right;
+}
+.THIS .slds-form-element__control .slds-radio{
+    display : inline-block !important;
+}
+.THIS .slds-required{
+    display: none;
+}
+/* remove the "or drop files" label from the right of the lightning:input type file */
+.THIS .slds-file-selector__dropzone .slds-file-selector__text{
+    display: none;
+}
+
+/* remove the "Upload Files" text from the button of the lightning:input type file */
+.THIS .slds-file-selector__dropzone .slds-file-selector__button{
+    font-size: 0;
+}
+.THIS .slds-button__icon .slds-button__icon_left{
+    
+    width: 40px;
+    height: 40px;
+    
+}
+/* insert the text "New Exam" into the button of the lightning:input type file */
+.THIS .slds-file-selector__dropzone .slds-file-selector__button:after{
+    content: 'Upload Image';
+    font-size: .8125rem;
+    color: rgba(27, 82, 151, 1.0);
+}
+
+.THIS .field__input{ 
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+    
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    font-family: inherit;
+    font-size: 1em;
+}
+
+.THIS  .field__input:focus::-webkit-input-placeholder{
+    color: token(fieldPlaceholderColor);
+}
+.THIS .cETST_StudentsTab{
+    padding:0px 10px;
+}
+.THIS  .field__input:focus::-moz-placeholder{
+    color: token(fieldPlaceholderColor);
+    opacity: 1;
+}
+
+.THIS  .a-field{
+    display: inline-block;
+}
+
+.THIS .a-field__input{ 
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.THIS  .a-field__input:focus{
+    outline: none;
+}
+.THIS  .a-field{
+    position: relative;
+    box-sizing: border-box;
+    font-size: 1em;
+    padding-top: 1em;  
+}
+
+
+.THIS  .a-field__input{
+    height: 40px;
+    padding: 0 15px 0 1em;
+    border-bottom: 2px solid #D1C4E9;  
+}
+
+.THIS  .a-field__input::-webkit-input-placeholder{
+    opacity: 0;
+    transition: opacity .2s ease-out;
+}
+
+.THIS  .a-field__input::-moz-placeholder{
+    opacity: 0;
+    transition: opacity .2s ease-out;
+}
+
+.THIS  .a-field__input:not(:placeholder-shown) ~ .a-field__label-wrap .a-field__label{
+    opacity: 0;
+    bottom: 15px;
+}
+
+.THIS  .a-field__input:focus::-webkit-input-placeholder{
+    opacity: 1;
+    transition-delay: .2s;
+}
+
+.THIS  .a-field__input:focus::-moz-placeholder{
+    opacity: 1;
+    transition-delay: .2s;
+}
+
+.THIS  .a-field__label-wrap{
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;	
+    
+    pointer-events: none;
+    cursor: text;
+    
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.THIS  .a-field__label{
+    position: absolute;
+    left: 1em;
+    bottom: calc(50% - .5em);
+    
+    line-height: 1;
+    font-size: 1em;
+    
+    pointer-events: none;
+    transition: bottom .2s cubic-bezier(0.9,-0.15, 0.1, 1.15), opacity .2s ease-out;
+    will-change: bottom, opacity;
+}
+
+.THIS  .a-field__input:focus ~ .a-field__label-wrap .a-field__label{
+    opacity: 1;
+    bottom: 40px;
+}
+
+
+.THIS  .a-field_a1 .a-field__input{
+    transition: #673AB7 .2s ease-out;
+    will-change: #673AB7;
+}
+
+.THIS  .a-field_a1 .a-field__input:focus{
+    border-color: #673AB7;
+}
+
+
+
+.THIS  .a-field_a2 .a-field__label-wrap::after{
+    content: "";
+    box-sizing: border-box;
+    width: 0;
+    height: 2px;
+    background-color: #673AB7;
+    
+    position: absolute;
+    bottom: 0;
+    left: 0;  
+    
+    will-change: width;
+    transition: width .285s ease-out;
+}
+
+.THIS  .a-field_a2 .a-field__input:focus ~ .a-field__label-wrap::after{
+    width: 100%;
+}
+
+
+
+.THIS  .a-field_a3{
+    padding-top: 1.5em;
+}
+
+.THIS  .a-field_a3 .a-field__label-wrap::after{
+    content: "";
+    box-sizing: border-box;
+    width: 100%;
+    height: 0;
+    
+    opacity: 0;
+    border: 2px solid #673AB7;
+    
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    
+    will-change: opacity, height;
+    transition: height .2s ease-out, opacity .2s ease-out;
+}
+
+.THIS .a-field_a3 .a-field__input:focus ~ .a-field__label-wrap::after{
+    height: 100%;
+    opacity: 1;
+}
+
+.THIS .a-field_a3 .a-field__input:focus ~ .a-field__label-wrap .a-field__label{
+    bottom: calc(40px + .5em);
+}
+
+
+.THIS .body{
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+    margin: 0;
+    
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.THIS .slds-text-heading_medium{
+    margin:0px;
+    color: #333;
+    font-weight: 300 !important;
+    text-align: center;
+    font-size: 16px;
+    font-size: 26px;
+    /*font-family: 'Cronos';*/
+}
+.THIS .slds-modal__close {
+    position: absolute;
+    right: 0rem;
+    top: 0rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: .875rem;
+    font-weight: 300;
+    border-radius: 100%;
+    z-index: 4;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    top:10px;
+}
+
+.THIS .slds-modal__close .slds-button_icon-inverse{
+    width: 13px;
+    height: 13px;
+    color:#000;
+}
+.THIS .slds-grid label{
+    visibility: hidden;display:block;
+}
+.THIS .slds-modal__header {
+    position: relative;
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    border-bottom: 2px solid #f2f2f2;
+    padding: 1rem;
+    text-align: center;
+}
+.THIS .slds-modal__footer {
+    border-top: 1px solid #f2f2f2;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    padding: .75rem 1rem;
+    background-color: #ffffff;
+    text-align: right;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+.THIS input[type="text"], .THIS input[type="password"], .THIS textarea, .THIS textarea.form-control ,
+.THIS select , .THIS input[type="tel"] , .THIS input[type="email"]{
+    height: 38px;
+    margin: 0;
+    padding: 0 .5rem 0 .5rem;
+    vertical-align: middle;
+    background: transparent!important;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    /*font-family: 'Cronos';*/
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none!important;
+    transition: all .3s;
+    border-radius: 0px !important;
+}
+.THIS .slds-select_container:after {
+    border-top: 5px solid #888;
+    bottom: calc((1.75rem / 2) - -1px);
+}
+.THIS .slds-select_container:before {
+    display:none;
+}
+.THIS .slds-modal__container{
+    animation: popup 0.7s;
+    width: 90%;
+    max-width: 90rem;
+    margin: 0 auto;
+}
+.THIS .btnsave{
+    font-size: 14px;
+    margin-top: 3px;
+    background: #337ab7;
+    border: 1px solid #337ab7;
+    color: #fff;
+}
+.THIS .btnsave:hover{
+    background-color: #286090;
+    border-color: #204d74;
+}
+.THIS .btncancel{
+    font-size: 14px;
+    margin-top: 3px;
+    background: #fff;
+    border: 1px solid #204d74;
+    color: #204d74;
+}
+.THIS .profilediv{
+    height:105px;
+    border:1px solid #dddddd;
+    border-radius:5px;
+    display: block;
+    margin-top: 0.4rem;    background: rgba(0, 193, 158, 0.2);
+    text-align: center;
+}
+.THIS .profilediv img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    margin: 12px;
+    
+}
+.THIS .slds-form-element__control {
+    margin-bottom: 8px;
+}
+.THIS .martop{
+    margin-top: 10px;
+}
+.THIS .slds-progress__item.slds-is-completed .slds-progress__marker_icon{
+    border-color: #32bb05;
+    color: #ffffff;
+    background: #32bb05;
+}
+.THIS .slds-is-active {
+    background: transparent!important;
+    border: none;
+}
+.THIS .slds-progress__item.slds-has-error .slds-progress__marker{
+    background: rgb(194, 57, 52);
+    color: #fff;
+}
+.THIS.btndivadd{
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    height: auto;
+    clear: both;
+    padding: 0px 0px 10px 0px;
+    border-bottom:1px solid #ddd;
+}
+.THIS.btndivadd h2{
+    display: inline-block;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+    padding: 8px 0px;
+}
+
+.THIS .btnnext , .THIS .btnperv{
+    font-size: 14px;
+    margin-top: 3px;
+    padding: 2px 15px!important;
+    color: #00c19e;
+    line-height: 1.875rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.THIS .slds-table [role=gridcell].slds-has-focus {
+    box-shadow: none;
+}
+.THIS .btn_div li{
+    display: inline-block;
+    padding-right: 5px;
+}
+.THIS.distablediv{
+    /*min-height:50px;
+    max-height:410px;*/
+    height: auto;
+    position: relative;
+    overflow: auto;
+    border-top: none;
+    margin-top:10px;
+    min-height:100%;
+    max-height:100%;
+}
+.THIS.distablediv .cETI_ShowVehicleDetails{
+    height:auto!important; 
+}
+.THIS .slds-form-element__label {
+    font-size: 13px !important;
+    /*font-family: 'Cronos';*/
+    font-weight: bold !important;
+    letter-spacing: .5px;
+}
+.THIS h1.mainheading{
+    font-size: 24px!important;
+    display: inline-block;
+    position: relative;
+}
+.THIS .content_div {
+    border-bottom: 2px solid #f2f2f2;
+    width:100%; position:relative;   
+}
+.THIS header, .THIS footer{
+    background-color: #fafafa !important;
+}
+.THIS .btn_table {
+    font-size: 14px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: auto!important;
+    height: 30px;
+    background-color: #ff4b5a;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+}
+.THIS .btn_table:hover {
+    background-color: #333333;
+}
+.THIS .btn_back {
+    font-size: 14px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 0 10px;
+    min-width: auto!important;
+    height: 30px;
+    background-color: #b0b1af;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+}
+.THIS .btn_back:hover {
+    background-color: #333333;
+}
+.THIS .slds-modal__content {
+    background: #fafafa !important;
+}
+.THIS .infoDetail{
+    background: #A5D6A7;
+    color: #0b0219;
+    padding: 5px;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+/*
+.THIS .slds-modal__container table{
+        height: 200px;
+}
+.THIS .slds-modal__container table tbody{
+    max-height: 174px;
+    overflow: auto;
+    position: absolute;
+    width: 100%;
+}
+.THIS .slds-modal__container table tbody tr{
+    width: 100%;
+    display: table;
+}
+.THIS .slds-modal__container table tbody tr td{
+    width: 18%;
+} */
+
+.THIS .slds-modal__container.addVehicleModal{
+    width: 50%;
+}
+
+@media only screen and (max-width: 1024px) {
+    .THIS .item {
+        width: 100%;
+        padding:4% 2%;
+        margin: 2% 0%;
+        height:auto;
+    }
+}
+
+@media (min-width: 481px){    
+    .THIS  .page{
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+}
+@media only screen and (max-width: 480px) {
+    .THIS.btndivadd h2 {
+        display: block!important;        
+    }
+    .THIS .btn_table {
+        font-size: 12px;
+        margin-left: 1px;
+        border: 0 solid #00c19e;
+        color: #fff;
+        padding: 0 8px;
+        min-width: auto!important;
+        height: 30px;
+        background-color: #ff4b5a;
+        border-radius: 0;
+        color: #fff;
+        line-height: 1.2;
+        transition: all .4s;
+    }
+}
+
+
+/* Creating a custom checkbox 
+based on demand  */
+.THIS  .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox_faux {
+    
+    border: 1px solid #ddd; 
+    border-width: 2px;
+}
+.THIS .slds-has-error .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox_faux {
+    
+    border-color: rgb(194, 57, 52);
+    border-width: 2px;
+}

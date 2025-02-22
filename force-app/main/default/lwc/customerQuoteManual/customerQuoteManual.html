@@ -1,0 +1,207 @@
+<template>
+    <lightning-card title="Create Manual Customer Quote ">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+            </lightning-spinner>
+        </template>
+        <template if:false={isLoading}>
+             <div class="slds-grid">
+                 <div class="slds-col slds-size_1-of-12"></div>
+                <div class="slds-col slds-size_6-of-12" style="padding-right: 10px;">
+                    <template if:false={isQuote}>
+                        <lightning-dual-listbox data-id="quoteList" name="quoteList" label="Pricing Request"
+                            options={quoteListOption} onchange={handleQuoteSelection}></lightning-dual-listbox>
+                    </template>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-combobox data-id="contractType" name="contractType" label="Contract Type"
+                                options={options} onchange={handleContractTypeChange}></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-12"></div>
+            </div>
+
+            <!-- Customer Quote Fields -->
+            <div class="customerQuote">
+                <lightning-record-edit-form data-id="customerQuote" object-api-name={customerQuote}
+                    onerror={handleError} onsuccess={handleSuccess} onsubmit={handleOnSubmit}>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.SECTOR} value={quoteDetail.sector}
+                                disabled="true"></lightning-input-field>
+                        </div>
+                        <!--<div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.QUOTE_NUMBER}
+                                value={quoteDetail.QuoteNumber} disabled="true"></lightning-input-field>
+                        </div>-->
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.ACCOUNT_NAME}
+                                value={quoteDetail.AccountId} disabled="true"></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.ACC_NUM} value={quoteDetail.acc_num}
+                                disabled="true"></lightning-input-field>
+                        </div>
+                        
+                        <!--<div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.OPPO_NUM} value={quoteDetail.opp_num}
+                                disabled="true"></lightning-input-field>
+                        </div>-->
+                    </div>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.CLIENT_TYPE}
+                                value={quoteDetail.clientType} disabled="true"></lightning-input-field>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.QUOTE_TOTAL_INVESTMENT}
+                                value={totalInvestment}></lightning-input-field>
+                        </div>
+                       
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.REC_TYPE}
+                                value={quoteDetail.recordType} disabled="true"></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.GROUP_BY}></lightning-input-field>
+                        </div>
+                    </div>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field field-name={customerQuoteFields.FUEL} value={quoteDetail.fuel}
+                                disabled="true"></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field
+                                field-name={customerQuoteFields.CUSTOMER_NAME}></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field
+                                field-name={customerQuoteFields.CUSTOMER_TITLE}></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-input-field
+                                field-name={customerQuoteFields.CUSTOMER_QUOTE_DATE}></lightning-input-field>
+                        </div>
+                    </div>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_2-of-4">
+                            <lightning-input-field
+                                field-name={customerQuoteFields.ADDITIONAL_NOTES}></lightning-input-field>
+                        </div>
+                       
+                    </div>
+
+                    <div class="slds-grid slds-hide">
+                        <lightning-input-field value={quoteDetail.oppoId}
+                            field-name={customerQuoteFields.OPPO_NAME}></lightning-input-field>
+                        <!--<lightning-input-field value={quoteDetail.quoteId}
+                            field-name={customerQuoteFields.QUOTE}></lightning-input-field>-->
+                        <lightning-input-field value={quoteDetail.contractVal}
+                            field-name={customerQuoteFields.CONTRACT_TYPE}></lightning-input-field>
+                        <lightning-input-field value={quoteDetail.customerQuoteName}
+                            field-name={customerQuoteFields.QUOTE_NAME}></lightning-input-field>
+                        <lightning-button variant="brand" type="submit" label="Save"> </lightning-button>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+
+            <!-- Terms and Condition -->
+            <lightning-accordion allow-multiple-sections-open>
+                <lightning-accordion-section name="A2" label="Terms and Conditions">
+                    <div>
+                        <div>
+                            <lightning-button-icon icon-name="utility:add" title="Add" variant="brand"
+                                tooltip="To add more terms and condition" style="padding-left: 15px;"
+                                onclick={addTermsAndConsitionRow}>
+                            </lightning-button-icon>
+                        </div>
+                        <template for:each={termsDetail} for:item="item">
+                            <c-terms-and-condition key={item.lineNo} line-no={item.lineNo} term-item={item.termItem}
+                                onlineitemsave={lineItemSaveHandler} is-term-disabled={item.isTermDisabled}
+                                all-terms={allTerms} onremoveterms={removeTermsAndConsitionRow}></c-terms-and-condition>
+                        </template>
+                        <div>
+                            <lightning-button-icon icon-name="utility:add" title="Add" variant="brand"
+                                tooltip="To add more terms and condition" style="padding-left: 15px;"
+                                onclick={addTermsAndConsitionRow}>
+                            </lightning-button-icon>
+                        </div>
+                        <div class="space"></div>
+                    </div>
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+            <!-- Vehicle and Workforce Lines Start -->
+            <template if:true={isContractTypeSelected}>
+                <lightning-accordion allow-multiple-sections-open active-section-name="A">
+                    <lightning-accordion-section name="A" label="Vehicle Information">
+                        <div class="slds-scrollable_x">
+
+                            <template if:true={quoteVehicleLinesExist}>
+                                 <c-customer-quote-manual-vehicle is-label-line="true" contract-type={contractType}
+                                    onlineitemsave={lineItemSaveHandler}></c-customer-quote-manual-vehicle>
+                                <c-customer-quote-manual-vehicle is-checkbox-line="true" contract-type={contractType}
+                                    onlineitemsave={lineItemSaveHandler}></c-customer-quote-manual-vehicle>
+                                <template for:each={quoteVehicleLines} for:item="item">
+                                    <c-customer-quote-manual-vehicle key={item.id}
+                                        onaddnewline={handleAddNewLine}
+                                        ondeleteline={handleDeleteLine}
+                                        lineitem={item}
+                                        record-id={recordId} 
+                                        contract-type={contractType} onlineitemsave={lineItemSaveHandler} is-actual-valued-line="true"
+                                        sector={sectorCheck}></c-customer-quote-manual-vehicle>
+                                </template>
+                            </template>
+                            <template if:false={quoteVehicleLinesExist}>
+                                    <h1 style="font-size: 15px; text-align: center;"><b>No Item Found</b></h1>
+                            </template>
+
+                            <div class="space"></div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Manpower Information Manual">
+                        <div class="slds-scrollable_x">
+
+                            <template if:true={quoteWorkforceLinesExist}>
+                                <c-customer-quote-manual-workforce data-id="labelLine" is-label-line="true"
+                                    contract-type={contractType}
+                                    onlineitemsave={lineItemSaveHandler}></c-customer-quote-manual-workforce>
+                                <c-customer-quote-manual-workforce data-id="checkboxLine" is-checkbox-line="true"
+                                    contract-type={contractType}
+                                    onlineitemsave={lineItemSaveHandler}></c-customer-quote-manual-workforce>
+                                <template for:each={quoteWorkforceLines} for:item="item">
+                                    <c-customer-quote-manual-workforce key={item.id}
+                                    contract-type={contractType} 
+                                    onaddworkforceline={handleAddNewWorkforceLine}
+                                    ondeleteworkforceline={handleDeleteWorkforceLine}
+                                    lineitem={item}
+                                    record-id={recordId} 
+                                    is-actual-valued-line="true"></c-customer-quote-manual-workforce>
+                                </template>
+                            </template>
+
+                            <template if:false={quoteWorkforceLinesExist}>
+                                <h1 style="font-size: 15px; text-align: center;"><b>No Item Found</b></h1>
+                            </template>
+                            <div class="space"></div>
+                        </div>
+                    </lightning-accordion-section>
+                    
+                </lightning-accordion>
+
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2 slds-p-right_small">
+                        <lightning-button variant="brand" class="slds-m-top_small slds-float_right" label="Cancel"
+                            onclick={handleCancel}></lightning-button>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-button variant="brand" onclick={handleSaveClick}
+                            class="slds-m-top_small slds-float_left" label="Save"></lightning-button>
+                    </div>
+                </div>
+            </template>
+
+        </template>
+    </lightning-card>
+</template>

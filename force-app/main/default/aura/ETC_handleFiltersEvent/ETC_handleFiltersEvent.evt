@@ -1,0 +1,7 @@
+<aura:event type="COMPONENT" description="handle Car filter Properties" >
+    <aura:attribute name="carModels" type="String" default =""/>
+    <aura:attribute name="carTypes" type="String" default =""/>
+    <aura:attribute name="carSegment" type="String" default =""/>
+    <aura:attribute name="priceLowToHigh" type="Boolean"/>
+    <aura:attribute name="priceHighToLow" type="Boolean"/>
+</aura:event>

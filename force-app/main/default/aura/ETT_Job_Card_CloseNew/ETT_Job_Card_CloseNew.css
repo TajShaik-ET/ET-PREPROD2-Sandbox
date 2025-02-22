@@ -1,0 +1,425 @@
+.THIS .slds-modal__close {
+    position: absolute;
+    right: 15px;
+    top: 14px;
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+    font-weight: 300;
+    border-radius: 100%;
+    z-index: 4;
+    color: #fff;
+    line-height: 3rem;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+.THIS .tableTd{
+    padding: 5px;
+}
+.THIS .inactive{
+    background-color: lightgray;
+    padding: .5rem;
+    width: 40px;
+    cursor:pointer;
+}
+.THIS .Buffing .active {
+    background-color: #00c099;
+    padding: .5rem;
+    width: calc(100% - 0px);
+    display: inline-flex;  
+    color: #fff;
+    cursor:pointer;
+}
+.THIS .Buffing .inactive {
+    background-color: lightgray;
+    padding: .5rem;
+    width: calc(100% - 0px);
+    display: inline-flex;
+    cursor:pointer;
+}
+.THIS div.Buffing {
+    width: calc(100% - 40px);
+    display: inline-flex;
+    cursor:pointer;
+}
+.THIS .active{
+    background-color: #00C099;
+    padding: .5rem;
+    width: 40px;
+    color: #fff;
+    cursor:pointer;
+}
+.THIS .slds-modal__close svg{
+    color: #000;
+    width: 13px;
+    height: 13px;
+}
+.THIS .slds-modal__header{
+    background: #f3f2f2;    border-bottom: 1px solid #dddbda;
+}
+.THIS .slds-modal__footer{
+    border-top: 1px solid #dddbda;
+}
+.THIS .slds-modal__header .slds-text-heading_medium, .THIS .slds-modal__header .slds-text-heading--medium{
+    font-weight: 400;
+}
+.THIS .outer-div {
+    position: relative;
+}
+
+.THIS .spinner2 {
+    position: absolute;
+}
+.THIS .slds-card__body{
+    padding: 0 1rem;
+}
+.THIS .heading{
+    display: block;
+    float: left;
+    width: 100%;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    padding-left: 4px;
+    font-size: 20px;
+    padding: 0.5rem 0;
+}
+.THIS .reponsive_table {
+    width: 99.6%;
+    overflow: auto;
+    margin-left: .4%;
+}
+.THIS .reponsive_table tr th, .THIS .reponsive_table tr td {
+    text-align: left;
+    padding: 4px;
+    /* border:1px solid #ddd;*/
+}
+.THIS .reponsive_table tr th {
+    background: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 4px;
+}
+.THIS div#no-records {
+    text-align: center;
+    font-size: 16px;
+    color: red;
+    padding: 1rem;
+}
+.THIS .submitdiv{
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+    margin: 1rem 0;
+    text-align: right;
+}
+.THIS span.slds-text-heading_small.slds-truncate {
+    font-size: 20px;
+    padding: 0.5rem 0;
+}
+.THIS label.slds-form-element__label {
+    display: inline-block!important;
+    min-width: fit-content!important;
+    padding-bottom: .25rem!important;
+    font-weight: 400!important;
+}
+
+.THIS caption, .THIS th, .THIS td{
+    vertical-align: top;
+}
+
+.THIS .headerColor, .THIS .slds-card__header-title{
+    color: #5a6e91;
+    font-size: 16px;
+    font-weight: 600;
+    display: block;
+}
+.THIS .uiInput--checkbox input, .THIS input.uiInput--checkbox{
+    display: inline-block;
+    margin-left: 10px;
+}
+.THIS .borderTable{
+    margin: 1rem 0;
+    border: 1px solid #ccc;
+    padding: 1rem;
+}
+
+.THIS .borderTableNoMargin{
+    border: 1px solid #ccc;
+    padding: 1rem;
+}
+.THIS lightning-tab-bar ul li{
+    background: #f3f3f3;
+    color: #000;
+    text-decoration: none;
+}
+.THIS lightning-tab-bar ul li a{
+    text-decoration: none !important;
+}
+
+.THIS lightning-tab-bar ul li.slds-is-active{
+    background: #5a6e91;
+    color: #fff;
+}
+.THIS lightning-tab-bar ul li.slds-is-active:after, .THIS lightning-tab-bar ul li:hover:after{
+    height: 0 !important;
+}
+
+.THIS .rightTable td .slds-form-element__label, .THIS .leftTable td .slds-form-element__label{
+    display: none !important;
+}
+.THIS .rightTable td .slds-form-element__control, .THIS .leftTable td .slds-form-element__control{
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+.THIS .RejAnalysis .checkboxSection{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.THIS .RejAnalysis .headerColor{
+    margin-bottom: .5rem;
+}
+.THIS .RejAnalysis .uiInput.uiInputCheckbox.uiInput--default.uiInput--checkbox {
+    display: inline-block;
+    flex: 1 0 200px;
+}
+
+.THIS .RejAnalysis .uiInput--checkbox input, .THIS .RejAnalysis input.uiInput--checkbox {
+    display: inline-block;
+    margin-right: 10px;
+    float: left;
+    margin-top: 3px;
+    margin-left: 0;
+}
+.THIS.slds-spinner_container {  
+    z-index: 10000;
+    position: fixed;   
+}
+
+
+
+
+
+
+.THIS .jobcard_main {
+    position: relative;
+    display: block;
+    background: #fff;
+    padding: 1rem;
+}
+.THIS h2 {
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 1rem;
+}
+.THIS .topsection {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border: 1px solid #ccc;
+    padding: 1rem;
+}
+.THIS .topsection lightning-input-field.slds-form-element.slds-form-element_horizontal,
+.THIS .topsection lightning-input.slds-form-element{
+    width: 24.15%;
+    flex-basis: auto;
+    padding: 0;
+    margin: 0 !important;
+}
+.THIS .topsection .slds-form-element__control {
+    margin: 0 !important;
+}
+.THIS .topsection .slds-form-element__control {
+    margin: 0 !important;
+    clear: both;
+    padding: 0;
+}
+.THIS h4 {
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    width: 100%;
+    padding-bottom: .5rem;
+    padding-top: .5rem;
+}
+.THIS .tyreinfo lightning-input-field.slds-form-element.slds-form-element_horizontal lightning-input.slds-form-element_horizontal.slds-form-element {
+    width: 100%;
+}
+.THIS .Consumptiondiv{
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 1rem;
+}
+.THIS .leftTable {
+    position: relative;
+    width: 20%;
+}
+.THIS .rightTable {
+    position: relative;
+    width: 80%;
+}
+.THIS .headingtop, .THIS .valuestop {
+    position: relative;
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid #555;
+}
+.THIS .headingtop{
+    border: 1px solid #ccc;
+}
+.THIS .headingtop label:first-child {
+    width: 40px;
+    padding: .5rem;
+    background: #f2f2f2;
+    font-weight:500;
+}
+.THIS .headingtop label:last-child {
+    width: calc( 100% - 40px);
+    padding: .5rem;
+    background: #f2f2f2;
+    font-weight:500;
+}
+.THIS .valuestop label:first-child{
+    width: 40px;
+    padding: .5rem;
+}
+.THIS .valuestop label:last-child {
+    width: calc( 100% - 40px);
+    padding: .5rem;
+}
+.THIS .valuestop:hover .inactive {
+    background: #00c099;
+    color: #fff;
+}
+.THIS .tableview{
+    min-height:100px;
+    max-height:500px;
+    overflow: auto;
+}
+.THIS .tableview table tr th {
+    background: #f3f3f3;
+    padding: .5rem;
+    border: 1px solid #ccc;
+}
+.THIS .tableview table tr td {
+    padding: .25rem .5rem!important;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+.THIS .slds-form-element_horizontal:not(.slds-is-editing), 
+.THIS .slds-form_horizontal .slds-form-element:not(.slds-is-editing), 
+.THIS .slds-form_stacked .slds-form-element_horizontal:not(.slds-is-editing) {
+    margin: 0;
+    padding: 0;
+}
+.THIS .tableview table tr td .slds-form-element__control {
+    padding: 0px !important;
+}
+.THIS .flexdiv{
+    width: 100%; display: flex; gap: 1rem;
+    justify-content: flex-start;
+}
+.THIS .flexdiv .first_div, .THIS .flexdiv .second_div, .THIS .flexdiv .third_div{
+    width:33.33%;
+    border: 1px solid #ccc;
+    padding: 1rem;
+}
+.THIS .fourth, .THIS .fifth, .THIS .six{
+    border: 1px solid #ccc;
+    padding: 1rem;
+}
+.THIS .seven{
+    padding:1rem;
+    width:100%;
+    border:1px solid #ccc;
+    margin:1rem 0;
+}
+.THIS .paddingleft{
+    padding-left:.25rem;
+}
+.THIS .paddingright{
+    padding-right:.25rem;
+}
+.THIS .timedetails .slds-form-element__row {
+    gap: .1rem;
+}
+.THIS .timedetails .slds-form-element__row lightning-datepicker.slds-form-element,
+.THIS .timedetails .slds-form-element__row lightning-timepicker.slds-form-element {
+    width: 50%;
+}
+.THIS .fourth {
+    width: 60%;
+}
+.THIS .fifth, .THIS .six {
+    width: 20%;
+}
+.THIS .margintop_bottom{
+    margin:1rem 0;
+}
+@media only screen and (max-width:1200px) {
+    .THIS .topsection lightning-input-field.slds-form-element.slds-form-element_horizontal, 
+    .THIS .topsection lightning-input.slds-form-element {
+        width: 32.25%;
+    }
+}
+@media only screen and (max-width:992px) {
+    .THIS .topsection lightning-input-field.slds-form-element.slds-form-element_horizontal, 
+    .THIS .topsection lightning-input.slds-form-element {
+        width: 49%;
+    }
+    .THIS .Consumptiondiv, .THIS .flexdiv {
+        flex-wrap: wrap;
+    }
+    .THIS .leftTable {
+        width: 100%;
+        min-height: 50px;
+        max-height: 200px;
+        overflow: auto;
+    }
+    .THIS .rightTable, .THIS .flexdiv .first_div, .THIS .flexdiv .second_div, 
+    .THIS .flexdiv .third_div, .THIS .fourth, .THIS .fifth, .THIS .six {
+        width: 100%;
+    }
+    .THIS .tableview table tr th {
+        min-width: 100px;
+    }
+    .THIS .tableview table tr th:first-child {
+        min-width: 220px;
+    }
+}
+@media only screen and (max-width:767px) {
+    .THIS .topsection lightning-input-field.slds-form-element.slds-form-element_horizontal, 
+    .THIS .topsection lightning-input.slds-form-element,
+    .THIS lightning-input-field.slds-size_1-of-3.slds-form-element.slds-form-element_stacked {
+        width: 100%;
+    }
+    .THIS lightning-input-field.slds-form-element.slds-form-element_stacked {
+        padding: 0;
+        margin: 0;
+    }
+    .THIS .fourth .checkboxSection lightning-input.slds-form-element,
+    .THIS .fifth .checkboxSection lightning-input.slds-form-element,
+    .THIS .six .checkboxSection lightning-input.slds-form-element,
+    .THIS .seven .checkboxSection lightning-input.slds-form-element{
+        width: 48%;
+    }
+}
+@media only screen and (max-width:767px) {
+    .THIS .fourth .checkboxSection lightning-input.slds-form-element,
+    .THIS .fifth .checkboxSection lightning-input.slds-form-element,
+    .THIS .six .checkboxSection lightning-input.slds-form-element,
+    .THIS .seven .checkboxSection lightning-input.slds-form-element{
+        width: 100%;
+    }
+}

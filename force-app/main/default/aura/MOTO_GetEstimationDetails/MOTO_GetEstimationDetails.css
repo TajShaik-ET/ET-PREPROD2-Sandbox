@@ -1,0 +1,25 @@
+.THIS.mainDiv{
+    overflow-y: auto;
+    height: 400px;
+}
+
+.THIS .name label{
+    font-size: 13px;
+}
+
+.THIS .leftLabel{
+    width: 300px;
+}
+.THIS .rightInput lightning-input{
+    width: 350px;
+}
+.THIS .rightInput lightning-input label{
+    display: none;
+}
+.THIS .outer-div{
+    
+    position:relative;
+}
+.THIS .spinner2{
+    position: absolute;
+}

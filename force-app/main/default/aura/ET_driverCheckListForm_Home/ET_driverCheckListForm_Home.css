@@ -1,0 +1,549 @@
+.THIS {
+}
+.THIS .btn_red {
+    background: transparent linear-gradient(0deg, #EB4026 0%, #F75064 100%) 0% 0% no-repeat padding-box;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #EB4026;
+    margin-bottom: 1rem;
+    box-shadow: none;
+}
+.THIS .btn_white {
+    background: #fff;
+    color: #EB4026;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #EB4026;
+    margin-bottom: 1rem;
+    box-shadow: none;
+}
+.THIS .btn_filter_main {
+    display: flex;
+    width: 100%;
+}
+.THIS .btn_filter_main .btn_innerfilter, .THIS .btn_filter_main .btn_search {
+    width: 50%;
+    display: inline-block;
+}
+.THIS .btn_filter_main .btn_search{
+    text-align: right;
+}
+.THIS .btn_search label.slds-form-element__label.slds-no-flex {
+    display: none;
+}
+.THIS .btn_search input , .THIS .btn_search select{
+    border: 1px solid rgb(56 59 68 / 10%);
+    border-radius: 5px;
+    box-shadow: none;
+    max-width: 200px;
+    min-height: 32px;
+    margin-left: 5px;
+    outline: none;
+}
+.THIS .btn_search select{
+    max-width: 150px;
+}
+.THIS .search_div {
+    position: relative;
+    display: inline-block;
+}
+.THIS img.search_icon {
+    position: absolute;
+    top: 35%;
+    right: 3%;
+}
+.THIS.bordertab{
+    background: #fff;
+    padding: 1rem;
+    overflow: auto;
+    box-shadow: 0px 3px 12px rgb(56 59 68 / 2%);
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-size: 12px;
+}
+.THIS.bordertab table tr th, .THIS.bordertab table tr td  {
+    border-bottom: 1px solid rgb(56 59 68 / 2%)!important;
+    color:#000!important;
+    padding:.5rem!important;
+}
+.THIS.bordertab table tr th{
+    font-weight:800!important;
+}
+.THIS p.infotext {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+.THIS header.slds-modal__header {
+    border-bottom: 1px solid #ccc;
+}
+.THIS .slds-form-element__label{ 
+    display: none;
+}
+/*.THIS .slds-button__icon{ 
+display: none;
+}*/
+.THIS.inspectionForm{
+    padding: 2rem;
+    background: #ebebeb;
+}
+.THIS .mainForm{
+    /* background: #ffffff; */
+}
+.THIS .mainForm .maindiv{
+    padding: 1rem;
+}
+
+.THIS .slds-form-element__control input{
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent;
+}
+.THIS .tabdiv .slds-grid{
+    padding: 0rem;
+    background: #ffffff;
+}
+.THIS .maindiv .slds-table{
+    margin: 10px 0;
+}
+.THIS .slds-table:not(.slds-no-row-hover) tbody tr:hover>td, 
+.THIS .slds-table:not(.slds-no-row-hover) tbody tr:hover>th, 
+.THIS .slds-table:not(.slds-no-row-hover) tbody tr:focus>td, 
+.THIS .slds-table:not(.slds-no-row-hover) tbody tr:focus>th {
+    background-color: transparent;
+}
+.THIS .slds-table thead th{
+    background: #adade1;
+    color: #fff;
+}
+.THIS .slds-modal__close svg.slds-button__icon.slds-button_icon-inverse {
+    fill: #fff;
+}
+.THIS table caption, .THIS .mainForm h2{
+    background: #4141a7;
+    color: #fff;
+    padding: 0.5rem;
+}
+.THIS span.slds-checkbox_faux {
+    border: 1px solid #ccc !important;
+}
+
+.THIS .tableBorder tr td, .THIS .tableBorder tr th{
+    border: 1px solid rgb(56 59 68 / 2%)!important;
+    color:#000!important;    
+    white-space: break-spaces;
+    padding:.5rem!important;
+}
+.THIS .tableBorder tr th{
+    font-weight:800!important;
+    border: 1px solid #000!important;
+}
+.THIS .tableBorder tr td{
+    border: 1px solid #000!important;
+}
+/*.THIS .tableBorder tr:first-child td:first-child{
+border-bottom: none;
+}*/
+.THIS .tabdiv{
+    position: relative;display: block;width: 100%;
+}
+.THIS .btn_red {
+    background: transparent linear-gradient(0deg, #EB4026 0%, #F75064 100%) 0% 0% no-repeat padding-box;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    border: 1px solid #EB4026;
+    margin-bottom: 1rem;
+    box-shadow: none;
+}
+.THIS .btn_white {
+    background: #fff;
+    color: #EB4026;
+    font-size: 12px;
+    font-weight: 800;
+    border: 1px solid #EB4026;
+    margin-bottom: 1rem;
+    box-shadow: none;
+}
+.THIS #video {
+    border: 1px solid black;
+    box-shadow: 2px 2px 3px black;
+    width:320px;
+    height:240px;
+}
+
+.THIS #photo {
+    border: 1px solid black;
+    box-shadow: 2px 2px 3px black;
+    width:320px;
+    height:240px;
+}
+
+.THIS #canvas {
+    display:none;
+}
+
+.THIS .camera {
+    width: 340px;
+    display:inline-block;
+}
+
+.THIS .output {
+    width: 340px;
+    display:inline-block;
+}
+
+.THIS #startbutton {
+    display:inline-block;
+    position:relative;
+    margin-left:60px;
+    margin-right:auto;
+    bottom:22px;
+    background-color: rgba(0, 150, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
+    font-size: 12px;
+    font-family: "Lucida Grande", "Arial", sans-serif;
+    color: rgba(255, 255, 255, 1.0);
+}
+
+.THIS .contentarea {
+    font-size: 16px;
+    font-family: "Lucida Grande", "Arial", sans-serif;
+    width: 760px;
+}
+
+.THIS #clearbutton {
+    display:inline-block;
+    position:relative;
+    margin-left:70px;
+    margin-right:auto;
+    bottom:22px;
+    background-color: red;
+    border: 1px solid rgba(155, 155, 255, 20);
+    box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
+    font-size: 12px;
+    font-family: "Lucida Grande", "Arial", sans-serif;
+    color: rgba(255, 255, 255, 1.0);
+}
+.THIS .container {
+    
+    flex-direction: column-reverse;
+}
+.THIS .card {
+    border-radius: 10px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
+    width: 400px;
+    height: 100px;
+    background-color: #ffffff;
+    padding: 10px 30px 40px;
+    
+}
+.THIS .card h3 {
+    
+    
+}
+
+.THIS.drop_box {
+    
+}
+
+
+
+.THIS.drop_box p {
+    
+}
+
+.THIS.btn {
+    
+}
+
+.THIS.btn:hover{
+    
+}
+.THIS.form input {
+    
+}
+.THIS .cardShowFiles{
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
+    width: 800px;
+    height: 600px;
+    background-color: #ffffff;
+    padding: 10px 30px 40px;
+}
+.THIS.active {
+    background-color: #4CAF50; /* Green color for the active state */
+    color: white; /* White text on green background */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 2.2);
+}
+
+.THIS .verticalAlign {
+    cursor: pointer;
+    margin: 6px 0px 0px 6px!important;
+}
+.THIS .fullWidth {
+    width: 100% !important;
+}
+.THIS .recordListBox {
+    margin-top:0px !important;
+    overflow-y: scroll;
+}
+.THIS .inputBox input {
+    padding-left: 30px;
+}
+.THIS .eachItem:hover {
+    background-color: #EEE;
+    cursor: pointer;
+}
+.THIS .inputIcon {
+    z-index: 99;
+    padding: 2px 0;
+}
+
+/* For Scrolling */
+.THIS ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.THIS ::-webkit-scrollbar-track {
+    display: none !important;
+}
+.THIS ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.4);
+}/* statefulButton.css */
+
+.THIS .driver_name_div input {
+    padding-left: 2rem;
+}
+.THIS button.slds-button.slds-button_icon.notselected_class.slds-button_icon-container {
+    background: #ccc !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    outline: none;
+    box-shadow: none;
+}
+.THIS button.slds-button.slds-button_icon.notselected_class.red.slds-button_icon-container {
+    background: red !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    outline: none;
+    box-shadow: none;
+}
+.THIS button.slds-button.slds-button_icon.selected_class.red.slds-button_icon-container{
+    color: #fff !important;
+    border-radius: 50% !important;
+    outline: none;
+    box-shadow: none;
+}
+.THIS button.slds-button.slds-button_icon.selected_class.green.slds-button_icon-container {
+    background: green !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    outline: none;
+    box-shadow: none;
+}
+.THIS button.slds-button.slds-button_icon.selected_class.yellow.slds-button_icon-container {
+    background: #FFD700 !important; /* Dark yellow color */
+    color: #fff !important;
+    border-radius: 50% !important;
+    outline: none;
+    box-shadow: none;
+}
+.THIS .green{
+    background:green !important;
+}
+.THIS .red{
+    background:red !important;
+}
+.THIS .yellow{
+  color: #FFD700 !important; /* Dark yellow color */
+}
+.THIS .greentext{
+    color:green !important;
+    font-weight:600;
+}
+.THIS .redtext{
+    color:red !important;
+    font-weight:600;
+}
+.THIS .yellowtext{
+ color: #FFD700 !important;
+    font-weight:600;
+}
+.THIS .uploading_div {
+    border-radius: 10px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
+    width: 60%;
+    background-color: #ffffff;
+    padding: 1rem;
+    margin: auto;
+    margin-bottom: 1rem;
+    position:relative;
+}
+.THIS .uploading_div .staticbtn{
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 1;
+}
+.THIS .upload_file_sec .upload_file_info lightning-primitive-icon {
+    display: none;
+}
+.THIS button.slds-button.slds-button_icon.photo_icon.slds-button_icon-container {
+    position: absolute;
+    top: 1.15rem;
+    left: 1rem;
+    z-index: 0;
+    outline: none;
+    box-shadow: none;
+}
+.THIS lightning-file-upload.upload_file_info span.slds-file-selector__button.slds-button.slds-button_neutral {
+    background: transparent;
+    padding: 0 1.5rem;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+.THIS .reqspan{
+    color: rgb(194, 57, 52);
+    margin: 0 .125rem;
+}
+.THIS table.slds-table.slds-table_cell-buffer.slds-table_bordered.tableBorder {
+    border-collapse: collapse;
+}
+.THIS .High{
+    background:rgb(237 26 36 / 70%)!important;
+    font-weight: 600;
+}
+.THIS .Medium{
+    background:rgb(255 126 36 / 70%)!important;
+    font-weight: 600;
+}
+.THIS .Low{
+    background: rgb(254 242 0 / 70%)!important;
+    font-weight: 600;
+}
+.THIS .table_div {
+    position: relative;
+    display: block;
+    overflow: auto;
+}
+.THIS .bgheading{
+    background:#dbe5f1!important;
+}
+.THIS .uiInput--checkbox input[type=checkbox], .THIS input.uiInput--checkbox[type=checkbox] {
+    border: 1px solid #000!important;
+}
+.THIS .uiInput.uiInputCheckbox.uiInput--default.uiInput--checkbox {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: .5rem;
+    width: 100%;
+}
+.THIS .arabictext .uiInput.uiInputCheckbox.uiInput--default.uiInput--checkbox {
+    flex-direction: row!important;
+}
+.THIS label.uiLabel-left.form-element__label.uiLabel {
+    color: #000;
+    width: calc(100% - 30px);
+}
+.THIS .arabictext label.uiLabel-left.form-element__label.uiLabel {
+    text-align: start;
+    unicode-bidi: plaintext;
+}
+.THIS .status_info {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+.THIS .status_info label {
+    color: #000;
+    padding: 0.5rem 1rem;
+    line-height: 1;
+    font-weight: 600;
+}
+.THIS .noborder_padding{
+    border: none!important;
+    padding: 0px!important;
+}
+.THIS .table_div textarea {
+    border: 1px solid #000!important;
+}
+.THIS .checkdiv {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0.25rem 0;
+    gap: 0.25rem;
+}
+.THIS .checkdiv .slds-form-element__icon {
+    padding: 0;
+}
+.THIS .thankyou_div {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem 0;
+}
+.THIS .thankyou_div div {
+    font-size: 24px;
+    color: #000;
+    font-weight: bold;
+}
+.THIS .finalresult_div {
+    position: relative;
+    display: block;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+.THIS lightning-button.clear_canvas button.slds-button.slds-button_neutral {
+    padding: 0;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+}
+@media only screen and (max-width:480px) {
+    .THIS .slds-modal__container {
+        max-width: 90% !important;
+        width: 90% !important;
+        margin: auto;
+    }
+    .THIS .tabdiv .slds-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .THIS .tabdiv .slds-grid  .slds-col.slds-size_1-of-2.slds-p-around_medium {
+        width: 100%;
+        padding-bottom: 0px;
+    }
+    .THIS .tabdiv .slds-grid  .slds-col.slds-size_1-of-2.slds-p-around_medium label {
+        width: 100%;
+        display: block;
+    }
+    .THIS .tabdiv .slds-grid  .slds-col.slds-size_1-of-2.slds-p-around_medium lightning-input.slds-form-element {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    .THIS .uploading_div {
+        width: 100%;
+        padding: 1rem 0.5rem;
+    }    
+}

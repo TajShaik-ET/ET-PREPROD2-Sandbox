@@ -1,0 +1,5 @@
+@media only screen and (max-width:992px) {
+    .slds-grid.infoTabs.condition_div {
+    flex-wrap: wrap;
+}
+}

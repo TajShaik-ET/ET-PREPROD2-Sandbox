@@ -1,0 +1,398 @@
+.THIS.imgBackground {
+    background: url(/resource/homepagebg_img) no-repeat;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.THIS .slds-input, .THIS select, .THIS .slds-input:focus, .THIS select:focus,
+.THIS .slds-input:active, .THIS select:active {
+    width: 100%;
+    margin-bottom: 10px;
+    height: 40px;    
+    border-radius: 3px;
+    display: block;
+    font-size: 14px;
+    line-height: 26px;    
+    padding: 0 30px 0px 10px; 
+    background: rgba(255, 255, 255, 0) !important;
+    border: 1px solid #D7D7D7 !important;
+    color:#000;
+}
+.THIS input:-internal-autofill-selected{
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+.THIS textarea, .THIS textarea:focus, .THIS textarea:active{
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 3px; 
+    display: block;
+    font-size: 14px;
+    line-height: 26px;    
+    padding: 0 30px 0px 10px; 
+    border: 1px solid #D7D7D7;
+    color:#000;
+    height: 120px;
+}
+.THIS.exampleHolder{
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+
+.THIS .slds-input:focus ,  .THIS select:focus{  
+    box-shadow:none;
+}
+.THIS.centerdiv{
+    padding: 4.7% 0% 8%;
+    position: relative;
+}
+.THIS .slds-button__icon , .THIS .slds-icon-text-default {
+    width: 1.275rem;
+    height: 1.275rem;
+    fill:#62CC8C !important;
+} 
+.THIS .slds-form .slds-input-has-icon .slds-input__icon{
+    width: 25px;
+    height: 25px;
+    top: 15px;
+}
+.THIS .slds-form .slds-input__icon-group_right { 
+    top: 28%;
+}
+.THIS .padbottom{
+   /* padding-bottom:0px;padding-top: 0px; */
+}
+
+.THIS .Drop-Address-listbox{
+    position: relative;
+    margin-top: -12px;
+}
+.THIS .btnsave{
+    font-size: 14px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+    border: 0px solid #eb4026;
+    color: #fff;
+    padding: 5px 20px;
+    min-width: 100px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    background-color: #eb4026;
+    border-color: #eb4026;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px; 
+    outline: none;
+    box-shadow: none;
+    
+}
+.THIS .btnsave:hover{
+    background-color: #c72e16;
+    border-color: #c72e16;
+    border: 0px solid #c72e16;
+}
+
+.THIS .btnsave.selectCar{
+    padding: 2px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    height: 30px;
+    width: 170px;
+}
+.THIS .desktopView{
+    width:100%;
+}
+@font-face {
+    font-family: 'Cronos';
+    src: url(/resource/ETST_Cronos); 
+}
+.THIS .caption-title{ 
+    font-size: 20px;
+    font-weight: 500; 
+    color:#000000;
+    clear: both;
+    display: inline-block; 
+    margin: 150px 0 15px 0;
+    width: 100%;
+    text-align: center;
+}
+.THIS .caption-subtitle { 
+    font-size: 40px;
+    font-weight: 600; 
+    text-transform: uppercase;
+    color:#62CC8C;
+    letter-spacing: 2.5px;
+    text-shadow: 0px 3px 3px rgba(0,0,0,0.29);
+    margin: 0 0 40px 0;
+    width: 100%;
+    text-align: center;
+}
+.THIS .mainsearchdiv{
+    text-align: left;
+    width: 90%;
+    margin: auto;
+    padding-bottom: 10px;
+}
+.THIS .datepickdiv{
+   /* padding-top: 0px;
+    padding-bottom: 0px; */
+}
+.THIS .datepickdiv .slds-form_compound .slds-form-element__row .slds-form-element__label, .THIS .datepickdiv .slds-form--compound .slds-form-element__row .slds-form-element__label {
+    padding-top: 0;
+    display: none;
+}
+.THIS .datepickdiv .slds-form_compound .slds-form-element__row .slds-form-element, .THIS .datepickdiv .slds-form--compound .slds-form-element__row .slds-form-element {
+    margin-bottom: 0;
+    width: 100%;
+}
+.THIS .datepickdiv .slds-form_compound .slds-form-element__row .slds-form-element+.slds-form-element, .THIS .datepickdiv .slds-form--compound .slds-form-element__row .slds-form-element+.slds-form-element {
+    padding-left: 1.5rem;
+    margin-top: 0;
+}
+.THIS  .slds-input__icon-group_right .slds-input__icon_right, .THIS .slds-input__icon-group_right .slds-input__icon--right {
+    right: .5rem;
+    margin-top: -11px;
+}
+
+.THIS.centerdiv .slds-form-element__label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 16px;  
+    color: #000 ;
+}
+.THIS.centerdiv .slds-form-element {
+    position: relative;
+    min-width: 0;
+    outline: none;
+}
+.THIS .form-title{
+    background: #14181c;
+    color: #ffffff;
+    padding: 16px;
+    margin-bottom: 15px;
+    position: relative;
+}
+.THIS .form-title h2{
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    margin: 0; 
+    color: #62CC8C;
+}
+.THIS .slds-form_compound{
+    outline: none;
+}
+.THIS .textright{
+    text-align: right;
+}
+.THIS .slds-tabs_scoped__nav, .THIS .slds-tabs--scoped__nav {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;  
+    border: 0px;
+    overflow:hidden;
+    color: #000;
+    background: none;
+}
+.THIS .mobileView {
+    display: none;
+}
+.THIS .slds-tabs_scoped__nav li{
+    width:49%;
+    text-align:center;
+}
+.THIS .slds-tabs_scoped__link , .THIS .slds-tabs--scoped__link{ 
+    font-size: 16px;
+    font-weight: 600;
+    background:#fff;
+    border:0px;
+    border-radius:20px 20px 0 0 !important;
+    margin: 0 0px 0 0;   
+    color: #62CC8C ;
+    line-height: 57px;
+    height: auto;
+}
+.THIS .slds-p-around_small, .THIS .slds-p-around--small {
+    padding: .2rem;
+}
+.THIS .slds-is-active .slds-tabs_scoped__link , .THIS .slds-is-active .slds-tabs--scoped__link{
+    background: #62CC8C;
+    color: #fff !important;    
+    border-bottom: 0px;
+    border-radius:20px 20px 0 0 !important;
+    text-decoration: none;
+}
+.THIS .slds-tabs_scoped__content, .THIS .slds-tabs--scoped__content { 
+    border-top: 0;
+    border-radius: 0 0 .25rem .25rem;
+    padding: 1rem;	
+    background:#fff;
+    border:0px;
+}
+.THIS .rightserachbtn {
+    text-align: center;
+    margin-top: 18px;
+    padding-right: 0px;
+}
+
+.THIS .flightNo{
+    width: 50%;
+}
+.THIS .inlineBlock{
+    display: inline-block;
+}
+.THIS .flightDesc{
+    width: 48%;
+}
+.THIS .flightType{
+    float: right;
+}
+.THIS .dateTime lightning-datepicker, .THIS .dateTime lightning-timepicker{
+    width: 50%;
+}
+
+.THIS .dateTime .slds-datepicker tbody>tr>td.slds-is-today>.slds-day{
+  	background-color: #62CC8C;
+    color:#fff;
+}
+.THIS .dateTime lightning-datepicker{
+    margin-right: 1%;
+}
+.THIS .dateTime lightning-timepicker{
+    margin-left: 1%;
+}
+
+.THIS .slds-form-element_stacked:not(.slds-is-editing){
+    padding: 0;
+}
+.THIS .slds-tabs_scoped__nav li:last-child{
+    /*display:none;*/
+}
+.THIS .search_icon .slds-form-element__control.slds-grow{
+    position:relative;
+}
+.THIS .search_icon .slds-form-element__control.slds-grow:after{
+    position:absolute;
+    content:'';
+    width:40px;
+    height:40px;
+    background:url(/resource/search) no-repeat center;
+    background-size:20px;
+    top:0px;
+    right:10px;
+}
+@media only screen and (max-width: 1024px){
+    .THIS.centerdiv {
+        padding: 3% 0% 1%;
+        height: 100%;
+    }
+}
+@media only screen and (max-width: 768px){
+    .THIS.centerdiv{
+        padding: 5% 0% 0%;
+        height: 92.5vh;
+    }
+    .THIS .caption-subtitle {
+        font-size: 48px;
+    }
+    .THIS .mainsearchdiv {
+        width: 90%;
+    }
+    .THIS .slds-input, .THIS select{
+        padding: 0 5px 0 10px;
+    }
+}
+@media only screen and (max-width: 767px){
+    .THIS.centerdiv{
+        padding: 4% 0% 4%;
+        height: 100%;
+ 
+    }
+    
+}
+ 
+@media (max-width: 480px){
+    .THIS.centerdiv{
+        padding: 40% 0% 50%;
+        height: 100%;
+        height: 100vh;
+    }
+    .THIS .mobileView {
+        width: 100%;
+    }
+    .THIS .desktopView, .THIS .webView {
+        display: none;
+    }
+    .THIS .caption-subtitle {
+        font-size: 32px;
+    }
+    .THIS .mainsearchdiv {
+        width: 96%;
+    }
+    .THIS .caption-title {
+        font-size: 16px;
+    }
+    .THIS .padbottom , .THIS .datepickdiv{
+        width: 100%;
+    }
+    .THIS .form-title h2 {
+        font-size: 16px;
+    }
+    .THIS .slds-input, .THIS select{
+        padding: 0 5px 0 10px;
+    }
+    .THIS .mobileView{
+        width:100%; 
+    }
+    .THIS .row{
+        margin:0 -15px;
+        display: flex;
+    }
+    .THIS .col-6{
+        width:50%;
+        padding:0 15px;
+    }
+    .THIS .time_section{
+        display:flex;
+        align-items: center;
+            margin-top: 10px;
+    }
+    .THIS .time_section em{
+         margin:0 15px;
+        font-weight:bold;
+        font-style:normal;
+    }
+    .THIS .time_section label{
+        display:none;
+    }
+    .THIS .time_section input, .THIS .time_section .slds-form-element__control .slds-input{
+        background:#fff !important;
+        margin-bottom:0px;
+        color:#000 !important;
+        text-align: center;
+        padding: 0 5px;
+    }
+    .THIS label, .THIS .slds-form-element__label{
+        color:#000;
+        font-weight: bold !important;
+    	margin-top: 10px;
+        display: inline-block;
+    }
+}
+@media only screen and (max-width: 480px){
+    .THIS.centerdiv{
+        padding: 15% 0% 15%;
+        height: 100%;
+        /*height: 100vh;*/
+    }
+}

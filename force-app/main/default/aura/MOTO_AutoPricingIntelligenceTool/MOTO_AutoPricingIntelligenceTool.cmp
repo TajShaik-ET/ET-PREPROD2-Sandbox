@@ -1,0 +1,148 @@
+<aura:component controller="MOTO_AutoPricingToolCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <!--
+      ** Author: Janardhan Muddana
+      ** Desc:
+   ** 
+    -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="makeModelData" type="Map" />
+    <aura:attribute name="makeOptions" type="List" />
+    <aura:attribute name="makeValue" type="String"/>
+    <aura:attribute name="modelOptions" type="List"/>
+    <aura:attribute name="modelValue" type="String"/>
+    <aura:attribute name="disableModel" type="boolean" default="true"/>
+    <aura:attribute name="autoPricingInfo" type="List" />
+    <aura:attribute name="maxValue" type="String" default="0"/>
+    <aura:attribute name="minValue" type="String" default="0"/>
+    <aura:attribute name="avgValue" type="String" default="0"/>
+    <aura:attribute name="totalValue" type="String" default="0"/>
+    <aura:attribute name="yearOptions" type="List"/>
+    <aura:attribute name="yearValue" type="String"/>
+    <aura:attribute name="dealerName" type="String"/>
+    <aura:attribute name="minKM" type="Integer"/>
+    <aura:attribute name="maxKM" type="Integer"/>
+    
+    <lightning:card class="outer-div">
+        
+        
+        <aura:set attribute="title">
+            <lightning:icon iconName="utility:edit_form" size="small"/>
+            Auto Pricing Intelligence Tool
+        </aura:set>
+        
+        <aura:set attribute="footer">
+            
+        </aura:set>
+        <div class="slds-p-horizontal_small">
+            <div class="slds-grid slds-wrap" >
+                <div class="slds-col slds-size_1-of-4"> 
+                    <lightning:select name="make" label="Make" aura:id="make" value="{!v.makeValue}" onchange="{!c.onMakeChange}">
+                        <option text="Choose Make" value="--None--" />
+                        <aura:iteration items="{!v.makeOptions}" var="option">
+                            <option text="{!option}" value="{!option}" selected="{!option.selected}"/>
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+                <div class="slds-col slds-size_1-of-4"> 
+                    <lightning:select name="Model" label="Model" aura:id="Model" value="{!v.modelValue}" disabled="{!v.disableModel}">
+                        <option text="Choose Model" value="--None--" />
+                        <aura:iteration items="{!v.modelOptions}" var="option">
+                            <option text="{!option}" value="{!option}" selected="{!option.selected}"/>
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+                <div class="slds-col slds-size_1-of-4"> 
+                    <lightning:select name="year" label="Year" aura:id="Year" value="{!v.yearValue}" >
+                        <option text="Choose year" value="" />
+                        <aura:iteration items="{!v.yearOptions}" var="option">
+                            <option text="{!option}" value="{!option}" selected="{!option.selected}"/>
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+                <div class="slds-col slds-size_1-of-4"> 
+                    <lightning:input name="dealerName" label="Dealer Name" value="{!v.dealerName}" placeholder="Enter Dealer Name"/>
+                </div>
+                
+                
+                <div class="slds-col slds-size_1-of-4"> 
+                    <lightning:input type="number" name="minKM"  value="{!v.minKM}" label="KM Min" />
+                </div>
+                <div class="slds-col slds-size_1-of-4"> 
+                    <lightning:input type="number" name="maxKM"  value="{!v.maxKM}" label="KM Max" />
+                </div>
+                <div class="slds-col slds-size_1-of-4"> 
+                    <lightning:select aura:id="posted" name="postedDate" label="Posted Time">
+                        <option value="">-None-</option>
+                        <option value="1_hour_ago">Posted less than 1 Hour ago</option>
+                        <option value="24_hour_ago">Posted less than 24 hours ago</option>
+                        <option value="1 day">Posted 1 Day Ago</option>
+                        <option value="2 day">Posted 2 Days Ago</option>
+                        <option value="3 day">Posted 3 Days Ago</option>
+                        <option value="4 day">Posted 4 Days Ago</option>
+                        <option value="5 day">Posted 5 Days Ago</option>
+                        <option value="5_Plus">Posted 5+ Days Ago</option>
+                    </lightning:select>
+                </div>
+            </div> 
+            <div class="slds-col slds-align_absolute-center" style="margin-top: 32px;">
+                
+                <lightning:button label="Search" variant="brand" onclick="{!c.getAutoPricingInfo}"/>
+                
+            </div>             
+            
+            
+            
+            
+            <div class="slds-grid slds-wrap" style="margin-bottom:10px" >
+                <div class="slds-col slds-size_1-of-6"> 
+                    <b>Max Price : </b><span class="valueCls">{!v.maxValue} </span>
+                </div>
+                <div class="slds-col slds-size_1-of-6"> 
+                    <b> Min Price : </b><span class="valueCls">{!v.minValue}  </span>
+                </div>
+                <div class="slds-col slds-size_1-of-6">
+                    <b> Avg Price : </b> <span class="valueCls">{!v.avgValue}</span>
+                </div>
+                 <div class="slds-col slds-size_1-of-6">
+                    <b> No. of Vehicles : </b> <span class="valueCls">{!v.totalValue}</span>
+                </div>
+            </div>
+            
+            <table class="slds-border--left slds-border--right slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal"> 
+                <thead>
+                    <tr class="slds-text-title_caps">
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Car Type</th>
+                        <th>Year</th>
+                        <th>Price</th>
+                        <th>Kilometers</th>
+                        <th>Dealer Name</th>
+                        <th>Posting Time</th>
+                        <th>Product Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.autoPricingInfo}" var="item" indexVar="key">
+                        <tr id="{!key}">
+                            <td>{!item.Make__c}</td>
+                            <td>{!item.Model__c}</td>
+                            <td>{!item.Car_Type__c}</td>
+                            <td>{!item.Year__c}</td>
+                            <td>{!item.Price__c}</td>
+                            <td>{!item.Kilometer__c}</td>
+                            <td>{!item.Dealer_Name__c}</td>
+                            <td>{!item.Posting_Time__c}</td>
+                            <td><a href="{!item.URL__c}" target="_blank">View</a></td>
+                            
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </div>
+    </lightning:card>
+    
+    
+</aura:component>

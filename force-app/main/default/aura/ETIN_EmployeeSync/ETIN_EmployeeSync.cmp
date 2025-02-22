@@ -1,0 +1,39 @@
+<aura:component controller="ETIN_EmployeeSync" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+     <!--aura handler with waiting and donewaiting events-->
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    
+    <aura:attribute name="EmpNumber" type="Integer" />
+    <aura:attribute name="CallcoutMsg" type="string" />
+    
+    <aura:attribute name="spinner" type="boolean" default="FALSE"/>
+    <aura:attribute name="isDisabled" type="Boolean" default="false" />
+    
+     <!--loading spinner start-->
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end-->  
+    
+    <div class="slds-theme_default">
+        <div class="slds-form-element">
+            <div class="container"> 
+                
+                
+                <div class="slds-align_absolute-center" style="height:5rem">
+                    <lightning:input type="number" value="{!v.EmpNumber}" name="input1" label="Enter Employee Number :" /> 
+                </div>
+                
+                <div class="slds-align_absolute-center" style="height:5rem">
+                    <lightning:button class="btn_table" disabled="{!v.spinner}" label="{!v.spinner == true ? 'Syncing...Please wait.' : 'Sync'}" aura:id="disablebuttonid" variant="brand" title="Sync" onclick="{! c.SyncMethod }" />
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

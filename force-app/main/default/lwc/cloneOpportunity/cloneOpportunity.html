@@ -1,0 +1,29 @@
+<template>
+    <lightning-card title="Clone Opportunity" icon-name="standard:opportunity">
+        <div class="slds-m-around_medium">
+            <lightning-input 
+                label="New Opportunity Name" 
+                value={opportunityName} 
+                onchange={handleNameChange} 
+                required>
+            </lightning-input>
+            
+            <div class="slds-m-top_medium slds-text-align_center">
+                <lightning-button 
+                    label="Clone Opportunity" 
+                    onclick={handleCloneOpportunity} 
+                    class="slds-m-right_small" 
+                    variant="brand">
+                </lightning-button>
+            </div>
+            
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Cloning Opportunity"></lightning-spinner>
+            </template>
+            
+            <template if:true={errorMessage}>
+                <div class="slds-text-color_error slds-m-top_medium">{errorMessage}</div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

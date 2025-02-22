@@ -1,0 +1,237 @@
+<aura:component controller ="ETST_CreateRefund" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .btnsend {
+        background: #fe864d;
+        border: 1px solid #fe864d;
+        outline: none;
+        box-shadow: none;
+        margin: 1rem;
+        }
+        .slds-border_bottom {
+        border-bottom: 1px solid #f2f2f2;
+        }
+        .slds-modal__close {
+        top: .5rem;
+        right: .5rem;
+        border: 1px solid #d4d4d4;
+        }
+        .slds-modal__close svg.slds-button__icon.slds-button_icon-inverse {
+        fill: #000;
+        }
+        .slds-modal__container{
+        max-width: 95rem !important;
+        width:95% !important;
+        }
+    </aura:html>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="Invoicename" type="String" />
+    <aura:attribute name="invoiceRecord" type="Invoice__c"  default="{'sobjectType':'Invoice__c'}"/>
+    <aura:attribute name="showImportModal" type="Boolean" default="false"/>
+    <aura:attribute name="Receipt" type="List"/>
+    <aura:attribute name="selectedrow" type="String"/>
+    <aura:attribute name="TEXTFIELDS" type="boolean" />
+    <aura:attribute name="payName" type="String" />
+    <aura:attribute name="Iban" type="String" />
+    <aura:attribute name="BankName" type="String" default=""/>
+    <aura:attribute name="refundAmount" type="String" />    
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:attribute name="receiptRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:attribute name="disableBtn" type="boolean" default="false"/>
+    
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="Name,ET_Amount__c"
+                      targetFields="{!v.receiptRecord}"
+                      targetError="{!v.recordLoadError}"
+                      />
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .slds-modal__container{
+        max-width: 80rem !important;
+        width:80% !important;
+        
+        }
+    </aura:html>
+    <lightning:radioGroup name="Receipts" options="{! v.options }" value="{! v.Receipt }" type="radio"/>
+    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center" style="position: relative;display: block;text-align: center;margin: 0.2rem;">Refund Process</h2> 
+    <div class="slds-form-element outer-div" align=""> 
+        <div class="exampleHolder">
+            <lightning:spinner aura:id="mySpinner" class="slds-hide"/>
+        </div>
+        <div class="slds-m-left_xx-large">
+            <aura:if isTrue="{!(empty(v.Receipt))}">
+                No receipts found.
+            </aura:if>
+            <p class="listview">
+                <aura:if isTrue="{!not(empty(v.Receipt))}">
+                    <aura:iteration items="{!v.Receipt}" var="rec">
+                        <!--<div class="slds-grid slds-gutters">
+                            <div class="slds-p-right_medium">
+                                <input type="radio" id="{!rec.receiptnumber}" name="radio"  onclick="{!c.checkboxSelect}"  />
+                            </div>    
+                            <b>{!rec.receiptnumber} </b> <br/>
+                            <div class="slds-col">
+                                <span><p style="padding-left:23px;"> {!rec.amount} </p></span>
+                            </div>
+                        </div>-->
+                        <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="ET_Refund__c">
+                            <div class="slds-box slds-theme_default">
+                                <div class="slds-p-bottom_large">
+                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center" style="position: relative;display: block;text-align: center;margin: 0.2rem;">Please Confirm Below Refund Details</h2> 
+                                </div>
+                                <div class="slds-grid slds-gutters">
+                                    <lightning:outputField fieldName="Payee_Name__c" />
+                                    <lightning:outputField fieldName="IBAN__c" />
+                                    <lightning:outputField fieldName="Bank_Name__c" />
+                                    <lightning:outputField fieldName="ET_Refund_Amount__c" />
+                                </div>
+                            </div>
+                        </lightning:recordViewForm>
+                        
+                    </aura:iteration>
+                </aura:if>
+            </p>
+        </div>
+        <aura:if isTrue="{!v.TEXTFIELDS}"> 
+            
+            <div class="slds-grid">
+                <!-- <div class="slds-col slds-size_1-of-4 slds-p-around_medium">
+                    <lightning:input value="{!v.payName}" label="Payee Name" required="true"/>
+                </div>
+                <div class="slds-col slds-size_1-of-4 slds-p-around_medium">
+                    <lightning:input value="{!v.Iban}" label="IBAN" required="true"/>
+                </div>
+               <div class="slds-col slds-size_1-of-4 slds-p-around_medium">
+                    <lightning:input value="{!v.BankName}" label="Bank Name" required="true"/>
+                    
+                </div>
+                <div class="slds-col slds-size_1-of-4 slds-p-around_medium">
+                <lightning:select name="cStat" label="BankName" 
+                                  value="{!v.BankName}"  >
+                    <option value="">choose one...</option>
+                    <option value="Emirates NBD">Emirates NBD</option>
+                    <option value="Abu Dhabi Commercial Bank">Abu Dhabi Commercial Bank</option>
+                    <option value="Emirates Islamic Bank">Emirates Islamic Bank</option>
+                    <option value="Dubai Islamic Bank">Dubai Islamic Bank</option>
+                    <option value="First Gulf Bank">First Gulf Bank</option>
+                    <option value="Noor Bank">Noor Bank</option>
+                    <option value="Sharjah Islamic Bank">Sharjah Islamic Bank</option>
+                    <option value="Ajman Bankk">Ajman Bank</option>
+                    <option value="Al Hilal Bank">Al Hilal Bank</option>
+                    <option value="Commercial Bank of Dubai">Commercial Bank of Dubai</option>
+                    <option value="National Bank of Abudhabi">National Bank of Abudhabi</option>
+                    <option value="Union National Bank">Union National Bank</option>
+                    <option value="Abudhabi Islamic Bank">Abudhabi Islamic Bankk</option>
+                    <option value="Commercial bank International - al Islami">Commercial bank International - al Islami</option>
+                    <option value="Al Masraf - Arab bank for Investment And Foreign Trade">Al Masraf - Arab bank for Investment And Foreign Trade</option>
+                    <option value="SafeBox">SafeBox</option>
+                    <option value="Central Bank of UAE">Central Bank of UAE</option>
+                    <option value="SHARJAH ISLAMIC BANK">SHARJAH ISLAMIC BANK</option>
+                    <option value="National Bank of Bahrain BSC">National Bank of Bahrain BSC</option>
+                    <option value="Multi Receipts">Multi Receipts</option>
+                    <option value="Prepayment Settelment">Prepayment Settelment</option>
+                    <option value="Samba Financial Group">Samba Financial Group</option>
+                    <option value="ABN Amro Bank N.V.">ABN Amro Bank N.V.</option>
+                    <option value="Al Ahli Bank of Kuwait KSC">Al Ahli Bank of Kuwait KSC</option>
+                    <option value="Al Khaliji France S.A.">Al Khaliji France S.A.</option>
+                    <option value="Arab African International Bank">Arab African International Bank</option>
+                    <option value="Emirates Investment Bank">Emirates Investment Bank</option>
+                    <option value="BANQUE MISRk">BANQUE MISR</option>
+                    <option value="BNP Paribas">BNP Paribas</option>
+                    <option value="Bank Melli Iran">Bank Melli Iran</option>
+                    <option value="Bank Saderat Iran">Bank Saderat Iran</option>
+                    <option value="Banque Du Caire">Banque Du Caire</option>
+                    <option value="Banque Libanaise Pour Le Commerce">Banque Libanaise Pour Le Commerce</option>
+                    <option value="Barclays Bank PLC">Barclays Bank PLC</option>
+                    <option value="Credit Agricole Indosuez">Credit Agricole Indosuez</option>
+                    <option value="Deutsche Bank">Deutsche Bank</option>
+                    <option value="Doha Bank">Doha Bank</option>
+                    <option value="El Nillien Bank">El Nillien Bank</option>
+                    <option value="Finance House PJSC">Finance House PJSC</option>
+                    <option value="Habib Bank LtdC">Habib Bank Ltd</option>
+                    <option value="Korean Exchange Bank">Korean Exchange Bank</option>
+                    <option value="NATIONAL BANK OF KUWAIT (S.A.K)">NATIONAL BANK OF KUWAIT (S.A.K)</option>
+                    <option value="Rafidain Bank">Rafidain Bank</option>
+                    <option value="The Bank of Tokyo-Mitsubishi UFJ Ltd">The Bank of Tokyo-Mitsubishi UFJ Ltd</option>
+                    <option value="RAK BANK The National Bank of Ras Al Khaimah PSC">RAK BANK The National Bank of Ras Al Khaimah PSC</option>
+                    <option value="HSBC Bank Middle East">HSBC Bank Middle East</option>
+                    <option value="Bank of Baroda">Bank of Baroda</option>
+                    <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                    <option value="NATIONAL BANK OF FUJAIRAH">NATIONAL BANK OF FUJAIRAH</option>
+                    <option value="Invest Bank">Invest Bank</option>
+                    <option value="United Bank Limited">United Bank Limited</option>
+                    <option value="UNITED ARAB BANK">UNITED ARAB BANK</option>
+                    <option value="Dubai Bank">Dubai Bank</option>
+                    <option value="Habib Bank AG Zurich">Habib Bank AG Zurich</option>
+                    <option value="CITI BANK">CITI BANK</option>
+                    <option value="ARAB BANK PSC">ARAB BANK PSC</option>
+                    <option value="BANK OF SHARJAH LTD.">BANK OF SHARJAH LTD.</option>
+                    <option value="BLOM BANK FRANCE">BLOM BANK FRANCE</option>
+                    <option value="Industrial and Commercial Bank of China">Industrial and Commercial Bank of China</option>
+                    <option value="NATIONAL BANK OF UMM AL QAIWAIN PSC">NATIONAL BANK OF UMM AL QAIWAIN PSC</option>
+                    <option value="JANATA BANK LIMITED">JANATA BANK LIMITED</option>
+                    <option value="National Bank of Oman">National Bank of Oman</option>
+                    <option value="Mashreq Al Islami">Mashreq Al Islami</option>
+                    <option value="First Abu Dhabi Bank">First Abu Dhabi Bank</option>
+                    <option value="AP/AR Netting">AP/AR Netting</option>
+                    <option value="Federal Tax Authority Abu Dhabi UAE">Federal Tax Authority Abu Dhabi UAE</option>
+                    <option value="Federal Tax Authority">Federal Tax Authority</option>
+                    <option value="APAR NETTING">APAR NETTING</option>
+                    <option value="Emirates NBD">Emirates NBD</option>
+                    <option value="HSBC BANK MIDDLE EAST LIMITED">HSBC BANK MIDDLE EAST LIMITED</option>
+                    <option value="First Abu Dhabi Bank">First Abu Dhabi Bank</option>
+                    <option value="Commercial Bank of Dubai">Commercial Bank of Dubai</option>
+                    <option value="Abu Dhabi Islamic Bank">Abu Dhabi Islamic Bank</option>
+                    <option value="sharjah Islamic Bank LLC">sharjah Islamic Bank LLC</option>
+                    <option value="AGRICULTURAL BANK OF CHINA AE">AGRICULTURAL BANK OF CHINA AE</option>
+                    <option value="Emirates Bank">Emirates Bank</option>
+                    <option value="Credit Card Multi Receipt">Credit Card Multi Receipt</option>
+                    <option value="UBL">UBL</option>
+                    <option value="NATIONAL BANK OF FUJAIRAH (NBF)">NATIONAL BANK OF FUJAIRAH (NBF)</option>
+                    <option value="RAKBANK">RAKBANK</option>
+                    <option value="UNITED ARAB BANK">UNITED ARAB BANK</option>
+                    <option value="Abu Dhabi Commercial Bank">Abu Dhabi Commercial Bank</option>
+                    <option value="BANIYAS SPIKE TRADING COMPANY LLC">BANIYAS SPIKE TRADING COMPANY LLC</option>
+                    <option value="ADIB">ADIB</option>
+                    <option value="EMIRATES ISLMIC BANK">EMIRATES ISLMIC BANK</option>
+                    <option value="United Bank Limited (UBL)">United Bank Limited (UBL)</option>
+                    <option value="TUV Rheinland Middle East LLC">TUV Rheinland Middle East LLC</option>
+                    <option value="Emirates National Bank of Dubai">Emirates National Bank of Dubai</option>
+                    </lightning:select>
+                </div>
+                <div class="slds-col slds-size_1-of-4 slds-p-around_medium">
+                    <lightning:input value="{!v.refundAmount}" label="Refund Amount" required="true" />
+                </div> -->
+                
+            </div>
+        </aura:if>
+        <div class="slds-float--right">
+            <lightning:button variant="brand" label="Submit" title="Submit" class="btnsend" onclick="{!c.save}" disabled="{!(empty(v.Receipt))}"/>
+            <lightning:button variant="brand" label="Cancel" title="Cancel" class="btnsend" onclick="{!c.OnCancel}" disabled="{!v.disableBtn}"/>
+        </div>
+    </div>
+</aura:component>

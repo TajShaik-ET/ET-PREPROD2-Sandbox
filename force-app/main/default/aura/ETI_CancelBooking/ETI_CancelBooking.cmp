@@ -1,0 +1,29 @@
+<aura:component controller="ETI_VehicleController" implements="force:hasRecordId,force:hasRecordId,force:lightningQuickAction" access="global">
+    <aura:attribute name="reshudleCancelMetaData" type="map"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="loading" type="Boolean" default="false" />
+    <aura:attribute name="bookings" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/>
+	<c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <!--Component Start-->
+    <lightning:recordEditForm objectApiName="ETI_Booking__c"
+                              aura:id="bkngEditForm"
+                              recordId="{!v.recordId}"
+                              onsubmit="{!c.handleSubmit}"
+                              onerror="{!c.handleError}">
+    <lightning:messages aura:id="bkngMessage" />
+        <div class="slds-p-horizontal_medium">
+            <span class="input-container">
+                <span class="asterix">*</span>
+                 <lightning:inputField fieldName="Cancellation_Reason__c" aura:id="newBookingField" class="slds-form-element_stacked"/>
+            </span>
+        </div>
+        <div class="slds-m-top_medium slds-text-align_center">
+            <lightning:button type="submit" label="Submit" variant="brand" />
+        </div>
+        <aura:if isTrue="{!v.loading}">
+            <lightning:spinner alternativeText="Loading" />
+        </aura:if>
+    </lightning:recordEditForm>
+    <!--Component End-->
+</aura:component>

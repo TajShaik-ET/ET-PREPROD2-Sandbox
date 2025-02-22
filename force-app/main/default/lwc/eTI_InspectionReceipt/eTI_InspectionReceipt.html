@@ -1,0 +1,971 @@
+<template>
+  <div class="mainouter">
+    <template if:true={showSpinner}>
+      <div class="exampleHolder">
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+      </div>
+    </template>
+    <h2 style="text-align: right;">
+      <p>Heavy Vehicle Inspection Center</p>
+      <p>مركز الفحص الفني للمركبات الثقيلة</p>
+    </h2>
+    <table style="width:100%;" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td>
+          <table style="width:100%;" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td style="border-bottom:1px solid #000; text-align:left;">
+                <p>
+                  <img src={logoleft} style="width:90%;" />
+                </p>
+                <p>
+                  <lightning-formatted-date-time value={todayDate} year="numeric" month="numeric" day="numeric"
+                    hour12="true" hour="2-digit" minute="2-digit">
+                  </lightning-formatted-date-time>
+                </p>
+              </td>
+              <td style="border-bottom:1px solid #000; text-align:center; vertical-align:bottom;padding-bottom:10px;">
+                <template lwc:if={receiptDetails}>
+                  <p class="font26">{receiptDetails.Location.EN}</p>
+                  <p class="font26">{receiptDetails.Location.AR}</p>
+                </template>
+                <template lwc:else>
+                  <p class="font26">Inspection Centre</p>
+                  <p class="font26">مركز الفحص الفني</p>
+                </template>
+              </td>
+              <td style="border-bottom:1px solid #000; text-align:right; width: 33%;">
+                <p>
+                  <img src={logoright} style="width:90%;" />
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="border-bottom:1px solid #000; text-align:left; vertical-align:bottom;">
+                <p style="font-size:14px;"> PO Box 253 <br />Abu Dhabi,UAE </p>
+              </td>
+              <td style="border-bottom:1px solid #000; text-align:center;">
+                <p class="font30">إيصال</p>
+                <p class="font30">RECEIPT</p>
+              </td>
+              <td style="border-bottom:1px solid #000; vertical-align:bottom; text-align:right;">
+                <p>TRN:100026365500003</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" align="left" valign="bottom" class="receipt_outer">
+                <table cellpadding="0" cellspacing="0" width="100%" class="receipt_div">
+                  <tr>
+                    <td>
+                      <table class="receipttable" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td style="padding:2px; width: 250px;">
+                            <lightning-input class="receipt" data-id="searchIpnutId" type="text" variant="label-hidden"
+                              value={searchInput} placeholder="AM/23/76715 OR B-230762"></lightning-input>
+                          </td>
+                          <td style="padding:2px;">
+                            <lightning-button variant="brand" label="Search / يبحث" title="Search / يبحث"
+                              onclick={fetchReceiptData} class="slds-m-left_x-small"></lightning-button>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <template if:true={receiptDetails}>
+                      <td style="vertical-align:bottom; text-align:right;">
+                        <table cellpadding="0" cellspacing="0" style="margin-right:0; width:auto; float:right;">
+                          <tr>
+                            <td>
+                              <p style="font-size:14px; line-height:18px; margin:0px;">
+                                <b>Date / التاريخ :</b>
+                              </p>
+                            </td>
+                            <td>
+                              <p style="font-size:14px; line-height:18px; margin:0px; text-align:center;">
+                                <lightning-formatted-date-time value={receiptDetails.Receipt_DateTime} year="numeric"
+                                  month="numeric" day="numeric">
+                                </lightning-formatted-date-time>
+                              </p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p style="font-size:14px; line-height:18px; margin:0px;">
+                                <b>Time / الوقت :</b>
+                              </p>
+                            </td>
+                            <td>
+                              <p style="font-size:14px; line-height:18px; margin:0px; text-align:center;">
+                                <lightning-formatted-date-time value={receiptDetails.Receipt_DateTime} hour12="true"
+                                  hour="2-digit" minute="2-digit">
+                                </lightning-formatted-date-time>
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </template>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <template if:true={receiptDetails}>
+              <tr>
+                <td colspan="3" style="padding:0px;">
+                  <table class="dataTable" cellpadding="0" cellspacing="0"
+                    style="width:100%;font-size:14px; line-height:22px; margin:0px; font-weight:600;">
+                    <tr>
+                      <td width="25%">
+                        <p>Receipt No / رقم الإيصال <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td width="25%">
+                        <p style="text-align:center;">{receiptDetails.Receipt_No}</p>
+                      </td>
+                      <td width="25%">
+                        <p>Booking No / رقم الحجز <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td width="25%">
+                        <p style="text-align:center;"><template
+                            if:true={responseWrapper.inspObsr.Bookings__r}>{responseWrapper.inspObsr.Bookings__r.Name}</template>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="25%">
+                        <p>Ref No / رقم المرجع <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td width="25%">
+                        <p style="text-align:center;">{receiptDetails.Reference_No}</p>
+                      </td>
+                      <td width="25%">
+                        <p>Plate No / رقم اللوحة <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td width="25%">
+                        <p style="text-align:center;">{receiptDetails.Vehicle_Details.Plate_No}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>Pay Type / نظام الدفع <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">{receiptDetails.Pay_type}</p>
+                      </td>
+                      <td>
+                        <p>Plate Type / نوع اللوحة <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">
+                          {receiptDetails.Vehicle_Details.Plate_Type.EN} /
+                          {receiptDetails.Vehicle_Details.Plate_Type.AR}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>Lane Type / المسار <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">{receiptDetails.Lane_Type.EN} /
+                          {receiptDetails.Lane_Type.AR}</p>
+                      </td>
+                      <td>
+                        <p>Plate Source / مصدر اللوحة <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">
+                          {receiptDetails.Vehicle_Details.Plate_Source.EN} /
+                          {receiptDetails.Vehicle_Details.Plate_Source.AR}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>Test Type / نوع الفحص <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">{receiptDetails.Test_Type.EN} /
+                          {receiptDetails.Test_Type.AR}</p>
+                      </td>
+                      <td>
+                        <p>Plate Color / لون اللوحة <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">
+                          {receiptDetails.Vehicle_Details.Plate_Color.EN} /
+                          {receiptDetails.Vehicle_Details.Plate_Color.AR}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>Test Purpose / الغرض من الفحص <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">{receiptDetails.Test_Purpose.EN} /
+                          {receiptDetails.Test_Purpose.AR}</p>
+                      </td>
+                      <td>
+                        <p>Body No / رقم الهيكل <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">{receiptDetails.Body_Number}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>Amount / رسوم الفحص <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">{receiptDetails.Total_Amount}</p>
+                      </td>
+                      <td>
+                        <p>Chassis No / رقم الشاسي <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">
+                          {receiptDetails.Vehicle_Details.Chassis_No}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>Total Amount (AED) <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center;">{receiptDetails.Total_Amount}</p>
+                      </td>
+                      <td style="padding-right:40px; padding-bottom:0px;">
+                        <p>KM Reading / الكيلومتر الفحص <span style="float:right;">:</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p style="text-align:center; padding-bottom:0px;">
+                          {receiptDetails.Vehicle_Details.KM_Reading}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4"></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" style="border-bottom:1px solid #000; padding-bottom:10px;">
+                  <table
+                    style="width:100%;font-size:11px; text-align:center; line-height:14px; margin:0px; font-weight:normal;">
+                    <tr>
+                      <td width="200" style="font-size:14px; text-align:center;">
+                        <p>Cashier / أمين الصندوق</p>
+                        <hr />
+                        <p>{receiptDetails.Cashier}</p>
+                      </td>
+                      <td style="padding:0 20px; text-align:center; font-size:14px;">
+                        <u style="line-height:14px;">The center will not be responsible for any
+                          loss of the items or any
+                          technical defects during the inspection. The above mentioned amount
+                          is collected by Emirates
+                          Transport on behalf of Integrated Transport Center.</u>
+                        <br />
+                        <u>.المركز غير مسؤول عن فقدان الأغراض القيمة أو أية أعطال قد تحدث في
+                          المركبات داخل مسارات الفحص
+                          الفني. يتم تحصيل المبلغ أعلاه من قبل مواصلات الإمارات بالنيابة عن
+                          مركز النقل المتكامل</u>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </template>
+            <tr>
+              <td class="paddingright" colspan="3" style="padding-top:20px;">
+                <template if:true={receiptDetails}>
+                  <lightning-tabset>
+                    <lightning-tab label="Vehicle Information" title="Vehicle Information">
+                      <div class="innterTabData">
+                        <div class="bottomData">
+                          <div class="sectionBox">
+                            <label>Lane Number</label>
+                            <lightning-combobox data-id="Lane_Number" name="Lane_Number__c" label="Lane Number"
+                              value={responseWrapper.inspObsr.Lane_Number__c} placeholder="Select lane"
+                              variant="label-hidden" options={optionsLane} onchange={handleFieldChange}
+                              disabled={isInspectionCompleted}>
+                            </lightning-combobox>
+                          </div>
+                          <table class="lasttable" cellpadding="0" cellspacing="0" border="1" style="margin-top:0px;">
+                            <tr>
+                              <td width="200">Plate No / لوحة لا</td>
+                              <td width="250" style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Plate_No}</td>
+                              <td width="300">
+                                <lightning-input variant="label-hidden" type="text" label=""
+                                  disabled="true"></lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Plate Color / لون اللوحة </td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Plate_Color.EN} /
+                                {receiptDetails.Vehicle_Details.Plate_Color.AR}</td>
+                              <td>
+                                <lightning-input variant="label-hidden" type="text" label=""
+                                  disabled="true"></lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Plate Type / نوع اللوحة</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Plate_Type.EN} /
+                                {receiptDetails.Vehicle_Details.Plate_Type.AR}</td>
+                              <td>
+                                <lightning-input variant="label-hidden" type="text" label=""
+                                  disabled="true"></lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Plate Source / مصدر اللوحة</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Plate_Source.EN} /
+                                {receiptDetails.Vehicle_Details.Plate_Source.AR}</td>
+                              <td>
+                                <lightning-input variant="label-hidden" type="text" label=""
+                                  disabled="true"></lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Vehicle Make / صناعة المركبات</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Vehicle_Make.EN} /
+                                {receiptDetails.Vehicle_Details.Vehicle_Make.AR}</td>
+                              <td>
+                                <lightning-input data-id="Vehicle_Make" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Vehicle_Make__c} onchange={handleFieldChange}
+                                  name="Vehicle_Make__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Vehicle Model / طراز السيارة</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Vehicle_Model.EN} /
+                                {receiptDetails.Vehicle_Details.Vehicle_Model.AR}</td>
+                              <td>
+                                <lightning-input data-id="Vehicle_Model" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Vehicle_Model__c} onchange={handleFieldChange}
+                                  name="Vehicle_Model__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Vehicle Type / نوع السيارة</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Vehicle_Type.EN} /
+                                {receiptDetails.Vehicle_Details.Vehicle_Type.AR}</td>
+                              <td>
+                                <lightning-input data-id="Vehicle_Type" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Vehicle_Type__c} onchange={handleFieldChange}
+                                  name="Vehicle_Type__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Vehicle Kind / نوع السيارة</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Vehicle_Kind.EN} /
+                                {receiptDetails.Vehicle_Details.Vehicle_Kind.AR}</td>
+                              <td>
+                                <lightning-input data-id="Vehicle_Kind" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Vehicle_Kind__c} onchange={handleFieldChange}
+                                  name="Vehicle_Kind__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Country / دولة</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Country.EN} /
+                                {receiptDetails.Vehicle_Details.Country.AR}</td>
+                              <td>
+                                <lightning-input data-id="Country" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Country__c} onchange={handleFieldChange}
+                                  name="Country__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Model Year / سنة الصنع</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Model_Year}</td>
+                              <td>
+                                <lightning-input data-id="Model_Year" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Model_Year__c} onchange={handleFieldChange}
+                                  name="Model_Year__c" disabled={isInspectionCompleted} maxlength="10">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Chassis No / رقم الشاسيه.</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Chassis_No}</td>
+                              <td>
+                                <lightning-input data-id="Chassis_No" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Chassis_No__c} onchange={handleFieldChange}
+                                  name="Chassis_No__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Engine No / رقم المحرك</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Engine_No}</td>
+                              <td>
+                                <lightning-input data-id="Engine_No" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Engine_No__c} onchange={handleFieldChange}
+                                  name="Engine_No__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Fuel Type / نوع الوقود</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Fuel_Type.EN} /
+                                {receiptDetails.Vehicle_Details.Fuel_Type.AR}</td>
+                              <td>
+                                <lightning-input data-id="Fuel_Type" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Fuel_Type__c} onchange={handleFieldChange}
+                                  name="Fuel_Type__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>No Of Cylinders / عدد الاسطوانات</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Cylinders}</td>
+                              <td>
+                                <lightning-input data-id="No_Of_Cylinders" variant="label-hidden" type="number" label=""
+                                  value={responseWrapper.inspObsr.No_Of_Cylinders__c} onchange={handleFieldChange}
+                                  name="No_Of_Cylinders__c" disabled={isInspectionCompleted} maxlength="10">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Horse Power / قوة حصان</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Horsepower}</td>
+                              <td>
+                                <lightning-input data-id="Horse_Power" variant="label-hidden" type="number" label=""
+                                  value={responseWrapper.inspObsr.Horse_Power__c} onchange={handleFieldChange}
+                                  name="Horse_Power__c" disabled={isInspectionCompleted} maxlength="10">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Vehicle Color / لون السيارة</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Vehicle_Color.EN} /
+                                {receiptDetails.Vehicle_Details.Vehicle_Color.AR}</td>
+                              <td>
+                                <lightning-input data-id="Vehicle_Color" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Vehicle_Color__c} onchange={handleFieldChange}
+                                  name="Vehicle_Color__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Weight Unloaded / الوزن المفرغ</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Weight_Unloaded.EN} /
+                                {receiptDetails.Vehicle_Details.Weight_Unloaded.AR}</td>
+                              <td>
+                                <lightning-input data-id="Weight_Unloaded" variant="label-hidden" type="number" label=""
+                                  value={responseWrapper.inspObsr.Weight_Unloaded__c} onchange={handleFieldChange}
+                                  name="Weight_Unloaded__c" disabled={isInspectionCompleted} maxlength="10">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Weight Loaded / تحميل الوزن</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Weight_Loaded.EN} /
+                                {receiptDetails.Vehicle_Details.Weight_Loaded.AR}</td>
+                              <td>
+                                <lightning-input data-id="Weight_Loaded" variant="label-hidden" type="number" label=""
+                                  value={responseWrapper.inspObsr.Weight_Loaded__c} onchange={handleFieldChange}
+                                  name="Weight_Loaded__c" disabled={isInspectionCompleted} maxlength="10">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>No Of Doors / عدد الابواب</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Doors}</td>
+                              <td>
+                                <lightning-input data-id="No_Of_Doors" variant="label-hidden" type="number" label=""
+                                  value={responseWrapper.inspObsr.No_Of_Doors__c} onchange={handleFieldChange}
+                                  name="No_Of_Doors__c" disabled={isInspectionCompleted} maxlength="10">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>No Of Seats / عدد المقاعد</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Seats}</td>
+                              <td>
+                                <lightning-input data-id="No_Of_Seats" variant="label-hidden" type="number" label=""
+                                  value={responseWrapper.inspObsr.No_Of_Seats__c} onchange={handleFieldChange}
+                                  name="No_Of_Seats__c" disabled={isInspectionCompleted} maxlength="10">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>No Of Axles / عدد المحاور</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Axles}</td>
+                              <td>
+                                <lightning-input data-id="No_Of_Axles" variant="label-hidden" type="number" label=""
+                                  value={responseWrapper.inspObsr.No_Of_Axles__c} onchange={handleFieldChange}
+                                  name="No_Of_Axles__c" disabled={isInspectionCompleted} maxlength="10">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>No Of Tires / عدد الاطارات</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Tires}</td>
+                              <td>
+                                <lightning-input data-id="No_Of_Tires" variant="label-hidden" type="number" label=""
+                                  value={responseWrapper.inspObsr.No_Of_Tires__c} onchange={handleFieldChange}
+                                  name="No_Of_Tires__c" disabled={isInspectionCompleted} maxlength="10">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Gear Type / نوع العتاد</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Gear_Type.EN} /
+                                {receiptDetails.Vehicle_Details.Gear_Type.AR}</td>
+                              <td>
+                                <lightning-input data-id="Gear_Type" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Gear_Type__c} onchange={handleFieldChange}
+                                  name="Gear_Type__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Steering Type / نوع التوجيه</td>
+                              <td style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.Steering_Type.EN} /
+                                {receiptDetails.Vehicle_Details.Steering_Type.AR}</td>
+                              <td>
+                                <lightning-input data-id="Steering_Type" variant="label-hidden" type="text" label=""
+                                  value={responseWrapper.inspObsr.Steering_Type__c} onchange={handleFieldChange}
+                                  name="Steering_Type__c" disabled={isInspectionCompleted} maxlength="100">
+                                </lightning-input>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </lightning-tab>
+                    <lightning-tab label="Vehicle History" title="Vehicle History">
+                       <!-- Inspection Table -->
+        <div class="table-container">
+          <div class="slds-text-heading_large slds-text-title_bold">Inspection</div>
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+              <thead>
+                  <tr>
+                      <th>Receipt Number</th>
+                      <th>Receipt Date</th>
+                      <th>Lane Type</th>
+                      <th>Test Purpose</th>
+                      <th>Test Type</th>
+                      <th>Test Result</th>
+                      <th>ADFCA Flag</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <template for:each={receiptDetails.Past_Inspection} for:item="inspection">
+                      <tr key={inspection.Receipt_No}>
+                          <td>{inspection.Receipt_No}</td>
+                          <td>{inspection.Receipt_DateTime}</td>
+                          <td>{inspection.Lane_Type.EN}/{inspection.Lane_Type.AR}</td>
+                          <td>{inspection.Test_Purpose.EN}/{inspection.Test_Purpose.AR}</td>
+                          <td>{inspection.Test_Type}</td>
+                          <td>{inspection.Test_Result}</td>
+                          <td>{inspection.ADFCA_Flag}</td>
+                      </tr>
+                  </template>
+              </tbody>
+          </table>
+      </div>
+
+      <!-- Certificate Table -->
+      <div class="slds-m-top_large table-container">
+          <div class="slds-text-heading_large slds-text-title_bold">Certificate</div>
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+              <thead>
+                  <tr>
+                      <th>Certificate Number</th>
+                      <th>Certificate Date</th>
+                      <th>Certificate Type</th>
+                      <th>Certificate Status</th>
+                      <th>New Type</th>
+                      <th>New Color</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <template for:each={receiptDetails.Past_Certificate} for:item="certificate">
+                      <tr key={certificate.Certificate_No}>
+                          <td>{certificate.Certificate_No}</td>
+                          <td>{certificate.Certificate_DateTime}</td>
+                          <td>{certificate.Certificate_Type}</td>
+                          <td>{certificate.Certificate_Status}</td>
+                          <td>{certificate.New_Vehicle_Type}</td>
+                          <td>{certificate.New_Vehicle_Color}</td>
+                      </tr>
+                  </template>
+              </tbody>
+          </table>
+      </div>
+                    </lightning-tab>
+                    <lightning-tab label="Break Inspector Codes" title="Break Inspector Codes">
+                      <div class="innterTabData">
+                        <div class="table_main_grid">
+                          <div class="table_main_grid_left">
+                            <p>Break Inspector Information:</p>
+                            <p>Name: {responseWrapper.inspObsr.Break_Inspector_Name__c}</p>
+                            <p>Id: {responseWrapper.inspObsr.Break_Inspector_Id__c}</p>
+                          </div>
+                          <div class="table_main_grid_right">
+                            <template if:true={oldCodes.length}>
+                              <div class="extraDiv" style=" width:100%;">
+                                <div class="tableData">
+                                  <h6>Previous Test Codes:</h6>
+                                </div>
+                                <lightning-layout vertical-align="stretch" multiple-rows="true"
+                                  class="x-small inspectionCode">
+                                  <template for:each={oldCodes} for:item="test">
+                                    <lightning-layout-item key={test.code} flexibility="auto" padding="around-small"
+                                      class="custom-box">
+                                      <lightning-input variant="label-hidden" class={test.defect} key={test.code}
+                                        type="text" label="" title={test.record.Test_Type_Name_En__c} value={test.code}
+                                        disabled="true">
+                                      </lightning-input>
+                                    </lightning-layout-item>
+                                  </template>
+                                </lightning-layout>
+                              </div>
+                            </template>
+                            <template if:false={responseWrapper.inspObsr.Approved__c}>
+                              <div class="enterCodeBtn">
+                                <lightning-button name="enterCodesBreak" label="Select Codes / حدد الرموز"
+                                  value="inspTabBreak" onclick={openCodesModal} variant="brand"
+                                  class="slds-m-around_small">
+                                </lightning-button>
+                              </div>
+                            </template>
+                            <div class="extraDiv" style=" width:100%;">
+                              <template if:true={allCodesBreak.length}>
+                                <div class="tableData">
+                                  <h6>Current Selected Test Codes: {testResult}</h6>
+                                </div>
+                                <lightning-layout vertical-align="stretch" multiple-rows="true"
+                                  class="x-small inspectionCode">
+                                  <template for:each={allCodesBreak} for:item="test">
+                                    <lightning-layout-item key={test.code} flexibility="auto" padding="around-small"
+                                      class="custom-box">
+                                      <lightning-input variant="label-hidden" class={test.defect} key={test.code}
+                                        type="text" label="" title={test.record.Test_Type_Name_En__c} value={test.code}
+                                        disabled="true">
+                                      </lightning-input>
+                                    </lightning-layout-item>
+                                  </template>
+                                </lightning-layout>
+                              </template>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </lightning-tab>
+                    <lightning-tab label="Visual Inspector Codes" title="Visual Inspector Codes">
+                      <div class="innterTabData">
+                        <div class="table_main_grid">
+                          <div class="table_main_grid_left">
+                            <p>Visual Inspector Information:</p>
+                            <p>Name: {responseWrapper.inspObsr.Visual_Inspector_Name__c}</p>
+                            <p>Id: {responseWrapper.inspObsr.Visual_Inspector_Id__c}</p>
+                          </div>
+                          <div class="table_main_grid_right">
+                            <template if:true={oldCodes.length}>
+                              <div class="extraDiv" style=" width:100%;">
+                                <div class="tableData">
+                                  <h6>Previous Test Codes:</h6>
+                                </div>
+                                <lightning-layout vertical-align="stretch" multiple-rows="true"
+                                  class="x-small inspectionCode">
+                                  <template for:each={oldCodes} for:item="test">
+                                    <lightning-layout-item key={test.code} flexibility="auto" padding="around-small"
+                                      class="custom-box">
+                                      <lightning-input variant="label-hidden" class={test.defect} key={test.code}
+                                        type="text" label="" title={test.record.Test_Type_Name_En__c} value={test.code}
+                                        disabled="true">
+                                      </lightning-input>
+                                    </lightning-layout-item>
+                                  </template>
+                                </lightning-layout>
+                              </div>
+                            </template>
+                            <template if:false={responseWrapper.inspObsr.Approved__c}>
+                              <div class="enterCodeBtn">
+                                <lightning-button name="enterCodesVisual" label="Select Codes / حدد الرموز"
+                                  value="inspTabVisual"  onclick={openCodesModal} variant="brand"
+                                  class="slds-m-around_small">
+                                </lightning-button>
+                              </div>
+                            </template>
+                            <div class="extraDiv" style=" width:100%;">
+                              <template if:true={allCodesVisual.length}>
+                                <div class="tableData">
+                                  <h6>Current Selected Test Codes: {testResult}</h6>
+                                </div>
+                                <lightning-layout vertical-align="stretch" multiple-rows="true"
+                                  class="x-small inspectionCode">
+                                  <template for:each={allCodesVisual} for:item="test">
+                                    <lightning-layout-item key={test.code} flexibility="auto" padding="around-small"
+                                      class="custom-box">
+                                      <lightning-input variant="label-hidden" class={test.defect} key={test.code}
+                                        type="text" label="" title={test.record.Test_Type_Name_En__c} value={test.code}
+                                        disabled="true">
+                                      </lightning-input>
+                                    </lightning-layout-item>
+                                  </template>
+                                </lightning-layout>
+                              </template>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </lightning-tab>
+                    <lightning-tab label="Approval information" title="Approval information">
+                      <div class="innterTabData">
+                        <template if:false={showAfterApproval}>
+                          
+                              <template if:false={isApprovalSubmit}>
+                                <template if:true={showPicklist}>
+                                <label>Submit for approval </label>
+                                <lightning-input type="checkbox"
+                                  checked={responseWrapper.inspObsr.Submit_for_Approval__c} onchange={handlecheckBox} name="Submit_for_Approval__c">
+                                </lightning-input>
+                        
+                                <lightning-combobox 
+                                    name="customPicklist"
+                                    label="Select an Option"
+                                    value={selectedValue}
+                                    placeholder="Choose an option"
+                                    options={picklistOptions}
+                                    onchange={handlePicklistChange}>
+                                </lightning-combobox>
+                                <div class="remarks">
+                                  <label>Remarks : </label>
+                                  <lightning-textarea data-id="Remarks" variant="label-hidden" type="text" label=""
+                                    value={responseWrapper.inspObsr.Remarks__c} onchange={handleFieldChange} name="Remarks__c"
+                                    disabled={isInspectionCompleted} maxlength="250">
+                                  </lightning-textarea>
+                                </div>
+                                <div style="text-align: left">
+                                  <template if:false={isInspectionCompleted}>
+                                    <template if:false={uploadDisabled}>
+                                      <div class="uploadfile_div">
+                                        <lightning-input type="file" required="true" accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf"
+                                          label="Attachment" onchange={openfileUpload}>
+                                        </lightning-input>
+                                      </div>
+                                      <template if:true={fileData}>
+                                        <p>{fileData.filename}</p>
+                                      </template>
+                                    </template>
+                                  </template>
+                                  
+                                </div>
+                                </template>
+                              </template>
+                              <template if:true={isApprovalSubmit}>
+                              <lightning-input type="text" disabled="true" value={responseWrapper.inspObsr.Approver_Name_and_ID__c}  name="Approver_Name_and_ID__c">
+                              </lightning-input>
+                              </template>
+                              <template if:false={showPicklist}>
+                                
+                                <div class="slds-hide">
+                                 
+                                  <lightning-input type="text" disabled="true" value={responseWrapper.inspObsr.Approver_Finance_ID__c}  name="Approver_Finance_ID__c">
+                                  </lightning-input>
+                                </div>
+                                <template if:true={showApproval}>
+                                  <label>Approval </label>
+                                  <lightning-input type="checkbox"
+                                    checked={responseWrapper.inspObsr.Approved__c} label="Approved" onchange={handlecheckBox} name="Approved__c">
+                                  </lightning-input>
+                                  <lightning-input type="checkbox"
+                                    checked={responseWrapper.inspObsr.Rejected__c} label="Rejected" onchange={handlecheckBox} name="Rejected__c">
+                                  </lightning-input>
+
+                                  <div class="remarks">
+                                    <label>Remarks : </label>
+                                    <lightning-textarea data-id="Remarks" required="true" variant="label-hidden" type="text" label=""
+                                      value={responseWrapper.inspObsr.Remarks_by_Supervisor__c} onchange={handleFieldChange} name="Remarks_by_Supervisor__c"
+                                      maxlength="250">
+                                    </lightning-textarea>
+                                  </div>
+                                  <div style="text-align: left">
+                                    <!--<template if:false={isInspectionCompleted}>-->
+                                      <template if:false={uploadDisabled}>
+                                        <div class="uploadfile_div">
+                                          <lightning-input type="file" required="true" accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf"
+                                            label="Attachment" onchange={openfileUpload}>
+                                          </lightning-input>
+                                        </div>
+                                        <template if:true={fileData}>
+                                          <p>{fileData.filename}</p>
+                                        </template>
+                                      </template>
+                                    <!--</template>-->
+                                    
+                                  </div>
+                                  <div class="slds-hide">
+                                    <lightning-input
+                                      value={responseWrapper.inspObsr.Actual_Approver__c} type="text" name="Actual_Approver__c">
+                                    </lightning-input>
+                                  </div>
+                              </template>
+                              </template>
+                            </template>
+                             
+                          
+                          <template if:true={showAfterApproval}>
+                            <div class="table_main_grid_left">
+                              <p>Approver Information:</p>
+                              <p>Submited Approver: {responseWrapper.inspObsr.Approver_Name_and_ID__c}</p>
+                              <p>Actual Approver: {responseWrapper.inspObsr.Actual_Approver_Name__c}</p>
+                            </div>
+                        </template>
+                        <div class="uploaded_file_section">
+                          <template if:true={filesList}>
+                            <template for:each={filesList} for:item="file">
+                              <div key={file.value} class="upload_file_inner_div">
+                                <div class="filename">
+                                  <p>{file.label}</p>
+                                </div>
+                                <div class="inner_div_btn"> 
+                                  <!--<template if:false={isBusinessCommunity}>-->
+                                    <lightning-icon data-id={file.value} onclick={previewHandler} title="Preview" size="x-small"
+                                      icon-name="action:preview">
+                                    </lightning-icon>
+                                    <lightning-icon data-id={file.url} onclick={downloadHandler} title="Download" size="x-small"
+                                      icon-name="action:download">
+                                    </lightning-icon>
+                                  <!--</template>-->
+                                  <template if:false={isInspectionCompleted}>
+                                    <lightning-icon data-id={file.value} onclick={deleteHandler} title="Delete" size="x-small"
+                                      icon-name="action:delete">
+                                    </lightning-icon>
+                                  </template>
+                                </div>
+                              </div>
+                            </template>
+                          </template>
+                        </div>
+                        
+                      </div>
+                    </lightning-tab>
+                  </lightning-tabset>
+                  <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                      <!--<template if:false={isInspectionCompleted}>-->
+                        <div style="text-align: center; margin: .5rem 0; border-top: 1px solid #000; padding-top: 1rem;">
+                          <lightning-button data-id="Vehicle_Info" style="text-align: center; margin: .5rem 0;"
+                            variant="brand"  label="Save / يحفظ" title="Save / يحفظ" onclick={saveReceiptData}
+                            class="slds-m-left_x-small">
+                          </lightning-button>
+                        </div>
+                      <!--</template>-->
+                    </div>
+                    <div class="slds-col">
+                      <!--<template if:false={isInspectionCompleted}>-->
+                        <div style="text-align: center; margin: .5rem 0; border-top: 1px solid #000; padding-top: 1rem;">
+                          <lightning-button data-id="Vehicle_Info" style="text-align: center; margin: .5rem 0;"
+                            variant="brand" disabled={disableCodeSelect} label="Submit / يُقدِّم" title="Submit / يُقدِّم" onclick={openSubmitModal}
+                            class="slds-m-left_x-small">
+                          </lightning-button>
+                        </div>
+                      <!--</template>-->
+                    </div>
+                  </div>
+                  
+                  <div class="slds-col">
+                    <template if:true={showPrintBtn}>
+                      <div style="text-align: center; margin: .5rem 0; border-top: 1px solid #000; padding-top: 1rem;">
+                        <lightning-button data-id="Vehicle_Info" style="text-align: center; margin: .5rem 0;"
+                          variant="brand"  label="Print / طباعة" title="Print / طباعة" onclick={showPrintMsg}
+                          class="slds-m-left_x-small">
+                        </lightning-button>
+                      </div>
+                    </template>
+                  </div>
+                </template>
+              </td>
+            </tr>
+            <template if:true={isCodesModalOpen}>
+              <template if:true={isBreakInsp}>
+                <c-e-t-i_-inspection-receipt-codes insp-codes={inspCodesBreak} all-codes={allCodesBreak}
+                  defects-map={defectsMapBreak} defects-array={defectsArrayBreak} tab-name={tabName}
+                  active-sections={activeSectionsBreak} oncodeschange={getSelectedCodes}
+                  ontogglesection={getToggleSection} onclosemodal={getCloseModal}>
+                </c-e-t-i_-inspection-receipt-codes>
+              </template>
+              <template if:false={isBreakInsp}>
+                <c-e-t-i_-inspection-receipt-codes insp-codes={inspCodesVisual} all-codes={allCodesVisual}
+                  defects-map={defectsMapVisual} defects-array={defectsArrayVisual} tab-name={tabName}
+                  active-sections={activeSectionsVisual} oncodeschange={getSelectedCodes}
+                  ontogglesection={getToggleSection} onclosemodal={getCloseModal}>
+                </c-e-t-i_-inspection-receipt-codes>
+              </template>
+            </template>
+            <!-- Submit Modal starts here-->
+            <template if:true={isSubmitModalOpen}>
+              <section role="dialog" class="slds-modal slds-fade-in-open">
+                  <div class="slds-modal__container">               
+                      <header class="slds-modal__header">
+                          <h2 class="slds-text-heading_medium slds-text-align_center">Submit Confirmation</h2>
+                      </header>
+                      <div class="slds-modal__content slds-p-around_medium slds-text-align_center">
+                          <p>Are you sure you want to submit?</p>
+                      </div>
+                      <footer class="slds-modal__footer slds-text-align_center">  
+                        <div class="slds-grid slds-grid_align-center slds-gutters"> 
+                          <lightning-button label="Yes" variant="brand" onclick={handleConfirmSubmit} class="slds-var-m-horizontal_small"></lightning-button>
+                          <lightning-button label="No" onclick={closeSubmitModal} class="slds-var-m-horizontal_small"></lightning-button>
+                        </div>                                          
+                      </footer>
+                  </div>
+              </section>
+              <div class="slds-backdrop slds-backdrop_open"></div>
+          </template>
+          <!-- Submit modal ends here -->
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</template>

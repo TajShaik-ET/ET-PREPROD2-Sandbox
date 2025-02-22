@@ -1,0 +1,16 @@
+<apex:page standardController="Opportunity" extensions="MOTO_GetEstimation" showHeader="false" sidebar="false" >
+    <style>
+        body{
+        overflow: hidden!important;
+        }
+        .maindiv{
+        position: relative;display: block;width: 100%;
+        }
+        .maindiv object{
+        width: 100%;height: 500px;
+        }
+    </style>
+    <div class="maindiv">
+        <object data="data:application/pdf;base64,{!docValue}" ></object> 
+    </div>   
+</apex:page>

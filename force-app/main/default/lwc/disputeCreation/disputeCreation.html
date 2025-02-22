@@ -1,0 +1,104 @@
+<!--
+  @description       : 
+  @author            : Srihari.Koyila@Smaartt.com-SK
+  @group             : 
+  @last modified on  : 09-20-2024
+  @last modified by  : Srihari.Koyila@Smaartt.com-SK
+  Modifications Log
+  Ver   Date         Author                          Modification
+  1.0   09-03-2024   Srihari.Koyila@Smaartt.com-SK   Initial Version
+-->
+<template>
+    <template if:true={showSpinner}>
+        <div>
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+    <template if:false={showSpinner}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Open Dispute Form</h2>
+                </header>
+            
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning-modal-body>
+                        <div if:true={errors} class="slds-notify slds-notify_alert slds-alert_error">
+                            {errors}
+                        </div>
+                        <lightning-record-edit-form object-api-name={caseObject} onsuccess={handleSuccess} onsubmit={handleOnSubmit} record-type-id="012Sl00000046MzIAI">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name={caseFields.DISPUTE_DATE} value={today}></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name={caseFields.SECTOR} value={invoiceDetail.sector} disabled="true"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field class="slds-col" field-name={caseFields.INVOICE_NUMBER} onchange={invoiceNumberChange} required="true"></lightning-input-field>
+                                    <lightning-button disabled={isInvoiceNumberEmpty} variant="base" label="Pull Invoice" style="padding-left: 10px;" onclick={fetchInvoiceDetail}></lightning-button>
+                                    <template if:false={IsInvoiceFetched}>
+                                        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field class="slds-col" value={invoiceDetail.transactionType} field-name={caseFields.INVOICE_TYPE} disabled="true"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name={caseFields.CUSTOMER_NAME} value={invoiceDetail.accountName} disabled="true"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name={caseFields.INVOICE_AMOUNT} value={invoiceDetail.amountDueOriginal} disabled="true"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name={caseFields.ORG_ID} value={invoiceDetail.orgId} disabled="true"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name={caseFields.OPERTAING_UNIT} value={invoiceDetail.operatingUnit} disabled="true"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name={caseFields.DISPUTE_AMOUNT} required="true"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name={caseFields.DISPUTE_REASON} required="true"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                    <lightning-input-field field-name={caseFields.COLLECTION_REMARSK} required="true"></lightning-input-field>
+                            </div>
+
+                            <div class="slds-grid slds-hide">
+                                <lightning-input-field value={recId} field-name={caseFields.ACCOUNT_ID}></lightning-input-field>
+                                <lightning-input-field value={collectorLogId} field-name={caseFields.COLLECTOR_LOG}></lightning-input-field>
+                                <lightning-input-field value="Invoice Dispute" field-name={caseFields.SUBJECT}></lightning-input-field>
+                                <lightning-input-field value="012Sl00000046MzIAI" field-name={caseFields.RECORD_TYPE_ID}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2 slds-p-right_small">
+                                    <lightning-button variant="brand" class="slds-m-top_small slds-float_right"  label="Cancel" onclick={handleReset}></lightning-button>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-button variant="brand"  class="slds-m-top_small slds-float_left" type="submit" label="Save"></lightning-button>
+                                </div>
+                            </div>
+                        </lightning-record-edit-form>
+
+                    </lightning-modal-body>
+                </div>
+                
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,99 @@
+<template>
+    <lightning-card title="Create Case With Global Event" icon-name="standard:case">
+        <div class="slds-form-element">
+            <lightning-record-edit-form object-api-name="Case" onsuccess={handleSuccess} onerror={handleError}>
+                <lightning-layout>
+                    <lightning-input-field field-name="AccountId" onchange={handleInputChange} class="slds-hide"></lightning-input-field>
+                    <lightning-input-field field-name="Status" value="In Progress" class="slds-hide"></lightning-input-field>
+                    <lightning-input-field field-name="Status_Category__c" value="Pending with ET" class="slds-hide"></lightning-input-field>
+                    <lightning-input-field field-name="Subject" value="Global Event" class="slds-hide"></lightning-input-field>
+                    
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
+                        <label for="fieldid">ESE User Name</label>
+                        <lightning-input-field  id="fieldid" variant="label-hidden"  required="true" field-name="ContactId" lable="hidden" onchange={handleInputChange}></lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
+                        <lightning-input-field field-name="Type_Of_Case__c"  required="true" onchange={handleInputChange}></lightning-input-field>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </template>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered ">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th>Line Number</th>
+                            <th></th>
+                            <th></th>
+                            <th>Request Line Deatils</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>Actions</th>               
+                        </tr>
+                    </thead>
+                <template for:each={eseRequestLines} for:item="line" for:index="index">
+                    <tr key={line.id}>
+                        <td>
+                          {line.number}
+                        </td>
+
+                        <td>
+                          <label>School Name</label>
+                           <c-custom-lookup-Global
+                           name="accountLookup"
+                           field-label="Account"
+                           child-object-api-name="Contact"
+                           target-field-api-name="AccountId"
+                           required="true"
+                           add-to-recent="true"
+                           onvalueselected={handleSelectedLookup}
+                           data-id={index} 
+                           ></c-custom-lookup-Global>
+                            <lightning-input value={line.Trip_Date__c}  required="true" label="Trip Date" data-id={index} data-field="Trip_Date__c" type="date" onchange={handleEseInputChange}></lightning-input>
+                            <lightning-input  value={line.Trip_Destination_From__c}  required="true" label="Trip Destination from" data-id={index} data-field="Trip_Destination_From__c" onchange={handleEseInputChange}></lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input value={line.Trip_Coordinator_Name__c}  required="true" label="Trip Coordinator Name" data-id={index} data-field="Trip_Coordinator_Name__c" onchange={handleEseInputChange}></lightning-input>
+                            <lightning-input value={line.Coordinator_Phone__c} label="Coordinator Phone" data-id={index} data-field="Coordinator_Phone__c" type="tel"  required="true" onchange={handleEseInputChange}></lightning-input>
+                            <lightning-input value={line.Trip_Destination_To__c}  required="true"  label="Trip Destination To" data-id={index} data-field="Trip_Destination_To__c" onchange={handleEseInputChange}></lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input  required="true" value={line.Email__c} data-id={index} label="Email" data-field="Email__c" type="email" onchange={handleEseInputChange}></lightning-input>
+                            <lightning-input required="true" value={line.Cycle__c} data-id={index} label="Cycle" data-field="Cycle__c"  type="number" onchange={handleEseInputChange}></lightning-input>
+                            <lightning-input required="true" value={line.Count_Of_Students__c} label="Count Of Students" data-id={index} data-field="Count_Of_Students__c" type="number" onchange={handleEseInputChange}></lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input  required="true" value={line.Special_Need_Students_Count__c} label="Special Need Students Count" data-id={index} data-field="Special_Need_Students_Count__c" type="number" onchange={handleEseInputChange}></lightning-input>
+                            <lightning-input required="true" value={line.Supervisors_Count_From_School__c}  label="Supervisors Count From School" data-id={index} data-field="Supervisors_Count_From_School__c" type="number" onchange={handleEseInputChange}></lightning-input>
+                            <lightning-input  required="true" value={line.Arrival_Time_To_Activity__c}  label="Arrival Time To Activity" data-id={index} data-field="Arrival_Time_To_Activity__c" type="time" onchange={handleEseInputChange}></lightning-input>
+
+                        </td>
+                        <td>
+                            <lightning-input  required="true" value={line.Assembly_Point__c} label="Assembly Point" data-id={index} data-field="Assembly_Point__c" onchange={handleEseInputChange}></lightning-input>
+                            <lightning-input  required="true" value={line.Landmark_Trip_To__c} label="Landmark Trip To" data-id={index} data-field="Landmark_Trip_To__c" onchange={handleEseInputChange}></lightning-input>
+                            <lightning-input  required="true" value={line.Landmark_Trip_From__c} label="Landmark Trip From" data-id={index} data-field="Landmark_Trip_From__c" onchange={handleEseInputChange}></lightning-input>
+                           
+                        </td>
+                        <td>
+                            <lightning-combobox  required="true" value={line.Gender__c}  data-id={index} label="Gender" data-field="Gender__c"   options={genderOptions} placeholder="Select Gender" onchange={handleEseInputChange}></lightning-combobox>
+                            <lightning-input  required="true" value={line.Leaving_time_from_Location__c}  label="Leaving time from Location" data-id={index} data-field="Leaving_time_from_Location__c" type="time" onchange={handleEseInputChange}></lightning-input>
+                          
+                        </td>
+                        <td>
+                            <lightning-button-icon class="button" icon-name="utility:add" alternative-text="Add Line" onclick={addESERequestLine}></lightning-button-icon>
+                            <lightning-button-icon icon-name="utility:delete" alternative-text="Delete" onclick={deleteESERequestLine} data-id={index}></lightning-button-icon>
+
+                        </td>           
+                    </tr>
+                     
+                     
+                </template>
+                   </table>
+                   <footer class="slds-modal__footer" style="padding: 0.50rem 1rem;">
+                <lightning-button label="Save"  disabled={isSaveDisabled} icon-name="utility:save" onclick={createCaseWithESERequestLines} class="slds-m-top_medium" variant="brand"></lightning-button>
+                </footer>
+            </lightning-record-edit-form>
+        </div>
+    </lightning-card>
+</template>

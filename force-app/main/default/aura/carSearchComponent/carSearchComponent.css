@@ -1,0 +1,306 @@
+.THIS .actionButton {
+    font-size: 14px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+    border: 0px solid #EB4026;
+    color: #fff;
+    padding: 5px 20px;
+    min-width: 100px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    background-color: #EB4026;
+    border-color: #EB4026;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Cronos';
+    outline: none;
+    box-shadow: none;
+    height: 30px; 
+ 	margin-top: 33px;
+}
+.THIS .actionButton:hover {
+    background-color: #d62b11;
+    border-color: #d62b11;
+    border: 0px solid #d62b11;
+}
+.THIS.filtermaindiv{
+    clear: both;
+    background: rgba(255,255,255,0.5);
+    padding: 15px;
+    display: block;
+    max-width: 100%;
+    float: left;
+    width: 100%;
+    border: none;
+    position: relative;
+    z-index: 2;
+    margin-top: 50px;
+    text-align: center;
+}
+.THIS .slds-form-element__control{
+    display:flex;
+}
+.THIS .fillterOuter .slds-form-element__control{ 
+    flex-direction: column;
+}
+.THIS.filtermaindiv .filtersec{
+    padding: 0;
+    width: 100%;
+    display:flex;
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    /* background: #fff; 
+    margin: 0% 0%;
+    float: left;*/
+}
+.THIS .slds-accordion__section {
+    padding: .75rem;
+    background: #fff;
+}
+.THIS .slds-checkbox{
+    line-height:1;
+}
+.THIS .bordright{
+    border-right: 1px solid #eee;
+}
+.THIS .bordleft{
+    border-left: 1px solid #eee;
+}
+.THIS .cPriceRange {
+    width: 84%;
+    margin: 0% 10%;
+}
+.THIS .cPriceRange .slider {
+    margin: 0px auto 0 auto;
+}
+.THIS .paddinglr{
+    padding: 0px 15px;
+}
+.THIS .noUi-horizontal {
+    height: 10px;
+}
+.THIS .noUi-horizontal .noUi-handle {
+    width: 20px;
+    height: 20px;
+    left: -17px;
+    top: -6px;
+    border-radius: 50%;
+}
+.THIS .noUi-handle:before, .THIS .noUi-handle:after {
+    display:none;
+}
+.THIS .slds-button_reset, .THIS .slds-button--reset {
+    font-size: 13px;
+    font-family: 'Cronos';
+    text-decoration: none;
+    letter-spacing: .5px;
+}
+.THIS .slds-icon_x-small, .THIS .slds-icon--x-small {
+    width: 0.7rem;
+    height: 1rem;
+    line-height: 1;
+}
+.THIS .slds-is-open>.slds-accordion__content {
+    position: absolute;
+    background: #fff;
+    width: 100%;
+    margin-left: -12px;
+    padding-left: 15px;
+    z-index: 11;
+    padding-bottom: 15px;
+    margin-top: 12px;
+    /* border: 1px solid #eaeaea; */
+    border-top: n;
+    box-shadow: 0px 0px 5px #eaeaea;
+    font-family: 'Cronos';
+}
+.THIS .slds-is-open>.slds-accordion__summary {
+    margin-bottom: 0rem; 
+}
+.THIS .cETCAR_PriceRange .slider {
+    margin: 18px auto 0 auto;
+    max-width: 350px;
+    background: transparent;
+}
+.THIS .filterTop{
+    width: 32%;
+    display: inline-block;
+    float: left;
+    margin: 0;
+    padding:0 1%;
+}
+.THIS .fillterOuter{
+    width:75%;
+}
+.THIS .priceSection{
+    padding: .5rem 1rem;
+    background: rgb(0 0 0 / 34%);
+    width: 40%;
+    float: right;
+    text-align: right;
+}
+
+.THIS .priceSection div{
+    width: 50%;
+    display: inline-block;
+    color: #fff;
+    cursor: pointer;
+}
+.THIS legend{
+     color: #000;
+}
+.THIS .slds-radio .slds-form-element__label{
+    color: #62CC8C;
+    font-size: 15px;
+    font-weight: normal;
+    text-transform: uppercase;
+    margin-right: 10px;
+}
+.THIS .mobileView{
+    display: none;
+}
+.THIS .webView{
+        display:  inline-block;
+    }
+.THIS .clear_btn{ 
+    color: #62CC8C;
+    border-color: #62CC8C;
+    font-size:13px;
+    margin-top: 33px;
+    height:30px;
+}
+.THIS .filterTop label, .THIS .filterTop legend{
+    text-align:left;
+    margin-bottom:10px;
+    width: 100%;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+}
+@media(max-width:1024px){
+    .THIS .filterTop{
+        width:50%;
+    }
+    .THIS .filterTop.webView{
+        width:100%;
+        text-align: left;
+    }
+}
+@media (max-width: 767px) {
+    .THIS .filtersec {
+ 		flex-direction: column;
+    }
+    .THIS .clear_btn{
+        display:none;
+    }
+    .THIS .filterTop, .THIS .fillterOuter{
+        width:100%;
+    }
+    .THIS .fillter_section {
+        width:50%; 
+    	display: inline-block;
+    }
+    .THIS .bordright {
+        border-right: 0px solid #eee;
+        border-bottom: 1px solid #eee;
+    }
+    .THIS .cPriceRange {
+        width: 85%;
+        margin: 13% 4% 0% 10%;
+    }
+    .THIS .bordleft {
+        border-left: 1px solid #eee;
+        border-top: 0px solid #eee;
+        padding-top: 0px!important;
+    }
+    .THIS .slds-is-open>.slds-accordion__content {    
+        margin-top: 13px;
+    }
+    .THIS .filtersec:nth-child(3){
+        margin-top: 5px;
+        margin-left: 0px!important;
+        float: left;
+        clear: both;
+    }
+    .THIS .actionButton{
+        height: 30px;
+        width: auto;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .filtersec {
+        width: 100%!important;
+    }
+    .THIS .filtersec:nth-child(2){
+        /*margin-top: 25px;*/
+    }
+    .THIS .scrolldiv {
+        width: 83%;
+        margin-left: 12%;
+    }
+    .THIS .bordright {
+        border-right: 0px solid #eee;
+        border-bottom: 1px solid #eee;
+    }
+    .THIS .cPriceRange {
+        width: 85%;
+        margin: 15% 4% 5% 10%;
+    }
+    .THIS .bordleft {
+        border-left: 0px solid #eee;
+        border-top: 1px solid #eee;
+        padding-top: 10px!important;
+    }
+    .THIS .slds-is-open>.slds-accordion__content {    
+        margin-top: 13px;
+    }
+     .THIS .filterTop .slds-form-element__legend{
+        margin-bottom:15px;
+    }
+    .THIS .filterTop .slds-form-element__control{
+        display:flex;
+            margin: 15px 0;
+    }
+    .THIS .fillterOuter{
+        display:flex;
+        width: 100%;
+    } 
+    .THIS .mobileView{
+        display: inline-block;
+    }
+     .THIS .webView{
+        display: none;
+    }
+    .THIS.filtermaindiv{
+        background:none;
+        margin:0 0 15px 0;
+        padding-top:0;
+    }
+    .THIS .slds-form-element__label, .THIS .slds-radio .slds-radio__label{
+        min-height:auto;
+    }
+}
+.THIS .slds-form-element .slds-radio [type=radio]+.slds-radio_faux, 
+.THIS .slds-form-element .slds-radio [type=radio]+.slds-radio--faux, 
+.THIS .slds-form-element .slds-radio [type=radio]~.slds-radio_faux, 
+.THIS .slds-form-element .slds-radio [type=radio]~.slds-radio--faux, 
+.THIS .slds-radio [type=radio]+.slds-radio__label .slds-radio_faux, 
+.THIS .slds-radio [type=radio]+.slds-radio__label .slds-radio--faux{
+        border: 1px solid #62cc8c;
+}
+.THIS .slds-radio [type="radio"]:checked + .slds-radio_faux::after, 
+.THIS .slds-radio [type="radio"]:checked + .slds-radio--faux::after, 
+.THIS .slds-radio [type="radio"]:checked ~ .slds-radio_faux::after, 
+.THIS .slds-radio [type="radio"]:checked ~ .slds-radio--faux::after, 
+.THIS .slds-radio [type="radio"]:checked + .slds-radio__label .slds-radio_faux::after, 
+.THIS .slds-radio [type="radio"]:checked + .slds-radio__label .slds-radio--faux::after{
+    background:#62cc8c;
+}

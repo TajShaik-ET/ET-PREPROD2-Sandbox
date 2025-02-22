@@ -1,0 +1,177 @@
+<aura:component controller="ETI_VehicleController" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:appHostable" access="global" >
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="showBulkCancelBookings" type="Boolean" default="false" />
+    <aura:attribute name="cancelReason" type="String" />
+    <aura:attribute name="totalRefundAmount" type="Decimal"/>
+    <aura:attribute name="isSelectAll" type="Boolean" default="false" />
+    <aura:attribute name="showSubmit" type="Boolean" default="true" />
+    <aura:attribute name="bookingWrapper" type="Object" />
+    <aura:attribute name="searchKeyword" type="String" />
+    
+    <!--Pagination-->
+    <aura:attribute name="allBookingData" type="Object"/>
+    <aura:attribute name="allBookingDataWithSearch" type="Object"/>
+    <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="8"/>
+    <aura:attribute name="totalPages" type="Integer" default="0"/>
+    <aura:attribute name="pageList" type="List"/>
+    <aura:attribute name="totalRecords" type="integer" default="0"/>
+    <aura:attribute name="recordStart" type="integer" default="0"/>
+    <aura:attribute name="recordEnd" type="integer" default="0"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <ltng:require styles="{!$Resource.ETI_BulkCancelPopupCSS}" />
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:if isTrue="{!v.loading}">
+        <lightning:spinner alternativeText="Loading" />
+    </aura:if>
+    <aura:html tag="style">
+        .THIS .slds-modal__close {
+        box-shadow: none;
+        outline: none;
+        display:none!important;
+        }    
+        .closeIcon {
+        	display:none !important;
+        }
+    </aura:html>
+    
+    <aura:if isTrue="{!v.showBulkCancelBookings}">
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container bulkCancelBookingsPopup">
+                <header class="slds-modal__header modalHeader">
+                    <!--<lightning:buttonIcon iconName="utility:close" onclick="{! c.closeCancelBookings}"
+                                          alternativeText="close" variant="bare-inverse"
+                                          class="slds-modal__close bulkCancelModal"/>-->
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Select Bookings to Cancel</h2>
+                </header> 
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                    <div class="slds-form-element" >
+                        <aura:if isTrue="{!not(empty(v.bookingWrapper))}"> 
+                            <!--label class="slds-form-element__label" for="text-input-id-2">
+                                <abbr class="slds-required" title="required">*</abbr>Cancellation Reason
+                            </label-->
+                            
+                            <lightning:input label="Cancellation Reason" aura:id="fieldId" value="{!v.cancelReason}" messageWhenValueMissing="This field is required" required="true" class="cancelbox"/> 
+                            
+                            <div class="slds-float_right searchbox">
+                                <span onkeyup="{!c.searchKeyUp}" >
+                                    <lightning:layoutItem size="12" class="searchBox">
+                                        <lightning:input aura:id="searchField"
+                                                         label="Search" 
+                                                         name="{!v.Search}"
+                                                         value="{!v.searchKeyword}" variant="label-inline"/>
+                                    </lightning:layoutItem>
+                                </span>
+                            </div>
+                            <div class="refunddiv">
+                                <table class="slds-table slds-max-medium-table stacked-horizontal">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col paddingfirst" class="smallWidth">
+                                                <lightning:input type="checkbox" title="Select All" onchange="{!c.handleAllSelect}" aura:id="selectallcheckbox" value="{!v.isSelectAll}" checked="{!v.isSelectAll}" variant="brand" class="selectAllCheckBox"/>    
+                                            </th>
+                                            <th scope="col paddingfirst"><span class="slds-truncate">Booking No</span></th>
+                                            <th scope="col"><span class="slds-truncate">Plate No</span></th>
+                                            <th scope="col"><span class="slds-truncate">Chassis No</span></th>
+                                            <th scope="col"><span class="slds-truncate">Service Type</span></th>
+                                            <th scope="col"><span class="slds-truncate">Status</span></th>
+                                            <th scope="col"><span class="slds-truncate">Amount</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.bookingWrapper}" var="bkng" indexVar="index">
+                                            <tr>
+                                                <td class="paddingfirst">
+                                                    <label class="checkboxcontainer">
+                                                        <lightning:input type="checkbox" label="" value="{!bkng.booking.Id}" checked="{!bkng.isSelected}" onchange="{!c.handleSelect}"/>
+                                                    </label>
+                                                </td> 
+                                                <td>
+                                                    <lightning:formattedUrl value="{!'/one/one.app#/sObject/'+bkng.booking.Id+'/view'}" title="{!bkng.booking.Id}" label="{!bkng.booking.Name}" target="_blank" />
+                                                </td>
+                                                <td>{!bkng.booking.Plate_No__c}</td>
+                                                <td>{!bkng.booking.Chassis_No__c}</td>
+                                                <td>{!bkng.booking.Service_Type__c}</td>
+                                                <td>{!bkng.booking.Booking_Status__c}</td>
+                                                <td>{!bkng.booking.Total_Amount__c}</td>
+                                            </tr>
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                                <!-- Total Refund Amount: {!v.totalRefundAmount}-->
+                            </div>
+                            <aura:set attribute="else">
+                                <br></br>
+                                <div class="slds-notify slds-notify_alert slds-theme_error slds-float_none" role="alert" >
+                                    <h2 style="text-align:right">There are no bookings to display.</h2>
+                                </div>
+                                <br></br><br></br>
+                            </aura:set>
+                        </aura:if>
+                        <!-- Pagination Start Here -->
+                        <aura:if isTrue="{!v.totalPages>1}">
+                            <div class="pagination">
+                                <div class="slds-clearfix">
+                                    <div class="slds-page-header" role="banner">
+                                        <div class="slds-float_right">            
+                                            <lightning:button label="{!v.First}" iconName="utility:left" iconPosition="left"
+                                                              onclick="{!c.onFirst}" disabled="{! v.currentPageNumber == 1}"/>
+                                            <lightning:button iconName="utility:chevronleft" iconPosition="left"
+                                                              onclick="{!c.onPrev}" disabled="{! v.currentPageNumber == 1}"/>
+                                            <span class="slds-p-horizontal_x-small">
+                                                <a onclick="{!c.processMe}" name="1" 
+                                                   class="{! (v.currentPageNumber == 1) ? 'selected' : ''}">1</a>
+                                            </span>
+                                            <aura:if isTrue="{!and(v.totalPages>5,v.pageList[0]!=2)}">
+                                                <span class="slds-p-horizontal_xxx-small">
+                                                    <a>...</a>
+                                                </span>
+                                            </aura:if>
+                                            <aura:iteration items="{!v.pageList}" var="item">
+                                                <span class="slds-p-horizontal_x-small">
+                                                    <a onclick="{!c.processMe}" name="{!item}"
+                                                       class="{! (v.currentPageNumber == item) ? 'selected' : ''}">{!item}</a>
+                                                </span>
+                                            </aura:iteration>
+                                            <aura:if isTrue="{!and(v.totalPages>5,v.totalPages-1!=v.pageList[4])}">
+                                                <span class="slds-p-horizontal_xxx-small">
+                                                    <a>...</a>
+                                                </span>
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.totalPages!=1}">
+                                                <span class="slds-p-horizontal_x-small">
+                                                    <a onclick="{!c.processMe}" name="{!v.totalPages}"
+                                                       class="{! (v.currentPageNumber == v.totalPages) ? 'selected' : ''}">{!v.totalPages}</a>
+                                                </span>
+                                            </aura:if>
+                                            <lightning:button iconName="utility:chevronright" iconPosition="right" 
+                                                              disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onNext}"/>
+                                            <lightning:button label="{!v.Last}" iconName="utility:right" iconPosition="right" 
+                                                              disabled="{! v.currentPageNumber == v.totalPages}" onclick="{!c.onLast}"/>
+                                        </div>
+                                        <p class="slds-page-header__title" style="color:#23527c;">{!v.recordStart}-{!v.recordEnd} of {!v.totalRecords} | {!v.Page} {!v.currentPageNumber} of {!v.totalPages}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <!-- Pagination End Here --> 
+                    </div>
+                </div>
+                <footer class="slds-modal__footer modalFooter modalFooter">
+                    <aura:if isTrue="{!not(empty(v.bookingWrapper))}"> 
+                    	<div class="amountdiv">Total Refund Amount: <strong>{!v.totalRefundAmount}</strong></div>
+                    </aura:if>
+                    <lightning:button variant="brand" label="Close" title="Close" 
+                                      onclick="{! c.closeCancelBookings }" class="btnsave"/>
+                    <lightning:button variant="brand" label="Submit" title="Submit" 
+                                      onclick="{! c.submitBulkCancel }" class="btnsave" disabled="{!!v.showSubmit}" />
+                </footer>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+            </div>
+        </section>
+        <!--###### MODAL BOX Part END Here ######-->  
+    </aura:if>
+</aura:component>

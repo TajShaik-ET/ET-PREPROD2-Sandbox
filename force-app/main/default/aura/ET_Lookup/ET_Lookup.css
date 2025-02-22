@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'Cronos';
+    src: url(/resource/ETST_Cronos); 
+}
+.THIS .leftPaddingClass {
+    border: none!important;
+    margin-top: 6px!important;
+}
+.THIS .slds-input-has-icon--right{
+    border-bottom: 1px solid #ddd
+}
+.THIS .slds-input-has-icon--left{
+    border-bottom: 1px solid #ddd
+}
+.THIS .slds-modal__body{
+    width:100%;
+    height: auto;
+}
+.THIS .slds-modal__bodyrtl{
+    width:100%;
+    height: auto;
+    direction:rtl; 
+    text-align: right !important;
+} 
+.THIS .slds-show {
+    display: block;
+    border: none;
+    background: transparent;
+}
+.THIS .slds-media__figure{
+    display:none;
+}
+.THIS .pillSize{
+    width:100%;
+    background: transparent;
+    border: none;    padding: 10px 0 0px;
+}
+.THIS .slds-pill__icon_container~.slds-pill__action {
+    border: none;
+}
+.THIS .slds-pill__label {
+    font-family: 'Cronos';
+    color:#888;
+}
+.THIS .slds-pill__action{
+    padding-left: .5rem;
+}
+.THIS .slds-pill__icon_container{
+    display:none;
+}
+.THIS .slds-lookup__search-input{
+    border-bottom: none!important;
+    height: 37px!important;
+}

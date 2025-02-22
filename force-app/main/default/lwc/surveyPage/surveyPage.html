@@ -1,0 +1,55 @@
+<template>
+    <template if:true={showSurveyPage}>
+        <section aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container " id="MyModal">
+               
+                <div class="slds-modal__content">
+                    <input type="image" class="logo" src="https://image.marketing.et.ae/lib/fe3711717564047d711d75/m/1/ad1d2921-8569-4d4a-9766-bcfe5b3def3b.png" alt="Submit">
+                   
+                    <h1 class="heading">How satisfied are you with our solution Provided?</h1>
+                    <form>
+                        <div class="cc-selector">
+                            <input id="VerySad" type="radio" name="selected-symbol" value="1"
+                                onclick={onRadioButtonChange} />
+                            <label class="drinkcard-cc VerySad" for="VerySad"><span>Very Sad</span></label>
+                            <input id="Sad" type="radio" name="selected-symbol" value="2"
+                                onclick={onRadioButtonChange} />
+                            <label class="drinkcard-cc Sad" for="Sad"><span>Sad</span></label>
+                            <input id="Neutral" type="radio" name="selected-symbol" value="3"
+                                onclick={onRadioButtonChange} />
+                            <label class="drinkcard-cc Neutral" for="Neutral"><span>Neutral</span></label>
+                            <input id="Happy" type="radio" name="selected-symbol" value="4"
+                                onclick={onRadioButtonChange} />
+                            <label class="drinkcard-cc Happy" for="Happy"><span>Happy</span></label>
+                            <input id="VeryHappy" type="radio" name="selected-symbol" value="5"
+                                onclick={onRadioButtonChange} />
+                            <label class="drinkcard-cc VeryHappy" for="VeryHappy"><span>Very Happy</span></label>
+                        </div>
+                    </form>
+
+                    <lightning-textarea class="comments" name="Comments(if any):" onchange={handleComments} placeholder="Comments (if any)"></lightning-textarea>
+
+
+                    <template if:true={ratingSelected}>
+                        <div class="slds-text-align_center">
+                            <lightning-button class="darkBtn" label="Submit Feedback" onclick={handleSubmit} variant="brand"
+                                type="submit"></lightning-button>
+                        </div>
+                    </template>
+
+                </div>
+            </div>
+        </section>
+    </template>
+    <template if:true={showThankyouPage}>
+        <section aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container " id="MyModal1">
+                <div class="slds-modal__content">   
+                    <input type="image" class="thankimg" src="https://image.marketing.et.ae/lib/fe3711717564047d711d75/m/1/cb062e1b-b15a-4f67-a873-ea8b657a7eca.png" alt="Submit" width="48" height="48">
+                    <h1><strong>Thank You</strong></h1>
+                    <p>Your submission has been received.</p>
+                </div>
+            </div>
+        </section>
+    </template>
+</template>

@@ -1,0 +1,76 @@
+<aura:component controller="ETC_RefundController" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:appHostable" access="global" >
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="page" type="String" default="page1" />
+    <aura:attribute name="loading" type="Boolean" default="false" />
+    <aura:attribute name="dataloaded" type="Boolean" default="false" />
+    <aura:attribute name="bookingColumns" type="List" />
+    <aura:attribute name="refundcolumns" type="List" />
+    <aura:attribute name="selectedBookings" type="List"/>
+    <aura:attribute name="refundMap" type="object"/>
+    <aura:attribute name="totalRefundAmount" type="Decimal"/>
+    <aura:attribute name="selectedBookingIds" type="List"/>
+    <aura:attribute name="noBookings" type="Boolean" default="false"/>
+    
+    <aura:attribute name="vehicleBookings" type="ETCAR_Service_Request_Line_Item__c" default="{'sobjectType':'ETCAR_Service_Request_Line_Item__c','ETST_Pick_Up_From__c':'','ETST_Service_Type__c':'','ETST_Pick_Up_Start_Date__c':'','ETST_Drop_Off_To__c':'','ETCAR_Pickup_Zone__c':'','ETCAR_Drop_Off_Zone__c':'','ETC_Guest_Name__c':'','ETC_Passenger_Mobile_Number__c':'',
+                                                                                              'ETCAR_Duration__c':'','ETCARS_Customer_Type__c':'', 'ETCAR_Pick_UP_Date_Time__c': '', 'ETCAR_Return_Date_Time__c': '' , 'ETCAR_Age__c':'','ETC_Flight_Number__c':'','ETC_Flight_Type__c':'','ETC_Instructions_To_Driver__c':'','ETC_Additional_Hours__c':''}" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <c:ETCAR_UtillityMethods aura:id="ETCAR_UtillityMethods"/>
+    <aura:if isTrue="{!v.loading}">
+        <lightning:spinner alternativeText="Loading" />
+    </aura:if>
+    <aura:html tag="style">
+        .slds-p-around–medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+    </aura:html>
+    <aura:if isTrue="{!v.dataloaded}">
+        <div class="modal-header slds-modal__header">
+            <aura:if isTrue="{!v.page=='page1'}">
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Select Bookings to Cancel</h2>
+                <aura:set attribute="else">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Submit to Cancel</h2>
+                    <!-- lightning:button variant="Neutral" class="slds-button" label="Cancel" onclick="{!c.handleExit}"/ -->
+                </aura:set>
+            </aura:if>
+        </div>
+        <div class="slds-modal__content slds-p-around–x-small slds-align_absolute-center slds-size_1-of-1 slds-is-relative">
+            <aura:if isTrue="{!v.page=='page1'}">
+                <aura:if isTrue="{!v.noBookings}">
+                    <h1>No Bookings available to cancel</h1>
+                    <aura:set attribute="else">
+                        <lightning:datatable columns="{!v.bookingColumns}" data="{!v.vehicleBookings}" keyField="id" onrowselection="{! c.handleSelect }"/>
+                    </aura:set>
+                </aura:if>
+                <aura:set attribute="else">
+                    <lightning:datatable columns="{!v.refundcolumns}" data="{!v.selectedBookings}" keyField="id" hideCheckboxColumn="true"/>
+                </aura:set>
+            </aura:if>
+        </div>
+        <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+            <aura:if isTrue="{!v.page=='page1'}">
+                <aura:if isTrue="{!not(v.noBookings)}">
+                    <lightning:button variant="Brand" class="slds-button" label="Next" onclick="{!c.handleNext}"/>
+                </aura:if>
+                <aura:set attribute="else">
+                    <div class="slds-align_absolute-center">
+                        Total Refund Amount: &nbsp; <ui:outputCurrency aura:id="curr" value="{!v.totalRefundAmount}"/> 
+                    </div>
+                    <div>
+                        <lightning:button variant="Brand" class="slds-button" label="Submit" onclick="{!c.handleSave}"/>
+                    </div>
+                    <!-- lightning:button variant="Neutral" class="slds-button" label="Cancel" onclick="{!c.handleExit}"/ -->
+                </aura:set>
+            </aura:if>
+        </div>
+    </aura:if>
+</aura:component>

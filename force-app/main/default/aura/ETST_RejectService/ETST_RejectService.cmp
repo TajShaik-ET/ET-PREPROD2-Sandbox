@@ -1,0 +1,38 @@
+<aura:component controller="ETSTController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+    
+    <aura:attribute name="showSpinner" type="boolean" default="false" />
+    <aura:attribute name="comments" type="string" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="serviceRequest" type="ET_Service_Request__c" />
+    <aura:attribute name="record" type="Object"/>
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="ETST_Status__c,ETST_Pick_Up_From__c,ETST_Prev_Pickup_From__c,ETST_Location__Latitude__s,ETST_Prev_Pickup_Loc__Latitude__s,ETST_Location__Longitude__s,ETST_Prev_Pickup_Loc__Longitude__s,ETST_Drop_Off_To__c,ETST_Dropoff_Location__Latitude__s,ETST_Prev_Dropoff_Loc__Latitude__s,ETST_Dropoff_Location__Longitude__s,ETST_Prev_Dropoff_Loc__Longitude__s,ET_Account__r.PersonEmail,ET_Account__r.PersonContactId"
+                      targetFields="{!v.record}"
+                      recordUpdated="{!c.onForceLoad}"
+                      />
+    <header class="slds-modal__header ">
+        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Reject Request</h2>
+    </header>
+    
+    <!-- Loading spinner end--> 
+    <div>
+        <div class="outer-div">
+            <aura:if isTrue="{!v.showSpinner}">
+                <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+            </aura:if>
+            <div class="slds-grid slds-gutters">               
+                <div class="slds-col slds-size_1-of-1">
+                    <lightning:input  value="{!v.comments}" required="true" label="Comments" type="text" /> 
+                </div>
+                
+            </div>
+            
+            <div class="slds-modal__footer">
+                <lightning:button  class="slds-button slds-button--brand" variant="neutral" label="Cancel" onclick="{!c.closeModel}" />
+                <lightning:button  class="slds-button slds-button--brand" variant="neutral" label="Save" onclick="{!c.saveRecord}" />
+            </div>
+        </div>
+    </div>
+    
+</aura:component>

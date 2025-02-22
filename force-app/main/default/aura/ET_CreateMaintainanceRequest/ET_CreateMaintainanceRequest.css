@@ -1,0 +1,10 @@
+.THIS {
+}
+.THIS .customButton{
+   background-color: #00d9ff;
+   color: #fff; 
+}
+.THIS .slds-form-element__label:empty {
+    margin: 0;
+    display: none !important;
+}

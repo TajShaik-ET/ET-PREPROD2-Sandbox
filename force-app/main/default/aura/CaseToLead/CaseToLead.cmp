@@ -1,0 +1,36 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:lightningQuickAction,lightning:actionOverride,force:hasRecordId" controller="CasetoLeadController">
+    <!--lightningRecEditFormComp-->
+    <lightning:workspaceAPI aura:id="workspace"/>
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="saved" type="Boolean" default="false" />
+    <aura:attribute name="cases" type="Object"/>
+    <aura:attribute name="qId" type="String" />
+    <aura:attribute name="caserecord" type="Object"/>
+    <aura:attribute name="requestCategory" type="string" />
+    <aura:if isTrue="{!!v.saved}">
+        <lightning:recordEditForm
+                                  aura:id="createLeadForm"
+                                  onload="{!c.handleLoad}"
+                                  onsubmit="{!c.handleSubmit}"
+                                  onsuccess="{!c.handleSuccess}"
+                                  recordTypeId="0123z000000Z6YmAAK"
+                                  objectApiName="Lead">
+            
+            <lightning:messages />
+            <lightning:inputField fieldName="FirstName" aura:id="FirstNameField"/>
+            <lightning:inputField fieldName="LastName" aura:id="LastNameField"/>
+            <lightning:inputField fieldName="Company" aura:id="CompanyField"/>
+            <lightning:inputField fieldName="Email" aura:id="EmailField"/>
+            <lightning:inputField fieldName="MobilePhone" aura:id="PhoneField"/>
+            <lightning:inputField fieldName="Request_Category__c" required="true" aura:id="RequestCategoryField" />
+            <lightning:inputField fieldName="Preferred_Location__c" required="true" aura:id="PreferredLocationField"/>
+            <!--<lightning:inputField fieldName="ETSALES_Lead_Type__c " />  -->
+            <lightning:inputField fieldName="Description"  aura:id="DescriptionField"/>
+            <div class="slds-m-top_medium">
+                <lightning:button  variant="brand" type="submit" name="save" label="Save" />
+            </div>
+        </lightning:recordEditForm>
+        
+    </aura:if>
+    
+</aura:component>

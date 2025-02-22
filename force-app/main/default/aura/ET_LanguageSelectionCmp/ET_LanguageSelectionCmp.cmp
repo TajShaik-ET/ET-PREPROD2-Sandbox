@@ -1,0 +1,27 @@
+<aura:component access="global" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" > 
+    <aura:attribute name="lang" type="String" default="en" />
+    <aura:attribute name="url" type="String" />
+    <aura:attribute name="mainLogo" type="string" default="{!$Resource.ETST_EngLogo}" />
+    <aura:attribute name="language" type="string" default="" />
+    <aura:attribute name="english" type="string" default="English" />
+    <aura:attribute name="arabic" type="string" default="العربية" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:registerEvent name="Actionname" type="c:ET_LanguageSelectionEvt" />
+    <div class="countryselectdiv">
+        <!--<lightning:select aura:id="Locationid" label="" onchange="{!c.selectLanguage}" value="{!v.lang}"  class="servicelist countryselect" >
+            <option value="en" text="English" />
+            <option value="ar" text="العربية" />
+        </lightning:select>-->
+        <div class="menudropdowndiv2">
+            <!--<button class="dropmenubtn2"><img class="" src="{!v.mainLogo}" /> {!v.english} <span class="downarrow">&#129171;</span></button>-->
+            <button class="dropmenubtn2"><img class="" src="{!v.mainLogo}" />  {!v.language} <img class="langdrop" src="{!$Resource.languagearrow}" /></button>
+            
+            <div class="dropdown-content2">
+                <ul>
+                    <li><a href="{!v.url}" onclick="{!c.selectenLanguage}"><img class="" src="{!$Resource.ETST_EngLogo}" />{!v.english}</a></li>
+                    <li><a href="{!v.url}" onclick="{!c.selectarLanguage}"><img class="" src="{!$Resource.ETST_arabicLogo}"/>{!v.arabic}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</aura:component>

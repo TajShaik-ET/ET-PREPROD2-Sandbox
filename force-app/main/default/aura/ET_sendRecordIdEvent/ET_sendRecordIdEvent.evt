@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" >
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="objectType" type="String"/>
+</aura:event>

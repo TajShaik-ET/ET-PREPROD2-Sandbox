@@ -1,0 +1,8 @@
+<aura:event type="Application" description="ET Employee tab">
+    <aura:attribute name="showHome" type="boolean" />
+    <aura:attribute name="showTask" type="boolean" />
+     <aura:attribute name="showLeave" type="boolean" />
+    <aura:attribute name="showSalary" type="boolean" />
+     <aura:attribute name="showInsurance" type="boolean" />
+    <aura:attribute name="showSupport" type="boolean" />
+</aura:event>

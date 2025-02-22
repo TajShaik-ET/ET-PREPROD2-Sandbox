@@ -1,0 +1,39 @@
+<aura:component controller="ETIN_InsuranceFilePreviewCtrl" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	
+     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="files" type="ContentDocument[]"/> 
+    
+     <div style="">
+       
+        <lightning:card >
+        <aura:set attribute="title" >
+            <lightning:icon iconName="standard:file" size="small"/>
+            Documents
+        </aura:set>
+            
+            <div class="slds-grid" style="margin-left: 6px;">
+                <div class="slds-col slds-size_1-of-1">
+                     <lightning:fileUpload multiple="false" label="" accept=".pdf,.jpg" recordId="{!v.recordId}" aura:id="multifileUpload" onuploadfinished="{!c.handleUploadFinished}" />
+                    
+                </div>
+                
+            </div>   <br/> <br/>
+          <div >
+              <aura:if isTrue="{!not(empty(v.files))}">    
+                  <ui:scrollerWrapper class="sWrapTest">
+                      <aura:iteration items="{!v.files}" var="f">  
+                          <div style="">
+                              <lightning:fileCard fileId="{!f.Id}" description="{!f.Title}"/>
+                          </div><br/>
+                          
+                      </aura:iteration>
+                  </ui:scrollerWrapper>
+              </aura:if>
+          </div>  
+            <aura:if isTrue="{!not(empty(v.files))}">
+                <a href="javascript:void(0)" onclick="{!c.NavigateTo}"><div class="slds-card__footer" ><span class="view-all-label" >View All<span class="assistiveText" >Files</span></span></div></a>
+            </aura:if>
+            </lightning:card> 
+         
+    </div>
+</aura:component>

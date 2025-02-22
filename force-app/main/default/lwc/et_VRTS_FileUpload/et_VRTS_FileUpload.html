@@ -1,0 +1,27 @@
+<template>
+  <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+    <template if:false={uploadDisabled}>
+      <div class="uploadfile_div">
+        <lightning-input type="file" accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf" label="Attachment" data-recid={recordId} onchange={openfileUpload}></lightning-input>
+      </div>
+      <template if:true={fileData}>
+        <p class="leftpadding">{fileData.filename}</p>
+      </template>
+      <div class="uploaded_file_section">
+        <template if:true={filesList}>
+          <template for:each={filesList} for:item="file">
+            <div key={file.value} class="upload_file_inner_div">
+              <div class="filename">
+                <p class="leftpadding">{file.label}</p>
+              </div>
+              <div class="inner_div_btn">
+                <lightning-icon data-id={file.url} onclick={downloadHandler} title="Download" size="x-small" icon-name="action:download"></lightning-icon>
+                <lightning-icon data-id={file.value} onclick={deleteHandler} title="Delete" size="x-small" icon-name="action:delete"></lightning-icon>
+              </div>
+            </div>
+          </template>
+        </template>
+      </div>
+    </template>
+  </div>
+</template>

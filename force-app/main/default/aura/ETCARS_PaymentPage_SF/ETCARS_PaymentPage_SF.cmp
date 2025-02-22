@@ -1,0 +1,75 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	<aura:attribute name="prefixURL" type="String" default="https://etsales--etpdev.my.salesforce.com/sfc/servlet.shepherd/version/download/"/>
+    <aura:attribute name="selectedCar" type="Object"/>
+    <aura:attribute name="selectedFeaturesList" type="Object[]"/>
+    <aura:attribute name="billingTotal" type="Integer" default="0"/>
+    <aura:attribute name="selectedCarId" type="String"/>
+    <aura:attribute name="vfUrl" type="String" />
+    <aura:attribute name="vfHost" type="String" />
+    <aura:attribute name="reqType" type="String" />
+    <aura:attribute name="paymentId" type="Id" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="serviceRecord" type="ET_Service_Request__c" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <c:ETCAR_UtillityMethods aura:id="ETCAR_UtillityMethods"/>
+    <div class="searchmaindiv">
+        <!-- Payment Form-->
+        <h1 class="paymentHeader"> Pay Here </h1>
+        <lightning:layout class="paymentcontainsection ">
+            <lightning:layoutItem class="onlinepaydiv">
+                <div> <iframe aura:id="vfFrame" src="{!v.vfUrl}" width="100%" frameBorder="0" height="410px" /></div>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="productdetaildiv">
+                <div class="finaldetailsdiv">
+                    <h2 class="slds-section-title--divider" >Billing Breakdown</h2>
+                    <div class="billingBreakDown">
+                        <lightning:layout multipleRows="true">
+                            <div>
+                                <lightning:layoutItem size ="12" class="carimgfinal" >
+                                    <img src="{!v.selectedCar.ETCAR_Image_Link__c}" width="400" height="400"/>
+                                </lightning:layoutItem>
+                            </div>
+                            
+                            <lightning:layoutItem padding="around-small" size ="12" class="nopadding">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            1x Car Rental - {!v.selectedCar.ETCAR_Selecetd_Car__r.Name}
+                                        </td>
+                                        <td style="text-align: right;">
+                                            {!v.selectedCar.ETCAR_Price__c}
+                                        </td>                                                
+                                    </tr>
+                                </table>    
+                            </lightning:layoutItem>
+                            <lightning:layoutItem padding="around-small" size ="12" class="nopadding">
+                                <!-- Selected Features -->
+                                <table>
+                                    <aura:iteration items="{!v.selectedCar.Service_Request_Sub_Line_Items__r.records}" var="feaut">
+                                        <tr>
+                                            <td style="width: 24px;padding-right:0px"> <lightning:input type="checkbox" label="selected" name="input2" checked="true" variant="label-hidden" disabled="true"/> </td>
+                                            <td style="text-align: left;">{!feaut.ETCAR_Car_Features__r.Name} </td>
+                                            <!--<div style ="padding-right: 6px;">
+                                                            <td style="background-color:lightblue ; padding:1px; border-radius: 2px">i </td>
+                                                        </div>-->
+                                            <td style="text-align: right;"> {!feaut.ETCAR_Price__c}</td>
+                                        </tr>
+                                    </aura:iteration>
+                                </table>
+                            </lightning:layoutItem>
+                            <div class="finaltotal">
+                                <lightning:layoutItem  size ="12">
+                                    <div style="float:left"> Billing Total </div>
+                                    <div style="float:right;color: #ff4b5a;"> <strong>AED {!v.selectedCar.ETC_Booking_Cost__c} </strong></div>                                            
+                                </lightning:layoutItem>
+                            </div>
+                        </lightning:layout>
+                    </div>
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+</aura:component>

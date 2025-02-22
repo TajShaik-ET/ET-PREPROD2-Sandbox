@@ -1,0 +1,131 @@
+<apex:page standardController="ET_Service_Request__c" extensions="ETI_InvoiceController" applyBodyTag="false" showHeader="false" sidebar="false" 
+standardStylesheets="false" applyHtmlTag="false" renderAs="pdf">
+
+   <apex:stylesheet value="{!URLFOR($Resource.ETST_Invoice,'css/invoice.css')}"/>
+   
+
+    <div class="container bottom_pad">
+        <div class="row log_div">
+       <div class="col-sm-6 col-xs-12">
+            <apex:image style="height: 100px;"
+                 url="{!URLFOR($Resource.ETST_Invoice, 'images/logo.png')}"/>
+
+        </div> 
+        <div class="col-sm-6 col-xs-12 text-right">
+          <h1>Invoice</h1>
+          <p id="invoice_no">{!ET_Service_Request__c.Name}</p>
+           <!--<p id="amount">{!ETI_Booking__c.Amount__c}</p>  -->
+
+        </div>
+      </div>
+      <div class="row address">
+        <div class="col-sm-12 col-xs-12 text-left">
+          <h4>{!$Organization.Name}
+          </h4>
+          <p>{!$Organization.Street}
+          </p>
+          <p>{!$Organization.City}
+          </p>
+          <p>{!$Organization.State}
+          </p>
+          <p>{!$Organization.Country}
+          </p>
+          <p>{!$Organization.Phone}
+          </p>
+        </div>
+      </div>
+      <br/>
+      <div class="row bill_to">
+        <div class="col-sm-6 col-xs-12">
+          <p>Bill To          </p>
+          <h5>{!ET_Service_Request__c.ET_Account__r.Name}</h5>
+            <!--h5> Rashid Khan </h5-->
+        </div>
+        <div class="col-sm-6 text-right ">
+           Invoice Date :&nbsp;
+           <apex:outputText value="{0,date,dd/MM/yyyy}"> 
+                    <apex:param value="{!TODAY()}"/> 
+                </apex:outputText> 
+        </div>
+      </div>
+         <div class="row address">
+         <div class="col-sm-12 col-xs-12 text-left">
+          <h5>Inspection Id</h5>
+          <p id="invoice_no">{!ET_Service_Request__c.Name}</p>
+           <!--<p id="amount">{!ETI_Booking__c.Amount__c}</p>  -->
+        </div>
+        </div>
+      
+      <div class="row"> 
+        <div class="col-sm-12">    
+          <div class="table-responsive">      
+          <apex:variable value="{!1}" var="rowNum"/>
+    
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Vehicle</th>
+                <th>Service Type</th>
+                <th>Location</th>
+                <th>Booking Date &amp; Time</th>
+                <th>Fare</th>
+              </tr>
+            </thead>
+            <tbody>
+            <apex:repeat value="{!bookingWrp}" var="wrp" id="theRepeat" >
+              <tr>
+                  <td>{!wrp.srN}</td>
+                  <td>{!wrp.booking.Customer_Vehicle__r.name}</td>
+                  <td>{!wrp.booking.Service_Type__c}</td>
+                  <td>{!wrp.booking.ET_Location__r.name}</td>
+                  <td>{!wrp.DateVal}</td>
+                 
+                  <!--td><apex:outputText value="{0,date,dd/MM/yy}">
+                      <apex:param value="{!wrp.booking.Booking_Date__c}"/> 
+                      </apex:outputText> 
+                  </td-->
+                  <td>{!wrp.booking.Total_Amount__c}</td>
+              </tr>
+              </apex:repeat>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+      <div class="row bill_to">
+        <div class="col-sm-6 col-xs-12 total_div">
+          &nbsp;
+        </div>
+        <div class="col-sm-6 col-xs-12 total_div">
+         
+          <div class="row final_div total">
+              <div class="col-sm-8 col-xs-6 text-right">Total </div>
+              <div class="col-sm-4 col-xs-6 text-right">AED {!ET_Service_Request__c.Total_Amount__c}</div> 
+          </div>
+          <div class="row final_div final" >
+            
+             <!-- <div class="col-sm-4 col-xs-6 text-right">{!ET_Service_Request__c.ETST_Fare_Charges__c}</div> -->
+          </div>
+         
+        </div>
+      </div>
+      <br/>
+      <br/>
+      <div class="row">
+        <div class="col-sm-12 thanks_div">
+
+          <p class="term_cond">Payment Option : {!ET_Service_Request__c.Payment_Status__c} </p>
+          
+          <p class="term_cond">Terms And Condition</p>
+          <p>Appear atleast 15 min before your slot</p>
+            <!--<br/-->
+            <p>Booking will automatically get cancelled in case of 30 Min delay</p>
+            <br/>
+             <p class="note">Notes </p>
+          <p>Thanks for your business.</p>
+        </div>
+      </div>
+    </div>
+       
+</apex:page>

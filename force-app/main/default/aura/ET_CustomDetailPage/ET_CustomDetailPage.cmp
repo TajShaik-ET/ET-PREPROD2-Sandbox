@@ -1,0 +1,100 @@
+<aura:component implements="force:appHostable,force:lightningQuickAction,force:hasRecordId,flexipage:availableForRecordHome"
+                access="global" >
+    <aura:attribute name="recordName" type="String"/>
+    <aura:attribute name="ObjectName" type="String"/>
+    <aura:attribute name="objectApiName" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="fieldApiName1" type="String"/>
+    <aura:attribute name="fieldApiName2" type="String"/>
+    <aura:attribute name="fieldApiName3" type="String"/>
+    <aura:attribute name="fieldApiName4" type="String"/>
+    <aura:attribute name="field1Label" type="String"/>
+    <aura:attribute name="field2Label" type="String"/>
+    <aura:attribute name="field3Label" type="String"/>
+    <aura:attribute name="field4Label" type="String"/>
+    <aura:attribute name="showDetailCmp" type="Boolean" />
+    <aura:attribute name="columns" type="Integer" access="global" default="2" />
+    <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>   -->
+    <aura:if isTrue="{!v.showDetailCmp}">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container" style="color: #000;">
+                <!--  <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{!v.recordLabel}</h2>
+                </header>  -->
+                <div class="mainClass slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="oppHeaderDiv">
+                        <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="{!v.objectApiName}">
+                             
+                            <lightning:card>
+                                <aura:set attribute="title">
+                                    <lightning:icon class="iconClass" iconName="standard:account" size="medium"/>
+                                    <span class="approvalTextClass">{!v.ObjectName}</span>
+                                    <div class="subheading_div">
+                                        <lightning:outputField variant="label-hidden" fieldName="{!v.recordName}" />
+                                    </div>
+                                </aura:set>
+                                <aura:set attribute="footer">   
+                                    <aura:if isTrue="{!or(v.ObjectName =='case',v.ObjectName =='Case')}">
+                                        <lightning:layout>   
+                                            
+                                            <lightning:layoutItem flexibility="auto, no-grow" padding="horizontal-medium">
+                                                <label class="slds-form-element__label" for="text-input-id-1">
+                                                    {!v.field1Label}</label><br/>
+                                                <span class="dataDisplayClass">
+                                                    <lightning:outputField variant="label-hidden" fieldName="{!v.fieldApiName1}" />
+                                                </span>  
+                                            </lightning:layoutItem>
+                                            <lightning:layoutItem flexibility="auto, no-grow" padding="horizontal-medium">
+                                                <label class="slds-form-element__label" for="text-input-id-1">
+                                                    {!v.field2Label}</label><br/>
+                                                <span class="dataDisplayClass">
+                                                    <lightning:outputField variant="label-hidden" fieldName="{!v.fieldApiName2}" />
+                                                </span>  
+                                            </lightning:layoutItem>
+                                            <lightning:layoutItem flexibility="auto, no-grow" padding="horizontal-medium">
+                                                <label class="slds-form-element__label" for="text-input-id-1">
+                                                    {!v.field3Label}</label><br/>
+                                                <span class="dataDisplayClass">
+                                                    <lightning:outputField variant="label-hidden" fieldName="{!v.fieldApiName3}" />
+                                                </span>  
+                                            </lightning:layoutItem>
+                                            <lightning:layoutItem flexibility="auto, no-grow" padding="horizontal-medium">
+                                                <label class="slds-form-element__label" for="text-input-id-1">
+                                                    {!v.field4Label}</label><br/>
+                                                <span class="dataDisplayClass">
+                                                    <lightning:outputField variant="label-hidden" fieldName="{!v.fieldApiName4}" />
+                                                </span>  
+                                            </lightning:layoutItem>
+                                            
+                                        </lightning:layout>
+                                    </aura:if>
+                                    
+                                </aura:set>
+                            </lightning:card>
+                        </lightning:recordViewForm>
+                    </div>
+                    <div class="detailTabClass"> 
+                        <lightning:tabset selectedTabId="details">
+                            <lightning:tab label="Details" id="details">
+                                <div class="oppDetailDiv"> 
+                                    <div id="accDiv" style="col-2">
+                                        <lightning:recordForm
+                                                              recordId="{!v.recordId}"
+                                                              objectApiName="{!v.objectApiName}"
+                                                              layoutType="Full"
+                                                              mode="readOnly"
+                                                              columns="{!v.columns}"/>
+                                    </div>
+                                </div>
+                            </lightning:tab>
+                        </lightning:tabset>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button class="btn_close" variant="brand" name="Close" label="Close" onclick="{!c.handleClose}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,39 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" >
+    <lightning:layoutItem padding="around-small" class="servicesdiv">
+        <div class="slds-box notoppad">
+            <div class="serviceheaddiv">
+                <img src="{!$Resource.ETST_Logo}" class="EtStLogo" />
+                <p class="serheading"><span class="gbheading">Pioneer in</span> <span class="gbsubheading"> Transportation</span></p>
+            </div>      
+            <div class="slds-grid slds-gutters" style="text-align: center;">
+                <div class="slds-col">
+                    <div class="item">
+                        <div class="serviceitem" >  <!-- {!$Resource.Login_Invidual}-->
+                            <img src="{!$Resource.Login_Invidual}" onclick="{!c.redirectCustomerPortal}" class="CarLogo"/>
+                            <div class="textcontenthead">
+                                <label class="CarLabel" onclick="{!c.redirectCustomerPortal}">Login as Individual </label><span class="rightarrow" onclick="{!c.redirectCustomerPortal}">&#10140;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="serviceitem">
+                            <img src="{!$Resource.Login_Business}" class="CarLogo" onclick="{!c.redirectToBusinessPortal}"/> 
+                            <div  class="textcontenthead">
+                                <label class="CarLabel" onclick="{!c.redirectToBusinessPortal}">Login as Business</label><span class="rightarrow" onclick="{!c.redirectToVehicleInspection}">&#10140;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="serviceitem">
+                            <img src="{!$Resource.Login_Employee}" class="CarLogo" onclick="{!c.redirectToEmpPortal}"/> 
+                            <div  class="textcontenthead">
+                                <label class="CarLabel" onclick="{!c.redirectToEmpPortal}">Login as Employee</label><span class="rightarrow" onclick="{!c.redirectToVehicleInspection}">&#10140;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning:layoutItem>
+</aura:component>

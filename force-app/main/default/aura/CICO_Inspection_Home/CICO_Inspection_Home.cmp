@@ -1,0 +1,263 @@
+<aura:component controller="CICO_InspectionCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    
+    <aura:attribute name="profileUrl" type="String"/>
+    
+    <aura:attribute name="userName" type="String"/>
+    <aura:attribute name="intimationList" type="list"/>
+    <aura:attribute name="FilteredData" type="list"/>
+    <aura:attribute name="selectedTabId" type="String"/>
+    <aura:attribute name="toggleIntimationList" type="boolean" default="true"/>
+    <aura:attribute name="toggleIntimationView" type="boolean" default="true"/>
+    
+    <aura:attribute name="toggleInspectionForm" type="boolean" default="false"/>
+    <aura:attribute name="vehicelSpecId" type="String"/>
+    <aura:attribute name="userInfo" type="Object[]"/>
+    <aura:attribute name="searchKeyWord" type="string"/> 
+    <aura:attribute name="intimationLinesData" type="list"/>
+    
+    <aura:attribute name="corousalSize" type="Integer" />
+    <aura:attribute name="start" type="Integer" default="0"/>
+    <aura:attribute name="CarousalintimationList" type="list"/>
+    <aura:attribute name="noOfIntimationList" type="Integer"/>
+    <aura:attribute name="assetType" type="string"/>
+    <aura:attribute name="ShowSpinner" type="boolean" default="false"/>
+    <aura:attribute name="selectedTab" type="string" default="inspection"/>
+    <aura:attribute name="device" type="string"/>
+    <aura:attribute name="showSearchErr" type="boolean" default="false"/>
+    <aura:attribute name="timer" type="string"/>
+    <aura:attribute name="showInspection" type="boolean" default="true"/>
+    <aura:attribute name="showCheckout" type="boolean" default="false"/>
+    <aura:attribute name="showCheckin" type="boolean" default="false"/>
+    <aura:attribute name="showMotoInspection" type="boolean" default="false"/>
+    <aura:attribute name="showReceivingForm" type="boolean" default="false"/>
+    
+    
+    <aura:attribute name="userLoginInfo" type="Object[]"/>
+    <aura:attribute name="showcico" type="boolean" />
+    <aura:attribute name="showMotoTabs" type="boolean" default="false"/>
+    <aura:attribute name="showInspectionTab" type="boolean"/>
+    
+    
+    <div class="bgimage"></div>
+    <div class="menudiv">
+        <!--<div class="menudropdowndiv">
+            <button class="dropmenubtn"> <img class="profileimg" src="{!$Resource.ETuser_profile}" /></button>
+            <div class="dropdown-content">
+                <ul>
+                    <li><a href="/CICO/s/">Inspection</a></li>
+                    <li><a href="/CICO/s/">Check Out</a></li>
+                    <li><a href="/CICO/s/">Check In</a></li>
+                </ul>
+            </div>
+        </div>-->
+        <img src="{!$Resource.CICOLogo}" class="companylogo" onclick="{!c.reloadPage}" /> 
+        <div class="menudropdowndiv1">
+            
+            <button class="dropmenubtn1" onclick="{!c.onMenuClickHandler}"> <img class="profileimg" src="{!$Resource.ETuser_profile}" /></button>
+            <span  class="profileText" onclick="{!c.onMenuClickHandler}">Hi {!v.userInfo[0].Name}</span>
+            <div class="dropdown-content1 slds-hide" aura:id="dropDown">
+                <ul>
+                    <aura:if isTrue="{!v.device != 'PHONE'}">
+                        <!--li><a href="/CICO/s/">Home</a></li-->
+                    </aura:if>
+                    <!--li><a href="{!v.profileUrl}">My Profile</a></li-->
+                    <aura:if isTrue="{!v.device == 'PHONE' || v.device =='TABLET'}">
+                        <aura:if isTrue="{!v.showInspectionTab}">
+                            <li><a href="javascript:void(0)" onclick="{!c.OpenInspection}">Intimation</a></li>
+                        </aura:if>
+                        <aura:if isTrue="{!v.showcico}">
+                            <li><a href="javascript:void(0)" onclick="{!c.OpenCheckOut}">Check Out</a></li>
+                            <li><a href="javascript:void(0)" onclick="{!c.OpenCheckIn}">Check In</a></li>
+                            
+                        </aura:if> 
+                        <aura:if isTrue="{!v.showMotoTabs}">
+                        <li><a href="javascript:void(0)" onclick="{!c.OpenReceivingForm}">VisualCheck</a></li>
+                        <li><a href="javascript:void(0)" onclick="{!c.OpenMotoInspection}">Inspection</a></li>
+                        </aura:if>
+                    </aura:if>
+                    <li><a onclick="{!c.handleLogout}" >Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <!--div class="notification_section"><forceCommunity:notifications/></div-->
+    </div>
+    <lightning:tabset selectedTabId="{!v.selectedTab}" onselect="{!c.handleSelectTab}" class="toptab" >
+        <aura:if isTrue="{!v.showInspectionTab}"> 
+            <lightning:tab label="Intimation" id="inspection" class="">
+                <aura:if isTrue="{!v.showInspection}">
+                    <!-- ***inspection form start*** -->
+                    <!--lightning:card class="main_contain"-->
+                    <div class="outer_div">
+                        <aura:if isTrue="{!v.ShowSpinner}">
+                            <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+                        </aura:if>
+                        <aura:if isTrue="{!v.toggleIntimationList}">            
+                            <div style="padding:0px" class="serchboxtab">
+                                <lightning:input type="search"
+                                                 name="searchKey" value="{!v.searchKeyWord}" 
+                                                 aura:id="searchKey"  oncommit="{!c.sortIntimationList}" onchange="{!c.sortIntimationList}" 
+                                                 placeholder="Search Intimation No" class="searchbox" autocomplete="off"/>
+                            </div>
+                            <div class="searchresult">                
+                                <aura:if isTrue="{!not(empty(v.FilteredData))}">
+                                    <p class="search_heading">Search Results</p>
+                                    <div class="search_details">
+                                        
+                                        <aura:iteration items="{!v.FilteredData}" var="veh">
+                                            <table>
+                                                <tr>
+                                                    <th>Chassis No</th>
+                                                    <th>Engine No</th>
+                                                    <th>Vehicle Color</th>
+                                                    <th>Year Model</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                                
+                                                <tr data-filename="{!veh.Id}" data-id="{!veh.Asset_Type__c}" onclick="{!c.VehicleRowClick}">
+                                                    <td>&nbsp;{!veh.Name}</td>
+                                                    <td>&nbsp;{!veh.Engine_No__c}</td>
+                                                    <td>&nbsp;{!veh.Vehicle_Color__c}</td>
+                                                    <td>&nbsp;{!veh.Year_Model__c}</td>
+                                                    <td>&nbsp;{!veh.Inspection_Status__c}</td>
+                                                </tr>
+                                            </table>
+                                        </aura:iteration>
+                                        
+                                        
+                                    </div>
+                                    <!--aura:set attribute="else">
+                                <div id="no-records" style="margin:2%;font-size: 13px;" class="slds-align_absolute-center"><strong> No records found</strong></div>
+                            </aura:set-->
+                                    
+                                </aura:if>
+                            </div>
+                            
+                            
+                            <aura:if isTrue="{!v.toggleIntimationView}">
+                                <aura:if isTrue="{!not(empty(v.CarousalintimationList))}">
+                                    <div class="item_main">
+                                        <aura:iteration items="{!v.CarousalintimationList}" var="intim" indexVar="indx">
+                                            <div class="item animated bounce" data-id="{!indx}" aura:id="itemVal">
+                                                <div class="details_div">
+                                                    <div data-filename="{!intim.Id}" onclick="{!c.showLines}" class="outer_div" data-id="{!indx}">
+                                                        
+                                                        <div class="head_div" >
+                                                            <div>{!intim.Intimation_No__c}</div>    
+                                                            <lightning:button label="submit" name="{!intim.Id}" onclick="{!c.submitIntimation}"/>
+                                                        </div>
+                                                        
+                                                        <div class="inner_details">
+                                                            <span>Reference No.</span>
+                                                            <span>{!intim.Name} </span>
+                                                        </div>
+                                                        <div class="inner_details">
+                                                            <span>Intimation Date</span>
+                                                            <span><lightning:formattedDateTime value="{!intim.Intimation_Date__c}"
+                                                                                               year="numeric" month="short" day="2-digit"
+                                                                                               timeZone="Asia/Dubai" hour12="true"/></span>
+                                                        </div>
+                                                        <div class="inner_details">
+                                                            <span>Received Date</span>
+                                                            <span><lightning:formattedDateTime value="{!intim.Intimation_Received_Date__c}"
+                                                                                               year="numeric" month="short" day="2-digit"
+                                                                                               timeZone="Asia/Dubai" hour12="true"/></span>
+                                                        </div> 
+                                                        <div class="inner_details">
+                                                            <span>Location Code</span>
+                                                            <span>{!intim.Location_Code__c}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </aura:iteration>
+                                        <div class="MS-controls ">
+                                            <lightning:button disabled="{!v.start==0}" onclick="{!c.getPreviousList}" iconName="utility:chevronleft" class="btnback btnprev"/>
+                                            <lightning:button disabled="{!!lessthan(v.start+v.corousalSize,v.noOfIntimationList)}"  onclick="{!c.getNextList}" iconName="utility:chevronright" class="btnback btnnext"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <lightning:accordion aura:id="accordion" activeSectionName="" allowMultipleSectionsOpen="true" class="accordion_main "> 
+                                        <aura:iteration items="{!v.intimationLinesData}" var="inl"> 
+                                            <lightning:accordionSection name="{!inl.Name}" label="{!'Line No: '+inl.Intimation_Line_No__c+' '+'Quantity: '+inl.Intimation_Quantity__c}" class="animated bounce">  
+                                                <div class="first_table">
+                                                    <table>
+                                                        <tr>
+                                                            <th><label>Line Id </label><span>{!inl.Name}</span></th>
+                                                            <th><label>PO Line Id </label><span>{!inl.PO_Line_ID__c}</span></th>
+                                                            <th><label>Intimation Quantity </label><span>{!inl.Intimation_Quantity__c}</span></th>
+                                                            <th><label>Submitted Vehicles </label><span>{!inl.Inspected_Vehicles__c}</span></th>                                            
+                                                        </tr>
+                                                        
+                                                    </table>
+                                                </div>
+                                                <div class="second_table">
+                                                    <aura:if isTrue="{!not(empty(inl.Vehicle_Spec__r.records))}">
+                                                        <table>
+                                                            <tr>
+                                                                <th>Chassis No</th>
+                                                                <th>Engine No</th>
+                                                                <th>Vehicle Color</th>
+                                                                <th>Year Model</th>
+                                                                <th>Status</th>
+                                                            </tr>
+                                                            <aura:iteration items="{!inl.Vehicle_Spec__r.records}" var="veh">
+                                                                <tr data-filename="{!veh.Id}" data-id="{!veh.Asset_Type__c}" onclick="{!c.VehicleRowClick}">
+                                                                    <td>&nbsp;{!veh.Name}</td>
+                                                                    <td>&nbsp;{!veh.Engine_No__c}</td>
+                                                                    <td>&nbsp;{!veh.Vehicle_Color__c}</td>
+                                                                    <td>&nbsp;{!veh.Year_Model__c}</td>
+                                                                    <td>&nbsp;{!veh.Inspection_Status__c}</td>
+                                                                </tr>
+                                                            </aura:iteration>
+                                                        </table>
+                                                        <aura:set attribute="else">
+                                                            <div id="no-records" style="margin:2%;font-size: 13px;" class="slds-align_absolute-center"><strong> No vehicles need your attenation</strong></div>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </div>
+                                            </lightning:accordionSection>                                        
+                                        </aura:iteration>
+                                    </lightning:accordion>                        
+                                    <aura:set attribute="else">
+                                        <div id="no-records"  class="slds-align_absolute-cent nointimationMsg"><strong> No Intimations assigned to you.</strong></div>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:if>                
+                        </aura:if>
+                        <aura:if isTrue="{!v.toggleInspectionForm}">                 
+                            <c:CICO_InspectionCheckInForm vehicelSpecId="{!v.vehicelSpecId}" assetType="{!v.assetType}" goToHomePage="{!c.goToHomePageParent}" userInfo="{!v.userInfo}"/>
+                        </aura:if> 
+                    </div>
+                </aura:if>
+                <!--/lightning:card--> 
+                <!-- ***inspection form end*** -->
+            </lightning:tab>
+        </aura:if>
+        <aura:if isTrue="{!v.showcico}">
+            <lightning:tab label="Check Out" id="checkout" class="" >  
+                <aura:if isTrue="{!v.showCheckout}">
+                    <c:CICO_CheckOutProcess />
+                </aura:if>
+            </lightning:tab>
+            <lightning:tab label="Check In" id="checkin" class="" > 
+                <aura:if isTrue="{!v.showCheckin}"> 
+                    <c:CICO_CheckInProcess />
+                </aura:if>
+            </lightning:tab>  
+           </aura:if>
+          <aura:if isTrue="{!v.showMotoTabs}">
+            <lightning:tab label="VisualCheck" id="ReceivingForm" class="" > 
+                <aura:if isTrue="{!v.showReceivingForm}"> 
+                    <c:mOTO_VehicleInspectionHome />
+                </aura:if>
+            </lightning:tab>
+            <lightning:tab label="Inspection" id="motoInspection" class="" > 
+                <aura:if isTrue="{!v.showMotoInspection}"> 
+                    <c:mOTO_VehicleFormsHome />
+                </aura:if>
+            </lightning:tab>
+        </aura:if>
+    </lightning:tabset>
+</aura:component>

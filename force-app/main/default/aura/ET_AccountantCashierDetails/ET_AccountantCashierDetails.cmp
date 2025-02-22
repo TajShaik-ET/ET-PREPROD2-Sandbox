@@ -1,0 +1,210 @@
+<aura:component controller="ET_WorkforceController">
+    <!-- Aura Attributes -->
+    <aura:attribute name="isDisabled" type="boolean" default="false"/>
+    <aura:attribute name="displaySpecialRequirements" type="boolean" default="false"/>
+    <aura:attribute name="workForceRecord" type="ET_Work_force__c" default="{'sObjectType':'ET_Work_force__c'}"/>
+    <aura:attribute name="lineNumber" type="Integer"  />
+    <aura:attribute name="serviceTypes" type="String[]" />
+    <aura:attribute name="accountantCategory" type="String[]" /> 
+    <aura:attribute name="specRequirement" type="String[]" /> 
+    <aura:attribute name="picklistFields" type="List" default="ET_Contract_Type__c,ET_Service_Emirate__c,ET_Pricing_Method__c,ET_Contract_Period__c,ET_Pricing_Type__c,ET_Accountant_Category__c,ET_Special_requirements__c"/>
+    <aura:attribute name="workingDaysPerWeek" type="List" default="1,2,3,4,5,6,7"/>
+    <aura:attribute name="workingMonthsPerYear" type="List" default="1,2,3,4,5,6,7,8,9,10,11,12"/>
+    <aura:attribute name="multipleList" type="List"  />
+    <aura:attribute name="contractPeriods" type="List"/>
+    <aura:attribute name="serviceEmirates" type="String[]"/>
+    <aura:attribute name="pricingMethods" type="String[]"/>
+    <aura:attribute name="pricingTypes" type="String[]"/>
+    <aura:attribute name="contractValue" type="List" />
+    <aura:attribute name="disablePriceUtilization" type="Boolean" default="false"/>
+    <aura:attribute name="contractTypes" type="String[]"/>
+    <aura:attribute name="commonFieldsAuraIdMap" type="Map" default="{'ET_Contract_Type__c' : 'contractType','multipleContract':'Contract_CheckboxGrp', 'ET_Service_Emirate__c': 'serviceEmirate', 'ET_Pricing_Method__c': 'pricingMethod', 'ET_Pricing_Type__c' : 'pricingType',  'ET_Working_Days_Per_Week__c' : 'daysPerWeek', 'ET_Working_Months_Per_Year__c' : 'monthsPerWeek'}" />
+    <aura:attribute name="specialTabRequirementData" type="ET_Special_Workforce_Requirement__c" default="{'sObjectType':'ET_Specific_Workforce_Requirement__c'}"/>
+    <aura:attribute name="pricingMethodAndDependentTypeMap" type="Map"/>
+    <aura:attribute name="existingAccountantOtherCosts" type="List"/>
+    <aura:attribute name="existingAccountantSpecialData" type="ET_Special_Workforce_Requirement__c"/>
+    
+    <aura:attribute name="editableFieldsByPricingTeam" type="Object" />
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    
+    <aura:attribute name="accountantCashierMasterDataMap" type="Map"/>
+    <aura:attribute name="accountantCashierSalaryDetailMap" type="Map"/>
+    <aura:attribute name="isSalaryDetailSet" type="boolean" default="false"/>
+    <aura:attribute name="quoteId" type="String"/>
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    
+    <aura:method  name="prePopulateLineItemData" action="{!c.setAlreadyStoredData}">
+        <aura:attribute name="manpowerDataToBeSet" type="ET_Work_force__c" />
+    </aura:method>
+    
+    <aura:method  name="setVisibilityForCommonFieldsForLineItem" action="{!c.setFieldVisibility}">
+        <aura:attribute name="multipleFieldList" type="List"  />
+    </aura:method>
+    
+    <!-- Alter Rate Start -->
+    <aura:attribute name="showAlterRates" type="Boolean" default="false" />
+    <aura:attribute name="alterRatesObj" type="Object" />
+    <aura:method name="alterRatesMethod" action="{!c.doAlterRates}" access="public">
+        <aura:attribute name="alterRatesObj1" type="Object" />
+	</aura:method>
+    <aura:if isTrue="{!v.showAlterRates}">
+        <c:ET_AlterQuoteRates aura:id ="alterRates" showAlterRates="{!v.showAlterRates}" alterRatesObj="{!v.alterRatesObj}" serviceName="Accountant/Cashier" Line="{!v.lineNumber}"/>
+    </aura:if>
+    <!--ALter Rate End -->
+    
+    <aura:registerEvent name="refreshEvent" type="c:ET_doNotAllowChildRefresh"/>
+    <aura:handler name="refreshEvent" event="c:ET_doNotAllowChildRefresh" action="{!c.doRefresh}" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{! not(v.loaded) }">
+        <lightning:spinner alternativeText="Loading" variant="brand" />
+    </aura:if>
+    
+    <c:ET_CollapsibleSection aura:id ="collapsibleCmp" title="{! 'Accountant/Cashier ' + v.lineNumber }" 
+                             lineItemNumber="{!v.lineNumber}"
+                             isPricingTeam = "{!v.isPricingTeam}">
+        <aura:if isTrue="{!not(empty(v.quoteId))}">
+            <p class="text_right"><lightning:button label="Alter Rates" class="btnsave" onclick="{!c.showAlterRates}"/></p> 
+        </aura:if>
+        <div class="slds-grid slds-wrap slds-hide" aura:id="multipleContract">
+            <br/>
+            
+            <!--<div>
+            <label class="slds-form-element__label contractLabelcls" ><b>Contract:</b></label>
+        </div> -->
+            <lightning:checkboxGroup name="Contract:"
+                                     label="Contract Years:"
+                                     aura:id="Contract_CheckboxGrp"
+                                     options="{! v.contractPeriods }"
+                                     value="{! v.contractValue }"
+                                     required="true"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.contractValue, v.isPricingTeam)}"/>
+            
+            <br/>
+        </div>
+        <div class="slds-grid slds-wrap slds-grid--pull-padded">
+            
+            <div class="slds-col--padded slds-size--3-of-12 slds-hide" aura:Id="ET_Contract_Type__c">
+                <lightning:select aura:id="contractType" name="Contract Type" label="Contract Type"
+                                  required="true" value="{!v.workForceRecord.ET_Contract_Type__c}" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Contract_Type__c, v.isPricingTeam)}">
+                    <!-- disabled="{! !v.disableFields.ET_Contract_Type__c}"-->
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.contractTypes}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            <div class="slds-col--padded slds-size--3-of-12 slds-hide" aura:Id="ET_Service_Emirate__c">
+                <lightning:select aura:id="serviceEmirate" name="Service Emirate" label="Service Emirate" required="true"
+                                  value="{!v.workForceRecord.ET_Service_Emirate__c}"  
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Service_Emirate__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.serviceEmirates}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            
+            <div class="slds-col--padded slds-size--3-of-12 slds-hide" aura:Id="ET_Working_Days_Per_Week__c" >
+                <lightning:select aura:id="daysPerWeek" name="Working Days per Week" label="Working Days per Week"
+                                  value="{!v.workForceRecord.ET_Working_Days_Per_Week__c}" required="true"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Working_Days_Per_Week__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.workingDaysPerWeek}" var="item">
+                        <option value="{!item}">{!item}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            <div class="slds-col--padded slds-size--3-of-12 slds-hide" aura:Id="ET_Working_Months_Per_Year__c" >
+                <lightning:select aura:id="monthsPerWeek" name="Working Months per Year" label="Working Months per Year" 
+                                  value="{!v.workForceRecord.ET_Working_Months_Per_Year__c}"   required="true"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Working_Months_Per_Year__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.workingMonthsPerYear}" var="item">
+                        <option value="{!item}">{!item}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            
+            <div class="slds-col--padded slds-size--3-of-12 slds-hide" aura:Id="ET_Pricing_Method__c">
+                <lightning:select aura:id="pricingMethod" name="Pricing Method" label="Pricing Method" required="true"
+                                  value="{!v.workForceRecord.ET_Pricing_Method__c}" 
+                                  onchange="{!c.handleChangeInPriceMethod}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Pricing_Method__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.pricingMethods}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            
+            <div class="slds-col--padded slds-size--3-of-12 slds-hide" aura:Id="ET_Pricing_Type__c">
+                <lightning:select aura:id="pricingType" name="Pricing Type" label="Pricing Type" required="true"   
+                                  value="{!v.workForceRecord.ET_Pricing_Type__c}" 
+                                  onchange="{!c.handleChangeInPriceType}" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Pricing_Type__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.pricingTypes}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                    
+                </lightning:select>
+            </div>
+            <div class="slds-col--padded slds-size--3-of-12 slds-hide" aura:id="ET_Pricing_Utilization__c" >
+                <lightning:input type="Number" name="Price Utilization" label="Price Utilization" disabled="{!v.disablePriceUtilization}" aura:id="ET_Price_Utilization__c" required="false" value="{!v.workForceRecord.ET_Price_Utilization__c}" min="1" messageWhenRangeUnderflow="please enter a positive value"/>
+            </div>
+            
+        </div>
+        
+        <!--Accountant Fields-->
+        <div class="slds-grid slds-wrap slds-grid--pull-padded">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select  name="Service Type" label="Service Type" required="true" aura:id="ET_Service_Type__c" 
+                                  value="{!v.workForceRecord.ET_Service_Type__c}" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Service_Type__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.serviceTypes}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input aura:id="NumberOfCashier" type="Number" name="Number Of Accountant/Cashier"
+                                 label="Number Of Accountant/Cashier" required="true" value="{!v.workForceRecord.ET_Number_of_Accountants__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Number_of_Accountants__c, v.isPricingTeam)}"/>
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select aura:id="cashierCategory" name="Accountant/Cashier Category" label="Accountant/Cashier Category" required="true"
+                                  value="{!v.workForceRecord.ET_Accountant_Category__c}" onchange="{!c.loadSpecialRequirementDetails}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Accountant_Category__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.accountantCategory}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            
+        </div>
+
+        <aura:if isTrue="{!(v.displaySpecialRequirements)}">
+            <c:ET_CommonWorkforceDetails  commonWorkForceRecord="{!v.specialTabRequirementData}" aura:id="accountantSpecialRequirements"
+                                         workforceSalaryDetailMap="{!v.accountantCashierSalaryDetailMap}"
+                                         editableFieldsByPricingTeam ="{!v.editableFieldsByPricingTeam}"
+                                         isPricingTeam = "{!v.isPricingTeam}"/>
+            <div aura:id="OtherCostDiv">
+                {!v.body}
+            </div>  
+            <br/>
+            <div style="text-align: center;">
+                <lightning:button  variant="brand" label="Add Other Cost" title="Add Other Cost" 
+                                  onclick="{! c.handleAddOtherCostMore }" 
+                                  disabled="{! v.isPricingTeam}"/>&nbsp;
+            </div>
+        </aura:if>          
+    </c:ET_CollapsibleSection>
+</aura:component>

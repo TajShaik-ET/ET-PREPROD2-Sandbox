@@ -1,0 +1,167 @@
+<aura:component controller="ETIN_SendEmailToPartnerWithDocsCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" >
+	
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+       <!-- Data table attributes -->
+    <aura:attribute name="Insurancedata" type="Object" />
+    <aura:attribute name="InsuranceColumns" type="List" />
+    <aura:attribute name="locationVal" type="string" default=""/>
+    <aura:attribute name="showPopup" type="boolean" default="false" />
+    <aura:attribute name="emailVal" type="string"/>
+    <aura:attribute name="subject" type="string"/>
+    <aura:attribute name="body" type="string"/>
+    <aura:attribute name="SelectedRecordlist" type="list" />
+     <aura:attribute name="selectedRows" type="list" />
+    <aura:attribute name="ServerEmailVal" type="string"/>
+    <aura:attribute name="showSpinner" type="boolean" default="false" />
+    <aura:attribute name="showSpinner2" type="boolean" default="false" /> 
+    
+    <aura:attribute name="ContentDocData" type="Object" />
+    <aura:attribute name="ContentDocDataColumns" type="List" />
+    <aura:attribute name="SelectedDocList" type="Object" /> 
+     <aura:attribute name="csvResultString" type="string"/>
+    
+    <aura:attribute name="finalFileList" type="string[]"/>
+     <aura:attribute name="fileToBeUploaded" type="Object[]"/>
+     <aura:attribute name="ApifieldsString" type="string"/>
+     <aura:attribute name="HeaderLabels" type="string"/>
+    
+    <aura:attribute name="sortedBy" type="String" default="Name"/>
+    <aura:attribute name="sortedDirection" type="string" default="asc" />
+    
+    <!--Added by Arunsarathy on 14.12.2022-->
+    <aura:attribute name="userDetails" type="User"/>
+   
+    
+    
+    <div class="bordertab">
+        
+       <div style="margin-left:10px" class="outer-div"> 
+           <aura:if isTrue="{!v.showSpinner2}">
+               <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2 spins2" alternativeText="Loading" />
+           </aura:if>
+        <!--label class="slds-form-element__label" style="font-size: 17px;margin-bottom: 16px;">Search Criteria</label-->
+        <div class="slds-form-element__control">
+            <div class="slds-form-element__row">
+               <div class="slds-grid">
+                <!--div class="slds-col slds-size_1-of-4">
+                    <div class="slds-form-element">
+                        
+                        <lightning:select name="location" label="Select Location" aura:id="LocationId" onchange="{!c.onChange}">
+                            <option value="Abu Dhabi">Abu Dhabi</option>
+                            <option value="Dubai">Dubai</option>
+                            
+                        </lightning:select>
+                    </div>
+                </div-->
+                
+                
+                <div class="slds-col" style="margin-top:10px;margin-right:10px;">
+                    <div class="slds-form-element">
+                        <lightning:button label="Send Email" class="slds-button_brand btnright btn_table" onclick="{!c.openModel}" ></lightning:button>
+                    </div>
+                </div>
+                </div>
+            </div>
+          </div>            
+        </div> <br/>
+        
+         <aura:if isTrue="{!!not(empty(v.Insurancedata))}">
+            <div id="no-records" style="margin-top: 3%;padding-bottom: 36px;font-size: 13px;" class="slds-align_absolute-center"> No reccords to display</div>
+        </aura:if>
+        <aura:if isTrue="{!not(empty(v.Insurancedata))}">
+            <ui:scrollerWrapper class="sWrapTest">
+                <lightning:datatable data="{!v.Insurancedata}" keyField="id" columns="{!v.InsuranceColumns }" 
+                                     onrowselection="{!c.getSelectedRows }"
+                                     onsort="{!c.sortColumn}"
+                                     sortedBy="{!v.sortedBy}"
+                                     resizeColumnDisabled="true"
+                                     showRowNumberColumn="true"
+                                     selectedRows="{!v.selectedRows}"
+                                     sortedDirection="{!v.sortedDirection}"
+                                     ></lightning:datatable>
+                
+            </ui:scrollerWrapper>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.showPopup}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+          
+            <div class="slds-modal__container ">
+                
+               
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closePopup}"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Send Email</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium outer-div" id="modal-content-id-1">
+                  <aura:if isTrue="{!v.showSpinner}">
+                    <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2 spins" alternativeText="Loading" />
+                  </aura:if>
+                    <div class="slds-m-around--medium">
+                        <div class="slds-container--medium">
+                            <div class="slds-form--stacked">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="CC">To</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:inputText class="slds-input" aura:id="email"  value="{!v.emailVal}" required="true" placeholder="abc@email.com"/>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="CC">Subject</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:inputText class="slds-input" aura:id="subject"  value="{!v.subject}" placeholder="Subject"/>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="textareaSample2">Mail Body</label>
+                                    <div class="slds-form-element__control">
+                                        <lightning:inputRichText aura:id="body" value="{!v.body}" />
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="slds-form-element">
+                                    
+                                  <label class="slds-form-element__label" for="">Choose files from Library to be added to this email</label>   
+                                    <lightning:datatable data="{!v.ContentDocData}" keyField="id" columns="{!v.ContentDocDataColumns }" onrowselection="{!c.getSelectedDocs}"></lightning:datatable>
+                                    
+                                    <aura:if isTrue="{!!not(empty(v.ContentDocData))}">
+                                        <div id="no-records" style="margin-top: 3%;font-size: 13px;" class="slds-align_absolute-center"> No files to display</div>
+                                    </aura:if>  
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input aura:id="file-input" type="file"
+                                                     files="{!v.fileToBeUploaded}"
+                                                     onchange="{!c.onFileUploaded}"
+                                                     label="Attachment"
+                                                     name="file" multiple="false"/>
+                                    
+                                    <aura:iteration items="{!v.finalFileList}" var="text"  indexVar="index">
+                                       <p>{!text.name} <a href="javascript:void(0)" data-filename="{!text.name}" data-index="{!index}" onclick="{!c.removeFile}">Delete</a>   </p>                               
+                                    </aura:iteration>
+                                    
+                                </div>
+                              
+                                <div class="slds-form-element">    
+                                    <button class="slds-button slds-button--brand" onclick="{!c.sendMail}"  disabled="{!v.showSpinner}" >Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </section>
+         <div class="slds-backdrop slds-backdrop_open"></div>
+         </aura:if>                   
+                         
+    </div>
+    
+    
+</aura:component>

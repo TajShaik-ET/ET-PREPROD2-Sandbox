@@ -1,0 +1,22 @@
+.THIS.mainDiv{
+    overflow-y: auto;
+    height: 400px;
+}
+
+.THIS .name label{
+    font-size: 13px;
+}
+
+.THIS .leftLabel{
+    width: 300px;
+}
+.THIS .rightInput lightning-input{
+    width: 350px;
+}
+.THIS .rightInput lightning-input label{
+    display: none;
+}
+.THIS .button-container {
+    display: flex; /* Make the buttons inline */
+    gap: 16px; /* Remove space between the buttons */
+}

@@ -1,0 +1,14 @@
+.THIS .inverse-background {
+    background-color: #16325c;
+    padding: 12px;
+    width: 424px;
+  }
+  .THIS.bgImageDiv{
+    background-image: url('https://etservices--community--c.visualforce.com/resource/1583318889000/ETSTBgLogo');
+    background-repeat: no-repeat;   
+}
+.THIS.detailsCss{
+  padding-left: 150px;
+  padding-right: 150px;
+  padding-top: 20px;
+}

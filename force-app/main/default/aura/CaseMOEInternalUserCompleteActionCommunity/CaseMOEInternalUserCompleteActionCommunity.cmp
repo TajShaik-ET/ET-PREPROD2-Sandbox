@@ -1,0 +1,55 @@
+<aura:component implements="force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global"
+                controller="ET_BusinessCommunityController">
+    <aura:attribute name="caseComments" type="string" default="" />
+    <lightning:workspaceAPI aura:id="workspace"/>
+    <aura:attribute name="confirmFlag" type="boolean" default="false" />
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:attribute name="spinner" type="boolean" default="false" />
+    <aura:attribute name="comments" type="string" />
+    <aura:attribute name="caseRecord" type="case" /> 
+    <aura:attribute name="status" type="String" default=""/>
+    <aura:attribute name="recentApprover" type="String" default=""/>
+    <aura:attribute name="currentApprover" type="String" default=""/>
+    <aura:attribute name="currentrecType" type="String" default=""/>
+    <aura:attribute name="ccmRemarks" type="String" access="public"/>
+    <aura:attribute name="Solution" type="String" access="public"/>
+    <aura:attribute name="caseIds" type="List"/> 
+    <aura:attribute name="isDisabled" type="boolean" default="false" />
+    <aura:attribute name="driverName" type="string" default="" />
+    <aura:attribute name="driverNumber" type="string" default="" />
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:if isTrue="{!v.confirmFlag}" >
+        <header class="slds-modal__header">
+           <!-- <lightning:buttonIcon iconName="utility:close"
+                                  onclick="{! c.closeConfirmModal }"
+                                  alternativeText="close"
+                                  variant="bare-inverse"
+                                  class="slds-modal__close"/> -->
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                Case Approval Process</h2>
+            
+        </header>
+        <div class="slds-modal__content slds-p-around_medium bgImageDiv"  id="modal-content-id-1">
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate text-align:center">
+                Do you want to Close the case?</h2>
+            <div class="slds-grid slds-gutters">               
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning:input type="text" aura:id="driverName" name="Driver Name" messageWhenPatternMismatch="Please use only letters" pattern="[a-zA-Z\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF*/\s*]*" messageWhenValueMissing="Complete this field." style="text-align:center" label="Driver Name" required="true" value="{!v.driverName}" autocomplete="off"/>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning:input type="text" aura:id="driverNumber" name="Driver Number" pattern="([+971]{4}|[971]{3}|[00971]{5})[0-9]{9}" messageWhenValueMissing="Complete this field." style="text-align:center" label="Driver Number" messageWhenPatternMismatch="Please Enter Mobile Number in the format +971XXXXXXXXX or 971XXXXXXXXX" required="true" value="{!v.driverNumber}" autocomplete="off"/>
+                </div>
+            </div>
+           <!-- <lightning:textarea aura:id="comment" name="input3" messageWhenValueMissing="Complete this field." style="text-align:center" label="CCM Remarks" required="true" value="{!v.ccmRemarks}"/>
+            <lightning:textarea aura:id="comment1" name="input3" messageWhenValueMissing="Complete this field." style="text-align:center" label="Solution" required="true" value="{!v.Solution}"/>
+            -->
+           <lightning:textarea name="comments" style="text-align:center" label="Comments" value="{!v.comments}" aura:id="caseComments" required="true" messageWhenValueMissing="You must write a comment's before closing the case !" autocomplete="off"/>
+           
+
+        </div>
+        <div class="slds-float_right">
+            <lightning:button  class="slds-button slds-button-brand" disabled="{!v.isDisabled}" variant="neutral" label="Save" onclick="{!c.saveRecord}" />
+        </div>
+    </aura:if>
+</aura:component>

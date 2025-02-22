@@ -1,0 +1,23 @@
+.THIS .serviceReqHeader{
+    text-transform: uppercase; 
+    padding: 16px 30px;
+    background: #fff;
+    border: 1px solid rgb(217, 219, 221);
+    border-bottom: none; 
+    border-radius:10px 10px 0 0;
+}
+.THIS .serviceReqHeader b{
+    font-size:13px;
+    color:#00C299;
+}
+.THIS .slds-grid.slds-wrap.slds-grid--pull-padded.slds-box{
+    border-radius:0 0 10px 10px !important;
+    background: #fff;
+    padding: 30px;
+}
+.THIS .serviceReqHeader label{
+    padding: 0;
+}
+.THIS .serviceReqValue .slds-checkbox__label{
+    cursor: pointer;
+}

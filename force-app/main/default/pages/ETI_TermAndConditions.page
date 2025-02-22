@@ -1,0 +1,48 @@
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" 
+           standardStylesheets="false" applyHtmlTag="false" renderAs="pdf" controller="ETI_TermAndConditions_Ctrl">
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ETST_Invoice,'css/invoice.css')}"/>
+    
+    
+    <div class="container bottom_pad">
+        <div class="row log_div">
+            <div class="col-sm-6 col-xs-12">
+                <apex:image style="height: 100px;"
+                            url="{!URLFOR($Resource.ETST_Invoice, 'images/logo.png')}"/>
+                
+            </div> 
+            
+            <div class="row address">
+                <div class="col-sm-12 col-xs-12 text-left">
+                    
+                </div>
+            </div>
+            <header>
+                <center>
+                    <h2>Terms and Conditions</h2>
+                </center>
+            </header>
+            <section>
+                <article>
+                    <ul>
+                        <apex:repeat value="{!termsAndConditionsList}" var="term">
+                         <li><a href="#">{!term.ET_Condition__c}</a></li>
+                        </apex:repeat>
+                        <!--li><a href="#">{!termsAndConditions.Line_1__c}</a></li>
+                        <li><a href="#">{!termsAndConditions.Line_2__c}</a></li>
+                        <apex:outputPanel rendered="{!termsAndConditions.Line_3__c != ''}" >
+                            <li><a href="#">{!termsAndConditions.Line_3__c}</a></li>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!termsAndConditions.Line_4__c != ''}" >
+                            <li><a href="#">{!termsAndConditions.Line_4__c}</a></li>
+                        </apex:outputPanel-->
+                    </ul></article>
+            </section>
+            <footer>
+                <center>
+                    <p>Terms and Conditions</p>
+                </center>
+            </footer>
+        </div>
+    </div>
+</apex:page>

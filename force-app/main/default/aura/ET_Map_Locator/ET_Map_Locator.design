@@ -1,0 +1,5 @@
+<design:component>
+    <design:attribute name="PlateNo" label="Plate No" description="Please enter plate no" />
+    <design:attribute name="showAll" label="Show All" description="show all vehicles for contract" />
+    <design:attribute name="showETLocations" label="Show ET Location" description="showET Location" />
+</design:component>

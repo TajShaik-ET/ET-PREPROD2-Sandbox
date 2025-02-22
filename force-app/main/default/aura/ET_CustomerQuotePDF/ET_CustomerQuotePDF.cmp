@@ -1,0 +1,60 @@
+<aura:component  controller="ET_QuotesPdfCtlr" implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <aura:attribute name="showPdfPage" type="Boolean" default="False"/>
+    <aura:attribute name="disabled" type="Boolean" default="False"/> 
+    <aura:attribute name="vfUrl" type="String"/> 
+    <aura:attribute name="stages" type="String[]" default="Any,Open,Closed,Closed Won"/>
+    <aura:handler name="init" value="{!this}" action="c.doInit" />
+    
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .slds-modal__container{
+        max-width: 60rem !important;
+        width:60% !important;
+        
+        }
+    </aura:html>
+        
+    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center" style="position: relative;display: block;text-align: center;margin: 0.2rem;">Quote Preview</h2>   
+    <div class="">
+        <!-- Open Pdf Page -->
+        <aura:if isTrue="{!v.showPdfPage}">
+            <div class="slds-form-element__control outer-div" style="height:375;">
+                
+                <aura:if isTrue="{!v.disabled}">
+                    <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
+                </aura:if>
+                <div style="padding:10px;">
+                    <iframe aura:id="pdfIframe" src="{!v.vfUrl}" width="100%" height="500px" frameBorder="0"/>
+                </div>
+                
+            </div>
+        </aura:if> 
+    </div>
+    
+    <div class="slds-m-top_medium slds-float--right" style="position: sticky;display: block;text-align: right;width: 100%;background: #fff;margin-top: -6px;padding: 1rem;border-radius: 5px;bottom:0%;">
+        <aura:if isTrue="{!v.showPdfPage}">
+            <div class="button-container slds-float_right">
+            <lightning:button variant="brand" 
+                              label="Save"
+                              title="Save"
+                              onclick="{!c.handleSave}" disabled="{!v.disabled}"/>
+            <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>
+            
+            <lightning:button variant="brand" 
+                              label="Cancel"
+                              title="Cancel"
+                              onclick="{!c.handleCancel}" disabled="{!v.disabled}"/>
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

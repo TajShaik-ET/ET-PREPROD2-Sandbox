@@ -1,0 +1,540 @@
+.THIS .item{
+    width: 31%;
+    display: inline-block;
+    margin: 1%;
+}
+.THIS.mainLayout{
+    padding:0px!important;
+    margin: auto -10px;
+}
+.THIS .CarLogo{
+    width:100%;
+    /*padding: 15% 10% 5% 10%;*/
+    transition: all 600ms;
+}
+.THIS .textcontenthead{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background: rgb(0 0 0 / 0.56);
+    position: absolute;
+    color: #fff;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    text-transform: uppercase;
+    font-weight: normal!important;
+}
+.THIS .CarLabel{ 
+    font-size:16px;letter-spacing: .5px;cursor: pointer;
+}
+.THIS .slds-p-around_small{
+    width:25%;
+    order:1;
+    -webkit-order: 1;    
+}
+.THIS .latestupdates , .THIS .quicklinks{
+    margin-bottom: 20px;
+    height: auto;
+    overflow: auto;
+    border-radius: 5px;
+    animation: 1s ease-out 0s 1 slideInFromLeft;
+}
+
+.THIS .latestupdates p , .THIS .quicklinks p{
+    border: 1px solid #e5e9f2;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    background: #f5f6fa;
+    color: rgb(142, 107, 26);
+    text-transform: uppercase;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    position: relative;
+}
+.THIS .latestupdates p:before , .THIS .quicklinks p:before{
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 40px;
+    border-bottom: 2px solid #606da6;
+}
+.THIS .latestupdates ul , .THIS .quicklinks ul{
+    position: relative;
+    display: block;
+}
+.THIS .latestupdates ul li, .THIS .quicklinks ul li{
+    padding: 10px;
+}
+.THIS .latestupdates ul li a, .THIS .quicklinks ul li a{
+    position: relative;
+    color: #555;
+    display: block;
+    transition: 0.5s ease;
+}
+.THIS .latestupdates ul li:hover, .THIS .quicklinks ul li:hover{    
+    background: #ddd;
+}
+.THIS .latestupdates ul li:hover a, .THIS .quicklinks ul li:hover a{    
+    margin-left:10px;
+    transition: 0.5s ease;
+    text-decoration: none;
+    font-weight: bold;
+}
+.THIS.servicesdiv{
+    width: 100%;
+    padding: 5%;
+    border: none;
+    padding: 0px;
+    order:2;
+    -webkit-order: 2;
+    /*height:400px;*/
+    min-height: 85.3vh;
+    height: 100%;
+}
+.THIS.servicesdiv .slds-box {
+    border: none;
+    padding: 0rem;
+}
+.THIS .servicelist .slds-select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    padding-left: .5rem;
+    padding-right: 1.5rem;
+    box-shadow: none;
+    /*border: 1px solid #E0E0E0;*/
+    color: #FFF;
+    background:#8e6b1a;
+}
+.THIS .serviceheaddiv{
+    Margin-bottom:5px;
+    display: block;
+    position: relative;
+    clear: both;
+    color: #000;
+}
+.THIS .servicelist{
+    display: inline-block;
+    float: right;width: 150px; 
+}
+.THIS .slds-form-element__label{
+    display: block;
+}
+.THIS .servicecontent{
+    text-align: center;
+    margin: 1% 0%;
+    
+}
+.THIS .servicecontent .serviceitem{
+    width: 50%;
+    Display:none;
+    margin: 1% 2% 2% 0;
+    float: left;
+    text-align: center;
+    background: rgba(250, 250, 250, 0.4);
+    border: 1px solid #e5e9f2;cursor: pointer;
+    /* box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    */border-radius: 5px;
+    animation: 0.5s ease-out 0s 1 slideInFromright;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.THIS .serviceitem{
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+.THIS .serviceitem:hover .CarLogo{
+    transform: scale(1.1);
+    transition: all 600ms;
+}
+/*.THIS .serviceitem:hover{
+background:#f5f6fa;
+-webkit-box-shadow: 0 8px 6px -6px #ccc;
+-moz-box-shadow: 0 8px 6px -6px #ccc;
+box-shadow: 0 8px 6px -6px #ccc;
+}*/
+.THIS .serviceitem:hover .CarLabel{
+    text-decoration: underline;cursor: pointer;
+}
+.THIS .lefttabimg{
+    max-width: 100%;
+    border: 1px solid #e5e9f2;
+    width: 100%;
+    display: block;
+    border-radius: 5px;
+    height: auto;
+}
+
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+@keyframes slideInFromright {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+.THIS .notoppad{
+    padding-top:0px!important;
+}
+.THIS .rightarrow{
+    color:#ff4b5a;
+    font-size:18px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+.THIS .slds-modal__header{
+    background-color: #fafafa;
+    border-bottom: none;
+    border-bottom: 1px solid #f2f2f2;
+    padding:1rem;
+}
+.THIS .slds-modal__content {
+    overflow-y: auto;
+    background: #fafafa;
+}
+.THIS .slds-modal__header h2{
+    color:#333;
+    text-align: center;
+    font-size: 26px;
+}
+.THIS .slds-modal__footer{
+    background-color: #fafafa;
+    border-top: 1px solid #f2f2f2;
+    padding:1rem;
+}
+.THIS .locationpopup{
+    color: #555;
+    font-size: 16px;
+}
+.THIS .btn_table {
+    font-size: 14px;
+    margin-top: 0px;
+    border: 0px solid #00c19e;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    line-height: 30px!important;
+    background-color: #ff4b5a;
+    border-radius: 0px;
+    color: #fff;
+    line-height: 1.2;
+    text-decoration: none;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    float: right;
+}
+.THIS .btn_table:hover{
+    background-color: #333333;
+}
+.THIS .locationbox select{
+    width: 100%;
+    height: 38px;
+    margin: 0;
+    padding: 0 .5rem 0 .5rem;
+    vertical-align: middle;
+    background: transparent!important;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 0px;
+    box-shadow: none!important;
+    transition: all .3s;
+}
+.THIS .locationbox .slds-select_container:after {
+    border-top: 5px solid #888;
+    bottom: calc((1.75rem / 2) - -1px);
+}
+.THIS .locationbox .slds-select_container:before {
+    display:none;
+}
+.THIS .locationbox .slds-form-element__label {
+    visibility: hidden;
+}
+.THIS .serviceheaddiv{
+    /*border-bottom: 1px solid #ddd;*/
+    Margin-bottom:5px;
+    display: block;
+    position: relative;
+    clear: both;
+    color: #000;
+    text-align: center;
+    padding-top: 4rem;
+}
+.THIS .EtStLogo{
+    width:150px; 
+}
+.THIS .serheading{
+    font-size: 72px;
+    font-weight: bold;
+    display: block;
+    position: relative;
+    padding: 0rem 0rem 3rem;
+    width: 100%;
+    text-align: center;
+    color:#fff;
+}
+
+.THIS .menudiv{
+    width: 25%;
+    float: right;
+}
+.THIS .dashboardmain{
+    position: relative;
+    display: block;
+    clear: both;
+    margin: 3rem 0rem 2rem;
+    width: 100%;
+    float: left;
+}
+.THIS .dashboardmain .businessdiv , .THIS .dashboardmain .casesdiv{
+    background: rgb(0 0 0 / 12%);
+    padding: 1rem .7rem 1rem 1rem;
+    width: 49%;
+    display: inline-block;
+    margin: 1% .5%;
+}
+.THIS .dashboardmain .businessdiv .heading, .THIS .dashboardmain .casesdiv .heading{
+    font-size: 18px;
+    color: rgb(255 255 255 / 0.6);
+    font-weight: 500;
+    display:block;
+    padding-bottom: .5rem;
+}
+.THIS .innerdivmain{
+    display:block;
+}
+.THIS .innerdivmain div{
+    display: inline-block;
+    width: 24%;
+    position: relative;
+    float: left;
+    margin: 1% 1% 1% 0%;
+    height: 150px;
+    line-height: 100px;
+    text-align: center;
+    background: hsl(0 0% 0% / 0.1);
+    font-size: 34px;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    /*white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;*/
+}
+.THIS .innerheading{
+    position: absolute;
+    font-size: 12px;
+    bottom: 0;
+    line-height: 14px;
+    left: 0;
+    color: rgb(255 255 255 / 0.8);
+    background: rgb(0 0 0 / 27%);
+    padding: .5rem .1rem;
+    height: 46px;
+    overflow: hidden;
+    width: 100%;
+}
+.THIS .servicesdiv {
+    width: 100%;
+    margin: .5%;
+    padding: 0;
+    text-align: center;
+    transition: all .5s;
+    border-right: 1px solid #f2f2f2;
+    background: transparent;
+    border: none;
+}
+.THIS .servicesdiv a {
+    color: #fff;
+}
+.THIS .servicesdiv a img {
+    filter: invert(1);
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .servicelist{
+        width: 135px; 
+    }
+    .THIS .CarLabel {
+        font-size: 14px;
+    }
+    .THIS .menudiv {
+        width: 40%;
+        float: right;
+    }
+}
+@media only screen and (max-width: 992px){
+    .THIS .menudiv {
+        width: 50%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .servicecontent .serviceitem {
+        width: 48%;
+        margin: 1% 2% 2% 0%;
+        float: left;
+        text-align: center;
+        background: #f2f2f2;
+        border: 1px solid #dedede;
+    }
+    .THIS .slds-p-around_small {
+        width: 40%;
+    }
+    .THIS.servicesdiv {
+        width: 100%;
+    }
+    .THIS .servicelist{
+        width: 150px; 
+    }
+    .THIS.servicesdiv .slds-box .serheading {
+        font-size: 18px;
+    }
+    .THIS .CarLabel {
+        font-size: 18px;
+    }
+    .THIS .item {
+        width: 98%;
+        display: inline-block;
+        margin: 1% 1% 4%;
+    }
+    .THIS .serviceitem{
+        margin-bottom:0px;
+    }
+    .THIS.servicesdiv .slds-box .serheading {
+        font-size: 22px;
+        padding: .7rem 0 2rem;
+        clear: both;
+        text-align: left;
+    }
+    .THIS.servicesdiv .slds-box .serheading .gbheading{
+        text-align: left;
+        font-size: 24px;
+    }
+    .THIS .EtStLogo {
+        float: right;
+    }
+    .THIS.servicesdiv .slds-box .serheading .gbsubheading{
+        display: block;
+        font-size: 44px;
+        text-align: left;
+    }
+    .THIS .menudiv {
+        width: 50%;
+    }
+    .THIS .dashboardmain .businessdiv, .THIS .dashboardmain .casesdiv {
+        width: 100%;
+        display: inline-block;
+        margin: 1% 0%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS.slds-grid{
+        display:block!important; 
+    }
+    .THIS.servicesdiv {
+        width: 100%!important;
+        border: none;
+        padding: 0;
+        float: left!important;
+        display: block;
+        position: relative;
+        order:1!important;
+        -webkit-order: 1!important;
+    }
+    .THIS .slds-p-around_small{
+        width: 100%;
+        float: left;
+        display: block;
+        position: relative;
+        float: left;
+        order:2!important;
+        -webkit-order: 2!important;
+    }
+    .THIS .quicklinks , .THIS .latestupdates {
+        height: auto;
+    }
+    .THIS.servicesdiv .slds-box .serheading {
+        font-size: 20px;
+    }
+    .THIS .CarLogo {
+        width: 100%;
+    }
+    .THIS .CarLabel {
+        font-size: 14px;
+    }
+    .THIS .mainlocationdiv .slds-grid{
+        display:block;
+    }
+    .THIS .mainlocationdiv .slds-grid .slds-size_1-of-2{
+        width:100%;
+    }
+    .THIS .item {
+        width: 48%;
+        display: inline-block;
+        margin: 1% 1% 4%;
+    }
+    .THIS.servicesdiv .slds-box .serheading .gbheading{
+        text-align: left;
+        font-size: 18px;
+    }
+    .THIS.servicesdiv .slds-box .serheading .gbsubheading{
+        display: block;
+        font-size: 34px;
+        text-align: left;
+    }
+    .THIS .EtStLogo {
+        width: 120px;
+        float: right;
+    }
+    .THIS .serviceheaddiv {
+        text-align: left;
+        padding-top: 4rem;
+    }
+    .THIS .menudiv {
+        width: 50%;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .CarLabel {
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .THIS .CarLogo {
+        width: 100%;
+    }
+    .THIS .CarLabel {
+        font-size: 14px;
+    }
+    .THIS .item {
+        width: 100%;
+        display: inline-block;
+        margin: 1% 0% 4%;
+    }
+    .THIS .serviceheaddiv {
+        text-align: left;
+        padding-top: 1rem;
+    }
+    .THIS .innerdivmain div {
+        width: 49%;
+        font-size: 30px;
+    }
+    .THIS .menudiv {
+        width: 100%;
+    }
+}

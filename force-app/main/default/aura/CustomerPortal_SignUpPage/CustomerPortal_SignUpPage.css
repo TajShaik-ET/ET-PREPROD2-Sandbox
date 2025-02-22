@@ -1,0 +1,85 @@
+.THIS  #error {
+    text-align: center;
+    color:#FF0000;
+}
+.THIS .outer-div {
+    position: relative;
+}
+
+.THIS .spinner2 {
+   background-color: rgb(255 255 255 / 40%);
+   position: fixed;
+}
+
+.THIS .backBtn{
+    padding: 0.5rem;
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 5px;
+    top: 100%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.THIS .inputTxt{
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.THIS .inputTxtnew input{
+    padding: 5px 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.THIS .inputTxtnew label{
+    color: #000;
+}
+.THIS .sfdc_button{
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    width: 100%;
+    background-color:#000 !important;
+    margin-bottom: 1rem;
+
+}
+.THIS .errorred{
+    color: red;
+    /*background: rgb(255 255 255 / 70%);*/
+    font-size: 24px;
+    padding: 1rem;
+    border-radius: 5px 5px 0 0;
+    padding-bottom: 0rem;
+    text-align:center;
+    width:100%;
+    display:block;
+}
+.THIS .errMsg{
+    color: #000;
+    /*background: rgb(255 255 255 / 70%);*/
+    font-size: 16px;
+    padding: 1rem;
+    border-radius: 0 0 5px 5px;
+    margin-bottom: 4rem;
+    text-align: center;
+}
+.THIS .anchorTag a {    
+    color:#000;
+    font-weight:600;
+}
+.THIS .yesBtn{
+    background-color:#000 !important;
+}
+.THIS .noBtn{
+    background-color:#fff !important;
+}
+/*.THIS .notediv{
+    background: rgb(255 255 255 / 90%);
+    font-size: 20px;
+    padding: 2rem;
+    border-radius: 5px;
+}*/

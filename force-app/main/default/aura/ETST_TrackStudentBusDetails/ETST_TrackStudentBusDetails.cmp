@@ -1,0 +1,20 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                access="global" >
+    
+    <aura:attribute name="workOrderId" type="Id"/>
+    <aura:attribute name="driverList" type="Object"/>
+    <aura:attribute name="isTrackModal" type="boolean"/>
+    <aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="markersTitle" type="String" />
+    <aura:attribute name="zoomLevel" type="Integer" />
+    <!--c:ETDM_UtilityMethods aura:id="ETDM_UtilityMethods"/-->
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+     <lightning:card variant="Narrow" title="{!$Label.c.ETST_Track_Location}">
+        <lightning:map 
+          mapMarkers="{! v.mapMarkers }"
+          markersTitle="{!v.markersTitle}" 
+          zoomLevel="{!v.zoomLevel}" class="addressmap"/> 
+      </lightning:card>
+  
+</aura:component>

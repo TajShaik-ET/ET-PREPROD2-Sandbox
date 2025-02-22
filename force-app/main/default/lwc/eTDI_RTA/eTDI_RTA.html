@@ -1,0 +1,49 @@
+<template>
+    <lightning-datatable key-field="Id" data={BRRecordList} columns={columns} onrowaction={handleRowAction}
+        hide-checkbox-column="true">
+    </lightning-datatable>
+
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading" aria-modal="true"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading" class="slds-modal__title slds-hyphenate">Edit RTA Form</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeEditModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"></lightning-icon>
+                    </button>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- Receipt No -->
+                    <lightning-input label="Receipt No" data-field="Receipt_No__c" value={selectedRowData.Receipt_No__c}
+                        onchange={handleInputChange} class="inputCss"></lightning-input>
+                    <!--RTA Receipt No -->
+                    <lightning-input label="RTA Receipt No" data-field="RTA_Receipt__c" type="Text" step="0.01"
+                        onchange={handleInputChange} value={selectedRowData.RTA_Receipt__c} class="inputCss">
+                    </lightning-input>
+                    <!--Traffic File -->
+                    <lightning-input label="Traffic File" data-field="Traffic__c" value={selectedRowData.Traffic__c}
+                        onchange={handleInputChange} class="inputCss"></lightning-input>
+
+                    <lightning-input type="date" label="Schedule Date Time"
+                        value={selectedRowData.Schedule_Date_Time__c} disabled class="inputCss">
+                    </lightning-input>
+                    <lightning-input label="Trainer Name" value={selectedRowData.TrainerName} disabled
+                        class="inputCss">
+                    </lightning-input>
+
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <div class="slds-text-align_center">
+                    <lightning-button variant="destructive" label="Save" onclick={handleSave}></lightning-button>
+                    <lightning-button variant="brand-outline" class="lightBtn slds-m-left_x-small" label="Cancel" onclick={closeEditModal}></lightning-button>
+                    
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

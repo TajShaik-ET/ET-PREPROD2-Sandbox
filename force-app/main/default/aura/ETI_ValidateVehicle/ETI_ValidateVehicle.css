@@ -1,0 +1,8 @@
+.THIS .slds-modal__close{
+    display:none!important;
+}
+
+.THIS .slds-spinner_container {
+        top: 10% !important;
+        bottom: 8% !important;
+}

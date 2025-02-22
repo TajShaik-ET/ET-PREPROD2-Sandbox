@@ -1,0 +1,88 @@
+<!--
+Name: Government_Parent_TermsAndConditions
+Controller: 
+Author: Sreelakshmi SK
+Created Date: 06 June 2023
+Description: 
+-->
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf"  standardStylesheets="false" applyHtmlTag="false">
+	<head>
+        <style>
+            span {
+            text-decoration:underline;
+            }
+            dd.d1 {
+            list-style-type: circle;
+            }           
+        </style>  
+        
+    </head>
+    
+    <h4>General</h4>
+    <ol>
+        <li>Transport operator operates school buses in compliance with the guidelines of the appropriate regulatory authority.</li>
+        <li>Transport services will be provided only to eligible students from approved catchment areas as received from the school. </li>
+        <li>All employees of Transport operator are fully trained and where required, hold the appropriate regulatory permits. All employees are trained periodically for safety, customer service and driver skills training.  </li>
+        <li>All buses are installed with smart bus technology, and this covers as a minimum, GPS tracking and CCTV Systems. Buses are monitored by CCTV and Transport operator reserves the right to view footage as per their Company policy. CCTV recordings will only be shared when requested by the appropriate authorities.</li>
+        <li>All confirmed bus routes have designated pick up and drop off points. The route travel time may vary depending on the number of students and or any change in routes.</li>
+        <li>Students who suffer from special medical conditions are required to obtain a certificate attested by the accredited health authorities, in addition to a certificate or request issued by the school administration regarding the student’s status</li>
+        <li>Only authorised persons (Bus Driver, Bus Supervisor, Transport operator, school employee) are permitted to enter the bus. Parents and or guardians are not authorised to enter the bus</li>
+        <li>Students are solely responsible for any personal items when traveling on the school bus. Transport operator is not liable for damaged, lost, or stolen equipment. Parents are responsible for ensuring their children can only access appropriate content on any portable device and that they do so effectively, safely and responsibly.</li>
+        <li>Children with contagious disease are not permitted to travel in the bus.</li>
+        <li>Any queries regarding behaviour or incidents will be reported by the Driver and or Bus Supervisor to the school management. Transport operator will follow the internal escalation process which may result in discontinuation or suspension of services. Parents or guardians shall compensate the company for any damages caused or sustained on the bus or to other passengers as a result of inappropriate behaviour by their child.</li>
+        <li>If parent has a note or query related to the bus service, the first point of contact will always be the school and then Emirates Transport and Who. The transport operator and parents will ensure that any queries or comments are made, in line with the Emirates Education Foundation to ensure an appropriate resolution. Parents will communicate directly with the transportation representative and not with the driver, bus supervisor, parent, or other student on the bus.</li>
+    </ol>
+    <h4>Parent responsibilities:</h4>
+    <ol>
+        <li>Parents are compulsory to complete the registration of student for use of transport services.</li>
+        <li>Parents will have access to mobile app to track the students during journey to and from school/home.</li>
+        <li>It is the responsibility of the parent(s) to ensure that their child/children is/are at the pick-up point at the assigned time. Buses will not leave from collection points ahead of schedule. However, buses will not be able to wait at pick-up points after the allotted time. Due to traffic delays buses may arrive at pick-up and drop-off points behind assigned time. </li>
+        <li>For KG and Cycle 1 students, parents are expected to nominate the authorized person who will be present at the time of pick up/drop off. It is the duty of the authorized person to be present at the pick-up and drop off points to take the custody of the students. If the younger students have older siblings, Cycle 2 / Cycle 3, travelling with them, and an undertaking has been given by the parent that they can be dropped in the care of their older sibling.</li>
+        <li>In case of authorized parents/guardian is not present at the drop off point, the driver will bring back the student to the school. The parents will be informed accordingly, to take back their child from the school </li>
+        <li>Parents are required to inform the Transport operator / School, if a student is absent on any day or if a student does not want to use the return trip for any day. </li>
+        <li>In case of a change in residence, parents are expected to inform new residence location to school and to transport operator. For efficient planning of the route, parents are expected to inform one month in advance.  </li>
+        <li>Parents must abide by the registered pick-up and drop-off location for the students from home to school and vice versa, and no temporary changes in the registered home location will be accepted except by a written letter approved by the director of the educational domain and the school administration</li>
+        <li>Train the child/children riding the school, to behave in a satisfactory manner for the driver to remain alert to the driving hazards, ensuring the safety of the passengers in the bus. </li>
+        <li>The registering Parent/Guardian remains responsible for ensuring that these Terms and Conditions are always complied with by their registered bus user child/children.</li>
+        
+    </ol>
+    <h4>Student bus behaviour code:</h4>
+    <p>Students must adhere to the Bus Behaviour Code, which is essential to keep everyone safe and happy, on the journey to and from school. Parents are encouraged to discuss the following standards with their child at home.</p>
+    <ol>
+        <lh><b>Do’s:</b></lh>
+        <li>Travel by your designated school bus.</li>
+        <li>Be on time for pick-up and departure.</li>
+        <li>Make sure the road is safe before crossing the street.</li>
+        <li>Stay at least 10 steps away from the school bus and make sure Driver can see you.</li>
+        <li>Avoid the danger zone areas surrounding the bus.</li>
+        <li>Enter the bus and take his/her assigned seat in a timely fashion, and not wait until just before the departure time.</li>
+        <li>Sit in the designated bus seat as advised by the Bus driver / supervisor.</li>
+        <li>Keep your seat belt on for the entire journey.</li>
+        <li>Remain seated until advised by the Bus Driver / supervisor.</li>
+        <li>Keep the bus clean.</li>
+        <li>Always face forward when seated.</li>
+        <li>Always keep the aisles and walkway clear.</li>
+        <li>Be courteous and follow the Bus Driver / supervisor instructions.</li>
+        <li>If you feel unwell, immediately report to the Bus Driver / supervisor.</li>
+        <li>Use electronic devices responsibly and report any misuse to Bus Driver / supervisor.</li>
+        <li>Take your personal items with you when you leave the bus.</li>
+        <li>follow the Bus Driver / supervisor instructions in emergency case </li>
+    </ol>
+    
+    <ol>
+        <lh><b>Don’ts:</b></lh>
+        <li>Stand while the school bus is moving.</li>
+        <li>Sit on a restricted seat.</li>
+        <li>Distract the Bus Driver.</li>
+        <li>Shout, throw things, be disrespectful, improper language, improper gesture, bully.</li>
+        <li>Bring friends onto the bus without written permission from Transport operator.</li>
+        <li>Eat or drink (except water) on the bus.</li>
+        <li>Throw objects of any kind in the bus / outside the bus.</li>
+        <li>Place anything on the windows of the bus.</li>
+        <li>Damage the bus, system, device in any way.</li>
+        <li>Stand near emergency door or try to open it.</li>
+        
+    </ol>
+    
+
+</apex:page>

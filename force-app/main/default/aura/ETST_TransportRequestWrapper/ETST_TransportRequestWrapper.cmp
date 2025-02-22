@@ -1,0 +1,320 @@
+<aura:component controller="ETSTController"  implements="force:hasRecordId,forceCommunity:availableForAllPageTypes">
+    <!--aura:handler event="c:ET_LanguageSelectionEvt" action="{!c.setLanguage}"/-->
+    <aura:attribute name="lang" type="String" default="English"  />
+    <aura:attribute name="selectedTabId" type="String"/>
+    <aura:attribute name="needMoreInfo" type="Boolean" default="false" />
+    <aura:attribute name="isEID" type="Boolean" default="false" />
+    <aura:attribute name="isPhone" type="Boolean" default="false" />
+    <aura:attribute name="backgroundImageURL" type="String" default=""/>
+    <aura:attribute name="backgroundColor" type="String" />
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="userId" type="Id" />
+    <aura:attribute name="EID" type="String" /> 
+    <aura:attribute name="Phone" type="String" />
+    <aura:attribute name="eid1" type="String" />
+    <aura:attribute name="eid2" type="String" />
+    <aura:attribute name="eid3" type="String" />
+    <aura:attribute name="termCondCheck" type="boolean" default="false"/>
+    <aura:attribute name="govParent" type="boolean" default="false"/>
+    <aura:attribute name="EtEid" type="String" />
+    <aura:attribute name="isModalOpen" type="Boolean" default="false" />
+    <aura:attribute name="url" type="String" />
+    
+    
+    <div aura:id="transportService" style="" id="userdashboard" > 
+        <c:ETST_StudentsTab   aura:id="activeStudnetsTab"/> 
+        <!--lightning:tabset selectedTabId="{!v.selectedTabId}" >
+                <lightning:tab label="Your Children" id="activestudents">
+                        <c:ETST_StudentsTab backgroundColor="{!v.backgroundColor}" aura:id="activeStudnetsTab" />
+                    </lightning:tab>
+                
+                 </lightning:tab>
+                <lightning:tab label="Payment History" id="paymentHistory">
+                        <c:ETST_PaymentHistory backgroundColor="{!v.backgroundColor}" aura:id="PaymentHistoryTab" />
+                </lightning:tab>
+                <lightning:tab label="Refund History" id="refundHistory">
+                    <c:ETST_RefundHistory backgroundColor="{!v.backgroundColor}" aura:id="refundHistoryTab" />
+                </lightning:tab>
+                <lightning:tab label="My Cases" id="case History">
+                        <c:ETST_ParentCaseHistory  aura:id="casHistoryTab" />
+                </lightning:tab>
+                 <lightning:tab label="none" id="none">
+                        
+                </lightning:tab>
+            </lightning:tabset--> 
+        
+    </div>
+    <aura:if isTrue="{! v.needMoreInfo }">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small custompopup">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">                  
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Profile Information</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p class="textinfopopup">Please complete your profile to continue</p>
+                    <p class="textinfopopup">Parent Emirates Id:</p>
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_1-of-2 teltextno">
+                            <aura:if isTrue="{! v.isEID}">
+                                <!--<label>Emirates Id:</label>-->
+                                <lightning:formattedText value="(EID) 784 " class="teltextuae textboxwidth"/>
+                                <lightning:formattedText value="-"  class="dashicon"/>
+                                <lightning:input class="textboxwidth" aura:id="eid1" required="true" 
+                                                 pattern="[0-9]*" messageWhenValueMissing="Complete this part"
+                                                 messageWhenPatternMismatch="Enter only digits" type="text" name="Emirates Id" value="{!v.eid1}" minlength="4" maxlength="4" onkeyup="{!c.changeFocus1}"  autocomplete="off"/>
+                                <lightning:formattedText value="-"  class="dashicon"/>
+                                <lightning:input class="textboxwidth" aura:id="eid2" required="true" type="text" name="Emirates Id" pattern="[0-9]*" messageWhenValueMissing="Complete this part"
+                                                 messageWhenPatternMismatch="Enter only digits" value="{!v.eid2}" minlength="7" maxlength="7" onkeyup="{!c.changeFocus2}" autocomplete="off"/>
+                                <lightning:formattedText value="-" class="dashicon"/>
+                                <lightning:input class="lasttextno" aura:id="eid3" required="true" type="text" pattern="[0-9]*" messageWhenValueMissing="Complete this part"
+                                                 messageWhenPatternMismatch="Enter only digits" name="Emirates Id" value="{!v.eid3}" maxlength="1" autocomplete="off" />
+                            </aura:if>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 phonetextno">
+                            <aura:if isTrue="{! v.isPhone}">
+                                <lightning:formattedText value="(Phone) +971" class="teltextuae phonetextwidth"/>
+                                <lightning:formattedText value="-"  class="dashicon"/>
+                                <!--pattern="^(|((9715))[0-9]{8})$"-->
+                                <lightning:input type="tel" name="Phone" class="phonetextwidthno" label="" disabled="false" minlength="9" maxlength="9" pattern="[0-9]*"  messageWhenPatternMismatch="Please enter correct mobile number"
+                                                 aura:id="Phone" messageWhenValueMissing="Phone is Mandatory" required="true" value="{!v.Phone}" autocomplete="off"/>
+                            </aura:if>
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 checkbox_custom checkbox_cond">
+                        <aura:if isTrue="{! v.govParent}">
+                            <lightning:input type="checkbox" label="" aura:id="checkboxField" checked="{!v.termCondCheck}" class="" onclick="{!c.urlClickHandler}" disabled="true"/>
+                            <span class="">I accept</span> &nbsp;<a href="" onclick="{!c.urlClickHandler}">Terms &amp; Condition</a>
+                        </aura:if> </div>
+                    
+                    <!-- Terms and conditions Modal-->
+                    <aura:if isTrue="{!v.isModalOpen}">    
+                        
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                
+                                <header class="slds-modal__header">
+                                    <lightning:buttonIcon iconName="utility:close"
+                                                          onclick="{! c.closeModal }"
+                                                          alternativeText="close"
+                                                          variant="bare-inverse"
+                                                          class="slds-modal__close"/>
+                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Terms and Conditions</h2>
+                                    
+                                </header>
+                                <!--Modal/Popup Box Body-->
+                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                    <!-- <iframe src="{!v.url}" width="100%" height="400px" frameborder="0" />-->
+                                    
+                                    
+                                    <h3 style="text-align: center; text-decoration: underline;"><b>Terms and Conditions related to the provision of school transport services to students of Emirates Schools Establishment (ESE)
+                                        </b></h3>
+                                    <h4><b>General</b></h4>
+                                    <ol style="list-style-type: circle;">
+										<li>The Transport Operator operates school buses in compliance with the guidelines of the appropriate regulatory authority within the United Arab Emirates.</li>
+										<li>Transport services will be provided only to eligible students from approved catchment areas as received from ESE. </li>
+										<li>All employees of the Transport Operator are fully trained and, where required, hold the appropriate regulatory permits. All employees are trained periodically for safety, customer service, and driver skills training. </li>
+										<li>All buses are installed with smart bus technology, and this covers, as a minimum, the GPS tracking and CCTV Systems. A CCTV system monitors the inside of buses, and the Transport Operator reserves the right to view footage as per regulatory authority policy. CCTV recordings will only be shared when requested by the appropriate authorities.</li>
+										<li>All confirmed bus routes have designated pick-up and drop-off points. The route travel time may vary depending on the number of students and/or any change in routes.</li>
+										<li>Only authorized persons (bus driver, bus supervisor, transport operator representative, school employee, students registered on the bus) can board the bus. Parents/guardians are not authorized to enter the bus.</li>
+										<li>Students are solely responsible for their personal belongings when traveling on the school bus and the Transport Operator is not liable for theft, damage, or loss of such items. Parents/guardians are responsible for ensuring their children access appropriate content on any portable device and do so effectively, safely, and responsibly. </li>
+										<li>Students with contagious diseases cannot travel on the bus and Parents/ guardians will be responsible for failing to report this matter to the Transport Operator/school.</li>
+										<li>If a student behaves inappropriately, the bus driver or the bus supervisor will inform the school administration about this behavior so that the necessary measures can be taken. If a student continues with this behavior, a decision may be made to stop or suspend the services for the student concerned. Parents/guardians will be responsible for any damage caused to the bus or passengers as a result of their child’s behavior.</li>
+										<li>If parents/guardians wish to raise any queries related to the bus service, the first point of contact will always be the school management, who will then communicate with the Transport Operator if required. Parents/guardians should  not communicate directly with the bus driver, bus supervisor, other parents, or other students on the bus unless otherwise advised.</li>
+                                    </ol>
+									
+									
+									
+                                    <h4><b>Parent responsibilities:</b></h4>
+                                    <ol style="list-style-type: circle;">
+                                        <li>Parents/guardians are required to complete the registration requirements annually for the school transportation service, during the registration period determined by ESE and the Transport Operator. ESE has the right to determine the method of registration that it deems appropriate, whether through a mobile application, registration link, or the school administration. For planning the Routes and for effective usage of mobile applications, parents must provide the relevant data (phone, email, UAE ID, location, photograph, etc.) during registering. </li>
+										<li>If parents/guardians know that the student will be absent from the bus on any given day, whether at morning pickup or the return trip, the guardian must inform the Transport Operator and the school administration through the correct channels as advised. If a student is absent for more than two weeks without any notification to the Transport Operator/school management, the student will be removed from the registration list. Parents/guardians are expected to re-register their children again for future transport requirements</li>
+										<li>A mobile application will help parents/guardians track the movement of buses, including boarding and disembarking from the buses during the journey to and from school/home. This application will also be used by the Transport Operator to notify parents/guardians regarding any school transport related services. </li>
+										<li>It is the responsibility of parents/guardians to ensure that children are at the correct pick-up point, at the assigned time. Buses will not leave from collection points ahead of schedule. Additionally, buses will not be able to wait at pick-up points after the allotted time, as this will delay the transit times for other students and the arrival time to school. Parents/guardians must consider the possibility of buses being late due to traffic congestion or any changes in the bus route at any given time.</li>
+										<li>Parents/guardians must use the designated pick-up and drop-off sites for students' transportation between home and school. Any temporary changes to the registered home address will not be considered without the school management’s approval.</li>
+										<li>Parents/guardians of KG and Cycle 1 students must be available at pick-up/drop-off times, though they may delegate this responsibility to another adult. It is essential for parents/guardians or the designated adult to be at the pick-up and drop-off locations to collect their children.</li>
+										<li>If the authorized parent/guardian of a KG or Cycle 1 student is absent at the drop-off location, the student will be taken back to school by the bus driver. Parents/guardians will then be notified to pick up their child from school. The school management will wait for parents/guardians for one hour; if the parents/guardians arrive later than one hour, the child may be handed over to the child protection team until the parents/guardians arrive.  Parents/guardians will issued a  warning for not being present at the drop-off location. After a second warning, the school reserves the right to discontinue a student's transportation services. Depending on the severity of the situation, the parents/guardians may be held legally accountable under the Child Protection Law of the United Arab Emirates</li>
+										<li>Parents/guardians of students with specific medical conditions must submit a certificate endorsed by a recognized health authority. The school administration will then examine a student's case and establish appropriate transportation requirements for the student's health condition. The Transport Operator will coordinate with ESE to arrange transportation as per the agreed contract terms. There may be a delay until transportation services becomes available.</li>
+										<li>If there is a change in the residence location, it is incumbent on the parents/guardians to inform the school and the Transport Operator about the new address, one month in advance for efficient route planning. Parents/guardians will lose transportation rights if the new residence location is outside the school-approved catchment area. Parents/guardians may need to switch to a school within the approved area to avail transportation facilities.</li>
+										<li>Parents/guardians are encouraged to train and advise their children to conduct themselves appropriately whilst on the school bus journey, enabling the bus driver to stay focused on potential driving hazards and ensure the safety of all passengers.</li>
+										<li>Parents/guardians are solely responsible for adhering to the above Terms and Conditions in respect of their children registered for the school transportation service.</li>
+                                    </ol>
+									
+									
+									
+                                    <h4><b>Student Bus Behavior Code of Conduct:</b></h4>
+                                    <p>Students must adhere to the Bus Behavior Code of Conduct to keep everyone safe and happy on the journey to and from school.</p>
+                                    <p>Parents/guardians are encouraged to discuss the following standards with their child/children at home:</p>
+									<h4><b>Do’s:</b></h4>
+                                    <ol style="list-style-type: circle;">
+                                        
+                                        <li>Travel on your designated school bus.</li>
+										<li>Be on time for pick-up and departure.</li>
+										<li>Make sure the road is safe before crossing the street.</li>
+										<li>Stay at least 10 steps away from the school bus, and make sure the bus driver can see you.</li>
+										<li>Be aware of the danger zones surrounding the bus as advised by the school management and avoid such areas.</li>
+										<li>Enter the bus and take your assigned seat promptly, and do not wait until just before departure.</li>
+										<li>Sit in the designated bus seat as the bus driver/supervisor advises.</li>
+										<li>Keep your seat belt on for the entire journey.</li>
+										<li>Remain seated until advised by the bus driver/supervisor.</li>
+										<li>Keep the bus clean.</li>
+										<li>Always face forward when seated.</li>
+										<li>Always keep the aisles and walkways clear.</li>
+										<li>Be courteous and follow the bus driver/supervisor's instructions.</li>
+										<li>If you feel unwell, immediately report it to the bus driver/supervisor.</li>
+										<li>Use electronic devices responsibly and report any observations of misuse to the bus driver/supervisor.</li>
+										<li>Take all your personal belongings with you when you leave the bus.</li>
+										<li>Follow the bus driver/supervisor's instructions in the case of an emergency.</li>
+										
+                                    </ol>
+                                    <h4><b>Don’ts:</b></h4>
+                                    <ol style="list-style-type: circle;">
+                                        
+                                        <li>Stand while the school bus is moving.</li>
+										<li>Sit on a restricted seat, loosen the seat belt, and move around the seats.</li>
+										<li>Distract the bus driver.</li>
+										<li>Shout, throw things, be disrespectful, use improper language, improper gestures or bully others on the bus.</li>
+										<li>Bring friends onto the bus without written permission from the Transport Operator.</li>
+										<li>Eat or drink (except water) on the bus.</li>
+										<li>Throw objects of any kind in the bus/outside the bus.</li>
+										<li>Place anything on the windows of the bus.</li>
+										<li>Damage the bus, system, or device in any way.</li>
+										<li>Stand near the emergency door or try to open it.</li>
+                                        
+                                    </ol>
+                                    
+                                    
+                                    <div style="direction: rtl;">
+                                    <h3 style="text-align: center; text-decoration: underline;"><b>شروط وأحكام متعلقة بتقديم خدمات المواصلات المدرسية لطلبة مؤسسة الإمارات للتعليم 
+                                        </b></h3>
+                                    
+                                    <h4><b>شروط عامة:</b></h4>
+                                        <ol style="list-style-type: circle;">
+                                            <li>1يقوم مزود خدمة المواصلات المدرسية بتوفير الحافلات المدرسية المتوافقة مع المعايير والمواصفات المعتمدة من قِبَل الجهات الحكومية المنوطة بها إدارة المواصلات المدرسية .</li>
+											<li>2ينبغي على العاملين لدى مشغل خدمة النقل كافة أن يكونوا حاصلين على التدريب الكامل، ويحملون تصاريح مزاولة المهنة وفق متطلبات الجهات التشريعية، ويُدرَّبُ الموظفون جميعًا تدريبًا شاملًا على عوامل السلامة، ومهارات خدمة العملاء، والقيادة السليمة للحافلات المدرسية.</li>
+											<li>3ستُوفَّرُ خدمات المواصلات للطلبة المستحقين للخدمة فقط، وهم أولئك الذين يسكنون ضمن النطاق الجغرافي للمدرسة، ويُحدَّد نطاق كل مدرسة من قبل مؤسسة الإمارات للتعليم المدرسي.</li>
+											<li>4إن الحافلات جميعها مزودة بأجهزة إلكترونية ذكية، وستتوفر أنظمة تتبع الحافلات GPS، وأنظمة CCTV في كل حافلة، ويحق لمشغل النقل الاطلاع على البث المباشر للكاميرات، أو على التسجيلات بغرض مراقبة جودة الخدمة، وذلك وفقًا للضوابط التي تقررها الجهات المشروعة، ولا يجوز مشاركة تسجيلات كاميرات الحافلات مع أيّة جهة أو فرد إلّا بموجب طلب رسمي صادر عن السلطات الحكوميّة المختصة، والمصرح لها بذلك. </li>
+											<li>5تُحدَّدُ مسارات الحافلات وفقًا لمعايير وآليات محددة، ويتضمن ذلك تحديد نقاط صعود الطلبة ونزولهم، وقد تتغير مواعيد الوصول وفقًا للمتغيرات في عدد الطلبة المسجلين بالمسار والازدحام المروريّ.</li>
+											<li>6يقتصر الصعود إلى الحافلة على الأشخاص المصرح لهم فقط، وهم: سائق الحافلة، ومشرف الحافلة، ومشرف مشغل النقل، وموظف المدرسة، والطلبة الذين تخدمهم الحافلة.</li>
+											<li>7يُعد الطلبة مسؤولين مسؤولية كاملة عن ممتلكاتهم الشخصية خلال التنقل في الحافلة المدرسية، وعلى ذلك فإنَّ مشغل النقل غير مسؤول عن تلف، أو ضياع، أو سرقة أيٍّ من المتعلقات الشخصية للطلبة، فضلًا عن أنّ أولياء الأمور هم المسؤولون عن الاستخدام السليم لأجهزة أبنائهم الإلكترونية، وعن طبيعة  البرامج والمحتويات التي تتضمنها تلك الأجهزة. </li>
+											<li>8لا يُسمح للطلبة المصابين بأمراض معدية باستخدام خدمة المواصلات المدرسية، ويتحمل ولي أمر الطالب أو الطالبة المسؤولية الكاملة نتيجة عدم إبلاغ مشغل الخدمة / المدرسة  عن أي حالة مرضية معدية في حال إصابة الطالب بها. </li>
+											<li>9سيقوم السائق أو مشرف الحافلة بإبلاغ إدارة المدرسة عن أي سلوك غير لائق قد يقوم به الطالب في الحافلة؛ لتُتَّخذ الإجراءات اللازمة بحقه، وفي حال استمرار الطالب بهذا السلوك ستُحجب الخدمة عنه، أو تُعلَّق تعليقًا مؤقتًا، وسيتحمل ولي الأمر مسؤولية التعويض المادي لمشغل الخدمة إذا تسبب سلوك ابنه في أي أضرار مادية ألحقها بالحافلة أو الركاب. </li>
+											<li>10في حال وجود أية ملاحظات لدى أولياء الأمور تتعلق بالخدمة أو بالحوادث أو بالسلوك الذي يصدر عن السائق أو مشرف الحافلة أو طالب ما؛ يجب أن تكون نافذة الاتصال الأولى دائمًا هي المدرسة، ثم مشغل الخدمة إذا تطلب الأمر، وعلى ذلك يُحظر على أولياء الأمور التواصل مباشرة مع السائق أو مشرف الحافلة أو أي طالب آخر أو ولي أمر ، وذلك في حال حدوث أي من المشكلات التي قد يتعرض لها أبناؤهم في الحافلة. </li>
+                                        </ol>
+										
+                                    
+                                    <h4><b>مسؤوليات أولياء الأمور:  </b></h4>
+                                        <ol style="list-style-type: circle;">
+												
+												<li>11يُطلب من أولياء الأمور في كل عام دراسي استكمال متطلبات التسجيل في خدمة المواصلات المدرسية خلال الفترة الزمنية المُتاحة، والتي تُحدّدُها مؤسسة الإمارات للتعليم المدرسي ومزود الخدمة، ويحق للمؤسسة أن تُعلن عن طريقة التسجيل التي تراها مناسبة، سواءً أكانت عن طريق تطبيقات الهاتف، أو الروابط الخاصة بالموقع الإلكتروني، أو لدى إدارة المدرسة، وذلك لأغراض التَّخطيط السليم، والآمن لما يخص نقل الطلبة، ويُطلب من أولياء الأمور حينئذٍ تقديم البيانات الصحيحة من خلال إجراءات التسجيل في الخدمة، وتشمل تلك البيانات: رقم الهاتف الأساسي المخصص للتواصل مع ولي الأمر، البريد الإلكتروني، الهوية الإماراتية، موقع المنزل، صورة شخصية للطالب، فضلًا عن المتطلبات الأُخرى.</li>
+												<li>12في حال كان ولي الأمر على علم بأن الطالب لن يستقل الحافلة في يوم ما، سواء للذهاب إلى المدرسة أو العودة منها، فيترتب عليه حينئذٍ إعلام جهة تشغيل الخدمة وإدارة المدرسة، وإذا غاب الطالب عن ركوب الحافلة لأكثر من أسبوعين دون تقديم إخطار لإدارة المدرسة أو الشركة المشغلة للنقل، فسيُحذف اسم الطالب من قائمة المسجلين في الحافلة، وفي هذه الحالة يتعين على ولي الأمر تقديم طلب جديد إذا ما أراد استخدام الحافلة مرة أخرى.</li>
+												<li>13يلتزم مزود خدمة المواصلات المدرسية بتوفير تطبيق هاتف ذكي يساعد أولياء الأمور على تتبع حركة الحافلات الخاصة بأبنائهم، ومعرفة صعودهم ونزولهم من الحافلات في أثناء الرحلة من وإلى المدرسة/ المنزل، وعلى ذلك فإنَّ هذا التطبيق الهاتفي يُعدُّ الوسيلة التي سيستخدمها مشغل الخدمة لإخطار أولياء الأمور بكلّ ما يخص رحلة أبنائهم في الحافلة المدرسية.</li>
+												<li>14تقع على كاهل أولياء الأمور مسؤولية التأكد من تواجد أبنائهم في المكان والوقت المُحددَّين لصعود الحافلة، ولن تغادر الحافلة  نقطة صعود الطالب إذا وصلت قبل الموعد المتفق عليه، وبالمقابل فلن تتمكن الحافلات من انتظار الطالب في نقطة الصعود إلى ما بعد الوقت المتفق عليه؛ إذ سيؤدي ذلك إلى التأخر في مواعيد المرور على  الطلبة الآخرين، والتأخر المحتمل في موعد الوصول إلى المدرسة، ويجب أن يراعي أولياء الأمور احتمال تأخر الحافلة أحياناً بسبب الازدحام المروري أو أية مستجدات أخرى في خط سير الحافلة.</li>
+												<li>15يجب على أولياء الأمور الالتزام بالموقع المسجل لاستلام الطالب من المنزل وتوصيله إلى المدرسة والعكس، ولن تُقبل أيّة تغييرات مؤقتة في موقع المنزل المسجل إلا بخطاب معتمد من إدارة المدرسة، وعندئذٍ سيتم التحقق من إمكانيّة توفير الخدمة المؤقتة أم لا.</li>
+												<li>وبالنسبة إلى طلبة رياض الأطفال والحلقة الأولى، فإنّنا نهيب بأولياء الأمور التواجد في وقت استلام الطالب/ تسليمه للحافلة (يمكن للوالدين تفويض أي شخص بالغ آخر)، ومن واجب الوالدين أو الشخص المخول التواجد عند نقاط الصعود والإنزال لاستلام أبنائهم.</li>
+												<li>17أما بالنسبة إلى طلبة رياض الأطفال والحلقة الأولى، وفي حال عدم وجود ولي الأمر عند نقطة الإنزال، فسيقوم السائق بإعادة الطالب إلى المدرسة لضمان عدم ترك الطالب دون رعاية،                     وسيتم إبلاغ ولي الأمر للحضور إلى المدرسة لاستلام الطالب، وستنتظر  إدارة المدرسة ولي الأمر مدة ساعة بعد إخطاره ، وفي حال تأخره لأكثر  من ساعة قد يتم تسليم الطفل إلى فريق حماية الطفل للعناية به إلى حين حضور ولي الأمر،  وسُيُوَجّه إلى ولي الأمر في هذه الحالة أول إنذار من إدارة المدرسة نظير عدم حضوره أو حضور من ينوب عنه لاستلام الطالب من مشرف الحافلة، وفي حالة التكرار سيتم إصدار الإنذار الثاني وعندها سيكون لإدارة المدرسة الحق في وقف الخدمة عن الطالب، وفي بعض الحالات قد يتعرض ولي الأمر للمساءلة القانونية، وفقًا لقانون حماية الطفل.</li>
+												<li>وبالنسبة إلى الطلاب الذين يعانون من حالات مَرَضيّة معينة، فيجب على ولي الأمر تقديم شهادة معتمدة من الجهات الصحية الرسمية، وستقوم إدارة المدرسة بفحص حالة الطالب، وتحديد الاحتياجات النقلية المناسبة لوضعه الصحي، وسُتُرتَّب عملية النقل بواسطة مشغل النقل بالتعاون مع المؤسسة الإماراتية للتعليم المدرسي، تماشِيًا مع بنود العَقد المتفق عليها، غير أن ذلك قد يستغرق بعض الوقت حتى تكون خدمات النقل متاحة بناءً على هذه التحضيرات.</li>
+												<li>19عند حدوث تغيير في مكان الإقامة، يتعين على ولي الأمر إعلام المدرسة والشركة المشغلة للنقل بالموقع الجديد، ولضمان تنظيم خط السير بكفاءة، يجب على الأهل التبليغ عن هذا التغيير قبل شهر على الأقل، وفي حالة كانت الإقامة الجديدة خارج نطاق التغطية المعتمدة من قبل المدرسة، سيخسر الطالب الحق في خدمة النقل، ويمكن للوالدين في هذه الحالة البحث عن مدرسة مستوفية لمتطلبات النقل المدرسي.</li>
+												<li>20على أولياء الأمور تدريب أبنائهم الذين يستخدمون الحافلة المدرسية على التصرف بطريقة لَبِقة ومناسبة لتجنب إزعاج السائق حتى يبقى متيقظاً لمخاطر الطريق، ويضمن سلامة الركاب في الحافلة.</li>
+												<li>يبقى ولي الأمر/ أو مَن ينوب عنه مسؤولاً عن ضمان امتثال أبنائه لهذه الشروط والأحكام بشكل مستمرّ.</li>
+												
+												
+											</ol>
+                                    
+                                    
+                                        <h4><b>لائحة سلوك الطلبة في الحافلة المدرسية</b></h4>
+                                    <p>نهيب بالطلبة جميعًا الالتزام بلائحة السلوك في الحافلات، وهذا أمر ضروري للحفاظ على سلامة الجميع، وتحقيق السعادة لهم في أثناء الرحلة من المدرسة وإليها، وعلى ذلك فإنّنا نوصي أولياء الأمور بمناقشة معايير الأمن والسلامة، والموجّهات الآتية مع أبنائهم في المنزل:</p>
+                                            
+                                    	<h4><b>افعل :</b></h4>
+                                        <ol style="list-style-type: circle;">
+                                            
+                                            <li>استخدام الحافلة المدرسية المخصصة لهم فقط.</li>
+											<li>الالتزام بالحضور إلى مواقع التحميل في الموعد المحدد.</li>
+											<li>التأكد من سلامة الطريق قبل عبور الشارع.</li>
+											<li>البقاء على بعد 10 خطوات على الأقل من الحافلة المدرسية، والتأكد من أن السائق يمكنه رؤيتك.</li>
+											<li>تجنب الدخول إلى مناطق الخطر المحيطة بالحافلة. </li>
+											<li>الصعود إلى الحافلة والجلوس في المقعد المخصَّص (حسب توجيهات مشرفة الحافلة) على الفور، ولا تؤجل ذلك إلى موعد تحرك الحافلة. </li>
+											<li>الالتزام بالجلوس في المقعد الذي سيحدده السائق/ المشرفة.</li>
+											<li>التزم بربط حزام الأمان طوال الرحلة.</li>
+											<li>الالتزام بالجلوس في المقعد إلى حين توقف الحافلة تمامًا في نقطة التنزيل. </li>
+											<li>المحافظة على نظافة الحافلة. </li>
+											<li>الجلوس على المقعد مُتَّجها إلى الأمام طوال وقت الرحلة. </li>
+											<li>اترك ممرات الحافلة خالية. </li>
+											<li>كن مهذَّبًا ولَبِقًا، واتبع تعليمات مشرفة وسائق الحافلة في أثناء الرحلة. </li>
+											<li>إذا شعرت بوعكة أو عارض صحيّ، أبلغ مشرفة الحافلة أو سائق الحافلة على الفور.</li>
+											<li>استخدام الأجهزة الإلكترونية بالشكل السليم مع مراعاة الالتزام بالآداب العامة.</li>
+											<li>تأكَّد من أخذ أغراضك الشخصية جميعها قبل أن تغادر الحافلة. </li>
+											<li>اتَّبع تعليمات المشرفة والسائق فيما يخص النظام في الحافلة المدرسية وعند حالات الطوارئ.</li>
+                                            
+                                            
+                                        </ol>
+                                        
+                                    	<h4><b>لا تفعل: </b></h4>
+                                        <ol style="list-style-type: circle;">
+                                            
+                                            <li>الوقوف في أثناء تحرُّك الحافلة المدرسية.</li>
+											<li>فك حزام الأمان والتنقل بين المقاعد أو الجلوس على المقعد غير المخصص لك. </li>
+											<li>تشتيت انتباه سائق أو مشرفة الحافلة في أثناء الرحلة. </li>
+											<li>الصُّراخ، ورمي الأشياء، واستخدام لغة غير لائقة في التعامل مع الآخرين، والإيماءات غير اللائقة، والتنمّر، وعدم الالتزام بالآداب العامة. </li>
+											<li>اصطحاب الزملاء أو الأصدقاء غير المسجلين في  الحافلة. </li>
+											<li>تناول الطعام أو الشراب (باستثناء الماء) في الحافلة.</li>
+											<li>رمي أشياء - من أي نوع - في الحافلة أو خارجها.</li>
+											<li>لصق أشياء على نوافذ الحافلة، أو الكتابة على المقاعد.</li>
+											<li>إتلاف الحافلة أو أي من محتوياتها. </li>
+											<li>فتح باب الطوارئ أو الجلوس بجانبه.</li>
+                                            
+                                            
+                                        </ol>
+                                    </div>
+                                    <div>
+                                    </div>
+                                    <div style="padding: 25px; text-align: center;">
+                                        <lightning:button variant="neutral" 
+                                                          label="Decline"
+                                                          title="Decline"
+                                                          onclick="{! c.closeModal }" class="btn_back"/>
+                                        <lightning:button variant="brand" 
+                                                          label="Accept"
+                                                          title="Accept"
+                                                          onclick="{! c.onAccept }" class="btn_table"/>                                    
+                                        
+                                    </div>
+                                    
+                                    
+                                    
+                                </div>
+                                <!--Modal/Popup Box Footer-->
+                                <footer class="slds-modal__footer">
+                                    
+                                    
+                                    
+                                </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </aura:if>
+                    <!-- Terms and conditions Modal-->
+                    
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Back"
+                                      title="Back"
+                                      onclick="{! c.closeModel }" class="btn_back"/>
+                    <lightning:button variant="brand" 
+                                      label="Submit"
+                                      title="Submit"
+                                      onclick="{!c.SubmitDetails}" class="btn_table"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+    
+</aura:component>

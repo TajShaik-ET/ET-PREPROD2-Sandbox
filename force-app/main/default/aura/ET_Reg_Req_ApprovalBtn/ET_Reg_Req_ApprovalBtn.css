@@ -1,0 +1,39 @@
+.THIS h2#modal-heading-01 {
+    border-bottom: 1px solid #f2f2f2;
+    font-size: 16px;
+    font-weight: 500!important;
+    padding: 1rem;
+}
+.THIS .btnsend1 {
+        background: #fe864d;
+        border: 1px solid #fe864d;
+        outline: none;
+        box-shadow: none;
+        margin: 0.5rem;
+        
+       
+        }
+.THIS  .btnsend {
+        background: #165b0e;
+        border: 1px solid #165b0e;
+        outline: none;
+        box-shadow: none;
+        margin: 8px;
+       
+        }
+ 
+.THIS .outer-div {
+    position: relative;
+}
+
+.THIS .spinner2 {
+   position: absolute;
+}
+.THIS .spinner2::after {
+    position: absolute;
+    content: 'Please wait user creation in progress';
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+}

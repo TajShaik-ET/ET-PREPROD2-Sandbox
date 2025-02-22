@@ -1,0 +1,216 @@
+<aura:component extends="c:ETI_BilingualCommunity" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" controller="ETI_VehicleController" access="global" >
+    <aura:attribute name="VehicleList" type="List" />
+    <aura:attribute name="VehicleColumns" type="List"/>
+    <aura:attribute name="selectedRowsList" type="List" />
+    <aura:attribute name="vehId" type="String" />
+    <aura:attribute name="startDate" type="Date"/>
+    <aura:attribute name="endDate" type="Date"/>
+    <aura:attribute name="maxDate" type="Date"/>
+    
+    <aura:registerEvent name="DataEvent" type="c:ETI_DataEvent"/>
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{!v.IsSpinner}">
+        <lightning:spinner variant="brand"  size="large" />
+    </aura:if>
+    <lightning:layout class="sortdiv" >
+        <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+            <div class="custom-box">
+                <ui:inputDate aura:id="StartDateField" label="{!v.Start_Date}" value="{!v.startDate}" displayDatePicker="true" format="dd/MM/yyyy"/>          
+            </div> 
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-small" size="4" alignmentBump="right">
+            <div class="custom-box">
+                <ui:inputDate aura:id="EndDateField" label="{!v.End_Date}" value="{!v.endDate}" displayDatePicker="true" format="dd/MM/yyyy"/>                               
+            </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem  padding="horizontal-medium" size="4" flexibility="auto" class="btnsubmitdiv">
+            <div class="custom-box btnposition" >
+                <lightning:button class=" SizeBtn blackBtn btnserach btn_table" label="{!v.Submit}" onclick="{!c.getBookingHistory}"/>
+                <lightning:button variant="brand" name="Back" label="{!v.Back}" onclick="{!c.cancelSave1}" class="btn_back"/>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout> 
+    <div aura:id="inspectionService" class="casesection" >
+        <aura:if isTrue="{!not(empty(v.VehicleList))}"> 
+            <aura:set attribute="else">
+                <br></br> <br></br>
+                <lightning:layout class="sortdiv" >
+                    <br></br>
+                    <div class="slds-notify slds-notify_alert slds-float_none" role="alert" >
+                        <h2 style="text-align:right;font-size: 18px;font-family: 'Cronos';">{!v.No_Records_Message}</h2>
+                    </div>
+                </lightning:layout>
+                <br></br><br></br>
+            </aura:set>
+            <!--div style="height: 500px">
+                <lightning:datatable data="{!v.VehicleList}"
+                                     columns="{!v.VehicleColumns}"
+                                     keyField="id"
+                                     onrowaction="{! c.handleRowAction }"
+                                     onrowselection="{!c.getSelectedName}"
+                                     hideCheckboxColumn="true"/>
+                
+            </div-->
+            <aura:iteration items="{!v.VehicleList}" var="item">
+                <!--<div class="slds-box">
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon firstrow">
+                        <label class="headtxt">Chassis No</label>
+                     <label class="headtxtdyn">: {!item.Chassis_No__c}</label>
+                 </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <label class="headtxt">Booking Date</label>
+                        <label class="headtxtdyn">: <lightning:formattedDateTime value="{!item.Booking_Date__c}"  
+                                                                                   year="numeric" month="numeric" day="numeric"  
+                                                                               timeZone="Asia/Dubai" hour12="false"/></label>
+                 </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <label class="headtxt">Service Type</label>
+                        <label class="headtxtdyn">: {!item.Service_Type__c}</label>
+                  </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <label class="headtxt">Location</label>
+                        <label class="headtxtdyn">: {!item.ET_Location__r.Name}</label>
+                 </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <label class="headtxt">Booking Status</label>
+                        <label class="headtxtdyn">: {!item.Booking_Status__c}</label>
+                 </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                        <label class="headtxt">Test Result</label>
+                        <label class="headtxtdyn">: <lightning:formattedUrl value="{!'/apex/ETI_VehicleTestResult?Id='+item.Encrypted_Id__c}" label="Click Here" target="_blank" /></label>
+                 </lightning:layoutItem>
+                </lightning:layout>
+            </div>-->
+                <div class="divpayment desktopview">
+                    <div class="successdiv">
+                        <aura:if isTrue="{!item.Customer_Vehicle__r.Registration_Type__c != 'Registered'}">
+                            <strong class="headingChassis">{!item.Chassis_No__c}</strong>
+                            <aura:set attribute="else">
+                                <strong class="headingChassis"> {!item.Customer_Vehicle__r.Plate_Color__c}-{!item.Customer_Vehicle__r.Plate_No__c}</strong>  
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                    <!--<img class="successpay" src="{!$Resource.ETST_payment}" />
+                        <div class="datailsdiv">Chassis No&nbsp;<strong>{!item.Chassis_No__c}</strong></div>-->
+                    <div class="vehicleDetailInfo">
+                        <div class="innerdiv">
+                            <div class="leftsectiondiv">
+                                <div class="datailsdiv"><span>{!v.Booking_Date}</span><br></br><strong><!--lightning:formattedDateTime value="{!item.Booking_Date__c}" timeZone="Asia/Dubai" hour12="false"/--><ui:outputDate format="dd/MM/yyyy" value="{!item.Booking_Date__c}"  /></strong></div>
+                            </div>
+                            <div class="rightsectiondiv">
+                                <div class="datailsdiv"><span>{!v.Booking_Id}</span><br></br><strong>{!item.Name}</strong></div>
+                            </div>
+                        </div>
+                        <div class="innerdiv">
+                            <div class="leftsectiondiv">
+                                <div class="datailsdiv"><span>{!v.Service_Type}</span><br></br><strong>{!item.Service_Type__c}</strong></div>
+                            </div>
+                            <div class="rightsectiondiv">
+                                <div class="datailsdiv"><span>{!v.Booking_Status}</span><br></br><strong>{!item.Booking_Status__c}</strong></div>
+                                
+                            </div>
+                        </div>
+                        <div class="innerdiv">
+                            <div class="leftsectiondiv" style="width:100%">
+                                <div class="datailsdiv mylocationctext"><span class="grey_font">{!v.Location}</span><br></br><strong>{!item.ET_Location__r.Name}</strong></div> 
+                            </div>
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!item.Booking_Status__c ne 'Cancelled'}">
+                        <div class="datailsdiv linkpad" ><strong><lightning:formattedUrl value="{!'/apex/ETI_VehicleTestResult?Id='+item.Encrypted_Id__c}" label="{!v.Test_Result}" target="_blank" /></strong>
+                            <span data-value="{!item.Id}" onclick="{!c.openInvoicePdf}">
+                                <img class="slds-button"  title="Invoice" src="{!$Resource.ETI_Invoice}" />
+                            </span>
+                        </div>
+                       
+                    </aura:if>
+                </div>
+                <div class="divpayment mobileview">
+                    <div class="topsection">
+                        <aura:if isTrue="{!item.Customer_Vehicle__r.Registration_Type__c != 'Registered'}">
+                            <strong class="leftsection">{!item.Chassis_No__c}</strong>
+                            <aura:set attribute="else">
+                                <strong class="leftsection"> {!item.Customer_Vehicle__r.Plate_Color__c}-{!item.Customer_Vehicle__r.Plate_No__c}
+                                </strong>  
+                            </aura:set>
+                        </aura:if>
+                        <div class="rightsection"><strong>
+                            <ui:outputDate format="dd/MM/yyyy" value="{!item.Booking_Date__c}"  />
+                            </strong>
+                        </div>
+                    </div>
+                    <!--<img class="successpay" src="{!$Resource.ETST_payment}" />
+                        <div class="datailsdiv">Chassis No&nbsp;<strong>{!item.Chassis_No__c}</strong></div>-->
+                    <div class="midsection">
+                        <div class="">{!v.Booking_Id}&nbsp;<strong>{!item.Name}</strong></div>
+                        <div class="">{!v.Service_Type}&nbsp;<strong>{!item.Service_Type__c}</strong></div>
+                        <div class="">{!v.Location}&nbsp;<strong>{!item.ET_Location__r.Name}</strong></div>
+                    </div>
+                    <div class="bottomsection">
+                        <aura:if isTrue="{!item.Booking_Status__c ne 'Cancelled'}">
+                            <div class="leftsection" ><strong><lightning:formattedUrl value="{!'/apex/ETI_VehicleTestResult?Id='+item.Encrypted_Id__c}" label="{!v.Test_Result}" target="_blank" /></strong></div>
+                            <span data-value="{!item.Id}" onclick="{!c.openInvoicePdf}">
+                                <img class="slds-button"  title="Invoice" src="{!$Resource.ETI_Invoice}" />
+                            </span>
+                        </aura:if>
+                        <div class="rightsection"><strong>{!item.Booking_Status__c}</strong></div>
+                    </div>
+                </div>
+                <!--<lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon firstrow">
+                            <label class="headtxt">Chassis No</label>
+                            <label class="headtxtdyn">: {!item.Chassis_No__c}</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                            <label class="headtxt">Booking Date</label>
+                            <label class="headtxtdyn">: <lightning:formattedDateTime value="{!item.Booking_Date__c}"  
+                                                                                     year="numeric" month="numeric" day="numeric"  
+                                                                                     timeZone="Asia/Dubai" hour12="false"/></label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                            <label class="headtxt">Service Type</label>
+                            <label class="headtxtdyn">: {!item.Service_Type__c}</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                            <label class="headtxt">Location</label>
+                            <label class="headtxtdyn">: {!item.ET_Location__r.Name}</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                            <label class="headtxt">Booking Status</label>
+                            <label class="headtxtdyn">: {!item.Booking_Status__c}</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout >
+                        <lightning:layoutItem size="4" padding="around-small" class="Padbottomnon ">
+                            <label class="headtxt">Test Result</label>
+                            <label class="headtxtdyn">: <lightning:formattedUrl value="{!'/apex/ETI_VehicleTestResult?Id='+item.Encrypted_Id__c}" label="Click Here" target="_blank" /></label>
+                        </lightning:layoutItem>
+                    </lightning:layout>-->
+            </aura:iteration>
+        </aura:if>  
+        <!--div style="text-align:right">
+            <lightning:button variant="brand" name="Back" label="Back" onclick="{!c.cancelSave}" class="btn_back"/>
+        </div-->
+    </div>
+</aura:component>

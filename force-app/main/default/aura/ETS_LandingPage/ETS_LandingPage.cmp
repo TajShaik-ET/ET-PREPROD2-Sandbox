@@ -1,0 +1,235 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="needMoreInfo" type="Boolean" default="false" />
+    <aura:attribute name="userId" type="Id" />
+    <aura:attribute name="userName" type="Id" /> 
+    <aura:attribute name="LocationList" type="List" />
+    <aura:attribute name="currentLocation" type="String" />
+    <aura:attribute name="loc" type="String"/>
+    <aura:attribute name="loc1" type="String"/>
+    <aura:attribute name="showSchool" type="boolean" default="false"/>
+    <aura:attribute name="showInspection" type="boolean" default="false"/>
+    <aura:attribute name="showSPEA" type="boolean" default="false"/>
+    <aura:attribute name="showLimo" type="boolean" default="false"/>
+    <aura:attribute name="showRental" type="boolean" default="false"/>
+    <aura:attribute name="loaded" type="boolean" default="true"/> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="serviceMap"  type="map"/>
+    <aura:attribute name="isGovtParent" type="boolean" default="false"/> 
+    <c:ETST_UtilityMethods aura:id="ETST_UtilityMethods"/>
+    
+    <aura:if isTrue="{! v.needMoreInfo }">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small custompopup">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">                  
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Profile Information</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium mainlocationdiv" id="modal-content-id-1">
+                    <p class="locationpopup">Please Provide your Preferred Location</p>
+                    <div class="slds-grid slds-gutters">                       
+                        <div class="slds-col slds-size_1-of-2 locationbox">
+                            <lightning:select aura:id="Locationid" label="Emirate" class="Box" value="{!v.loc}" >
+                                <aura:iteration items="{!v.LocationList}" var="per">
+                                    <option value="{!per}" text="{!per}" /> 
+                                </aura:iteration>                                
+                            </lightning:select>
+                        </div>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" 
+                                      label="Submit"
+                                      title="Submit"
+                                      onclick="{!c.SubmitDetails}" class="btn_table"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <!--div class="mainDiv">
+    <lightning:layout horizontalAlign="spread" aura:id="mainLayout" class="mainLayout">
+            <lightning:layoutItem padding="around-small">
+                <div class="slds-box">
+                 
+                 <img src="{!$Resource.ETS_DubaiLogo}" onclick="{!c.toggle}"  title ="Dubai" class="ETS_DubaiLogo"/>
+             
+                </div>
+                   
+                </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="slds-box"><img src="{!$Resource.ETS_AbuDhabiLogo}"  title ="Abu Dhabi" onclick="{!c.toggle}" class="ETS_AbuDhabiLogo"/></div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="slds-box2"><img src="{!$Resource.ETS_FujairaLogo}" style="width: 150px;height: 102px;" title ="Fujairah" onclick="{!c.toggle}" class="ETS_FujairaLogo"/></div>
+            </lightning:layoutItem>
+    </lightning:layout>
+    </div>
+    <div>
+        <c:ETS_Header></c:ETS_Header>
+    </div> -->
+    
+    <lightning:layout horizontalAlign="spread" aura:id="mainLayout" class="mainLayout desktopview mobileview"  >
+        <img src="{!$Resource.ETOne_img}" class="topimglogo" />
+        <h2 class="username">Hi <span>{!v.userName}</span></h2>
+        <div class="findcity">
+            <p class="Exp_services">Explore our services in your preferred location</p> 
+            <div class="serviceheaddiv">
+                <!--<p class="serheading">Services</p> -->
+                <img src="{!$Resource.citylocation}" class="citylocation" />
+                <lightning:select aura:id="Locationid1" label="" onchange="{!c.toggle}" value="{v.loc1}" class="Box servicelist" >
+                    <aura:iteration items="{!v.LocationList}" var="per">
+                        <option value="{!per}" selected="{!per==v.loc}"> {!per}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+        </div>
+        <aura:if isTrue="{! v.loaded }">
+            <lightning:layoutItem padding="around-small" class="servicesdiv">
+                <div class="slds-box notoppad">
+                    
+                    <div class="slds-grid slds-gutters mobileservices_sec" style="text-align: center;">
+                        <div class="slds-col">
+                            <aura:if isTrue="{!v.showSchool}">
+                                <div class="item" onclick="{!c.redirectToTransport}">
+                                    <div class="serviceitem" onclick="{!c.redirectToTransport}">
+                                        <img src="{!$Resource.ETschool_bus}" onclick="{!c.redirectToTransport}" class="CarLogo"/>
+                                        <img src="{!$Resource.schooltrans_img}"  onclick="{!c.redirectToTransport}" class="mobileLogo"/>
+                                        <div class="textcontenthead">
+                                            <label class="CarLabel" onclick="{!c.redirectToTransport}">School Transport </label>
+                                            <!--<span class="rightarrow" onclick="{!c.redirectToTransport}">&#10140;</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:if>
+                             <aura:if isTrue="{!and(v.showInspection,!v.isGovtParent)}">
+                                <div class="item" onclick="{!c.redirectToVehicle}">
+                                    <div class="serviceitem" onclick="{!c.redirectToVehicle}">
+                                        <img src="{!$Resource.ETVehicle_Inspection}" class="CarLogo" onclick="{!c.redirectToVehicle}"/> 
+                                        <img src="{!$Resource.vehicleInspec_img}" onclick="{!c.redirectToVehicle}" class="mobileLogo"/>
+                                        <div  class="textcontenthead">
+                                            <label class="CarLabel" onclick="{!c.redirectToVehicle}">Vehicle Inspection</label>
+                                            <!--<span class="rightarrow" onclick="{!c.redirectToVehicle}">&#10140;</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!and(v.showSPEA,!v.isGovtParent)}">
+                                <div class="item" onclick="{!c.redirectToVehicle}">                                
+                                    <div class="serviceitem" onclick="{!c.redirectToVehicle}">
+                                        <img src="{!$Resource.ET_Inspection_car}" class="CarLogo" onclick="{!c.redirectToVehicle}"/> 
+                                        <img src="{!$Resource.ETI_BUS}" onclick="{!c.redirectToVehicle}" class="mobileLogo"/>
+                                        <div  class="textcontenthead">
+                                            <label class="CarLabel" onclick="{!c.redirectToVehicle}">SPEA Inspection</label>
+                                            <!--<span class="rightarrow" onclick="{!c.redirectToVehicle}">&#10140;</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showLimo}">
+                                <div class="item" onclick="{!c.redirectToLimoService}">                                
+                                    <div class="serviceitem" onclick="{!c.redirectToLimoService}">
+                                        <!-- src="{!$Resource.ETCAR_Chaffuer_link}" -->
+                                        <img src="{!$Resource.ETLimo_img}" class="CarLogo" onclick="{!c.redirectToLimoService}"/> 
+                                        <img src="{!$Resource.limoservices_img}" onclick="{!c.redirectToLimoService}" class="mobileLogo"/>
+                                        <div  class="textcontenthead">
+                                            <label class="CarLabel">Limo Services</label>
+                                            <!--<span class="rightarrow">&#10140;</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showLimo}">
+                                <div class="item" onclick="{!c.redirectToRentalService}">
+                                    <div class="serviceitem" onclick="{!c.redirectToRentalService}">
+                                        <!-- src="{!$Resource.ETCAR_Chaffuer_link}" -->
+                                        <img src="{!$Resource.ETLimo_img}" class="CarLogo" onclick="{!c.redirectToRentalService}"/> 
+                                        <img src="{!$Resource.limoservices_img}" onclick="{!c.redirectToRentalService}" class="mobileLogo"/>
+                                        <div  class="textcontenthead">
+                                            <label class="CarLabel">Rental Services</label>
+                                            <!--<span class="rightarrow">&#10140;</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:if>
+                              <aura:if isTrue="false"> <!-- added by janardhan-->
+                                <div class="item" onclick="{!c.redirectToAlWataneya}">
+                                    <div class="serviceitem" onclick="">
+                                        <img src="{!$Resource.OneET_Icons + '/OneET_Icons/CarAuctions.svg'}" onclick="{!c.redirectToAlWataneya}" class="CarLogo"/>
+                                        <img src="{!$Resource.OneET_Icons + '/OneET_Icons/CarAuctions_Mobile.svg'}"  onclick="" class="mobileLogo"/>
+                                        <div class="textcontenthead">
+                                            <label class="CarLabel" onclick="">Al Wataneya Auctions </label>
+                                            <!--<span class="rightarrow" onclick="{!c.redirectToTransport}">&#10140;</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="item" onclick="{!c.redirectToETDI}">
+                                    <div class="serviceitem" onclick="">
+                                        <img src="{!$Resource.OneET_Icons + '/OneET_Icons/DrivingSchool.svg'}" onclick="{!c.redirectToETDI}" class="CarLogo"/>
+                                        <img src="{!$Resource.OneET_Icons + '/OneET_Icons/DrivingSchool_Mobile.svg'}"  onclick="" class="mobileLogo"/>
+                                        <div class="textcontenthead">
+                                            <label class="CarLabel" onclick="">ETDI</label>
+                                            <!--<span class="rightarrow" onclick="{!c.redirectToTransport}">&#10140;</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="item" onclick="{!c.redirectToEmoto}">
+                                    <div class="serviceitem" onclick="">
+                                        <img src="{!$Resource.OneET_Icons + '/OneET_Icons/carresale.svg'}" onclick="{!c.redirectToEmoto}" class="CarLogo"/>
+                                        <img src="{!$Resource.OneET_Icons + '/OneET_Icons/carresale_Mobile.svg'}"  onclick="" class="mobileLogo"/>
+                                        <div class="textcontenthead">
+                                            <label class="CarLabel" onclick="">Emirates MOTO</label>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                  <div class="item" onclick="{!c.redirectToMusada}">
+                                      <div class="serviceitem" onclick="">
+                                          <img src="{!$Resource.OneET_Icons + '/OneET_Icons/Roadsideassistance.svg'}" onclick="{!c.redirectToMusada}" class="CarLogo"/>
+                                          <img src="{!$Resource.OneET_Icons + '/OneET_Icons/Roadsideassistance_Blue.svg'}"  onclick="" class="mobileLogo"/>
+                                          <div class="textcontenthead">
+                                              <label class="CarLabel" onclick="">Musada</label>
+                                              
+                                          </div>
+                                      </div>
+                                  </div>
+                                   <div class="item" onclick="{!c.redirectToET}">
+                                    <div class="serviceitem" onclick="">
+                                        <img src="{!$Resource.OneET_Icons + '/OneET_Icons/OtherServices.svg'}" onclick="{!c.redirectToET}" class="CarLogo"/>
+                                        <img src="{!$Resource.OneET_Icons + '/OneET_Icons/OtherServices_Mobile.svg'}"  onclick="" class="mobileLogo"/>
+                                        <div class="textcontenthead">
+                                            <label class="CarLabel" onclick="">Other Services</label>
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="item" onclick="{!c.redirectToContactUs}">
+                                      <div class="serviceitem" onclick="">
+                                          <img src="{!$Resource.OneET_Icons + '/OneET_Icons/ContactUs.svg'}" onclick="{!c.redirectToContactUs}" class="CarLogo"/>
+                                          <img src="{!$Resource.OneET_Icons + '/OneET_Icons/ContactUs_Blue.svg'}"  onclick="" class="mobileLogo"/>
+                                          <div class="textcontenthead">
+                                              <label class="CarLabel" onclick="">Contact Us</label>
+                                              
+                                          </div>
+                                      </div>
+                                  </div>
+                            </aura:if>
+                            <!-- <div class="item">
+                            <div class="serviceitem">
+                                <img src="{!$Resource.ETI_B2B}" class="CarLogo" onclick="{!c.redirectToB2BService}"/> 
+                                <div  class="textcontenthead">
+                                    <label class="CarLabel">B2B Services</label><span class="rightarrow">&#10140;</span>
+                                </div>
+                            </div>
+                        </div>-->
+                        </div>
+                    </div>
+                </div>
+            </lightning:layoutItem>
+            <aura:set attribute="else">
+                <lightning:spinner alternativeText="Loading" />
+            </aura:set>                                                        
+        </aura:if>
+    </lightning:layout>
+    
+</aura:component>

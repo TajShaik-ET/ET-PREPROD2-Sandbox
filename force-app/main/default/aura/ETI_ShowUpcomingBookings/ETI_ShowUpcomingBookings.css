@@ -1,0 +1,598 @@
+/*@font-face {
+font-family: 'Cronos';
+src: url(/resource/ETI_Cronos); 
+}
+.THIS {
+font-family: 'Cronos';
+letter-spacing: .5px;
+}*/
+.THIS label span{
+    color: #000 !important;
+}
+.THIS.paymenttable{
+    border: 0px solid rgb(212, 212, 212);
+    background:#f1f1f1;
+    margin-top: -30px;
+    border-radius: 0;
+    padding: 1rem;
+    width: 100%;
+    clear: both;
+    position: relative;
+}
+
+.THIS .paymentsection{
+    position: relative;
+    display: block;
+    width: 80%;
+    margin:auto;
+    text-align: center;
+}
+.THIS .divpayment {
+    width: 24%;
+    padding: 0%;
+    margin: 1% .5% 0%;
+    display: inline-block;
+    position: relative;
+    border-radius: 0;
+    height: 230px;
+    transition: .4s;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.95);
+    box-shadow: 0 8px 6px -6px #9c9c9c;
+}
+/*.THIS .divpayment:hover{
+border-radius: 0;
+box-shadow: 0 8px 6px -6px #9e9e9e;
+}*/
+.THIS .paymentbgimg{
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    top: 15%;
+    opacity: .01;
+}
+.THIS .successpay{
+    position: relative;
+    width: 60px;
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+}
+.THIS .successdiv{
+    color: #000;
+    font-size: 12px;
+    padding: 0 0;
+    word-break: break-word;
+}
+.THIS .paymentamount{
+    font-size: 30px;
+    color: #00a861;
+    font-weight: 700;
+}
+.THIS .norecorddiv{
+    position: relative;
+    height: 215px;
+    /*background: url(/resource/ETST_no_row_found);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;*/
+}
+/*.THIS .norecorddiv:before{
+background-color: rgba(0, 0, 0, 0.6);
+content: '';
+left: 0;
+top: 0;
+display: block;
+height: 100%;
+position: absolute;
+width: 100%;
+}*/
+.THIS .norecorddiv .norecord{
+    color: #333;
+    font-size: 1.5rem;
+    /* font-family: 'Cronos';
+    text-shadow: 1px 1px 2px #f2f2f2; */
+    text-align: center;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.THIS .norecordhead{
+    font-size: 1.8rem;
+    font-family: 'Cronos';
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px #f2f2f2;
+    position: relative;
+    margin-bottom: 10px;
+    text-align: left;
+}
+.THIS .norecordhead:before{
+    position: absolute;
+    content: '';
+    width: 40px;
+    height: 3px;
+    left: 0;
+    top: -3px;
+    background: #00904a;
+}
+.THIS .linkpad{
+    padding: 15px;
+}
+.THIS .headingChassis{
+    color: #ff4b5a;
+}
+
+.THIS .contentheading{
+    color: #000;
+    font-size: 3rem;
+    /*font-family: 'Cronos';*/
+    text-shadow: 1px 1px 2px #f2f2f2;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.THIS .paymentbgimg{
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    top: 15%;
+    opacity: .01;
+}
+.THIS .successpay{
+    position: relative;
+    width: 60px;
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.THIS .datailsdiv{
+    color: #000;
+    font-size: 12px;
+    padding: 0 0;
+}
+.THIS .paymentamount{
+    font-size: 30px;
+    color: #00a861;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+.THIS .norecorddiv{
+    position: relative;
+    height: 215px;
+    /*background: url(/resource/ETST_no_row_found);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;*/
+}
+/*.THIS .norecorddiv:before{
+background-color: rgba(0, 0, 0, 0.6);
+content: '';
+left: 0;
+top: 0;
+display: block;
+height: 100%;
+position: absolute;
+width: 100%;
+}*/
+.THIS .norecorddiv .norecord{
+    color: #333;
+    font-size: 1.5rem;
+    /*font-family: 'Cronos';
+    text-shadow: 1px 1px 2px #f2f2f2; */
+    text-align: center;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.THIS .norecordhead{
+    font-size: 1.8rem;
+    /*font-family: 'Cronos';
+    letter-spacing: 1px;*/
+    text-shadow: 1px 1px 2px #f2f2f2;
+    position: relative;
+    margin-bottom: 10px;
+    text-align: left;
+}
+.THIS .norecordhead:before{
+    position: absolute;
+    content: '';
+    width: 40px;
+    height: 3px;
+    left: 0;
+    top: -3px;
+    background: #00904a;
+}
+.THIS .linkpad{
+    padding: 15px;
+}
+.THIS .headingChassis{
+    color: #ff4b5a;
+}
+.THIS input[type="text"]{
+    height: 38px;
+    margin: 0;
+    padding: 0 .5rem 0 .5rem;
+    vertical-align: middle;
+    /*font-family: 'Cronos';*/
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 40px;
+    color: #888;
+    border-radius: 4px;
+    box-shadow: none!important;
+    transition: all .3s;
+    border: 1px solid #ccc;
+    color: #000;
+}
+/*.THIS .slds-button_icon{
+color:rgb(255, 255, 255)
+}*/
+.THIS .slds-form-element__label {
+    font-weight: bold;
+    color: #fff;
+    font-size:14px;
+}
+.THIS .slds-p-around_small, .THIS .slds-p-around--small {
+    padding: .75rem .75rem .75rem .0rem;
+}
+.THIS .btn_table , .THIS .btn_table a{
+    font-size: 14px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 7px;
+    min-width: 100px;
+    height: 38px;
+    background-color: #eb4026;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+    text-decoration: none;
+}
+.THIS .btn_table:hover , .THIS .btn_table a:hover {
+    background-color: #333333!important;
+}
+.THIS .btn_back {
+    font-size: 14px;
+    margin-left: 10px;
+    border: 0 solid #00c19e;
+    color: #fff;
+    padding: 7px;
+    height: 38px;
+    background-color: #b0b1af;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 1.2;
+    transition: all .4s;
+    min-width: 100px;
+}
+.THIS .btn_back:hover {
+    background-color: #333333;
+}
+.THIS .slds-truncate{
+    display: contents;
+}
+.THIS .padtop{
+    padding-top: 0px; 
+}
+.THIS .our-team .student_id{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 90px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    background: #ff4b5a;
+    padding: 5px;
+    z-index: 1;
+    font-size: 12px;
+    border-radius: 0px;
+}
+.THIS .slds-card{
+    background: transparent!important;
+    border: none;
+}
+.THIS .slds-table {
+    background-color: transparent;
+    border:transparent;
+}
+.THIS .btnsubmitdiv{
+    vertical-align: top;
+    padding:35px 0px 0px;
+}
+.THIS .slds-button_icon {
+    background: #000;
+    border: #000;
+}
+.THIS .btnview .slds-button_icon{
+    background: transparent;
+    border: transparent;
+    outline: none;
+    box-shadow: none;
+}
+.THIS .btnview .slds-button_icon svg.slds-button__icon {
+    fill: #000;
+    width: 20px;
+    height: 20px;
+}
+.THIS .slds-modal__container .slds-button_icon {
+    background: transparent;
+    border: none;
+}
+.THIS .slds-modal__container .slds-form-element__label , .THIS .slds-modal__container label span{
+    color: #000;
+    font-size: 14px;
+}
+.THIS.sortdiv{
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.5);
+    margin: auto;
+    padding:1rem;
+    margin-bottom: 1rem;
+}
+.THIS .innerdiv{
+    position: relative;
+    clear:both;
+    width:100%;
+    display:block;
+}
+.THIS .innerdiv .leftsectiondiv{
+    display: inline-block;
+    width: 50%;
+    float: left;
+    padding: .5rem 1rem;
+}
+.THIS .innerdiv .rightsectiondiv{
+    display: inline-block;
+    width: 50%;
+    float: left;
+    text-align: right;
+    padding: .5rem 1rem;
+}
+.THIS .Chassis_num{
+    background: #f2f2f2;
+    padding: .5rem 1rem;
+}
+.THIS .carimg {
+    width: 32px!important;
+    height: 32px!important;
+    position: absolute;
+    top: 10px;
+    right: 16px;
+}
+.THIS .bookingid{
+    font-size: 16px;
+    font-weight: bold;
+    position: relative;
+    padding: 5px 0;
+    color: #000;
+}
+.THIS .btnview{
+    display: block;
+    clear: both;
+    position: relative;
+    text-align: right;
+    padding: 0 1rem;
+}
+@media only screen and (min-width: 1024px) {
+    .THIS .btnsubmitdiv{ 
+        padding: 12px 0px 0px; 
+    }
+    .THIS .custom-box .uiInputDate label{
+        margin-right:15px;
+    }
+    .THIS .custom-box .uiInputDate{
+        display:flex;
+        align-items:center;
+    }
+    .THIS .form-element { 
+        flex: 1;
+    }
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .paymentsection {
+        width: 100%;
+    }
+    .THIS .divpayment {
+        width: 32.33%;
+    }
+    .THIS .btnsubmitdiv {
+        padding: 30px 0 0;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .THIS .norecorddiv {
+        height: 100px;
+    }
+    .THIS .norecorddiv .norecord {
+        font-size: 2rem;
+    }
+    .THIS .contentheading {
+        font-size: 2rem;
+    }
+    .THIS .btn_table {
+        min-width: 90px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .divpayment {
+        width: 49%!important;
+    }
+    .THIS .norecorddiv {
+        height: 100px;
+    }
+    .THIS .norecorddiv .norecord {
+        font-size: 1.5rem;
+    }
+    .THIS .contentheading {
+        font-size: 1.5rem;
+    }
+    .THIS .btn_table, .THIS .btn_table a{
+        padding:7px 7px!important;
+    }
+    .THIS .btn_back , .THIS .btn_table{    
+        min-width: auto!important;
+    }
+}
+@media only screen and (max-width: 600px){
+    .THIS .btnsubmitdiv .btn_table{
+        margin-left: 0px;
+    }
+    .THIS .btn_back , .THIS .btn_table{    
+        min-width: auto!important;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .divpayment {
+        width: 100%!important;
+        margin: 0% 0% 3%;
+        height: 255px;;
+        border-radius: 10px;
+        padding: 0rem;
+        box-shadow: 0 8px 6px -6px #9c9c9c;
+    }
+    .THIS .norecorddiv {
+        height: 100px;
+    }
+    .THIS .norecorddiv .norecord {
+        font-size: 1.5rem;
+    }
+    .THIS .contentheading {
+        font-size: 1.5rem;
+    }
+    
+    .THIS .btnsubmitdiv {
+        padding: 10px 0 10px 0px;
+    }
+    .THIS .btnsubmitdiv {
+        vertical-align: top;
+        width: 100%;
+    }
+    .THIS .btn_back , .THIS .btn_table{    
+        min-width: 100px!important;
+    }
+    .THIS.slds-grid {
+        display: block!important;
+        background: transparent;
+        position: sticky;
+        top: 48px;
+        left: 0;
+        right: 0;
+        padding:0rem;
+        z-index:1;
+    }
+    .THIS .slds-p-around_small, .THIS .slds-p-around--small {
+        padding: 0;
+        width: 48%;
+        display: inline-block;
+        margin: 0% 1%;
+    }
+    .THIS label span {
+        color: #000!important;
+    }
+    .THIS .custom-box{
+        display: block;
+        width: 100%;
+    }
+    .THIS .custom-box .slds-button{
+        width: 50%;
+        margin: 0px;
+        vertical-align: text-top;
+    }
+    .THIS .slds-table {
+        margin-top: 10px;
+        display: inline-table!important;
+        position: relative;
+        width: 100%;
+    }
+    .THIS .btn_table{
+        color: #fff;
+        background: #62cc8c;
+        border: 1px solid #fff;
+        border-radius: 0px;
+        box-shadow: none;
+    }
+    .THIS .btn_table:hover , .THIS .btn_table:active , .THIS .btn_table:focus{
+        color: #62cc8c;
+        background: #fff!important;
+        border: 1px solid #62cc8c;
+    }
+    .THIS .btn_back{
+        color: #62cc8c;
+        background: #fff;
+        border: 1px solid #fff;
+        border-radius: 0px;
+        box-shadow: none;
+    }
+    .THIS .btn_back:hover , .THIS .btn_back:active , .THIS .btn_back:focus{
+        color: #fff;
+        background: #62cc8c!important;
+        border: 1px solid #62cc8c;
+    }
+    .THIS .uiInput--default input{
+        padding: 0px;
+        font-size: 14px;
+        border-radius: 0px;
+        border: none;
+        border-bottom: 1px solid #000;
+        background: transparent;
+    }
+    .THIS .divpayment .lefttext{
+        position: relative;
+        display: inline-block;
+        width: 80%;
+        float: left;
+        text-align: left;
+    }
+    .THIS .divpayment .righttext{
+        position: relative;
+        display: inline-block;
+        width: 20%;
+        text-align: center;
+    }
+    .THIS .divpayment .righttext .padtop {
+        padding-top: 0px;
+    }
+    .THIS .divpayment .righttext .padtop .slds-button_icon {
+        margin: .1rem;
+    }
+    .THIS .datailsdiv{
+        text-align: left;font-size: 1em;
+    }
+    .THIS .datailsdiv.padtop{
+        text-align:center;
+    }
+    .THIS .successdiv {
+        color: #000;
+    }
+    .THIS .slds-button_icon {
+        background: #000;
+        border: #000000;
+    }
+    .THIS .successdiv{
+        height: auto;
+    }
+    .THIS .custom-box li.form-element__help {
+        font-size: .7em;
+        margin-top: -0.1rem;
+        float: left;
+        position: absolute;
+    }
+    .THIS .custom-box .uiInput--default.has-error.uiInputDefaultError {
+        padding: 4px 0 0;
+    }
+    .THIS .innerdiv .leftsectiondiv , .THIS .innerdiv .rightsectiondiv{
+        width: 100%;
+        padding: .3rem 1rem;
+    }
+    .THIS .bookingid{
+        padding:.5rem 0 0;
+    }
+}

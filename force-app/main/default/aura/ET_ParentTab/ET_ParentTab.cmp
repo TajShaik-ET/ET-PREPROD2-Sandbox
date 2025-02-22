@@ -1,0 +1,79 @@
+<aura:component extensible="true">
+    <aura:attribute name="driverDetailFieldsToValidate" type="List"
+                    default="ET_Service_Type__c,NumOfDrivers,DriverCategory,ET_Specific_Base_Salary__c,
+                             ET_Specific_Gross_Salary__c,Reliever_For__c,Resource_Type__c"/>
+    <aura:attribute name="vehicleDetailFieldsToValidate" type="List" default="ET_Vehicle_Source__c,ET_Service_Type__c,ET_Vehicle_MAKE__c,vehicleCondition,vehicleModel,vehicleType,
+                                                                              vehicleSubType,insuranceCategoty,fuelType,ET_Vehicle_Source__c,
+                                                                              vehicleQuantity,vehicleOriginalPurchasePrice,vehicleCurrentPurchasePrice,vehicleNoOfSeats,annualKm,
+                                                                              vehicleFuel,vehicleModelYear,specialRequirementsc"/>
+    <aura:attribute name="nannyDetailFieldsToValidate" type="List" default="NumOfNannies,nannyCategory"/>
+    <aura:attribute name="supervisorDetailFieldsToValidate" type="List" default="NumOfSupervisors,supervisorCategory"/>
+    <aura:attribute name="coordinatorDetailFieldsToValidate" type="List" default="NumofCoordinators,coordinatorCategory"/>
+    <aura:attribute name="accountantDetailFieldsToValidate" type="List" default="NumberOfCashier,cashierCategory"/>
+    <aura:attribute name="otherEmployeeDetailFieldsToValidate" type="List" default="NumOfOtherEmps,otherEmpCategory"/>
+    <aura:attribute name="commonWorkforceDetailFieldIds" type="List" default="['ET_Specific_Gross_Salary__c', 'ET_Specific_Base_Salary__c', 
+                                                                              'ET_Over_Time__c','ET_Specific_Leave_Plan__c', 'Resource_Type__c',
+                                                                              'Cost_of_Living_Allowance__c', 'Transport_Allowance__c','Additional_Transport_Allowance__c',
+                                                                              'Other_Allowance__c', 'Social_Allowance__c', 'Social_Insurance__c',
+                                                                              'Housing_Allowance__c']"/>
+    <aura:attribute name="commonWorkforceDepenedentFieldIdsMap" type="Map" default="{'ET_Smart_Phone_Cost_Type__c':'ET_Smart_Phone__c'}"/>
+    <aura:attribute name="otherCostDetailFieldsToValidate" type="List" default="otherCostLabel,otherCostValue,CostType_CheckboxGrp"/>
+    <aura:attribute name="commonFieldsToBePopulateLst" type="List" /> 
+    <aura:attribute name="numberOfLines" type="Integer" default="0"/>
+    <aura:attribute name="message" type="String" default="Please complete all the required fields in Common Information Section to add new Item."/>
+   
+    <aura:attribute name="existingDriverTabData" type="Object"/>
+    <aura:attribute name="existingDriverCommonData" type="ET_Service_Request_Common_Data__c"/>
+    <aura:attribute name="existingDriverLineItems" type="List" />
+    <aura:attribute name="existingOtherEmpTabData" type="Object"/>
+    <aura:attribute name="existingOtherEmpCommonData" type="ET_Service_Request_Common_Data__c"/>
+    <aura:attribute name="existingOtherEmpLineItems" type="List" />
+    <aura:attribute name="existingSupervisorTabData" type="Object"/>
+    <aura:attribute name="existingSupervisorCommonData" type="ET_Service_Request_Common_Data__c"/>
+    <aura:attribute name="existingSupervisorLineItems" type="List" />
+    <aura:attribute name="existingAccountantTabData" type="Object"/>
+    <aura:attribute name="existingAccountantCommonData" type="ET_Service_Request_Common_Data__c"/>
+    <aura:attribute name="existingAccountantLineItems" type="List" />
+    <aura:attribute name="existingCoordinatorTabData" type="Object"/>
+    <aura:attribute name="existingCoordinatorCommonData" type="ET_Service_Request_Common_Data__c"/>
+    <aura:attribute name="existingCoordinatorLineItems" type="List" />
+    <aura:attribute name="existingNannyTabData" type="Object"/>
+    <aura:attribute name="existingNannyCommonData" type="ET_Service_Request_Common_Data__c"/>
+    <aura:attribute name="existingNannyLineItems" type="List" />
+     
+    
+    <aura:attribute name="deletedDriverChildDetailCmpList" type="List" default="[]"/>
+    <aura:attribute name="deletedVehicleChildDetailCmpList" type="List" default="[]"/>
+    <aura:attribute name="deletedNannyChildDetailCmpList" type="List" default="[]"/>
+    <aura:attribute name="deletedSupervisorChildDetailCmpList" type="List" default="[]"/>
+    <aura:attribute name="deletedCoordinatorChildDetailCmpList" type="List" default="[]"/>
+    <aura:attribute name="deletedAccountantChildDetailCmpList" type="List" default="[]"/>
+    <aura:attribute name="deletedOtherEmpChildDetailCmpList" type="List" default="[]"/>
+    <aura:attribute name="deletedOtherCostChildDetailCmpList" type="List" default="[]"/>
+
+   
+
+    <aura:attribute name="showToast" type="boolean" default="false"/>
+    <aura:attribute name="commonInforReceivedFrmWrapper" type="ET_Service_Request_Common_Data__c" default="{'sObjectType':'ET_Service_Request_Common_Data__c'}"/>
+    
+    
+    
+     <aura:method name="intializeTabProgrammaticallyUponLoading" action="{!c.intializeTabs}" access="public">
+         <aura:attribute name="backgroundColor" type="String"/>
+         <aura:attribute name="commonFieldsToBePopulateLst" type="List"/>
+         <aura:attribute name="commonInforReceivedFrmWrapper" type="ET_Service_Request_Common_Data__c"/>
+         <aura:attribute name="existingData" type="Object"/>
+  	</aura:method>
+   
+    <aura:handler action="{!c.doInit}" name="init" value="{!this}"/>
+    <aura:if isTrue="{!v.showToast}">
+     <!-- <div class="alert" style="color:red">
+          <span class="closebtn" onclick="{!c.hideErrorMessage}">&times;</span> 
+          <strong>Error!</strong> Please complete all the required fields in Common Information Section to add new Item.
+      </div> -->
+      <c:ET_DisplayErrorMessage message="{!v.message}" type="Error" ></c:ET_DisplayErrorMessage>
+  </aura:if>
+
+    <div>{!v.body}</div>
+ 
+</aura:component>

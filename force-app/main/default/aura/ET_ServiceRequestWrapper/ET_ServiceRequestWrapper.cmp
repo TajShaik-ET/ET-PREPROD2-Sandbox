@@ -1,0 +1,508 @@
+<aura:component implements="lightning:isUrlAddressable" controller="ET_ServiceRequestController" >
+    <!--Taj-->
+    <!--<aura:attribute name="isEditMode" type="boolean" default="false" />-->
+    <lightning:messageChannel type="ET_CommunicateChange__c" onMessage="{!c.handleChangeInQuantity}" />
+    <aura:attribute name="changeInVehicleQuantity" type="boolean" default="false" />
+    <lightning:messageChannel type="ET_CommunicateChange__c" aura:id="changeInTabsLMS"/>
+    <aura:attribute name="quoteDetail" type="Quote" />
+    <aura:attribute name="disableSubmit" type="boolean" />
+    <aura:method name="checkValidations" action="{!c.handleValidations}" access="public"></aura:method>
+    <aura:attribute name = "quoteTypeOptions" type = "List" default = "[{'label': 'System', 'value': 'System'},{'label': 'Manual', 'value': 'Manual'}]"/>  
+    <aura:attribute name = "contractYearOptions" type = "List" default = "[{'label': '1', 'value': '1'},{'label': '2', 'value': '2'},{'label': '3', 'value': '3'},{'label': '4', 'value': '4'},{'label': '5', 'value': '5'},{'label': '6', 'value': '6'},{'label': '7', 'value': '7'},{'label': '8', 'value': '8'}]"/>  
+    <!--	attributes	-->
+    <aura:attribute name="displayTabs" type="boolean"/>
+    <aura:attribute name="displayVehicleTab" type="boolean"/>
+    <!-- <aura:attribute name="displayVehicleFuelTab" type="boolean"/>   -->
+    <aura:attribute name="displayDriverTab" type="boolean"/>
+    <aura:attribute name="displaySchoolNanniesTab" type="boolean"/>
+    <aura:attribute name="displaySupervisorTab" type="boolean"/>
+    <aura:attribute name="displayCoordinatorTab" type="boolean"/>
+    <aura:attribute name="displayAccountantTab" type="boolean"/>
+    <aura:attribute name="displayOtherEmployeesTab" type="boolean"/>
+    <aura:attribute name="displayOtherCostTab" type="boolean"/>
+    <aura:attribute name="showModal" type="boolean" default="false"/>
+    <aura:attribute name="requirementVisibility" type="boolean" default="false"/>
+    <aura:attribute name="disableCustomizePricingBttn" type="boolean"/>
+    <aura:attribute name="fieldsWithMultipleValueLst" type="List"/>
+    <aura:attribute name="tabInfoToSendToMappingCmpMap" type="Map"/>
+    <aura:attribute name="dataFromAllOpenTabs" type="Map"/>
+    <aura:attribute name="commonDetailsForAllTab" type="ET_Service_Request_Common_Data__c" default="{'sObjectType':'ET_Service_Request_Common_Data__c'}"/>
+    <aura:attribute name="selectedTabs" type="List"/>
+    <aura:attribute name="selectedTabId" type="String"/>
+    <aura:attribute name="backgroundColor" type="String" />
+    <aura:attribute name="disableSaveButton" type="boolean" default="false"/>
+    <aura:attribute name="atleastOneTabIsSelected" type="boolean"/>
+    <aura:attribute name="disableQuoteBttn" type="boolean"/>
+    <aura:attribute name="activeQuoteId" type="Id"/>
+    <aura:attribute name="opportunityRecordId" type="Id"/>
+    <aura:attribute name="commonCmpLoadingDone" type="boolean" default="false"/>
+    <aura:attribute name="serviceRequestRecordId" type="Id"/>
+    <aura:attribute name="commonDetailsId" type="Id"/>
+    <aura:attribute name="displayUpdateCommonDetailsLayout" type="boolean" default="false"/>
+    <aura:attribute name="serviceRequestModificationStatus" type="String"/>
+    <aura:attribute name="existingApplicationData" type="Object"/>
+    <aura:attribute name="existingAppCommonDetails" type="ET_Service_Request_Common_Data__c" />
+    <aura:attribute name="existingVehicleTabData" type="Object"/>
+    <aura:attribute name="existingDriverTabData" type="Object"/>
+    <aura:attribute name="existingSupervisorTabData" type="Object"/>
+    <aura:attribute name="existingNannyTabData" type="Object"/>
+    <aura:attribute name="existingCoordinatorTabData" type="Object"/>
+    <aura:attribute name="existingAccountantTabData" type="Object"/>
+    <aura:attribute name="existingOtherEmpTabData" type="Object"/>
+    <aura:attribute name="existingOtherCostTabData" type="Object"/>
+    <aura:attribute name="predefinedOtherCostMasterData" type="Map"/>
+    <aura:attribute name="alterRatesWrWithServiceList" type="Object"/>
+    
+    <aura:attribute name="existingCommonDataTabListUponLoading" type="List"/>
+    <aura:attribute name="manpowerDetailCmpsToDeleteList" type="List" default="[]"/>
+    <aura:attribute name="oppRecordType" type="String"/>
+    
+    <!-- attributes for capturing editable fields for Pricing Team -->
+    <aura:attribute name="editableVehicleFieldsforPricingTeam" type="Object"/>
+    <aura:attribute name="editableNannyFieldsforPricingTeam" type="Object"/>
+    <aura:attribute name="editableAccntantFieldsforPricingTeam" type="Object"/>
+    <aura:attribute name="editableOtherEmployeeFieldsforPricingTeam" type="Object"/>
+    <aura:attribute name="editableCoordinatorFieldsforPricingTeam" type="Object"/>
+    <aura:attribute name="editableSupervisorFieldsforPricingTeam" type="Object"/>
+    <aura:attribute name="editableDriverFieldsforPricingTeam" type="Object"/>
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    
+    <!-- Added by Arun for system admin custom permission -->
+    <aura:attribute name="isSysAdmin" type="Boolean" default="true"/>
+    <aura:attribute name="speaFileList" type="Object[]" />
+    <aura:attribute name="uploadedDocs" type="Object[]"/> 
+    <aura:attribute name="oppId" type="String"/>
+    
+    <aura:attribute name="isAlterRatesChanged" type="Boolean" default="false"/>
+    <aura:attribute name="quoteId" type="String"/>
+    <aura:attribute name="totalProjectQuoteId" type="String" />
+    <aura:attribute name="showRejectionPopup" type="Boolean" default="false"/>
+    <aura:attribute name="rejectionReason" type="String" default=""/>
+    <aura:attribute name="showAnnualTargetPrice" type="Boolean" default="false"/>
+    
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:attribute name="showQuotationPDF" type="Boolean" default="false" />
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="commentStr" type="String"/>
+     <aura:attribute name="flag2" type="boolean" default="false"/>
+    <aura:attribute name="opportunityStatus" type="String"/>
+    <aura:attribute name="contractPeriods" type="List"/>
+    <aura:attribute name="contractValue" type="list" />
+    <aura:attribute name="isMultipleContractSelected" type="Boolean" default="false"/>
+    <aura:attribute name="requestForTargetPrice" type="boolean" default="false"/>
+    
+    <aura:handler name="opportunityRecordTypeEvent" action="{!c.setOppRecordType}" event="c:ET_SetOppRecordTypeEvt"/>
+    <aura:handler name="change" value="{!v.selectedTabId}" action="{!c.handleProgrammaticallyTabIdChange}"/>
+    
+    <!-- <aura:attribute name="proceedBttnDisable" type="boolean" default="false" /> -->
+    <aura:method name="getData" action="{!c.getData}" access="public">
+    </aura:method>
+    <aura:method name="deleteAlterRatesData" action="{!c.deleteAlterRatesData}" access="public">
+    </aura:method>
+    <aura:method name="rejectRequestData" action="{!c.rejectRequestData}" access="public">
+    </aura:method>
+    <aura:method name="getAlterRatesData" action="{!c.getAlterRatesData}" access="public">
+    </aura:method>
+    <aura:method name="generateQuotation" action="{!c.generateQuotation}" access="public">
+    </aura:method>
+    <aura:method name="generateTotalProject" action="{!c.generateTotalProject}" access="public">
+    </aura:method>
+    <aura:method name="handleCustomizePricingClicked" action="{!c.handleCustomizePricingClicked}" access="public">
+    </aura:method>
+    <aura:method name="handleCancelButton" action="{!c.handleCancelBttnClicked}" access="public">
+    </aura:method>
+    <aura:method name="submitQuoteForApproval" action="{!c.handlesubmitQuoteForApproval}" access="public">
+         <aura:attribute name="quoteId" type="String" /> 
+    </aura:method>
+    
+    <aura:method name="submitToHeadOfSales" action="{!c.submitToHeadOfSalesController}" access="public">
+    </aura:method>
+    
+    <aura:method name="openQuotation" action="{!c.handleopenQuotationBttnClicked}" access="public">
+    </aura:method>
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:handler name="hideMappingModal" event="c:ET_Hide_MappingModal" action="{!c.hideMappingModel}"/> 
+    <!-- <aura:attribute name="isRefreshAllowed" type="Boolean" default="true"/> -->
+    <aura:handler name="refreshEvent" event="c:ET_doNotAllowChildRefresh" action="{!c.doRefresh}" />
+    <aura:handler name="deletedOtherCostsIdsEvt" event="c:ET_fireDeletedOtherCostTabWiseIdsEvt" action="{!c.handleDeletedOtherCostTabWiseEvt}"/>
+    <aura:attribute name="deletedOtherCostObjIdsLst" type="List"/>
+    <aura:handler name="notifyAlterRatesEvent" event="c:ET_AlterRatesEvent" action="{!c.handlenotifyAlterRatesEvent}"/>
+    <aura:handler name="alterRateDataEvent" event="c:ET_AlterRatesEvent" action="{!c.handleAlterRateEvent}"/>
+    <aura:registerEvent name="alterRateWrpEvent" type="c:ET_AlterRatesEvent"/>
+    <aura:html tag="style">
+        #Vehicle, #Drivers {
+        --backgroundColor: {!v.backgroundColor};
+        }
+        
+    </aura:html>
+    <!--	event handlers	-->
+    <aura:handler name="tabVisibilityEvent" event="c:ET_ControlTabsVisibility" action="{!c.updateTabs}" />
+    
+    <!-- <aura:if isTrue="{!v.requirementVisibility}"> -->
+    <!--SK-->
+    <aura:attribute name="OpprecordTypeName" type="String"/>
+    <aura:handler name="OpprecordTypeNameEvent" action="{!c.getOppRecTypeId}" event="c:ET_SetOppRecordTypeEvt"/>
+    
+    <c:ET_ServiceRequestData aura:id="serviceRequestDataCmp" isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"/>
+    
+    <!-- </aura:if> -->
+    
+    <h3 class="slds-section-title--divider serviceReqHeader"><b>Request Common Information</b></h3>
+    
+    <div aura:id="serviceRequestCommonData" style ="background: #fff;">
+        <c:ET_ServiceRequestCommonData aura:id="serviceRequestCommonCmp" /> <!-- existingCommonInfo = "{!v.existingAppCommonDetails}"-->
+    </div>
+    
+    <aura:if isTrue="{!v.disableSaveButton}">
+        <div class="slds-align_absolute-center"><!--disabled="{!!v.disableSaveButton}" -->
+            <lightning:button class="proceedBtn" variant="brand" label="Proceed" title="Proceed with Requirement" onclick="{! c.handleProceedButtnClick }" />&nbsp;
+        </div>
+    </aura:if>
+    <aura:if isTrue = "{!not(v.isPricingTeam)}">
+        <aura:if isTrue ="{!not(or (v.opportunityStatus == 'Approved' , v.opportunityStatus == 'Submitted For Approval' ))}">
+            <div class="slds-align_absolute-center slds-hide" aura:id ="editButton">
+                <lightning:button class="proceedBtn" variant="brand" label="Edit" title="update common data" onclick="{! c.handleEditCommonDetails }" />&nbsp;
+            </div>
+        </aura:if>
+    </aura:if>
+    
+    
+    <aura:if isTrue="{!v.displayUpdateCommonDetailsLayout == true}">
+        <div style ="background: #fff; border-radius: 0 0 10px 10px!important ;padding:20px;">
+            <!-- disabled="{!v.isDisable}"  -->
+            <lightning:checkboxGroup name="Multiple"
+                                     label="Contract Years:"
+                                     options="{! v.contractPeriods }"
+                                     value="{! v.contractValue }"
+                                     onchange="{! c.handleContractYearChange }"
+                                     aura:id="multipleContract"
+                                     required="true"
+                                     />
+            <br/>
+            
+            <lightning:recordEditForm aura:id="recordEditForm"  
+                                      recordId = "{!v.commonDetailsId}"
+                                      objectApiName="ET_Service_Request_Common_Data__c"
+                                      onsubmit="{!c.handleSubmit}"
+                                      onsuccess="{!c.handleSuccess}"
+                                      >
+                <lightning:messages />
+                
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_4-of-12 checklabel">
+                        <lightning:inputField aura:id="targetPrices" fieldName="ET_Request_for_Target_Price__c"/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12 checklabel">
+                        <lightning:inputField aura:id="nameField" fieldName="ET_Request_for_Separate_Prices__c"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:inputField aura:id="contractType" fieldName="ET_Contract_Type__c"/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:inputField aura:id="serviceEmirate" fieldName="ET_Service_Emirate__c"/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:inputField aura:id="workingDaysPerWeek" fieldName="ET_Working_Days_Per_Week__c"/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:inputField aura:id="workingMonthsPerYear" fieldName="ET_Working_Months_Per_Year__c"/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:inputField aura:id="pricingMethod" fieldName="ET_Pricing_Method__c"/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:inputField aura:id="pricingType" fieldName="ET_Pricing_Type__c"/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:inputField aura:id="pricingUtilization" fieldName="ET_Price_Utilization__c"/>
+                    </div>
+                </div>
+                <lightning:buttonGroup class="slds-align_absolute-center">
+                    <div >
+                        <lightning:button  variant="brand" type="submit" label="Update Changes" />
+                    </div>
+                    <div >
+                        <lightning:button  label="Cancel" variant="brand"  onclick = "{!c.handleEditCommonDetailsCancel}"/>
+                    </div>
+                </lightning:buttonGroup>
+            </lightning:recordEditForm>
+        </div>
+    </aura:if>
+    
+    <br/>
+    <br/>
+    <br/>
+    
+    <aura:if isTrue="{! v.loaded }">
+        <!-- Show Data -->
+        <aura:if isTrue="{!and(v.displayTabs, v.requirementVisibility)}">
+            <div id="requestWrapperTabsetId">
+                
+                <lightning:tabset selectedTabId="{!v.selectedTabId}" variant="scoped" aura:id="tabset" >
+                    
+                    <aura:if isTrue="{!v.displayVehicleTab}">
+                        
+                        <lightning:tab label="Vehicle Information" id="Vehicle" aura:id="vehicleLightningTab">
+                            <c:ET_VehicleTab backgroundColor="{!v.backgroundColor}" aura:id="vehicleTab"
+                                             commonFieldsToBePopulateLst="{!v.fieldsWithMultipleValueLst}"
+                                             commonInforReceivedFrmWrapper="{!v.commonDetailsForAllTab}" 
+                                             existingVehicleTabData="{!v.existingVehicleTabData}"
+                                             alterRatesWithServiceWrp="{!v.alterRatesWrWithServiceList}"
+                                             editableVehicleFieldsforPricingTeam = "{!v.editableVehicleFieldsforPricingTeam}"
+                                             isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"
+                                             predefinedOtherCostMasterData = "{!v.predefinedOtherCostMasterData}"
+                                             quoteId = "{!v.quoteId}" oppId = "{!v.oppId}"
+                                             showAnnualTargetPrice="{!v.showAnnualTargetPrice}" 
+                                             OpprecordTypeName="{!v.OpprecordTypeName}"
+                                             serviceRequestRecordId="{!v.serviceRequestRecordId}"
+                                             /> 
+                        </lightning:tab>
+                        
+                    </aura:if>
+                    <!-- <aura:if isTrue="{!v.displayVehicleFuelTab}">
+                <lightning:tab label="Vehicle Fuel Information" id="Vehicle_Fuel">
+                    Two Content !
+                </lightning:tab>
+            </aura:if>
+            -->
+                    <aura:if isTrue="{!v.displayDriverTab}">
+                        <lightning:tab label="Driver Information" id="Drivers">
+                            <!-- <div aura:id="driverTabBody">
+                        {!v.body}
+                    </div> -->
+                            <c:ET_DriverTab aura:id="driverTab" backgroundColor="{!v.backgroundColor}" 
+                                            commonFieldsToBePopulateLst="{!v.fieldsWithMultipleValueLst}" 
+                                            commonInforReceivedFrmWrapper="{!v.commonDetailsForAllTab}" existingDriverTabData="{!v.existingDriverTabData}"
+                                            editableDriverFieldsforPricingTeam = "{!v.editableDriverFieldsforPricingTeam}"
+                                            alterRatesWithServiceWrp="{!v.alterRatesWrWithServiceList}"
+                                            isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"
+                                            quoteId = "{!v.quoteId}"
+                                            />
+                        </lightning:tab>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.displaySchoolNanniesTab}">
+                        <lightning:tab label="School Bus Nannies Information" id="School_Bus_Nannies">
+                            <!--<div aura:id="nannyTabBody">
+                        {!v.body}
+                    </div> -->
+                            <c:ET_SchoolBusNanniesTab aura:id="schoolBusNanniesTab" backgroundColor="{!v.backgroundColor}" 
+                                                      commonFieldsToBePopulateLst="{!v.fieldsWithMultipleValueLst}" commonInforReceivedFrmWrapper="{!v.commonDetailsForAllTab}" existingNannyTabData="{!v.existingNannyTabData}"
+                                                      editableNannyFieldsforPricingTeam = "{!v.editableNannyFieldsforPricingTeam}"
+                                                      alterRatesWithServiceWrp="{!v.alterRatesWrWithServiceList}"
+                                                      isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"
+                                                      quoteId = "{!v.quoteId}"/>
+                        </lightning:tab>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.displaySupervisorTab}">
+                        <lightning:tab label="Supervisor Information" id="Supervisors">
+                            <!-- <div aura:id="supervisorTabBody">
+                        {!v.body}
+                    </div> -->
+                            <c:ET_SupervisorTab aura:id="supervisorTab" backgroundColor="{!v.backgroundColor}" commonFieldsToBePopulateLst="{!v.fieldsWithMultipleValueLst}" commonInforReceivedFrmWrapper="{!v.commonDetailsForAllTab}"
+                                                existingSupervisorTabData="{!v.existingSupervisorTabData}"
+                                                editableSupervisorFieldsforPricingTeam = "{!v.editableSupervisorFieldsforPricingTeam}"
+                                                alterRatesWithServiceWrp="{!v.alterRatesWrWithServiceList}"
+                                                isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"
+                                                quoteId = "{!v.quoteId}"/>
+                        </lightning:tab>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.displayCoordinatorTab}">
+                        <lightning:tab label="Coordinator Information" id="Coordinators">
+                            <!--<div aura:id="coordinatorTabBody">
+                        {!v.body}
+                    </div> -->
+                            <c:ET_CoordinatorTab aura:id="coordinatorTab" backgroundColor="{!v.backgroundColor}" commonFieldsToBePopulateLst="{!v.fieldsWithMultipleValueLst}" commonInforReceivedFrmWrapper="{!v.commonDetailsForAllTab}"
+                                                 existingCoordinatorTabData="{!v.existingCoordinatorTabData}"
+                                                 editableCoordinatorFieldsforPricingTeam = "{!v.editableCoordinatorFieldsforPricingTeam}"
+                                                 alterRatesWithServiceWrp="{!v.alterRatesWrWithServiceList}"
+                                                 isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"
+                                                 quoteId = "{!v.quoteId}"/>
+                        </lightning:tab>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.displayAccountantTab}">
+                        <lightning:tab label="Accountant/Cashier Information" id="Accountant">
+                            <!-- <div aura:id="accountantTabBody">
+                        {!v.body}
+                    </div> -->
+                            <c:ET_AccountantCashierTab aura:id="accountantTab" backgroundColor="{!v.backgroundColor}" commonFieldsToBePopulateLst="{!v.fieldsWithMultipleValueLst}" commonInforReceivedFrmWrapper="{!v.commonDetailsForAllTab}"
+                                                       existingAccountantTabData="{!v.existingAccountantTabData}"
+                                                       editableAccntantFieldsforPricingTeam = "{!v.editableAccntantFieldsforPricingTeam}"
+                                                       alterRatesWithServiceWrp="{!v.alterRatesWrWithServiceList}"
+                                                       isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"
+                                                       quoteId = "{!v.quoteId}"/> 
+                        </lightning:tab>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.displayOtherEmployeesTab}">
+                        <lightning:tab label="Other Employees Information" id="Other_Employees">
+                            <!-- <div aura:id="otherEmpTabBody">
+                        {!v.body}
+                    </div> -->
+                            <c:ET_OtherEmployeeTab aura:id="otherEmployeeTab" backgroundColor="{!v.backgroundColor}" commonFieldsToBePopulateLst="{!v.fieldsWithMultipleValueLst}" commonInforReceivedFrmWrapper="{!v.commonDetailsForAllTab}"
+                                                   existingOtherEmpTabData="{!v.existingOtherEmpTabData}"
+                                                   editableOtherEmployeeFieldsforPricingTeam = "{!v.editableOtherEmployeeFieldsforPricingTeam}"
+                                                   alterRatesWithServiceWrp="{!v.alterRatesWrWithServiceList}"
+                                                   isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"
+                                                   quoteId = "{!v.quoteId}"/>
+                        </lightning:tab>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.displayOtherCostTab}">
+                        <lightning:tab label="Other Cost Information" id="Other_Cost">
+                            <!-- <div aura:id="otherCostTabBody">
+                        {!v.body}
+                    </div> -->
+                            <c:ET_OtherCostTab aura:id="otherCostTab" backgroundColor="{!v.backgroundColor}" 
+                                               isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"
+                                               existingOtherCostTabData="{!v.existingOtherCostTabData}"
+                                               quoteId = "{!v.quoteId}"
+                                               />
+                        </lightning:tab>
+                    </aura:if>
+                </lightning:tabset>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.showModal}">
+        <!-- data="{!v.tabInfoToSendToMappingCmpMap}"   -->
+        <c:ET_MappingModal aura:id = "mappingModalCmp" 
+                           disableQuoteBttn="{!v.disableQuoteBttn}" 
+                           selectedTabLst="{!v.selectedTabs}" 
+                           serviceRequestRecordId="{!v.serviceRequestRecordId}"
+                           isPricingTeam = "{!AND(v.isPricingTeam, v.isSysAdmin)}"
+                           opportunityStatus = "{!v.opportunityStatus}"
+                           />  <!--disableCustomizePricingBttn="{!v.disableCustomizePricingBttn}"-->
+        
+    </aura:if>
+    <aura:if isTrue="{!v.showRejectionPopup}">
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container bulkCancelBookingsPopup">
+                <header class="slds-modal__header modalHeader">
+                    <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeRejectionPopup}"
+                                          alternativeText="close" variant="bare-inverse"
+                                          class="slds-modal__close bulkCancelModal"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Rejection Reason</h2>
+                </header> 
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="custom_popup slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                    <div class="slds-form-element" >
+                        <div class="slds-card slds-has-bottom-magnet" >
+                            <lightning:textarea aura:id="fieldId" label="Reason" value="{!v.rejectionReason}" required="true" />
+                        </div>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer modalFooter modalFooter">
+                    <lightning:button variant="brand" label="Close" title="Close" 
+                                      onclick="{! c.closeRejectionPopup }" class="btnsave"/>
+                    <lightning:button variant="brand" label="Submit" title="Submit" 
+                                      onclick="{! c.submitRejectRequest }" class="btnsave"/>
+                </footer>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->  
+    </aura:if>
+    
+    <aura:if isTrue="{!v.isModalOpen}">
+        <div class="slds-m-around_xx-large">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Comments</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning:combobox name="quoteType" label="Quotation Type" value="{!v.quoteDetail.Quote_Type__c}" options="{!v.quoteTypeOptions}" onchange="{!c.handleChange}" required="true"/> <!--quoteDetail - {!v.quoteDetail.Quote_Type__c} File Size - {!v.speaFileList.length}-->
+                        <lightning:combobox name="contractYear" label="Contract year" value="{!v.quoteDetail.Contract_Year__c}" options="{!v.contractYearOptions}" onchange="{!c.handleChange}" required="true"/>
+                        <!--<aura:if isTrue="{!v.quoteDetail.Quote_Type__c == 'Manual'}">-->
+                        <lightning:input type="number" name="totalInv" label="Quote Total Investment" value="{!v.quoteDetail.Quote_Total_Investment__c}"  onchange="{!c.handleChange}" required="{!v.quoteDetail.Quote_Type__c == 'Manual'}"/>
+                        <lightning:input type="number" name="totalInvVeh" label="Total Investment New Vehicles Manual" value="{!v.quoteDetail.Total_Investment_New_Vehicles_Manual__c}"  onchange="{!c.handleChange}" required="{!v.quoteDetail.Quote_Type__c == 'Manual'}"/>
+                        <lightning:input type="number" name="totalValRental" label="Total Value of Rental Manual" value="{!v.quoteDetail.Total_Value_of_Rental_Manual__c}"  onchange="{!c.handleChange}" required="{!v.quoteDetail.Quote_Type__c == 'Manual'}"/>
+                        <!--</aura:if>-->
+                        <lightning:textarea value="{!v.commentStr}" placeholder="Type comments"  />
+                    
+                    
+                        <lightning:input aura:id="Images" type="file" files="{!v.uploadedDocs}" onchange="{!c.OnUploadSpea}" accept="" multiple="false" disabled="" class="imgupload" title="Upload Images" required="{!v.quoteDetail.Quote_Type__c == 'Manual' ? true : false}"/>
+                        <lightning:layout multipleRows="false">
+                        <aura:iteration items="{!v.speaFileList}" var="file" indexVar="index">
+                            <lightning:layoutItem padding="" >
+                                <p href="" id="{!file.Id}" onclick="">{!file.filename}
+                                    <a onclick="{!c.removeRecord}" data-record="{!index}">
+                                        <lightning:icon iconName="utility:close" size="small" alternativeText="Delete"/>
+                                        <span class="slds-assistive-text">Delete</span>
+                                    </a>
+                                </p>
+                                <!--lightning:fileCard fileId="{!file.Id}" description="{!file.filename}"/-->
+                                
+                            </lightning:layoutItem>
+                        </aura:iteration>
+						</lightning:layout>
+                   </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                            <lightning:button variant="success"
+                                              label="Submit"
+                                              title="Approve"
+                                              disabled="{!v.disableSubmit}"
+                                              onclick="{!c.onSubmit}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </aura:if>
+        <aura:set attribute="else">
+            <lightning:spinner alternativeText="Loading" variant="brand" />
+        </aura:set>
+    </aura:if>
+    
+    
+    
+    <!-- Confirm Dialog to proceed pricing combination page-->
+    
+    <div class="slds-hide" aura:id="ConfirmDialogPricingCombination" style="height:24rem">
+        <section role="alertdialog" tabindex="0" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-theme--warning slds-theme_alert-texture">
+                    <aura:if isTrue ="{!not(or (v.opportunityStatus == 'Approved' , v.opportunityStatus == 'Submitted For Approval' ))}">
+                        <h2 class="slds-text-heading_medium" id="prompt-heading-id">Are you sure ?</h2>
+                        <aura:set attribute = "else">
+                            <h2 class="slds-text-heading_medium" id="prompt-heading-id">Info</h2>
+                        </aura:set>
+                    </aura:if>
+                </header>
+                <aura:if isTrue ="{!not(or (v.opportunityStatus == 'Approved' , v.opportunityStatus == 'Submitted For Approval' ))}">
+                    <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+                        <p>Do you want to proceed to pricing customization ? Make sure to hit "save" button, if you havn't yet, before you press "yes", in order to save the unsaved changes.</p>
+                    </div>
+                    <aura:set attribute = "else">
+                        <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+                            <p>Pricing Customization is already done. You can only view the combinations now.</p>
+                        </div>
+                    </aura:set>
+                </aura:if>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" label="Yes" title="Yes" onclick="{!c.handleYes}" />&nbsp;&nbsp;
+                    <lightning:button  variant="brand" label="No" title="No" onclick="{!c.handleNo}" />   
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    
+</aura:component>

@@ -1,0 +1,5 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId" controller="ET_ServiceRequestController" >
+        <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+        <aura:attribute name="recordId" type="Id"/>
+        <aura:attribute name="quoteId" type="String"/>
+</aura:component>

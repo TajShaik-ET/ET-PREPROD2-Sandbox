@@ -1,0 +1,198 @@
+.THIS .serviceitem{
+    position: relative;
+    width: 19%;
+    margin: 1% .5%;
+    border: 1px solid rgba(231,236,239,1);
+    display: inline-block;
+    text-align: center;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 0px 0px 10px 10px;
+}
+.THIS .serviceitem h3{
+    padding: 1rem .5rem 0rem;
+    color: #000;
+    font-size: 16px;
+}
+.THIS .serviceitem a{
+    color: #555;
+    padding: .5rem .5rem 1rem;
+    display: block;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: bold;
+    transition: .4s;
+}
+.THIS .serviceitem a:hover{
+    color: #0c32d8;
+    transition: .4s;
+}
+.THIS .imagediv{
+    overflow: hidden;
+    position: relative;
+    
+}
+.THIS .imagediv img{
+    transition: .4s;
+    width:100%;
+    height:100%;
+}
+.THIS .serviceitem:hover img{
+    transform: scale(1.2);
+    transition: .4s;
+}
+.THIS .imagediv:hover img{
+    transform: scale(1.2);
+    transition: .4s;
+}
+
+/*------------------sub services---------------*/
+
+.THIS .serviceheading{
+    font-size: 30px;
+    text-align: center;
+    color: #000;
+    padding: 20px 10px;
+}
+.THIS.subservicesection .subserviceitem{
+    position: relative;
+    width: 32.33%;
+    margin: 1% .5%;
+    border: 1px solid rgba(231,236,239,1);
+    display: inline-block;
+    text-align: center;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 0px 0px 10px 10px;
+    height: 260px;
+}
+.THIS.subservicesection .subserviceitem h3{
+    padding: 1rem 1rem 0rem;
+    color: #fff;
+    position: absolute;
+    bottom: 40px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: normal;
+    z-index: 2;
+}
+.THIS.subservicesection .subserviceitem .requestbtn{
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    transition: .4s;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #00c19e;
+    color: white;
+    border: 1px solid #00c19e;
+    padding: 5px;
+    height: 30px;
+    width: 150px;
+    line-height: 20px;
+    font-weight: 800;
+    z-index: 2;
+}
+.THIS.subservicesection .subserviceitem .requestbtn:hover{
+    color: #fff;
+    transition: .4s;
+}
+.THIS.subservicesection .subserviceitem a{
+    color: #00c19e;
+    padding: 0rem 0rem 0rem 1rem;
+    display: block;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    transition: .4s;
+    position: absolute;
+    bottom: 20px;
+    z-index: 2;
+}
+.THIS.subservicesection .subserviceitem a:hover{
+    color: #fff;
+    transition: .4s;
+}
+.THIS.subservicesection .imagediv{
+    overflow: hidden;
+    position: relative;
+    width:100%;
+    height:100%;
+}
+.THIS.subservicesection .imagediv:before {
+    bottom: 0;
+    content: "";
+    display: block;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    background-image: linear-gradient(182deg, rgba(0,0,0,0) 37%,rgba(0,0,0,1) 76%);
+    opacity: 0.7;
+    height: 100%;
+}
+.THIS.subservicesection .imagediv img{
+    transition: .4s;
+    width:100%;
+    height:100%;
+}
+
+.THIS.subservicesection .subserviceitem:hover img{
+    transform: scale(1.2);
+    transition: .4s;
+}
+.THIS.subservicesection .imagediv:hover img{
+    transform: scale(1.2);
+    transition: .4s;
+}
+@media only screen and (max-width: 1024px) {
+    .THIS .serviceitem h3 {
+        padding: 1rem 1.6rem 0;
+        color: #000;
+        font-size: 14px;
+    }
+    .THIS .serviceitem a {
+        font-size: 10px;
+    }
+    .THIS.subservicesection .subserviceitem {
+        height: 220px;
+    }
+}
+@media only screen and (max-width: 768px){
+    .THIS .serviceitem h3 {
+        padding: 1rem 1rem 0;
+    }
+    .THIS.subservicesection .subserviceitem {
+        width: 49%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .THIS .serviceitem {
+        width: 32.33%;
+        margin: 1% .5%;
+    }
+    .THIS .serviceitem h3 {
+        padding: 1rem .5rem 0;
+    }
+    .THIS.subservicesection .subserviceitem {
+        width: 49%;
+        height:210px;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .THIS .serviceitem {
+        width: 49%;
+        margin: 1% .5%;
+    }
+    .THIS.subservicesection .subserviceitem {
+        width: 100%;
+        margin: 1% 0%;
+        height: auto;
+    }
+}

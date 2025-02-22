@@ -1,0 +1,52 @@
+.THIS.searchmaindiv{
+    width: 80%;
+    position: relative;
+    display: block;
+    margin: auto;
+}
+.THIS.searchmaindiv .searchleftdiv{
+    width: 25%;
+    display: inline-block;
+    float: left;
+    background: #f4f4f5;
+    padding: 15px;
+    font-family: 'Cronos';
+    border: 0px solid #f4f4f5;
+}
+.THIS.searchmaindiv .searchleftdiv .internaldiv{
+    background: #fff;
+    padding: 15px;
+}
+.THIS.searchmaindiv .searchleftdiv h3{
+    color: #ff4b5a!important;
+    font-family: 'Cronos';
+    font-size: 18px;
+    padding: 0px;
+    background: transparent;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e6e3e3;
+    margin-bottom: 5px;
+    
+}
+.THIS.searchmaindiv .searchleftdiv .infolabel{
+    font-weight: 700!important;
+    font-size: 14px;
+    letter-spacing: .5px;
+    padding-bottom: 0px;
+}
+.THIS.searchmaindiv .searchleftdiv .infovalue{
+    font-size: 14px;
+    letter-spacing: .5px;
+    padding-bottom: 5px;
+    font-weight: 400!important;
+    line-height: 20px;
+}
+.THIS.searchmaindiv .searchleftdiv .infovalue .slds-form-element__static{
+    color: #9a9a9a;
+}
+.THIS.searchmaindiv .searchrightdiv{
+    width: 73%;
+    display: inline-block;
+    margin-left: 2%;
+    float: left;
+}

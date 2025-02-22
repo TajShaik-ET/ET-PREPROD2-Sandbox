@@ -1,0 +1,211 @@
+<aura:component extensible="true" access="global">
+    <aura:attribute name="clLang" type="string" default="en" />
+    <aura:attribute name="clMyBusiness" type="string" default=""/>
+    <aura:attribute name="clGeneralCases" type="string" default=""/>
+    <aura:attribute name="clSpecialRequest" type="string" default=""/>
+    <aura:attribute name="clCustomerCare" type="string" default=""/>
+    <aura:attribute name="clEscForm" type="string" default=""/>
+    <aura:attribute name="clEseDashboard" type="string" default=""/>
+    <aura:attribute name="clAccidentVehicle" type="string" default=""/>
+    <aura:attribute name="clCreateRequest" type="string" default=""/>
+    <aura:attribute name="clAllSpecialRequests" type="string" default=""/>
+    <aura:attribute name="clAllRequests" type="string" default=""/>
+    <aura:attribute name="clDownload" type="string" default=""/>
+    <aura:attribute name="clNew" type="string" default=""/>
+    <aura:attribute name="clInProgress" type="string" default=""/>
+    <aura:attribute name="clHome" type="string" default=""/>
+    <aura:attribute name="clExplore" type="string" default=""/>
+    <aura:attribute name="clPendingApproval" type="string" default=""/>
+    <aura:attribute name="clRejected" type="string" default=""/>
+    <aura:attribute name="clApproved" type="string" default=""/>
+    <aura:attribute name="clClosed" type="string" default="" />    
+    <aura:attribute name="clAll" type="string" default=""/>
+    <aura:attribute name="clApprove" type="string" default=""/>
+    <aura:attribute name="clReject" type="string" default=""/>
+    <aura:attribute name="clReply" type="string" default=""/>
+    <aura:attribute name="clSearchCase" type="string" default=""/>
+    <aura:attribute name="clSrNo" type="string" default=""/>
+    <aura:attribute name="clCaseNumber" type="string" default="" />
+    <aura:attribute name="clType" type="string" default="" />
+    <aura:attribute name="clNextActivity" type="string" default="" /> 
+    <aura:attribute name="clSubject" type="string" default="" /> 
+    <aura:attribute name="clRecentActivity" type="string" default="" /> 
+    <aura:attribute name="clAssignedResources" type="string" default="" /> 
+    <aura:attribute name="clAssignedVehicles" type="string" default="" /> 
+    <aura:attribute name="clStudent" type="string" default="" /> 
+    <aura:attribute name="clAction" type="string" default="" /> 
+    <aura:attribute name="clCaseApprovalProcess" type="string" default="" />    
+    <aura:attribute name="clSave" type="string" default="" />
+    <aura:attribute name="clDOyouwantto" type="string" default="" />
+    <aura:attribute name="clCreateCase" type="string" default="" />
+    <aura:attribute name="clSelectType" type="string" default="" />
+    <aura:attribute name="clSelectAccount" type="string" default="" />
+    <aura:attribute name="clSelectStatus" type="string" default="" />
+    <aura:attribute name="clthecase" type="string" default="" />  
+    <aura:attribute name="clComments" type="string" default="" />
+    <aura:attribute name="clCompletethisfield" type="string" default="" />  
+    <aura:attribute name="clHowcanwehelpyou" type="string" default="" />
+    <aura:attribute name="clSelectRequestType" type="string" default="" /> 
+    <aura:attribute name="clNone" type="string" default="" />
+    <aura:attribute name="clGlobalEventRequest" type="string" default="" /> 
+    <aura:attribute name="clActivitiesEvents" type="string" default="" />
+    <aura:attribute name="clAwarenessSessionRequest" type="string" default="" />
+    <aura:attribute name="clGrowthRequestsforVehicleNannyandCoordinator" type="string" default="" /> 
+    <aura:attribute name="clHandicapServicesTransportationorNannyRequest" type="string" default="" />
+    <aura:attribute name="clTeachersTransportationRequest" type="string" default="" /> 
+    <aura:attribute name="clSchoolName" type="string" default="" /> 
+    <aura:attribute name="clCoordinatorName" type="string" default="" />    
+    <aura:attribute name="clRequest" type="string" default="" />    
+    <aura:attribute name="clPhone" type="string" default="" /> 
+    <aura:attribute name="clCity" type="string" default="" /> 
+    <aura:attribute name="clZoneType" type="string" default="" /> 
+    <aura:attribute name="clNoofStudents" type="string" default="" /> 
+    <aura:attribute name="clGender" type="string" default="" /> 
+    <aura:attribute name="clNoofVehicles" type="string" default="" /> 
+    <aura:attribute name="clNoofAttendants" type="string" default="" />  
+    <aura:attribute name="clDescription" type="string" default="" /> 
+    <aura:attribute name="clCCMRemarks" type="string" default="" /> 
+    <aura:attribute name="clSearchLocation" type="string" default="" /> 
+    <aura:attribute name="clSearch" type="string" default="" /> 
+    <aura:attribute name="clSkip" type="string" default="" />
+    <aura:attribute name="clEscortforDisabledStudents" type="string" default="" /> 
+    <aura:attribute name="clNoofDisabledStudents" type="string" default="" />    
+    <aura:attribute name="clStudentDivision" type="string" default="" /> 
+    <aura:attribute name="clNoofPassengers" type="string" default="" /> 
+    <aura:attribute name="clGetLocation" type="string" default="" /> 
+    <aura:Attribute name="clTripCoordinator" type="string" default="" /> 
+    <aura:attribute name="clPreferredEndDate" type="string" default="" /> 
+    <aura:Attribute name="clPreferredStartDate" type="string" default="" />
+    <aura:Attribute name="clBusSupervisorAvailable" type="string" default=""/>
+    <aura:attribute name="clTripType" type="string" default="" /> 
+    <aura:attribute name="clMode" type="string" default="" />
+    <aura:attribute name="clTripDestination" type="string" default="" />   
+    <aura:attribute name="clNoofTeachers" type="string" default="" /> 
+    <aura:attribute name="clDisabilityType" type="string" default="" /> 
+    <aura:attribute name="clMobilityAids" type="string" default="" /> 
+    <aura:attribute name="clRequestType" type="string" default="" />
+     <aura:attribute name="clSubRequest" type="string" default="" /> 
+    <aura:attribute name="clSISNumber" type="string" default="" /> 
+    <aura:attribute name="clGrade" type="string" default="" /> 
+    <aura:attribute name="clParentName" type="string" default="" /> 
+    <aura:attribute name="clParentPhone" type="string" default="" /> 
+    <aura:attribute name="clDelegatedPersonName" type="string" default="" /> 
+    <aura:attribute name="clDelegatedPersonPhone" type="string" default="" /> 
+    <aura:attribute name="clAudience" type="string" default="" />  
+    <aura:attribute name="clProgramType" type="string" default="" />
+    <aura:attribute name="clNoofAttendance" type="string" default="" />    
+    <aura:attribute name="clClose" type="string" default="" />    
+    <aura:attribute name="clSelectLocation" type="string" default="" /> 
+    <aura:attribute name="clActive" type="string" default="" /> 
+    <aura:attribute name="clStudents" type="string" default="" /> 
+    <aura:attribute name="clStudentName" type="string" default="" />
+    <aura:attribute name="clGoodAsNew" type="string" default="" />
+    <aura:attribute name="clEmiratesMoto" type="string" default="" />
+    <aura:attribute name="clEmiratesTransport" type="string" default="" />
+    <aura:attribute name="clEtBoostsItsLogistics" type="string" default="" />
+    <aura:attribute name="clEtCallCentreRecieved" type="string" default="" />
+    <aura:attribute name="clEmiratesMotoServices" type="string" default="" />
+    <aura:attribute name="clEtPoweredBySmaartt" type="string" default="" />
+    
+    <aura:attribute name="clStudentId" type="string" default="" /> 
+    <aura:attribute name="clEmiratesId" type="string" default="" /> 
+    <aura:attribute name="clName" type="string" default="" /> 
+    <aura:attribute name="clVehicleNumber" type="string" default="" /> 
+    <aura:attribute name="clVehicleDescription" type="string" default="" /> 
+    <aura:attribute name="clSalesAgreementName" type="string" default="" /> 
+    <aura:attribute name="clAssignStartDate" type="string" default="" />
+    <aura:attribute name="clAssignEndDate" type="string" default="" /> 
+    <aura:attribute name="clRaiseComplaint" type="string" default="" /> 
+    <aura:attribute name="clSchools" type="string" default="" /> 
+    <aura:attribute name="clSalesAgreements" type="string" default="" /> 
+    <aura:attribute name="clInvoices" type="string" default="" />
+    <aura:attribute name="clInvoiceNumber" type="string" default="" /> 
+    <aura:attribute name="clTotalInvoiceAmount" type="string" default="" />  
+    <aura:attribute name="clInvoiceDescription" type="string" default="" /> 
+    <aura:attribute name="clStatus" type="string" default="" /> 
+    <aura:attribute name="clCreatedDate" type="string" default="" /> 
+    <aura:attribute name="clAccountName" type="string" default="" /> 
+    <aura:attribute name="clContractStartDate" type="string" default="" /> 
+    <aura:attribute name="clContractEndDate" type="string" default="" /> 
+    <aura:attribute name="clAccountNumber" type="string" default="" />    
+    <aura:attribute name="clSchoolId" type="string" default="" /> 
+    <aura:attribute name="clComplete" type="string" default="" /> 
+    <aura:attribute name="clCancel" type="string" default="" /> 
+    <aura:attribute name="clLastNameisMandatory" type="string" default="" /> 
+    <aura:attribute name="clPleaseuseonlylettersorDigits" type="string" default="" /> 
+    <aura:attribute name="clStudentIdisMandatory" type="string" default="" /> 
+    <aura:attribute name="clEnteronlydigits" type="string" default="" /> 
+    <aura:attribute name="clCompletethispart" type="string" default="" /> 
+    <aura:attribute name="clPleaseentercorrectmobilenumber" type="string" default="" /> 
+    <aura:attribute name="clGradeisMandatory" type="string" default="" />
+    <aura:attribute name="clSectionisMandatory" type="string" default="" /> 
+    <aura:attribute name="clPleaseselectCorrectdate" type="string" default="" /> 
+    <aura:attribute name="clPhoneisMandatory" type="string" default="" />
+    <aura:attribute name="clNoPricelistisassociatedtoyourschool" type="string" default="" /> 
+    <aura:attribute name="clPleasecontactEmiratesTransport" type="string" default="" /> 
+    <aura:attribute name="clCreatedBy" type="string" default="" /> 
+    <aura:attribute name="clCaseOwner" type="string" default="" /> 
+    <aura:attribute name="clCoordinator" type="string" default="" />
+    <aura:attribute name="clRequestaboardingpassforCompanionHandycamptransportation" type="string" default="" />
+    <aura:attribute name="clStudentCompanionName" type="string" default="" />
+    <aura:attribute name="clCompanionIDNumber" type="string" default="" />
+    <aura:attribute name="clDelete" type="string" default="" />
+    <aura:attribute name="clHomeTotalRequest" type="string" default="" />
+    <aura:attribute name="clHomeNew" type="string" default="" />
+    <aura:attribute name="clHomeOnHold" type="string" default="" />
+    <aura:attribute name="clHomeApprovalPending" type="string" default="" />
+    <aura:attribute name="clHomeInProgress" type="string" default="" />
+    <aura:attribute name="clHomeClosed" type="string" default="" />
+    <aura:attribute name="clOurServices" type="string" default="" />
+    <aura:attribute name="clHomeStudentTransport" type="string" default="" />
+    <aura:attribute name="clinspectionservices" type="string" default="" />
+    <aura:attribute name="cllogisticservices" type="string" default="" />
+    <aura:attribute name="clhomedashboard" type="string" default="" />
+    <aura:attribute name="clhomelimoservices" type="string" default="" />
+    <aura:attribute name="clCancelRequest" type="string" default="" />
+    <aura:attribute name="clYes" type="string" default="" />
+    <aura:attribute name="clNo" type="string" default="" />
+    <aura:attribute name="clCancelled" type="string" default="" />
+    <aura:attribute name="clfilePreview" type="string" default="" />
+    <aura:attribute name="faqVal" type="string" default="" />
+    <aura:attribute name="clDescriptionESECase" type="string" default="" />
+    <aura:attribute name="cllandmark" type="string" default="" />
+    <aura:attribute name="clCaseCustomerCare" type="string" default="" />
+    <aura:attribute name="clCaseCustomerCareType" type="string" default="" />
+    <aura:attribute name="clStudenthome" type="string" default="" />
+    <aura:attribute name="clStudenthomeAr" type="string" default="" />
+    <aura:attribute name="clTripLocation" type="string" default="" />
+    <aura:attribute name="clTripLocationAr" type="string" default="" />
+    <aura:attribute name="clAwarenessSessionLocation" type="string" default="" />
+    <aura:attribute name="clAwarenessSessionLocationAr" type="string" default="" />
+     <aura:attribute name="clSchoolCode" type="string" default="" />
+     <aura:attribute name="clSchoolArea" type="string" default="" />
+     <aura:attribute name="clSchoolCity" type="string" default="" />
+    <aura:attribute name="clSchoolCodeAR" type="string" default="" />
+     <aura:attribute name="clSchoolAreaAR" type="string" default="" />
+     <aura:attribute name="clSchoolCityAR" type="string" default="" />
+     <aura:attribute name="clFAQ" type="string" default="" />
+     <aura:attribute name="clSpecialNeedsActivityAndEventRequest" type="string" default="" />
+    <aura:attribute name="clSpecialNeedsTransportationRequest" type="string" default="" /> 
+    <aura:attribute name="clSpecialNeedsCompanionRequest" type="string" default="" />
+    <aura:attribute name="clFleetGrowthRequest" type="string" default="" /> 
+    <aura:attribute name="clSpecialDashboard" type="string" default="" /> 
+    <aura:attribute name="clESErejectionPageTitle" type="string" default="" />
+    <aura:attribute name="clInternalNumberofStudent" type="string" default="" />
+    <aura:attribute name="clPendingESE" type="String" default="" />
+    <aura:attribute name="clPendingHemam" type="String" default="" />
+    <aura:attribute name="clPendingMOE" type="String" default="" />
+    <aura:attribute name="clPendingSchoolActivities" type="String" default="" />
+    <aura:attribute name="clPendingSupervisors" type="String" default="" />
+    <aura:attribute name="clPendingManager" type="String" default="" />
+     <aura:attribute name="clPendingHeadofSafety" type="String" default="" />
+	    
+  {!v.body}
+   
+    <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> -->
+    <!-- added calling feedbackPopup.cmp-->
+
+        
+    
+    
+</aura:component>

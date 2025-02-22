@@ -1,0 +1,60 @@
+<template>
+    <div class="material_div">
+        <h3 class="heading" >Material Return Notes</h3>
+        <div class="searchdiv">
+            <c-custom-lookup-Global name="GIN" field-label="Tool & Materials"
+                child-object-api-name="ETT_Material_Return_Note__c" target-field-api-name="GIN__c"
+                variant="label-hidden" required="true" add-to-recent="true" onvalueselected={handleSelectedLookup}>
+            </c-custom-lookup-Global>
+        </div>
+        <!-- Table to display and input editable data -->
+        <template if:true={goodsIssueLines.length}>
+            <div class="table_responsive">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Select</th>
+                            <th>Goods Issue No</th>
+                            <th>Process Name</th>
+                            <th>Material Name</th>
+                            <th>Item Code</th>
+                            <th>Factory Stock</th>
+                            <th>Fact-Stock Avg Price</th>
+                            <th>Issued Quantity</th>
+                            <th class="righttext">Total Price</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={goodsIssueLines} for:item="line">
+                            <tr key={line.Id}>
+                                <td>{line.rowNumber}</td>
+                                <td>
+                                    <lightning-input type="checkbox" data-id={line.Id} checked={line.isSelected}
+                                        onchange={handleRowSelection}></lightning-input>
+                                </td>
+                                <td>{line.Name}</td>
+                                <td>{line.Process_Name__c}</td>
+                                <td>{line.Tool_Material_Name__r.Name}</td>
+                                <td>{line.Item_Code__c}</td>
+                                <td>{line.Tool_Material_Name__r.ETT_Allocated_Units__c}</td>
+                                <td >{line.Tool_Material_Name__r.Factory_Stock_Average_Price__c}</td>
+                                <td>{line.Issued_Quantity__c}</td>
+                                <td class="righttext">{line.Total_Price__c}</td>
+                                <td>
+                                    <lightning-input variant="label-hidden" type="number" value={line.Quantity__c}
+                                        data-id={line.Id} onchange={handleInputChange}></lightning-input>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex-right">
+                <lightning-button variant="success" label="Create Material Return Lines" onclick={createMaterialReturnLines}>
+                </lightning-button>
+            </div>
+        </template>
+    </div>
+</template>

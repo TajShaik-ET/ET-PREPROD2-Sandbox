@@ -1,0 +1,65 @@
+<aura:component controller="LCRecordTypeSelController" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+     <aura:html tag="style">
+        .slds-modal__container{
+        max-width: 60rem !important;
+        width:60% !important;
+        }
+         .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .closeIcon {
+        display:none !important;
+    		}
+    </aura:html>
+    <aura:attribute name="selectedRecordType" type="String"/>
+    <aura:attribute name="recordTypeList" type="Object[]"/>    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    
+	<div class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <lightning:buttonIcon class="slds-modal__close" iconName="utility:close" size="large" 
+                                          variant="bare-inverse" alternativeText="Close" onclick="{!c.defaultCloseAction}" /> 
+               
+                <h2 id="header43" class="slds-text-heading--medium">Please select record Type</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">
+                <div class="slds-align--absolute-center">
+                     <div class="slds-p-top--small slds-p-bottom--small" >
+                        <fieldset class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <aura:iteration items="{!v.recordTypeList}" var="item">
+                                    <label class="slds-radio slds-p-top--small">
+                                        <tr>
+                                            <td>
+                                                <ui:inputRadio name="benefits" change="{!c.onChange}" text="{!item.recordTypeId}"/>
+                                                <span class="slds-radio--faux"></span>
+                                            </td>
+                                            <td>
+                                                <span class="slds-form-element__label">{!item.recordTypeLabel}</span>
+                                            </td>
+                                        </tr>
+                                    </label>
+                                
+                               </aura:iteration>
+                             </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-modal__footer">
+                <lightning:button label="Cancel" variant="neutral"  onclick="{!c.defaultCloseAction}"/>
+                <lightning:button label="Continue" variant="brand"  onclick="{!c.onconfirm}"/>
+            </div>
+        </div>
+    </div>
+   
+</aura:component>

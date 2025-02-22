@@ -1,0 +1,749 @@
+<aura:component controller="ET_VehicleController">
+     <!--Taj-->
+     <aura:attribute name="serviceRequestRecordId" type="Id"/>
+     <aura:attribute name="changeInVehicleQuantity" type="boolean" default="false"/>
+     <lightning:messageChannel type="ET_CommunicateChange__c" aura:id="changeInQuantityLMS"/>
+     <aura:attribute name="error" type="String" access="public"/>
+    <!-- Aura Attributes-->
+    <aura:attribute name="displaySpecialRequirements" type="boolean" default="false" />
+    <aura:attribute name="displaySpecialRequirementsNew" type="boolean" default="false" />
+    <aura:attribute name="multipleList" type="List"  />
+    <aura:attribute name="editableFieldsByPricingTeam" type="Object" />
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+    <aura:attribute name="lineNumber" type="Integer" />
+    <aura:attribute name="workingDaysPerWeek" type="List" default="1,2,3,4,5,6,7"/>
+    <aura:attribute name="workingMonthsPerYear" type="List" default="1,2,3,4,5,6,7,8,9,10,11,12"/>
+    <aura:attribute name="additionalFields" type="List" />
+    <aura:attribute name="displayRoute" type="String" />
+    <aura:attribute name="vehicleLine" type="Vehicle__c" default="{'sObjectType':'Vehicle__c' , 'ET_Annual_Target_Price__c' : 0}" />
+    <aura:attribute name="commonFieldsAuraIdMap" type="Map" default="{'ET_Contract_Type__c' : 'contractType', 'multipleContract': 'Contract_CheckboxGrp','ET_Service_Emirate__c': 'serviceEmirate', 'ET_Pricing_Method__c': 'pricingMethod', 'ET_Pricing_Type__c' : 'pricingType', 'ET_Pricing_Utilization__c' : 'ET_Price_Utilization__c','ET_Fleet_Type__c' : 'fleetType', 'ET_Working_Days_Per_Week__c' : 'daysPerWeek', 'ET_Working_Months_Per_Year__c' : 'monthsPerWeek'}" />
+    <aura:attribute name="contractPeriods" type="List"/>
+    <aura:attribute name="serviceEmirates" type="String[]"/>
+    <aura:attribute name="pricingMethods" type="String[]"/>
+    <aura:attribute name="pricingTypes" type="String[]"/>
+    <aura:attribute name="vehicleSubTypes" type="String[]"/>
+    <aura:attribute name="InsuranceCategoryList" type="String[]"/>
+    <aura:attribute name="vehicleTypes" type="String[]"/>
+    <aura:attribute name="vehicleFuelTypes" type="String[]"/>
+    <aura:attribute name="fleetTypes" type="String[]"/>
+    <aura:attribute name="contractValue" type="List" />
+    <aura:attribute name="specRequirOptionLst" type="List" />
+    <aura:attribute name="specRequirOptionLstPermit" type="List" />
+    <aura:attribute name="specRequirOptionLstBranding" type="List" />
+    <aura:attribute name="specRequirOptionLstDriver" type="List" />
+    <aura:attribute name="specRequirOptionLstLogo" type="List" />
+    <aura:attribute name="specRequirOptionLstBasic" type="List" />
+    <aura:attribute name="selectedOtherCostSpecReqLst" type="List"/>
+    <aura:attribute name="contractTypes" type="String[]"/>
+    <aura:attribute name="serviceTypes" type="String[]" />     
+    <aura:attribute name="vehicleSource" type="String[]" /> 
+    <aura:attribute name="vehicleMake" type="String[]" /> 
+    <aura:attribute name="vehicleModel" type="String[]" /> 
+    <aura:attribute name="vehicleModelYear" type="String[]" />
+    <aura:attribute name="vehicleModelYearnew" type="String[]" /> 
+    <aura:attribute name="vehicleModelYearOriginalLst" type="String[]" /> 
+    <aura:attribute name="vehicleSpecs" type="String[]" /> 
+    <aura:attribute name="vehicleOrigin" type="String[]" /> 
+    <aura:attribute name="vehicleCondition" type="String[]" /> 
+    <aura:attribute name="vehicleType" type="String[]" /> 
+    <aura:attribute name="insuranceCoverage" type="String[]" /> 
+    <aura:attribute name="vehicleFuel" type="String[]" /> 
+    <aura:attribute name="specRequirement" type="String[]" /> 
+    <aura:attribute name="disableAtrribute" type="Boolean"/>
+    <aura:attribute name="pricingMethodAndDependentTypeMap" type="Map"/>
+    <aura:attribute name="disablePriceUtilization" type="Boolean" default="false"/>
+    <aura:attribute name="vehicleMasterRecord" type="Object"/>
+    <aura:attribute name="vehicleAlterRatesMap" type="Map"/>
+    <aura:attribute name="quoteId" type="String" />
+    
+    <aura:attribute name="oppId" type="String" />
+    <aura:attribute name="opportunitySector" type="String" />
+    <!--SK-->
+    <aura:attribute name="SetServicetype" type="String" default="General Rent"/>
+    <aura:attribute name="SetFuelType" type="String" default="Petrol"/>
+    <aura:attribute name="SetNewVehicleModel" type="String" default="2025"/>
+    <aura:attribute name="SetNumberofseats" type="String" default="4"/>
+    <aura:attribute name="OpprecordTypeName" type="String"/>
+    
+    <aura:attribute name="isSettingAlreadyStoredData" type="Boolean" default="false"/>
+    <aura:attribute name="costTypeOptions1" type="List" default="[{label: 'One time Cost',value : 'One_time_Cost'},{label : 'Annual Cost', value: 'Annual_Cost'}]"/>
+    <aura:attribute name="costTypeValue1" type="List"/>
+    <aura:attribute name="otherVehicleReqRecords" type="ET_Other_Cost_Request__c[]" />
+    <aura:attribute name="otherVehicleReqNames" type="Object" />
+    <aura:attribute name="predefinedOtherCostMasterData" type="Map"/>
+    <aura:attribute name="removePredefinedOtherCost" type="String" />
+    <aura:attribute name="showAnnualTargetPrice" type="Boolean" default="false"/>
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:attribute name="trailerAndRefrigeratorList" type="List" 
+                    default="[{label: 'Trailer/Equipment/Ambulance Service',value : 'Trailer/Equipment'},{label : 'Refrigerator', value: 'Refrigerator'}]"/>
+    <aura:attribute name="selectedTrailerOrRefrigerator" type="List"/>
+    <aura:attribute name="showTraileRequirement" type="Boolean" default="false"/>
+    <aura:attribute name="showRefrigeratorRequirement" type="Boolean" default="false"/>
+    <aura:attribute name="showtrailerAndRefrigerator" type="Boolean" default="false"/>
+    <aura:attribute name="TrailerMake" type="String[]" /> 
+    <aura:attribute name="TrailerModelList" type="String[]" /> 
+    <aura:attribute name="TrailerType" type="String[]" /> 
+    <aura:attribute name="TrailerSubTypeList" type="String[]" />
+    <aura:attribute name="RefregiratorModelList" type="String[]" /> 
+    <aura:attribute name="RefregiratorSubTypeList" type="String[]" />
+    
+    <aura:attribute name="picklistFields" type="List" default="ET_Fleet_Type__c,ET_Pricing_Type__c,ET_Pricing_Method__c,ET_Service_Emirate__c,ET_Contract_Type__c,ET_Contract_Period__c,ET_Insurance_Coverage__c,
+                                                               ET_Pricing_Type__c,ET_Vehicle_Type__c,ET_Vehicle_Specs__c,ET_Vehicle_Condition__c,ET_Vehicle_MAKE__c,
+                                                               ET_Vehicle_Model__c,ET_Vehicle_Model_Year__c,ET_Pricing_Method__c,
+                                                               ET_Specific_requirements__c,Vehicle_Origin__c, Specific_Requirements_Branding__c"/>
+    
+    <aura:method name="updateCommonFieldsMethod" action="{!c.updateCommonFields}" description="Method to update visibility of common fields in vehicle information">
+        <aura:attribute name="updatedField" type="String" />
+    </aura:method>
+    <aura:method  name="prePopulateVehicleData" action="{!c.setAlreadyStoredData}">
+        <aura:attribute name="vehicleDataToBeSet" type="Vehicle__c" />
+    </aura:method>
+    
+    <aura:method  name="getQuoteIdParentTab" action="{!c.setQuoteIdFromParentTab}">
+        <aura:attribute name="quoteId" type="String" default="test" />
+    </aura:method>
+    
+    <!-- Event Handlers-->
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:registerEvent name="refreshEvent" type="c:ET_doNotAllowChildRefresh"/>
+    <aura:registerEvent name="deletedOtherCostsIdsEvt" type="c:ET_fireDeletedOtherCostTabWiseIdsEvt"/>
+    
+    <!-- Alter Rate Start -->
+    <aura:attribute name="showAlterRates" type="Boolean" default="false" />
+    <aura:attribute name="alterRatesObj" type="Object" />
+    <aura:method name="alterRatesMethod" action="{!c.doAlterRates}" access="public">
+        <aura:attribute name="alterRatesObj1" type="Object" />
+    </aura:method>
+    
+    <aura:if isTrue="{!v.showAlterRates}">
+        <c:ET_AlterQuoteRates aura:id ="alterRates" showAlterRates="{!v.showAlterRates}" alterRatesObj="{!v.alterRatesObj}" serviceName="Vehicle" 
+                              Line="{!v.lineNumber}" quoteId ="{!v.quoteId}" isPricingTeam = "{!v.isPricingTeam}"/>
+    </aura:if>
+    
+    
+    <!-- ALter Rate End -->
+    
+    <c:ET_CollapsibleSection aura:id ="collapsibleCmp" title="{!' Vehicle Line ' + v.lineNumber }" 
+                             lineItemNumber="{!v.lineNumber}"
+                             isPricingTeam = "{!v.isPricingTeam}">
+        <br/>
+        <aura:if isTrue="{!not(empty(v.quoteId))}">
+            <p class="text_right"><lightning:button label="Alter Rates" class="btnsave" onclick="{!c.showAlterRates}"/></p> 
+        </aura:if>
+        <div aura:id="errorDiv">
+            {!v.body}
+        </div>
+        <div class="slds-grid slds-wrap slds-hide" aura:id="multipleContract">
+            <br/>
+            <!--
+            <div>
+                <label class="slds-form-element__label contractLabelcls" ><b>Contract:</b></label>
+            </div> -->
+            
+            <lightning:checkboxGroup name="Contract"
+                                     label="Contract Years:"
+                                     options="{! v.contractPeriods }"
+                                     value="{! v.contractValue }"
+                                     aura:id="Contract_CheckboxGrp"
+                                     required="true"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.Contract_CheckboxGrp, v.isPricingTeam)}"/>
+            <br/>
+        </div>
+        
+        <aura:if isTrue="{! not(v.loaded) }">
+            <lightning:spinner alternativeText="Loading" variant="brand" />
+        </aura:if>
+        <!-- common Fields - Hidden by SLDS-HIDE -->
+        <div class="slds-grid slds-wrap">
+            
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:Id="ET_Contract_Type__c">
+                <lightning:select aura:id="contractType" name="Contract Type" label="Contract Type"
+                                  required="true" value="{!v.vehicleLine.ET_Contract_Type__c}" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Contract_Type__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.contractTypes}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:Id="ET_Service_Emirate__c">
+                <lightning:select aura:id="serviceEmirate" name="Service Emirate" label="Service Emirate" 
+                                  required="true" 
+                                  value="{!v.vehicleLine.ET_Service_Emirate__c}" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Service_Emirate__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.serviceEmirates}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:Id="ET_Working_Days_Per_Week__c" >
+                <lightning:select aura:id="daysPerWeek" name="Working Days per Week" label="Working Days per Week" value="{!v.vehicleLine.ET_Working_Days_Per_Week__c}" 
+                                  onchange="{!c.updateCommonFields}" required="true" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Working_Days_Per_Week__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.workingDaysPerWeek}" var="item">
+                        <option value="{!item}">{!item}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:Id="ET_Working_Months_Per_Year__c" >
+                <lightning:select aura:id="monthsPerWeek" name="Working Months per Year" label="Working Months per Year" value="{!v.vehicleLine.ET_Working_Months_Per_Year__c}"  
+                                  onchange="{!c.updateCommonFields}" required="true" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Working_Months_Per_Year__c, v.isPricingTeam)}"
+                                  >
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.workingMonthsPerYear}" var="item">
+                        <option value="{!item}">{!item}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:Id="ET_Pricing_Method__c">
+                <lightning:select aura:id="pricingMethod" name="Pricing Method" label="Pricing Method" required="true" 
+                                  value="{!v.vehicleLine.ET_Pricing_Method__c}"  onchange="{!c.handleChangeInPriceMethod}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Pricing_Method__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.pricingMethods}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:Id="ET_Pricing_Type__c">
+                <lightning:select aura:id="pricingType" name="Pricing Type" label="Pricing Type" required="true"   value="{!v.vehicleLine.ET_Pricing_Type__c}"  
+                                  onchange="{!c.handleChangeInPriceType}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Pricing_Type__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.pricingTypes}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                    
+                </lightning:select>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:id="ET_Pricing_Utilization__c" >
+                <lightning:input type="Number" name="Price Utilization" label="Price Utilization" disabled="{!v.disablePriceUtilization}" aura:id="ET_Price_Utilization__c"
+                                 required="false" value="{!v.vehicleLine.ET_Price_Utilization__c}" min="1" 
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 />
+            </div>
+            <!--div class="" >
+                <lightning:input type="Number" name="Total Student Per Passenger" label="Total Student Per Passenger" disabled="{!v.disablePriceUtilization}" aura:id="Total_Student_Per_Passenger__c"
+                                 required="false" value="{!v.vehicleLine.Total_Student_Per_Passenger__c}"
+                                 />
+            </div-->
+            
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:Id="ET_Fleet_Type__c">
+                <lightning:select aura:id="fleetType" name="Fleet Type" label="Fleet Type" required="true"  
+                                  value="{!v.vehicleLine.ET_Fleet_Type__c}" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Fleet_Type__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.fleetTypes}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                    
+                </lightning:select>  
+            </div>
+            
+        </div>
+        <!--    Vehicle Fields -->
+        <br/>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select  name="Service Type" label="Service Type" required="true" aura:id="ET_Service_Type__c" 
+                                  value="{!v.vehicleLine.ET_Service_Type__c}" onchange="{!c.onServiceTypeChange}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Service_Type__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.serviceTypes}" var="val">
+                        <option value="{!val}" Selected="{!val==v.vehicleLine.ET_Service_Type__c}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            
+            <!--lightning:select  name="Service Type" label="Service Type" required="true" aura:id="ET_Service_Type__c" 
+                                  value="{!v.vehicleLine.ET_Service_Type__c}" onchange="{!c.onServiceTypeChange}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Service_Type__c, v.isPricingTeam)}">
+                   
+                    <aura:if isTrue="{!v.opportunitySector == 'Transport And Lease'}">
+                        <option value="">General Rent</option>
+                        <option value="">Motorcycle Services</option>
+                        <option value="">Passengers Transportation</option>
+                        <option value="">General Equipment</option>
+                        <option value="">Taxi Services</option>
+                        <option value="">Ambulance Service</option>
+                        <option value="">Limousine Services</option>
+                    </aura:if>
+                    <aura:if isTrue="{!v.opportunitySector == 'School'}">
+                        <option value="">School Transportation</option>
+                    </aura:if>
+                    <aura:if isTrue="{!v.opportunitySector == 'MRO'}">
+                        <option value="">Logistic Services</option>
+                    </aura:if>
+                </lightning:select-->  
+            
+            
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select  name="Vehicle MAKE" label="Vehicle MAKE" required="true" aura:id="ET_Vehicle_MAKE__c" 
+                                  value="{!v.vehicleLine.ET_Vehicle_MAKE__c}" onchange="{!c.getvehicleModels}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_MAKE__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.vehicleMake}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select aura:id="vehicleModel" name="Vehicle Model" label="Vehicle Model" required="true" 
+                                  value="{!v.vehicleLine.ET_Vehicle_Model__c}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Model__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.vehicleModel}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select aura:id="vehicleType" name="Vehicle Type" label="Vehicle Type" 
+                                  required="true" value="{!v.vehicleLine.Vehicle_Type__c}" 
+                                  onchange="{!c.getVehicleSubTypesController}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.Vehicle_Type__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.vehicleTypes}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select aura:id="vehicleSubType" name="Vehicle Sub Type" label="Vehicle Sub Type" 
+                                  required="true" value="{!v.vehicleLine.ET_Vehicle_Sub_Type__c}" 
+                                  onchange="{!c.getVehicleFuelTypesController}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Sub_Type__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.vehicleSubTypes}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select aura:id="insuranceCategoty" name="Insurance Category" label="Insurance Category" 
+                                  required="true" value="{!v.vehicleLine.Insurance_Category__c}" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.Insurance_Category__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.InsuranceCategoryList}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select aura:id="fuelType" name="Fuel Type" label="Fuel Type" 
+                                  required="true" value="{!v.vehicleLine.ET_Fuel_Type__c}" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Fuel_Type__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.vehicleFuelTypes}" var="val">
+                        <option value="{!val}" Selected ="{!val==v.vehicleLine.ET_Fuel_Type__c}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select  name="Vehicle Source" label="Vehicle Source" required="true" aura:id="ET_Vehicle_Source__c" 
+                                  value="{!v.vehicleLine.ET_Vehicle_Source__c}" 
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Source__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.vehicleSource}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select aura:id="vehicleCondition" name="Vehicle Condition" label="Vehicle Condition"
+                                  required="true" value="{!v.vehicleLine.ET_Vehicle_Condition__c}"
+                                  onchange="{!c.handleVehicleConditionChange}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Condition__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.vehicleCondition}" var="val">
+                        <option value="{!val}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div> 
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select aura:id="vehicleModelYear" name="Vehicle Manufacture Year"
+                                  label="Vehicle Model Year" required="true"
+                                  value="{!v.vehicleLine.ET_Vehicle_Model_Year__c}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Model_Year__c, v.isPricingTeam)}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.vehicleModelYearnew}" var="val">
+                        <option value="{!val}" Selected ="{!val==v.vehicleLine.ET_Vehicle_Model_Year__c}"> {!val}</option>
+                    </aura:iteration>
+                </lightning:select>  
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input aura:id="vehicleQuantity" type="Number" name="Vehicle Quantity" label="Vehicle Quantity"
+                                 required="true" value="{!v.vehicleLine.ET_Vehicle_Quantity__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Quantity__c, v.isPricingTeam)}"
+                                 onclick="{!c.warningVehicleQuantityChange}"
+                                 onchange="{!c.handleVehicleQuantityChange}" />
+            </div> 
+            <aura:if isTrue="{!v.showAnnualTargetPrice}">
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:input aura:id="annualTargetPrice" type="Number" name="Annual Target Price" label="Annual Target Price"
+                                     required="true" value="{!v.vehicleLine.ET_Annual_Target_Price__c}" min="0"
+                                     messageWhenRangeUnderflow="please enter a positive value"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.ET_Annual_Target_Price__c, v.isPricingTeam)}"/>
+                </div>
+            </aura:if>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input aura:id="vehicleOriginalPurchasePrice" type="Number" name="Vehicle Original Purchase Price" label="Vehicle Original Purchase Price"
+                                 required="true" value="{!v.vehicleLine.ET_Vehicle_Original_Purchase_Price__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"  onchange="{!c.handleOriginalPurchasePriceChange}"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Original_Purchase_Price__c, v.isPricingTeam)}"/>
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input aura:id="vehicleCurrentPurchasePrice" type="Number" name="vehicle Current Purchase Price" label="vehicle Current Purchase Price"
+                                 required="true" value="{!v.vehicleLine.ET_Vehicle_Current_Purchase_Price__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Current_Purchase_Price__c, v.isPricingTeam)}"/>
+            </div>
+            
+            <div class="slds-col--padded slds-size--4-of-12" aura:id="VehicleNoOfSeatsdiv">
+                <lightning:input aura:id="vehicleNoOfSeats" type="Number" name="Vehicle No Of Seats" label="Vehicle No Of Seats"
+                                 required="true" value="{!v.vehicleLine.ET_Number_of_seats__c}" min="1"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Number_of_seats__c, v.isPricingTeam)}"/>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:input aura:id="annualKm" type="Number" name="Annual KM" label="Annual KM" 
+                                 required="true" value="{!v.vehicleLine.ET_Annual_KM__c}"
+                                 min="1" messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Annual_KM__c, v.isPricingTeam)}"/>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:id="ET_Route__c">
+                <lightning:input aura:id="route" type="text" name="Route" label="Route" 
+                                 required="false" 
+                                 value="{!v.vehicleLine.ET_Route__c}" 
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Route__c, v.isPricingTeam)}"/>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select aura:id="vehicleFuel" name="Vehicle Fuel"
+                                  label="Vehicle Fuel" aura:Id="vehicleFuel" required="true"
+                                  onchange="{!c.updateVehicleFuelInformation}" 
+                                  value="{!v.vehicleLine.ET_Vehicle_Fuel__c}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Fuel__c, v.isPricingTeam)}">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </lightning:select>  
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12 slds-hide" aura:Id="ET_Vehicle_Fuel_Consumption__c">
+                <lightning:input aura:id="vehicleFuelConsumption" type="Number" name="Vehicle Fuel Consumption" label="Vehicle Fuel Consumption"
+                                 value="{!v.vehicleLine.ET_Vehicle_Fuel_Consumption__c}" min="1" formatter="decimal" step="0.01"
+                                 messageWhenRangeUnderflow="please enter a positive value"
+                                 disabled="{! and(!v.editableFieldsByPricingTeam.ET_Vehicle_Fuel_Consumption__c, v.isPricingTeam)}"/>
+            </div>
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:select name="Specific Requirements" label="Specific Requirements" aura:Id="specialRequirements" required="true" onchange="{!c.displaySpecialRequirementsSection}" 
+                                  value="{!v.vehicleLine.ET_Specific_requirements__c}"
+                                  disabled="{! and(!v.editableFieldsByPricingTeam.ET_Specific_requirements__c, v.isPricingTeam)}">
+                    <option value="No"> No</option>
+                    <option value="Yes"> Yes</option>
+                </lightning:select>  
+            </div>
+            
+            
+            <div class="slds-col--padded slds-size--4-of-12">
+                <lightning:textarea name="VehicleNotes" label="Vehicle Notes" placeholder="type here..." aura:Id="VehicleNotes"
+                                    value="{!v.vehicleLine.Vehicle_Notes__c}" 
+                                    disabled="{! and(!v.editableFieldsByPricingTeam.Vehicle_Notes__c, v.isPricingTeam)}"/>
+            </div>
+            
+            <!-- selection for Trailer and Refrigerator -->
+            <aura:if isTrue="{!v.showtrailerAndRefrigerator}">
+                <div class="slds-col--padded slds-size--12-of-12">
+                    <lightning:checkboxGroup name="trailerAndRefrigerator"
+                                             label="Trailer and Refrigerator"
+                                             options="{! v.trailerAndRefrigeratorList }"
+                                             value="{! v.selectedTrailerOrRefrigerator }"
+                                             aura:id="trailerOrRefrigerator_CheckboxGrp"
+                                             required="false"
+                                             disabled="{! and(!v.editableFieldsByPricingTeam.trailerAndRefrigerator, v.isPricingTeam)}" 
+                                             onchange="{! c.handleSelectionOfTrailerOrRefrigerator }"/>
+                </div>
+            </aura:if>
+            
+            <!-- Trailer/Equipment -->
+            <aura:if isTrue="{!v.showTraileRequirement}">
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:select aura:id="TrailerModel" name="Trailer/Equipment Model" label="Trailer/Equipment Model" 
+                                      required="true" 
+                                      value="{!v.vehicleLine.Trailer_Equipment_Model__c}"
+                                      disabled="{! and(!v.editableFieldsByPricingTeam.Trailer_Equipment_Model__c, v.isPricingTeam)}">
+                        <option value="">choose one...</option>
+                        <aura:iteration items="{!v.TrailerModelList}" var="val">
+                            <option value="{!val}"> {!val}</option>
+                        </aura:iteration>
+                    </lightning:select>  
+                </div>
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:select aura:id="TrailerSubType" name="Trailer/Equipment subtype"
+                                      label="Trailer/Equipment subtype" 
+                                      required="true" value="{!v.vehicleLine.Trailer_Equipment_subtype__c}" 
+                                      disabled="{! and(!v.editableFieldsByPricingTeam.Trailer_Equipment_subtype__c, v.isPricingTeam)}">
+                        <option value="">choose one...</option>
+                        <aura:iteration items="{!v.TrailerSubTypeList}" var="val">
+                            <option value="{!val}"> {!val}</option>
+                        </aura:iteration>
+                    </lightning:select>  
+                </div>
+                <!-- Trailer condition -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:select aura:id="TrailerCondition" name="Trailer Condition" label="Trailer Condition"
+                                      required="true" value="{!v.vehicleLine.Trailer_condition__c}"
+                                      onchange="{!c.handleVehicleConditionChange}"
+                                      disabled="{! and(!v.editableFieldsByPricingTeam.Trailer_condition__c, v.isPricingTeam)}">
+                        <option value="">choose one...</option>
+                        <aura:iteration items="{!v.vehicleCondition}" var="val">
+                            <option value="{!val}"> {!val}</option>
+                        </aura:iteration>
+                    </lightning:select>  
+                </div> 
+                <!-- Trailer model year -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:select aura:id="trailerModelYear" name="Trailer Manufacture Year"
+                                      label="Trailer Model Year" required="true"
+                                      value="{!v.vehicleLine.Trailer_model_year__c}"
+                                      disabled="{! and(!v.editableFieldsByPricingTeam.Trailer_model_year__c, v.isPricingTeam)}">
+                        <option value="">choose one...</option>
+                        <aura:iteration items="{!v.vehicleModelYear}" var="val">
+                            <option value="{!val}"> {!val}</option>
+                        </aura:iteration>
+                    </lightning:select>  
+                </div>
+                <!-- Trailer Original Purchase Price -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:input aura:id="trailerOriginalPurchasePrice" type="Number" name="Trailer Original Purchase Price" label="Trailer Original Purchase Price"
+                                     required="true" value="{!v.vehicleLine.Trailer_original_purchase_price__c}" min="1"
+                                     messageWhenRangeUnderflow="please enter a positive value"  onchange="{!c.handleOriginalPurchasePriceChangeInTrailer}"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.Trailer_original_purchase_price__c, v.isPricingTeam)}"/>
+                </div>
+                
+                <!-- Trailer Current Purchase Price -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:input aura:id="trailerCurrentPurchasePrice" type="Number" name="Trailer Current Purchase Price" label="Trailer Current Purchase Price"
+                                     required="true" value="{!v.vehicleLine.Trailer_Current_purchase_price__c}" min="1"
+                                     messageWhenRangeUnderflow="please enter a positive value"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.Trailer_Current_purchase_price__c, v.isPricingTeam)}"/>
+                </div>
+                
+                <!-- Trailer External Maintenance Cost -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:input aura:id="trailerExternalMaintainenceCost" type="Number" name="Trailer External Maintenance Cost" label="Trailer External Maintenance Cost"
+                                     required="" value="{!v.vehicleLine.Trailer_External_Maintenance_Cost__c}" min=""
+                                     messageWhenRangeUnderflow="please enter a positive value"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.Trailer_External_Maintenance_Cost__c, v.isPricingTeam)}"/>
+                </div>
+                
+            </aura:if>
+            <br/><br/>
+            <div class="slds-col--padded slds-size--12-of-12">
+            </div>
+            
+            <!-- Refrigerator -->
+            <aura:if isTrue="{!v.showRefrigeratorRequirement}">
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:select aura:id="RefrigeratorModel" name="Refrigerator Model" label="Refrigerator Model" 
+                                      required="true" 
+                                      value="{!v.vehicleLine.Refregirator_Model__c}"
+                                      disabled="{! and(!v.editableFieldsByPricingTeam.Refregirator_Model__c, v.isPricingTeam)}">
+                        <option value="">choose one...</option>
+                        <aura:iteration items="{!v.RefregiratorModelList}" var="val">
+                            <option value="{!val}"> {!val}</option>
+                        </aura:iteration>
+                    </lightning:select>  
+                </div>
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:select aura:id="RefrigeratorSubType" name="Refrigerator subtype"
+                                      label="Refrigerator subtype" 
+                                      required="true" value="{!v.vehicleLine.Refregirator_subtype__c}" 
+                                      disabled="{! and(!v.editableFieldsByPricingTeam.Refregirator_subtype__c, v.isPricingTeam)}">
+                        <option value="">choose one...</option>
+                        <aura:iteration items="{!v.RefregiratorSubTypeList}" var="val">
+                            <option value="{!val}"> {!val}</option>
+                        </aura:iteration>
+                    </lightning:select>  
+                </div>
+                <!-- Trailer condition -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:select aura:id="RefrigeratorCondition" name="Refrigerator Condition" label="Refrigerator Condition"
+                                      required="true" value="{!v.vehicleLine.Refrigerator_condition__c}"
+                                      onchange="{!c.handleVehicleConditionChange}"
+                                      disabled="{! and(!v.editableFieldsByPricingTeam.Refrigerator_condition__c, v.isPricingTeam)}">
+                        <option value="">choose one...</option>
+                        <aura:iteration items="{!v.vehicleCondition}" var="val">
+                            <option value="{!val}"> {!val}</option>
+                        </aura:iteration>
+                    </lightning:select>  
+                </div> 
+                <!-- Refrigerator model year -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:select aura:id="RefrigeratorrModelYear" name="Refrigerator Manufacture Year"
+                                      label="Refrigerator Model Year" required="true"
+                                      value="{!v.vehicleLine.Refrigerator_model_year__c}"
+                                      disabled="{! and(!v.editableFieldsByPricingTeam.Refrigerator_model_year__c, v.isPricingTeam)}">
+                        <option value="">choose one...</option>
+                        <aura:iteration items="{!v.vehicleModelYear}" var="val">
+                            <option value="{!val}"> {!val}</option>
+                        </aura:iteration>
+                    </lightning:select>  
+                </div>
+                <!-- Refrigerator Original Purchase Price -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:input aura:id="RefrigeratorOriginalPurchasePrice" type="Number" name="Refrigerator Original Purchase Price" label="Refrigerator Original Purchase Price"
+                                     required="true" value="{!v.vehicleLine.Refrigerator_original_purchase_price__c}" min="1"
+                                     messageWhenRangeUnderflow="please enter a positive value"  onchange="{!c.handleOriginalPurchasePriceChangeInRefrigerator}"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.Refrigerator_original_purchase_price__c, v.isPricingTeam)}"/>
+                </div>
+                
+                <!-- Refrigerator Current Purchase Price -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:input aura:id="RefrigeratorCurrentPurchasePrice" type="Number" name="Refrigerator Current Purchase Price" label="Refrigerator Current Purchase Price"
+                                     required="true" value="{!v.vehicleLine.Refrigerator_Current_purchase_price__c}" min="1"
+                                     messageWhenRangeUnderflow="please enter a positive value"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.Refrigerator_Current_purchase_price__c, v.isPricingTeam)}"/>
+                </div>
+                
+                <!-- Refrigerator External Maintenance Cost -->
+                <div class="slds-col--padded slds-size--4-of-12">
+                    <lightning:input aura:id="RefrigeratorExternalMaintainenceCost" type="Number" name="Refrigerator External Maintenance Cost" label="Refrigerator External Maintenance Cost"
+                                     required="true" value="{!v.vehicleLine.Refrigerator_External_Maintenance_Cost__c}" min="1"
+                                     messageWhenRangeUnderflow="please enter a positive value"
+                                     disabled="{! and(!v.editableFieldsByPricingTeam.Refrigerator_External_Maintenance_Cost__c, v.isPricingTeam)}"/>
+                </div>
+            </aura:if>
+            
+            
+        </div>
+        
+        <!--aura:if isTrue="{!v.displaySpecialRequirements}">
+            <br/>
+            <div class="slds-grid slds-wrap">
+                  <lightning:input type="checkbox" label="Show Special Requirements" 
+                 onchange="{!c.toggleSpecialRequirements}" value="{!v.vehicleLine.Specific_Requirements_Branding__c}"
+                 checked="{!v.displaySpecialRequirementsNew}" />
+            </div>
+          
+        </aura:if-->
+        
+        <aura:if isTrue="{!v.displaySpecialRequirements}">
+            <br/>
+            
+            <div class="slds-grid slds-wrap multicheckbox_div"> 
+                <label class="multicheckbox_leb1">Basics</label>
+                <label class="multicheckbox_leb2">Permits</label>
+                <label class="multicheckbox_leb3">Branding </label>
+                <label class="multicheckbox_leb4">Driver/ Nany Cost</label>
+                <label class="multicheckbox_leb5">Logo</label>
+                <!--div class="admin_labels">
+                    <label class="multicheckbox_leb1">Basics</label>
+                    <label class="multicheckbox_leb2">Permits</label>
+                    <label class="multicheckbox_leb3">Branding </label>
+                    <label class="multicheckbox_leb4">Driver/ Nany Cost</label>
+                    <label class="multicheckbox_leb5">Logo</label>
+                </div>
+                <div class="users_labels">
+                    <label class="multicheckbox_leb1">Basics</label>
+                    <label class="multicheckbox_leb2">Permits</label>
+                    <label class="multicheckbox_leb3">Branding </label>
+                    <label class="multicheckbox_leb4">Driver/ Nany Cost</label>
+                    <label class="multicheckbox_leb5">Logo</label>
+                </div-->                
+                <lightning:checkboxGroup name="onetimeRequirements"
+                                         label="Basic Vehicle Requirements bbb:"
+                                         options="{! v.specRequirOptionLst }"
+                                         value="{! v.selectedOtherCostSpecReqLst }"
+                                         aura:id="onetimeRequirement_CheckboxGrp"
+                                         required="false"
+                                         disabled="{! and(!v.editableFieldsByPricingTeam.selectedOnetimeSpecReqLst, v.isPricingTeam)}" 
+                                         onchange="{! c.handleOtherVehicleReqChange }" 
+                                         class="myCheckbox multicheckbox"/>
+                <!--  <lightning:accordion allowMultipleSectionsOpen="true">
+                       <aura:iteration items="{!v.specRequirOptionLst}" var="item">
+                           <lightning:accordionSection name="{!item.label}" label="{!item.label}">
+                               <table>
+                                  
+                                   <tr>
+                                       <aura:iteration items="{!item.value}" var="itemChild">
+                                           <td>
+                                               <lightning:input type="checkbox" class="myCheckbox" label="{!itemChild.record.Name}" name="{!item.label+'-'+itemChild.record.Name}" checked="{!itemChild.isSelected}" required="false" onchange="{!c.onValueChanged}"/>
+                                           </td>
+                                       </aura:iteration>
+                                   </tr>
+                               </table>
+                           </lightning:accordionSection>
+                       </aura:iteration>
+                   </lightning:accordion>-->
+                
+                <!--<table>
+                       <tr>
+                           <aura:iteration items="{!v.specRequirOptionLst}" var="item">
+                               <th>{!item.label}</th>
+                           </aura:iteration>
+                       </tr>
+                       <tr>
+                           <aura:iteration items="{!v.specRequirOptionLst}" var="item">
+                               <aura:iteration items="{!item.value}" var="itemChild">
+                                   <td>
+                                       <label>{!itemChild.record.Name}</label><br/>
+                                       <lightning:input type="checkbox" class="myCheckbox" label="{!itemChild.record.Name}" name="{!item.label+'-'+itemChild.record.Name}" checked="{!itemChild.isSelected}" required="false" onchange="{!c.onValueChanged}"/>
+                                   </td>
+                               </aura:iteration>
+                           </aura:iteration>
+                       </tr>
+                   </table>-->
+                
+                
+                
+            </div>
+            
+            <div aura:id="OtherVehicleReq">
+                {!v.body}
+            </div><br/>
+            <div aura:id="OtherCostDiv">
+                {!v.body}
+            </div>  
+            <br/>
+            <div class="btn_outer">
+                <lightning:button  variant="brand" label="Add Other Cost" title="Add Other Cost" 
+                                  onclick="{!c.handleAddOtherCostMore }"  disabled="{!v.isPricingTeam}"  />&nbsp;
+            </div>
+        </aura:if>
+        
+    </c:ET_CollapsibleSection>
+    
+    <div class="slds-hide" aura:id="ConfirmDialog2" style="height:24rem">
+        <section role="alertdialog" tabindex="0" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-theme--warning slds-theme_alert-texture">
+                    
+                    <h2 class="slds-text-heading_medium" id="prompt-heading-id">Are you sure ?</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+                    <p>Do you want to remove this Cost Item ? Make sure to hit "save" button after you press "yes", in order to save the changes.</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" label="Yes" title="Yes" onclick="{!c.handleYes}" />&nbsp;&nbsp;
+                    <lightning:button  variant="brand" label="No" title="No" onclick="{!c.handleNo}" />   
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</aura:component>

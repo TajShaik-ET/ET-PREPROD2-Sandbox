@@ -1,0 +1,172 @@
+<aura:component controller="ETVIN_VehicleTheftCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String"  />
+    <aura:attribute name="files" type="ContentDocument[]"/> 
+    
+     <aura:attribute name="DocOptions" type="List" />
+    <aura:attribute name="selectedDocValue" type="String" />
+     <aura:attribute name="DisableFileUpload" type="boolean" default="true" />
+    <aura:attribute name="closePopup" type="boolean" default="false" />
+     <aura:attribute name="emailUserList" type="List" />
+    <aura:attribute name="CheckboxValue1" type="Boolean" default="false" />
+    <aura:attribute name="CheckboxValue2" type="Boolean" default="false" />
+    <aura:attribute name="CheckboxValue3" type="Boolean" default="false" />
+   
+     <!--aura:registerEvent name="Actionname" type="c:ETVIN_RefreshEvent"/--> 
+
+    
+    <div>
+        <lightning:card>
+        <aura:set attribute="title">
+            <lightning:icon iconName="utility:connected_apps" size="small"/>
+            Documents
+        </aura:set>
+            <div class="slds-grid" style="margin-left: 6px;">
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning:select name="docId" label="Select a Document:" aura:id="docId" value="{!v.selectedDocValue}" onchange="{!c.onChangeDocVal}">
+                        <option text="--None--" value="blank"/>
+                        <aura:iteration items="{!v.DocOptions}" var="option">
+                            <option text="{!option}" value="{!option}" selected="{!option.selected}"/>
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                     <lightning:fileUpload multiple="false" label="" accept=".pdf" disabled="{!v.DisableFileUpload}" recordId="{!v.recordId}" aura:id="multifileUpload" onuploadfinished="{!c.handleUploadFinished}" />
+                    
+                </div>
+            </div>
+            <!--div class="slds-grid" style="margin-left: 6px;">
+                <div class="slds-col slds-size_1-of-1">
+                    
+                    <lightning:fileUpload multiple="false" label="" accept=".pdf" disabled="{!v.DisableFileUpload}" recordId="{!v.recordId}" aura:id="multifileUpload" onuploadfinished="{!c.handleUploadFinished}" />
+                    
+                </div>
+            </div-->     
+               
+         
+        <br/>
+         
+            <aura:if isTrue="{!!not(empty(v.files))}">
+                <P class="slds-align_absolute-center" style="margin-top: 27px;">No records to display </P>
+                <br/>
+            </aura:if>            
+            <aura:if isTrue="{!not(empty(v.files))}"> 
+                <div class="slds-page-header" style="border-radius: 0px; border-right: 0px;border-left: 0px;border-top: 0px;  
+                                                     box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.1);margin-left: 6px;">  
+                    All Documents 
+                </div> 
+                <table class="slds-table slds-table--bordered" >  
+                    <thead>  
+                        <tr>  
+                            <th>Title</th>  
+                            <th>FileType</th> 
+                            <!--th>ContentSize</th-->  
+                            <!--th>Description</th--> 
+                            <th>Action</th>
+                            <th></th>
+                        </tr>  
+                    </thead>  
+                    <tbody>  
+                        <aura:iteration items="{!v.files}" var="f">  
+                            <tr>  
+                                <td> <a href="" id="{!f.Id}" onclick="{!c.OpenFile}">{!f.Title}</a></td>  
+                                <td>{!f.FileType}</td>  
+                                <!--td>{!f.ContentSize}</td-->
+                                <!--td>{!f.Description}</td--> 
+                                <td><a  onclick="{!c.clearAttachment}" id="{!f.Id +'_'+ f.Title}">Delete</a> </td>
+                               
+                                <td><a  onclick="{!c.notifyWithEmail}" id="{!f.Title}">Notify</a> </td>
+                            </tr>  
+                        </aura:iteration>  
+                    </tbody>  
+                </table>  
+            </aura:if> 
+        </lightning:card>
+        <aura:if isTrue="{!v.closePopup}">
+         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <!-- ###### MODAL BOX HEADER Start ######-->
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeModelPopup}"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Email Notification</h2>
+                        </header>
+                        <!--###### MODAL BOX BODY Part Start######-->
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <!--p class="slds-align_absolute-center" style="margin-top:2%;margin-bottom:5%;font-weight: 300;
+                                                                         font-size: 17px;">Please click on Confirm button to renew.
+                                
+                            </p-->
+                            
+                            <fieldset class="slds-form-element slds-form-element_compound padbot" >
+                                <div class="slds-form-element__control" style="margin: 42px;"> 
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <div class="slds-form-element">
+                                                <P>Salik Controller</P>
+                                                  <ui:inputCheckbox aura:id="checkbox" label="" value="{!v.CheckboxValue1}" change=""/>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <div class="slds-form-element">
+                                                <P>Fuel Controller</P>
+                                                  <ui:inputCheckbox aura:id="checkbox" label="" value="{!v.CheckboxValue2}" change=""/>
+                                               
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <div class="slds-form-element">
+                                                <P>Fine Controller</P>
+                                                  <ui:inputCheckbox aura:id="checkbox" label="" value="{!v.CheckboxValue3}" change=""/>
+                                               
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                             <!--aura:iteration items="{!v.emailUserList}" var="e" indexVar="indx"> 
+                                 
+                                
+                                  <fieldset class="slds-form-element slds-form-element_compound padbot" >  
+                                 <div class="slds-form-element__row">
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <div class="slds-form-element">
+                                                <P>{!e.Label__c}</P>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <div class="slds-form-element">
+                                                
+                                                 <ui:inputCheckbox aura:id="checkbox" name="{!indx}" text="{!e.Label__c}" label="" value="{!v.CheckboxValue}" change="{!c.onCheck}"/>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                 </fieldset>
+                            </aura:iteration-->
+                            
+                        </div>
+                        <!--###### MODAL BOX FOOTER Part Start ######-->
+                        <footer class="slds-modal__footer">
+                            <lightning:button class="btn_back" variant="neutral" 
+                                              label="Cancel"
+                                              title="Cancel"
+                                              onclick="{!c.closeModelPopup}"/>
+                            <lightning:button class="btn_table" variant="brand" 
+                                              label="Confirm"
+                                              title="Confirm"
+                                              onclick="{!c.sendEmailtoList}"/>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                <!--###### MODAL BOX Part END Here ######-->
+        </aura:if>
+     </div>
+</aura:component>

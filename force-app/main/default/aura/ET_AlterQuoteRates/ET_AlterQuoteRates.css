@@ -1,0 +1,81 @@
+.THIS .slds-modal__container {
+    margin: auto;
+    width: 90%;
+    max-width: 90%;
+    min-width: 90%;
+}
+.THIS.slds-modal__close {
+    box-shadow: none;
+    outline: none;
+    display:none!important;
+}
+.THIS .cancelbox{
+    width: 50%;  
+}
+.THIS .cancelbox .slds-form-element__control{
+    display: inline-block;
+    width: 70%; 
+}
+.THIS .cancelbox .slds-form-element__label{
+    font-weight: bold;
+}
+
+.THIS .alterRatesContainer{
+    overflow: auto;
+}
+
+.THIS .name_text{
+    position:realtive;
+    padding-right:40px;
+    margin:0px;
+}
+.THIS .name_text button{
+	position:absolute;
+    right:10px;
+    top: 9px;
+}
+.THIS .input_width{
+    width:60px;
+}
+.THIS .input_width input[type="text"]{
+     padding: 0 5px;
+}
+.THIS .custom_checkox .slds-checkbox__label{
+    padding:0px;
+}
+.THIS .custom_checkox .slds-form-element .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox_faux{
+    margin:0px;
+}
+.THIS .custom_checkox .slds-form-element__label{
+    padding:0px;
+}
+.THIS .custom_checkox .slds-form-element{
+    width: 20px;
+    display: inline-block;
+}
+.THIS .slds-form-element__label:empty { 
+    display: none;
+}
+.THIS .label_none label{
+    display:none;
+}
+.THIS .label_none .slds-form-element {
+    width: 130px;
+}
+.THIS .year_th th{
+    width:75px;
+    text-align:center;
+}
+.THIS th{
+    background: #333;
+    color: #fff !important;
+    background-color: #00c099 !important;
+    border-color: rgba(255,255,255, 0.3) !important; 
+}
+.THIS tbody:nth-child(odd) tr td{
+    /*background-color:#efefef;*/
+}
+.THIS .slds-modal__footer .slds-button+.slds-button, .THIS .btnsave{
+    background-color: #00c099 !important;
+    border-color:#00c099 !important; 
+}

@@ -1,0 +1,192 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" 
+                controller="ETVIN_ShowVehicleInsuranceCtrl">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="string" />
+    <aura:attribute name="vehicleInsList" type="List" />
+    <aura:attribute name="detailPage" type="boolean" default="false" />
+    <aura:attribute name="FilteredData" type="object"/>
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    
+    <aura:method name="callingFromParentCmp" action="{!c.getData}"
+                 access="public">
+        <aura:attribute name="searchKeyWord" type="string"/>
+    </aura:method>
+    
+    <div class="noRecord">
+        <aura:if isTrue="{!v.detailPage}" >
+            <lightning:card >
+                
+            <div class="headerTop">
+                <!-- <lightning:button variant="brand-outline" label="Back" title="Brand action" onclick="{! c.handleback }" />
+                &#x2190; -->
+                <div class="backBtn">
+                    <lightning:buttonicon iconName="utility:back" variant="brand" onclick="{! c.handleback }" />
+                </div>
+                <h3>Vehicle Details</h3>
+            </div>
+            <div class="slds-p-around_large">
+                
+                 <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Correction_Cancel_Request__c" >
+                    <lightning:messages />
+                     
+                     <lightning:layout multipleRows="true">
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField fieldName="Name" />
+                         </lightning:layoutItem>
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField fieldName="Vehicle_Master__c" />
+                         </lightning:layoutItem>
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField  fieldName="Policy_Number__c" />
+                         </lightning:layoutItem>
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField  fieldName="TC_No__c" />
+                         </lightning:layoutItem>
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField  fieldName="Plate_Number__c" />
+                         </lightning:layoutItem>
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField  fieldName="Effective_Date__c" />
+                         </lightning:layoutItem>
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField  fieldName="Comments__c" />
+                         </lightning:layoutItem>
+                         
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField  fieldName="Vehicle_Insurance_Policy__c" />
+                         </lightning:layoutItem>
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField  fieldName="Chassis_No__c" />
+                         </lightning:layoutItem>
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField  fieldName="VehicleType__c" />
+                         </lightning:layoutItem>
+                         <lightning:layoutItem  size="6" flexibility="auto" padding="around-small">
+                             <lightning:outputField  fieldName="SubmittedBy__c" />
+                         </lightning:layoutItem>
+                         
+                     </lightning:layout>
+                     
+                     
+                </lightning:recordEditForm>
+            </div>
+                <div class="footerBtns">
+                    <lightning:button variant="brand" label="Approve" title="Approved" onclick="{! c.handleApproved }" />
+                    <lightning:button variant="destructive" label="Reject" title="Reject" onclick="{! c.handlereject }"/>
+                </div>  
+                
+                
+            </lightning:card>
+            
+            <aura:set attribute="else">
+                <aura:if isTrue="{!not(empty(v.FilteredData))}"> 
+                    <h3 class="Headingcontent">Insurance Available for Mulkiya</h3>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" >Ref Number</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" >Effective Date</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" >Vehicle Internal Number</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" >TC No.</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" >Comments</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" >Requested Date</div>
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.FilteredData}" var="vehicle" indexVar="index">
+                                <tr class="slds-hint-parent">
+                                    <td data-label="Name" scope="row">
+                                        <div class="slds-truncate" title="Vehicle Insurance Name">
+                                            <a data-value="{!index}" data-record="{!vehicle.Id}" onclick="{!c.openRecord}">{!vehicle.Name}</a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate" title=""><lightning:formattedDateTime value="{!vehicle.Effective_Date__c}"/></div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate" title="">{!vehicle.Vehicle_Interanal_Number__c}</div>
+                                    </td>
+                                     <td>
+                                        <div class="slds-truncate" title="">{!vehicle.TC_No__c}</div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate" title="">{!vehicle.Comments__c}</div>
+                                    </td>
+                                    <td>
+                                      
+                                        <div class="slds-truncate" title=""> <lightning:formattedDateTime value="{!vehicle.CreatedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit"
+                                                                                                          minute="2-digit" hour12="false"/></div>
+                                        
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <aura:set attribute="else"> 
+                        No records to display
+                    </aura:set>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+     
+    </div>
+    
+      <aura:if isTrue="{!v.isModalOpen}">
+       
+
+        <!-- Modal/Popup Box starts here-->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box Header Starts here-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Insurance Availble for Mulkiya</h2>
+                </header>
+                <!--Modal/Popup Box Body Starts here-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>
+                        <lightning:recordEditForm recordId="{!v.recordId}"  onsuccess="{!c.handleSuccessReq}" onsubmit="{!c.onRecordSubmit}" objectApiName="Correction_Cancel_Request__c" aura:id="accForm">
+                            <lightning:messages />
+                            <lightning:inputField fieldName="Request_Status__c" value="Insurance Rejected" class="slds-hide"/>
+                            <lightning:inputField fieldName="ETVIN_Rejection_Reason__c" aura:id="rejectReason1" class="slds-hide"/>
+                            <lightning:textarea value="" label="Reason for Rejection" aura:id="rejectReason"/>
+                        
+                           <div class="cancelSaveBtnn">
+                                <lightning:button variant="neutral"
+                                                  label="Cancel"
+                                                  title="Cancel"
+                                                  onclick="{! c.closeModel }"/>
+                                <lightning:button variant="brand"
+                                                  label="Save"
+                                                  title="Save"
+                                                  onclick="" type="submit"/>
+                           </div>
+                        
+                        </lightning:recordEditForm>
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+	
+</aura:component>

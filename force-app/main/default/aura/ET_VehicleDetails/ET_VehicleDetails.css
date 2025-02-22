@@ -1,0 +1,90 @@
+.THIS .slds-checkbox {
+    display: inline !important;
+}
+.THIS .slds-checkbox__label{    
+    padding-right: 20px;
+    
+}
+.THIS .contractLabelcls{
+    padding-right: 20px;
+    
+}
+.THIS .text_right{
+    text-align:right;
+}
+.THIS .btnsave, .THIS .slds-button_brand, .THIS .slds-button--brand{
+    background-color: #00c099 !important;
+    border-color:#00c099 !important;
+    border-radius:5px;
+    color:#fff;
+} 
+.THIS .btn_outer{
+    display:inline-block;
+    width:100%;
+    margin:15px 0 0 0;
+    text-align:center;
+}
+.THIS.myCheckbox {
+    display: inline-block;
+    padding-bottom: 0.1em;
+    float: left;
+    margin-right: 4%; /* Adjust this value to increase or decrease the gap */
+    display: block;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+    padding-block-start: 0.35em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.625em;
+}
+.THIS lightning-checkbox-group.myCheckbox.slds-form-element .slds-form-element__control {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.THIS lightning-checkbox-group.myCheckbox.slds-form-element .slds-form-element__control span.slds-checkbox {
+    width: 50%;
+}
+.THIS lightning-checkbox-group.myCheckbox.slds-form-element .slds-form-element__control span.slds-checkbox:nth-child(11),
+.THIS lightning-checkbox-group.myCheckbox.slds-form-element .slds-form-element__control span.slds-checkbox:nth-child(22),
+.THIS lightning-checkbox-group.myCheckbox.slds-form-element .slds-form-element__control span.slds-checkbox:nth-child(25),
+.THIS lightning-checkbox-group.myCheckbox.slds-form-element .slds-form-element__control span.slds-checkbox:nth-child(28){
+    padding-bottom: 50px;
+    width: 51%;
+}
+.THIS .slds-grid.slds-wrap.multicheckbox_div {
+    position: relative;
+}
+.THIS .slds-grid.slds-wrap.multicheckbox_div legend.slds-form-element__legend.slds-form-element__label {
+    visibility: hidden;
+    padding-bottom: 5px;
+}
+.THIS label.multicheckbox_leb1,
+.THIS label.multicheckbox_leb2,
+.THIS label.multicheckbox_leb3,
+.THIS label.multicheckbox_leb4,
+.THIS label.multicheckbox_leb5{
+    position: absolute;
+    font-weight: 700;
+    font-size: 16px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+}
+.THIS label.multicheckbox_leb2 {
+    top: 170px;
+}
+.THIS label.multicheckbox_leb3 {
+    top: 340px;
+}
+.THIS label.multicheckbox_leb4 {
+    top: 430px;
+}
+.THIS label.multicheckbox_leb5 {
+    top: 520px; 
+}
+.THIS lightning-checkbox-group.myCheckbox.multicheckbox.slds-form-element .slds-form-element__label {
+    font-weight: 200!important;
+}

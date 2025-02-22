@@ -1,0 +1,38 @@
+<aura:component implements="force:hasRecordId,forceCommunity:availableForAllPageTypes"  
+                access="global" extends="c:ETST_BilingualCommunity">
+    <aura:attribute name="selectedTabId" type="String"/>
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <div class="parentClass">
+        <div class="myCaseBackBtn"><lightning:button variant="brand" name="Back" label="{!v.clBack}" onclick="{!c.cancelSave}" class="cancel_btn" /></div>
+        <div class="mobilebackarrow">
+            <a href="" onclick="{!c.cancelSave}">
+                <!--<img src="{!$Resource.backarrow_img}" />-->
+                <span>&#10094;</span>
+            </a>
+        </div>
+        
+        <c:ET_DashboardCmp  selectedTabId="{!v.selectedTabId}"  aura:id="dashboardCmp" /> 
+        
+        <div id="deliveryService" >
+            <h2 class="ticketstext">Tickets</h2>
+            <lightning:tabset selectedTabId="{!v.selectedTabId}" >
+                <lightning:tab label="New" id="activeDeliveries">
+                    <c:ET_CaseDetails  status="New"   aura:id="activeDeliveriesTab" />
+                </lightning:tab>
+                <lightning:tab label="In Progress" id="CompletedDeliveries">
+                    <c:ET_CaseDetails  status="Progress"   aura:id="CompletedDeliveriesTab" />
+                </lightning:tab>
+                <lightning:tab label="Closed" id="CancelledDeliveries">
+                    <c:ET_CaseDetails  status="Closed"   aura:id="CancelledDeliveriesTab" />
+                </lightning:tab>
+                <lightning:tab label="On Hold" id="OnHoldDeliveries">
+                    <c:ET_CaseDetails  status="On Hold"   aura:id="OnHoldDeliveriesTab" />
+                </lightning:tab>                
+            </lightning:tabset> 
+        </div>        
+    </div>
+    <!--div class="showmobilefooter">
+        <c:ET_MobileFooter />
+    </div-->
+</aura:component>

@@ -1,0 +1,106 @@
+<aura:component implements="lightning:actionOverride,force:hasRecordId,lightning:isUrlAddressable"
+                access="global"
+                controller="ET_NewButtonOVerrideControlelr">
+    <!-- call doInit function on component load -->  
+    <aura:handler name="init" value="this" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="parentobj" type="Object" />
+    <aura:attribute name="parentdetails" type="sObject" />
+    <aura:attribute name="resourceRecord" type="sObject" />
+    <!-- aura attributes-->  
+    <aura:attribute name="listControllingValues" type="list" default="[]" description="to store controller field values"/>
+    <aura:attribute name="listDependingValues" type="list" default="" description="to store dependent field values"/>
+    <aura:attribute name="depnedentFieldMap" type="map" description="map to store dependent values with controlling value"/>
+    <aura:attribute name="bDisabledDependentFld" type="boolean" default="true"/> 
+    
+    <aura:attribute name="objDetail" type="Case" default="{'sobjectType' : 'Case'}"/>
+    <aura:attribute name="controllingFieldAPI" type="string" default="Record_Types__c" description="store field API name of Controller field"/>
+    <aura:attribute name="dependingFieldAPI" type="string" default="Case_Types__c" description="store field API name of dependent field"/>
+ 	<aura:attribute name="isOpen" type="boolean" default="false" />
+    <aura:attribute name="isNext" type="boolean" default="true" />
+     <!--<div class="slds-clearfix">
+        <div class="slds-float_right">
+            <lightning:buttonGroup >
+                <lightning:button label="New" onclick="{!c.showModal}"/>   
+            </lightning:buttonGroup>
+        </div>
+    </div>-->
+    <div>
+  </div>
+    <aura:if isTrue="{!v.isOpen}">
+        <div role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.HideModal}">
+                        X<span class="slds-assistive-text">Cancel</span>
+                    </button>
+                    <h2 id="header43" class="slds-text-heading--medium">New Case</h2>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around--medium">
+                        
+                        <div class="slds-form_horizontal">	
+                            <lightning:layoutItem size="12" padding="around-small">    
+								<lightning:select aura:Id="rectype"
+                                                  name="controllerFld"
+												  value="{!v.objDetail.Record_Types__c}"
+												  label="Select Record Type"
+												  onchange="{!c.onControllerFieldChange}">
+									<aura:iteration items="{!v.listControllingValues}" var="val">
+										<option value="{!val}">{!val}</option>
+									</aura:iteration>
+								</lightning:select>
+							</lightning:layoutItem>
+                        </div>
+						
+						<div class="slds-form_horizontal">	
+                            <lightning:layoutItem size="12" padding="around-small">    
+								<lightning:select aura:Id="typefld"
+                                                  name="dependentFld"
+												  value="{!v.objDetail.Case_Types__c}"
+												  label="Select Case Type"
+												  disabled="{!v.bDisabledDependentFld}">
+									<aura:iteration items="{!v.listDependingValues}" var="val">
+										<option value="{!val}">{!val}</option>
+									</aura:iteration>
+								</lightning:select>
+							</lightning:layoutItem>
+                        </div>
+                    	 
+                  </div>                   
+                
+                <div class="slds-modal__footer">
+                    <lightning:button class="slds-button slds-button--neutral" onclick="{!c.HideModal}">Cancel</lightning:button>
+                    <lightning:button class="slds-button slds-button--brand" onclick="{!c.createRecord}" disabled="{!v.isNext}">Next</lightning:button>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+    
+    
+    <!--Controller Field-->
+    <!--
+    <lightning:layoutItem size="12" padding="around-small">    
+        <lightning:select name="controllerFld"
+                          value="{!v.objDetail.Country__c}"
+                          label="Country"
+                          onchange="{!c.onControllerFieldChange}">
+            <aura:iteration items="{!v.listControllingValues}" var="val">
+                <option value="{!val}">{!val}</option>
+            </aura:iteration>
+        </lightning:select>
+    </lightning:layoutItem>
+    
+    <lightning:layoutItem size="12" padding="around-small">
+        <lightning:select name="dependentFld"
+                          value="{!v.objDetail.City__c}"
+                          label="City"
+                          disabled="{!v.bDisabledDependentFld}">
+            <aura:iteration items="{!v.listDependingValues}" var="val">
+                <option value="{!val}">{!val}</option>
+            </aura:iteration>
+        </lightning:select>
+    </lightning:layoutItem> -->
+    
+</aura:component>

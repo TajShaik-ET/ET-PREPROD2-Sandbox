@@ -1,0 +1,375 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                controller = "ETM_controller" access="global">
+    
+    <!-- Attributes -->
+    <aura:attribute name="selectedCount" type="Integer" default="0" description="selected Records Count"/>
+    <aura:attribute name="totalRecordsCount" type="Integer"/>
+    <aura:attribute name="Message" type="boolean" default="false" description="use for display no record found message"/>
+    <aura:attribute name="searchResult" type="List" />
+    <aura:attribute name="data" type="List" />
+    <aura:attribute name="msgDesc" type="string" />
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:attribute name="leadId" type="string" />
+    
+    
+    <!-- Pagination Attributes -->
+    <aura:attribute name="pageSize" type="Integer" default="10" description="number of records to be display on per page"/>
+    <aura:attribute name="currentPage" type="integer" default="1"/>
+    <aura:attribute name="totalPagesCount" type="integer"/>
+    <aura:attribute name="PaginationList" type="list"/> 
+    <aura:attribute name="startPage" type="Integer" />
+    <aura:attribute name="endPage" type="Integer"/>
+    <!-- to refernce utility methods -->
+    <c:ETM_utiliyMethods aura:id="ETM_utiliyMethods"/>
+    
+    <!-- Filter Values -->
+    <aura:attribute name="vehTypes" type="List"/>
+    <aura:attribute name="vehMakes" type="List" />
+    <aura:attribute name="vehModels"  type="List" />
+    <aura:attribute name="vehFamilies"  type="List" />
+    <aura:attribute name="vehNumbers"  type="List" />
+    <aura:attribute name="vehTyeMakeMap"  type="Object" />
+    <aura:attribute name="vehMakeFamilyMap"  type="Object" />
+    
+    <aura:attribute name="sel_vehTypes" type="List"/>
+    <aura:attribute name="sel_vehMakes" type="List"/>
+    <aura:attribute name="sel_modelValues" type="List"/>
+    <aura:attribute name="sel_Families" type="List"/>
+    <aura:attribute name="sel_vehNumber" type="List"/>
+    
+    <!-- filter Events && Params -->
+    <aura:handler event="c:ETM_RangeChangeEvent" action="{!c.onRangeChange}"/> 
+    <aura:handler event="c:ETM_KmsRangeChangeEvent" action="{!c.onKmsRangeChange}"/> 
+    <aura:attribute name="minPrice" type="integer" />
+    <aura:attribute name="maxPrice" type="integer" />
+    <aura:attribute name="minKms" type="integer" />
+    <aura:attribute name="maxKms" type="integer" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+    <!-- Navigation link -->
+    <lightning:navigation aura:id="navLink"/> 
+    <!-- styling to change width of popup -->
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content {
+        overflow-y: hidden !important;
+        height: unset !important;
+        max-height: unset !important;
+        }
+        .slds-modal__container{
+        max-width: 100rem !important;
+        width:90% !important;
+        }  
+        
+        .pageTopFilter{
+        border: 1px solid #ddd;
+        width: 100%;
+        position: fixed;
+        display: block;
+        top: 0px;
+        left: 0;
+        z-index: 999;
+        background-color: #e2e2e2;
+        height: 200px;
+        }    
+        .pageTopFilter .slds-form-element__label, .pageTopFilter span{
+        	font-size: 12px;
+        }
+        .table_div{
+        margin: 8% 0;
+        z-index: 1;
+        }
+        .clearFilterBtn{
+        margin: 3rem;
+        }
+        .table_div th{
+        background-color: #e2e2e2 !important;
+        font-size: 16px;
+        padding: .5rem;
+        }
+        .table_div td{
+        text-align: center;
+        padding: .5rem;
+        }
+        .range, .range .slds-clearfix{
+        height: 120px;
+        }
+    </aura:html>
+    <!-- Filters -->
+    <div style="border: 1px solid #ddd;" class="pageTopFilter">
+        <lightning:layout>
+            <lightning:layoutItem size="2" padding="around-small">
+                <!-- Type-->
+                <lightning:select aura:id="types" value="{!v.sel_vehTypes}"  name="types" label="Type" onchange="{!c.onTypeChange}"  >
+                    <option value="none">None</option>
+                    <aura:iteration items="{!v.vehTypes}" var="type" indexVar="key">
+                        
+                        <option value="{!type.value}" text="{!type.value}" ></option>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+            <!-- Make-->
+            <lightning:layoutItem size="2" padding="around-small">
+                <lightning:select aura:id="makes" value="{!v.sel_vehMakes}"  name="makes" label="Make" onchange="{!c.onMakeChange}"  >
+                    <option value="none">None</option>
+                    <aura:iteration items="{!v.vehMakes}" var="make" indexVar="key">
+                        <option value="{!make.value}" text="{!make.value}" ></option>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+            
+             <!-- Family-->
+            <lightning:layoutItem size="2" padding="around-small">
+                <lightning:select aura:id="families" value="{!v.sel_Families}"  name="families" label="Family" onchange="{!c.onFamilyChange}"  >
+                    <option value="none">None</option>
+                    <aura:iteration items="{!v.vehFamilies}" var="family" indexVar="key">
+                        
+                        <option value="{!family.value}" text="{!family.value}" ></option>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+            <!-- Models-->
+            <lightning:layoutItem size="2" padding="around-small">
+                <lightning:select aura:id="models" value="{!v.sel_modelValues}"  name="models" label="Models" onchange="{!c.onModelChange}"  >
+                    <option value="none">None</option>
+                    <aura:iteration items="{!v.vehModels}" var="model" indexVar="key">
+                        
+                        <option value="{!model.value}" text="{!model.value}" ></option>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+            <!-- Vehicle Number -->
+            <lightning:layoutItem size="2" padding="around-small">
+                <lightning:select aura:id="vehNumber" value="{!v.sel_vehNumber}"  name="vehNumber" label="Vehicle Number" onchange="{!c.onVehNoChange}"  >
+                    <option value="none">None</option>
+                    <aura:iteration items="{!v.vehNumbers}" var="number" indexVar="key">
+                        
+                        <option value="{!number.value}" text="{!number.value}" ></option>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <!-- Range Bar Section-->
+        <lightning:layout>
+            <lightning:layoutItem size="4" class="range">
+                <aura:if isTrue="{!and(v.minPrice >=0,v.maxPrice >=0)}">
+                    <div >
+                        <span style="margin-left:15px; text-size:4rem">
+                            Price
+                        </span>  <c:ETM_PriceRangeComponent min="{!v.minPrice}" max="{!v.maxPrice}" step="500"/>
+                    </div> 
+                </aura:if>
+                
+            </lightning:layoutItem> 
+             <lightning:layoutItem size="4" class="range">
+                <aura:if isTrue="{!and(v.minKms >=0,v.maxKms >=0)}">
+                    <div >
+                        <span style="margin-left:15px; text-size:4rem">
+                            Kms
+                        </span>  <c:ETM_kmsRangeComponent min="{!v.minKms}" max="{!v.maxKms}" step="500"/>
+                    </div> 
+                </aura:if>
+            </lightning:layoutItem> 
+           
+            <lightning:layoutItem size="4" class="range">
+                <div class="slds-clearfix">
+                    <div class="slds-float_right clearFilterBtn"> <br />
+                        <lightning:button variant="neutral" label="Clear Filters" title="Clear Filters" onclick="{! c.clearFilters }"/>
+                    </div>
+                </div>
+            </lightning:layoutItem> 
+        </lightning:layout>
+        
+        <!-- Buttons-->
+        <br/>
+    </div>
+    
+    
+    <!-- TABLE CONTENT--> 
+    <div class="table_div" aura:id="tableDiv" >
+        <div class="slds-clearfix slds-m-around_small">
+            <div class="slds-clearfix">
+                <div class="slds-float_left">
+                    <!-- display total record and selected record count -->    
+                    <span  style="align:left; display:inline-block;height: 33px;padding-top:20px" >
+                        <aura:if isTrue="{!v.selectedCount == 0 }">   {!v.totalRecordsCount}+ Items - Updated a few seconds ago</aura:if>
+                        <aura:if isTrue="{!v.selectedCount > 0 }">{!v.selectedCount > 0 ? v.selectedCount : ''} Items Selected </aura:if>
+                    </span>
+                </div>
+                <div class="slds-float_right">
+                    <!-- Button to create selected vehicles-->
+                    <div class="slds-grid slds-gutters">
+                        <lightning:button variant="brand" iconName="utility:add"
+                                          label="Add Vehicles"
+                                          onclick="{! c.createVehicles }"
+                                          disabled="{!v.selectedCount == 0}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ERROR MESSAGE IF NOT RECORDS FOUND--> 
+        <aura:if isTrue="{!v.Message}">
+            <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme_success" >
+                    <div class="slds-notify__content" >
+                        <h2 class="slds-text-heading_small">{!v.msgDesc}</h2>
+                    </div>
+                </div>
+            </div>
+        </aura:if>
+        
+        <!-- Vehicles Data -->
+        <aura:if isTrue="{! v.loaded }">
+            <!-- Show Data -->
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                    <tr class="slds-text-title_caps">
+                        <th scope="col">
+                            <label class="slds-checkbox">
+                                <ui:inputCheckbox disabled="{!v.totalRecordsCount == 0}"
+                                                  aura:id="selectAllId"
+                                                  change="{!c.selectAllCheckbox}"/>
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-form-element__label"></span>
+                            </label>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Vehicle Name">Vehicle Image</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Vehicle Name">Vehicle Name</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate"  title="Make">Make</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Vehicle Type">Vehicle Type</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Vehicle Model">Vehicle Family</div>
+                        </th>
+                         <th scope="col">
+                            <div class="slds-truncate" title="Year">Model</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Vehicle Status">Vehicle Status</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Price">Price</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Kms">Kms</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Warranty Km">Warranty Km</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Warranty Period">Warranty Period</div>
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody> 
+                    <!--### display all records of searchResult attribute by aura:iteration ###-->
+                    <aura:iteration items="{!v.searchResult}" var="veh" indexVar="count">
+                        
+                        <tr>
+                            <td>
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        
+                                        <label class="slds-checkbox">
+                                            <ui:inputCheckbox text="{!veh.Id}"
+                                                              value="{!veh.isChecked}"
+                                                              change="{!c.checkboxSelect}"/>
+                                            <span class="slds-checkbox_faux"></span>
+                                            <span class="slds-form-element__label text"></span>
+                                        </label>
+                                        
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <lightning:formattedRichText aura:id="vehImage" class="slds-truncate" value="{!veh.VehicleImage}"/>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{!veh.VehicleName}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{!veh.Make}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{!veh.VehicleType}</div>
+                            </td>
+                            <td>
+                                <!-- <div class="around-small">
+                                <ui:outputText aura:id="fieldarea" value="{!lst.unit_Area}"/>
+                            </div>-->
+                                <div class="slds-truncate">{!veh.Family}</div>
+                            </td>
+                            <td>
+                                <div class="around-small">
+                                    <div class="slds-truncate">{!veh.VehicleModel}</div> 
+                                </div>
+                            </td>
+                            <td>
+                                <div class="around-small">
+                                    <div class="slds-truncate">{!veh.VehicleStatus}</div> 
+                                </div>
+                            </td>
+                            <td>
+                                <lightning:formattedNumber aura:id="fieldPrice" class="slds-truncate" value="{!veh.Price}" style="currency" currencyCode="AED" />
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{!veh.KM}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{!veh.WarrantyKm}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{!veh.WarrantyPeriod}</div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+            <aura:set attribute="else">
+                <lightning:spinner alternativeText="Loading" variant="brand" />
+            </aura:set>
+        </aura:if>
+        
+        <!--  Pagination Buttons Start -->
+        <br/>
+        <div class="slds-align_absolute-center"> 
+            <aura:if isTrue="{!v.searchResult != null}">
+                
+                <lightning:button label="Previous"
+                                  disabled="{!v.startPage == 0}"  
+                                  onclick="{!c.navigation}"
+                                  variant="brand"
+                                  iconName="utility:back"
+                                  name="previous"/>
+                
+                <span class="slds-badge slds-badge_lightest"
+                      style="margin-right: 10px;margin-left: 10px;">
+                    Page {!v.currentPage} out of {!v.totalPagesCount}
+                </span>
+                
+                <lightning:button label="Next"
+                                  disabled="{!(v.endPage + 1) >= v.totalRecordsCount}" 
+                                  onclick="{!c.navigation}"
+                                  variant="brand"
+                                  iconName="utility:forward"
+                                  iconPosition="right"
+                                  name="next"/>
+            </aura:if>
+        </div>  
+        <!--  Pagination Buttons End -->
+    </div>
+    
+</aura:component>

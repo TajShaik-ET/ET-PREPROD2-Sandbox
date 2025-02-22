@@ -1,0 +1,13 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	
+    <aura:attribute name="variant" type="String" default="linear"/>
+    <aura:attribute name="hideUpdateButton" type="Boolean" default="true"/>
+    <!--aura:handler name="Actionname" event="c:ETVIN_RefreshEvent" action="{!c.doInit}"/-->
+     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:path aura:id="path" recordId="{!v.recordId}"
+        variant="{!v.variant}"
+        hideUpdateButton="{!v.hideUpdateButton}"
+        onselect=""/>
+    
+</aura:component>

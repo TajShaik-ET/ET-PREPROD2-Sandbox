@@ -1,0 +1,358 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" 
+                controller="ETVIN_ShowVehicleInsuranceCtrl">
+    
+     <aura:attribute name="fileName" type="String" default="" />
+     <aura:attribute name="polfileName" type="String" default="" />
+     <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
+    <aura:attribute name="recordId" type="string" />
+    <aura:attribute name="vehicleInsList" type="List" />
+    <aura:attribute name="detailPage" type="boolean" default="false" />
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+     <aura:attribute name="isApproved" type="boolean" default="false"/>
+    <aura:attribute name="vehicleInsurancePol" type="ETVIN_Vehicle_Insurance__c" />
+    <aura:attribute name="InsuranceTransactions" type="ETIN_Insurance_Transactions__c"  
+                    default="{'sObjectType':'ETIN_Insurance_Transactions__c'}" />
+     <aura:attribute name="aptype" type="String[]" />
+     <aura:attribute name="invoicetype" type="String[]" />
+     <aura:attribute name="insurancetype" type="String[]" />
+    
+    <!--aura attributes-->  
+    <aura:attribute name="selectedDocumentId" type="string"/>
+    <aura:attribute name="lstContentDoc" type="List"/>
+    <aura:attribute name="hasModalOpen" type="boolean" default="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     <aura:attribute name="FilteredData" type="object"/>
+     
+    
+    <aura:method name="callingFromParentCmp" action="{!c.getData}"
+                 access="public">
+       <aura:attribute name="searchKeyWord" type="string"/>
+    </aura:method>
+    
+    <div class="noRecord">
+   
+    <aura:if isTrue="{!v.detailPage}" > 
+        <lightning:card >
+            <div class="headerTop">
+                <!-- <lightning:button variant="brand-outline" label="Back" title="Brand action" onclick="{! c.handleback }" />
+                &#x2190; -->
+                <div class="backBtn">
+                    <lightning:buttonicon iconName="utility:back" variant="brand" onclick="{! c.handleback }" />
+                </div>
+                <h3>Insurance Details</h3>
+            </div>
+            <div class="slds-p-around_large">
+                <!--lightning:recordForm aura:id="recordLoader"
+                                      recordId="{!v.recordId}" columns="2"
+                                      objectApiName="ETVIN_Vehicle_Insurance__c"
+                                      layoutType="Full" fields="Name"
+                      targetFields="{!v.Vehiclepolicy}"
+                      /-->
+                
+                <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="ETVIN_Vehicle_Insurance__c" >
+                    <lightning:messages />
+                    
+                    <lightning:layout multipleRows="true">
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:inputField fieldName="Name" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Insurance_Policy_Number__c" />
+                        </lightning:layoutItem>
+                        <!--lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Enrollment_Date__c" />
+                        </lightning:layoutItem-->
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Effective_Date__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Insurance_Status__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Chassis_Number__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Renew_Request__c" />
+                        </lightning:layoutItem>
+                        <!--lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Contract__c" />
+                        </lightning:layoutItem-->
+                        
+                        
+                        <!--lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Vehicle__c" />
+                        </lightning:layoutItem-->
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Vehicle_Name__c" />
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Reg_No__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Request_Status__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Purchase_Value__c" />
+                        </lightning:layoutItem>
+                         <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Vehicle_Insurance_Value__c" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Location__c" />
+                        </lightning:layoutItem>
+                       <lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Comments__c" />
+                        </lightning:layoutItem>
+                        
+                        <!--lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_TCF_No__c" />
+                        </lightning:layoutItem-->
+                      
+                        <!--lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="ETVIN_Vehicle_Number__c" />
+                        </lightning:layoutItem-->
+                        
+                        <!--lightning:layoutItem size="6" flexibility="auto" padding="around-small">
+                            <lightning:outputField fieldName="Amount__c" />
+                        </lightning:layoutItem-->
+                    </lightning:layout>
+                </lightning:recordEditForm>
+            </div>
+            <aura:if isTrue="{!not(empty(v.lstContentDoc))}"> 
+            <!-- Custom DataTable to Display List Of Available ContentDocuments Start-->  
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="Title"><span>Uploaded Documents</span></div>
+                        </th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.lstContentDoc}" var="CD">
+                        <tr>
+                            <th scope="row">
+                                <div class="slds-truncate" title="{!CD.Title}">
+                                    <!--store contentDocument Id in data-Id attribute-->
+                                    <a onclick="{!c.getSelected}" data-Id="{!CD.Id}">{!CD.Title}</a>
+                                </div>
+                            </th>
+                            
+                        </tr>  
+                    </aura:iteration>
+                </tbody>
+            </table>
+            </aura:if>
+            <div class="footerBtns">
+                <lightning:button variant="brand" label="Approve" title="Approved" onclick="{! c.handleApproved }" />
+                <lightning:button variant="destructive" label="Reject" title="Reject" onclick="{! c.handlereject }"/>
+            </div>   
+        </lightning:card>
+        <aura:set attribute="else"> 
+              <aura:if isTrue="{!not(empty(v.FilteredData))}"> 
+                  
+                  <h3 class="Headingcontent">Vehicle Policy</h3>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered vehicleDetlTable">
+                
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="policyRef" scope="col">
+                            <div class="slds-truncate" >Policy Ref Number</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" >Enrollment Date</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" >Chassis Number</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" >Plate Number</div>
+                        </th>
+                         <th class="" scope="col">
+                            <div class="slds-truncate" >Internal Number</div>
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.FilteredData}" var="vehicle" indexVar="index">
+                        <tr class="slds-hint-parent">
+                            <td data-label="Opportunity Name" scope="row">
+                                <div class="slds-truncate" title="Vehicle Insurance Name">
+                                    <a data-value="{!index}" data-record="{!vehicle.Id}" onclick="{!c.openRecord}">{!vehicle.Name}</a>
+                                </div>
+                            </td>
+                            <td data-label="Account Name">
+                                <div class="slds-truncate" title="Enrollment Date">{!vehicle.ETVIN_Enrollment_Date__c}</div>
+                                
+                            </td>
+                            <td>
+                             <div class="slds-truncate" title="">{!vehicle.ETVIN_Chassis_Number__c}</div>
+                            </td>
+                            <td>
+                            <div class="slds-truncate" title="">{!vehicle.Vehicle__r.Plate_Number__c}</div>
+                                
+                            </td>
+                            <td>
+                             <div class="slds-truncate" title="">{!vehicle.ETVIN_Internal_Number__c}</div>
+                         
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+                    <aura:set attribute="else"> 
+                        No Records To Display
+                  </aura:set>
+            </aura:if>
+        </aura:set>
+    </aura:if>
+    </div>
+    <aura:if isTrue="{!v.isModalOpen}">
+        
+        <aura:if isTrue="{!v.showLoadingSpinner}">
+            <div class="slds-text-body_small slds-text-color_error">Uploading... 
+                <img src="/auraFW/resources/aura/images/spinner.gif" class="spinner-img" alt="Loading"/>'
+            </div>
+        </aura:if>
+        <!-- Modal/Popup Box starts here-->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box Header Starts here-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Insurance Policy</h2>
+                </header>
+                <!--Modal/Popup Box Body Starts here-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>
+                        <aura:if isTrue="{!v.isApproved}">
+                         <!-- Section 1 -->
+                        <div class="slds-section slds-is-open">
+                            <h3 class="slds-section__title slds-theme_shade">
+                                <span class="slds-truncate slds-p-horizontal_small green" title="Vehicle Insurance Policy">Vehicle Insurance Policy</span>
+                            </h3>
+                            <div aria-hidden="false" class="slds-section__content">
+                                <p>
+                                    <lightning:recordEditForm recordId="{!v.recordId}"  onsuccess="{!c.handleSuccessCorrReq}" onerror="{!c.handleError}" objectApiName="ETVIN_Vehicle_Insurance__c" aura:id="accForm123">
+                                        <lightning:messages />
+                                        <lightning:inputField fieldName="Name" />
+                                        <lightning:inputField fieldName="ETVIN_Effective_Date__c" aura:id="effectiveDate"/>
+                                        <lightning:inputField fieldName="ETVIN_Expiry_Date__c" aura:id="expiryDate"/>
+                                        <lightning:inputField fieldName="ETVIN_Insurance_Policy_Number__c" aura:id="policyNumber" />
+                                        <!--lightning:inputField fieldName="Amount__c" /-->
+                                        
+
+                                        
+                                    </lightning:recordEditForm>
+                                </p>
+                                <lightning:input aura:id="policyfileId" onchange="{!c.handleFilesChange}" type="file" name="file" label="Upload Policy" multiple="false" required="true"/>
+                                <div class="slds-text-body_small slds-text-color_success">{!v.polfileName} </div>
+                            </div>
+                        </div>
+                        <!-- Section 2 -->
+                        <div class="slds-section slds-is-open slds-hide">
+                            <h3 class="slds-section__title slds-theme_shade">
+                                <span class="slds-truncate slds-p-horizontal_small green" title="Vehicle Insurance Transactions">Vehicle Insurance Transactions</span>
+                            </h3>
+                            <div aria-hidden="false" class="slds-section__content">
+                                <p>
+                                   
+                                        <lightning:input aura:id="amount" label="Amount" value="{!v.InsuranceTransactions.ETIN_Amount__c}"/>
+                                        <lightning:input label="Invoice Date" type="date" value="{!v.InsuranceTransactions.ETIN_Invoice_Date__c}"/>
+                                    
+                                   
+                                    <lightning:select name="select" label="AP Type" required="true" value="{!v.InsuranceTransactions.ETIN_AP_Type__c}" disabled="true">
+                                          <option value="Credit Note">Credit Note</option>
+                                        <aura:iteration items="{!v.aptype}" var="typ">
+                                            <option value="{!typ.label}">{!typ.label}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    
+                                    <lightning:select name="select" label="Invoice Type" required="true" value="{!v.InsuranceTransactions.ETIN_Invoice_Type__c}" class="slds-hide">
+                                        <option value="Addition">Addition</option>
+                                        <aura:iteration items="{!v.invoicetype}" var="typ">
+                                            <option value="{!typ.label}">{!typ.label}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    
+                                    <lightning:select name="select" label="Insurance Type" required="true"  value="{!v.InsuranceTransactions.Insurance_Type__c}" disabled="true">
+                                        <option value="Vehicle">Vehicle</option>
+                                        <aura:iteration items="{!v.insurancetype}" var="typ">
+                                            <option value="{!typ.label}">{!typ.label}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                   
+                                   
+                               
+                                    <!--lightning:input aura:id="fileId" onchange="{!c.handleFilesChange}" type="file" name="file" label="Upload Attachment" multiple="false"/>
+                                    <div class="slds-text-body_small slds-text-color_success">{!v.fileName} </div-->
+                                </p>
+                            </div>
+                        </div>
+                        </aura:if>
+                        <aura:if isTrue="{!!v.isApproved}">
+                            <lightning:recordEditForm recordId="{!v.recordId}" onsubmit="{!c.onRecordSubmit}" objectApiName="ETVIN_Vehicle_Insurance__c" aura:id="accForm">
+                                <lightning:messages />
+                     
+                                <lightning:inputField fieldName="ETVIN_Rejection_Reason__c" aura:id="rejectReason1" class="slds-hide"/>
+                            <lightning:textarea value="" label="Reason for Rejection" aura:id="rejectReason"/>
+                            
+                                <div class="cancelSaveBtnn">
+                                <lightning:button variant="neutral"
+                                                  label="Cancel"
+                                                  title="Cancel"
+                                                  onclick="{! c.closeModel }"/>
+                               <lightning:button variant="brand"
+                                                  label="Save"
+                                                  title="Save"
+                                                  onclick="" type="submit"/>
+                               </div> 
+                            </lightning:recordEditForm>
+                            
+                        </aura:if>
+                    </p>
+                </div>
+                <!--Modal/Popup Box Footer Starts here-->
+                <footer class="slds-modal__footer">
+                   <aura:if isTrue="{!v.isApproved}">  
+                    <lightning:button variant="neutral"
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    <lightning:button variant="brand"
+                                      label="Save"
+                                      title="Save"
+                                      onclick="{!c.submitDetails}"/>
+                    </aura:if>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.hasModalOpen}">
+        <section onclick="{!c.closeFileModel}"
+                 role="dialog"
+                 aria-modal="true"
+                 class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__content slds-p-around_medium slds-text-align_center"
+                     style="background: transparent;">
+                    <div style="width: 50%; margin: 0 auto; text-align: left">
+                        <!--<lightning:fileCard> to preview file using content document Id -->
+                        <lightning:fileCard fileId="{!v.selectedDocumentId}"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

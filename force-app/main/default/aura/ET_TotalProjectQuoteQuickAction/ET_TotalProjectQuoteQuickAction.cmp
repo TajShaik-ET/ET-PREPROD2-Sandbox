@@ -1,0 +1,9 @@
+<aura:component controller="ET_PricingUtilityClass"  implements="force:lightningQuickAction,force:hasRecordId" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="quoteId" type="String"/>
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:if isTrue="{! not(v.loaded) }">
+        <lightning:spinner alternativeText="Loading" variant="brand" />
+    </aura:if>
+</aura:component>

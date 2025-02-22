@@ -1,0 +1,348 @@
+<aura:component extends="c:ETI_BilingualCommunity" controller="ETI_B2B_VehicleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="VehicleInfo" type="ET_Customer_Vehicle__c" default="{'sObjectType':'ET_Customer_Vehicle__c','Registration_Type__c':'','Chassis_No__c':'','Custom_Number__c':'','Vehicle_Type__c':'','ET_Vehicle_type__c':'','ADFCA_Type__c':'','Selected_Type__c':'','Plate_No__c':'','Plate_Source__c':'','Plate_Type__c':'','Plate_Color__c':''}"/>
+    <aura:attribute name="verifiedVehicleInfo" type="ET_Customer_Vehicle__c" />
+    <aura:attribute name="loc" type="list"/>
+    <aura:attribute name="selectedEmirate" type="String" />
+    <aura:attribute name="RegistrationType" type="list"/>
+    <aura:attribute name="branch" type="list"/>
+    <aura:attribute name="serviceType" type="list"/>
+    <aura:attribute name="requiredDocumnets" type="Object" />
+    <aura:attribute name="bookingSlotOptions" type="list"/>
+    <aura:attribute name="ChooseDataInfo" type="String[]" />
+    <aura:attribute name="selectedValue" type="String"/>
+    <aura:attribute name="fileName" type="string[]"  />
+    <aura:attribute name="SelectedVehicles" type="list" />
+    <aura:handler name="DataEvent" event="c:ETI_DataEvent" action="{!c.SelectedData}"/>
+    <aura:attribute name="booking" type="ETI_Booking__c" default="[{'sObjectType':'ETI_Booking__c','Name':''}]"/>
+    <aura:attribute name="isOpenRequestForService" type="boolean" default="false"/>
+    <aura:attribute name="isOpenwhennoservice" type="boolean" default="false"/>
+    <aura:attribute name="bookingSlots" type="list"/>
+    <aura:attribute name="IsSpinner" type="boolean" default="false"/>
+    <aura:attribute name="showAvailableSlots" type="boolean" default="false"/> 
+    <aura:attribute name="dateValidationError" type="boolean" default="false"/>
+    <aura:attribute name="mandatoryFields" type="List" default="ETSPlate,ETSsource,ETScolor,ETSType"/>
+    <aura:attribute name="vehicleTypes" type="List" />
+    <aura:attribute name="ADFCATypes" type="List" />
+    <aura:attribute name="Afterbooking" type="ETI_Booking__c" default="[{'sobjectType':'ETI_Booking__c', 'Test__c':'' }]"/> 
+    <aura:attribute name="showPaymentDetail" type="boolean" default="false"/>
+    <aura:attribute name="isOpendeletevehicle" type="boolean" default="false"/>    
+    <aura:attribute name="vehicleId" type="list"/>
+    <aura:attribute name="isPayment" type="boolean" default="false"/>
+    <aura:attribute name="vfUrl" type="String" />    
+    <aura:attribute name="mandatoryFieldsBooking" type="List" default="Cust_Status,Cust_branch,Cust_serviceType,Cust_date"/>
+    <aura:attribute name="paymentvehicleid" type="Id"/>
+    <aura:attribute name="PlateType" type="list"/>
+    <aura:attribute name="Platesource" type="list"/>
+    <aura:attribute name="Platecolor" type="list"/> 
+    <aura:attribute name="lookupVehicleTypes" type="list"/>
+    <aura:attribute name="showReg" type="boolean" default="true"/> 
+    <aura:attribute name="errorReg" type="boolean" default="false"/> 
+    <aura:attribute name="errorChassis" type="boolean" default="false"/>
+    <aura:attribute name="errorPlateColor" type="boolean" default="false"/>
+    <aura:attribute name="errorPlateType" type="boolean" default="false"/>
+    <aura:attribute name="errorvehicleType" type="boolean" default="false"/>
+    <aura:attribute name="errorADFCAType" type="boolean" default="false"/>
+    <aura:attribute name="errorPlateSource" type="boolean" default="false"/>
+    <aura:attribute name="isFilesNotUploaded" type="boolean" default="false"/>
+    <aura:attribute name="isfeebackModal" type="boolean" default="false"/> 
+    <aura:attribute name="requiredDocsList" type="ETI_Required_Documents__c[]" default="[{'sobjectType':'ETI_Required_Documents__c', 'Id':'','Name':'' }]"/>
+    <aura:attribute name="fileToBeUploaded" type="Object[]"/>
+    <aura:attribute name="isTearmAndCondition" type="boolean" default="false"/>
+    <aura:attribute name="isNewServiceRequest" type="boolean" default="false"/>
+    <aura:attribute name="isOpenRequestForService1" type="boolean" default="false"/>
+    <aura:attribute name="isShowType" type="boolean" default="false"/>    
+    <aura:attribute name="isShowColor" type="boolean" default="false"/> 
+    <aura:attribute name="isBulkModel" type="boolean" default="false"/>    
+    <aura:attribute name="errorVehicle" type="boolean" default="false"/>
+	<aura:attribute name="isShowButtons" type="boolean" default="true"/>
+    
+    <c:ETI_UtilityMethods aura:id="ETI_UtilityMethods"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:registerEvent name="showDetails" type="c:ETI_B2B_ShowDetails"/>
+    <aura:handler event="c:ETI_B2B_ShowButtons" action="{!c.showButtonsEvent}"/>
+
+    <!--Use "slds-m-around_xx-large" class to add standard X-Large padding to the component--> 
+    <div class="textright" style="color: rgb(201, 199, 197);font-weight: bold;">
+        <aura:if isTrue="{!v.selectedEmirate != 'Sharjah'}">
+            <span class="infoDetail">*{!v.Service_availability}</span>
+            <aura:set attribute="else">
+                <span class="infoDetail">{!v.Service_availability_Sharjah}*</span>
+            </aura:set>
+        </aura:if>
+    </div>
+     <div class="textright" style="color: rgb(201, 199, 197);font-weight: bold;">
+       <span class="infoDetail">{!v.Inspection_Plates_suspended}</span>
+    </div>
+    <div class="slds-m-around_xx-large">
+        <aura:if isTrue="{!or(!v.isOpenRequestForService,v.isShowButtons)}">
+            <div class="vehicleDetlsBtns textright padbut">
+                <lightning:button class="slds-button_outline-brand btn_table" 
+                                  label="{!v.Upload_File}" onclick="{!c.openBulkModel}"/>  
+                <lightning:button class="slds-button_outline-brand btn_table" 
+                                  label="{!v.Add}" onclick="{!c.openModel}"/> 
+                <!--lightning:button class="slds-button_outline-brand btn_table" 
+                                  aura:id="RequestButton"                           
+                                  label="{!v.Service}"
+                                  onclick="{!c.requestForService}"/--> 
+                <!--lightning:button class="slds-button_outline-brand btn_table " 
+                                  label="Delete" 
+                                  onclick="{!c.ShowVehiclepopup}"/--> 
+                <lightning:button variant="brand" class="btn_table"
+                                  label="{!v.Support}" onclick="{!c.openFeedbackModal}"/>  
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.isBulkModel}">
+              <c:ETI_B2BBulkVehicleUpload isBulkModel="{!v.isBulkModel}" emirate="{!v.selectedEmirate}"/>                                    
+        </aura:if>
+        <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+        <aura:if isTrue="{!v.isOpen}">
+            <!--###### MODAL BOX Start######--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container addVehicleModal">
+                    <aura:if isTrue="{!v.IsSpinner}">
+                        <lightning:spinner alternativeText="Loading" size="medium" variant="brand"/>
+                    </aura:if>
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header modalHeader">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="{!v.Close}"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.Add_Vehicle}</h2>
+                    </header>
+                    <!--###### MODAL BOX BODY  Start######-->
+                    <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                        <div>
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col" style="max-width: 100%">
+                                    <aura:if isTrue="{!v.isFilesNotUploaded}" >
+                                        <c:ETI_MessageComponent message="{!v.Required_Documents}" type="error" />
+                                    </aura:if>
+                                </div>
+                            </div>
+                            <aura:if isTrue="{!v.showReg}">
+                                <aura:if isTrue="{!v.selectedEmirate != 'Sharjah'}">
+                                    <lightning:select label="{!v.Registration_Type}" aura:id="RegistrationType" value="{!v.VehicleInfo.Registration_Type__c}"  
+                                                      name="RegistrationType" onchange="{!c.clearvalues}" class="{!v.errorReg?'slds-form-element slds-has-error':''}">   
+                                        <option value="">-- {!v.None} --</option>
+                                        <aura:iteration items="{!v.RegistrationType}" var="status">
+                                            <option value="{!status.value}">{!status.label}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    <aura:if isTrue="{!v.errorReg}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                    </aura:if>
+                                    
+                                    <lightning:select label="{!v.Vehicle_Type}" aura:id="ET_Vehicle_type__c" name="Vehicle Type" 
+                                                      class="{!v.errorvehicleType?'slds-form-element slds-has-error':''}"
+                                                      value="{!v.VehicleInfo.ET_Vehicle_type__c}" required="true" disabled="false"
+                                                      onchange="">   
+                                    <option value="">-- {!v.None} --</option>
+                                    	<aura:iteration items="{!v.vehicleTypes}" var="type">
+                                            <option value="{!type.value}" >{!type.label}</option>
+                                        </aura:iteration>
+                                 </lightning:select>
+                                 <aura:if isTrue="{!v.errorvehicleType}">
+                                      <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                 </aura:if>
+                                </aura:if>
+                                <aura:if isTrue="{!v.selectedEmirate == 'Sharjah'}">
+                                    <!-- Registration Type -->
+                                    <lightning:select label="{!v.Registration_Type}" aura:id="RegistrationType" value="{!v.VehicleInfo.Registration_Type__c}"  
+                                                      name="RegistrationType" onchange="{!c.clearvalues}" class="{!v.errorReg?'slds-form-element slds-has-error':''}">   
+                                        <option value="Registered">Registered</option>
+                                    </lightning:select>
+                                    <aura:if isTrue="{!v.errorReg}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                    </aura:if>
+                                    
+                                     <!-- Vehicle Type -->
+                                    <lightning:select label="{!v.Vehicle_Type}" aura:id="ET_Vehicle_type__c" name="Vehicle Type" 
+                                                      class="{!v.errorvehicleType?'slds-form-element slds-has-error':''}"
+                                                      value="{!v.VehicleInfo.ET_Vehicle_type__c}" required="true" disabled="false"
+                                                      onchange="">   
+                                        <option value="Vehicle">Vehicle</option>
+                                    </lightning:select>
+                                    <aura:if isTrue="{!v.errorvehicleType}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                    </aura:if>
+                                </aura:if>
+                            	
+                                <aura:if isTrue="{!v.selectedEmirate != 'Sharjah'}">
+                                    <lightning:select label="{!V.ADFCA_Type}" aura:id="ADFCA_Type__c" name="ADFCA Type" 
+                                                      class="{!v.errorADFCAType?'slds-form-element slds-has-error':''}"
+                                                      value="{!v.VehicleInfo.ADFCA_Type__c}" required="true" disabled="false"
+                                                      onchange="{!c.onADFCATypeChange}">   
+                                        <option value="">-- {!v.None} --</option>
+                                        <aura:iteration items="{!v.ADFCATypes}" var="type">
+                                            <option value="{!type.value}" >{!type.label}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    <aura:if isTrue="{!v.errorADFCAType}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                    </aura:if>
+                                </aura:if>
+                                <aura:if isTrue="{!and(v.VehicleInfo.Registration_Type__c=='Registered',v.selectedEmirate != 'Sharjah')}">
+                                    <lightning:select label="{!v.Plate_Combination+'/'+v.Chassis_No}"  aura:id="ChooseData" name="ChooseData" 
+                                                      value="{!v.selectedValue}" onchange="{!c.clearvalues1}" class="{!v.errorChassis?'slds-form-element slds-has-error':''}">   
+                                        <option value="">-- {!v.None} --</option>
+                                        <aura:iteration items="{!v.ChooseDataInfo}" var="ChooseDataInfo">
+                                            <option value="{!ChooseDataInfo.value}">{!ChooseDataInfo.label}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    <aura:if isTrue="{!v.errorChassis}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                    </aura:if>
+                                </aura:if>
+                            </aura:if>
+                            
+                            <aura:if  isTrue="{!or(and(v.selectedValue =='Chassis No',v.VehicleInfo.Registration_Type__c=='Registered'),
+                                              v.VehicleInfo.Registration_Type__c=='Un-Registered')}" >
+                                <lightning:input type="text" name="ChassisNo" label="{!v.Chassis_No}" aura:id="ETSChassis" onkeyup="{!c.handleOnChmageOfChassis}"
+                                                 value="{!v.VehicleInfo.Chassis_No__c}" />
+                            </aura:if>
+                           
+                            <aura:if isTrue="{!or(v.VehicleInfo.Registration_Type__c=='Registered')}">
+                                <aura:if isTrue="{!or(v.selectedValue =='Plate Combination',v.isOpenwhennoservice)}">
+                             		<span onkeyup="{!c.plateNoValidation}">  
+                                    	<lightning:input type="text" name="PlateNo" label="{!v.Plate_No}"
+                                                         aura:id="ETSPlate" required="true" value="{!v.VehicleInfo.Plate_No__c}" maxlength="5" minlength="5"/> 
+                                    </span>
+                                    <lightning:select label="{!v.Plate_Source}" aura:id="ETSsource" name="Plate Source" class="{!v.errorPlateSource?'slds-form-element slds-has-error':''}"
+                                                      value="{!v.VehicleInfo.Plate_Source__c}" required="true" onchange="{!c.onSourceChange}">      
+                                        <option value="">-- {!v.None} --</option>
+                                        <aura:iteration items="{!v.Platesource}" var="Psource">
+                                            <option value="{!Psource.value}"  name="{!Psource.label}">{!Psource.label}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    <aura:if isTrue="{!v.errorPlateSource}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                    </aura:if>
+                                    <lightning:select label="{!v.Plate_Type}" aura:id="ETSType" name="Plate Type" class="{!v.errorPlateType?'slds-form-element slds-has-error':''}"
+                                                      value="{!v.VehicleInfo.Plate_Type__c}" required="true" disabled="{!!v.isShowType}"
+                                                      onchange="{!c.onTypeChange}">      
+                                        <option value="">-- {!v.None} --</option>
+                                        <aura:iteration items="{!v.PlateType}" var="PType">
+                                            <option value="{!PType.value}" name="{!PType.label}" >{!PType.label}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    <aura:if isTrue="{!v.errorPlateType}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                    </aura:if>
+                                    <lightning:select label="{!v.Plate_Color}" aura:id="ETScolor" name="Plate Color" class="{!v.errorPlateColor?'slds-form-element slds-has-error':''}"
+                                                      value="{!v.VehicleInfo.Plate_Color__c}" required="true" disabled="{!!v.isShowColor}"
+                                                      onchange="{!c.onColorChange}">      
+                                        <option value="">-- {!v.None} --</option>
+                                        <aura:iteration items="{!v.Platecolor}" var="Pcolor">
+                                            <option value="{!Pcolor.value}" name="{!Pcolor.label}">{!Pcolor.label}</option>  
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    
+                                    <aura:if isTrue="{!v.errorPlateColor}">
+                                        <div role="alert" class="slds-form-element__help" id="error-message-unique-id" style="color: #c23934;">{!v.Field_is_required}</div>
+                                    </aura:if>
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{!v.VehicleInfo.Registration_Type__c=='Un-Registered'}">
+                                 <lightning:input aura:id="ETSEngineNo"  value="{!v.VehicleInfo.Engine_No__c}" Name="Engine No" 
+                                                                 label ="Engine No" required="true"/>
+                                <lightning:input type="text" name="Custom Number" label="{!v.Custom+'/'+v.Transfer_Certificate_Number}" aura:id="customNo" required="true"
+                                                 value="{!v.VehicleInfo.Custom_Number__c}" onkeyup="{!c.handleOnChmageOfCustomNumber}"/>
+                                <lightning:input type="text" name="Model Year" label="{!v.Model_Year}" aura:id="ModelYear" maxlength="4" minlength="4" pattern="[0-9]*" 
+                                                 value="{!v.VehicleInfo.Vehicle_Year__c}" onkeyup="{!c.handleOnChmageOfModelyear}" required="true"/>
+                                <!--File Upload Strat -->
+                                <aura:iteration items="{!v.requiredDocsList}" var="doc" indexVar="index">
+                                    <table>
+                                        <tr>
+                                            <lightning:input label="{!doc.Name}" aura:id="{!'fileId' + index}" id="fileId" onchange="{!c.handleFilesChange}" type="file" name="{!doc.Id}" multiple="false" accept="image/jpeg, image/png, .zip, .doc, .docx, .pdf" required="true" />
+                                        </tr>
+                                        <aura:iteration items="{!v.fileName}" var="text"  indexVar="index">
+                                            <tr>
+                                                <aura:if isTrue="{!text.Id == doc.Id}">
+                                                    <td style="padding-bottom: 5px;">{!text.Name}</td>                 
+                                                    <td class="textalignright"><a href="javascript:void(0)" data-filename="{!text.Name}" data-index="{!index}" onclick="{!c.removeFile}">{!v.Delete}</a></td>
+                                                </aura:if>
+                                            </tr>
+                                        </aura:iteration>
+                                    </table> 
+                                </aura:iteration>
+                                <!---File Upload End-->
+                            </aura:if>
+                            <aura:if isTrue="{!or(v.VehicleInfo.Registration_Type__c =='Un-Registered', and(v.selectedValue !='',v.VehicleInfo.Registration_Type__c=='Registered'))}">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div class="slds-show">
+                                        <c:ETI_TermsandConditions aura:id="termsandconditioncheckboxParent" placeOfVisibility="Vehicle Registration" isCheckbox="{!v.isTearmAndCondition}"/>
+                                    </div>
+                                    <p aura:id="TC" class="slds-hide" style="color:red">{!v.Agree_the_Terms_and_Conditions}</p>
+                                    <div class="slds-form-element__help slds-hide" aura:id="termsandconditioncheckboxError" style="color:red">{!v.Field_is_required}</div>
+                                </div>
+                            </aura:if>
+                            
+                        </div>
+                    </div>
+                    <!--###### MODAL BOX FOOTER  Start ######-->
+                    <footer class="slds-modal__footer modalFooter">
+                        <lightning:button variant="neutral" 
+                                          label="{!v.Cancel}"
+                                          title="{!v.Cancel}"
+                                          onclick="{! c.closeModel }" class="btn_back"/>
+                        <lightning:button variant="neutral" 
+                                          label="{!v.Save}"
+                                          title="{!v.Save}"
+                                          onclick="{! c.saveVeh }" class="btn_table"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--###### MODAL BOX Part END Here ######-->
+        </aura:if>
+        <!--Model pop up for booking delete warning -->
+        <aura:if isTrue="{!v.isOpendeletevehicle}">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header modalHeader">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeVehiclepopup }"
+                                              alternativeText="{!v.Close}"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.Delete_Vehicle}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium modalContainer" id="modal-content-id-1">
+                        <!--p style="text-align: center;padding: 30px;font-size: 14px;"><b> All your bookings associated with the Vehicle will get deleted.
+                     Please click on proceed to continue
+                     </b>
+                  </p-->
+                        <p style="text-align: center;padding: 30px;font-size: 14px;">
+                            <b>{!v.Click_on_proceed_to_continue}</b>
+                        </p>
+                    </div>
+                    <footer class="slds-modal__footer modalFooter modalFooter">
+                        <lightning:button variant="neutral" 
+                                          label="{!v.Cancel}"
+                                          title="{!v.Cancel}"
+                                          onclick="{! c.closeVehiclepopup }" class="btncancel"/>
+                        <lightning:button variant="brand" 
+                                          label="{v.Proceed}"
+                                          title="{v.Proceed}"
+                                          onclick="{! c.deletevehicle }" class="btnsave"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if> 
+        <aura:if isTrue="{!v.isOpenRequestForService}">
+            <c:ETI_B2B_RequestForService booking="{!v.booking}" tableDisplay="True" emirate="{!v.selectedEmirate}" isNavigateToHome="true" />
+        </aura:if>
+        <aura:if  isTrue="{!v.isfeebackModal}" > 
+            <c:ETI_B2B_FeedBackPage isfeebackModal="{!v.isfeebackModal}" aura:id="feedbackPage" />
+        </aura:if> 
+    </div>
+    
+    <div aura:id="cmpBody" class="distablediv">
+        {!v.body}
+    </div>  
+    
+</aura:component>

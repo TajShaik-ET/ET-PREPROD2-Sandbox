@@ -1,0 +1,237 @@
+.THIS .imageClass{
+    text-align: center;
+}
+.THIS.parentClass{
+    padding :2rem 3rem 0rem;
+    height: calc(100vh - 26px)!important;
+    background-image: url(/resource/homepagebg_img);
+    z-index: 1;
+    background-size: cover;
+    background-position: top;
+    /*position: absolute;
+    overflow: auto;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;*/
+}
+.THIS .myCaseBackBtn{
+    text-align: right;
+}
+
+.THIS .cancel_btn{
+    margin-left: 8%;
+}
+
+.THIS .mobilebackarrow{
+    display:none;
+}
+.THIS .btn_table {
+    font-size: 14px;
+    margin-top: 8px;
+    margin-left: 10px;
+    border: 0px solid #00c19e;
+    padding: 0 10px;
+    min-width: 100px;
+    height: 30px;
+    line-height: 30px!important;
+    background-color: #eb4026;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 1.2;
+    text-decoration: none;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.THIS .btn_table:hover{
+    background-color: #333333;
+}
+
+.THIS.bgimage{
+    background-image: url(/resource/homepagebg_img);
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0;
+    bottom: 0;
+    height: Calc(100vh - 0px);
+    overflow: auto;
+}
+.THIS.helpsection{
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: auto;
+}
+.THIS .searchdiv{
+    position: relative;
+    display: block;
+    text-align: center;
+    width: 100%;   
+    padding: 2rem;
+    background: rgb(255 255 255 / 0.6);
+}
+.THIS .searchdiv .headingsearch{
+    color: #62cc8c;
+    font-size: 20px;
+    font-weight: bold;
+}
+.THIS .searchdiv #search{
+    width: 450px;
+    border: 0px solid #ddd;
+    height: 38px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: .5rem;
+    outline: none;
+}
+.THIS.topicsection{
+    position: relative;
+    display: inline-block;
+    padding: 3rem 5rem 0rem;
+    width: 100%;
+}
+.THIS.topicsection .leftsection{
+    display: inline-block;
+    position: relative;
+    float: left;
+    width: 75%;    
+    background: rgb(255 255 255 / 0.7);
+    border-radius: 10px;
+}
+.THIS.topicsection .rightsection{
+    display: inline-block;
+    position: relative;
+    float: left;
+    width: 23%;
+    margin-left:2%;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+}
+.THIS.topicsection .rightsection .textshow{
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color:#000;
+}
+.THIS.topicsection .rightsection .btncontact{
+    font-size: 12px;
+    color: #fff;
+    letter-spacing: 1px;
+    text-decoration: none;
+    background: #eb4026;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    text-transform: uppercase;
+    transition: all .4s;
+}
+.THIS.topicsection .rightsection .btncontact:hover{
+    background: #333333;
+}
+.THIS.topicsection .leftsection .topheading{
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid #62cc8c;
+    font-size: 16px;
+    color: #555;
+    font-weight: bold;
+}
+.THIS.topicsection .leftsection .contentdiv{
+    padding: 1rem;
+}
+.THIS.topicsection .leftsection .contentdiv .topics {
+    display: inline-block;
+    width: 48%;
+    margin: 1%;
+    position: relative;
+    padding: .5rem;
+}
+.THIS.topicsection .leftsection .contentdiv .topics .topics_img_div {
+    position: relative;
+    display: inline-block;
+    width: 20%;
+    float: left;
+    text-align: center;
+}
+.THIS.topicsection .leftsection .contentdiv .topics .topics_img_div img {
+    width: 42px;
+    height: 42px;
+}
+.THIS.topicsection .leftsection .contentdiv .topics .topics_heading_div h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+}
+.THIS.topicsection .leftsection .contentdiv .topics .topics_heading_div p {
+    font-size: 13px;
+    color: #000;
+}
+/*My account css start*/
+.THIS.cleardiv{
+    display: block;
+    position: relative;
+    clear: both;
+}
+.THIS li.slds-accordion__list-item {
+    margin-bottom: 1rem;
+    background: #fff;
+    border-top: 0px;
+    border-radius: 5px;
+}
+.THIS section.slds-accordion__section.slds-is-open {
+    background: #fff;
+    border-radius: 5px;
+}
+.THIS li.slds-accordion__list-item .slds-accordion__content{
+    padding: 1rem;
+    border-top: 1px solid #ccc;
+}
+.THIS li.slds-accordion__list-item  lightning-primitive-icon {
+    position: absolute;
+    right: 0;
+    color: #000;
+}
+.THIS li.slds-accordion__list-item span.slds-truncate ,
+.THIS li.slds-accordion__list-item span.slds-truncate:hover{
+    color: #000;
+}
+.THIS .heading{
+    text-align: center;
+    font-weight: bold;
+    padding: 1rem 0;
+    font-size: 32px;
+}
+
+@media only screen and (max-width: 480px) {
+    .THIS .mobilebackarrow{
+        display:block;
+    }
+    .THIS .btn_table{
+        display:none;
+    }
+    .THIS .heading{
+        font-size: 20px;
+    }
+    .THIS.parentClass {
+        padding: 3.5rem 1.5rem 0;
+        background-size: auto;
+        height: calc(100vh - 0px)!important;        
+        margin-top: -48px;
+    }
+    .THIS .mobilebackarrow span{
+        padding: 0rem;
+        font-size: 30px;
+        display: inline-block;
+        color: #fff;
+    }
+}
+/*My account css end*/

@@ -1,0 +1,60 @@
+<aura:component controller="ET_B2B_ViewDashboardCtrl"  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global"  >
+<!--Chartjs chartJs_v3_9_0 -->
+    <ltng:require scripts="{!$Resource.Chartjs}"
+                  afterScriptsLoaded="{!c.scriptsLoaded}" />
+     <aura:attribute name="resourcePickVal" type="String[]" default="By Contracts,By Employee Type,By Employee Catogery"/>
+     <aura:attribute name="resourceData" type="list"  />
+     <aura:attribute name="vehiclePickVal" type="String[]" default="By Contracts,By Vehicle Type,By Status"/>
+     <aura:attribute name="vehicleData" type="list"  />
+     <aura:attribute name="VehicleVal" type="String" />
+     <aura:attribute name="resourceVal" type="String" />
+     <aura:attribute name="currentaccountId" type="String"/>
+    <aura:attribute name="showAll" type="Boolean" />
+    <aura:attribute name="vehiclesCount" type="String"/>
+    <aura:attribute name="resourcesCount" type="String"/>  
+    
+    <div class="chart_details">
+        
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col chartSection">
+                <span class="chartSName">Resource Count</span>
+                <span> {!v.resourcesCount}</span>
+            </div>
+            <div class="slds-col chartSection">
+                 <span class="chartSName">Assigned Vehicles Count</span>
+                <span>{!v.vehiclesCount}</span>
+            </div>
+            
+            
+        </div>       
+        
+         <div class="slds-grid slds-gutters">
+            <div class="slds-col businessTableSection" >
+                <h1>Resource 360 View</h1>
+                <lightning:select class="selectionItem" name="select" aura:id="selectResource" label="Choose group by value" value="{!v.resourceVal}" onchange="{!c.onResourceChangeHandler}">
+                    <aura:iteration items="{!v.resourcePickVal}" var="val">
+                        <option text="{!val}"></option>
+                    </aura:iteration>
+                </lightning:select>
+             
+                <canvas id="resources" width="250" height="250" style="{!'display:'+if(v.resourceVal=='By Contracts','Block','None')}"/>             
+                <canvas id="resources2" width="250" height="250" style="{!'display:'+if(v.resourceVal=='By Employee Type','Block','None')}"/>
+                <canvas id="resources3" width="250" height="250" style="{!'display:'+if(v.resourceVal=='By Employee Catogery','Block','None')}"/>
+                
+             </div>
+            <div class="slds-col businessTableSection" >
+                 <h1>Assigned Vehicles 360 View</h1>
+                <lightning:select class="selectionItem" name="select" aura:id="selectVehicle" label="Choose group by Value" value="{!v.VehicleVal}"  onchange="{!c.onVehicleChangeHandler}">
+                    <aura:iteration items="{!v.vehiclePickVal}" var="val">
+                        <option text="{!val}"></option>
+                    </aura:iteration>
+                </lightning:select>
+                <canvas id="vehicles" width="250" height="250" style="{!'display:'+if(v.VehicleVal=='By Vehicle Type','Block','None')}"></canvas>
+                <canvas id="vehicles2" width="250" height="250" style="{!'display:'+if(v.VehicleVal=='By Status','Block','None')}"></canvas>
+                <canvas id="vehicles3" width="250" height="250" style="{!'display:'+if(v.VehicleVal=='By Contracts','Block','None')}"></canvas>
+
+            </div>
+        </div>
+    </div>
+</aura:component>

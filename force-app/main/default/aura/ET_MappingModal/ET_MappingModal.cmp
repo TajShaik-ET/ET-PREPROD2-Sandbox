@@ -1,0 +1,128 @@
+<aura:component controller="ET_SaveCombinationCntrl">
+    <aura:attribute name="totalLines" type="Integer" default="0" />
+    <aura:attribute name="data" type="Map" />
+    <aura:attribute name="supervisorPricingChoice" type="String" />
+    <aura:attribute name="coordinatorPricingChoice" type="String" />
+    <aura:attribute name="accountantPricingChoice" type="String" />
+    <aura:attribute name="otherEmployeePricingChoice" type="String" />
+    <!--<aura:attribute name="addPricingComboBttnDisable" type="Boolean" default="false"/> -->
+    <aura:attribute name="allTabDataWithUpdatedUnitAvailableNo" type="Map" />
+    <aura:attribute name="selectedTabLst" type="List"/>
+    <aura:attribute name="isVehicleTabSelected" type="Boolean" default="false"/>
+    <aura:attribute name="isDriverTabSelected" type="Boolean" default="false"/>
+    <aura:attribute name="isNanyTabSelected" type="Boolean" default="false"/>
+    <aura:attribute name="isSupervisorTabSelected" type="Boolean" default="false"/>
+    <aura:attribute name="isCoordinatorTabSelected" type="Boolean" default="false"/>
+    <aura:attribute name="isAccuntantTabSelected" type="Boolean" default="false"/>
+    <aura:attribute name="isEmployeeTabSelected" type="Boolean" default="false"/>
+    <aura:attribute name="isCostTabSelected" type="Boolean" default="false"/>
+    <aura:attribute name="disableQuoteBttn" type="boolean"/>
+    <aura:attribute name="disableCustomizePricingBttn" type="boolean"/>
+   <!-- <aura:attribute name="opportunityRecordId" type="Id"/> -->
+    <aura:attribute name="serviceRequestRecordId" type="Id"/>
+    <aura:attribute name="existingCombinations" type="ET_Request_Mapping__c[]"/>
+    
+    <aura:attribute name="deletedCombintaionIds" type="List"/>
+    <aura:attribute name="serviceRequestModificationStatus" type="String"/>
+    <aura:attribute name="isPricingTeam" type="Boolean" default="false"/>
+	<aura:attribute name="loaded" type="Boolean" default="true" />
+    <aura:attribute name="opportunityStatus" type="String"/>
+  
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:handler name="sendDataToModal" event="c:ET_sendDataToMappingModalEvt" action="{!c.handleSendDataEvent}"/>
+
+    <aura:registerEvent name="hideMappingModal" type="c:ET_Hide_MappingModal" />
+	
+    <aura:method name="setServiceRequestModificationStatus" action="{!c.setServiceRequestModificationStatus}" access="public">
+        <aura:attribute name="status" type="String"/>
+    </aura:method>
+    
+    <aura:if isTrue="{! not(v.loaded) }">
+        <lightning:spinner alternativeText="Loading" variant="brand" />
+    </aura:if>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_large">
+        <div class="slds-modal__container">
+            <!-- ###### MODAL BOX HEADER Start ######-->
+            <header class="slds-modal__header">
+                <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeModel }" alternativeText="close"
+                    variant="bare-inverse" class="slds-modal__close" />
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Pricing Combination Modal</h2>
+            </header>
+            <div aura:id="errorMessage">
+            </div>
+            <!--###### MODAL BOX BODY Part Start######-->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-grid slds-wrap slds-grid--pull-padded" style="padding-bottom: 1rem">
+                    <aura:if isTrue="{!v.isSupervisorTabSelected}">
+                        <div class="slds-col--padded slds-size--4-of-12">
+                            <lightning:select  name="supervisorPricingChoice" label="Supervisor Pricing Choice" required="true" value="{!v.supervisorPricingChoice}"
+                            aura:id="selectSuperPriChoice" disabled="{!}">
+                                <!--<option value="perUnit">Per Unit</option>-->
+                                <!--<option value="">choose one...</option>-->
+                                <option value="perUnit">Per Quotation</option>
+                               <!--<option value="perCombination">Per Combination</option>-->
+                                <!--<option value="separately">Separately</option>-->
+                            </lightning:select>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.isCoordinatorTabSelected}">
+                        <div class="slds-col--padded slds-size--4-of-12">
+                            <lightning:select  name="coordinatorPricingChoice" label="Coordinator Pricing Choice" required="true" 
+                                aura:id="selectCordiPriChoice"  value="{!v.coordinatorPricingChoice}">
+                                <!--<option value="perUnit">Per Unit</option>-->
+                                <!--<option value="">choose one...</option>-->
+                                <option value="perUnit">Per Quotation</option>
+                                <!--<option value="perCombination">Per Combination</option>-->
+                                <!--<option value="separately">Separately</option>-->
+                            </lightning:select>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.isAccuntantTabSelected}">
+                        <div class="slds-col--padded slds-size--4-of-12">
+                            <lightning:select  name="accountantPricingChoice" label="Accountant/Cashier Pricing Choice" required="true" 
+                                aura:id="selectAccPriChoice"  value="{!v.accountantPricingChoice}">
+                                <!--<option value="perUnit">Per Unit</option>-->
+                                <!--<option value="">choose one...</option>-->
+                                <option value="perUnit">Per Quotation</option>
+                                <!--<option value="perCombination">Per Combination</option>-->
+                                <!--<option value="separately">Separately</option>-->
+                            </lightning:select>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.isEmployeeTabSelected}">
+                        <div class="slds-col--padded slds-size--4-of-12">
+                            <lightning:select  name="otherEmployeePricingChoice" label="Other Employee Pricing Choice" required="true" 
+                                aura:id="selectOtherEmployeePriChoice"  value="{!v.otherEmployeePricingChoice}">
+                                <!--<option value="perUnit">Per Unit</option>-->
+                                <!--<option value="">choose one...</option>-->
+                                <option value="perUnit">Per Quotation</option>
+                                <!--<option value="perCombination">Per Combination</option>-->
+                                <!--<option value="separately">Separately</option>-->
+                            </lightning:select>
+                        </div>
+                    </aura:if>
+                </div>
+                <div aura:id="cmpBody">
+                    {!v.body}
+                </div>
+                <br/>
+                <aura:if isTrue ="{!not(or (v.opportunityStatus == 'Approved' , v.opportunityStatus == 'Submitted For Approval' ))}">
+                    <lightning:button variant="neutral" label="Add Pricing Combination" title="Add Pricing Combination"
+                                      onclick="{!c.addMapping }"/>
+                </aura:if>
+                
+            </div>
+            <!--###### MODAL BOX FOOTER Part Start ######-->
+            <footer class="slds-modal__footer">
+                <lightning:button variant="neutral" label="Cancel" title="Cancel" onclick="{! c.closeModel }" />
+                <aura:if isTrue ="{!not(or (v.opportunityStatus == 'Approved' , v.opportunityStatus == 'Submitted For Approval' ))}">
+                    <lightning:button variant="brand" label="Save Cart" title="Save Cart"
+                                      onclick="{! c.saveMapping }" />
+                </aura:if>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    
+</aura:component>

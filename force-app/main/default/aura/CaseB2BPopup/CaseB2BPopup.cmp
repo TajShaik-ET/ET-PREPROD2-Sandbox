@@ -1,0 +1,284 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,force:lightningQuickAction"
+                controller="ET_B2BController" access="global" extends="c:ET_MOE_BilingualCommunity">
+     <aura:attribute name="objectName" 	type="string" default="Account" required="true" />
+    <aura:attribute name="fieldName" 	type="string" default="Name" required="true" />
+    <aura:attribute name="value" 		type="String" default="" description="To pre-populate a value" />
+    <aura:attribute name="recordCount" 	type="string" default="5" description="Records visible at once"/>
+    <aura:attribute name="iconName" 	type="string" default="standard:groups" description="complete icon name eg. standard:account" />
+    <aura:attribute name="label" 		type="string" default="" description="Label will be displayed above input Box" />
+    <aura:attribute name="placeholder" 	type="string" default="Search..." description="placeholder for input Box" />
+    <aura:attribute name="recordTypeName" type="String" default="B2B Account" />
+     <aura:attribute name="searchString"   type="string" access="private" default="" description="String to search"/>
+    <aura:attribute name="selectedRecord" type="Object" access="private" default="" description="selected Record Details" />
+    <aura:attribute name="recordsList" 	  type="List"   access="private" description="List of Records having data" />
+    <aura:attribute name="message" 		  type="String" access="private" default="" />
+    <aura:attribute name="Invoices" type="boolean" />
+    <aura:attribute name="AccountId" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="complaintAgainstType" type="String" />
+    <aura:attribute name="AssignedResource" type="boolean" />
+    <aura:attribute name="AssignedVehicle" type="boolean" />
+    <aura:attribute name="SalesAggrement" type="boolean" />
+    <aura:attribute name="AssignedStud" type="boolean" />
+    <aura:attribute name="Others" type="boolean" />
+    <aura:attribute name="Technical" type="boolean" />
+    <aura:attribute name="Requestor" type="string"  />
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    <aura:attribute name="lang" type="string" default="en"/>
+     <aura:attribute name="description" type="string"  />
+    <aura:attribute name="Spinner" type="Boolean" default="false"/>
+    <lightning:overlayLibrary aura:id="cmp1" /> 
+     <aura:attribute name="userInfo" type="Object"/>
+    <aura:attribute name="uploadedDocs" type="Object[]"/>
+    <aura:attribute name="selectedFileName" type="String"/>
+    <aura:attribute name="fileList" type="Object[]" />
+    
+     
+    <aura:attribute name="userParentProfileWrap" type="ET_BusinessCommunityController.ResultWrapper" />
+    <aura:registerEvent name="Actionname" type="c:ETST_sendDataEvent"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+        <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+            
+        </div>
+    </aura:if>
+   <lightning:recordEditForm objectApiName="Case" aura:id="caseForm" onload="{!c.handleOnLoad}"
+                              onsubmit="{!c.handleOnSubmit}" onsuccess="{!c.handleOnSuccess}" onerror="{!c.handleOnError}">
+        <div class="documentmain">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <div class="slds-tile__detail">
+                        <div class="slds-form-element__control">
+                            <aura:if isTrue="{!v.lang == 'en'}">
+                                <span class="createReqPopHeading" style="color:#000;float:left;">Requestor</span><B/>
+                                <lightning:inputField variant="label-hidden"  fieldName="Requestor__c" value="{!v.Requestor}" />
+                                <aura:set attribute="else">
+                                    <span class="createReqPopHeading_ar" style="color:#000;float:right">نوع الملاحظة</span><B/>
+                                    <lightning:inputField variant="label-hidden"  fieldName="Requestor_Ar__c" value="{!v.Requestor}" class="ar_textbox" />
+                                </aura:set>
+                            </aura:if>
+                        </div>
+                        <aura:if isTrue="{!(v.Requestor == 'Driver' || v.Requestor == 'سائق الحافلة' || v.Requestor == 'Supervisor' || v.Requestor == 'مشرف الحافلة' || v.Requestor == 'Station in-charge/Zonal manager' || v.Requestor == 'المحطة')}">
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <aura:if isTrue="{!v.lang == 'en'}">
+                                            <span class="createReqPopHeading" style="color:#000;"><span class="reqspan">*</span>Person Name</span><B/>
+                                            <aura:set attribute="else">
+                                                <span class="createReqPopHeading" style="color:#000;float:right">اسم الشخص <span class="reqspan">*</span></span><B/>
+                                            </aura:set>
+                                        </aura:if>
+                                        <lightning:inputField  aura:id="field1" required="true"  variant="label-hidden" fieldName="Driver_Name_1__c" value="" />
+                                    </div>
+                                    <div class="slds-form-element__control">
+                                        <aura:if isTrue="{!v.lang == 'en'}">
+                                            <span class="createReqPopHeading" style="color:#000;"><span class="reqspan">*</span>Person Name (If not available above)</span><B/>
+                                            <aura:set attribute="else">
+                                                <span class="createReqPopHeading" style="color:#000;float:right">(إذا لم يكن متوفرا أعلاه) اسم الشخص <span class="reqspan">*</span></span><B/>
+                                            </aura:set>
+                                        </aura:if>
+                                        <lightning:inputField aura:id="field1" required="true" variant="label-hidden" fieldName="Driver_Name__c" value=""   class="{!v.lang == 'en' ? '' : 'ar_textbox'}"/>
+                                    </div>
+                                     <div class="slds-form-element__control">
+                                        <aura:if isTrue="{!v.lang == 'en'}">
+                                            <span class="createReqPopHeading" style="color:#000;"><span class="reqspan">*</span>Result</span><B/>
+                                            <aura:set attribute="else">
+                                                <span class="createReqPopHeading" style="color:#000;float:right">نتيجة<span class="reqspan">*</span></span><B/>
+                                            </aura:set>
+                                        </aura:if>
+                                        <lightning:inputField  aura:id="field1" required="true"  variant="label-hidden" fieldName="Result__c" value="" />
+                                    </div>
+                                      <div class="slds-form-element__control">
+                                           <aura:if isTrue="{!v.lang == 'en'}">
+                                          <span class="createReqPopHeading" style="color:#000;">School Name</span><B/>
+                                            <aura:set attribute="else">
+                                               <span class="createReqPopHeading" style="color:#000;float:right">اسم المدرسة</span><B/>
+                                            </aura:set>
+                                        </aura:if>
+                                           <div class="slds-combobox_container">
+                                               <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aura:id="resultsDiv" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                                                    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                                        <div aura:id="lookup-pill" class="{! 'slds-pill-container ' + if(v.selectedRecord == '','slds-hide','') }">
+                                                            <!-- Selected Value Pill -->
+                                                            <lightning:pill class="fullWidth" label="{!v.selectedRecord.label}" name="{!v.selectedRecord.value}" onremove="{! c.removeItem }">
+                                                                <aura:set attribute="media">
+                                                                    <lightning:icon iconName="{!v.iconName}" size="x-small" alternativeText="icon"/>
+                                                                </aura:set>
+                                                            </lightning:pill>
+                                                        </div>
+                                                        <div aura:id="lookupField" class="{! if(v.selectedRecord == '','slds-show','slds-hide') }">
+                                                            <!-- Icon, Search Bar, Search Icon -->
+                                                            <lightning:icon class="slds-combobox__input-entity-icon" iconName="{!v.iconName}" size="large" alternativeText="icon"/>
+                                                            <lightning:input aura:id="inputLookup"  placeholder="{!v.placeholder}" onblur="{!c.blurEvent}" onclick="{!c.showRecords}" onkeyup="{!c.searchRecords}" value="{!v.searchString}" autoComplete="off" variant="label-hidden" id="combobox-id-1" class="{!v.lang == 'en' ? '' : 'ar_textbox'}" />
+                                                            <lightning:icon class="slds-input__icon" iconName="utility:search" size="x-small" alternativeText="search"/>
+                                                            <lightning:spinner class="slds-hide" aura:id="Spinner" alternativeText="Loading" size="small" variant="brand"/>
+                                                        </div>
+                                                        <!-- Dropdown List -->
+                                                        <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" style="{! 'max-height:' + (5 + (v.recordCount * 40)) + 'px' }">
+                                                            <ul class="slds-listbox slds-listbox_vertical recordListBox" role="presentation">
+                                                                <aura:if isTrue="{!empty(v.message)}" >
+                                                                    <!-- To display Drop down List -->
+                                                                    <aura:iteration items="{!v.recordsList}" var="rec"  >
+                                                                        <li id="{!rec.value}" class="slds-listbox__item eachItem" onmousedown="{!c.selectItem}">
+                                                                            <div class="slds-media slds-listbox__option_entity">
+                                                                                <lightning:icon iconName="{!v.iconName}" size="x-small" alternativeText="icon" />
+                                                                                <span class="verticalAlign slds-truncate ">{!rec.label}</span>
+                                                                            </div>
+                                                                        </li>
+                                                                    </aura:iteration>
+                                                                    <!-- To display Error Message -->
+                                                                    <aura:set attribute="else">
+                                                                        <li class="slds-listbox__item">
+                                                                            <span class="slds-media slds-listbox__option_entity">{!v.message}</span>
+                                                                        </li>
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </ul>
+                                                        </div>
+                                                   </div>
+                                               </div>
+                                          </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!(v.Requestor == 'Vehicles' || v.Requestor == 'المركبات' || v.Requestor == 'Journey Time' || v.Requestor == 'زمن الرحلة')}">
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <aura:if isTrue="{!v.lang == 'en'}">
+                                            <span style="color:#000;">Vehicle</span><B/>
+                                            <aura:set attribute="else">
+                                                <span style="color:#000;float:right">حافلة</span><B/>
+                                            </aura:set>
+                                        </aura:if>
+                                        <lightning:inputField variant="label-hidden" fieldName="ET_Vehicle_Master__c" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!and(and(v.Requestor != 'Others', v.Requestor != 'أخرى'), and(v.Requestor != 'IT Complaints',v.Requestor != 'مشاكل تقنية'))}">
+                           
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <aura:if isTrue="{!v.lang == 'en'}">
+                                            <span class="createReqPopHeading" style="color:#000;">Type</span><B/>
+                                            <lightning:inputField variant="label-hidden" fieldName="ESE_Type_En__c" value="" />
+                                            <aura:set attribute="else">
+                                                <span class="createReqPopHeading" style="color:#000;float:right"></span><B/>
+                                                <lightning:inputField variant="label-hidden" fieldName="ESE_Type_Ar__c" value="" class="ar_textbox"  />
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </aura:if>
+                        <aura:if isTrue="{!and(and(v.Requestor != 'Others', v.Requestor != 'أخرى'), and(v.Requestor != '',v.Requestor != null))}">
+                            <aura:if isTrue="{!v.userInfo.UserRole.Name == 'MINISTRY OF EDUCATION Partner User'}"> 
+                                <div class="slds-col">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <div class="slds-form-element__control">
+                                            <aura:if isTrue="{!v.lang == 'en'}">
+                                                <span style="color:#000;">Fine Applicable</span><B/>
+                                                <aura:set attribute="else">
+                                                    <span style="color:#000;float:right">غرامة قابلة للتطبيق</span><B/>
+                                                </aura:set>
+                                            </aura:if>
+                                            <lightning:inputField variant="label-hidden" fieldName="Fine_Applicable__c" Checked="false" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <div class="slds-form-element__control">
+                                            <aura:if isTrue="{!v.lang == 'en'}">
+                                                <span style="color:#000;">KPI Number</span><B/>
+                                                <aura:set attribute="else">
+                                                    <span style="color:#000;float:right">رقم KPI</span><B/>
+                                                </aura:set>
+                                            </aura:if>
+                                            <lightning:inputField variant="label-hidden" fieldName="KPI_Number__c" value="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:if> 
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.Requestor != '',v.Requestor != null)}">
+       
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <aura:if isTrue="{!v.lang == 'en'}">
+                                            <span class="createReqPopHeading" style="color:#000;">Description</span><B/>
+                                            <aura:set attribute="else">
+                                                <span class="createReqPopHeading" style="color:#000;float:right">وصف</span><B/>
+                                            </aura:set>
+                                        </aura:if>
+                                        <lightning:inputField variant="label-hidden" fieldName="Description" value="{!v.description}" class="{!v.lang == 'en' ? '' : 'ar_textbox'}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control">
+                                        <aura:if isTrue="{!v.lang == 'en'}">
+                                            <span class="createReqPopHeading" style="color:#000;">File Upload</span><B/>
+                                            <aura:set attribute="else">
+                                                <span class="createReqPopHeading" style="color:#000;float:right">تحميل الملف</span><B/>
+                                            </aura:set>
+                                        </aura:if>
+                                        <br/>
+                                        <lightning:input aura:id="fileId" 
+                                                         onchange="{!c.filesUpload}"
+                                                         class="file-selector-large ar_textbox"
+                                                         type="file" files="{!v.uploadedDocs}"
+                                                         accept="image/png, image/jpeg, image/jpg , application/pdf" 
+                                                         name="file" multiple="false"
+                                                         label="{!v.lang == 'en' ? 'File Upload' : 'تحميل الملف'}" 
+                                                         variant="label-hidden"/> 
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <aura:if isTrue="{!v.fileList.length > 0}">
+                                <div class="slds-col">
+                                    <div class="slds-form-element slds-is-editing">
+                                        <div class="slds-form-element__control">
+                                            <aura:if isTrue="{!v.lang == 'en'}">
+                                                <span class="createReqPopHeading" style="color:#000;">Files to be uploaded</span><B/>
+                                                <aura:set attribute="else">
+                                                    <span class="createReqPopHeading" style="color:#000;float:right">الملفات المراد تحميلها</span><B/>
+                                                </aura:set>
+                                            </aura:if>
+                                            <aura:iteration items="{!v.fileList}" var="item" indexVar="i">
+                                                <br/>{!item.filename} <lightning:buttonIcon class="deleteBtn" variant="brand" name="{!item.filename}" value="{!i}" onclick="{!c.removeFile}" iconName="utility:delete" alternativeText="Remove"/>
+                                            </aura:iteration>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:if>
+                        </aura:if>
+                    
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col">
+                                <div class="slds-form-element slds-is-editing">
+                                    <div class="slds-form-element__control" style="{!v.lang == 'en' ? 'float: right' : 'float: left'}">
+                                        <lightning:button class="slds-m-top_small btbupdate" disabled ="{!v.saveDisabled}" variant="brand" type="submit" name="SAVE" label="{!v.lang == 'en' ? 'SAVE' : 'يحفظ'}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning:recordEditForm>
+    
+</aura:component>

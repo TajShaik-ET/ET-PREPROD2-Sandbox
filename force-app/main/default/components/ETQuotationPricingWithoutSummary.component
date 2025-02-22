@@ -1,0 +1,8 @@
+<apex:component controller="ET_Quotation_PDF_Attachment_Controller" access="global">
+    <apex:attribute name="qId" description="Quote Record Id" assignTo="{!QuoteId}" type="Id" />
+    <apex:outputText value="{!PagePDFContentWithoutTotalSummary}" escape="false" />
+    <apex:outputPanel rendered="{!NOT(ISNULL(ManualQuotationLink))}">
+        <br/>Please find the Manual Quotation document here:<br/>
+        <a href="{!ManualQuotationLink}" target="_blank">Open Manual Quotation</a><br/><br/>
+    </apex:outputPanel>
+</apex:component>

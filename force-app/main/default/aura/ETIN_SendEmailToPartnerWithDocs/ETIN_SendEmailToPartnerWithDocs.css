@@ -1,0 +1,29 @@
+.THIS .outer-div {
+    position: relative;
+}
+
+.THIS .spinner2 {
+   position: absolute;
+   height:600px;
+}
+.THIS .spins::after {
+    position: absolute;
+    content: 'Please wait, email sending..';
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+} 
+.THIS .spins2::after {
+    position: absolute;
+    content: 'Loading..';
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+}
+
+.THIS .sWrapTest {
+    height:500px;
+    width:100%;
+}

@@ -1,0 +1,30 @@
+<aura:component controller = "ET_Map_Controller" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+	<!-- attributes -->
+    <aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="center" type="Object" />
+    <aura:attribute name="zoomLevel" type="Integer" />
+    <aura:attribute name="markersTitle" type="String" />
+    <aura:attribute name="showFooter" type="Boolean" />
+    <aura:attribute name="PlateNo" type="String" default="M-25499"/>
+    <aura:attribute name="showAll" type="String" default="false"/>
+    <aura:attribute name="showETLocations" type="Boolean" default="false"/>
+    <aura:attribute name="listViewType" type="String" default="false"/>
+    <aura:attribute name="height" type="Integer" default="100"/>
+    <aura:attribute name="width" type="Integer" default="100"/>
+    
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+    <!-- the map component -->
+    <aura:if isTrue="{!v.mapMarkers.length > 0}" >
+    <lightning:map
+        mapMarkers="{! v.mapMarkers }"
+        center="{! v.center }"
+        zoomLevel="{! v.zoomLevel }"
+        markersTitle="{! v.markersTitle }"
+        showFooter="{ !v.showFooter }"
+                   listView = "{!v.listViewType}">
+    </lightning:map>
+    </aura:if>
+
+</aura:component>
