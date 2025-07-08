@@ -24,6 +24,9 @@ import REMARKS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Remarks__
 import DELIVERY_DAYS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Delivery_Days__c';
 import VAT from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Vat_Rate__c';
 import EXPECTED_MOBILIZATION from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Expected_Mobilization__c';
+import YEARLY_PRICE_FOR_ALL_UNITS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Yearly_Price_for_All_Units__c';
+import ADDITIONAL_KM_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Additional_KM_Price__c';
+import TOTAL_ALL_KM_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Total_All_KM_Price__c';
 
 // Lable and CheckBox
 import LABEL_ROW from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Label_Row__c';
@@ -32,12 +35,15 @@ import CHECKBOX_ROW from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_C
 import CONTRACT_PERIOD from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_No_of_Months__c';
 import LABEL_CONTRACT_PERIOD from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_No_of_Months__c';
 import LABEL_VEHICLE_NAME from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Name__c';
+import LABEL_VEHICLE_CONDITION from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Vehicle_Condition__c';
 import IS_NUMBER_OF_VEHICLE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Number_of_Vehicles__c';
 import LABEL_NUMBER_OF_VEHICLE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_No_of_Vehicles__c';
 import IS_VEHICLE_MONTHLY_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Vehicle_Monthly_Price__c';
 import LABEL_VEHICLE_MONTHLY_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Vehicle_Monthly_Price__c';
 import IS_MONTHLY_RATE_ALL_UNITS_WITH_VAT from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Monthly_Rate_All_Unit_with_VAT__c';
 import LABEL_MONTHLY_RATE_ALL_UNITS_WITH_VAT from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Monthly_Rate_All_Unit_with_VAT__c';
+import LABEL_YEARLY_PRICE_FOR_ALL_UNITS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Yearly_Price_for_All_Units__c';
+import IS_YEARLY_PRICE_FOR_ALL_UNITS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Yearly_Price_for_All_Units__c';
 import IS_TOTAL_RATE_ALL_UNITS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Total_Rate_All_Units__c';
 import LABEL_TOTAL_RATE_ALL_UNITS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Total_Rate_All_Units__c';
 import IS_ANNUAL_MILEAGE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_ET_Total_Annual_Mileage__c';
@@ -48,11 +54,16 @@ import IS_EXTRA_MILES from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is
 import LABEL_EXTRA_MILES from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Extra_Miles__c';
 import IS_DELIVERY_DAYS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Delivery_Days__c';
 import LABEL_DELIVERY_DAYS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Delivery_Days__c';
+import IS_ADDITIONAL_KM_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Additional_KM_Price__c';
+import LABEL_ADDITIONAL_KM_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Additional_KM_Price__c';
+import IS_TOTAL_ALL_KM_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Total_All_KM_Price__c';
+import LABEL_TOTAL_ALL_KM_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Total_All_KM_Price__c';
 import OPPORTUNITY from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Opportunity__c';
 import QUOTE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Quote__c';
 import QUOTE_OPP_NUM from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Quote_Opp_Number__c';
 import VEV_PURCHASE_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Vehicle_Current_Purchase_Price__c';
 import VEV_TOTAL_INVESTMENT from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Vehicle_Total_Investment__c';
+
 
 // import CUSTOMER_QUOTE_CSS from '@salesforce/resourceUrl/ET_inspectionExternalStyle'
 import { loadStyle } from 'lightning/platformResourceLoader';
@@ -75,6 +86,8 @@ export default class CutsomerQuoteLineItem extends LightningElement {
         'numberOfMonths' : '1',
         'numberOfYears' : '1',
         'extraCost' : '0',
+        'AdditionalKMPrice' : '0',
+        'totalALLKMPrice' : '0',
         'monthlyVehicleCost' : '0',
         //'monthlyVehicleUnitPrice' : '0',
         // 'vatPerUnit' : '0',
@@ -82,7 +95,9 @@ export default class CutsomerQuoteLineItem extends LightningElement {
         // 'monthRateAllUnitsWithVat': '0',
         'totalRateAllUnits' : '0',
         'monthRateAllUnits' : '0',
-        'totalMileage' : '0'
+        'totalMileage' : '0',
+        'yPriceAllUnits' : '0'
+
     };
     vehicleQuoteItem = CUSTOMER_VEHICLE_QUOTE_OBJECT;
     customerQuoteFields = {
@@ -98,6 +113,9 @@ export default class CutsomerQuoteLineItem extends LightningElement {
         MONTHLY_RATE_WITH_VAT,
         MONTHLY_RATE_ALL_UNITS_WITH_VAT,
         TOTAL_RATE_ALL_UNITS,
+        YEARLY_PRICE_FOR_ALL_UNITS,
+        ADDITIONAL_KM_PRICE,
+        TOTAL_ALL_KM_PRICE,
         CUSTOMER_QUOTE,
         SERVICE_TYPE,
         LINE_NUM,
@@ -115,6 +133,7 @@ export default class CutsomerQuoteLineItem extends LightningElement {
         CONTRACT_PERIOD,
         LABEL_CONTRACT_PERIOD,
         LABEL_VEHICLE_NAME,
+        LABEL_VEHICLE_CONDITION,
         IS_NUMBER_OF_VEHICLE,
         LABEL_NUMBER_OF_VEHICLE,
         IS_VEHICLE_MONTHLY_PRICE,
@@ -123,6 +142,12 @@ export default class CutsomerQuoteLineItem extends LightningElement {
         LABEL_MONTHLY_RATE_ALL_UNITS_WITH_VAT,
         IS_TOTAL_RATE_ALL_UNITS,
         LABEL_TOTAL_RATE_ALL_UNITS,
+        IS_YEARLY_PRICE_FOR_ALL_UNITS,
+        LABEL_YEARLY_PRICE_FOR_ALL_UNITS,
+        IS_ADDITIONAL_KM_PRICE,
+        LABEL_ADDITIONAL_KM_PRICE,
+        IS_TOTAL_ALL_KM_PRICE,
+        LABEL_TOTAL_ALL_KM_PRICE,
         IS_ANNUAL_MILEAGE,
         LABEL_ANNUAL_MILEAGE,
         IS_VEH_SOURCE,
@@ -136,6 +161,7 @@ export default class CutsomerQuoteLineItem extends LightningElement {
         QUOTE_OPP_NUM,
         VEV_PURCHASE_PRICE,
         VEV_TOTAL_INVESTMENT
+
     };
     //wholeMonthlyVehiclePrice;
     //@track wholeMonthlyVehicleCost;
@@ -191,6 +217,8 @@ export default class CutsomerQuoteLineItem extends LightningElement {
     
     calculateCost(){
         var extra = parseFloat(this.template.querySelector('[data-id="extraCost"]').value);
+        var extraKMPrice = parseFloat(this.template.querySelector('[data-id="EXTRA_MILES"]').value);
+        var additionalKMPrice = parseFloat(this.template.querySelector('[data-id="ADDITIONAL_KM_PRICE"]').value);
         var monthlyVehiclePrice = this.template.querySelector('[data-id="monthlyVehiclePrice"]').value;
         var noOfVehicle = this.template.querySelector('[data-id="noOfVehicle"]').value;
         var vehCost = this.template.querySelector('[data-id="VEV_PURCHASE_PRICE"]').value;
@@ -198,7 +226,6 @@ export default class CutsomerQuoteLineItem extends LightningElement {
         extra =  extra == undefined ? 0 : extra;
         vehCost =  vehCost == undefined ? 0 : vehCost;
         this.totalInvestment = +noOfVehicle * +vehCost;
-        
         monthlyVehiclePrice =  monthlyVehiclePrice == undefined ? 0 : monthlyVehiclePrice;
         //monthlyVehiclePrice = Math.floor(monthlyVehiclePrice);
         //var monthlyVehicleUnitPrice = monthlyVehiclePrice;
@@ -249,6 +276,10 @@ export default class CutsomerQuoteLineItem extends LightningElement {
         // var monthlyMileage = this.lineitem.annualMileage/12;
         // this.calculatedCost.totalMileage = monthlyMileage * numberOfMonths;
         this.calculatedCost.totalMileage = this.lineitem.annualMileage;
+        this.calculatedCost.yPriceAllUnits = noOfVehicle * monthRateAllUnits * 12;
+        this.calculatedCost.totalALLKMPrice = extraKMPrice + additionalKMPrice;
+        console.log('-----totalALLKMPrice ----  '+this.calculatedCost.totalALLKMPrice);
+
     }
 
     handleOnSubmit(event){

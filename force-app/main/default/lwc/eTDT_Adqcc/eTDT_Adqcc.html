@@ -2,7 +2,6 @@
     <lightning-datatable key-field="Id" data={BRRecordList} columns={columns} onrowaction={handleRowAction}
         hide-checkbox-column="true">
     </lightning-datatable>
-
     <template if:true={isModalOpen}>
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading" aria-modal="true"
             class="slds-modal slds-fade-in-open">
@@ -13,34 +12,27 @@
                         <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"></lightning-icon>
                     </button>
                 </header>
-
                 <div class="slds-modal__content slds-p-around_medium">
                     <!-- Type  -->
                     <lightning-combobox label="Type" data-field="Type" value={selectedRowData.Type}
                         options={typeOptions} onchange={handleInputChange} class="inputCss">
                     </lightning-combobox>
-
                     <!-- Request No -->
                     <lightning-input label="Request No" data-field="RequestNo" value={selectedRowData.RequestNo}
                         onchange={handleInputChange} class="inputCss"></lightning-input>
-
                     <!-- Submitted Date (read-only) -->
                     <lightning-input type="date" label="Submitted Date" data-field="Submitted_Date__c"
                         value={selectedRowData.Submitted_Date__c} disabled class="inputCss"></lightning-input>
-
                     <!-- Payment Reference -->
                     <lightning-input label="Payment Reference" data-field="Payment_Referance__c"
                         value={selectedRowData.Payment_Referance__c} onchange={handleInputChange} class="inputCss">
                     </lightning-input>
-
                     <!-- Payment Date (read-only) -->
                     <lightning-input type="date" label="Payment Date" data-field="Payment_Date__c"
                         value={selectedRowData.Payment_Date__c} disabled class="inputCss"></lightning-input>
-
                     <!-- Receipt No -->
                     <lightning-input label="Receipt No" data-field="Receipt_No__c" value={selectedRowData.Receipt_No__c}
                         onchange={handleInputChange} class="inputCss"></lightning-input>
-
                     <!-- Permit Type (read-only) -->
                     <lightning-input label="Permit Type" value={selectedRowData.PermitType} disabled class="inputCss">
                     </lightning-input>

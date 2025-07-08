@@ -17,6 +17,12 @@
                             variant="label-hidden"
                     ></lightning-input-field>
                 </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field 
+                            field-name={customerQuoteFields.LABEL_VEHICLE_CONDITION}
+                            variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
                 <div class="slds-col" style="min-width:70px;max-width:70px">
                     <lightning-input-field 
                             field-name={customerQuoteFields.LABEL_NUMBER_OF_VEHICLE}
@@ -41,6 +47,14 @@
                             variant="label-hidden"
                     ></lightning-input-field>
                 </div>
+                <!-- SK -->
+                <div class="slds-col" style="min-width:110px;max-width:110px">
+                    <lightning-input-field 
+                            field-name={customerQuoteFields.LABEL_YEARLY_PRICE_FOR_ALL_UNITS}
+                            variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
+
                 <div class="slds-col" style="min-width:110px;max-width:110px">
                     <lightning-input-field 
                             field-name={customerQuoteFields.LABEL_TOTAL_RATE_ALL_UNITS}
@@ -65,7 +79,19 @@
                             variant="label-hidden"
                     ></lightning-input-field>
                 </div>
-                <div class="slds-col slds-hide" style="min-width:90px;max-width:90px">
+                <div class="slds-col " style="min-width:130px;max-width:130px">
+                    <lightning-input-field 
+                    field-name={customerQuoteFields.LABEL_ADDITIONAL_KM_PRICE}
+                    variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col " style="min-width:130px;max-width:130px">
+                    <lightning-input-field 
+                    field-name={customerQuoteFields.LABEL_TOTAL_ALL_KM_PRICE}
+                    variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col " style="min-width:90px;max-width:90px">
                     <lightning-input-field 
                             field-name={customerQuoteFields.LABEL_DELIVERY_DAYS}
                             variant="label-hidden"
@@ -95,6 +121,9 @@
                 <div class="slds-col" style="min-width:150px;max-width:150px">
                     <!--  -->
                 </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <!--  -->
+                </div>
                 <div class="slds-col" style="min-width:70px;max-width:70px">
                     <lightning-input-field 
                             field-name={customerQuoteFields.IS_NUMBER_OF_VEHICLE}
@@ -116,6 +145,12 @@
                 <div class="slds-col" style="min-width:110px;max-width:110px">
                     <lightning-input-field 
                             field-name={customerQuoteFields.IS_MONTHLY_RATE_ALL_UNITS_WITH_VAT}
+                            variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:110px;max-width:110px">
+                    <lightning-input-field 
+                            field-name={customerQuoteFields.IS_YEARLY_PRICE_FOR_ALL_UNITS}
                             variant="label-hidden"
                     ></lightning-input-field>
                 </div>
@@ -143,7 +178,19 @@
                             variant="label-hidden"
                     ></lightning-input-field>
                 </div>
-                <div class="slds-col slds-hide" style="min-width:90px;max-width:90px">
+                <div class="slds-col " style="min-width:130px;max-width:130px">
+                    <lightning-input-field 
+                    field-name={customerQuoteFields.IS_ADDITIONAL_KM_PRICE}
+                    variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col " style="min-width:130px;max-width:130px">
+                    <lightning-input-field 
+                    field-name={customerQuoteFields.IS_TOTAL_ALL_KM_PRICE}
+                    variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col " style="min-width:90px;max-width:90px">
                     <lightning-input-field 
                             field-name={customerQuoteFields.IS_DELIVERY_DAYS}
                             variant="label-hidden"
@@ -200,12 +247,20 @@
                         field-name={customerQuoteFields.REMARKS} 
                     ></lightning-input-field>
                 </div>
+                <div class="slds-col slds-p-top_xx-small" style="min-width:100px;max-width:100px">
+                    <lightning-input class="slds-col"
+                        type="text" 
+                        value={lineitem.VehCondition}
+                         
+                    ></lightning-input>
+                </div>
                 <div class="slds-col" style="min-width:70px;max-width:70px">
                     <lightning-input-field 
                         data-id="noOfVehicle"
                         field-name={customerQuoteFields.NUMBER_OF_VEHICLE}
                         value={lineitem.NumberOfVehicles} 
                         onchange={calculateCost}
+                        disabled="true"
                     ></lightning-input-field>
                 </div>
                 <div class="slds-col slds-hide" style="min-width:100px;max-width:200px">
@@ -295,6 +350,14 @@
                 </div>
                 <div class="slds-col" style="min-width:110px;max-width:110px">
                     <lightning-input-field class="slds-col" 
+                        data-id="monthRateAllUnits" 
+                        field-name={customerQuoteFields.YEARLY_PRICE_FOR_ALL_UNITS} 
+                        value={calculatedCost.yPriceAllUnits} 
+                        disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:110px;max-width:110px">
+                    <lightning-input-field class="slds-col" 
                         data-id="totalRateAllUnits" 
                         field-name={customerQuoteFields.TOTAL_RATE_ALL_UNITS} 
                         value={calculatedCost.totalRateAllUnits} 
@@ -339,7 +402,23 @@
                         disabled="true"
                     ></lightning-input-field>
                 </div>
-                <div class="slds-col slds-hide" style="min-width:90px;max-width:90px">
+                <div class="slds-col " style="min-width:130px;max-width:130px">
+                    <lightning-input-field class="slds-col" 
+                    data-id="ADDITIONAL_KM_PRICE" 
+                    field-name={customerQuoteFields.ADDITIONAL_KM_PRICE}
+                    value={calculatedCost.AdditionalKMPrice}
+                    onchange={calculateCost}  
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col " style="min-width:130px;max-width:130px">
+                    <lightning-input-field class="slds-col" 
+                    data-id="TOTAL_ALL_KM_PRICE" 
+                    field-name={customerQuoteFields.TOTAL_ALL_KM_PRICE} 
+                     value={calculatedCost.totalALLKMPrice}
+                    disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col " style="min-width:90px;max-width:90px">
                     <lightning-input-field class="slds-col" 
                         data-id="DELIVERY_DAYS" 
                         field-name={customerQuoteFields.DELIVERY_DAYS} 

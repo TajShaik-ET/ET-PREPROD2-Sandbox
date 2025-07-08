@@ -17,6 +17,12 @@
                             variant="label-hidden"
                     ></lightning-input-field>
                 </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field 
+                            field-name={customerQuoteFields.LABEL_VEHICLE_CONDITION}
+                            variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
                 <div class="slds-col" style="min-width:70px;max-width:70px">
                     <lightning-input-field 
                             field-name={customerQuoteFields.LABEL_NUMBER_OF_VEHICLE}
@@ -71,6 +77,18 @@
                             variant="label-hidden"
                     ></lightning-input-field>
                 </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field 
+                            field-name={customerQuoteFields.LABELs_VEH_SOURCE}
+                            variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field 
+                            field-name={customerQuoteFields.LABEL_ANNUAL_KM}
+                            variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
                 <div class="btn_div">
                     <div class="slds-col" style="padding-top: 24px;">
                     </div>
@@ -93,6 +111,9 @@
                 <!-- <div class="slds-col" style="min-width:150px;max-width:150px">
                 </div> -->
                 <div class="slds-col" style="min-width:150px;max-width:150px">
+                    <!--  -->
+                </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
                     <!--  -->
                 </div>
                 <div class="slds-col" style="min-width:70px;max-width:70px">
@@ -149,6 +170,18 @@
                             variant="label-hidden"
                     ></lightning-input-field>
                 </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field 
+                            field-name={customerQuoteFields.ISs_VEH_SOURCE}
+                            variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field 
+                            field-name={customerQuoteFields.Is_ANNUAL_KM}
+                            variant="label-hidden"
+                    ></lightning-input-field>
+                </div>
                 <div class="btn_div">
                     <div class="slds-col" style="padding-top: 24px;">
                     </div>
@@ -197,6 +230,13 @@
                         value={lineitem.Name} 
                         onchange={updateVehicleName}
                     ></lightning-input-field>
+                </div>
+                <div class="slds-col slds-p-top_xx-small" style="min-width:100px;max-width:100px">
+                    <lightning-input class="slds-col"
+                        type="text" 
+                        value={lineitem.VehCondition}
+                         
+                    ></lightning-input>
                 </div>
                 <div class="slds-col" style="min-width:70px;max-width:70px">
                     <lightning-input-field 
@@ -356,6 +396,20 @@
                         data-id="QUOTE" 
                         field-name={customerQuoteFields.QUOTE} 
                         disabled="true"
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field class="slds-col" 
+                        data-id="sourceType" 
+                        field-name={customerQuoteFields.VEHs_SOURCE} 
+                        value={vehSource}
+                    ></lightning-input-field>
+                </div>
+                <div class="slds-col" style="min-width:100px;max-width:100px">
+                    <lightning-input-field class="slds-col" 
+                        data-id="sourceType" 
+                        field-name={customerQuoteFields.ANNUAL_KM} 
+                        value={AnnualKM}
                     ></lightning-input-field>
                 </div>
                 <div class="slds-hide" style="min-width:100px;max-width:200px">

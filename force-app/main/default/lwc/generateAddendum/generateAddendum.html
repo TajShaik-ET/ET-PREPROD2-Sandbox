@@ -124,8 +124,8 @@
 										<lightning-input-field class="slds-col" required data-id="Number_of_Vehicles"
 											field-name={contractHeader.Number_of_Vehicles}></lightning-input-field>
 									</div>
-                                    <div class="slds-col slds-size_1-of-3">
-										<lightning-input-field class="slds-col" required data-id="Mobilization_Date"
+                                    <div class="slds-col slds-size_1-of-3 " style={mobilizationDateClass}>
+										<lightning-input-field class="slds-col {mobilizationDateClass}" required={required} data-id="Mobilization_Date" 
 											field-name={contractHeader.Mobilization_Date}></lightning-input-field>
 									</div>
 									

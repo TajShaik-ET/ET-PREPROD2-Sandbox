@@ -11,7 +11,6 @@
     <aura:attribute name="showEtdiAdqcc" type="boolean" default="false"/>
     <aura:attribute name="showEtdiRta" type="boolean" default="false"/>
     <aura:attribute name="showNoTaskMsg" type="boolean" default="false"/>    
-    
     <aura:handler event="c:ET_EmployeeTabNavigation" action="{!c.handleEvent}"/>
     <aura:attribute name="showHome" type="boolean" default="true" />
     <aura:attribute name="showTask" type="boolean" />
@@ -26,9 +25,6 @@
     <aura:attribute name="showVRTSCREEN" type="boolean" default="false"/>
     <aura:attribute name="showQHSECREEN" type="boolean" default="false"/>
     <aura:attribute name="currentUserInsurance" type="ETIN_Insurance__c" default="{'sObjecttype': 'ETIN_Insurance__c'}" />
-    
-    
-    
     
     <div class="ET_tasksection">
         <div class="left_menu">
@@ -356,9 +352,6 @@
                                             <label class="pro_label">Expiry Date</label>
                                             <label class="pro_value">{!v.currentUserInsurance.Expiry_Date__c}</label>
                                         </div>
-                                        
-                                        
-                                        
                                     </div>
                                 </div>
                             </div>

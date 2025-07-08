@@ -695,6 +695,14 @@
                                 </td>
                             </apex:repeat>                    
                         </tr>
+                        <tr style="display: {!IF(wrapperQuotationDetails[LineNumber].quoteDetailsWrapper.quotetype != 'Total Project Summary','table-row','none')};">
+                          <td>Unlimited Mileage</td>
+                                <apex:repeat var="veicleDetail" value="{!wrapperQuotationDetails[LineNumber].vehicleQuoteCalcContracts}">
+                              <td align="right">
+                                   <apex:outputText value="{!IF(veicleDetail.unlimitedMileage != null,veicleDetail.unlimitedMileage,'')}"/> 
+                                    </td>
+                             </apex:repeat>
+                        </tr>
                         
                         <tr style="display: {!IF(wrapperQuotationDetails[LineNumber].quoteDetailsWrapper.quotetype != 'Total Project Summary','table-row','none')};">
                             <td>Daily Mileage</td>

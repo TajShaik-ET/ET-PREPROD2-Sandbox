@@ -154,70 +154,70 @@ export default class ETDI_TrainerScreen extends LightningElement {
 	}
 
 	getTraineeDetails(bkngId) {
-		getTraineeList({
-			BookingId: bkngId
-		})
-			.then(result => {
-				let tempData1 = [];
+	
+	this.TraineeList = [];
+	this.filteredTraineeList = [];
+	this.tempTraineeList = [];
+	this.tempTraineeAttendanceDayList = [];
 
-				result.forEach(item => {
-					if (item.ETDI_Booking_Request__r.Exam_Required__c == 'Yes') {
-						this.examReq = true;
-					}
-					//SK
-					this.TraineeTotalNoofDays = item.ETDI_Booking_Request__r.Total_Days__c;
-					this.TraineeTotalNoofDaysList = Array.from({ length: this.TraineeTotalNoofDays }, (_, index) => ({
-						"Id": item.Id,
-						"Days": item.ETDI_Booking_Request__r.Total_Days__c,
-						"dayTitle": 'Day ' + (index + 1)
-					}));
-					//console.log('TraineeDaysList'+JSON.stringify(this.TraineeTotalNoofDaysList));
+	getTraineeList({
+		BookingId: bkngId
+	})
+		.then(result => {
+			let tempData1 = [];
 
-					let traineeObj = new Object();
-					traineeObj.sobjectType = 'ETDI_Trainees__c';
-					traineeObj.Id = item.Id;
-					traineeObj.TotalDays = item.ETDI_Booking_Request__r.Total_Days__c;
-					traineeObj.EmpName = item.Employee__r.Name;
-					traineeObj.EmpId = item.Employee__r.ETIN_Employee_Id__c
-					traineeObj.Theoretical_Marks__c = 0;
-					traineeObj.Practical_Marks__c = 0;
-					traineeObj.Remarks__c = '';
-					this.TraineeList.push(traineeObj);
-                    this.filteredTraineeList.push(traineeObj);
+			result.forEach(item => {
+				if (item.ETDI_Booking_Request__r.Exam_Required__c == 'Yes') {
+					this.examReq = true;
+				}
+				this.TraineeTotalNoofDays = item.ETDI_Booking_Request__r.Total_Days__c;
+				this.TraineeTotalNoofDaysList = Array.from({ length: this.TraineeTotalNoofDays }, (_, index) => ({
+					"Id": item.Id,
+					"Days": item.ETDI_Booking_Request__r.Total_Days__c,
+					"dayTitle": 'Day ' + (index + 1)
+				}));
 
-					let traineeObj2 = new Object();
-					traineeObj2.sobjectType = 'ETDI_Trainees__c';
-					traineeObj2.Id = item.Id;
-					traineeObj2.Theoretical_Marks__c = 0;
-					traineeObj2.Practical_Marks__c = 0;
-					traineeObj2.Remarks__c = '';
-					traineeObj2.Attended__c = false;
-					this.tempTraineeList.push(traineeObj2);
+				let traineeObj = {
+					sobjectType: 'ETDI_Trainees__c',
+					Id: item.Id,
+					TotalDays: item.ETDI_Booking_Request__r.Total_Days__c,
+					EmpName: item.Employee__r.Name,
+					EmpId: item.Employee__r.ETIN_Employee_Id__c,
+					Theoretical_Marks__c: 0,
+					Practical_Marks__c: 0,
+					Remarks__c: ''
+				};
+				this.TraineeList.push(traineeObj);
+				this.filteredTraineeList.push(traineeObj);
 
-					let AttendanceObj3 = new Object();
-					AttendanceObj3.sobjectType = 'Attendance__c';
-					//traineeObj3.Id = '';
-					AttendanceObj3.ETDI_Trainees__c = '';
-					AttendanceObj3.Day__c = '';
-					AttendanceObj3.ETDI_Trainer_Schedules__c = '';
+				let traineeObj2 = {
+					sobjectType: 'ETDI_Trainees__c',
+					Id: item.Id,
+					Theoretical_Marks__c: 0,
+					Practical_Marks__c: 0,
+					Remarks__c: '',
+					Attended__c: false
+				};
+				this.tempTraineeList.push(traineeObj2);
 
-					this.tempTraineeAttendanceDayList.push(AttendanceObj3);
-
-				});
-
-				console.log(this.TraineeList)
-
-
-				if (this.TraineeList.length > 0)
-					this.hasTraineeData = true;
-				else
-					this.hasTraineeData = false;
-
-			})
-			.catch(error => {
-				console.log(error);
+				let AttendanceObj3 = {
+					sobjectType: 'Attendance__c',
+					ETDI_Trainees__c: '',
+					Day__c: '',
+					ETDI_Trainer_Schedules__c: ''
+				};
+				this.tempTraineeAttendanceDayList.push(AttendanceObj3);
 			});
-	}
+
+			console.log(this.TraineeList);
+
+			this.hasTraineeData = this.TraineeList.length > 0;
+
+		})
+		.catch(error => {
+			console.log(error);
+		});
+}
 
 	hanldeAttendenceButton(event) {
 		this.showModalAttendance = true;
@@ -304,7 +304,7 @@ export default class ETDI_TrainerScreen extends LightningElement {
 	}
 	filterData(event) {
 		const searchKey = event.target.value;
-		this.filteredTraineeList = this.TraineeList.filter(trainee => {			
+		this.filteredTraineeList = this.TraineeList.filter(trainee => {
 			return (
 				trainee.EmpName.toLowerCase().includes(searchKey.toLowerCase()) ||
 				trainee.EmpId.includes(searchKey)

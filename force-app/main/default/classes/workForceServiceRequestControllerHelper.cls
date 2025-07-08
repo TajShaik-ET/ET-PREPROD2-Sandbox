@@ -820,7 +820,7 @@ Use - Input workforce, Contract year, specialRequirement from workforce and all 
                     genericWorkforceQuoteCalcObj.workingDaysPerYear =  180;
                 }
                 else if(genericWorkforceQuoteCalcObj.workingMonthsPerYear == 12 && genericWorkforceQuoteCalcObj.workingDaysPerWeek ==5  ){
-                    genericWorkforceQuoteCalcObj.workingDaysPerYear =  264;
+                    genericWorkforceQuoteCalcObj.workingDaysPerYear =  260;
                 }
                 else if(genericWorkforceQuoteCalcObj.workingMonthsPerYear == 12 && genericWorkforceQuoteCalcObj.workingDaysPerWeek ==6 ){
                     genericWorkforceQuoteCalcObj.workingDaysPerYear =  312;

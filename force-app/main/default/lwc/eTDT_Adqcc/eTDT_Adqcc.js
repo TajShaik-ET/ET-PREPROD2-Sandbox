@@ -88,8 +88,6 @@ export default class ETDT_Adqcc extends LightningElement {
                 console.error('Error fetching booking requests:', error);
             });
     }
-
-
     handleRowAction(event) {
         const actionName = event.detail.action.name;
         const row = event.detail.row;
@@ -98,7 +96,6 @@ export default class ETDT_Adqcc extends LightningElement {
             this.openEditModal(row);
         }
     }
-
     openEditModal(row) {
         this.selectedRowData = { ...row };
         this.isModalOpen = true;

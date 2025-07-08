@@ -21,10 +21,12 @@ import COMMENT from '@salesforce/schema/Customer_Quote__c.Comments__c';
 import CONTRACT_TYPE from '@salesforce/schema/Customer_Quote__c.Contract_Type__c';
 import ADDITIONAL_CHARGES from '@salesforce/schema/Customer_Quote__c.Additional_Terms_Charges__c';
 import CUSTOMER_NAME from '@salesforce/schema/Customer_Quote__c.CustomerName__c';
+import SM_EMAIL from '@salesforce/schema/Customer_Quote__c.SM_Email__c';
 import CUSTOMER_TITLE from '@salesforce/schema/Customer_Quote__c.Contact_PersonTitle__c';
 import CUSTOMER_QUOTE_DATE from '@salesforce/schema/Customer_Quote__c.Customer_Quote_Date__c';
 import ADDITIONAL_NOTES from '@salesforce/schema/Customer_Quote__c.Additional_Notes__c';
 import GROUP_BY from '@salesforce/schema/Customer_Quote__c.Group_By__c';
+import TOTAL_VALUE_OF_RENTAL from '@salesforce/schema/Customer_Quote__c.Total_Value_of_Rental__c';
 // import CUSTOMER_QUOTE_VEHICLE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Customer_Quote__c';
 
 
@@ -69,10 +71,12 @@ export default class CustomerQuote extends NavigationMixin(LightningElement) {
         FUEL,
         CONTRACT_TYPE,
         CUSTOMER_NAME,
+        SM_EMAIL,
         CUSTOMER_TITLE,
         CUSTOMER_QUOTE_DATE,
         ADDITIONAL_NOTES,
-        GROUP_BY
+        GROUP_BY,
+        TOTAL_VALUE_OF_RENTAL
     };
     workforceIds = {};
 
@@ -248,23 +252,28 @@ export default class CustomerQuote extends NavigationMixin(LightningElement) {
     }
     */
     quoteOppName ={};
+    @track newtotalValueOfRental = 0;
     mapQuoteToCustomerQuote(response) {
-        console.log('mapQuoteToCustomerQuote response: ' + JSON.stringify(response));
+       // console.log('mapQuoteToCustomerQuote response: ' + JSON.stringify(response));
         var mapData = Object.keys(response).map(key => {
             return { key: key, value: response[key] };
         });
         var quoteDetail;
         var totalInvestment = 0;
+        var totalValueOfRental = 0;
         var customerQuoteCount = 0;
         mapData.forEach(item => {
             console.log(`Key: ${item.key}, Value: ${JSON.stringify(item.value)}`);
             if (!quoteDetail)
                 quoteDetail = item.value.quote;
             totalInvestment += item.value.quote.Quote_Total_Investment__c;
+            totalValueOfRental += item.value.quote.Total_Value_of_Rental__c;
+            this.newtotalValueOfRental = totalValueOfRental;
             customerQuoteCount += item.value.customerQuoteCount;
             this.quoteOppName = item.value.quote.QuoteNumber;
             
         });
+        console.log('totalValueOfRental: ' + totalValueOfRental);
         console.log('totalInvestment: ' + totalInvestment);
         console.log('customerQuoteCount: ' + customerQuoteCount);
         console.log('this.quoteOppName>>>>>>>>> ' , this.quoteOppName);
@@ -284,7 +293,7 @@ export default class CustomerQuote extends NavigationMixin(LightningElement) {
         this.quoteDetail.quoteId = quoteDetail.Id;
         this.quoteDetail.acc_num = quoteDetail.Account.AccountNumber;
         console.log('quoteDetail.Opportunity.ETSALES_Sector__c>>>>>>>>>', quoteDetail.Opportunity.ETSALES_Sector__c);
-        if (quoteDetail.Opportunity.RecordType.Name === 'Leasing/ Rental' || quoteDetail.Opportunity.RecordType.Name === 'Logistics' || quoteDetail.Opportunity.RecordType.Name === 'Manpower')
+        if (quoteDetail.Opportunity.RecordType.Name === 'Leasing/ Rental' || quoteDetail.Opportunity.RecordType.Name === 'Logistics' || quoteDetail.Opportunity.RecordType.Name === 'Manpower' || quoteDetail.Opportunity.RecordType.Name === 'Chauffeur and Limousine -B2B' || quoteDetail.Opportunity.RecordType.Name === 'Last Mile Delivery')
         {   
             this.quoteDetail.recordType = 'Leasing/ Rental';
             this.isManpower = true;    

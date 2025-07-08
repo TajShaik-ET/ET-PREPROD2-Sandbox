@@ -876,8 +876,11 @@ Description : To Calculate all Quote elements that is - Vehicle quote elements a
                                         vehicleQuoteCalcObj.vehicleRepairsAndMaintenance = (applicapleMaintenanceRate) * 25000 ;
                                     }*/
                                     //Added by Taj on 01.08.2024 for All update maintenance rate
-                                    if(annualMileage <= 25000 ){
-                                        vehicleQuoteCalcObj.vehicleRepairsAndMaintenance = (applicapleMaintenanceRate) * 25000 ;
+                                    //Updated by Taj on 22.04.2025 for All update maintenance rate
+                                    if(vehicle.ET_Service_Type__c == 'School Transportation' && annualMileage <= 22000 ){ // 30 May 2025: Taj Shaik - updated the mileage to 22000 from 25000
+                                        vehicleQuoteCalcObj.vehicleRepairsAndMaintenance = (applicapleMaintenanceRate) * 22000 ; 
+                                    }else if(vehicle.ET_Service_Type__c != 'School Transportation' && annualMileage <= 26250 ){ 
+                                        vehicleQuoteCalcObj.vehicleRepairsAndMaintenance = (applicapleMaintenanceRate) * 26250 ; 
                                     }else{
                                         vehicleQuoteCalcObj.vehicleRepairsAndMaintenance = (applicapleMaintenanceRate) * annualMileage ;
                                     }
@@ -1029,11 +1032,14 @@ vehicleQuoteCalcObj.vehicleFinancing = 0;
                                 Decimal calVehicleValue = 0.0;
                                 if(vehQuoteItem.Depreciated_years_from_insurance_master__c != null && vehQuoteItem.Depreciated_years_from_insurance_master__c != 0.0 ){
                                     if(contractYearInt == 1){
-                                        calVehicleValue = (vehicleTrailerAndRefrigeratorCurrentValue *(insuranceRate/100));
+                                        //calVehicleValue = (vehicleTrailerAndRefrigeratorCurrentValue *(insuranceRate/100));
+                                        Decimal year1 = vehicleTrailerAndRefrigeratorCurrentValue * (insuranceRate / 100);
+                                        Decimal minCost = vehQuoteItem.ET_Minimum_Cost__c;
+                                        calVehicleValue = (year1 < minCost) ? minCost : year1;
                                     }
                                     else if (contractYearInt > = 2){
                                         calVehicleValue = calculateInsuranceVehicleValue(vehicleTrailerAndRefrigeratorCurrentValue ,vehQuoteItem.Depreciated_years_from_insurance_master__c , insuranceRate,
-                                                                                         contractYearInt);
+                                                                                         contractYearInt, vehQuoteItem.ET_Minimum_Cost__c);
                                     }
                                     
                                     
@@ -1044,7 +1050,7 @@ vehicleQuoteCalcObj.vehicleFinancing = 0;
                                     if(finalCalc < vehQuoteItem.ET_Minimum_Cost__c){
                                         finalCalc = vehQuoteItem.ET_Minimum_Cost__c;
                                     }
-                                    vehicleQuoteCalcObj.vehicleInsurance = finalCalc;
+                                    vehicleQuoteCalcObj.vehicleInsurance = finalCalc+(finalCalc/2/integerContractYear); //finalCalc; // finalCalc+(finalCalc/2/integerContractYear)
                                     
                                 }
                                 // For total Project quote
@@ -1589,7 +1595,7 @@ vehicleQuoteCalcObj.vehicleFinancing = 0;
     }
     
     
-    Public static decimal calculateInsuranceVehicleValue (decimal currentVehicleValue , decimal deprciatedYearsFromMaster, 
+    /*Public static decimal calculateInsuranceVehicleValue (decimal currentVehicleValue , decimal deprciatedYearsFromMaster, 
                                                           decimal insuranceRate, integer contractYearInt)
     {
         decimal vehicleInsuranceValue = (currentVehicleValue *(insuranceRate/100));
@@ -1599,7 +1605,7 @@ vehicleQuoteCalcObj.vehicleFinancing = 0;
         }
         
         return vehicleInsuranceValue/contractYearInt;
-    }
+    }*/
     
     public static void updateVehicleTotalProjectSummaryVehicleQuoteItems(String quoteId){
         
@@ -2135,6 +2141,38 @@ costApiName - This is either  'ET_Total_Vehicles_Cost__c' or 'ET_Annual_Vehicles
         }
         return sum;
     }
+    public static Decimal calculateInsuranceVehicleValue(
+        Decimal currentVehicleValue,
+        Decimal depreciatedYearsFromMaster,
+        Decimal insuranceRate,
+        Integer contractYearInt,
+        Decimal minCostPerYear
+    ) {
+        List<Decimal> yearlyCosts = new List<Decimal>();
+    
+        // Year 1: Full value * insurance rate
+        Decimal year1 = currentVehicleValue * (insuranceRate / 100);
+        year1 = (year1 < minCostPerYear) ? minCostPerYear : year1;
+        yearlyCosts.add(year1);
+    
+        // Year 2 to contractYearInt
+        for (Integer i = 2; i <= contractYearInt; i++) {
+            Decimal yearValue = (currentVehicleValue / depreciatedYearsFromMaster) *
+                                (depreciatedYearsFromMaster - (i - 1)) *
+                                (insuranceRate / 100);
+    
+            yearValue = (yearValue < minCostPerYear) ? minCostPerYear : yearValue;
+            yearlyCosts.add(yearValue);
+        }
+    
+        Decimal total = 0;
+        for (Decimal val : yearlyCosts) {
+            total += val;
+        }
+    
+        return total / contractYearInt;
+    }
+
     public static void testCoverage(){
         integer i =0;
         i++;

@@ -1,0 +1,55 @@
+<template>
+    <template if:true={showSurvey}>
+        <div class="survey_outer">
+
+            <!--input type="image" class="surbey_bg"
+                        src="https://icrm--sit.sandbox.my.salesforce.com/servlet/servlet.ImageServer?id=015TA000003vstC&oid=00DTA000007URwP&lastMod=1744091961000"
+                        alt="bg_logo"-->
+            <div class="survey_inner">
+                <center>
+                    <input type="image" class="logo"
+                        src="https://image.marketing.et.ae/lib/fe3711717564047d711d75/m/1/ad1d2921-8569-4d4a-9766-bcfe5b3def3b.png"
+                        alt="Logo">
+                </center>
+                <div class="heading">Customer Service Survey<br/>Please rate your experience</div>
+                <form>
+                    <div class="cc-selector">
+                        <input id="Happy" type="radio" name="selected-symbol" value="Grinning Face"
+                                onclick={onRadioButtonChange} />
+                        <label class="drinkcard-cc Happy" for="Happy"><span>Happy</span></label>
+                        <input id="Neutral" type="radio" name="selected-symbol" value="Neutral Face"
+                                onclick={onRadioButtonChange} />
+                        <label class="drinkcard-cc Neutral" for="Neutral"><span>Neutral</span></label>
+                        <input id="Sad" type="radio" name="selected-symbol" value="Slightly Frowning Face"
+                                onclick={onRadioButtonChange} />
+                        <label class="drinkcard-cc Sad" for="Sad"><span>Sad</span></label>
+                    </div>
+                </form>
+
+                <!--label class="comments" for="comments">Do you have any comments about the service?</label-->
+                <lightning-textarea class="comments" name="Comments" id="comments"
+                    label="Do you have any comments about the service?" onchange={handleComments}
+                    placeholder="Please type your comments here..."></lightning-textarea>
+                <template if:true={ratingSelected}>
+                    <div class="slds-text-align_center">
+                        <lightning-button class="darkBtn" label="Submit Survey" onclick={handleSubmit} variant="brand"
+                            type="submit"></lightning-button>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </template>
+    <template if:true={showThankyou}>
+        <div class="survey_outer">
+            <div class="survey_inner">
+                <center>
+                    <input type="image" class="thankimg"
+                        src="https://image.marketing.et.ae/lib/fe3711717564047d711d75/m/1/cb062e1b-b15a-4f67-a873-ea8b657a7eca.png"
+                        alt="Submit" width="48" height="48">
+                </center>
+                <div class="heading1">Thank You</div>
+                <p>Your submission has been received.</p>
+            </div>
+        </div>
+    </template>
+</template>

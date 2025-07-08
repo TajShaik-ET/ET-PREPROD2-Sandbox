@@ -159,7 +159,7 @@ display: none;
 margin-bottom: .5rem;
 }*/
 .THIS .selectsearch{
-    padding: 1rem;
+    /*padding: 1rem;*/
     background: #fff;
     margin-bottom: 0rem;
 }
@@ -512,6 +512,7 @@ border-bottom: 1px solid #ddd;font-size: 14px;
 .THIS .slds-modal__header{
     border-bottom: 1px solid rgb(98 204 140);
     border-radius: 10px 10px 0px 0px;
+    padding-top:1rem;
 }
 .THIS .slds-modal__header h1{
     color: rgb(98 204 140)!important;
@@ -582,7 +583,8 @@ border-bottom: 1px solid #ddd;font-size: 14px;
     bottom: 0;
 }
 .THIS .formdiv, .THIS .formdiv_ar {
-    min-height: 318px; max-height: 318px;
+    /*min-height: 318px;*/
+    max-height: 318px;
     overflow:auto;
 }
 .THIS .formdiv_ar .slds-input__icon-group_right {
@@ -718,4 +720,80 @@ border-bottom: 1px solid #ddd;font-size: 14px;
     width: 55px;
     vertical-align: middle;
     white-space: nowrap;
+}
+/* New Css Addition*/
+.THIS .slds-modal__content{
+    min-height:auto !Important;
+}
+.THIS .documetnupload{
+    display:inline-block;
+    width:300px;
+    max-width:100%;
+}
+.THIS .datainfo{
+    display:inline-block;
+    width:500px;
+    max-width:100%;
+    padding-top: 30px;
+}
+.THIS .datainfo table thead th{
+    padding: 10px 20px;
+    text-align: left;
+}
+.THIS .datainfo table td{
+    padding: 10px 20px;
+    text-align: left;
+}
+.THIS .arabicupload.uploadSection{
+    flex-direction: row-reverse; 
+}
+.THIS .arabicupload.uploadSection .documetnupload{
+    padding-left: 30px;
+}
+.THIS .arabicupload.uploadSection .datainfo table thead th,
+.THIS .arabicupload.uploadSection .datainfo table td{ 
+    text-align: right;
+}
+.THIS .slds-modal__footer{
+    box-shadow: none;
+    padding: 0px;
+    margin-top:15px;
+}
+/* Upload File Css Start*/
+.THIS .uploadSection{
+    display: flex;
+    width: 100%;
+    padding-left: 30px;
+    align-items: flex-start;
+    gap:15px;
+}
+.THIS .uploadSection .file-selector-large{
+    background: #fff;
+    padding: 25px 15px;
+    border: 2px dashed #dedede;
+    border-radius: 7px;
+    margin-top: 10px;
+    text-align: center;
+}
+.THIS .uploadSection .slds-form-element__help{
+    margin: 0px;
+}
+.THIS .uploadSection .slds-form-element__label{
+    display:none;
+}
+.THIS .uploadSection .slds-file-selector__button{
+    background: #62cc8c;
+    color: #fff;
+    border-radius: 0px;
+    cursor: pointer;
+}
+.THIS .uploadSection .slds-file-selector_files .slds-file-selector__body{
+    margin:0px;
+}
+/* Upload File Css End*/
+@media(max-width:767px){
+.THIS .uploadSection {
+        flex-direction:column;
+        flex-wrap:wrap;
+    }
 }

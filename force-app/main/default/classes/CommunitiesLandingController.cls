@@ -6,7 +6,7 @@ public with sharing class CommunitiesLandingController {
     // Code we will invoke on page load.
     public PageReference forwardToStartPage() {
         //return Network.communitiesLanding();
-        return new PageReference('https://oneet.force.com/');
+        return new PageReference('https://icrm--preprod2.sandbox.my.site.com/s/');
     }
     
     public CommunitiesLandingController() {

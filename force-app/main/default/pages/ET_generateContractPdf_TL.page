@@ -207,7 +207,16 @@
             padding-left: 2px; /* Adjust the left padding for indentation */
             text-align: left; /* Align text to the left to avoid wide gaps */
             margin-left: 2px; /* Additional margin if needed */
-        }
+                }
+                
+                /* Optional: Prevent rows from splitting across pages */
+                table {
+                page-break-inside: auto; /* Default behavior */
+                }
+                tr {
+                page-break-inside: avoid; /* Prevent rows from splitting */
+                }
+                
             </style>
         </head>
         <body>
@@ -248,13 +257,13 @@
                     <div class="title textCenter">RECITAL</div>
                     <div class="content left_margin">
                         <p class="article">
-                            <strong class="numbers"> a)  Whereas,</strong> the Lessor is a Company working in the field of transport and leasing of vehicles and  has a number of vehicles licensed in accordance with applicable laws and regulations of United Arab Emirates.
+                            <strong class="numbers"> a)  Where as,</strong> the Lessor is a Company working in the field of transportation and leasing of Services and  has a number of vehicles licensed in accordance with applicable laws and regulations of United Arab Emirates.
                         </p>
                         <p class="article">
-                            <strong class="numbers"> b)  Whereas,</strong> the Lessee requires to lease a number of vehicles {!Driver} and {!Fuel} and has agreed to lease the vehicles from the Lessor subject to the terms and conditions of this Agreement.
+                            <strong class="numbers"> b)  Where as,</strong> the Lessee requires to lease a number of vehicles {!Driver} and {!Fuel} and has agreed to lease the vehicles from the Lessor subject to the terms and conditions of this Agreement.
                         </p>
                         <p class="article">
-                            <strong class="numbers"> c)  Whereas,</strong> the Lessor has agreed to provide the Services against the payment paid by the Lessee  on regular basis as per Agreement between the Parties.
+                            <strong class="numbers"> c)  Where as,</strong> the Lessor has agreed to provide the Services against the payment paid by the Lessee  on regular basis as per Agreement between the Parties.
                         </p>
                         <p>
                             The above Recital is an integral part of this Agreement and shall be read together with this Agreement.
@@ -273,7 +282,7 @@
                             </div>
                             <table class="article_table">
                                 <apex:repeat value="{!article.subCaluses}" var="subClause">
-                                    <tr class="left_margin"><td style="padding-left:20px;padding-right:5px;padding-bottom:8px">{!subClause.Name}</td><td style="text-align: justify">{!subClause.Description}</td></tr>
+                                    <tr class="left_margin"><td style="padding-left:20px;padding-right:5px;padding-bottom:8px">{!subClause.Name} {!subClause.Description}</td></tr>
                                 </apex:repeat>
                             </table>
                         </apex:column>
@@ -335,19 +344,19 @@
                             <tr>
                                 <th style="padding:10px"><strong>Vehicle Type &amp; Model</strong></th>
                                 <th style="padding:10px"><strong>Quantity</strong></th>
-                                <th style="padding:10px"><strong>Mileage/Year in KM</strong></th>
+                                <th style="padding:10px"><strong>Annual Mileage(KM)</strong></th>
                                 <th style="padding:10px"><strong>Service Type</strong></th>
-                                <th style="padding:10px"><strong>Monthly Rate Per Vehicle({!Contract_Pdf_Header__c.Sh1_Clause3_1_Agreement_YearsMonths__c} Year(s) ) excluding VAT</strong></th>
+                                <th style="padding:10px"><strong>Monthly Rate Per Unit ({!Contract_Pdf_Header__c.Sh1_Clause3_1_Agreement_YearsMonths__c} Year(s) ) excluding VAT</strong></th>
                             </tr>
                             <apex:repeat var="Veh" value="{!VehiclList}">
                                 <tr>
                                     <td>{!Veh.Remarks__c} </td>
                                     <td>{!Veh.Number_of_Vehicles__c}</td>
                                     <td><apex:outputText value="{0, number, ###,###,###,###.##}">
-    <apex:param value="{!Contract_Pdf_Header__c.Sh1_Clause7_1_KM_Reading__c}"/></apex:outputText></td>
+                                        <apex:param value="{!Contract_Pdf_Header__c.Sh1_Clause7_1_KM_Reading__c}"/></apex:outputText></td>
                                     <td>{!Driver} and {!Fuel}</td>
                                     <td>AED &nbsp; <apex:outputText value="{0, number, ###,###,###,###.##}">
-    <apex:param value="{!Veh.Vehicle_Monthly_Cost__c}"/></apex:outputText></td>
+                                        <apex:param value="{!Veh.Vehicle_Monthly_Cost__c}"/></apex:outputText></td>
                                 </tr>
                             </apex:repeat>
                             <tr>
@@ -355,7 +364,7 @@
                                 <td style="padding:10px"></td>
                                 <td style="padding:10px"></td>
                                 <td style="padding:10px"></td>
-                                <td style="padding:10px">Total Contract value for {!Contract_Pdf_Header__c.Sh1_Clause3_1_Agreement_YearsMonths__c} {!contractType}<div>AED <apex:outputText value="{0, number, ###,###,###,###.##}">
+                                <td style="padding:10px">Total Contract {!Contract_Pdf_Header__c.Sh1_Clause3_1_Agreement_YearsMonths__c} {!contractType}<div>value for AED <apex:outputText value="{0, number, ###,###,###,###.##}">
     <apex:param value="{!TotalContractvalue}"/></apex:outputText></div></td>
                             </tr>    
                         </table> 
@@ -366,7 +375,7 @@
                         </li> 
                         <li>  
                             <strong>Ref. clause 4.4</strong>
-                            Smoking in vehicles shall be charged up to <strong>AED 1000</strong>.
+                            Smoking in vehicles shall be charged up to <strong>AED {!Contract_Pdf_Header__c.Sh1_Clause4_4_Smoking_Charges__c}</strong>.
                         </li> 
                         <li>  
                             <strong>Ref. clause 5.1</strong>
@@ -374,7 +383,7 @@
                         </li> 
                         <li> 
                             <strong>Ref. clause 7.1</strong>
-                            Agreed limited mileage {!Contract_Pdf_Header__c.Sh1_Clause7_1_KM_Reading__c} KM/Year.
+                            Agreed limited mileage per year-{!Contract_Pdf_Header__c.Sh1_Clause7_1_KM_Reading__c} km/year.
 							
                                                   
 					</li>  
@@ -393,10 +402,7 @@
                                         
                                     </tr>
                                 </apex:repeat>
-                                <tr>
-                                    <td style="padding:10px"></td>
-                                    <td style="padding:10px"></td>
-                                </tr>    
+                                  
                             </table> 
 
                         </li> 
@@ -406,30 +412,30 @@
                         </li>
 						<li> 
                             <strong>Ref. Clause 12.3</strong>
-                            Administrative charges for fine payment to be paid by the Lessee - Due amount for fines and additionally an administrative fee not exceeding 10% (+ VAT) of the traffic fine amount. 
+                            Administrative charges for fine payment to be paid by the Lessee - Due amount for fines and additionally an administrative fee not exceeding {!Contract_Pdf_Header__c.Sh1_Clause12_3_TF_Admin_Fee__c}% (+ VAT) of the traffic fine amount. 
                         </li> 
 						<li> 
                             <strong>Ref. Clause 12.4</strong>
-                            Salik/Darb charges to be paid based on actual consumption and an administrative fee shall be charged not exceeding – 10% (+ VAT) of the monthly invoice amount for Salik/Darb.
+                            Salik/Darb charges to be paid based on actual consumption and an administrative fee shall be charged not exceeding – {!Contract_Pdf_Header__c.Sh1_Clause12_4_SALIK_DARB__c}% (+ VAT) of the monthly invoice amount for Salik/Darb.
                         </li> 
                         <li>    
-                            <strong>Ref. Clause 12. 2</strong>
+                            <strong>Ref. Clause 12.2</strong>
                             The invoices for the leased vehicles  shall be paid within {!Contract_Pdf_Header__c.Sh1_Clause12_2_Calendar_Days__c} calendar days from date of receipt of the invoice. 
                         </li> 
                         <li> 
-                            <strong>Ref. Clause 12.11 (A) (a)</strong>
+                            <strong>Ref. Clause 12.14 (A)(a)</strong>
                             Charges for delay in payment – {!Contract_Pdf_Header__c.Sh1_Clause12_11Aa_Payment_Percentage__c}%  (based on simple interest calculation method) of the due payable amount on monthly for each month of delay. 
                         </li> 
                         <li> 
-                            <strong>Ref. Clause 12.11 (A) (b)</strong>
+                            <strong>Ref. Clause 12.14  (A)(b)</strong>
                             Fee for return cheque – AED {!Contract_Pdf_Header__c.Sh1_Clause12_Ab_Return_Cheque_Amount__c}  (+ VAT) on the returned cheque.   
                         </li> 
                         <li> 
-                            <strong>Ref. Clause 12.11 (A) (c)</strong>
+                            <strong>Ref. Clause 12.14  (A)(c)</strong>
                             In case payment is unpaid or delayed for more than {!Contract_Pdf_Header__c.Sh1_Clause12_11Ac_Delayed_Days__c}  days, then the Lessor has right to suspend the Services by providing 1 week notice to suspend the Services.
                         </li> 
                         <li> 
-                            <strong>Ref. Clause 12.11 (A) (d)</strong>
+                            <strong>Ref. Clause 12.14  (A)(d)</strong>
                             In case payment is unpaid or delayed for more than for more than {!Contract_Pdf_Header__c.Sh1_Clause12_11Ad_Delayed_Days__c}  days, then the Lessor has the right to terminate.                               
                         </li> 
                         <li> 
@@ -438,33 +444,36 @@
                         </li> 
                         <li> 
                             <strong>Ref. Clause 15.1</strong>
-                            <p><span class="indent-aligned">a) In case any vehicle is terminated in the first year from the date of delivery of vehicle, the lessee shall pay the rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1_Rental_Months__c} months as early termination fee.</span><br/>
-						       <span class="indent-aligned">b) In case any vehicle is terminated in the second year or third year after the completion of the first year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1b_Rental_Months__c} months as early termination fee.</span><br/>
-                               <span class="indent-aligned">c) In case any vehicle is terminated in the fourth or fifth year and after the completion of the third year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1c_Rental_Months__c} months as early termination fee.</span><br/>
+                            <p><span class="indent-aligned">a) In case any vehicle is terminated in first year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1_Rental_Months__c} months as early termination fee.</span><br/>
+						       <span class="indent-aligned">b) In case any vehicle is terminated in the second year after the completion of the first year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1b_Rental_Months__c} months as early termination fee.</span><br/>
+                               <span class="indent-aligned">c) In case any vehicle is terminated in the third year after the completion of the second year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1b2_Rental_Months__c} months as early termination fee.</span><br/>
+                               <span class="indent-aligned">d) In case any vehicle is terminated in the fourth year after the completion of the third year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1c_Rental_Months__c} months as early termination fee.</span><br/>
+                               <span class="indent-aligned">e) In case any vehicle is terminated in the fifth year and after the completion of the fourth year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1c5_Rental_Months__c} months as early termination fee.</span><br/>
+                               <!--<span class="indent-aligned">e) In case any vehicle is terminated in the f year and after the completion of the sixth year from the date of delivery of the vehicle, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Sh1_Clause15_1c6_Rental_Months__c} months as early termination fee.</span><br/>
 							<apex:outputPanel rendered="{!NOT(ISNULL(Contract_Pdf_Header__c.Early_termination_Fee_After_Issue_LPO__c))}">
             				   <span class="indent-aligned">d) In case any vehicle is terminated after issuing LPO, the Lessee shall pay a rental fee of {!Contract_Pdf_Header__c.Early_termination_Fee_After_Issue_LPO__c} months as early termination fee.</span>
-        </apex:outputPanel>
+        </apex:outputPanel>-->
 </p>
                         </li> 
                         <li> 
                             <strong>Ref. Clause 16.1</strong>
-                            For each driver who is unable to present themselves within the stipulated time frame, a penalty of AED 3000 and any additional charges as imposed by the competent authorities will be charged from the Lessee to clear the file.                               
+                            For each driver who is unable to present themselves within the stipulated time frame, a penalty of AED {!Contract_Pdf_Header__c.Sh1_Clause16_1_TF_Client_Driver_Required__c} and any additional charges as imposed by the competent authorities will be charged from the Lessee to clear the file.                               
                         </li> 
                         <li> 
                             <strong>Ref. Clause 16.2</strong>
-                            AED 25 will be charged additionally for each day in case the delay in renewal process is caused due to negligence or fault of the Lessee.                               
+                            AED {!Contract_Pdf_Header__c.Sh1_Clause16_2_Delay_in_Renewal__c} will be charged additionally for each day in case the delay in renewal process is caused due to negligence or fault of the Lessee.                               
                         </li> 
                         <li> 
                             <strong>Ref. Clause 16.4</strong> 
-                            Charges for providing letter or any document – Fee of AED 50 (+VAT). on all types of Letters/Certificates.                               
+                            Charges for providing letter or any document – Fee of AED {!Contract_Pdf_Header__c.Sh1_Clause16_4_Charges_of_Letters_Certs__c} (+VAT). on all types of Letters/Certificates.                               
                         </li> 
                         <li> 
                             <strong>Ref clause 17.3</strong>
-                            In case of breach as stipulated in clause 17.3, the Lessee shall be charged 10% (+ VAT) as excess payable on the repair cost 
+                            In case of breach as stipulated in clause 17.3, due amount for repair cost and additionally an administrative fee not exceeding {!Contract_Pdf_Header__c.Sh1_Clause17_3_Breach_of_Permitted_Use__c}% (+ VAT) of the total repair cost. 
                         </li> 
                         <li> 
-                            <strong>Ref clause 18.1 (f)</strong>
-                            Administration fee charges - AED 25 (+ VAT) per fine.                               
+                            <strong>Ref clause 18.1 (g)</strong>
+                            Administration fee charges - AED {!Contract_Pdf_Header__c.Sh1_Clause18_1f_Traffic_Offence__c} (+ VAT) per fine.                               
                             
                         </li>
                     </ol>

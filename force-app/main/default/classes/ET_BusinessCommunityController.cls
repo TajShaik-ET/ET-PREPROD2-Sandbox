@@ -900,12 +900,13 @@ and CALENDAR_MONTH(Assign_End_Date__c) = :monthNo];*/
             String moeInclusiveEducationDepartmentinESELabel = System.Label.ET_MOE_Inclusive_Education_Department_in_ESE;
             String govtschool = System.Label.Gov_Profile_login;
             String ESEsupportCenter =System.Label.ESE_Support_Center;
+            String RegionalManager =System.Label.Regional_Manager;
             Profile p=[Select Id,Name from Profile where Id=:userInfo.getProfileId() LIMIT 1];
             system.debug('profile Name in getCaseDetails '+p.Name);
             List<Case> caseList = new List<Case>();
             if(p.Name !=privateSchoolLabel && p.Name !=governmentSchoolLabel 
                && p.Name !=moeDepartmentActivitySchoolLabel && p.Name !=moeDepartmentServicesSchoolLabel
-               && p.Name !=moePersonnelManagementLabel && p.Name !=moeSpecialEducationtLabel && p.Name!=govtschool && p.Name!=moeExtraCurricularActivitiesLabel  && p.Name!=moeInclusiveEducationDepartmentinESELabel){
+               && p.Name !=moePersonnelManagementLabel && p.Name !=moeSpecialEducationtLabel && p.Name!=govtschool && p.Name!=moeExtraCurricularActivitiesLabel  && p.Name!=moeInclusiveEducationDepartmentinESELabel && p.Name!=RegionalManager){
                    system.debug('if  getCaseDetails');
                    if(status == 'All'){
                        caseList= [select id,CaseNumber,Request_Type_For_Data_Handling_AR__c,Request_Type_For_Data_Handling__c,Status,RecordType.developerName,RecordTypeId,Invoice__c,Invoice__r.name,Sub_Status__c,
@@ -920,7 +921,7 @@ and CALENDAR_MONTH(Assign_End_Date__c) = :monthNo];*/
                    }
                }else if(p.Name ==privateSchoolLabel || p.Name ==governmentSchoolLabel ||P.Name==ESEsupportCenter
                         || p.Name ==moeDepartmentActivitySchoolLabel || p.Name ==moeDepartmentServicesSchoolLabel
-                        || p.Name ==moePersonnelManagementLabel || p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel){
+                        || p.Name ==moePersonnelManagementLabel || p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel || p.Name==RegionalManager){
                             system.debug('else if  childid');
                             String listoftypes=System.Label.ET_Special_Requests_Record_Types;
                             List<String>  casetypeList= new List<String>();
@@ -943,30 +944,30 @@ and CALENDAR_MONTH(Assign_End_Date__c) = :monthNo];*/
                                            from Case where status IN ('New','In Progress','Rejected','Approved','Closed','Cancel') and IsActive__c= true  AND RecordType.developerName IN ('Special_Needs_Companion_Request','Fleet_Growth_Request','Special_Needs_Transportation_Request','Special_Needs_Activities_and_Events_Request', 'Global_Event_Request','Request_for_the_Companian_Handicap_Transportation','Requests_for_trips_activities_events','Handicap_Services_Transport_or_Nanny_Request','Growth_Request','Teachers_Transportation_Request','Request_for_the_awareness_sessions','Special_Needs_Activities_and_Events_Request') Order by CaseNumber DESC limit 500]; //AND AccountId IN:childAccountIDs
                             }else {
                                 
-                                if(status =='In Progress' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel ||P.Name==ESEsupportCenter)){
+                                if(status =='In Progress' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel ||P.Name==ESEsupportCenter || p.Name==RegionalManager)){
                                     caseList= [select id ,AccountId,Sub_Request_AR__c,Request_Type_For_Data_Handling_AR__c,Request_Type_For_Data_Handling__c,Sub_Request__c,Account.Name,CaseNumber,Status,RecordType.developerName,RecordTypeId,Invoice__c,Invoice__r.name,Sub_Status__c,
                                                Subject, Description, RecordType.Name,Case_Type_AR__c,Status_Category_AR__c,Sub_Status_AR__c,ETST_Student__c,ETST_Student__r.Name,Sales_Agreement__c,Sales_Agreement__r.Name,Assigned_Resource__c,
                                                Coordinator_Name__c,Student_Name_AR__c,  Assigned_Vehicle__c,Assigned_Vehicle__r.Name,Status_Category__c,CreatedDate,ETST_Student__r.ETST_Full_Name_AR__c,Account.ETIN_Name_Arabic__c,Parent_Name_Student__c,Student_Name__c,FeedBack_EN__c,Emirates__c
                                                from Case where Status='In Progress' AND RecordType.developerName IN ('Special_Needs_Companion_Request','Fleet_Growth_Request','Special_Needs_Transportation_Request','Special_Needs_Activities_and_Events_Request','Global_Event_Request','Request_for_the_Companian_Handicap_Transportation','Requests_for_trips_activities_events','Handicap_Services_Transport_or_Nanny_Request','Growth_Request','Teachers_Transportation_Request','Request_for_the_awareness_sessions') Order by CaseNumber DESC limit 500]; 
                                     
-                                }else if(status =='Rejected' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel)){
+                                }else if(status =='Rejected' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel || p.Name==RegionalManager)){
                                     caseList= [select id,Sub_Request_AR__c,Request_Type_For_Data_Handling_AR__c,Request_Type_For_Data_Handling__c,Sub_Request__c,Account.Name,CaseNumber,Status,RecordType.developerName,RecordTypeId,Invoice__c,Invoice__r.name,Sub_Status__c,
                                                Subject, Description, RecordType.Name,Case_Type_AR__c,Status_Category_AR__c,Sub_Status_AR__c,ETST_Student__c,ETST_Student__r.Name,Sales_Agreement__c,Sales_Agreement__r.Name,Assigned_Resource__c,
                                                Coordinator_Name__c,Student_Name_AR__c,  Assigned_Vehicle__c,Assigned_Vehicle__r.Name,Status_Category__c,CreatedDate,ETST_Student__r.ETST_Full_Name_AR__c,Account.ETIN_Name_Arabic__c,Parent_Name_Student__c,Student_Name__c,FeedBack_EN__c,Emirates__c
                                                from Case where Status='Rejected' AND RecordType.developerName IN ('Special_Needs_Companion_Request','Fleet_Growth_Request','Special_Needs_Transportation_Request','Special_Needs_Activities_and_Events_Request','Global_Event_Request','Request_for_the_Companian_Handicap_Transportation','Requests_for_trips_activities_events','Handicap_Services_Transport_or_Nanny_Request','Growth_Request','Teachers_Transportation_Request','Request_for_the_awareness_sessions') Order by CaseNumber DESC limit 500];
-                                } else if(status =='Closed' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel)){
+                                } else if(status =='Closed' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel || p.Name==RegionalManager)){
                                     caseList= [select id,Sub_Request_AR__c,Request_Type_For_Data_Handling_AR__c,Sub_Request__c,Account.Name,CaseNumber,Status,RecordType.developerName,RecordTypeId,Invoice__c,Invoice__r.name,Sub_Status__c,
                                                Subject, Description, RecordType.Name,Case_Type_AR__c,Status_Category_AR__c,Sub_Status_AR__c,ETST_Student__c,ETST_Student__r.Name,Sales_Agreement__c,Sales_Agreement__r.Name,Assigned_Resource__c,Emirates__c,
                                                Coordinator_Name__c, Student_Name_AR__c, Assigned_Vehicle__c,Assigned_Vehicle__r.Name,Status_Category__c,CreatedDate,ETST_Student__r.ETST_Full_Name_AR__c,Account.ETIN_Name_Arabic__c,Parent_Name_Student__c,Student_Name__c,FeedBack_EN__c
                                                from Case where Status='Closed' AND IsActive__c= true AND  RecordType.developerName IN ('Fleet_Growth_Request','Special_Needs_Transportation_Request','Special_Needs_Activities_and_Events_Request','Global_Event_Request','Request_for_the_Companian_Handicap_Transportation','Requests_for_trips_activities_events','Handicap_Services_Transport_or_Nanny_Request','Growth_Request','Teachers_Transportation_Request','Request_for_the_awareness_sessions') Order by CaseNumber DESC limit 500];
                                 }
-                                else if(status =='Cancel' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel)){
+                                else if(status =='Cancel' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel || p.Name==RegionalManager)){
                                     caseList= [select id,Sub_Request_AR__c,Request_Type_For_Data_Handling_AR__c,Sub_Request__c,Request_Type_For_Data_Handling__c,Account.Name,CaseNumber,Status,RecordType.developerName,RecordTypeId,Invoice__c,Invoice__r.name,Sub_Status__c,
                                                Subject, Description, RecordType.Name,Case_Type_AR__c,Status_Category_AR__c,Sub_Status_AR__c,ETST_Student__c,ETST_Student__r.Name,Sales_Agreement__c,Sales_Agreement__r.Name,Assigned_Resource__c,
                                                Coordinator_Name__c,Student_Name_AR__c,  Assigned_Vehicle__c,Assigned_Vehicle__r.Name,Status_Category__c,CreatedDate,ETST_Student__r.ETST_Full_Name_AR__c,Account.ETIN_Name_Arabic__c,Parent_Name_Student__c,Student_Name__c,FeedBack_EN__c,Emirates__c
                                                from Case where Status='Cancel' AND IsActive__c= true AND  RecordType.developerName IN ('Special_Needs_Companion_Request','Fleet_Growth_Request','Special_Needs_Transportation_Request','Special_Needs_Activities_and_Events_Request','Request_for_the_Companian_Handicap_Transportation','Requests_for_trips_activities_events','Handicap_Services_Transport_or_Nanny_Request','Growth_Request','Teachers_Transportation_Request','Request_for_the_awareness_sessions') Order by CaseNumber DESC limit 500];
                                 }
-                                else if(status =='On Hold' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel ||P.Name==ESEsupportCenter)){
+                                else if(status =='On Hold' && (p.Name == moeDepartmentActivitySchoolLabel||p.Name == moeDepartmentServicesSchoolLabel||p.Name ==moePersonnelManagementLabel||p.Name ==moeSpecialEducationtLabel || p.Name==govtschool || p.Name==moeExtraCurricularActivitiesLabel || p.Name==moeInclusiveEducationDepartmentinESELabel ||P.Name==ESEsupportCenter || p.Name==RegionalManager)){
                                     caseList= [select id ,AccountId,Sub_Request_AR__c,Request_Type_For_Data_Handling_AR__c,Request_Type_For_Data_Handling__c,Sub_Request__c,Account.Name,CaseNumber,Status,RecordType.developerName,RecordTypeId,Invoice__c,Invoice__r.name,Sub_Status__c,
                                                Subject, Description, RecordType.Name,Case_Type_AR__c,Status_Category_AR__c,Sub_Status_AR__c,ETST_Student__c,ETST_Student__r.Name,Sales_Agreement__c,Sales_Agreement__r.Name,Assigned_Resource__c,
                                                Coordinator_Name__c,Student_Name_AR__c,  Assigned_Vehicle__c,Assigned_Vehicle__r.Name,Status_Category__c,CreatedDate,ETST_Student__r.ETST_Full_Name_AR__c,Account.ETIN_Name_Arabic__c,Parent_Name_Student__c,Student_Name__c,FeedBack_EN__c
@@ -1065,7 +1066,7 @@ and CALENDAR_MONTH(Assign_End_Date__c) = :monthNo];*/
                 c.Collection_of_ESE_Approver_Email__c = emailsofeseuser;
             }
             c.Sub_Status__c = 'Approved by Department of School Services';
-            c.Status_Category__c = 'Pending with Operation Manager'; 
+            c.Status_Category__c = 'Pending with Operation Supervisors'; 
         }
         //****Request_for_the_awareness_sessions
         else if(c.RecordType.developername == 'Request_for_the_awareness_sessions' && c.Status_Category__c == 'Pending with Department Of School Services'){
@@ -1192,6 +1193,15 @@ and CALENDAR_MONTH(Assign_End_Date__c) = :monthNo];*/
                 c.Collection_of_ESE_Approver_Email__c = emailsofeseuser;
             }
             c.Sub_Status__c ='Approved by ESE Support Center';
+            c.Status_Category__c = 'Pending with Operation Supervisors';
+        }
+        else if(c.RecordType.developername =='Requests_for_trips_activities_events' && c.Status_Category__c == 'Pending with Regional Manager'){ 
+            if (c.Collection_of_ESE_Approver_Email__c != null && c.Collection_of_ESE_Approver_Email__c != '') {
+                c.Collection_of_ESE_Approver_Email__c += ', ' + emailsofeseuser;
+            } else {
+                c.Collection_of_ESE_Approver_Email__c = emailsofeseuser;
+            }
+            c.Sub_Status__c ='Approved by Regional Manager';
             c.Status_Category__c = 'Pending with Operation Supervisors';
         }
         
@@ -1463,6 +1473,11 @@ and CALENDAR_MONTH(Assign_End_Date__c) = :monthNo];*/
             c.Status='Rejected';
             c.Status_Category__c = '';
         }
+        else if(c.RecordType.developername == 'Requests_for_trips_activities_events' && c.Status_Category__c == 'Pending with Regional Manager'){           
+            c.Sub_Status__c = 'Rejected by Regional Manager';
+            c.Status='Rejected';
+            c.Status_Category__c = '';
+        }
         
         
         List<ET_Case_Comment__c> caseCommentsList = new List<ET_Case_Comment__c>();
@@ -1642,7 +1657,7 @@ and CALENDAR_MONTH(Assign_End_Date__c) = :monthNo];*/
 ********************************************************
 */
     @AuraEnabled
-    public static void updateMOECaseStatus(List<Id> caseIds,String status,String driverName,String driverMobile, String Comments,String ccmRemarks){
+    public static void updateMOECaseStatus(List<Id> caseIds,String status,String driverName,String driverMobile, String Comments,String ccmRemarks,Integer isNewBus, Integer isSupervisor){
         String privateSchoolLabel = System.Label.ET_Private_School_Profile_Name;
         String governmentSchoolLabel = System.Label.ET_Government_School_Profile_Name;
         String ESEProfile = System.Label.ET_ESE_School_Profile_Name;
@@ -1684,50 +1699,59 @@ and CALENDAR_MONTH(Assign_End_Date__c) = :monthNo];*/
                          }
                          //Government School Case Owner Approval Process Flow
                          else if(contactuser.Profile.Name==governmentSchoolLabel){
-
-                             if(cs.RecordType.developername=='Growth_Request' && cs.Status=='In Progress' && cs.Sub_Status__c==null){//&& cs.Status=='In Progress' && cs.Status_Category__c =='Pending with Operation Supervisors' && cs.Sub_Status__c==null
+                             if(cs.RecordType.developername=='Growth_Request' && cs.Status=='In Progress' && cs.Sub_Status__c==null){
                                  if(status=='Approve'){     
-                                     cs.Sub_Status__c='Approved by Operation Supervisors';
-                                     cs.Status_Category__c = 'Pending with Operation Manager';
+                                     // Check if both values are zero, then mark it as complete
+                                     if (isNewBus == 0 && isSupervisor == 0) {
+                                         cs.Status = 'Complete';
+                                         cs.Sub_Status__c = 'Approved by Operation Supervisors';
+                                         cs.Status_Category__c = '';
+                                         cs.No_of_Buses__c=isNewBus;
+                                         cs.No_of_Supervisors__c=isSupervisor;
+                                     }else{
+                                         cs.Sub_Status__c='Approved by Operation Supervisors';
+                                         cs.Status_Category__c = 'Pending with Operation Manager';
+                                         cs.No_of_Buses__c=isNewBus;
+                                         cs.No_of_Supervisors__c=isSupervisor; 
+                                     }
+                                  
                                  }else if(status=='Reject'){
                                      cs.Status='Rejected';
                                      cs.Sub_Status__c='Rejected by Operation Supervisors';
                                      cs.Status_Category__c ='';
                                  }
-                                 
-                             }
-                             //2s'nd Approval By Operation Manager 
-                             else if(cs.RecordType.developername== 'Growth_Request' && cs.Status=='In Progress' && cs.Status_Category__c == 'Pending with Operation Manager'){     
-                                 if(status=='Approve'){
-                                     cs.Sub_Status__c='Approved by Operation Manager';
-                                     cs.Status_Category__c = 'Pending with Resource Planner';
-                                 }else if(status=='Reject'){
-                                     cs.Status='Rejected';
-                                     cs.Sub_Status__c='Rejected by Operation Manager';
-                                     cs.Status_Category__c ='';
-                                 }
                                  else if(status=='Complete'){
-                                     cs.Sub_Status__c='Approved by Operation Manager';
-                                     cs.Status_Category__c = '';
                                      cs.Status = 'Closed';
+                                     cs.Status_Category__c ='';
+                                     cs.Sub_Status__c = 'Approved by Operation Supervisors';
                                      cs.Driver_Name__c=driverName;
                                      cs.Driver_Number__c=driverMobile;
                                  }
                                  
                              }
+                             //2s'nd Approval By Operation Manager 
+                            else if(cs.RecordType.developername== 'Growth_Request' &&  cs.Status=='In Progress' && cs.Status_Category__c == 'Pending with Operation Manager'){     
+                                 if(status=='Approve'){
+                                     cs.Sub_Status__c='Approved by Operation Manager';
+                                     cs.Status_Category__c = 'Pending with KAM office & Bus';
+                                 }else if(status=='Reject'){
+                                     cs.Status='In Progress';
+                                     cs.Sub_Status__c='Rejected by Operation Manager';
+                                     cs.Status_Category__c ='Pending with Operation Supervisors';
+                                 }
+                             }
                              //3rd Approve By Resources Planner
                              else if( cs.RecordType.developername== 'Growth_Request' && cs.Status=='In Progress' &&  cs.Sub_Status__c== 'Approved by Operation Manager'){
                                  if(status=='Approve'){
-                                     cs.Sub_Status__c='Approved by Resource Planner';
+                                     cs.Sub_Status__c='Approved by KAM office & Bus';
                                      cs.Status_Category__c = 'Pending with Department Of School Services';
                                  }else if(status=='Reject'){
-                                     cs.Status='Rejected';
-                                     cs.Sub_Status__c='Rejected by with Resource Planner';
-                                     cs.Status_Category__c ='';
+                                     cs.Status='In Progress';
+                                     cs.Sub_Status__c='Rejected by with KAM office & Bus';
+                                     cs.Status_Category__c ='Pending with Operation Supervisors';
                                  }
                                  
                              }
-                             
                           
                              /*
                              //Added SrihariKoyila
@@ -1799,7 +1823,21 @@ and CALENDAR_MONTH(Assign_End_Date__c) = :monthNo];*/
                          
                               //Added SrihariKoyila-//
                              //Requests_for_trips_activities_events-1
-                             else if((cs.RecordType.developername=='Requests_for_trips_activities_events') && cs.Status=='In Progress' && cs.Status_Category__c == 'Pending with Operation Supervisors'){
+                             else if((cs.RecordType.developername=='Requests_for_trips_activities_events') && cs.Status=='In Progress' && cs.Sub_Status__c == 'Approved by Regional Manager'){
+                                 if(status=='Complete'){
+                                     cs.Sub_Status__c='Approved by Operation Supervisors';
+                                     cs.Status_Category__c = '';
+                                     cs.Status = 'Closed';
+                                     cs.Driver_Name__c=driverName;
+                                     cs.Driver_Number__c=driverMobile;
+                                     cs.CCM_Remarks__c='Case is closed';
+                                 }else if(status=='Reject'){
+                                     cs.Status='Rejected';
+                                     cs.Sub_Status__c='Rejected by Operation Supervisors';
+                                     cs.Status_Category__c ='';
+                                 }
+                             }
+                             else if((cs.RecordType.developername=='Requests_for_trips_activities_events') && cs.Status=='In Progress' && cs.Sub_Status__c == 'Approved by Department of School Activities'){
                                  if(status=='Complete'){
                                      cs.Sub_Status__c='Approved by Operation Supervisors';
                                      cs.Status_Category__c = '';
@@ -2156,7 +2194,7 @@ Approval.ProcessResult result = Approval.process(req); */
     @AuraEnabled
     public static Case getCaseData(string recId){
         
-        return [Select Id,CaseNumber,Status,Sub_Status__c,Status_Category__c,Bus_Internal_Number__c,Service_Start_Date__c,Vehicle_Type__c,Bus_Type__c,RecordType.DeveloperName FROM Case WHERE id=:recId];
+        return [Select Id,CaseNumber,Status,Sub_Status__c,Type_OF_Fleet__c,No_of_Large_Buses__c,No_of_Medium_Buses__c,No_of_Small_Buses__c,No_of_Supervisors__c,Status_Category__c,Bus_Internal_Number__c,Service_Start_Date__c,Vehicle_Type__c,Bus_Type__c,RecordType.DeveloperName FROM Case WHERE id=:recId];
     }
     @AuraEnabled
     public static ETST_Student__c getstudentDetails(string studentid){

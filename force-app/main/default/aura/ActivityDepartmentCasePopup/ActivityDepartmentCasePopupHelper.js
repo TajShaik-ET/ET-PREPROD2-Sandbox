@@ -573,4 +573,52 @@
         });
         component.set("v.requestLineList", eseReqLineObjectFiled);
     },
+    handlefileAttached: function(component, event, helper, caseId) {
+        try {
+            debugger;
+            var fileList = component.get("v.fileList") || [];
+            var recordIdString = caseId; // Ensure you pass the case ID correctly
+            
+            var action = component.get("c.attachFileToCase");
+            action.setParams({
+                recordId: recordIdString,
+                filesData: JSON.stringify(fileList)
+            });
+    
+            action.setCallback(this, function(response) {
+                var state = response.getState();
+                if (state === "SUCCESS") {
+                    alert("File attached to Case.");
+                    
+                    $A.get('e.force:showToast').setParams({
+                        "title": "Success",
+                        "message": "Case is created successfully!",
+                        "type": "success"
+                    }).fire();
+                    
+                    component.set('v.showSpinner', false);
+                    // Optionally reload or refresh the data
+                    // location.reload();
+                } else {
+                    console.error("Error attaching file to Case: ", response.getError());
+                    $A.get('e.force:showToast').setParams({
+                        "title": "Error",
+                        "message": "Error attaching file to Case!",
+                        "type": "error"
+                    }).fire();
+                }
+            });
+    
+            $A.enqueueAction(action);
+    
+        } catch (e) {
+            console.error("Exception: " + e.message);
+            $A.get('e.force:showToast').setParams({
+                "title": "Error",
+                "message": "Exception occurred while attaching file to Case!",
+                "type": "error"
+            }).fire();
+        }
+    }
+    
 })

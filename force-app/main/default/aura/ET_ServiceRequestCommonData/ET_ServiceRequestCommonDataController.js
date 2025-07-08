@@ -46,7 +46,7 @@
         var params = event.getParam('arguments');
         //var fieldDivCmpIds =["daysPerWeekDiv","requestforSeparatePriceDiv"];
         
-        alert('getOpprecordTypeName: '+params);
+        //alert('getOpprecordTypeName: '+params);
         console.log('OpprecordTypeName: '+params.OpprecordTypeName);
         if(params){
             component.set("v.OpprecordTypeName", params.OpprecordTypeName);

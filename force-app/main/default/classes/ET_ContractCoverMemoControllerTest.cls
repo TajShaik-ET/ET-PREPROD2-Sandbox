@@ -135,7 +135,7 @@ public class ET_ContractCoverMemoControllerTest {
         Test.setCurrentPage(pageRef);
         pageRef.getParameters().put('Id', [SELECT Id FROM Contract_Pdf_Header__c LIMIT 1].Id);
         ApexPages.StandardController sc = new ApexPages.StandardController([SELECT Id FROM Contract_Pdf_Header__c LIMIT 1]);
-        ET_ContractCoverMemoController testpdf = new ET_ContractCoverMemoController(sc);
+        ET_ContractCoverMemoController testpdf = new ET_ContractCoverMemoController();
         
         
         
@@ -169,7 +169,7 @@ public class ET_ContractCoverMemoControllerTest {
         
         ApexPages.StandardController sc = new ApexPages.StandardController(noCustomerQuotePdf);
         try {
-            new ET_ContractCoverMemoController(sc);
+            new ET_ContractCoverMemoController();
             System.assert(false, 'Exception should have been thrown');
         } catch (ET_ContractCoverMemoController.CustomException e) {
             System.assertEquals('No Customer_Quote__c found for the given Id.', e.getMessage(), 'Custom exception message should match');

@@ -39,7 +39,7 @@ public class ET_QuotesPdfCtlr {
         
         
         //get customer Quote owner related information
-        List<Customer_Quote__c> customerQuotes =[select id, Opportunity_Name__r.AccountId, Opportunity_Name__r.Owner.Name, Opportunity_Name__r.Owner.Email,
+        List<Customer_Quote__c> customerQuotes =[select id,Opportunity_Name__r.ETSALES_Opportunity_Number__c, Opportunity_Name__r.AccountId, Opportunity_Name__r.Owner.Name, Opportunity_Name__r.Owner.Email,
                                                 Opportunity_Name__r.Owner.Manager.Name, Opportunity_Name__r.Owner.ManagerName__c, Group_By__c,
                                                 Opportunity_Name__r.ETSALES_Sector__c,Opportunity_Name__r.RecordType.Name,  Opportunity_Name__r.Fuel_Included_Current_Contract__c,
                                                 Opportunity_Name__r.Owner.ContactNumber__c, Opportunity_Name__r.Owner.ManagerDesignation__c,Customer_Quote_Date__c,Additional_Notes__c,
@@ -132,7 +132,7 @@ public class ET_QuotesPdfCtlr {
     
     @AuraEnabled
     public static string generateQuoteDoc(string quoteId){
-        List<Customer_Quote__c>  cusQuote =[select Id, Name from Customer_Quote__c where Id =:quoteId];
+        List<Customer_Quote__c>  cusQuote =[select Id, Name, Opportunity_Name__r.ETSALES_Opportunity_Number__c from Customer_Quote__c where Id =:quoteId];
         String CusQuoteName = cusQuote[0].Name;
         PageReference pdf =  Page.ET_CustomerQuotePDF;
         pdf.getParameters().put('Id',quoteId);
@@ -141,12 +141,38 @@ public class ET_QuotesPdfCtlr {
             pdfBlob = pdf.getContentAsPDF();
         }
         try{
+            Integer serialNumber = 1; // Default serial number if no previous versions exist
+            // Build the base file name pattern
+            String baseFileName = CusQuoteName + '_'+ cusQuote[0].Opportunity_Name__r.ETSALES_Opportunity_Number__c + '_Rv_';
+            system.debug('baseFileName '+baseFileName);
+            // Query the latest ContentVersion for the same quote
+            list<ContentVersion> latestVersion = [
+                SELECT Title 
+                FROM ContentVersion 
+                WHERE Title LIKE :baseFileName + '%'
+                ORDER BY CreatedDate DESC 
+                LIMIT 1
+            ];
+            if (latestVersion.size() > 0) {
+                String latestTitle = latestVersion[0].Title;
+                
+                // Updated regex pattern to match '_Rv_' instead of '_Rv '
+                Pattern pattern = Pattern.compile('_Rv_(\\d+)\\.pdf');
+                Matcher matcher = pattern.matcher(latestTitle);
+                
+                if (matcher.find()) {
+                    serialNumber = Integer.valueOf(matcher.group(1)) + 1;
+                }
+            }
+            String newFileName = baseFileName + serialNumber + '.pdf';
+            System.debug('Final New File Name: ' + newFileName);
+
             ContentVersion conVer = new ContentVersion();
             DateTime  dt = System.now();
             
             conVer.ContentLocation = 'S'; // TO USE S specify this document IS IN Salesforce, TO USE E FOR external files
-            conVer.PathOnClient = CusQuoteName+'_'+dt.hour()+dt.minute()+dt.second()+'.pdf'; 
-            conVer.Title = CusQuoteName+ '_'+dt.hour()+dt.minute()+dt.second()+'.pdf'; 
+            conVer.PathOnClient = CusQuoteName+'_'+ cusQuote[0].Opportunity_Name__r.ETSALES_Opportunity_Number__c +'_Rv_'+ serialNumber +'.pdf'; 
+           conVer.Title = CusQuoteName+'_'+ cusQuote[0].Opportunity_Name__r.ETSALES_Opportunity_Number__c +'_Rv_'+ serialNumber +'.pdf'; 
             conVer.VersionData = pdfBlob;
             insert conVer;  
             
@@ -159,7 +185,9 @@ public class ET_QuotesPdfCtlr {
             insert conDocLink;
         }
         catch(Exception e){
+             System.debug('Line number of error: ' + e.getLineNumber()); 
             throw new AuraHandledException(e.getMessage());
+           
         }
         return quoteId;
         
@@ -168,29 +196,59 @@ public class ET_QuotesPdfCtlr {
     public void getLinesData(String quoteId, String groupBy){
         
         Map<Integer, List<Customer_Vehicle_Quote_Item__c>> vehicleMapByYear = new Map<Integer, List<Customer_Vehicle_Quote_Item__c>>();
+        system.debug('vehicleMapByYearB'+vehicleMapByYear);
+        Map<String, List<Customer_Vehicle_Quote_Item__c>> vehicleMapByName = new Map<String, List<Customer_Vehicle_Quote_Item__c>>();
+        system.debug('vehicleMapByYearB'+vehicleMapByYear);
 
         List<Customer_Vehicle_Quote_Item__c> vehicles = new List<Customer_Vehicle_Quote_Item__c>();
         VehcileLabelDetail = new Customer_Vehicle_Quote_Item__c();
+        System.debug('VehcileLabelDetail =>1'+VehcileLabelDetail);
+        
         VehcileCheckBoxDetail = new Customer_Vehicle_Quote_Item__c();
-
+        
         for(Customer_Vehicle_Quote_Item__c vehicle: getVehicleLines(quoteId)){
+            system.debug('vehicle'+vehicle);
             if(vehicle.Is_Label_Row__c == false && vehicle.Is_CheckBox_Row__c == false){
                 // to build map on yearly base
                 if(groupBy == 'Year'){
                     Integer contractPeriod = Integer.valueOf(vehicle.Contract_Period_In_Years__c);
+                    system.debug('contractPeriod -: '+contractPeriod);
+                     system.debug('vehicleMapByYear.get(contractPeriod)'+vehicleMapByYear.get(contractPeriod));
                     if(vehicleMapByYear.containsKey(contractPeriod)){
+                       
+                        
                         List<Customer_Vehicle_Quote_Item__c> temp = vehicleMapByYear.get(contractPeriod);
+                        system.debug('tempB'+temp);
+                        
                         temp.add(vehicle);
+                        system.debug('tempA'+temp);
                     }else{
                         List<Customer_Vehicle_Quote_Item__c> temp = new List<Customer_Vehicle_Quote_Item__c>();
+                        system.debug('elsetempB'+temp);
                         temp.add(vehicle);
+                        system.debug('elsetempA'+temp);
+                        
                         vehicleMapByYear.put(contractPeriod, temp);
+                        system.debug('vehicleMapByYearA'+vehicleMapByYear);
+                        
                     }
-                }else{
+                } else if (groupBy == 'Name') {
+                 String contractName = String.valueOf(vehicle.Name);
+                 if (vehicleMapByName.containsKey(contractName)) {
+                    List<Customer_Vehicle_Quote_Item__c> temp = vehicleMapByName.get(contractName);
+                    temp.add(vehicle);
+                 } else {
+                    List<Customer_Vehicle_Quote_Item__c> temp = new List<Customer_Vehicle_Quote_Item__c>();
+                    temp.add(vehicle);
+                    vehicleMapByName.put(contractName, temp);
+                }
+            }else{
                     vehicles.add(vehicle);
                 }
             }else if(vehicle.Is_Label_Row__c == true && vehicle.Is_CheckBox_Row__c == false){
                 VehcileLabelDetail = vehicle;
+                System.debug('VehcileLabelDetail =>2'+VehcileLabelDetail);
+
             }else if(vehicle.Is_Label_Row__c == false && vehicle.Is_CheckBox_Row__c == true){
                 VehcileCheckBoxDetail = vehicle;
             }
@@ -198,7 +256,9 @@ public class ET_QuotesPdfCtlr {
 
         if(groupBy == 'Year'){
             buildVehicleListByYear(vehicleMapByYear);
-        }else{
+        } else if (groupBy == 'Name') {
+            buildVehicleListByName(vehicleMapByName);
+        } else{
             linesDetail = new List<LinesDetail>();
             LinesDetail tempLinesDetail = new LinesDetail();
             tempLinesDetail.vehciledetails = vehicles;
@@ -250,7 +310,36 @@ public class ET_QuotesPdfCtlr {
             linesDetail.add(tempLinesDetail);
         }
     }
-
+    //SK-buildVehicleListByName
+    public void buildVehicleListByName(Map<String, List<Customer_Vehicle_Quote_Item__c>> vehicleMapByName) {
+        linesDetail = new List<LinesDetail>();
+        for (String key : vehicleMapByName.keySet()) {
+            List<Customer_Vehicle_Quote_Item__c> vehicles = vehicleMapByName.get(key);
+            
+            // Calculate totals for the group
+            Integer totalQty = 0;
+            Decimal monthlyCostPerVeh = 0;
+            Decimal monthlyRateAllUnit = 0;
+            Decimal totalRateAllUnit = 0;
+            for (Customer_Vehicle_Quote_Item__c veh : vehicles) {
+                totalQty += Integer.valueOf(veh.Number_of_Vehicles__c);
+                monthlyCostPerVeh += veh.Vehicle_Monthly_Cost__c;
+                monthlyRateAllUnit += veh.Monthly_Rate_All_Unit_with_VAT__c;
+                totalRateAllUnit += veh.Total_Rate_All_Units__c;
+            }
+            
+            // Create a LinesDetail object for the group
+            LinesDetail tempLinesDetail = new LinesDetail();
+            tempLinesDetail.name = key; // Store the name of the group
+            tempLinesDetail.totalQty = totalQty;
+            tempLinesDetail.monthlyCostPerVeh = monthlyCostPerVeh;
+            tempLinesDetail.monthlyRateAllUnit = monthlyRateAllUnit;
+            tempLinesDetail.totalRateAllUnit = totalRateAllUnit;
+            tempLinesDetail.vehciledetails = vehicles;
+            tempLinesDetail.isGroupByYear = false;
+            linesDetail.add(tempLinesDetail);
+        }
+    }
     public List<Customer_Vehicle_Quote_Item__c> getVehicleLines(String quoteId){
         return  [select Remarks__c, Vehicle_Unique_key__c,Vehicle_Manufacture_Year__c,Number_of_Vehicles__c,Total_Vehicles_Cost__c,No_of_Months__c, No_of_Years__c,
                 Name, Vehicle_Monthly_Cost__c,Vat_Per_Unit__c,Monthly_Rate_with_VAT__c,Monthly_Rate_All_Unit_with_VAT__c, Total_Rate_All_Units__c,
@@ -279,6 +368,7 @@ public class ET_QuotesPdfCtlr {
     
     class LinesDetail{
         public Boolean isGroupByYear {get; set;}
+        public String name { get; set; } // New property for grouping by name
         public Integer year{get; set;}
         public Integer totalQty {get; set;}
         public Decimal monthlyCostPerVeh {get; set;}

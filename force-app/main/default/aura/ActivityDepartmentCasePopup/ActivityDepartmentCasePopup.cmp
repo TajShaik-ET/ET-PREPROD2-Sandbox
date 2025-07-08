@@ -75,6 +75,8 @@
     <aura:attribute name="currentDestClick" type="String" />
     <aura:attribute name="requestLineList" type="List" default="[]" />
     <aura:attribute name="selectedLookUpRecord" type="sObject" default="{}"/>
+    <aura:attribute name="uploadedFiles" type="List" />
+    <aura:attribute name="fileList" type="List" default="[]" />
     <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
              aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
         <div class="slds-modal__container" aura:id="mainDiv">
@@ -86,40 +88,45 @@
                                       variant="bare-inverse" class="slds-modal__close" />
                 <h1 class="slds-text-heading--medium">{!v.clHowcanwehelpyou}</h1>
             </header>
-            
-            <lightning:select name="mySelect" label="{!v.clSelectRequestType}" aura:id="mySelect" onchange="{!c.toggle}"
-                              class="{!v.clLang =='ar' ? 'selectsearchrtl' : 'selectsearch'}" >
-                <option>{!v.clNone}</option>
-                <option>{!v.clGlobalEventRequest}</option>
-            </lightning:select>
-            
-            <lightning:messages />
-            <aura:if isTrue="{!v.loadEdirForm}">
+            <div class="slds-modal__content slds-p-around_medium">
+                <lightning:select name="mySelect" label="{!v.clSelectRequestType}" aura:id="mySelect" onchange="{!c.toggle}"
+                                  class="{!v.clLang =='ar' ? 'selectsearchrtl' : 'selectsearch'}" >
+                    <option>{!v.clNone}</option>
+                    <option>{!v.clGlobalEventRequest}</option>
+                </lightning:select>
+                
+                <lightning:messages />
+                <aura:if isTrue="{!v.loadEdirForm}">
                 <aura:if isTrue="{!v.showSpinner}">
                     <lightning:spinner aura:id="Spinner" variant="brand" class="spinner2" />
                 </aura:if>
                 <!--____________________________________this popup only open when lang is arbic____________________________-->              
                 <aura:if  isTrue="{!v.clLang =='ar'}"> 
                     <div style="padding:0px" class="{!v.clLang =='ar'}">
-                        
                         <lightning:recordEditForm objectApiName="Case" recordTypeId="{!v.RecordTypeId}" aura:id="caseForm" onsuccess="{!c.caseHandleOnSuccessAR}" onerror="{!c.handleOnErrorCase}">
                             <lightning:inputField fieldName="Subject" value="Global Event" class="slds-hide"/>
                             <lightning:inputField fieldName="AccountId" value="{!v.AccountId}"  class="slds-hide"/>
-                            <lightning:inputField fieldName="Status" value="In Progress" class="slds-hide"/>
-                            <lightning:inputField fieldName="Status_Category__c" value="Pending with ET" class="slds-hide"/>
+                            <lightning:inputField fieldName="Status" value="" class="slds-hide"/>
+                            <lightning:inputField fieldName="Status_Category__c" value="" class="slds-hide"/>
                             <lightning:inputField fieldName="Origin" value="CRM Portal" class="slds-hide"/>
                             <div style ="direction: rtl; background:#fff; padding:0 15px;">
-                                <div class="slds-grid">
+                                
+                                
+                                <div class="slds-grid slds-gutters slds-m-top_medium">
                                     <div class="slds-col slds-size_1-of-2">
-                                        <div class="align">   <label for="cityid"><span class="reqspan">*</span>نوع الطلب</label></div>
+                                        <label for="cityid"><span class="reqspan">*</span>Request Type</label>
                                         <lightning:inputField fieldName="Type_Of_Case_AR__c" value="{!v.typeOfCase}" variant="label-hidden" required="true"/>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <label for="cityid"><span class="reqspan"></span>Emirate</label>
+                                        <lightning:inputField fieldName="Emirates_Global__c"  variant="label-hidden"/>
                                     </div>
                                 </div>
                             </div>
                         </lightning:recordEditForm>
-                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <div id="modal-content-id-1">
                             <div class="formdiv_ar " >
-                                <table class="slds-table  slds-table_col-bordered  outerTable" width="100%">
+                                <table class="slds-table" width="100%">
                                     <tbody>
                                        <aura:iteration items="{!v.requestLineList}" var="eseObject" indexVar="index">
                                                 <tr>
@@ -218,10 +225,6 @@
                                                                  <label for="cityid">توقيت المغادرة من الموقع<span class="reqspan">*</span></label>
                                                                 <lightning:input name="" type="time"  maxlength="50" label=""   value="{!eseObject.Leaving_time_from_Location__c}" />
                                                             </td>
-                                                            <td>
-                                                                <label for="cityid">أخرى<span class="reqspan">*</span></label>
-                                                                <lightning:input name="" type="text"  maxlength="50" label=""   value="{!eseObject.Other__c}" />
-                                                            </td>
                                                         </tr>    
                                                     </td>        
                                                     <td> 
@@ -274,9 +277,44 @@
                         </section>
                         <!--<div class="slds-backdrop slds-backdrop_open"></div> -->
                     </aura:if>
+                    <div class="uploadSection slds-m-top_medium arabicupload"> 
+                    	<div class="documetnupload">
+                            <legend class="slds-border_bottom"></legend>
+                            <lightning:input aura:id="fileUpload"
+                            onchange="{!c.handleFileUpload}"
+                            class="file-selector-large"
+                            type="file"
+                            multiple="true"
+                            accept="image/png, image/jpeg, image/jpg, application/pdf"
+                            label="Upload File"
+                            required="true"/> 
+                       </div>
+                        <div class="datainfo">
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col">Actions</th>
+                                        <th scope="col" width="70%">File Name</th>
+                                    </tr>
+                                </thead>
+                                <aura:iteration items="{!v.fileList}" var="file" indexVar="index">
+                                    <tr>
+                                    <td>
+                                        <lightning:buttonIcon iconName="utility:delete" 
+                                                              alternativeText="Delete" 
+                                                              class="slds-m-left_x-small"
+                                                              onclick="{!c.handleDeleteFile}"
+                                                              />
+                                    </td>
+                                        <td>{!file.filename}</td>
+                                    </tr>
+                                </aura:iteration>
+                            </table>
+                        </div> 
+                    </div>
                     
                     <footer class="slds-modal__footer">
-                        <div class="slds-float_left">
+                        <div class="slds-text-align_left">
                             <lightning:button variant="brand" label="إرسال" type="submit" onclick="{!c.saveArabic}" class="btnsave" />
                             <lightning:button class="btnsave"  variant="brand" label="{!v.clCancel}" title="{!v.clCancel}"
                                               onclick="{!c.closeModel}"  />
@@ -287,8 +325,7 @@
                     
                     <!--________________________________This set  used to   for popup English  Language only__________________________-->    
                     <aura:set attribute="else" >
-                        
-                       
+                         
                         <!--This input field is being used in the backend and for case creation and is the default value -->
                         <lightning:recordEditForm objectApiName="Case" recordTypeId="{!v.RecordTypeId}" aura:id="caseForm" onsuccess="{!c.caseHandleOnSuccess}" onerror="{!c.handleOnError}">
                             <lightning:inputField fieldName="Subject" value="Global Event" class="slds-hide"/>
@@ -296,19 +333,20 @@
                             <lightning:inputField fieldName="Status" value="In Progress" class="slds-hide"/>
                             <lightning:inputField fieldName="Status_Category__c" value="Pending with ET " class="slds-hide"/>
                             <lightning:inputField fieldName="Origin" value="CRM Portal" class="slds-hide"/>
-                            <div class="slds-grid" style="background:#fff;padding: 0 15px;">
+                            <div class="slds-grid slds-gutters slds-m-top_medium">
                                 <div class="slds-col slds-size_1-of-2">
                                     <label for="cityid"><span class="reqspan">*</span>Request Type</label>
                                     <lightning:inputField fieldName="Type_Of_Case__c" value="{!v.typeOfCase}" variant="label-hidden" required="true"/>
                                 </div>
-                                
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="cityid"><span class="reqspan"></span>Emirate</label>
+                                    <lightning:inputField fieldName="Emirates_Global__c" value="{!v.typeOfCase}" variant="label-hidden"/>
+                                </div>
                             </div>
-                            
                         </lightning:recordEditForm>
                         
-                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                            <div class="formdiv">
-                                <table  class="slds-table  slds-table_col-bordered  outerTable" width="100%">
+                          <div class="formdiv">
+                                <table  class="slds-table outerTable" width="100%">
                                     <tbody>
                                         <aura:iteration items="{!v.dynamicRowsList}" var="eachRow" indexVar="index">
                                             <lightning:recordEditForm objectApiName="ESE_Request_Line__c" aura:id="caseFormMOE" onload="{!c.handleOnLoad}" onsubmit="{!c.handleOnSubmit}" onsuccess="{!c.handleOnSuccess}" onerror="{!c.handleOnError}">
@@ -527,14 +565,6 @@
                                                                                           fieldName="Leaving_time_from_Location__c" variant="label-hidden"  />
                                                                 </div>                                            
                                                             </td>
-                                                            
-                                                            <td>
-                                                                <div class="slds-form-element__control">
-                                                                    <label for="cityid"><span class="reqspan">*</span>Other</label>
-                                                                    <lightning:inputField aura:id="assResId" required="true"
-                                                                                          fieldName="Other__c" variant="label-hidden"  />
-                                                                </div>                                            
-                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             
@@ -557,9 +587,7 @@
                                         </aura:iteration>
                                     </tbody>                                    
                                 </table>
-                            </div> 
-                        </div>
-                        
+                            </div>  
                         <!--map window-->
                         <aura:if  isTrue="{!v.openMap}" >  
                             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" 
@@ -597,20 +625,51 @@
                                 </div>
                             </section>
                             <!--<div class="slds-backdrop slds-backdrop_open"></div> -->
-                        </aura:if>
-                        <footer class="slds-modal__footer">
-                            
-                           <!-- <lightning:button class="btnsave" label="Submit" type="submit" onclick="{!c.save}" /> -->
+                        </aura:if> 
+                            <div class="uploadSection slds-m-top_medium"> 
+                                <div class="documetnupload">
+                                    <legend class="slds-border_bottom">Upload Documents</legend>
+                                    <lightning:input aura:id="fileUpload"
+                                    onchange="{!c.handleFileUpload}"
+                                    class="file-selector-large"
+                                    type="file"
+                                    multiple="true"
+                                    accept="image/png, image/jpeg, image/jpg, application/pdf"
+                                    label="Upload Documents"
+                                    required="true"/> 
+                                </div>
+                                <div class="datainfo">
+                                	<table class="slds-table">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th scope="col" width="70%">File Name</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <aura:iteration items="{!v.fileList}" var="file" indexVar="index">
+                                        <tr>
+                                            <td>{!file.filename}</td>
+                                        <td>
+                                            <lightning:buttonIcon iconName="utility:delete" 
+                                                                  alternativeText="Delete" 
+                                                                  class="slds-m-left_x-small"
+                                                                  onclick="{!c.handleDeleteFile}"
+                                                                  />
+                                        </td>
+                                        </tr>
+                                    </aura:iteration>
+                                </table>
+                                </div>
+                            </div>  
+                        <footer class="slds-modal__footer"> 
+                            <lightning:button class="btnsave" label="Submit" type="submit" onclick="{!c.save}" />
                             <lightning:button class="btnsave"  variant="brand" label="{!v.clCancel}" title="{!v.clCancel}"
-                                              onclick="{!c.closeModel}"  />
-                            
-                            
-                        </footer>
-                        
-                        
+                                              onclick="{!c.closeModel}"  /> 
+                        </footer> 
                     </aura:set> 
                 </aura:if>
             </aura:if>
+            </div>
         </div>
         
     </section>

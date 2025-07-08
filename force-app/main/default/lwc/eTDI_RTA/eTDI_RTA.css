@@ -1,17 +1,15 @@
-.dummyClass{
-    color:black;
- }
- 
-  lightning-input-field.inputCss{
-    --slds-c-input-color-border:#312b2a; 
-       
-  }
-  lightning-input.inputCss{
-    --slds-c-input-color-border:#312b2a; 
-       
-  }
- 
-  lightning-combobox.inputCss{
-   --slds-c-input-color-border:#312b2a; 
-      
- }
+.dummyClass {
+  color: black;
+}
+
+lightning-input-field.inputCss {
+  --slds-c-input-color-border: #312b2a;
+}
+
+lightning-input.inputCss {
+  --slds-c-input-color-border: #312b2a;
+}
+
+lightning-combobox.inputCss {
+  --slds-c-input-color-border: #312b2a;
+}

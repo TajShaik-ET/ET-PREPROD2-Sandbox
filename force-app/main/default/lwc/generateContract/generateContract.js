@@ -22,7 +22,10 @@ import Sh1_Clause12_Ab_Return_Cheque_Amount from '@salesforce/schema/Contract_Pd
 import Sh1_Clause14_4_Insurance_Excess_Charge from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause14_4_Insurance_Excess_Charge__c';
 import Sh1_Clause15_1_Rental_Months from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause15_1_Rental_Months__c';
 import Sh1_Clause15_1b_Rental_Months from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause15_1b_Rental_Months__c';
+import Sh1_Clause15_1b2_Rental_Months from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause15_1b2_Rental_Months__c';
 import Sh1_Clause15_1c_Rental_Months from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause15_1c_Rental_Months__c';
+import Sh1_Clause15_1c5_Rental_Months from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause15_1c5_Rental_Months__c';
+import Sh1_Clause15_1c6_Rental_Months from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause15_1c6_Rental_Months__c';
 import Sh1_Clause3_1_Agreement_YearMonth from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause3_1_Agreement_YearsMonths__c';
 import Sh1_Clause3_1_Minimum_Period from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause3_1_Minimum_Period__c';
 import Sh1_Clause5_1_Vehicle_Percentage from '@salesforce/schema/Contract_Pdf_Header__c.Sh1_Clause5_1_Vehicle_Percentage__c';
@@ -99,7 +102,10 @@ export default class GenerateContract extends NavigationMixin(LightningElement) 
         Sh1_Clause3_1_Minimum_Period,
         Sh1_Clause5_1_Vehicle_Percentage,
         Sh1_Clause15_1b_Rental_Months,
+        Sh1_Clause15_1b2_Rental_Months,
         Sh1_Clause15_1c_Rental_Months,
+        Sh1_Clause15_1c5_Rental_Months,
+        Sh1_Clause15_1c6_Rental_Months,
         Sh1_Clause7_1_KM_Reading,
         Sh1_Clause7_2_Charge_Additional_KM,
         Sh1_Clause9_1_Branding_Charge,
@@ -150,6 +156,9 @@ export default class GenerateContract extends NavigationMixin(LightningElement) 
     @track firstYearTermination;
     @track secondYearTermination;
     @track thirdYearTermination;
+    @track fourthYearTermination;
+    @track fifthYearTermination;
+    @track sixthYearTermination;
     @track lpoTermination;
     @track salikDarb;
     @track trafficFineAdmin;
@@ -221,9 +230,12 @@ export default class GenerateContract extends NavigationMixin(LightningElement) 
             this.InsuranceExcessCharge = this.customerQuoteData.InsuranceExcessCharge;
             this.CelanderDays = this.customerQuoteData.CelanderDays;
             this.DelayPaymentPer = this.customerQuoteData.DelayPaymentPer;
-            this.firstYearTermination = this.customerQuoteData.firstYearTermination;
-            this.secondYearTermination = this.customerQuoteData.secondYearTermination;
-            this.thirdYearTermination = this.customerQuoteData.thirdYearTermination;
+            this.firstYearTermination  = this.customerQuoteData.firstYearTermination;
+            this.secondYearTermination= this.customerQuoteData.secondYearTermination;
+            this.thirdYearTermination  = this.customerQuoteData.thirdYearTermination;
+            this.fourthYearTermination= this.customerQuoteData.fourthYearTermination;
+            this.fifthYearTermination  = this.customerQuoteData.fifthYearTermination;
+            this.sixthYearTermination  = this.customerQuoteData.sixthYearTermination;
             this.contractType = this.customerQuoteData.ContractType;
             this.tradeLicense = this.customerQuoteData.TradeLicense;
             this.lpoTermination = this.customerQuoteData.LPOTermination;
@@ -479,6 +491,49 @@ export default class GenerateContract extends NavigationMixin(LightningElement) 
                 actionName: 'view'
             }
         });
+    }
+    @track agreementYear = 1; // Default value set to 1 year
+    get isFirstYearVisible() {
+        return this.agreementYear >= 1;
+    }
+
+    get isSecondYearVisible() {
+        return this.agreementYear >= 2;
+    }
+
+    get isThirdYearVisible() {
+        return this.agreementYear >= 3;
+    }
+
+    get isFourthYearVisible() {
+        return this.agreementYear >= 4;
+    }
+
+    get isFifthYearVisible() {
+        return this.agreementYear >= 5;
+    }
+
+    get isSixthYearVisible() {
+        return this.agreementYear >= 6;
+    }
+    getAgreementYear(event){
+        this.agreementYear = event.target.value;
+
+
+
+
+
+
+
+
+
+
+
+
+        if (this.agreementYear.length > 1 ) {
+            // event.preventDefault();
+            //add message for length validation
+        }
     }
         
 }

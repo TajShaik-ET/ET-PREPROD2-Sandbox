@@ -115,8 +115,8 @@
             
             <div class="topData"  style="display: inline-block; width: 100%;">
                 <div style=""><p style="margin: 0 0px 10px 0; font-weight: 600; font-size: 16px; display: inline-block;"><strong>QUOTATION FOR {!Customer_Quote__c.RecordType__c} </strong></p>
-                    <p style="display: inline-block; float: right; font-size: 12px; min-width: 120px; margin-top: 3px;">Date:<apex:outputText value="{0, date, MMMM d','  yyyy}">
-<apex:param value="{!customerQuote.Customer_Quote_Date__c}"/></apex:outputText><br/>
+                    <p style="display: inline-block; float: right; font-size: 12px; margin-top: 3px; white-space: nowrap;">Date:<apex:outputText value="{0, date, MMMM d',' yyyy}">
+<apex:param value="{!customerQuote.Customer_Quote_Date__c}"/></apex:outputText>
                     </p>
                 </div>
                 <div style="min-width: 250px;">
@@ -179,9 +179,9 @@
                                     <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Extra_Miles__c}">
                                         <th style="background-color: #fff; padding:3px; padding-bottom: 15px;  font-weight:600; border-bottom: 1px solid #ccc; text-align: left;">{!VehcileLabelDetail.Label_Extra_Miles__c}</th>
                                     </apex:outputPanel>
-                                    <!--<apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Delivery_Days__c}">
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Delivery_Days__c}">
                                         <th style="background-color: #fff; padding:3px; padding-bottom: 15px; font-weight:600; border-bottom: 1px solid #ccc; text-align: left;">{!VehcileLabelDetail.Label_Delivery_Days__c}</th>
-                                    </apex:outputPanel>-->
+                                    </apex:outputPanel>
                                     <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Source__c}">
                                         <th style="background-color: #fff; padding:3px; padding-bottom: 15px; font-weight:600; border-bottom: 1px solid #ccc; ;text-align: left;">{!VehcileLabelDetail.Label_Vehicle_Source__c}</th>
                                     </apex:outputPanel>
@@ -198,11 +198,11 @@
                                         <td style=" padding:8px; text-align: center; font-weight: 600;">{!rowNum}</td>
                                         
                                         <apex:outputPanel layout="none" rendered="{!IF(ISNULL(Veh.No_of_Months__c), 'false', 'true')}">
-                                            <td style="padding:8px; text-align: center;">{!Veh.No_of_Months__c} Months</td>
+                                            <td style="padding:8px; text-align: center;">{!Veh.No_of_Months__c} Month(s)</td>
                                         </apex:outputPanel>
                                         
                                         <apex:outputPanel layout="none" rendered="{!IF(ISNULL(Veh.No_of_Years__c), 'false', 'true')}">
-                                            <td style="padding:8px; text-align: center;">{!Veh.No_of_Years__c} Years</td>
+                                            <td style="padding:8px; text-align: center;">{!Veh.No_of_Years__c} Year(s)</td>
                                         </apex:outputPanel>
                                         
                                         <td style="padding:8px; text-align: left;">{!Veh.Remarks__c}</td>
@@ -257,9 +257,9 @@
                                         <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Extra_Miles__c}">
                                             <td style=" padding:8px; text-align: center;">{!Veh.Extra_Miles__c}</td>
                                         </apex:outputPanel>
-                                        <!--<apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Delivery_Days__c}">
+                                        <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Delivery_Days__c}">
                                             <td style=" padding:8px; text-align: center;">{!Veh.Delivery_Days__c}</td>
-                                        </apex:outputPanel>-->
+                                        </apex:outputPanel>
                                         <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Source__c}">
                                             <td style=" padding:8px; text-align: center;">{!Veh.Vehicle_Source__c}</td>
                                         </apex:outputPanel>
@@ -273,7 +273,7 @@
                                         <td style="padding:8px; text-align: center;"></td>
                                     </apex:outputPanel>
                                     
-                                    <td style="background-color: #fff; padding:8px; text-align: left;"> <b>TOTAL </b></td>
+                                     <td style="background-color: #fff; padding:8px; text-align: left;"> <b>TOTAL </b></td>
                                     <apex:outputPanel layout="none" rendered="{!If(oppSector == 'School', 'true', 'false')}">
                                         <td style="padding:8px; text-align: left;"></td>
                                     </apex:outputPanel>
@@ -283,9 +283,9 @@
                                     <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Monthly_Price__c}">
                                         <td style="padding:8px; text-align: center;">
                                             <b>
-                                                <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                <!--<apex:outputText value="{0, number, ###,###,###,##0.00}">
                                                     <apex:param value="{!line.monthlyCostPerVeh}" />
-                                                </apex:outputText>
+                                                </apex:outputText>-->
                                             </b>
                                         </td>
                                     </apex:outputPanel>
@@ -303,9 +303,9 @@
                                     <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Monthly_Rate_All_Unit_with_VAT__c}">
                                         <td style="padding:8px; text-align: center;">
                                             <b>
-                                                <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                <!--<apex:outputText value="{0, number, ###,###,###,##0.00}">
                                                     <apex:param value="{!line.monthlyRateAllUnit}" />
-                                                </apex:outputText>
+                                                </apex:outputText>-->
                                             </b>
                                         </td>
                                     </apex:outputPanel>
@@ -325,9 +325,9 @@
                                     <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Extra_Miles__c}">
                                         <td style="padding:8px; text-align: center;"></td>
                                     </apex:outputPanel>
-                                    <!--<apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Delivery_Days__c}">
+                                    <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Delivery_Days__c}">
                                         <td style="padding:8px; text-align: center;"></td>
-                                    </apex:outputPanel>-->
+                                    </apex:outputPanel>
                                     <apex:outputPanel layout="none" rendered="{!VehcileCheckBoxDetail.Is_Vehicle_Source__c}">
                                         <td style="padding:8px; text-align: center;"></td>
                                     </apex:outputPanel>
@@ -372,9 +372,9 @@
                                 <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Type__c}">
                                     <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!workforceLabelDetail.Label_Type__c}</th>
                                 </apex:outputPanel>
-                                <!--<apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Delivery_Days__c}">
+                                <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Delivery_Days__c}">
                                     <th style="background-color: #fff; padding:3px; padding-bottom: 15px; text-align: left;font-weight:600; border-bottom: 1px solid #ccc;">{!workforceLabelDetail.Label_Delivery_Days__c}</th>
-                                </apex:outputPanel>-->
+                                </apex:outputPanel>
                                 
                             </tr>
                             
@@ -419,9 +419,9 @@
                                     <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Type__c}">
                                         <td style="padding:8px; text-align: center;">{!Veh.Type__c}</td>
                                     </apex:outputPanel>
-                                    <!--<apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Delivery_Days__c}">
+                                    <apex:outputPanel layout="none" rendered="{!workforceCheckBoxDetail.Is_Delivery_Days__c}">
                                         <td style="padding:8px; text-align: center;">{!Veh.Delivery_Days__c}</td>
-                                    </apex:outputPanel>-->
+                                    </apex:outputPanel>
                                     
                                     
                                 </tr>
@@ -534,7 +534,7 @@
                                 </td>
                                 <!-- Remarks -->
                                 <td style="padding:8px; text-align: left;">
-                                     {!aTerm.Additional_Term_Text__c}
+                                     {!aTerm.Charge_Value__c} {!aTerm.Charge_Type_Value__c} {!aTerm.Additional_Term_Text__c}
                                 </td>
                             </tr>
                         </apex:repeat>
@@ -615,6 +615,16 @@ Thanks and Regards,<br/>
                 <tr>
                     <td style= "display: {!If(oppOwnerName =='','none','') }">
                         {!oppOwnerName}
+					</td>
+                </tr>
+                 <tr>
+                    <td style= "display: {!If(Customer_Quote__c.CustomerName__c =='','none','') }">
+                        {!Customer_Quote__c.CustomerName__c}
+					</td>
+                </tr>
+                 <tr>
+                    <td style= "display: {!If(Customer_Quote__c.SM_Email__c =='','none','') }">
+                        {!Customer_Quote__c.SM_Email__c}
 					</td>
                 </tr>
                 <tr>

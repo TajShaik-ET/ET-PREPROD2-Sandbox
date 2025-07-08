@@ -31,11 +31,33 @@ export default class GenerateContractPdfButton extends LightningElement {
 
     @wire(getRecord, { recordId: '$recordId', fields: [NAME, APPROVAL_STATUS, APPROVAL_STAGE, ALL_APPROVAL, PDFSector, CQRecordType] })
     wiredContact({ error, data }) {
-        if (data) {
-            console.log('---data---',data);
-            this.contract = data;
-            this.checkApprovalStatus();
+        try {
+            if (data) {
+                console.log('---data---', data);
+                this.contract = data;
+                this.checkApprovalStatus();
+            } else if (error) {
+                // Handle the error
+                console.error('---error---', error);
+                this.handleError(error);
+            }
+        } catch (exception) {
+            // Handle any unexpected exceptions
+            console.error('---unexpected error---', exception);
+            this.handleError(exception);
         }
+    }
+    handleError(error) {
+        // Custom error handling logic
+        // For example, show an error message to the user
+        const errorMessage = error?.body?.message || 'An unexpected error occurred.';
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Error',
+                message: errorMessage,
+                variant: 'error',
+            }),
+        );
     }
     
     checkApprovalStatus(){

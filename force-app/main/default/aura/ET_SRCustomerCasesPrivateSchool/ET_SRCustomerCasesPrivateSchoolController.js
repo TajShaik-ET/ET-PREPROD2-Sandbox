@@ -5,7 +5,7 @@
         helper.getPrivateuserdata(component, event);
         helper.getEmiratesdata(component, event);
         helper.getEseUserEmail(component, event);
-         helper.fetchCases(component, event,helper);
+       //  helper.fetchCases(component, event,helper);
         //helper.getCaseData(component, event, helper,'All');
         component.set('v.isSchoolActivitiesDepartment', false);
         component.set('v.isSchoolServicesDepartment', false);

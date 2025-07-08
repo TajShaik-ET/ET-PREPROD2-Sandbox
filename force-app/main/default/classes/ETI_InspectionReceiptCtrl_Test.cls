@@ -104,6 +104,22 @@ public class ETI_InspectionReceiptCtrl_Test {
         inspObsrRec.Id = inspObsr.id;
         inspObsrRec.Is_Visual_Inspection_Completed__c = true;
         Update inspObsrRec;
+        User currentUser = [SELECT Id,Email, MobilePhone,ContactNumber__c FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
+        ETI_Inspection_Observation__c testInspObs = new ETI_Inspection_Observation__c(
+            Approver_Finance_ID__c = '12345',
+            AMAN_Receipt_No__c = 'AMAN123',
+            Email_Sent_to_Supervisor__c = false
+        );
+        insert testInspObs;
+        
         ETI_InspectionReceiptCtrl.synInspResultsToAman(inspObsrFields,inspObsr.Id);
+        ETI_InspectionReceiptCtrl.getPicklistValues();
+        ETI_InspectionReceiptCtrl.getRoleAndProfile(currentUser.Id);
+        ETI_InspectionReceiptCtrl.sendEmailtoSupervisor(testInspObs);
+        ETI_InspectionReceiptCtrl.sendEmailToInpector(testInspObs);
+	    //ETI_InspectionReceiptCtrl.getPrintResult('AMAN123', 'INSP456', testInspObs.Id);
+        ETI_InspectionReceiptCtrl.updatePrintStatus(testInspObs.Id,'S','Results Processed');
+        ETI_InspectionReceiptCtrl.IntegrateWithAman(testInspObs,'');
+		
     }
 }

@@ -14,8 +14,8 @@
 		//SK-
         console.log('OpprecordTypeName: '+component.get("v.OpprecordTypeName"));
         if(component.get("v.OpprecordTypeName")=='Leasing/ Rental'){
-            var fieldDivCmp = component.find("VehicleNoOfSeatsdiv");
-            $A.util.addClass(fieldDivCmp, 'slds-hide');
+            //var fieldDivCmp = component.find("VehicleNoOfSeatsdiv");
+            //$A.util.addClass(fieldDivCmp, 'slds-hide');
             var CurrentYear = new Date().getFullYear();
            // var currentYearString = currentYear.toString();
             var vehicleObj = component.get("v.vehicleLine");
@@ -28,6 +28,10 @@
 
             component.set("v.vehicleLine",vehicleObj);
             console.log('inside getOpprecordTypeName of ET_VehicleDetails in doinit of vehicleLine : '+JSON.stringify(component.get("v.vehicleLine")));
+        }else{
+            var vehicleObj = component.get("v.vehicleLine");
+            vehicleObj["ET_Vehicle_Line__c"] = component.get("v.lineNumber");
+            component.set("v.vehicleLine",vehicleObj);
         }
 	},
     

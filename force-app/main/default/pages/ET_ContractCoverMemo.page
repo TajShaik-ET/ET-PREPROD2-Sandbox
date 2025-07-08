@@ -8,7 +8,7 @@
   Ver   Date         Author                          Modification
   1.0   08-06-2024   Srihari.Koyila@Smaartt.com-SK   Initial Version
 -->
-<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf" standardStylesheets="false" applyHtmlTag="false" standardController="Contract_Pdf_Header__c" extensions="ET_ContractCoverMemoController">
+<apex:page applyBodyTag="false" showHeader="false" sidebar="false" renderAs="pdf" standardStylesheets="false" applyHtmlTag="false"  controller="ET_ContractCoverMemoController">
     <head>
         <style>
             @page{
@@ -103,6 +103,7 @@
                 width: 150px; /* Increase width to match the header columns */
                 padding:10px 20px; /* Increase padding to allow space for signatures */
             }
+            tr {page-break-inside: avoid;}
         </style>
     </head>
     <div class="divHeader">
@@ -181,7 +182,7 @@
                     <td class="col3"><apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!DOAPricing}"/> </apex:outputtext></td>
                 </tr>
                 <tr>
-                    <td class="col1">Investments Amount</td>
+                    <td class="col1">Investments Amount (inclusive of used vehicles)</td>
                     <td class="col3"><apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!QuoteTotalvalue}"/> </apex:outputtext></td>
                 </tr>
                 <tr>
@@ -237,13 +238,13 @@
             <table>
                 <tbody>
                     <tr>
-                        <td class="col31">Collection Signature</td>
+                        <!--td class="col31">Collection Signature</td-->
                         <td class="col31">Credit Assessment Signature</td>
                         <td class="col31">Legal Director Signature</td>
                         <td class="col31">BU’s Chief Officer Signature</td>
                     </tr>
                     <tr>
-                        <td class="col3"> &nbsp; </td>
+                        <!--td class="col3"> &nbsp; </td-->
                         <td class="col3"></td>
                         <td class="col3"></td>
                         <td class="col3"></td>

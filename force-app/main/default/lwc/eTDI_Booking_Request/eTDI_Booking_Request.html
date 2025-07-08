@@ -1,5 +1,4 @@
 <template>
-
 	<div class="slds-float_right">
 		<lightning-button label="New Request" onclick={handleNewReq} variant="brand" class="darkBtn"></lightning-button>
 	</div>
@@ -46,30 +45,20 @@
 									<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
 								</template>
 
-
-
 								<!-- <lightning-combobox name="Program Name" label="Program Name"
 									value={value} options={programNames} onchange={handleProgramSelect}
 									placeholder="Select a Program Name" required="true"> </lightning-combobox> -->
 
 								<lightning-input-field class="inputCss programName" field-name="Program_Name__c"
 									required="true" onchange={handleProgramSelect}></lightning-input-field>
-
-
 								<lightning-combobox class="inputCss" name="Branch" label="Branch" value={value}
 									options={Branches} onchange={handleBranchSelect} placeholder="Select a Branch"
 									required="true">
 								</lightning-combobox>
-
-
-
 								<lightning-combobox class="inputCss" name="Depot" label="Depot" value={value}
 									options={depotNames} onchange={handleDepotSelect} placeholder="Select a Depot"
 									required="true">
 								</lightning-combobox>
-
-
-
 								<lightning-input-field class="inputCss" value={ReqDate} data-id="form"
 									field-name="Requested_Date__c" required="true"></lightning-input-field>
 								<!-- <lightning-input-field class="inputCss"
@@ -79,7 +68,6 @@
 								</lightning-combobox> -->
 								<lightning-input-field class="inputCss" field-name="Language__c">
 								</lightning-input-field>
-
 								<lightning-combobox class="inputCss" name="Exam Required?" label="Exam Required?"
 									value={value} options={availableOptions} onchange={handleExamReq}
 									placeholder="Choose Yes or No" required="true">
@@ -92,7 +80,6 @@
 											</lightning-icon>
 										</lightning-pill>
 									</template>
-
 								</div>
 								<div class="slds-grid slds-gutters">
 									<template if:false={isExternal}>
@@ -105,8 +92,6 @@
 											<lightning-button label="Search" class="darkBtn"
 												onclick={handleSearchKeyword} variant="brand">
 											</lightning-button>
-
-
 										</div>
 									</template>
 
@@ -121,7 +106,7 @@
                 						<input type="checkbox" onchange={handleIsExternalChange} /> Is External Training
             						</label>
 								</div>
-							<!--	<lightning-input label="" name="Upload" accept=".csv" onchange={handleUploadFile}
+								<!--	<lightning-input label="" name="Upload" accept=".csv" onchange={handleUploadFile}
 									type="file" multiple="false"></lightning-input>-->
 								<template if:true={isExternal}>
 									<template if:true={extractedData.length}>
@@ -161,7 +146,6 @@
 												</template>
 											</tbody>
 										</table>
-
 									</template>
 									<template if:false={extractedData.length}>
 										<div class="slds-text-body_small slds-text-color_error">No data available from
@@ -169,19 +153,17 @@
 									</template>
 								</template>
 							</div>
-
 							<div class="slds-m-horizontal_medium">
-						<lightning-input label="" name="Upload" accept=".csv" onchange={handleUploadFile} type="file"
-							multiple="false"></lightning-input>
-						<div if:true={showFileName} class="slds-text-body_small slds-text-color_error">
-							{fileName}
-						</div>
-						<div style="margin-bottom:5px">
-							<b>Note:</b> Please use the standard template to upload data. <a
-								onclick={DownloadTemplate}>Click here</a> to download the template.
-						</div>
-					</div>
-
+								<lightning-input label="" name="Upload" accept=".csv" onchange={handleUploadFile}
+									type="file" multiple="false"></lightning-input>
+								<div if:true={showFileName} class="slds-text-body_small slds-text-color_error">
+									{fileName}
+								</div>
+								<div style="margin-bottom:5px">
+									<b>Note:</b> Please use the standard template to upload data. <a
+										onclick={DownloadTemplate}>Click here</a> to download the template.
+								</div>
+							</div>
 							<template if:false={isExternal}>
 								<template if:true={data}>
 									<div>
@@ -204,7 +186,6 @@
 											</th>
 										</tr>
 									</thead>
-
 									<tbody>
 										<template for:each={AccountRecord} for:item="acc">
 
@@ -219,11 +200,9 @@
 												<td>
 													<div class="slds-truncate">{acc.ETIN_Employee_Id__c}</div>
 												</td>
-
 											</tr>
 										</template>
 									</tbody>
-
 								</table>
 							</template>
 							<footer class="slds-modal__footer">
@@ -233,20 +212,13 @@
 									</lightning-button>
 									<lightning-button class="lightBtn slds-m-left_x-small" label="Cancel"
 										variant="brand-outline" onclick={cancel}></lightning-button>
-
 								</div>
-
 							</footer>
 						</lightning-record-edit-form>
 					</div>
-
-
 				</div>
 			</section>
 			<div class="slds-backdrop slds-backdrop_open"></div>
-
 		</template>
-
-
 	</div>
 </template>

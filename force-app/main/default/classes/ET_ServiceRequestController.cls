@@ -309,6 +309,7 @@ That Pricing service Request is allowed to Customize.
     
     @AuraEnabled
     public static String authorizeOperation(String serviceRequestId, String operation){
+        System.debug('serviceRequestId: '+serviceRequestId+' operation: '+operation);
         boolean fuelValuePresent = true;
         try{
             ET_Pricing_Service_Request__c serviceRequest = getServiceRequestForValidation(serviceRequestId);
@@ -2465,6 +2466,7 @@ vehicleQuoteCalcClass -- Wrapper to store all Vehicle calculations
                                 vehicleQuoteCalcObj.isTargerPriceRequired = isTargerPriceRequired;
                                 vehicleQuoteCalcObj.isSeparatePriceRequired = isSeparatePriceRequired;
                                 vehicleQuoteCalcObj.vehicleNotes = vehicle.Vehicle_Notes__c;
+                                vehicleQuoteCalcObj.unlimitedMilage=vehicle.ET_Unlimited_Mileage__c;
                                 
                                 system.debug('isTargerPriceRequired2 = '+ isTargerPriceRequired);
                                 vehicleQuoteCalcObj.vehReqId = vehicle.Id;
@@ -3826,6 +3828,7 @@ Desription : To Create Quote and Quote Items ..
                     for(vehicleQuoteCalcClass vehicleQuoteCalObj : quoteCalcObj.vehicleQuoteItemLst){
                         ET_Vehicle_Quote_Item__c vehicleQuoteItemtoInsert = new ET_Vehicle_Quote_Item__c();
                         vehicleQuoteItemtoInsert.Quote__c = quoteObj.Id;
+                         vehicleQuoteItemtoInsert.ET_Vehicle_Unlimited_Mileage__c= vehicleQuoteCalObj.unlimitedMilage;
                         vehicleQuoteItemtoInsert.ET_Client_Type__c = quoteCalcObj.clientType;
                         vehicleQuoteItemtoInsert.ET_Client_Classification__c = quoteCalcObj.clientClassification;
                         vehicleQuoteItemtoInsert.ET_Quote_Item_Type__c = 'Vehicle';
@@ -4433,6 +4436,7 @@ specReqToInsert.Quote__c = quoteObj.Id;*/
         public Decimal refrigeratorModelYear = 0.0;
         public Decimal corporateTax = 0.0;
         public string vehicleNotes;
+        Public String unlimitedMilage;
         
     }
     

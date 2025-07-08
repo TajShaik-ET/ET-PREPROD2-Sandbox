@@ -17,7 +17,8 @@ doInit : function(component, event, helper){
     
     
      previewFileAction :function(component,event,helper){  
-        var rec_id = event.currentTarget.id;  
+        var rec_id = event.currentTarget.id; 
+         alert(rec_id);
         $A.get('e.lightning:openFiles').fire({ 
             recordIds: [rec_id]
         });  

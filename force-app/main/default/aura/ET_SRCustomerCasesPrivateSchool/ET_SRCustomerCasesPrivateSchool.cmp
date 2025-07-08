@@ -472,13 +472,13 @@
                                             <aura:iteration items="{!v.currentData}" var="case" indexVar="index">
                                                 <tr class="slds-hint-parent">
                                                     <td align="center">    
-                                                           <aura:if isTrue="{!(not(case.RecordType.Name=='Requests to provide transportation for trips, activities and Events'))}">
+                                                           
                                                         <lightning:buttonIcon iconName="utility:preview"
                                                                               onclick="{!c.openFileView }"
                                                                               value="{!case.Id}"
                                                                               alternativeText="File Preview"
                                                                               class="btnsaveicon"/>
-                                                          </aura:if>
+                                                         
                                                     </td> 
                                                     <td class="buttongrp" width="250px">
                                                         <!--start private school main school approve-->
@@ -532,7 +532,8 @@
                                                                          (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with MOE-Extra-Curricular Activities')||
                                                                          (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with ESE Support Center') ||
                                                                           (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with Department Of School Services') ||
-                                                                         (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with ESE Transport Operations')
+                                                                         (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with ESE Transport Operations') ||
+                                                                         (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with Regional Manager')
 
                                                                          }">
                                                             
@@ -870,7 +871,8 @@
                                                                              (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with Department Of School Services')||
                                                                              (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with MOE-Extra-Curricular Activities')||
                                                                              (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with ESE Support Center' &amp;&amp;  case.Status!='Closed')|| 
-                                                                             (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with ESE Transport Operations')
+                                                                             (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with ESE Transport Operations') ||
+                                                                             (case.buttonVisblity == true &amp;&amp;  case.Status_Category__c=='Pending with Regional Manager')
                                                                              }">
                                                                 <lightning:button variant="neutral"
                                                                                   label="{!v.clApprove}" value="{!case.Id}"
@@ -1514,7 +1516,6 @@
                                                     <div class="slds-truncate" title="File Name">
                                                         {!req.Trip_Destination_To__c}</div>
                                                 </td>
-
                                                 <td data-label="File Name">
                                                     <div class="slds-truncate" title="File Name">
                                                         {!req.Assembly_Point__c}</div>
@@ -1545,19 +1546,14 @@
                                                     <div class="slds-truncate" title="File Name">
                                                         {!req.Supervisors_Count_From_School__c}</div>
                                                 </td>
-                                              
                                                 <td data-label="File Name" class="text-center">
-
                                                     <div class="slds-truncate" title="File Name">
                                                         <lightning:formattedDateTime
                                                             value="{!req.Arrival_Time_To_Activity__c}" hour="2-digit"
                                                             minute="2-digit" timeZone="UTC" hour12="true"
                                                             timeZoneName="short" />
                                                     </div>
-
                                                 </td>
-
-
                                                 <td data-label="File Name" class="text-center">
                                                     <div class="slds-truncate" title="File Name">
                                                         <lightning:formattedDateTime

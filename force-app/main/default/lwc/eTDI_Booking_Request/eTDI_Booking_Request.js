@@ -10,12 +10,8 @@ import LWCImages from "@salesforce/resourceUrl/LWCImages";
 import getSlotValues from '@salesforce/apex/ETDIBookingRequest.getSlotValues';
 import getAvailableOptions from '@salesforce/apex/ETDIBookingRequest.getAvailableOptions';
 
-
 import { loadStyle, loadScript } from 'lightning/platformResourceLoader';
-
-
 let ArrayFields = [];
-
 export default class ETDI_Booking_Request extends LightningElement {
   ObjectApiName = BOOKING_REQUEST_OBJECT;
   @track showChildComponent = false;
@@ -93,8 +89,6 @@ export default class ETDI_Booking_Request extends LightningElement {
   @track selectedItems = new Set();
   @track areAllSelected = false;
   @track selectedData = [];
-
-
   connectedCallback() {
     this.getBookingRequest();
     this.getAllBranches();
@@ -104,18 +98,13 @@ export default class ETDI_Booking_Request extends LightningElement {
     //this.todaysDate=new Date().toISOString().split('T')[0]
     //console.log('todays date:'+this.todaysDate);
   }
-
   renderedCallback() {
-
     Promise.all([
-
       loadStyle(this, LWCImages + '/LWC-Images/css/ETExternalStyle.css')
     ])
 
   }
-
   getBookingRequest() {
-
     getBRRecords()
       .then(result => {
         let tempData1 = [];
@@ -224,7 +213,6 @@ export default class ETDI_Booking_Request extends LightningElement {
   }
 
   handleDepotSelect(event) {
-
     this.selectedDepot = event.detail.value;
     this.selectedDepotCapacityList = this.depotCapacityList.filter(item => item.id === this.selectedDepot);
     this.depotCapacity = this.selectedDepotCapacityList[0].capacity;
@@ -245,17 +233,11 @@ export default class ETDI_Booking_Request extends LightningElement {
     this.searchValue = null;
     this.ReqDate = null;
   }
-
   searchKeyword(event) {
-
     this.searchValue = event.target.value;
-
   }
-
   handleSearchKeyword() {
-
     if (this.searchValue != '') {
-
       getEmployeeList({
         searchKey: this.searchValue
       })
@@ -266,7 +248,6 @@ export default class ETDI_Booking_Request extends LightningElement {
             this.hasEmployees = true;
         })
         .catch(error => {
-
           const event = new ShowToastEvent({
             title: 'Error',
             variant: 'error',
@@ -330,7 +311,6 @@ export default class ETDI_Booking_Request extends LightningElement {
     this.selectedEmployees.splice(removeIndex, 1);
     this.hasEmployees = false;
 
-
   }
   handleOnSubmit(event) {
     console.log('entered handleOnSubmit');
@@ -355,8 +335,6 @@ export default class ETDI_Booking_Request extends LightningElement {
       };
       const selectedDataString = JSON.stringify(this.selectedData);
       console.log('selectedDataString:' + selectedDataString);
-
-
       createBooking({
         bkngReq: bkngOBj,
         empList: this.selectedEmployees,
@@ -473,25 +451,20 @@ export default class ETDI_Booking_Request extends LightningElement {
       this.filesUploaded = event.target.files;
       this.fileName = event.target.files[0].name;
       this.file = this.filesUploaded[0];
-
       this.fileReader = new FileReader();
-
       this.fileReader.onloadend = (() => {
-
         this.fileContents = this.fileReader.result;
-
         this.readAttachedFile();
       });
       this.fileReader.readAsText(this.file);
     }
-
   }
   parseCSVData(data) {
     const rows = data.split('\n');
     this.extractedData = rows.slice(1).map((row, index) => {
       const columns = row.split(',');
       return {
-        id: index, // Assign a unique id for each item if not present
+        id: index,
         name: columns[1],
         trafficFile: columns[2],
         license: columns[3],
@@ -547,11 +520,7 @@ export default class ETDI_Booking_Request extends LightningElement {
 
       this.data = data;
     }
-
-
   }
-
-
   /*  handleDateChange(event) {
      let selectedDate = new Date(event.target.value);
      let currentDate = new Date();
@@ -576,19 +545,12 @@ export default class ETDI_Booking_Request extends LightningElement {
      return;
      }
      } */
-
-
-
   DownloadTemplate() {
     var jsonStr = '{"rows":[{"vals":[{"val":"Test Employee"},{"val":"1241323"}]}],"headers":[{"title":"EmployeeName"},{"title":"Traffic File"}]}';
     var jsonData = JSON.parse(jsonStr);
-
     var gridData = jsonData;
-    // Spliting headers form table.
     var gridDataHeaders = gridData["headers"];
-    // Spliting row form table.
     var gridDataRows = gridData["rows"];
-    //  CSV download.
     var csv = '';
     for (var i = 0; i < gridDataHeaders.length; i++) {
       csv += (i === (gridDataHeaders.length - 1)) ? gridDataHeaders[i]["title"] : gridDataHeaders[i]["title"] + ',';
@@ -613,7 +575,6 @@ export default class ETDI_Booking_Request extends LightningElement {
       csv += row.join(',');
       csv += "\n";
     });
-    // 6. To download table in CSV format.
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     hiddenElement.target = '_blank';

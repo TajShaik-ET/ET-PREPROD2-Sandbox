@@ -9,11 +9,12 @@ Modification Log:
 Ver   Date         Author                               Modification
 1.0   30-09-2024   Santosh kumar                     Initial Version
 1.1   18/02/2025   Santosh kumar           (Trailer and Refrigerator clones)
+1.2   03/04/2025   Santosh kumar           (Closed date today+1)
 *********************************************************
 
 */ 
 
-    public with sharing class Oppcr {
+public with sharing class Oppcr {
     @AuraEnabled
     public static Opportunity cloneOpportunity(Id oppId, String newName) {
         System.debug('Starting cloneOpportunity method...');
@@ -30,7 +31,6 @@ Ver   Date         Author                               Modification
             Database.releaseSavepoint(sp);
             throw new AuraHandledException('Error querying original Opportunity: ' + e.getMessage());
         }
-        
         System.debug('Original Opportunity queried successfully: ' + originalOpportunity);
         
         Opportunity clonedOpportunity;
@@ -38,6 +38,7 @@ Ver   Date         Author                               Modification
             clonedOpportunity = originalOpportunity.clone(false, true);
             clonedOpportunity.Name = newName;
             clonedOpportunity.StageName = 'Qualification'; // Set StageName to 'Qualification'
+            clonedOpportunity.CloseDate = Date.today().addDays(1); // Set CloseDate to today + 1
             insert clonedOpportunity;
         } catch (Exception e) {
             System.debug('Error cloning Opportunity: ' + e.getMessage());
@@ -55,9 +56,9 @@ Ver   Date         Author                               Modification
             clonedItem.OpportunityId = clonedOpportunity.Id;
             clonedLineItems.add(clonedItem);
         }
-       
-            insert clonedLineItems; 
-       
+        
+        insert clonedLineItems; 
+        
         
         System.debug('Cloned OpportunityLineItems inserted successfully: ' + clonedLineItems);
         
@@ -68,15 +69,14 @@ Ver   Date         Author                               Modification
             clonedRole.OpportunityId = clonedOpportunity.Id;
             clonedContactRoles.add(clonedRole);
         }
-         insert clonedContactRoles;
-               
+        insert clonedContactRoles;
+        
         System.debug('Cloned OpportunityContactRoles inserted successfully: ' + clonedContactRoles);
         
         // Cloning related ET_Pricing_Service_Request__c records
         Map<Id, Id> pricingRequestMap = new Map<Id, Id>(); // Map to store original to cloned pricing request IDs
         List<ET_Pricing_Service_Request__c> originalPricingRequests = originalOpportunity.Pricing_Service_Requests__r;
         List<ET_Pricing_Service_Request__c> clonedPricingRequests = new List<ET_Pricing_Service_Request__c>();
-        
         // Collecting all vehicles, request mappings, work forces, and other cost requests related to the original pricing requests
         Map<Id, List<Vehicle__c>> originalVehiclesMap = new Map<Id, List<Vehicle__c>>();
         Map<Id, List<ET_Request_Mapping__c>> originalRequestMappingsMap = new Map<Id, List<ET_Request_Mapping__c>>();
@@ -87,9 +87,7 @@ Ver   Date         Author                               Modification
         Map<Id, Id> workForceRequestMap = new Map<Id, Id>();
         Map<Id, Id> vehicleMap = new Map<Id, Id>();
         List<Vehicle__c> originalVehicles = new List<Vehicle__c>();
-
         Map<Id, List<ET_Other_Cost_Request__c>> originalOtherCostRequestsMap = new Map<Id, List<ET_Other_Cost_Request__c>>();
-        
         for (ET_Pricing_Service_Request__c request : originalPricingRequests) {
             if (request.Vehicle_Requests__r != null && !request.Vehicle_Requests__r.isEmpty()) {
                 originalVehiclesMap.put(request.Id, request.Vehicle_Requests__r);
@@ -121,13 +119,11 @@ Ver   Date         Author                               Modification
             clonedRequest.Opportunity__c = clonedOpportunity.Id;
             clonedPricingRequests.add(clonedRequest);
         }
+        insert clonedPricingRequests;
+        for (Integer i = 0; i < originalPricingRequests.size(); i++) {
+            pricingRequestMap.put(originalPricingRequests[i].Id, clonedPricingRequests[i].Id);
+        }
         
-       
-            insert clonedPricingRequests;
-            for (Integer i = 0; i < originalPricingRequests.size(); i++) {
-                pricingRequestMap.put(originalPricingRequests[i].Id, clonedPricingRequests[i].Id);
-            }
-               
         System.debug('Cloned ET_Pricing_Service_Request__c inserted successfully: ' + clonedPricingRequests);
         
         // Cloning Vehicles
@@ -139,10 +135,10 @@ Ver   Date         Author                               Modification
                 vehiclesToClone.add(clonedVehicle);
             }
         }
-                   insert vehiclesToClone;
-               for (Integer i = 0; i < originalVehicles.size(); i++) {
-                vehicleMap.put(originalVehicles[i].Id, vehiclesToClone[i].Id);
-            }
+        insert vehiclesToClone;
+        for (Integer i = 0; i < originalVehicles.size(); i++) {
+            vehicleMap.put(originalVehicles[i].Id, vehiclesToClone[i].Id);
+        }
         System.debug('Cloned Vehicle__c inserted successfully: ' + vehiclesToClone);
         
         //Cloning OtherCost Request related to vehicle request
@@ -164,26 +160,26 @@ Ver   Date         Author                               Modification
         }
         
         System.debug('Cloned ET_Other_Cost_Request__c related to vehicle inserted successfully: ' + VehicleOtherCostToClone);
-
-        // Cloning Request Mappings
-      /*  List<ET_Request_Mapping__c> requestMappingsToClone = new List<ET_Request_Mapping__c>();
-        for (Id originalRequestId : originalRequestMappingsMap.keySet()) {
+        
+                    // Cloning Request Mappings
+                    /*  List<ET_Request_Mapping__c> requestMappingsToClone = new List<ET_Request_Mapping__c>();
+            for (Id originalRequestId : originalRequestMappingsMap.keySet()) {
             for (ET_Request_Mapping__c requestMapping : originalRequestMappingsMap.get(originalRequestId)) {
-                ET_Request_Mapping__c clonedRequestMapping = requestMapping.clone(false, true);
-                clonedRequestMapping.ET_Pricing_Service_Request__c = pricingRequestMap.get(originalRequestId);
-                requestMappingsToClone.add(clonedRequestMapping);
+            ET_Request_Mapping__c clonedRequestMapping = requestMapping.clone(false, true);
+            clonedRequestMapping.ET_Pricing_Service_Request__c = pricingRequestMap.get(originalRequestId);
+            requestMappingsToClone.add(clonedRequestMapping);
             }
-        }
-        try {
+            }
+            try {
             insert requestMappingsToClone;
-        } catch (Exception e) {
+            } catch (Exception e) {
             System.debug('Error cloning ET_Request_Mapping__c: ' + e.getMessage());
             Database.rollback(sp);
             Database.releaseSavepoint(sp);
             throw new AuraHandledException('Error cloning ET_Request_Mapping__c: ' + e.getMessage());
-        }
-        
-      */  //System.debug('Cloned ET_Request_Mapping__c inserted successfully: ' + requestMappingsToClone);
+            }
+            
+            */  //System.debug('Cloned ET_Request_Mapping__c inserted successfully: ' + requestMappingsToClone);
         
         // Cloning Work Forces
         List<ET_Work_force__c> workForcesToClone = new List<ET_Work_force__c>();
@@ -206,11 +202,8 @@ Ver   Date         Author                               Modification
             Database.releaseSavepoint(sp);
             throw new AuraHandledException('Error cloning ET_Work_force__c: ' + e.getMessage());
         }
-        
         System.debug('Cloned ET_Work_force__c inserted successfully: ' + workForcesToClone);
-        
-        
-        // Cloning Special Work Forces
+       // Cloning Special Work Forces
         List<ET_Special_Workforce_Requirement__c> specialWorkForcesToClone = new List<ET_Special_Workforce_Requirement__c>();        
         for (Id workForceRequestId : originalSpecialWorkForcesMap.keySet()) {
             for (ET_Special_Workforce_Requirement__c specialWorkForce : originalSpecialWorkForcesMap.get(workForceRequestId)) {
@@ -227,10 +220,7 @@ Ver   Date         Author                               Modification
             Database.releaseSavepoint(sp);
             throw new AuraHandledException('Error cloning ET_Special_Workforce_Requirement__c: ' + e.getMessage());
         }
-        
-        System.debug('Cloned ET_Special_Workforce_Requirement__c inserted successfully: ' + specialWorkForcesToClone);
-
-        
+         System.debug('Cloned ET_Special_Workforce_Requirement__c inserted successfully: ' + specialWorkForcesToClone);
         // Cloning Other Cost Requests
         List<ET_Other_Cost_Request__c> otherCostRequestsToClone = new List<ET_Other_Cost_Request__c>();
         for (Id originalRequestId : originalOtherCostRequestsMap.keySet()) {
@@ -248,13 +238,10 @@ Ver   Date         Author                               Modification
             Database.releaseSavepoint(sp);
             throw new AuraHandledException('Error cloning ET_Other_Cost_Request__c: ' + e.getMessage());
         }
-        
         System.debug('Cloned ET_Other_Cost_Request__c inserted successfully: ' + otherCostRequestsToClone);
-        
         // Return the cloned Opportunity
         return clonedOpportunity;
     }
-    
     @AuraEnabled
     public static Opportunity getOpportunity(Id oppId, String newName) {
         Return [SELECT Id, Name, ETSALES_Sector__c, CloseDate, StageName, GL_Zone_Lookup__c, ETSALES_Opportunity_Number__c, OwnerId, AccountId, Type, RecordTypeId, Contract_Type__c, Contract_Years__c,
@@ -280,7 +267,7 @@ Ver   Date         Author                               Modification
                   Vehicle_Type__c, Insurance_Category__c, Request_for_Target_Price__c, Special_Requirement_Basic__c, ET_Contract_Type__c, ET_Fleet_Type__c, ET_Contract_Period__c,
                   ET_Service_Emirate__c, ET_Price_Utilization__c, ET_Working_Days_Per_Week__c, ET_Pricing_Type__c, ET_Working_Months_Per_Year__c, ET_Pricing_Method__c ,
                   (SELECT Id, Name, RecordTypeId, Other_Requirement_API_Name__c, ET_Cost_Type__c, ET_Other_Cost_Line_Number__c, ET_Cost_Value__c, Vehicle_Request__c, Work_force_Request__c, ET_Pricing_Service_Request__c, Other_Cost_Type__c 
-                  FROM Other_Cost_Requests__r)
+                   FROM Other_Cost_Requests__r)
                   FROM Vehicle_Requests__r),
                  (SELECT Id, ET_Pricing_Service_Request__c, ET_Vehicle_Unique_key__c, ET_Number_of_Vehicles__c, ET_Number_of_Drivers__c, ET_Number_of_Nannies__c,
                   ET_Number_of_Accountants__c, ET_Number_of_Coordinators__c, ET_Number_of_Supervisors__c, ET_Number_of_Other_Employees__c,ET_Driver_Unique_Id__c

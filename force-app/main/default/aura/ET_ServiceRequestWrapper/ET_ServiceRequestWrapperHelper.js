@@ -918,7 +918,14 @@
     },
     
     generateTotalProjectQuotation: function(component,event,helper){
-        window.open("/apex/ET_Quotation_Pricing_PDF?quoteId="+component.get('v.totalProjectQuoteId'));				
+        var quoteDetail = component.get("v.quoteDetail");
+        console.log('quoteDetail: Open ' + JSON.stringify(quoteDetail));
+        if (quoteDetail.Quote_Type__c == 'Manual' && quoteDetail.ContentDocumentLinks.length > 0) {
+            window.open("/lightning/r/ContentDocument/" + quoteDetail.ContentDocumentLinks[0].ContentDocumentId + "/view"); //lightning/r/ContentDocument/069UE000002ho8TYAQ/view
+        } else {
+            window.open("/apex/ET_Quotation_Pricing_PDF?quoteId="+component.get('v.totalProjectQuoteId'));
+        }	
+        //window.open("/apex/ET_Quotation_Pricing_PDF?quoteId="+component.get('v.totalProjectQuoteId'));				
     },
     
     saveAllTabCommonDataIntoSystem : function(component,event,helepr){
@@ -1000,7 +1007,9 @@
                     var result = response.getReturnValue();
                     console.log('Existing application Data = ' + JSON.stringify(result));
                     if(result != null){
+                        console.log('setOperationStatus1');
                         helper.setOperationStatus(component,helper);
+                        console.log('setOperationStatus2');
                         component.set("v.existingApplicationData",result);
                         if(result.opportunityRecordType){
                             component.set("v.oppRecordType", result.opportunityRecordType);
@@ -1491,6 +1500,7 @@
 
     //SK
     getOppRecTypeIdHelper: function(component,RecordId,helper,childCompName) {
+        console.log('RecordId: '+RecordId);
         var action = component.get("c.getOpportunityRecordTypeId");
         action.setParams({ 
             "opportunityId": String(RecordId) 
@@ -1994,16 +2004,23 @@
     },
     
     setOperationStatus : function(component,helper,callingFrom){
+        console.log('setOperationStatus:');
         var serviceRequestId = component.get("v.serviceRequestRecordId");
+        console.log('serviceRequestId:'+serviceRequestId);
         if(serviceRequestId){
-            
+            console.log('serviceRequestId:'+serviceRequestId);
             var action = component.get("c.authorizeOperation");
+            console.log('Apex action: ', action);
             action.setParams({"serviceRequestId": String(serviceRequestId),
                               "operation" : 'serviceRequestFormModification'});
-            
+        setTimeout(function(){
             action.setCallback(this, function(response){
-                
-                console.log('setOperationStatus: ', response.getState());
+                if (!response) {
+                    console.error('Response is undefined or null!');
+                    return;
+                }
+                console.log('Response object:', response); // Check the full response
+                console.log('Response state:', response.getState());
                 if(response.getState() == 'SUCCESS'){
                     var result = response.getReturnValue();
                     console.log('result in doinit of wrapper : ' + JSON.stringify(result));
@@ -2028,10 +2045,15 @@
                         toastReference.fire();
                         // alert('associated service request not found, Please try contacting Administrator')
                     }
+                }else if(response.getState() === 'ERROR'){
+                    console.log('Error:', response.getError());
+                    console.log('Error: ' + JSON.stringify(response.getError()));
                 }
             });
+            console.log('Before enqueueing action');
             $A.enqueueAction(action);
-            
+            console.log('After enqueueing action');
+        }, 500);
         }else{
             var toastReference = $A.get("e.force:showToast");
             toastReference.setParams({

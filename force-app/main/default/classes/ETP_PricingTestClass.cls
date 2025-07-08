@@ -84,7 +84,8 @@ public class ETP_PricingTestClass {
     @isTest
     static void etPricingUtilityClass1(){
         Test.startTest();
-        ET_PricingQuoteItemsCalculationClass.calculateInsuranceVehicleValue(145000, 4, 2.5, 4);
+        //ET_PricingQuoteItemsCalculationClass.calculateInsuranceVehicleValue(145000, 4, 2.5, 4);
+        ET_PricingQuoteItemsCalculationClass.calculateInsuranceVehicleValue(145000, 4, 2.5, 4, 10);
         ET_PricingQuoteItemsCalculationClass.testCoverage();
         Test.stopTest();
     }

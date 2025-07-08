@@ -2,10 +2,9 @@
     doInit : function(component, event, helper) {
         helper.getUserDetails(component, event, helper);
         component.set("v.showEmpHome", true);
-     },
-    
+    },
     handleSelectTab : function(component, event, helper) {   
-      /***Commented by Janardhan on 25/04/23 **/
+        /***Commented by Janardhan on 25/04/23 **/
         
         /*let tab = component.get('v.selectedTab');
           let selTab = component.get('v.FormVisibility');
@@ -66,8 +65,4 @@
         };
         navService.navigate(pageReference);
     },
-    
-   
-    
-    
 })

@@ -18,6 +18,8 @@ import SERVICE_TYPE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Serv
 import LINE_NUM from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Line_Number__c';
 import CONTRACT_PERIODE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Contract_Period_In_Years__c';
 import VEH_SOURCE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Vehicle_Source__c';
+import VEHs_SOURCE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Vehicles_Source__c';
+import ANNUAL_KM from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Annual_KM__c';
 import ANNUAL_MILEAGE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.ET_Total_Annual_Mileage__c';
 import EXTRA_MILES from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Extra_Miles__c';
 import REMARKS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Remarks__c';
@@ -32,6 +34,7 @@ import CHECKBOX_ROW from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_C
 import CONTRACT_PERIOD from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_No_of_Months__c';
 import LABEL_CONTRACT_PERIOD from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_No_of_Months__c';
 import LABEL_VEHICLE_NAME from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Name__c';
+import LABEL_VEHICLE_CONDITION from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Vehicle_Condition__c';
 import IS_NUMBER_OF_VEHICLE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Number_of_Vehicles__c';
 import LABEL_NUMBER_OF_VEHICLE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_No_of_Vehicles__c';
 import IS_VEHICLE_MONTHLY_PRICE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Vehicle_Monthly_Price__c';
@@ -44,6 +47,10 @@ import IS_ANNUAL_MILEAGE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c
 import LABEL_ANNUAL_MILEAGE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_ET_Total_Annual_Mileage__c';
 import IS_VEH_SOURCE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Vehicle_Source__c';
 import LABEL_VEH_SOURCE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Vehicle_Source__c';
+import LABEL_ANNUAL_KM from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Annual_KM__c';
+import Is_ANNUAL_KM from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Annual_KM__c';
+import LABELs_VEH_SOURCE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Labels_Vehicle_Source__c';
+import ISs_VEH_SOURCE from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Iss_Vehicle_Source__c';
 import IS_EXTRA_MILES from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Extra_Miles__c';
 import LABEL_EXTRA_MILES from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Label_Extra_Miles__c';
 import IS_DELIVERY_DAYS from '@salesforce/schema/Customer_Vehicle_Quote_Item__c.Is_Delivery_Days__c';
@@ -72,6 +79,8 @@ export default class CustomerQuoteManualVehicle extends LightningElement {
     @api key;
     @track lineId;
     @track oppId;
+    @track vehSource;
+    @track AnnualKM;
     hasRendered  = false;
     isShowModal = false;
     checkBoxFlag = true;
@@ -108,6 +117,8 @@ export default class CustomerQuoteManualVehicle extends LightningElement {
         LINE_NUM,
         CONTRACT_PERIODE,
         VEH_SOURCE,
+        VEHs_SOURCE,
+        ANNUAL_KM,
         ANNUAL_MILEAGE,
         EXTRA_MILES,
         REMARKS,
@@ -120,6 +131,7 @@ export default class CustomerQuoteManualVehicle extends LightningElement {
         CONTRACT_PERIOD,
         LABEL_CONTRACT_PERIOD,
         LABEL_VEHICLE_NAME,
+        LABEL_VEHICLE_CONDITION,
         IS_NUMBER_OF_VEHICLE,
         LABEL_NUMBER_OF_VEHICLE,
         IS_VEHICLE_MONTHLY_PRICE,
@@ -132,6 +144,10 @@ export default class CustomerQuoteManualVehicle extends LightningElement {
         LABEL_ANNUAL_MILEAGE,
         IS_VEH_SOURCE,
         LABEL_VEH_SOURCE,
+        LABELs_VEH_SOURCE,
+        LABEL_ANNUAL_KM,
+        Is_ANNUAL_KM,
+        ISs_VEH_SOURCE,
         IS_EXTRA_MILES,
         LABEL_EXTRA_MILES,
         IS_DELIVERY_DAYS,
@@ -174,7 +190,10 @@ export default class CustomerQuoteManualVehicle extends LightningElement {
         if (this.lineitem) {
             console.log('lineitem id:', this.lineitem.id);
             this.vehName = this.lineitem.Name;
-            console.log('---connectedCallback----this.lineitem.vehicleLineId--',this.lineitem.vehicleLineId);
+            this.vehSource = this.lineitem.vehSource;
+            this.AnnualKM = this.lineitem.AnnualKM;
+
+            console.log('---AnnualKM--',this.lineitem.AnnualKM);
             if(this.lineitem.id)
             {
                 this.lineId = this.lineitem.id; // This should now work

@@ -112,6 +112,8 @@ export default class GenerateContract extends NavigationMixin(LightningElement) 
     @track showExtension = false;
     @track showContract = false;
     @track contractId;
+    @track required = true;
+    @track mobilizationDateClass = ''+'display: none;'+'';
     @track filterCondition; //filtercondition to cutom lookup
     @wire(CurrentPageReference)
     setCurrentPageReference(currentPageReference) {
@@ -195,6 +197,8 @@ export default class GenerateContract extends NavigationMixin(LightningElement) 
             this.showExtension = false;
             this.showAdditional = true;
             this.showContract = true;
+            this.required = false;
+
         }
         else{
             this.showRenewal = false;
@@ -226,11 +230,11 @@ export default class GenerateContract extends NavigationMixin(LightningElement) 
     handleAddClause()
     {
         console.log(' In Additional Article Method>>>>>>>>');
-        if(this.addendumType == 'Renewal')
+        if(this.addendumType == 'Renewal' || this.addendumType == 'Extension')
         {
             this.addSector = 'ADM_RENEWAL';
         }
-        else if(admType == 'Additional')
+        else if(this.addendumType == 'Additional')
         {
             this.addSector = 'ADM_ADDITIONAL';
         }

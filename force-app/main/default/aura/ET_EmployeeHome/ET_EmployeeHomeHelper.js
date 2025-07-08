@@ -3,10 +3,8 @@
         var action = component.get("c.getCurrentUser");
         action.setCallback(this, function(response) {
             var state = response.getState();
-           
             if (state === "SUCCESS") {
                 var data = response.getReturnValue();
-                
                 component.set("v.currentUser", data.userInfo);
                 console.log('data.insuranceInfo: ',!$A.util.isUndefinedOrNull(data.insuranceInfo));
                 if(!$A.util.isUndefinedOrNull(data.insuranceInfo)){
@@ -18,12 +16,12 @@
                     component.set("v.showNoTaskMsg", false);
                     component.set("v.showEtdiBkngReq", true);
                     component.set("v.showEtdiTrainerSch", true);
-                     component.set("v.showEtdiAdqcc", true);
-                     component.set("v.showEtdiRta", true);
+                    component.set("v.showEtdiAdqcc", true);
+                    component.set("v.showEtdiRta", true);
                     component.set("v.showVRTSCREEN", true);
                     component.set("v.showQHSECREEN", true);
                     component.set("v.showDriverForm", true);
-
+                    
                 }
                 try{
                     let tabInfo = data.userInfo.Account.Employee_Tabs__c;
@@ -39,7 +37,7 @@
                             component.set("v.showEtdiAdqcc", true);
                             component.set("v.selectedTab", 'Adqcc'); 
                         }
-                         if(tabInfo.includes("ETDI Rta")){
+                        if(tabInfo.includes("ETDI Rta")){
                             component.set("v.showEtdiRta", true);
                             component.set("v.selectedTab", 'Rta'); 
                         }
@@ -51,17 +49,17 @@
                             component.set("v.showQHSECREEN", true);
                             component.set("v.selectedTab", 'QHSE'); 
                         }
-                         if(tabInfo.includes("Driver Checklist Form")){
+                        if(tabInfo.includes("Driver Checklist Form")){
                             component.set("v.showDriverForm", true);
                             component.set("v.selectedTab", 'DriverForm'); 
                         }
                         
                     }else{
-                         component.set("v.showNoTaskMsg", true);
+                        component.set("v.showNoTaskMsg", true);
                     }
                 }catch(e){   
                     if(data.userInfo.Profile.Name != 'System Administrator')
-                    component.set("v.showNoTaskMsg", true);
+                        component.set("v.showNoTaskMsg", true);
                     console.log(e.message);
                 }
                 

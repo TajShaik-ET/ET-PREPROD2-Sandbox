@@ -54,6 +54,9 @@
                 if(pro.includes('HSE')){
                       component.set('v.customerCare',true);
                 }
+                if(pro.includes('ESE')){
+                      component.set('v.customerCare',true);
+                }
             }),
             
             $A.getCallback(function(error) {

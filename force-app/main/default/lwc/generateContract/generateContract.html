@@ -58,7 +58,7 @@
 								</div>
 								<div class="slds-col slds-size_1-of-3">
 									<div class="slds-grid slds-wrap">
-										<div class="slds-col slds-size_1-of-2">
+										<div class="slds-col slds-size_1-of-2 slds-hide">
 											<lightning-input-field data-id="With_Driver" field-name={contractHeader.With_Driver} value={withDriver}></lightning-input-field>
 										</div>
 										<div class="slds-col slds-size_1-of-2">
@@ -91,9 +91,9 @@
 												font-size: var(--lwc-formLabelFontSize, 0.75rem);
 												padding-right: var(--lwc-spacingXSmall, 0.5rem);
 												padding-top: var(--lwc-spacingXxSmall, 0.25rem);
-												margin-bottom: var(--lwc-spacingXxxSmall, 0.125rem);">Sh1-Clause3.1-Agreement Year</label>
+												margin-bottom: var(--lwc-spacingXxxSmall, 0.125rem);">Agreement Year(s)</label>
 											<lightning-input-field class="slds-col" required variant="label-hidden" data-id="Sh1_Clause3_1_Agreement_YearMonth"
-												field-name={contractHeader.Sh1_Clause3_1_Agreement_YearMonth} id="Agreement"></lightning-input-field>
+												field-name={contractHeader.Sh1_Clause3_1_Agreement_YearMonth} id="Agreement" onchange={getAgreementYear}></lightning-input-field>
 										</template>
 										<template if:false={yearlyLabel}>	
 											<abbr title="required" class="slds-required">*</abbr>
@@ -108,7 +108,7 @@
 												font-size: var(--lwc-formLabelFontSize, 0.75rem);
 												padding-right: var(--lwc-spacingXSmall, 0.5rem);
 												padding-top: var(--lwc-spacingXxSmall, 0.25rem);
-												margin-bottom: var(--lwc-spacingXxxSmall, 0.125rem);">Sh1-Clause3.1-Agreement Month(s)</label>
+												margin-bottom: var(--lwc-spacingXxxSmall, 0.125rem);">Agreement Month(s)</label>
 											<lightning-input-field class="slds-col" required variant="label-hidden" data-id="Sh1_Clause3_1_Agreement_YearMonth"
 												field-name={contractHeader.Sh1_Clause3_1_Agreement_YearMonth} id="AgreementMonths"></lightning-input-field>
 										</template>
@@ -124,8 +124,8 @@
 										<lightning-input-field class="slds-col" required data-id="Sh1_Clause5_1_Vehicle_Percentage"
 											field-name={contractHeader.Sh1_Clause5_1_Vehicle_Percentage} value={vehReplacePer}></lightning-input-field>
 									</div>
-									<div class="slds-col slds-size_1-of-4">
-										<lightning-input-field class="slds-col" required data-id="Sh1_Clause7_1_KM_Reading"
+									<div class="slds-col slds-size_1-of-4 slds-hide">
+										<lightning-input-field class="slds-col" data-id="Sh1_Clause7_1_KM_Reading"
 											field-name={contractHeader.Sh1_Clause7_1_KM_Reading} value={AnnualKMCharge}></lightning-input-field>
 									</div>
 									<!--<div class="slds-col slds-size_1-of-4">
@@ -160,18 +160,74 @@
 										<lightning-input-field class="slds-col" required data-id="Sh1_Clause14_4_Insurance_Excess_Charge"
 											field-name={contractHeader.Sh1_Clause14_4_Insurance_Excess_Charge} value={InsuranceExcessCharge}></lightning-input-field>
 									</div>
-									<div class="slds-col slds-size_1-of-4">
-										<lightning-input-field class="slds-col" required data-id="Sh1_Clause15_1_Rental_Months"
-											field-name={contractHeader.Sh1_Clause15_1_Rental_Months} value={firstYearTermination}></lightning-input-field>
-									</div>
-									<div class="slds-col slds-size_1-of-4">
-										<lightning-input-field class="slds-col" required data-id="Sh1_Clause15_1b_Rental_Months"
-											field-name={contractHeader.Sh1_Clause15_1b_Rental_Months} value={secondYearTermination}></lightning-input-field>
-									</div>
-									<div class="slds-col slds-size_1-of-4">
-										<lightning-input-field class="slds-col" required data-id="Sh1_Clause15_1c_Rental_Months"
-											field-name={contractHeader.Sh1_Clause15_1c_Rental_Months} value={thirdYearTermination}></lightning-input-field>
-									</div>
+									<!-- SK -->
+										<template if:true={isFirstYearVisible}>
+											<div class="slds-col slds-size_1-of-4">
+												<lightning-input-field 
+													class="slds-col" 
+													required ={isFirstYearVisible}
+													data-id="Sh1_Clause15_1_Rental_Months"
+													field-name={contractHeader.Sh1_Clause15_1_Rental_Months} 
+													value={firstYearTermination}>
+												</lightning-input-field>
+											</div>
+										</template>
+										<template if:true={isSecondYearVisible}>
+											<div class="slds-col slds-size_1-of-4">
+												<lightning-input-field 
+													class="slds-col" 
+													required ={isSecondYearVisible}
+													data-id="Sh1_Clause15_1b_Rental_Months"
+													field-name={contractHeader.Sh1_Clause15_1b_Rental_Months} 
+													value={secondYearTermination}>
+												</lightning-input-field>
+											</div>
+										</template>
+										<template if:true={isThirdYearVisible}>
+											<div class="slds-col slds-size_1-of-4">
+												<lightning-input-field 
+													class="slds-col" 
+													required ={isThirdYearVisible} 
+													data-id="Sh1_Clause15_1b2_Rental_Months"
+													field-name={contractHeader.Sh1_Clause15_1b2_Rental_Months} 
+													value={thirdYearTermination}>
+												</lightning-input-field>
+											</div>
+										</template>
+										<template if:true={isFourthYearVisible}>
+											<div class="slds-col slds-size_1-of-4">
+												<lightning-input-field 
+													class="slds-col" 
+													required ={isFourthYearVisible} 
+													data-id="Sh1_Clause15_1c_Rental_Months"
+													field-name={contractHeader.Sh1_Clause15_1c_Rental_Months} 
+													value={fourthYearTermination}>
+												</lightning-input-field>
+											</div>
+										</template>
+										<template if:true={isFifthYearVisible}>
+											<div class="slds-col slds-size_1-of-4">
+												<lightning-input-field 
+													class="slds-col" 
+													required ={isFifthYearVisible} 
+													data-id="Sh1_Clause15_1c5_Rental_Months"
+													field-name={contractHeader.Sh1_Clause15_1c5_Rental_Months} 
+													value={fifthYearTermination}>
+												</lightning-input-field>
+											</div>
+										</template>
+										<template if:true={isSixthYearVisible}>
+											<div class="slds-col slds-size_1-of-4">
+												<lightning-input-field 
+													class="slds-col" 
+													required ={isSixthYearVisible} 
+													data-id="Sh1_Clause15_1c6_Rental_Months"
+													field-name={contractHeader.Sh1_Clause15_1c6_Rental_Months} 
+													value={sixthYearTermination}>
+												</lightning-input-field>
+											</div>
+										</template>
+
 									<div class="slds-col slds-size_1-of-4">
 										<lightning-input-field class="slds-col" data-id="Early_Termination_After_LPO"
 											field-name={contractHeader.Early_Termination_After_LPO} value={lpoTermination}></lightning-input-field>
@@ -196,7 +252,7 @@
 										<lightning-input-field class="slds-col" data-id="Sh1_Clause17_3_Breach_of_Permitted_Use"
 											field-name={contractHeader.Sh1_Clause17_3_Breach_of_Permitted_Use} value={breachPermittedUse}></lightning-input-field>
 									</div>
-									<div class="slds-col slds-size_1-of-4">
+									<div class="slds-col slds-size_1-of-4 slds-hide">
 										<lightning-input-field class="slds-col" data-id="Sh1_Clause4_4_Smoking_Charges"
 											field-name={contractHeader.Sh1_Clause4_4_Smoking_Charges} value={smokingCharges}></lightning-input-field>
 									</div>

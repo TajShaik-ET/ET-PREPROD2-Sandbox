@@ -50,14 +50,14 @@
             component.set("v.today", selectedDate);
         }
     },
+    
     handleChangeInternalNum: function(component, event, helper) {
         var InternalNumRec = component.get("v.internalNumber");
         console.log('In CHnage Inter Number>>>', InternalNumRec);
-        
         // Check if InternalNumRec is not null or undefined
         if (InternalNumRec !== null && InternalNumRec !== undefined && InternalNumRec.length > 0) {
-             helper.validateInternalNumber(component, event, helper);
-            var query = 'SELECT Id, Name,Location_Code__c FROM Vehicle_Master__c WHERE Id = \'' + InternalNumRec + '\'';
+            helper.validateInternalNumber(component, event, helper);
+            var query = 'SELECT Id, Name,Location_Code__c,Main_Type__c,Description__c FROM Vehicle_Master__c WHERE Id = \'' + InternalNumRec + '\'';
             var action = component.get("c.fetchRecords");
             action.setParams({
                 "query": query
@@ -66,11 +66,27 @@
                 var state = response.getState();
                 if (state === "SUCCESS") {
                     var records = response.getReturnValue();
+                    component.set("v.vehicleMasterRec", records);
+                    if (records && records[0]) {
+                       // var mainType = records[0].Main_Type__c;
+                        var description=records[0].Description__c;
+                        console.log('mainType Inter Number>>>', description);
+                      /*  if (mainType === 'Bus - Special Need') {
+                            helper.handleSpecialNeeds(component, event, helper, true);
+                        } 
+                        */
+                        if (description && description.toLowerCase().includes("special needs")) {
+                            helper.handleSpecialNeeds(component, event, helper, true);
+                        }
+                        else {
+                            helper.handleSpecialNeeds(component, event, helper, false);
+                        }
+                    }
                     var LocCode;
                     if (records && records[0] && records[0].Location_Code__c !== undefined && records[0].Location_Code__c !== null) {
                         LocCode = records[0].Location_Code__c;
                         //-//
-                        var query = 'SELECT Id,Name,GL_Region__c, Location_Code__c from ETSALES_Location__c WHERE Location_Code__c = \'' + LocCode + '\'';
+                        var query = 'SELECT Id,Name,GL_Region__c,Location_Code__c FROM ETSALES_Location__c WHERE Location_Code__c = \'' + LocCode + '\'';
                         var action = component.get("c.fetchRecords");
                         action.setParams({
                             "query": query
@@ -119,6 +135,7 @@
         }
         
     },
+    
     handleSubmit: function(component, event, helper) {
         try{
             event.preventDefault();
@@ -349,7 +366,6 @@
         }
         var isResult = 'Pass';
         var isCommentReq = false;
-        
         for (var key in driverChecklistWrpMdt) {
             if (buttonName == 'approevButton' && driverChecklistWrpMdt[key].srNo == '14' && driverChecklistWrpMdt[key].optionType == 'Radio') {
                 if(driverChecklistWrpMdt[key].response == 'Selected'){

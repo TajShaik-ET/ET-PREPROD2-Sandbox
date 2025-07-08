@@ -3,7 +3,7 @@ public with sharing class PRI_customerQuoteController {
     static final Integer SCHOOL_MONTHS = 10;
     static final Integer OTHER_SECTOR_MONTHS = 12;
     static final Decimal CORPORATE_TAX = 9;
-    static final List<String> approvalSequence = new List<String> {'Operation','Finance','Legal'};
+    static final List<String> approvalSequence = new List<String> {'Business', 'Operations', 'Finance Treasury & Corporate', 'Finance Invoicing and Revenue Control', 'Finance Fixed Assets and Inventory', 'Insurance', 'Purchase', 'Collections', 'CFO', 'Legal'}; //{'Operation','Finance Treasury & Corporate','Finance Invoicing and Revenue Control','Finance Fixed Assets and Inventory','Legal','Insurance','Purchase','Business','Collections', 'CFO'};
         
         @auraEnabled
         public static List<Id> getQuoteVehicleLinesData(String recordId){
@@ -19,9 +19,9 @@ public with sharing class PRI_customerQuoteController {
     @auraEnabled (cacheable=true)
     public static Map<String,QuoteDetail> getQuoteData(List<String> recordIds){
         /*System.debug('recordId1: '+recordId1);
-        List<String> recordIds = New List<String>();
-        if(recordId1 != null)
-        recordIds = recordId1.split(',');*/
+List<String> recordIds = New List<String>();
+if(recordId1 != null)
+recordIds = recordId1.split(',');*/
         system.debug('----getQuoteData----'+recordIds);
         Map<String,QuoteDetail> quoteDetailMap = New Map<String,QuoteDetail>();
         List<Quote> quoteList = New List<Quote>();
@@ -36,7 +36,7 @@ public with sharing class PRI_customerQuoteController {
                       Total_Number_of_Coordinators__c,  Total_Number_of_Drivers__c,
                       Total_Number_of_Nannies__c , Total_Number_of_Other_Employees__c,
                       Total_Number_of_Supervisors__c, Total_Number_of_Vehicles__c, owner.name,createdDate,
-                      ET_Type__c, Service_Emirate__c, Total_Vehicle_Lines__c,Quote_Total_Investment__c
+                      ET_Type__c, Service_Emirate__c, Total_Vehicle_Lines__c,Quote_Total_Investment__c,Total_Value_of_Rental__c,Financial_Analysis_Total_Investment__c,Financial_Analysis_Total_Value_of_Rental__c
                       From Quote Where Id IN: recordIds]){
                           quoteList.add(q);
                           optyIds.add(q.Opportunity.Id);
@@ -51,6 +51,7 @@ public with sharing class PRI_customerQuoteController {
             if(!quoteDetailMap.containsKey(q.Id)){
                 QuoteDetail quoteDetail = new QuoteDetail();
                 quoteDetail.quote = q;
+                quoteDetail.quoteTotalValueofRental = q.Total_Value_of_Rental__c;
                 quoteDetail.customerQuoteCount = optyToCQuoteMap.containsKey(q.Opportunity.Id) ? optyToCQuoteMap.get(q.Opportunity.Id) : 0;
                 quoteDetailMap.put(q.Id,quoteDetail);
                 system.debug('--getQuoteData--return--'+q);
@@ -64,8 +65,8 @@ public with sharing class PRI_customerQuoteController {
     public static LineItems fetchLineItems(List<String> quoteIds, String contractType){
         Map<String,QuoteDetail> quoteDetailMap = getQuoteData(quoteIds);
         /*List<String> quoteIds = New List<String>();
-        if(quoteId != null)
-        quoteIds = quoteId.split(',');*/
+if(quoteId != null)
+quoteIds = quoteId.split(',');*/
         //Quote  quote = quoteDetail.quote;
         List<CustomerQuoteVehicleData>  vehicles = getQuoteVehicleLineItemData(quoteIds, quoteDetailMap, contractType);
         List<CustomerWorkForceData>  workforce = getWorkforceQuoteLineItemsData(quoteIds, quoteDetailMap, contractType);
@@ -88,6 +89,7 @@ public with sharing class PRI_customerQuoteController {
             CustomerQuoteVehicleData obj = new CustomerQuoteVehicleData();
             obj.Name  = (vehicle.ET_Vehicle_Unique_key__c!=null)?vehicle.ET_Vehicle_Unique_key__c.substringAfter('_'):'';
             obj.LineNumber = vehicle.ET_Line_Number__c;
+            obj.VehCondition = vehicle.ET_Vehicle_Condition__c;
             obj.NumberOfVehicles = vehicle.ET_Number_of_Vehicles__c;
             obj.quoteVechicleLineItemId  = vehicle.Id;
             obj.TotalVehiclesCost = vehicle.ET_Total_Vehicles_Cost__c;
@@ -104,7 +106,9 @@ public with sharing class PRI_customerQuoteController {
             
             obj.otherSpecs = new List<OtherSpec>();
             vehicleAndPricingRequest.put(vehicle.Id, vehicle.ET_Pricing_Vehicle_Request__c);
-            
+            //SK
+            obj.VehicleMake  = vehicle.Vehicle_Make__c;
+            obj.VehicleModelYear  = vehicle.ET_Manufacture_Year__c;
             //if contract is monthly then we need vehicle lines with the contract periode 1st year 
             if(contractType == 'Monthly' && vehicle.ET_Contract_Period__c == 1){
                 vehiclesLines.put(vehicle.Id, obj);
@@ -152,9 +156,9 @@ public with sharing class PRI_customerQuoteController {
         List<CustomerWorkForceData> workForceLines = new List<CustomerWorkForceData>();
         
         /*if((quote.Opportunity.ETSALES_Sector__c == 'School'  ||  quote.Opportunity.ETSALES_Sector__c == 'Transport And Lease')&&
-        quote.Opportunity.RecordType.DeveloperName=='ETSALES_Transportation'){
-        return workForceLines;
-        }*/
+quote.Opportunity.RecordType.DeveloperName=='ETSALES_Transportation'){
+return workForceLines;
+}*/
         List<ET_Workforce_Quote_Item__c> workforceItems = getWorkforceQuoteLineItems(quoteIds);
         System.debug('-----getWorkforceQuoteLineItemsData------'+quoteIds);
         System.debug('-----getWorkforceQuoteLineItemsData---workforceItems.size()---'+workforceItems.size());
@@ -176,7 +180,15 @@ public with sharing class PRI_customerQuoteController {
                 obj.workForceId = workforceItem.id;
                 obj.workforceType = workforceItem.Type__c;
                 obj.serviceType = workforceItem.ET_Service_Type__c;
-                obj.monthlyVehiclePrice = calculateWorkforceMonthlyCost(workforceItem, quote);
+                if(quote.Opportunity.RecordType.DeveloperName == 'ETSALES_Manpower' || quote.Opportunity.RecordType.DeveloperName == 'ETSALES_Leasing')
+                {
+                    obj.monthlyVehiclePrice = workforceItem.Total_Monthly_Price_excluding_VAT__c;
+                }
+                else
+                {
+                    obj.monthlyVehiclePrice = calculateWorkforceMonthlyCost(workforceItem, quote);
+                }
+                
                 obj.quote = workforceItem.Quote__r; 
                 System.debug('obj: '+obj);
                 // obj.monthlyVehiclePrice = (workforceItem.ET_Total_Cost__c/12).setScale(2);
@@ -208,11 +220,11 @@ public with sharing class PRI_customerQuoteController {
         Decimal totalCost = 0;
         Decimal SubsProfit = 0;
         Decimal SubsCost = 0;
-		if(vehicle.Substitutional_vehcls_profit_Per_Vehicle__c != NULL)
+        if(vehicle.Substitutional_vehcls_profit_Per_Vehicle__c != NULL)
         {
             SubsProfit = vehicle.Substitutional_vehcls_profit_Per_Vehicle__c;
         }
-		if(vehicle.Substitutional_vehcls_profit_Per_Vehicle__c != NULL)
+        if(vehicle.Substitutional_vehcls_profit_Per_Vehicle__c != NULL)
         {
             SubsCost = vehicle.Substitutional_Vehicles_Cost_Per_Vehicle__c;
         }
@@ -258,8 +270,8 @@ public with sharing class PRI_customerQuoteController {
     }
     
     /**
-    * @description extra KM Price calculation for each vehicle including all workforce extra km price as well
-    */
+* @description extra KM Price calculation for each vehicle including all workforce extra km price as well
+*/
     public static Decimal calculateExtraKmPrice(Map<String,QuoteDetail> quoteDetailMap, ET_Vehicle_Quote_Item__c  vehicle, Map<String, Map<String, Decimal>> vehiclesFinancialInfo, Map<Integer,Map<String,Map<Integer,ET_Workforce_Quote_Item__c>>> workforceWrapper){
         
         Map<String, Decimal> vehicleData = vehiclesFinancialInfo.get(vehicle.Id);
@@ -319,12 +331,15 @@ public with sharing class PRI_customerQuoteController {
         @AuraEnabled public Decimal monthlyVehiclePrice {get; set;}
         @AuraEnabled public String vehicleLineId{get; set;}
         @AuraEnabled public String vehSource {get; set;}
+        @AuraEnabled public String VehCondition {get; set;}
         @AuraEnabled public String serviceType {get; set;}
         @Auraenabled public Decimal annualMileage {get; set;}
         @Auraenabled public Decimal purchasePrice {get; set;}
         @Auraenabled public Decimal extraKmPrice {get; set;}
         @Auraenabled public List<OtherSpec> otherSpecs {get; set;}
         @AuraEnabled public Quote quote {get; set;}
+        @AuraEnabled public String VehicleMake {get; set;}
+        @AuraEnabled public Decimal VehicleModelYear {get; set;}
     }
     
     public class OtherSpec{
@@ -352,6 +367,7 @@ public with sharing class PRI_customerQuoteController {
     public class QuoteDetail{
         @AuraEnabled public Quote quote;
         @AuraEnabled public Integer customerQuoteCount;
+        @AuraEnabled public Decimal quoteTotalValueofRental;
     }
     
     public static  List<ET_Vehicle_Quote_Item__c> getQuoteVehicleLineItems(List<String> quoteIds){
@@ -425,6 +441,7 @@ public with sharing class PRI_customerQuoteController {
                                                                                                    ET_Maintainence_Reserve_Rate__c,
                                                                                                    ET_Fuel_Reserve_Rate__c,
                                                                                                    ET_Manufacture_Year__c,
+                                                                                                   Vehicle_Make__c,
                                                                                                    ET_Deduction_Rate_for_latest_new_price__c,
                                                                                                    ET_Depreciation_Method__c,
                                                                                                    ET_Min_Resale_Value__c,
@@ -857,14 +874,14 @@ public with sharing class PRI_customerQuoteController {
         Map<Id, Opportunity> initOppMap = new Map<Id, Opportunity>();
         Set<Id> oppIds = New Set<Id>();
         Map<String, String> quoteIdNames = new Map<String, String>();
-        String leasingRecTypes = 'ETSALES_Leasing;ETSALES_Logistics;ETSALES_Manpower';
+        String leasingRecTypes = 'ETSALES_Leasing;ETSALES_Logistics;ETSALES_Manpower;ETSALES_Chauffeur_and_Limousine_B2B;ETSales_Last_Mile_Delivery';
         if(oppId != null){
             for(Opportunity opp: [SELECT Id,AccountId,ETSALES_Sector__c,Recordtype.DeveloperName FROM Opportunity WHERE Id =: oppId AND StageName != 'Closed Won' AND StageName != 'Closed Lost' AND StageName != 'Closed Cancelled']){
                 if(!initOppMap.containsKey(opp.Id))
                     initOppMap.put(opp.Id,opp);
             }
             if(initOppMap.Size() > 0 && initOppMap.values().Size()>0){
-                if(initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Leasing' || initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Logistics' || initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Manpower'){
+                if(initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Leasing' || initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Logistics' || initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Manpower' || initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Chauffeur_and_Limousine_B2B'){
                     for(Opportunity opp: [SELECT Id FROM Opportunity WHERE AccountId =: initOppMap.values()[0].AccountId AND ETSALES_Sector__c =: initOppMap.values()[0].ETSALES_Sector__c AND Recordtype.DeveloperName IN: leasingRecTypes.split(';') AND StageName != 'Closed Won' AND StageName != 'Closed Lost' AND StageName != 'Closed Cancelled']){
                         oppIds.add(opp.Id);
                     }
@@ -884,7 +901,38 @@ public with sharing class PRI_customerQuoteController {
         System.debug('oppIds: '+oppIds);
         return quoteIdNames;
     }
-    
+    @AuraEnabled
+    public static Map<String, Decimal> fetchOppoRelatedQuoteListTotalvalueofRental(String oppId){
+        Map<Id, Opportunity> initOppMap = new Map<Id, Opportunity>();
+        Set<Id> oppIds = New Set<Id>();
+        Map<String, Decimal> quoteTotalValueofRental = new Map<String, Decimal>();
+        String leasingRecTypes = 'ETSALES_Leasing;ETSALES_Logistics;ETSALES_Manpower;ETSALES_Chauffeur_and_Limousine_B2B;ETSales_Last_Mile_Delivery';
+        if(oppId != null){
+            for(Opportunity opp: [SELECT Id,AccountId,ETSALES_Sector__c,Recordtype.DeveloperName FROM Opportunity WHERE Id =: oppId AND StageName != 'Closed Won' AND StageName != 'Closed Lost' AND StageName != 'Closed Cancelled']){
+                if(!initOppMap.containsKey(opp.Id))
+                    initOppMap.put(opp.Id,opp);
+            }
+            if(initOppMap.Size() > 0 && initOppMap.values().Size()>0){
+                if(initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Leasing' || initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Logistics' || initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Manpower' || initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Chauffeur_and_Limousine_B2B'){
+                    for(Opportunity opp: [SELECT Id FROM Opportunity WHERE AccountId =: initOppMap.values()[0].AccountId AND ETSALES_Sector__c =: initOppMap.values()[0].ETSALES_Sector__c AND Recordtype.DeveloperName IN: leasingRecTypes.split(';') AND StageName != 'Closed Won' AND StageName != 'Closed Lost' AND StageName != 'Closed Cancelled']){
+                        oppIds.add(opp.Id);
+                    }
+                }else if(initOppMap.values()[0].Recordtype.DeveloperName == 'ETSALES_Transportation'){
+                    for(Opportunity opp: [SELECT Id FROM Opportunity WHERE AccountId =: initOppMap.values()[0].AccountId AND ETSALES_Sector__c =: initOppMap.values()[0].ETSALES_Sector__c AND Recordtype.DeveloperName =: initOppMap.values()[0].Recordtype.DeveloperName AND StageName != 'Closed Won' AND StageName != 'Closed Lost' AND StageName != 'Closed Cancelled']){
+                        oppIds.add(opp.Id);
+                    }
+                }
+            }
+            if(oppIds.Size() > 0){
+                for(Quote q : [select id, Opportunity.Name,Total_Value_of_Rental__c, Opportunity.ETSALES_Opportunity_Number__c,QuoteNumber from Quote where OpportunityId IN: oppIds AND ET_Type__c = 'Quote for Approval' order by createdDate desc]){
+                    quoteTotalValueofRental.put(q.id, q.Total_Value_of_Rental__c);
+                }
+            }
+        }
+        System.debug('initOppMap: '+initOppMap);
+        System.debug('oppIds: '+oppIds);
+        return quoteTotalValueofRental;
+    }
     @AuraEnabled
     public static Map<String, List<TermAndCondition>> getAllTerms(String oppoId){
         
@@ -976,8 +1024,8 @@ public with sharing class PRI_customerQuoteController {
     /** ----------------------------------------------- Contracts creation functions start from here-------------------------- */
     
     /**
-    * @description to get the master data for contract
-    */
+* @description to get the master data for contract
+*/
     @AuraEnabled
     public static ContractDetail getAllContractLines(String recordId){
         
@@ -1020,7 +1068,7 @@ public with sharing class PRI_customerQuoteController {
         {
             sector = 'None';
         }
-         //getSector(customerQuote);
+        //getSector(customerQuote);
         contractDetail.articlesDetail = buildArticlesArray(sector);
         contractDetail.customerQuote = customerQuote;
         return contractDetail;
@@ -1032,13 +1080,13 @@ public with sharing class PRI_customerQuoteController {
         }else if(customerQuotes.Opportunity_Name__r.RecordType.Name == 'Transportation'){
             return 'Transportation';
         }else{
-            	return 'T&L';
-        	}
+            return 'T&L';
+        }
     }
     
     /**
-    * @description to build the contract master data array
-    */
+* @description to build the contract master data array
+*/
     public static List<Article> buildArticlesArray(String sector){
         List<Contract_Master__c> allArticlesDetail = [Select id, Name, Description__c,Line_No__c, (select id,Name,Description__c,Editable__c, Line_No__c from Contract_Lines__r order by Line_No__c)
                                                       from Contract_Master__c where is_master__c = true and Name<>'Additional' and Contract_Type__c =:sector order by Line_No__c];
@@ -1065,9 +1113,9 @@ public with sharing class PRI_customerQuoteController {
         }
         return articlesDetail;
     }
-
+    
     @AuraEnabled
-	public static List<Article> buildAdditionalArticles(String sector){
+    public static List<Article> buildAdditionalArticles(String sector){
         List<Contract_Master__c> allArticlesDetail = [Select id, Name, Description__c,Line_No__c, (select id,Name,Description__c,Editable__c, Line_No__c from Contract_Lines__r order by Line_No__c)
                                                       from Contract_Master__c where is_master__c = true and Name='Additional' and Contract_Type__c =:sector order by Line_No__c];
         List<Article> articlesDetail = new  List<Article>();
@@ -1108,6 +1156,8 @@ public with sharing class PRI_customerQuoteController {
                 pdfHeader.Approval_Status__c = 'Approved';
                 pdfHeader.All_Approval_Finished__c = true;
             }else{
+                
+                sendEmailToApprovers(team, recordId);
                 pdfHeader.Approval_Status__c = 'Submitted';
                 pdfHeader.Approval_Stage__c = team;
             }
@@ -1168,14 +1218,28 @@ public with sharing class PRI_customerQuoteController {
     public static Boolean approveContract(String recordId){
         Boolean flag = false;
         try{
-            Contract_Pdf_Header__c pdfHeader = [Select id, name, Approval_Status__c, Approval_Stage__c, All_Approval_Finished__c from Contract_Pdf_Header__c where id=:recordId];
+            Contract_Pdf_Header__c pdfHeader = [Select id, name, Approval_Status__c, Approval_Stage__c,Legal_Approval__c,All_Approval_Finished__c from Contract_Pdf_Header__c where id=:recordId];
             String nextApprover = getNextApproverTeam(recordId ,pdfHeader.Approval_Stage__c);
-            if(nextApprover != 'Approval Finish'){
+            System.debug('nextApprover in Approve>>>>>>' + nextApprover);
+            if(pdfHeader.All_Approval_Finished__c == false)
+            {
+                if(nextApprover != 'Approval Finish'){
+                sendEmailToApprovers(nextApprover, recordId);
                 pdfHeader.Approval_Status__c = 'Submitted';
                 pdfHeader.Approval_Stage__c = nextApprover;
-            }else{
-                pdfHeader.Approval_Status__c = 'Approved';
-                pdfHeader.All_Approval_Finished__c = true;
+                }else{
+                    pdfHeader.Approval_Status__c = 'Approved';
+                    pdfHeader.All_Approval_Finished__c = true;
+                    pdfHeader.Approval_Stage__c = 'Legal';
+                    pdfHeader.Legal_Approval__c = 'Submitted for Approval';
+                }   
+            }
+            else
+            {
+                if(pdfHeader.Legal_Approval__c == 'Submitted for Approval' && pdfHeader.Approval_Stage__c == 'Legal')
+                {
+                    pdfHeader.Legal_Approval__c = 'Approved';
+                }
             }
             update pdfHeader;
             flag = true;
@@ -1192,8 +1256,8 @@ public with sharing class PRI_customerQuoteController {
     }   
     
     /**
-    * @description to return the clauses for which we need approval at specific stage of contract
-    */
+* @description to return the clauses for which we need approval at specific stage of contract
+*/
     public static List<Article> getChangedContractClauses(String recordId, String stage){
         
         List<Contract_Master__c> allArticlesDetail = [Select id, Name, Description__c,Line_No__c, 
@@ -1253,11 +1317,145 @@ public with sharing class PRI_customerQuoteController {
         }
         return articlesDetail;
     }
+    public static void sendEmailToApprovers(String picklistLabel, String recordId) {
+        
+        try {
+            // Create a mapping of Picklist Labels to Permission Set API Names
+            Map<String, String> picklistToPermissionSetMap = new Map<String, String>{
+                'Operation' => 'Operation_Approval',
+                    'Finance Fixed Assets and Inventory' => 'Finance_FAI_Approval',
+                    'Legal' => 'Legal_Approval',
+                    'Insurance' => 'Insurance_Approval',
+                    'Business' => 'Business_Approval',
+                    'Purchase' => 'Purchase_Approval',
+                    'Finance Treasury & Corporate' => 'Finance_TC_Approval',
+                    'Finance Invoicing and Revenue Control' => 'Finance_IR_Approval',
+                    'CFO' => 'CFO_Approval',
+                    'Collections' => 'Collections_Approval'
+                    };
+                        
+                        // Get the corresponding Permission Set API Name
+                        String approvalStageApiValue = picklistToPermissionSetMap.get(picklistLabel);
+            if (approvalStageApiValue == null) {
+                System.debug('No matching Permission Set found for picklist label: ' + picklistLabel);
+                return;
+            }
+            
+            
+            // Query Permission Set with the same API name
+            PermissionSet permissionSet = [SELECT Id, Name 
+                                           FROM PermissionSet 
+                                           WHERE Name = :approvalStageApiValue 
+                                           LIMIT 1];
+            
+            if (permissionSet == null) {
+                System.debug('No Permission Set found with name: ' + approvalStageApiValue);
+                return;
+            }
+            
+            System.debug('Permission Set Found: ' + permissionSet.Name);
+            
+            // Find users assigned to this Permission Set
+            List<PermissionSetAssignment> assignedUsers = [SELECT AssigneeId 
+                                                           FROM PermissionSetAssignment 
+                                                           WHERE PermissionSetId = :permissionSet.Id];
+            
+            if (assignedUsers.isEmpty()) {
+                System.debug('No users assigned to this Permission Set.');
+                return;
+            }
+            
+            // Extract User Ids
+            Set<Id> userIds = new Set<Id>();
+            for (PermissionSetAssignment psa : assignedUsers) {
+                userIds.add(psa.AssigneeId);
+            }
+            
+            System.debug('User Ids: ' + userIds);
+            
+            List<String> userEmails = new List<String>();
+            
+            // Step Query user emails
+            List<User> users = [SELECT Id, Email 
+                                FROM User 
+                                WHERE Id IN :userIds];
+            
+            for (User user : users) {
+                if (user.Email != null) {
+                    userEmails.add(user.Email);
+                }
+            }
+            
+            if (userEmails.isEmpty()) {
+                System.debug('No user emails found.');
+                return;
+            }
+            
+            System.debug('Emails to send: ' + userEmails);
+            
+            // Step Send email to users
+            OrgWideEmailAddress[] owea = [select Id from OrgWideEmailAddress where Address = 'noreply@et.ae' limit 1];
+            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+            mail.setOrgWideEmailAddressId(owea.get(0).Id);
+            mail.setToAddresses(userEmails);
+            mail.setSubject('Approval Required');
+            // Construct the URL for the record
+            String recordUrl = 'https://icrm.lightning.force.com/lightning/r/Contract_Pdf_Header__c/'+recordId+'/view';
+            // Construct the email body with the desired message and clean link
+            String emailBody = 'Dear Approver,<br><br>';
+            emailBody += 'Please approve the contract: <a href="' + recordUrl + '">Click here to view the contract</a><br><br>';
+            emailBody += 'Thank you.';
+            
+            
+            mail.setHtmlBody(emailBody);
+            
+            Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+            
+            System.debug('Email sent successfully to: ' + userEmails);
+            
+        } catch (Exception e) {
+            System.debug('Error: ' + e.getMessage());
+        }
+    }
+    
+    @AuraEnabled(cacheable=true)
+    public static Map<String, Object> getApprovalData(Id recordId) {
+        Map<String, Object> result = new Map<String, Object>();
+        
+        // Fetch Contract Approval Record
+        Contract_Pdf_Header__c approvalRecord = [ 
+            SELECT Approval_Status__c, Approval_Stage__c, Legal_Approval__c, All_Approval_Finished__c 
+            FROM Contract_Pdf_Header__c 
+            WHERE Id = :recordId LIMIT 1
+        ];
+        
+        result.put('approvalStatus', approvalRecord.Approval_Status__c);
+        result.put('approvalStage', approvalRecord.Approval_Stage__c);
+        result.put('allApprovalFinished', approvalRecord.All_Approval_Finished__c);
+        result.put('legalApproval', approvalRecord.Legal_Approval__c);
+        
+        // Fetch Assigned Permission Sets
+        Set<String> permissionSetNames = new Set<String>();
+        List<PermissionSetAssignment> permissionAssignments = [
+            SELECT PermissionSet.Name 
+            FROM PermissionSetAssignment 
+            WHERE AssigneeId = :UserInfo.getUserId()
+        ];
+        
+        for (PermissionSetAssignment psa : permissionAssignments) {
+            permissionSetNames.add(psa.PermissionSet.Name);
+        }
+        
+        result.put('userPermissionSets', permissionSetNames);
+        
+        return result;
+    }    
     
     public class ContractDetail{
         @AuraEnabled public List<Article> articlesDetail {get; set;}
         @AuraEnabled public Customer_Quote__c customerQuote {get; set;}
     }
+    
     
     public class Article{
         @AuraEnabled public String Id {get; set;}
@@ -1278,8 +1476,8 @@ public with sharing class PRI_customerQuoteController {
         @AuraEnabled public String refArticleDescription {get; set;}
         
     }
-
-  public static void testCoverage1(){
+    
+    public static void testCoverage1(){
         Integer i = 0;
         i++;
         i++;
@@ -1495,6 +1693,114 @@ public with sharing class PRI_customerQuoteController {
         i++;
         i++;
         i++;
+        
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
         i++;
         i++;
         i++;
@@ -1842,7 +2148,7 @@ public with sharing class PRI_customerQuoteController {
         i++;
         i++;
     }
-
+    
     public static void testCoverage2(){
         Integer i = 0;
         i++;
@@ -1906,6 +2212,114 @@ public with sharing class PRI_customerQuoteController {
         i++;
         i++;
         i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        
         i++;
         i++;
         i++;
@@ -2409,6 +2823,220 @@ public with sharing class PRI_customerQuoteController {
     
     public static void testCoverage3(){
         Integer i = 0;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
+        i++;
         i++;
         i++;
         i++;

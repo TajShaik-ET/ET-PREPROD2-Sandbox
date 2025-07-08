@@ -49,7 +49,12 @@
                     if(result.quoteDetail.Quote_Total_Investment__c >= 500000 || (profileSalesTL.includes(result.quoteDetail.CreatedBy.Profile.Name) && result.isInitiatedUser != true)){
                         component.set("v.hideDeleteQuote", true);
                     }else{
-                        component.set("v.hideDeleteQuote", false); 
+                        component.set("v.hideDeleteQuote", false);
+                    }
+                    if((profileSalesTL.includes(result.quoteDetail.CreatedBy.Profile.Name) && result.isInitiatedUser != true)){
+                        component.set("v.hideOpenQuote", true);
+                    }else{
+                        component.set("v.hideOpenQuote", false);
                     }
                 }
             }

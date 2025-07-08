@@ -7,7 +7,7 @@ export default class ETDT_Adqcc extends LightningElement {
     @track columns = [
         { label: 'Booking Ref No.', fieldName: 'ReqName', type: 'text' },
         { label: 'External Name', fieldName: 'ExternalName', type: 'text' },
-       // { label: 'Traffic File', fieldName: 'TrafficFile', type: 'text' },
+        // { label: 'Traffic File', fieldName: 'TrafficFile', type: 'text' },
         { label: 'Company', fieldName: 'Company', type: 'text' },
         { label: 'Program Name', fieldName: 'ProgramName', type: 'text' },
         { label: 'Nationality', fieldName: 'Nationality', type: 'text' },

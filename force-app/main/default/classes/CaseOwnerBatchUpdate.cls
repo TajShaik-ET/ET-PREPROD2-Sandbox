@@ -1,3 +1,15 @@
+/**************************************************************************************************
+* Class        : CaseOwnerBatchUpdate
+* Author       : Karri Sagar 
+* Test class   :CaseOwnerBatchUpdateTest
+* CreatedDate  :
+* Deployed Date: First Deployment on 27/03/2025
+* Description : Used in ESE_SchoolUser_Case_Owner_Update (APEX CLASS)
+
+* ----------------------------------------------------------------------------------------------- 
+Sr.No.  version_DevInitials     Date               Author                  Details
+1.          V1.0              27/03/2025		  Karri Sagar       	 Initial Version 
+**************************************************************************************************/ 
 global class CaseOwnerBatchUpdate implements Database.Batchable<sObject> {
     
     private Id newOwnerId;

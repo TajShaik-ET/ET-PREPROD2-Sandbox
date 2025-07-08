@@ -4,6 +4,7 @@
     <aura:attribute name="selectedTabs" type="String" />
     <aura:attribute name="skipSalesUser" type="Boolean" default="false" />
     <aura:attribute name="hideDeleteQuote" type="Boolean" default="false" />
+    <aura:attribute name="hideOpenQuote" type="Boolean" default="false" />
     <aura:attribute name="quoteDetail" type="Quote" />
     <aura:attribute name="validateNotificationSent" type="Boolean" default="false" />
     <aura:attribute name="isSalesUser" type="Boolean" default="false" />
@@ -200,7 +201,7 @@
                                     <aura:if isTrue="{!or(v.isPricingTeam, and(and(and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser),!v.hideDeleteQuote),!v.validateNotificationSent))}">
                                         <lightning:button variant="brand" label="Delete Quotation" title="Delete Quotation" onclick="{! c.deleteAlterRates }" />&nbsp;
                                 </aura:if>
-                                <aura:if isTrue="{!or(v.isPricingTeam, and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser))}">
+                                <aura:if isTrue="{!or(v.isPricingTeam, and(and(and(v.isSalesUser,v.selectedTabs == 'Vehicle'),!v.skipSalesUser),!v.hideOpenQuote))}">
                                     <lightning:button variant="success" label="Open Quotation" title="Open Quotation"
                                         onclick="{! c.handleOpenQuoteButton }" />&nbsp;
                                 </aura:if>

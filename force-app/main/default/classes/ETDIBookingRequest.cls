@@ -10,7 +10,7 @@ TestClass  :
 ----------------------------------------------------------------------------------------------------------------
 Sr.No.  version_DevInitials     Date        Author          Details
 1.          V1.0              			          	   Initial Version 
-2.          V2.0               14/02/2025   Sudheer
+2.          V2.0               17/02/2025   Sudheer
 ****************************************************************************************************************/
 
 public without sharing class ETDIBookingRequest {
@@ -31,7 +31,6 @@ Method      : addTrainee
 Author      : Sreelakshmi SK
 CreatedDate : 16.06.2023
 */    
-    
     @AuraEnabled
     public static string addTrainee(list<Account> empList,string bkreqId) {
         String retStr = 'ERROR';
@@ -165,10 +164,8 @@ CreatedDate : 27.04.2023
     
     @AuraEnabled
     public static List<Attendance__c> InsertAttendanceToTraineeList(List<String> TraineeIds, String ScheduleRecIds, String formattedDate) {
-        
         List<Attendance__c> attendanceList = new List<Attendance__c>();
         List<ETDI_Trainer_Schedules__c> trainerSchedulesToUpdate = new List<ETDI_Trainer_Schedules__c>();
-        
         for (String traineeId : TraineeIds) {
             Attendance__c attendance = new Attendance__c();
             attendance.ETDI_Trainees__c = traineeId;
@@ -192,9 +189,6 @@ CreatedDate : 27.04.2023
         
         return attendanceList;
     }
-    
-    
-    
     /*
 Method      : getTrainerSchedules
 Author      : Sreelakshmi SK
@@ -202,15 +196,12 @@ CreatedDate : 24.04.2023
 */    
     @AuraEnabled
     public static list<ETDI_Trainer_Schedules__c> getTrainerSchedules(){
-        
         Id currentUserId = UserInfo.getUserId();
         User currentUser = [SELECT Id,Username,Email FROM User WHERE Id = :currentUserId];
         String userName = currentUser.Username;
         String email = currentUser.Email;
         system.debug('email:'+email);
-        
         list<ETDI_Trainer_Schedules__c> ETDSHLS =[select id,Status__c,Attendance_Completed__c, name,Booking_Request__c,Booking_Request__r.Name,Booking_Request__r.Language__c,Booking_Request__r.Number_of_Trainees__c,Schedule_Date_Time__c,Trainer__c,Booking_Request__r.Status__c,CreatedDate,Booking_Request__r.Total_Days__c,Booking_Request__r.End_Date_OfProgram__c,Booking_Request__r.Program_Name__r.Name from ETDI_Trainer_Schedules__c where (Status__c = 'Booked' OR Status__c = 'Completed') and Booking_Request__c!=null and Trainer__r.Account__r.PersonEmail=:email order by name desc LIMIT 100];
-        
         return ETDSHLS;
     }
     /*
@@ -237,8 +228,6 @@ CreatedDate : 17.02.2025
         
         return bookingRequests;
     }
-    
-    
     @AuraEnabled
     public static List<BookingRequestWrapper> getBRRecordsForRTA() {
         Id currentUserId = UserInfo.getUserId();
@@ -361,7 +350,6 @@ CreatedDate : 17.02.2025
         }
     }
     
-    
     @AuraEnabled
     public static void updateTrainee(Id traineeId,String ReceiptNo, String RTAReceiptNo,String TrafficFile) {
         try {
@@ -380,7 +368,6 @@ CreatedDate : 17.02.2025
     @AuraEnabled
     public static void updateTraineeADQCC(Id traineeId, Decimal empNo, String type, String payRef, Date payDate, String reqNo, String rptNo,Date subdate) {
         try {
-            
             ETDI_Trainees__c trainee = new ETDI_Trainees__c();
             trainee.Id = traineeId;
             trainee.Employee_Number__c = empNo;
@@ -390,7 +377,6 @@ CreatedDate : 17.02.2025
             trainee.Request_No__c = reqNo;
             trainee.Receipt_No__c = rptNo;
             trainee.Submitted_Date__c = subdate;
-            
             update trainee;
             
         } catch (Exception e) {

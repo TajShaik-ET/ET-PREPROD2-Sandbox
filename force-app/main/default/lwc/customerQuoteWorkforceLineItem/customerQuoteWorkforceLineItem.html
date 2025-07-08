@@ -3,11 +3,11 @@
          <!-- Label Line -->
         <template if:true={isLabelLine}>
             <div class="slds-grid infoTabs">
-                <!-- <div class="slds-col" style="min-width:70px;max-width:70px">
+                <div class="slds-col" style="min-width:70px;max-width:70px">
                     <lightning-input-field  variant="label-hidden"
                         field-name={customerQuoteWorkforceFields.LABEL_NO_OF_MONTHS}
                     ></lightning-input-field> 
-                </div> -->
+                </div>
                 <div class="slds-col" style="min-width:90px;max-width:90px">
                     
                 </div>
@@ -73,11 +73,11 @@
         <!-- CheckBoxes Line -->
         <template if:true={isCheckboxLine}>
             <div class="slds-grid infoTabs">
-                <!-- <div class="slds-col" style="min-width:70px;max-width:70px">
-                    <lightning-input-field  variant="label-hidden"
+                <div class="slds-col" style="min-width:70px;max-width:75px">
+                    <!-- <lightning-input-field  variant="label-hidden"
                         field-name={customerQuoteWorkforceFields.IS_NO_OF_MONTHS}
-                    ></lightning-input-field>
-                </div> -->
+                    ></lightning-input-field> -->
+                </div>
                 <div class="slds-col" style="min-width:90px;max-width:90px">
                     
                 </div>
@@ -146,7 +146,7 @@
             <div class="slds-grid infoTabs">
 
                 <template if:true={isMonthlyContract}>
-                    <div class="slds-col slds-hide" style="min-width:70px;max-width:70px">
+                    <div class="slds-col " style="min-width:70px;max-width:70px">
                         <lightning-input-field 
                             data-id="numberOfMonths"
                             field-name={customerQuoteWorkforceFields.NO_OF_MONTHS}
@@ -156,7 +156,7 @@
                     </div>
                 </template>
                 <template if:false={isMonthlyContract}>
-                    <div class="slds-col slds-hide" style="min-width:70px;max-width:70px">
+                    <div class="slds-col " style="min-width:70px;max-width:70px">
                         <lightning-input-field 
                             data-id="numberOfYears"
                             field-name={customerQuoteWorkforceFields.NO_OF_YEARS}

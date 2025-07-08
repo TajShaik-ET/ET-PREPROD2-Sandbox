@@ -392,7 +392,7 @@ helper.handlefileAttached(component, event, helper, casid);
                 if (type == component.get("v.clActivitiesEvents")) {
                     eventFields["Status"] = 'In Progress';
                     //evetFields ["Northern_Emirates__c"]="True";
-                    eventFields["Status_Category__c"] = 'Pending with Operation Supervisors';
+                    eventFields["Status_Category__c"] = 'Pending with Regional Manager';
                 } else if (type == component.get("v.clGrowthRequestsforVehicleNannyandCoordinator")) {
                     eventFields["Status"] = 'In Progress';
                     eventFields["Status_Category__c"] = 'Pending with Operation Supervisors';

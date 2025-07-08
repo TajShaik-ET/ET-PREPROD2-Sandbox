@@ -20,10 +20,10 @@
         var childCompName = event.getParam("oppRecordType");
         console.log('in SRWrapperControlller OpprecordTypeName : childCompName :'+childCompName);
         
-        //var url_string = window.location.href;
-        //var url = new URL(url_string);
-        //var RecordId = url.searchParams.get("c__recordId"); 
-        var RecordId = component.get("v.oppId"); 
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var RecordId = url.searchParams.get("c__recordId"); 
+        //var RecordId = component.get("v.oppId"); 
         console.log('RecordId: '+RecordId);
         if(RecordId != null && RecordId != '' && RecordId != undefined){
             helper.getOppRecTypeIdHelper(component,RecordId,helper,childCompName);
@@ -261,6 +261,7 @@
     
     generateQuotation: function(component,event,helper){
         var status = component.get("v.serviceRequestModificationStatus");
+        console.log('status: '+status);
         if(status == 'Success') {
             helper.checkValidityOfQuoteCreation(component,event,helper); 
         }else if(status == 'SRIsInActive'){

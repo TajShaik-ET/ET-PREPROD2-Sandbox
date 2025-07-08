@@ -400,14 +400,14 @@
     */
     saveArabic: function(component, event, helper) {
         component.set('v.showSpinner', true);
-        if (helper.checkBeforeInsertGlobalReq(component, event)) {
-           // alert('Validation Pass 1');
-            let caseForm = component.find('caseForm').submit();
-            // If you need to perform additional actions after submission, you can do so here.
-        }
+       /* if (helper.checkBeforeInsertGlobalReq(component, event)) {
+          
+           
+           
+        }*/
         
-        // Note: If the conditions are not met, the form won't be submitted.
         
+        let caseForm = component.find('caseForm').submit();
         
     },
     caseHandleOnSuccessAR : function(component, event, helper) {
@@ -415,15 +415,19 @@
         let param = event.getParams();
         let caseId = param.response.id;
         component.set("v.CaseId",caseId);
-        if (helper.validateAccountList(component, event)) {
-            helper.saveAccountList(component, event,helper,caseId);
+        helper.saveAccountList(component, event,helper,caseId);
+        helper.handlefileAttached(component, event, helper,caseId);
+       /* if (helper.validateAccountList(component, event)) {
+          
         }
+       */
         
     },
     caseHandleOnSuccess : function(component, event, helper) {
         try{
             let param = event.getParams();
             let caseId = param.response.id;
+            helper.handlefileAttached(component, event, helper,caseId);
             component.set("v.CaseId",caseId);
             let forms  = component.find('caseFormMOE'); 
             let formCount =  component.get("v.dynamicRowsList").length;
@@ -460,6 +464,97 @@
     
 }
  },
+ 
+
+handleDeleteFile: function(component, event) {
+    var index = event.getSource().get("v.value");
+    var fileList = component.get("v.fileList");
+    
+    fileList.splice(index, 1);
+    component.set("v.fileList", fileList);
+},
+
+handleFileUpload: function(component, event) {
+    try {
+        var files = event.getSource().get("v.files");
+        var fileList = component.get("v.fileList") || [];
+
+        if (!files || files.length === 0) {
+            return;
+        }
+
+        if (fileList.length >= 10) {
+            var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                "title": "Error!",
+                "message": "You cannot upload more than 10 file.",
+                "type": "error",
+                "mode": "sticky"
+            });
+            toastEvent.fire();
+            return;
+        }
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+
+            if (file.size > 500000) { // 500 KB limit
+                var toastEvent = $A.get("e.force:showToast");
+                toastEvent.setParams({
+                    "title": "Error!",
+                    "message": "File size must be less than 500 KB.",
+                    "type": "error",
+                    "mode": "sticky"
+                });
+                toastEvent.fire();
+                continue;
+            }
+
+            var reader = new FileReader();
+            reader.fileName = file.name;
+            reader.fileType = file.type;
+
+            reader.onloadend = (function(file) {
+                return function(e) {
+                    var fileType = file.type;
+
+                    if (fileType.includes("image") || fileType.includes("pdf")) {
+                        var base64Data = e.target.result.split(',')[1];
+                        fileList.push({
+                            'filename': file.name,
+                            'filetype': fileType,
+                            'base64': base64Data
+                        });
+
+                        component.set("v.fileList", fileList);
+
+                        var toastEvent = $A.get("e.force:showToast");
+                        toastEvent.setParams({
+                            "title": "Success!",
+                            "message": "File uploaded successfully.",
+                            "type": "success"
+                        });
+                        toastEvent.fire();
+                    } else {
+                        var toastEvent = $A.get("e.force:showToast");
+                        toastEvent.setParams({
+                            "title": "Error!",
+                            "message": "Unsupported file type.",
+                            "type": "error"
+                        });
+                        toastEvent.fire();
+                    }
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
+        }
+
+    } catch (e) {
+        console.error("Exception: " + e.message);
+    }
+}
+
  
  
  })

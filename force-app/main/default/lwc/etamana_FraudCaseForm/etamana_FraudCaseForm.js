@@ -9,12 +9,6 @@ import deleteFile from '@salesforce/apex/ETAmana_FraudCaseFormController.deleteF
 import ReportCSS from "@salesforce/resourceUrl/report";
 import { loadStyle } from 'lightning/platformResourceLoader';
 import LWCImages from "@salesforce/resourceUrl/LWCImages";
-/*import { getObjectInfo, getPicklistValues } from "lightning/uiObjectInfoApi";
-import CASE_OBJECT from "@salesforce/schema/Amana_Solution__c";
-import BUSINESSFUNCTIONINCIDENT_FIELD from "@salesforce/schema/Amana_Solution__c.ETAmana_Business_function_incident__c";
-import VIOLATIONTYPE_FIELD from "@salesforce/schema/Amana_Solution__c.ETAmana_Type_of_the_violation__c";
-import RELATIONWITHET_FIELD from "@salesforce/schema/Amana_Solution__c.ETAmana_Relation_with_Emirates_Transport__c";
-import INCIDENTLOCATION_FIELD from "@salesforce/schema/Amana_Solution__c.ETAmana_incident_location__c";*/
 import getPicklistValuesApex from '@salesforce/apex/ETAmana_FraudCaseFormController.getPicklistValues';
 export default class Etamana_FraudCaseForm extends LightningElement {
 Logo = LWCImages + "/AmanaLogo.png";
@@ -40,16 +34,12 @@ ETLogo = LWCImages + "/ETLogo.png";
     @track uploadedFilesData = [];
     @track showSpinner = false;
     caseRecordTypeId;
-    /*businessFunctionOptions = [];
-    violationTypeOptions = [];
-    relationWithETOptions = [];
-    incidentLocationOptions = [];*/
     debounceTimeout; //Prevent Repeated Actions multiple(click within seconds) case creation
     @track filesList = [];
     fileData;
     isSubmitButtonClicked = false;
-    isModalOpen = false;
-    modalMessage = '';
+    @track isModalOpen = false;
+    @track modalMessage = '';
     @track searchKey = '';
     @track searchResult = null;
     @track activeTab = 'Report Fraud Case';
@@ -60,6 +50,12 @@ ETLogo = LWCImages + "/ETLogo.png";
 
     connectedCallback() {
         console.log('connectedCallback triggered');
+         // Automatically create a case if no caseId exists and the activeTab is set
+        if (!this.caseId && this.activeTab) {
+        console.log('Draft case created.');
+        this.createAmanaCaseRecord();
+        }
+        
         //this.uniqueNumber = this.generateUniqueNumber();
         // this.createAmanaCaseRecord();
         window.addEventListener('beforeunload', this.handleWindowClose.bind(this));
@@ -98,61 +94,6 @@ ETLogo = LWCImages + "/ETLogo.png";
             });
     }
 
-
-
-    /*@wire(getPicklistValues, { recordTypeId: "$caseRecordTypeId", fieldApiName: BUSINESSFUNCTIONINCIDENT_FIELD })
-    wiredBusinessFunctionValues({ error, data }) {
-        if (data) {
-            this.businessFunctionOptions = data.values;
-            this.error = undefined;
-        } else if (error) {
-            this.error = error;
-            this.businessFunctionOptions = undefined;
-        }
-    }
-        @wire(getPicklistValues, { fieldApiName: BUSINESSFUNCTIONINCIDENT_FIELD })
-        wiredBusinessFunctionValues({ error, data }) {
-            if (data) {
-                this.businessFunctionOptions = data.values;
-            } else if (error) {
-                console.error('Error fetching business function picklist values:', error);
-            }
-        }
-        
-
-    @wire(getPicklistValues, { fieldApiName: VIOLATIONTYPE_FIELD })
-    wiredViolationTypeFieldValues({ error, data }) {
-        if (data) {
-            this.violationTypeOptions = data.values;
-            this.error = undefined;
-        } else if (error) {
-            this.error = error;
-            this.violationTypeOptions = undefined;
-        }
-    }
-
-    @wire(getPicklistValues, {  fieldApiName: RELATIONWITHET_FIELD })
-    wiredRelationWithETFieldValues({ error, data }) {
-        if (data) {
-            this.relationWithETOptions = data.values;
-            this.error = undefined;
-        } else if (error) {
-            this.error = error;
-            this.relationWithETOptions = undefined;
-        }
-    }
-
-    @wire(getPicklistValues, {  fieldApiName: INCIDENTLOCATION_FIELD })
-    wiredIncidentLocationieldValues({ error, data }) {
-        if (data) {
-            this.incidentLocationOptions = data.values;
-            this.error = undefined;
-        } else if (error) {
-            this.error = error;
-            this.incidentLocationOptions = undefined;
-        }
-    }*/
-
     generateUniqueNumber() {
         console.log('Generating unique number...');
         const prefix = 'UN-';
@@ -173,22 +114,22 @@ ETLogo = LWCImages + "/ETLogo.png";
         console.log('caseId: ' + this.caseId);
         console.log('isSubmitButtonClicked: ' + this.isSubmitButtonClicked);
 
-        /*if (selectedTab === this.activeTab) {
+        /*if (selectedTab === this.activeTab) { // old code
             console.log('Selected Tab:', selectedTab);
             this.createAmanaCaseRecord();
         }*/
-        if (selectedTab === this.activeTab && !this.caseId) {
+       /* if (selectedTab === this.activeTab && !this.caseId) {
             console.log('Selected Tab:', selectedTab);
             if (this.debounceTimeout) {
-                clearTimeout(this.debounceTimeout);
+                clearTimeout(this.debounceTimeout);// prevent multiple click
             }
 
             this.debounceTimeout = setTimeout(() => {
                 this.createAmanaCaseRecord();
                 console.log('Draft case created.');
             }, 500); // Adjust debounce time as needed
-        }
-        /*if (selectedTab === this.activeTab && this.caseId != null && this.caseId !='') {
+        }*/
+        /*if (selectedTab === this.activeTab && this.caseId != null && this.caseId !='') { // taj code
             
             console.log('Selected Tab:', selectedTab);
             this.createAmanaCaseRecord();
@@ -199,6 +140,7 @@ ETLogo = LWCImages + "/ETLogo.png";
         }
         // Update the active tab
         this.activeTab = selectedTab;
+         
     }
     createAmanaCaseRecord() {
         this.uniqueNumber = this.generateUniqueNumber();
@@ -272,16 +214,11 @@ ETLogo = LWCImages + "/ETLogo.png";
             this.showSpinner = false;  // Ensure spinner is not shown if validation fails
             return;  // Prevent form submission if the email is invalid
         } else {
-            // Clear custom validity message if the email is valid or empty
-            emailInput.setCustomValidity("");
+           
+            emailInput.setCustomValidity(""); // Clear custom validity message if the email is valid or empty
         }
         this.showSpinner = true;
-
-
-        // Update status to 'New' before submission
-        this.caseRecord.ETAmana_Status__c = 'New';
-
-
+        this.caseRecord.ETAmana_Status__c = 'New'; // Update status to 'New' before submission
         submitAmanaCase({ caseData: this.caseRecord })
             .then(result => {
                 this.caseId = result.Id;
@@ -300,8 +237,7 @@ ETLogo = LWCImages + "/ETLogo.png";
             });
     }
 
-
-
+ 
     openfileUpload(event) {
         console.log('openfileUpload');
         const file = event.target.files[0];
@@ -452,8 +388,8 @@ ETLogo = LWCImages + "/ETLogo.png";
     handleSearch() {
         // Check if searchKey is empty
         if (!this.searchKey || this.searchKey.trim() === '') {
-            // Clear the searchResult if searchKey is empty
-            this.searchResult = null;
+           
+            this.searchResult = null; // Clear the searchResult if searchKey is empty
             return;
         }
         getAmanaCaseStatus({ uniqueNumber: this.searchKey })
@@ -495,6 +431,11 @@ ETLogo = LWCImages + "/ETLogo.png";
                     console.table(error);
                 });
         }
+    }
+    
+    errorCallback(error, stack) {
+        console.log('Errorcallback: ',error);
+        console.log('Errorcallback-stack: ',stack);
     }
 
 }

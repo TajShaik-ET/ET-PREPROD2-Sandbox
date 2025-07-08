@@ -7,7 +7,7 @@
     //SK-
     getOpprecordTypeName: function(component, event, helper){
         var params = event.getParam('arguments');
-        
+        console.log('params: '+JSON.stringify(params));
         if(params){
             component.set("v.OpprecordTypeName", params.OpprecordTypeName);
             if(params.OpprecordTypeName == 'Leasing/ Rental'){
@@ -168,13 +168,13 @@
         }
     },
 
-    getOpprecordTypeName: function(component,event,helper){
+    /*getOpprecordTypeName: function(component,event,helper){
         var params = event.getParam('arguments');
         //alert('getOpprecordTypeName: '+params);
         if(params){
             component.set("v.OpprecordTypeName", params.OpprecordTypeName);
             console.log('inside getOpprecordTypeName in of ET_VehicleTabController ' + JSON.stringify(component.get("v.OpprecordTypeName")));
         }
-    },
+    },*/
     
 })

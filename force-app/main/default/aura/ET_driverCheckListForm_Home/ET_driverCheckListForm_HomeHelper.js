@@ -68,7 +68,7 @@
             if (component.isValid() && state === "SUCCESS") {
                 var result = response.getReturnValue();
                 component.set("v.driverChecklistWrpMdt", result);
-                //console.log('result>>> ' + JSON.stringify(result));
+                console.log('result>>> ' + JSON.stringify(result));
             } else if (component.isValid() && state === "ERROR") {
                 console.log("Exception caught successfully");
                 //console.log("Error object", response);
@@ -243,22 +243,23 @@
         });  
         $A.enqueueAction(action);  
     }, 
-     previewHandler: function(component, row, action) {
+    
+    previewHandler: function(component, row, action) {
         const urlString = window.location.href;
-       const communityBaseURL = urlString.split('/Employee')[0] + '/Employee';
+        const communityBaseURL = urlString.split('/Employee')[0] + '/Employee';
         component.set("v.driverRecord", row.Id);
         const recordId = component.get("v.driverRecord");
-    // const communityBaseURL = 'https://icrm--preprod2.sandbox.my.site.com/Employee/s/';
+        // const communityBaseURL = 'https://icrm--preprod2.sandbox.my.site.com/Employee/s/';
         const vfPageName = 'apex/DriverChecklistPDF';
         const vfUrl = `${communityBaseURL}/${vfPageName}?Id=${recordId}`;
         //window.open(vfUrl, '_blank');
-      const popupWindow = window.open(vfUrl, 'PDF Preview', 'width=700,height=500,scrollbars=yes,resizable=yes');
-         if (popupWindow) {
-             popupWindow.focus();
-         } else {
-             alert('Popup blocked! Please allow popups for this site.');
-         }
-         /*
+        const popupWindow = window.open(vfUrl, 'PDF Preview', 'width=700,height=500,scrollbars=yes,resizable=yes');
+        if (popupWindow) {
+            popupWindow.focus();
+        } else {
+            alert('Popup blocked! Please allow popups for this site.');
+        }
+        /*
         
          component.set("v.vfUrl", vfUrl);
          
@@ -282,6 +283,7 @@
          );
           */
     },
+    
     validateInternalNumber: function(component, event, helper) {
         var InternalNumRec = component.get("v.internalNumber");
         var query = "SELECT Id, Name, Internal_Number__c,LastModifiedDate  FROM Driver_Daily_Check_List__c  WHERE LastModifiedDate = TODAY";
@@ -311,7 +313,87 @@
         
         $A.enqueueAction(action); // Enqueue the action
     },
-   
+    
+    handleSpecialNeeds: function (component, event, helper, isSpecialNeeds) {
+        console.log('isSpecialNeeds: ',isSpecialNeeds);
+        var driverChecklistWrpMdt = component.get('v.driverChecklistWrpMdt');
+        for (var key in driverChecklistWrpMdt) {
+            if (driverChecklistWrpMdt[key].seq == '13.001') {
+                if (isSpecialNeeds == true) {
+                    driverChecklistWrpMdt[key].iconSelectedAction = '';
+                    driverChecklistWrpMdt[key].response = '';
+                    driverChecklistWrpMdt[key].isDisabled = false;
+                } else {
+                    driverChecklistWrpMdt[key].iconSelectedAction = 'notApplicableButton';
+                    driverChecklistWrpMdt[key].response = 'Not Applicable';
+                    driverChecklistWrpMdt[key].isDisabled = true;
+                }
+            }
+        }
+        var isResult = 'Pass';
+        var isCommentReq = false;
+        for (var key in driverChecklistWrpMdt) {
+            if (driverChecklistWrpMdt[key].iconSelectedAction == '' && driverChecklistWrpMdt[key].srNo == '14' && driverChecklistWrpMdt[key].optionType == 'Radio') {
+                if (driverChecklistWrpMdt[key].response == '') {
+                    driverChecklistWrpMdt[key].severity.ar = 'High';
+                    isResult = 'Fail';
+                }
+                break;
+            } else if (driverChecklistWrpMdt[key].iconSelectedAction == 'notApplicableButton' && driverChecklistWrpMdt[key].srNo == '14' && driverChecklistWrpMdt[key].optionType == 'Radio') {
+                if (driverChecklistWrpMdt[key].response == 'Not Applicable') {
+                    driverChecklistWrpMdt[key].severity.ar = 'Low';
+                    isResult = 'Not Applicable';
+                }
+                break;
+            }
+        }
+        for (var key in driverChecklistWrpMdt) {
+            if (driverChecklistWrpMdt[key].srNo == '14' && driverChecklistWrpMdt[key].optionType == 'Radio' &&
+                (driverChecklistWrpMdt[key].response == '' || driverChecklistWrpMdt[key].response == null)) {
+                isResult = 'Fail';
+                isCommentReq = true;
+                break;
+            }
+        }
+        for (var key in driverChecklistWrpMdt) {
+            if (driverChecklistWrpMdt[key].srNo == '14' && driverChecklistWrpMdt[key].optionType == 'Result') {
+                driverChecklistWrpMdt[key].response = isResult;
+                if (driverChecklistWrpMdt[key].srNo == '14' && isResult == 'Not Applicable'){
+                    driverChecklistWrpMdt[key].severity.ar = 'Low';
+                }else if (driverChecklistWrpMdt[key].srNo == '14' && isResult != 'Not Applicable'){
+                    driverChecklistWrpMdt[key].severity.ar = 'High';
+                }
+                break;
+            }
+        }
+        for (var key in driverChecklistWrpMdt) {
+            if (driverChecklistWrpMdt[key].srNo == '14' && driverChecklistWrpMdt[key].optionType == 'Comment') {
+                driverChecklistWrpMdt[key].commentReq = isCommentReq;
+                if (driverChecklistWrpMdt[key].srNo == '14' && isResult == 'Not Applicable'){
+                    driverChecklistWrpMdt[key].severity.ar = 'Low';
+                    driverChecklistWrpMdt[key].isDisabled = true;
+                }else if (driverChecklistWrpMdt[key].srNo == '14' && isResult != 'Not Applicable'){
+                    driverChecklistWrpMdt[key].severity.ar = 'High';
+                    driverChecklistWrpMdt[key].isDisabled = false;
+                }
+                break;
+            }
+        }
+        var finResult = 'Pass';
+        for (var key in driverChecklistWrpMdt) {
+            //console.log(key+' - '+driverChecklistWrpMdt[key].response);
+            if (driverChecklistWrpMdt[key].severity.ar == 'High' && driverChecklistWrpMdt[key].optionType == 'Result' &&
+                (driverChecklistWrpMdt[key].response == 'Fail' || driverChecklistWrpMdt[key].response == null || driverChecklistWrpMdt[key].response == 'undefined')) {
+                finResult = 'Fail';
+                // console.log(key+' - '+driverChecklistWrpMdt[key].response);
+                break;
+            }
+        }
+        component.set('v.finalResult', finResult);
+        component.set('v.driverChecklistWrpMdt', driverChecklistWrpMdt);
+        //console.log('driverChecklistWrpMdt: ' + JSON.stringify(driverChecklistWrpMdt));
+    },
+    
     showToast: function(component, event, helper, title, type, mode, duration, message) {
         var toastEvent = $A.get("e.force:showToast");
         toastEvent.setParams({
@@ -401,6 +483,6 @@
                                           }
                                       },
                                      ]);
-   },
+    },
                                       
  })

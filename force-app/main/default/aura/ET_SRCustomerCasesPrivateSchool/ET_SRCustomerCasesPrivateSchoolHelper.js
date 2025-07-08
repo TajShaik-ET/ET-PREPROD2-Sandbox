@@ -1,6 +1,6 @@
 ({
-      fetchCases: function(component, event, helper) {
-        let action = component.get("c.getDynamicCases");
+      /*fetchCases: function(component, event, helper) {
+        let action = component.get("c.");
 
         // Pass parameters from the client-side
         action.setParams({
@@ -37,7 +37,7 @@
 
         $A.enqueueAction(action);
     },
-
+*/
         getEseUserEmail: function(component, event, helper,status){
         var action = component.get('c.getuserDetails');
         action.setParams({

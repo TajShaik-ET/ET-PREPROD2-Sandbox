@@ -158,11 +158,13 @@ public Without Sharing class ET_driverCheckLisFormCntrl {
         @AuraEnabled public Boolean categoryShow { get; set; }
         @AuraEnabled public LangWrapper checkPoint { get; set; }
         @AuraEnabled public LangWrapper severity { get; set; }
+        @AuraEnabled public Boolean isDisabled { get; set; }
         public DriverChecklistWrapper() {
             this.category = New LangWrapper();
             this.checkPoint = New LangWrapper();
             this.severity = New LangWrapper();
             this.iconSelectedAction ='';
+            this.isDisabled = false;
         }
     }
     

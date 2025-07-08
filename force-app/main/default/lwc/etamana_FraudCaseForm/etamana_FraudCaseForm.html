@@ -9,6 +9,7 @@
         </div>
         <!--img src={Logo} alt="Logo" />
         <img src={ETLogo} alt="Logo" /-->
+        <!--<lightning-tabset value={activeTab} onclick={handleTabChange}>-->
         <lightning-tabset active-tab-value={activeTab} onclick={handleTabChange}>
             <lightning-tab label="Search Case Status" title="Search Case Status" value="Search Case Status">
                 <div class="report_main">
@@ -34,7 +35,7 @@
 
                             <div class="readonlydiv">
                                 <label class="labeltext">Solution</label>
-                                <div class="valuetext">{searchResult.ETAmana_Solution__c}</div>
+                                <div class="valuetext">{searchResult.Solution__c}</div>
                             </div>
 
                             <!--lightning-input type="text" label="Unique Number"

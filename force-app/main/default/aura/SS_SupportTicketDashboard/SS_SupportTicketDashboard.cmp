@@ -21,7 +21,7 @@
             <img src="{!$Resource.ET_Home_Moeimg}" class="bg_newimg"/>
             <div class="business_link_section">
               
-               
+               {!v.Profilename}
                 <aura:if isTrue="{!v.Profilename==true}">
                   <!--   <div class="business_link centerbox" onclick="{!c.customerCareSelected}">
                        <img src="{!$Resource.ET_Customer_Careimg}" class="bg_newimg centerimg"/>

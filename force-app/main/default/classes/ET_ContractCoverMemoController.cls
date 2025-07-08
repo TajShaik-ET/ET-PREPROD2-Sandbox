@@ -1,14 +1,14 @@
 /**
-     * @description       : 
-     * @author            : Srihari.Koyila@Smaartt.com-SK
-     * @group             : 
-     * @last modified on  : 09-10-2024
-     * @last modified by  : Srihari.Koyila@Smaartt.com-SK
-     * Modifications Log
-     * Ver   Date         Author                          Modification
-     * 1.0   08-06-2024   Srihari.Koyila@Smaartt.com-SK   Initial Version
-    **/
-    public class ET_ContractCoverMemoController {
+* @description       : 
+* @author            : Srihari.Koyila@Smaartt.com-SK 
+* @group             : 
+* @last modified on  : 09-10-2024
+* @last modified by  : Srihari.Koyila@Smaartt.com-SK
+* Modifications Log
+* Ver   Date         Author                          Modification
+* 1.0   08-06-2024   Srihari.Koyila@Smaartt.com-SK   Initial Version
+**/
+public class ET_ContractCoverMemoController {
     public string recordId {get;set;} 
     public string ContractHeaderName {get;set;}  
     public string AccountName {get;set;}  
@@ -29,23 +29,41 @@
     public Decimal TotalOverDueAmount {get;set;}  
     public Boolean CreditAssessment {get;set;}  
     public string CreditAssessmentValue {get;set;}  
-
-
-
-
+    public SObject record { get; private set; }
+    public String objectType { get; private set; }
+    
+    
+    
     public List<Customer_Workforce_Quote_Item__c> CustomerWorkForceItemList {get;set;}
     public List<Customer_Vehicle_Quote_Item__c> customerVehicleQuoteItemList {get;set;}
-
-    public ET_ContractCoverMemoController(ApexPages.StandardController stdController){
-        String CPDFId = ApexPages.currentPage().getParameters().get('Id'); 
-        recordId = CPDFId;
+    
+    public ET_ContractCoverMemoController(){
+        String CPDFId; 
+        
+        Id recordId = (Id) ApexPages.currentPage().getParameters().get('Id');
+        // Get the SObjectType from the recordId
+        Schema.SObjectType objectType = recordId.getSObjectType();
+        
+        // Get the object name as a string
+        String objectName = objectType.getDescribe().getName();
+        System.debug('Object Name: ' + objectName);
+        if(objectName == 'Contract_Pdf_Header__c'){
+            CPDFId =recordId;
+        }else if (objectName == 'Addendum__c') {
+            List<Addendum__c> addendumList = [SELECT Id, Contract__c, Contract__r.Id FROM Addendum__c WHERE Id = :recordId LIMIT 1];
+            if (!addendumList.isEmpty()) {
+                CPDFId = addendumList[0].Contract__r.Id;
+            } else {
+                System.debug('No Addendum__c record found with Id: ' + recordId);
+            }
+        }
         Decimal sumasTotalContractValue = 0;
         Decimal sumasTotalVeh =0;
         Decimal sumasTotalWorkForce =0;
         Decimal sumasDOAPricing =0;
-
         
-
+        
+        
         // Fetch Contract_Pdf_Header__c record
         Contract_Pdf_Header__c ConPdfH = [SELECT Id, Customer_Quote__c, CreatedBy.Name, CreatedDate, Contract_Type__c, Name, Sh1_Clause3_1_Agreement_YearsMonths__c, Sh1_Clause3_1_Minimum_Period__c, With_Driver__c, With_Fuel__c FROM Contract_Pdf_Header__c WHERE Id=:CPDFId];
         Customer_Quote__c customerQuote;
@@ -53,14 +71,14 @@
             customerQuote = [select Id,Quote__c,Quote_Total_Investment__c,Fuel_Included_Current_Contract__c,Account_Name__r.Name,Account_Name__r.AccountNumber,Account_Name__r.Credit_Assessment__c,Name,Opportunity_Name__r.Id,Opportunity_Name__r.Name,Opportunity_Name__r.RecordTypeId,Opportunity_Name__r.RecordType.Name,Opportunity_Name__r.Type from Customer_Quote__c where Id=:ConPdfH.Customer_Quote__c];
         }else {
             throw new CustomException('No Customer_Quote__c found for the given Id.');
-
+            
         }
         Quote QT;
         if (customerQuote.Quote__c != null) {
-             QT =[select Id,Total_Value_of_Rental__c from Quote where Id=:customerQuote.Quote__c limit 1];
+            QT =[select Id,Total_Value_of_Rental__c from Quote where Id=:customerQuote.Quote__c limit 1];
         }else {
             throw new CustomException('No Quote__c found for the given Customer_Quote__c Id.');
-
+            
         }
         if (customerQuote != null) {
             CustomerWorkForceItemList = [select Id,Name,Number_of_Workforce__c,Total_Main_Vehicle__c,Service_Type__c,Monthly_Rate_with_VAT__c,Monthly_Rate_All_Unit_with_VAT__c,Quote__c from Customer_Workforce_Quote_Item__c where Quote__c =:customerQuote.Id];
@@ -68,8 +86,8 @@
         if (customerQuote != null) {
             customerVehicleQuoteItemList = [select Id,Name,Vehicle_Monthly_Cost__c,Total_Rate_All_Units__c,DOA_Pricing__c,Number_of_Vehicles__c,Passed_years_from_Bus_Model__c,Service_Type__c,Monthly_Rate_with_VAT__c,Monthly_Rate_All_Unit_with_VAT__c,Customer_Quote__c from Customer_Vehicle_Quote_Item__c where Customer_Quote__c =:customerQuote.Id];
         }
-
-
+        
+        
         ContractHeaderName = ConPdfH.Name;
         AccountName = customerQuote.Account_Name__r.Name;
         AccountNumber = customerQuote.Account_Name__r.AccountNumber;
@@ -79,43 +97,43 @@
         QuoteTotalvalue = customerQuote.Quote_Total_Investment__c;
         FuelCluse = ConPdfH.With_Fuel__c;
         if(!FuelCluse) {
-             FuelCluseValue = 'NA';
+            FuelCluseValue = 'NA';
         } else {
-             FuelCluseValue = String.valueOf(FuelCluse);
+            FuelCluseValue = String.valueOf(FuelCluse);
         }
         if(!CreditAssessment) {
-             CreditAssessmentValue = 'No';
+            CreditAssessmentValue = 'No';
         } else {
-             //CreditAssessmentValue = String.valueOf(CreditAssessment);
-             CreditAssessmentValue = 'Yes';
+            //CreditAssessmentValue = String.valueOf(CreditAssessment);
+            CreditAssessmentValue = 'Yes';
         }
         ContractDuration = ConPdfH.Sh1_Clause3_1_Agreement_YearsMonths__c;
         FromasSender = ConPdfH.CreatedBy.Name;
         DateofSender = ConPdfH.CreatedDate;
-
-
+        
+        
         if (customerVehicleQuoteItemList != null && !customerVehicleQuoteItemList.isEmpty()) {
-        for(Customer_Vehicle_Quote_Item__c VQI :customerVehicleQuoteItemList){
-            if(VQI.Total_Rate_All_Units__c != null ){
-                sumasTotalContractValue += VQI.Total_Rate_All_Units__c;
-            }
-            if (VQI.Number_of_Vehicles__c != null) {
-                sumasTotalVeh += VQI.Number_of_Vehicles__c;
-            } 
-            if (VQI.DOA_Pricing__c != null) {
-                sumasDOAPricing += VQI.DOA_Pricing__c;
-            }
+            for(Customer_Vehicle_Quote_Item__c VQI :customerVehicleQuoteItemList){
+                if(VQI.Total_Rate_All_Units__c != null ){
+                    sumasTotalContractValue += VQI.Total_Rate_All_Units__c;
+                }
+                if (VQI.Number_of_Vehicles__c != null) {
+                    sumasTotalVeh += VQI.Number_of_Vehicles__c;
+                } 
+                if (VQI.DOA_Pricing__c != null) {
+                    sumasDOAPricing += VQI.DOA_Pricing__c;
+                }
             }
             TotalContractvalue = sumasTotalContractValue;
             VehicleQuanty = sumasTotalVeh;
             DOAPricing = sumasDOAPricing;
-
+            
             Customer_Quote__c UpdatDOA = new Customer_Quote__c();
             UpdatDOA.Id = customerQuote.Id;
             //UpdatDOA.Total_DOA_Pricing__c = DOAPricing;
             // update UpdatDOA;
         }
-
+        
         if (CustomerWorkForceItemList != null && !CustomerWorkForceItemList.isEmpty()) {
             for (Customer_Workforce_Quote_Item__c WQI : CustomerWorkForceItemList) {
                 if (WQI.Number_of_Workforce__c != null) {
@@ -135,7 +153,11 @@
             CreateCollectorLogHandler.customerAmountWrapper customerAmountDetails = CreateCollectorLogHandler.getCustomerAmountDetails(customerQuote.Account_Name__r.Id);
             
             if (customerAmountDetails != null) {
-                TotalOverDueAmount = Decimal.valueOf(customerAmountDetails.totalReceivable);
+                if(customerAmountDetails.totalReceivable !=null ){
+                    TotalOverDueAmount = Decimal.valueOf(customerAmountDetails.totalReceivable);   
+                }else{
+                    TotalOverDueAmount = 0; 
+                }
                 System.debug('Total Amount Original: ' + customerAmountDetails.totalAmountOriginal);
                 System.debug('TotalOverDueAmount' + customerAmountDetails.totalReceivable);
                 System.debug('Error Message: ' + customerAmountDetails.errorMessage);
@@ -143,9 +165,9 @@
         }
         
     }
-
-
-
+    
+    
+    
     @AuraEnabled
     public static string generateContractMemoDoc(string quoteId){
         system.debug(quoteId);
@@ -184,8 +206,8 @@
         }
         return quoteId;
     }
-
+    
     public class CustomException extends Exception {}
-
-
-    }
+    
+    
+}

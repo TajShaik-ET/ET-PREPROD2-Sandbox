@@ -76,6 +76,7 @@ Description : to query whole Vehicle Request Records
                                                     Refrigerator_model_year__c,
                                                     Refrigerator_External_Maintenance_Cost__c,
                                                     Vehicle_Notes__c,
+                                                    ET_Unlimited_Mileage__c,
                                                     ET_Pricing_Service_Request__r.ET_Service_Request_Common_Data__r.ET_Request_for_Target_Price__c,
                                                     ET_Pricing_Service_Request__r.ET_Service_Request_Common_Data__r.ET_Request_for_Separate_Prices__c,
                                                     ET_Pricing_Service_Request__r.ET_Service_Request_Common_Data__r.ET_Service_Emirate__c,
@@ -878,18 +879,18 @@ Description : To get Total Project quote id based on approval quote id. Used to 
 */
     
     @AuraEnabled
-    Public static String getTotalProjectQuoteId(String quoteId){
+    Public Static String getTotalProjectQuoteId(String quoteId){
         String totalProjectQuoteId ;
         String opportunityId ;
         try{
-            List<quote> quote = [select id , OpportunityId FROM quote where id =:quoteId];
-            if(quote!= null && !quote.isEmpty()){
-                opportunityId = quote[0].OpportunityId;
+            List<Quote> quotes = [SELECT Id, OpportunityId FROM Quote WHERE Id =: quoteId];
+            if(quotes!= null && !quotes.isEmpty()){
+                opportunityId = quotes[0].OpportunityId;
             }
             if(opportunityId != null){
-                List<quote> Tquote = [select id from quote where OpportunityId =:opportunityId and ET_Type__c ='Total Project Summary'];
-                if(Tquote!= null && !Tquote.isEmpty()){
-                    totalProjectQuoteId = Tquote[0].id;
+                List<Quote> Tquotes = [SELECT Id FROM Quote WHERE OpportunityId =: opportunityId AND ET_Type__c = 'Total Project Summary' AND IsActive__c = true ORDER BY CreatedDate DESC];
+                if(Tquotes!= null && !Tquotes.isEmpty()){
+                    totalProjectQuoteId = Tquotes[0].Id;
                 }
             }
         }
@@ -897,8 +898,67 @@ Description : To get Total Project quote id based on approval quote id. Used to 
             system.debug('Exception e ='+ e.getMessage());
             system.debug('Trace  ='+ e.getStackTraceString());
         }
-        
         return totalProjectQuoteId;
+    }
+
+    @AuraEnabled
+    public static Quote getPreviewQuoteTotalProject(Id quoteId) {
+        List<Quote> activeQuotes = ET_ServiceRequestController.getActiveQuotes(null, quoteId);
+        // First, check for 'Quote for Approval' && 'Manual' in the initial list
+        if (activeQuotes != null && !activeQuotes.isEmpty()) {
+            for (Quote qt : activeQuotes) {
+                if (qt.ET_Type__c == 'Quote for Approval' && qt.Quote_Type__c == 'Manual') {
+                    return qt;
+                }
+            }
+            // If 'Quote for Approval' && 'Manual' is NOT found, check for 'Total Project Summary'
+            for (Quote qt : activeQuotes) {
+                if (qt.ET_Type__c == 'Quote for Approval' || qt.ET_Type__c == 'Total Project Summary') {
+                    // Fetch new active quotes based on Pricing Service Request
+                    activeQuotes = ET_ServiceRequestController.getActiveQuotes(qt.ET_Pricing_Service_Request__c, null);
+                    break; // No need to check further, as we fetch new quotes
+                }
+            }
+        }
+        // Check again for 'Quote for Approval' && 'Manual' in the newly fetched quotes
+        if (activeQuotes != null && !activeQuotes.isEmpty()) {
+            for (Quote qt : activeQuotes) {
+                if (qt.ET_Type__c == 'Quote for Approval' && qt.Quote_Type__c == 'Manual') {
+                    return qt;
+                }
+            }
+            // If 'Quote for Approval' && 'Manual' is STILL NOT found, return 'Total Project Summary' as a last option
+            for (Quote qt : activeQuotes) {
+                if (qt.ET_Type__c == 'Total Project Summary') {
+                    return qt;
+                }
+            }
+        }
+        return null; // If no matching quote is found, return null
+    }
+
+    @AuraEnabled
+    public static Quote getPreviewQuote(Id serviceRequestId, Id quoteId) {
+        List<Quote> activeQuotes = ET_ServiceRequestController.getActiveQuotes(null, quoteId);
+        if (activeQuotes != null && !activeQuotes.isEmpty()) {
+            for (Quote qt : activeQuotes) {
+                if (qt.ET_Type__c == 'Quote for Approval') {
+                    return qt;
+                } else if (qt.ET_Type__c == 'Total Project Summary') {
+                    activeQuotes = ET_ServiceRequestController.getActiveQuotes(qt.ET_Pricing_Service_Request__c, null);
+                    break; // No need to check other records in the first list once we fetch a new one
+                }
+            }
+        }
+        // Check again for 'Quote for Approval' in the newly fetched quotes
+        if (activeQuotes != null && !activeQuotes.isEmpty()) {
+            for (Quote qt : activeQuotes) {
+                if (qt.ET_Type__c == 'Quote for Approval') {
+                    return qt;
+                }
+            }
+        }
+        return null; // Return null if no matching quote is found
     }
     
     /* Method : logException

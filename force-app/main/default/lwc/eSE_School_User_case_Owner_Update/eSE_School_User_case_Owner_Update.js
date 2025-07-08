@@ -1,10 +1,8 @@
 import { LightningElement, track } from 'lwc';
-import getCasesByAccountName from '@salesforce/apex/ESE_SchoolUser_Case_Owner_Update.getCasesByAccountName';
+import getCaseData from '@salesforce/apex/ESE_SchoolUser_Case_Owner_Update.getCaseData';
 import getAccountsByNameOrCode from '@salesforce/apex/ESE_SchoolUser_Case_Owner_Update.getAccountsByNameOrCode';
 import getUserList from '@salesforce/apex/ESE_SchoolUser_Case_Owner_Update.getUserList';
 import updateCaseOwnersBatch from '@salesforce/apex/ESE_SchoolUser_Case_Owner_Update.updateCaseOwnersBatch';
-import getCaseOwnerHistory from '@salesforce/apex/ESE_SchoolUser_Case_Owner_Update.getCaseOwnerHistory';
-import getUsersByIds from '@salesforce/apex/ESE_SchoolUser_Case_Owner_Update.getUsersByIds';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class eSE_School_User_case_Owner_Update extends LightningElement {
@@ -18,10 +16,9 @@ export default class eSE_School_User_case_Owner_Update extends LightningElement 
     @track endDate = '';
     @track status = ''; 
     @track accounts = [];
-    @track caseCount = 0;
     @track paginatedCases = [];
     @track currentPage = 1;
-    @track pageSize = 30; 
+    @track pageSize = 20; 
     @track totalPages = 0;
     @track isPreviousDisabled = true;
     @track isNextDisabled = true;
@@ -37,7 +34,7 @@ export default class eSE_School_User_case_Owner_Update extends LightningElement 
         { label: 'Escalated', value: 'Escalated' }
     ];
 
-    columns = [
+    @track columns = [
         { label: 'Case Number', fieldName: 'CaseLink', type: 'url', typeAttributes: {label: { fieldName: 'CaseNumber' }, target: '_blank'} },
         { label: 'Account Name', fieldName: 'AccountLink', type: 'url', typeAttributes: {label: { fieldName: 'AccountName' }, target: '_blank'} },
         { label: 'Status', fieldName: 'Status' },
@@ -48,9 +45,7 @@ export default class eSE_School_User_case_Owner_Update extends LightningElement 
     ];
 
     connectedCallback() {
-        
         this.fetchUsers();
-        this.fetchUsers1();
     }
 
     fetchUsers() {
@@ -62,27 +57,8 @@ export default class eSE_School_User_case_Owner_Update extends LightningElement 
         getUserList({ searchKey: this.searchKey })
             .then(result => {
                 this.users = result.map(user => ({
-                    label: user.Name,
-                    value: user.Id
-                }));
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-                this.showToast('Error', 'Error fetching users', 'error');
-            });
-    }
-
-    fetchUsers1() {
-        if (!this.searchKey || this.searchKey === this.selectedUserId) {
-            this.users = []; 
-            return;
-        }
-
-         getUsersByIds({ searchKey: this.searchKey })
-            .then(result => {
-                this.users = result.map(user => ({
-                    label: user.Name,
-                    value: user.Id
+                    label: user.name,
+                    value: user.id
                 }));
             })
             .catch(error => {
@@ -128,84 +104,87 @@ export default class eSE_School_User_case_Owner_Update extends LightningElement 
     }
 
     async handleSearch() {
-        if (!this.accountName) {
-            this.showToast('Error', 'Please select the account Name to filter cases.', 'error');
-            return;
-        }
+    if (!this.accountName) {
+        this.cases = []; 
+        this.updatePagination();
+        this.caseCount = [];
+        this.showToast('Error', 'Please select the account Name to filter cases.', 'error');
+        return;
+    }
 
-        try {
-            const result = await getCasesByAccountName({
-                accountName: this.accountName,
-                startDate: this.startDate ? new Date(this.startDate) : null,
-                endDate: this.endDate ? new Date(this.endDate) : null,
-                status: this.status
-            });
-            console.log('Cases retrieved:', JSON.stringify(result));
+    try {        
+        // Fetch case data, user list, and case history from Apex
+        const result = await getCaseData({
+            accountName: this.accountName,
+            startDate: this.startDate || null,
+            endDate: this.endDate || null,
+            status: this.status,
+        });
 
-            this.caseCount = result.length;
+        console.log('--- Raw Result from Apex: ---', result);
 
-            this.cases = result.map(caseRecord => ({
+        // Extract cases, users, and case history
+        this.cases = result.cases.map(caseRecord => ({
+            ...caseRecord,
+            CaseNumber: caseRecord.caseNumber,
+            Status: caseRecord.status,
+            CreatedDate: caseRecord.createdDate,
+            OwnerName: caseRecord.ownerName || 'N/A',
+            AccountName: caseRecord.accountName || 'N/A',
+            CaseLink: `/lightning/r/Case/${caseRecord.id}/view`,
+            AccountLink: `/lightning/r/Account/${caseRecord.accountId}/view`, // Ensure correct Account ID is used
+        }));
+
+        console.log('Result Cases:', result.cases);
+        console.log('Result Users:', result.users);
+        console.log('Result Histories:', result.caseHistories);
+        // Build a map for the latest owner change history per case
+        const latestHistoryMap = result.caseHistories.reduce((acc, history) => {
+            if (!acc[history.caseId] || new Date(acc[history.caseId].createdDate) < new Date(history.createdDate)) {
+                acc[history.caseId] = history;
+            }
+            return acc;
+        }, {});
+        console.log('--- Latest Case History Map: ---', latestHistoryMap);
+        // Create a map of user IDs to user names for easy lookup
+        const userMap = result.users.reduce((acc, user) => {
+            acc[user.id] = user.name;
+            return acc;
+        }, {});
+        console.log('--- User Map: ---', userMap);
+        // Attach Old Owner and New Owner information from history data
+        this.cases = this.cases.map(caseRecord => {
+            const history = latestHistoryMap[caseRecord.id] || {}; // Get latest history record for this case
+            const oldValue = history.oldValue;
+            const newValue = history.newValue;
+
+            const oldOwnerName = userMap[oldValue] || oldValue;
+            const newOwnerName = userMap[newValue] || newValue;
+            const caseowner = caseRecord.OwnerName;
+
+            console.log(`Case ID: ${caseRecord.id}`);
+            console.log(`Old Value: ${history.oldValue}, Old Owner Name: ${oldOwnerName || 'No Data'}`);
+            console.log(`New Value: ${history.newValue}, New Owner Name: ${newOwnerName || 'No Data'}`);
+
+            return {
                 ...caseRecord,
-                OwnerName: caseRecord.Owner?.Name || 'N/A',
-                AccountName: caseRecord.Account?.Name || 'N/A',
-                CaseLink: `/lightning/r/Case/${caseRecord.Id}/view`,
-                AccountLink: `/lightning/r/Account/${caseRecord.AccountId}/view`,
-            }));
-            this.updatePagination();
-
-            this.caseCount = this.cases.length;
-            const caseIds = this.cases.map(c => c.Id);
-            //if (caseIds.length === 0) return;
-            const historyResult = await getCaseOwnerHistory({ caseIds });
-
-            const latestHistoryMap = historyResult.reduce((acc, history) => {
-                if (!acc[history.CaseId] || new Date(acc[history.CaseId].CreatedDate) < new Date(history.CreatedDate)) {
-                    acc[history.CaseId] = history;
-                }
-                return acc;
-            }, {});
-
-            const userIds = Object.values(latestHistoryMap).flatMap(history => [history.OldValue, history.NewValue]);
-
-            // Fetch user names for OldOwner and NewOwner
-            const userList = await getUsersByIds({ userIds });
-
-            // Create a map of user IDs to names
-            const userMap = userList.reduce((acc, user) => {
-                acc[user.Id] = user.Name;
-                return acc;
-            }, {});
-
-            this.cases = this.cases.map(caseRecord => {
-                const history = latestHistoryMap[caseRecord.Id];
-                const oldOwnerName = userMap[history?.OldValue] || 'N/A';
-                const newOwnerName = userMap[history?.NewValue] || 'N/A';
-
-                return {
-                    ...caseRecord,
-                    OldOwner: oldOwnerName,
-                    NewOwner: newOwnerName,
-                    OwnerName: userMap[history?.NewValue] || caseRecord.OwnerName 
-                };
-            });
-
-            this.updatePagination();
-        } catch (error) {
-            console.error('Error fetching cases:', error);
-        }
+                OldOwner: oldOwnerName,
+                NewOwner: newOwnerName,
+                OwnerName: caseowner 
+            };
+        });
+        this.caseCount = this.cases.length;
+        this.updatePagination();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        this.showToast('Error', 'Error fetching case data', 'error');
     }
-    
-    async fetchUserNameById(userId) {
-        if (!userId) return null;
-        const user = await getUserList({ searchKey: userId });
-        return user.length > 0 ? user[0].Name : null;
-    }
+}
     updatePagination() {
-        this.totalPages = Math.ceil(this.caseCount / this.pageSize);
+        this.totalPages = Math.ceil(this.cases.length / this.pageSize);
         const startIdx = (this.currentPage - 1) * this.pageSize;
-        const endIdx = Math.min(this.currentPage * this.pageSize, this.caseCount); 
+        const endIdx = this.currentPage * this.pageSize;
         this.paginatedCases = this.cases.slice(startIdx, endIdx);
-        console.log('Paginated cases:', this.paginatedCases);
         this.isPreviousDisabled = this.currentPage === 1;
         this.isNextDisabled = this.currentPage === this.totalPages;
     }
@@ -252,48 +231,47 @@ export default class eSE_School_User_case_Owner_Update extends LightningElement 
         }
     }
     
-        handleSave() {
-            if (!this.selectedUserId) {
-                this.showToast('Error', 'Please select a user to assign as the new owner.', 'error');
-                return;
-            }
-    
-            const caseIds = this.cases.map(c => c.Id);
-            console.log('Case IDs to update:', caseIds);
-            console.log('New owner ID:', this.selectedUserId);
-            const oldOwnerMap = this.cases.reduce((acc, caseRecord) => {
-        acc[caseRecord.Id] = caseRecord.OwnerName; // Store current owner name as old owner
+    handleSave() {
+    if (!this.selectedUserId) {
+        this.showToast('Error', 'Please select a user to assign as the new owner.', 'error');
+        return;
+    }
+    const caseIds = this.cases.map(c => c.id); // Corrected case ID extraction
+    console.log('Case IDs to update:', caseIds);
+    console.log('New owner ID:', this.selectedUserId);
+    const oldOwnerMap = this.cases.reduce((acc, caseRecord) => {
+        acc[caseRecord.id] = caseRecord.OwnerName; // Store current owner name as old owner
         return acc;
     }, {});
-            updateCaseOwnersBatch({ caseIds: caseIds, newOwnerId: this.selectedUserId })
-                .then(() => {
-                     console.log('Case owners updated successfully.');
-                     // Update the owner details in the local cases list
+    updateCaseOwnersBatch({ caseIds: caseIds, newOwnerId: this.selectedUserId })
+        .then(() => {
+            console.log('Case owners updated successfully.');
+            // Update the owner details in the local cases list
             this.cases = this.cases.map(caseRecord => {
-                if (caseIds.includes(caseRecord.Id)) {
+                if (caseIds.includes(caseRecord.id)) { 
                     return {
                         ...caseRecord,
-                        OwnerName: this.searchKey, 
+                        OwnerName: this.searchKey,
                         NewOwner: this.searchKey,
-                        OldOwner: oldOwnerMap[caseRecord.Id] || 'N/A',
+                        OldOwner: oldOwnerMap[caseRecord.id] || 'N/A',
                     };
                 }
                 return caseRecord;
             });
-                    this.showModal = false; 
-                    this.selectedUserId = ''; // Reset selected user
-                    console.log('Calling handleSearch to refresh the case list.');
-                    this.searchKey = '';
-                    this.updatePagination();
-                    console.log('After handleSearch call:');
-                    console.log('Updated cases list:', this.cases);
-                    this.showToast('Success', 'Case owners updated successfully!', 'success');
-                })
-                .catch(error => {
-                    console.error('Error updating case owners:', error);
-                    this.showToast('Error', 'Error updating case owners', 'error');
-                });
-        }
+            this.showModal = false;
+            this.selectedUserId = ''; // Reset selected user
+            console.log('Calling handleSearch to refresh the case list.');
+            this.searchKey = '';
+            this.updatePagination();
+            console.log('After handleSearch call:');
+            console.log('Updated cases list:', this.cases);
+            this.showToast('Success', 'Case owners updated successfully!', 'success');
+        })
+        .catch(error => {
+            console.error('Error updating case owners:', error);
+            this.showToast('Error', 'Error updating case owners', 'error');
+        });
+}
         handleExport() {
         if (!this.cases.length) {
             this.showToast('Error', 'No cases available to export.', 'error');
@@ -328,26 +306,7 @@ export default class eSE_School_User_case_Owner_Update extends LightningElement 
         this.showToast('Success', 'Cases exported successfully.', 'success');
     }
 
-    /*get reportUrl() {
-    if (!this.accountName) return null; 
-    const encodedAccountName = encodeURIComponent(this.accountName);
-    return `/lightning/r/Report/00OQz000002awynMAA/view?fv0=${encodedAccountName}`;
-  }*/
-
   handleOpenReport() {
-    /*if (!this.AccountName) {
-        this.showToast('Error', 'Please select an account first.', 'error');
-        return;
-    }*/
-    const formatDate = (dateString) => {
-        if (!dateString) return '';
-
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); 
-        const day = String(date.getDate()).padStart(2, '0'); 
-        return `${day}/${month}/${year}`;
-    };
 
     let reportUrl = `/lightning/r/Report/00Odv000000QjuLEAS/view?`;
 
