@@ -7,7 +7,8 @@
 * -----------------------------------------------------------------------------------------------                      *
 * VERSION   AUTHOR      DATE                COMMENTS                                                                   *
 * 1.0       Taj Shaik   06/Sep/2023         Initial Draft.                                                             *
-* 1.1       Taj Shaik   20/Sep/2024         Sync Test Results to Aman                                                  *
+* 1.1       Taj Shaik   20/Sep/2024         Sync Test Results to Aman
+* 1.2		Asif Tayyab 17/Feb/2024			Aproval Process and Print Integration
 ***********************************************************************************************************************/
 public without sharing class ETI_InspectionReceiptCtrl{
     
@@ -365,8 +366,8 @@ respWrp.receiptWrp.ReceiptDetails.Location.AR = bookingList[0]?.ET_Location__r?.
     public static void sendEmailToInpector(ETI_Inspection_Observation__c inspObsr)
     {
         system.debug('sendEmailToInpector>>>>>>>>');
-        String breakInsp = inspObsr.Break_Inspector_Id__c; 
-        String visualInsp = inspObsr.Visual_Inspector_Id__c;
+        String breakInsp = '82639'; //inspObsr.Break_Inspector_Id__c; 
+        String visualInsp = '89999';//inspObsr.Visual_Inspector_Id__c;
         // Query user emails
         List<User> users = [SELECT EmployeeNumber, Email FROM User WHERE EmployeeNumber IN:new Set<String>{breakInsp, visualInsp}];
         system.debug('users List Inpector>>>>>>>>' + users);
@@ -474,11 +475,11 @@ respWrp.receiptWrp.ReceiptDetails.Location.AR = bookingList[0]?.ET_Location__r?.
             return null;
     }
     
+    
     @auraEnabled
     public static void sendResultToAman(ETI_Inspection_Observation__c inspObsr){
         System.debug('isSyncedToAman__c>>  ' + inspObsr.isSyncedToAman__c + '  Integration_Status__c>> ' + inspObsr.Integration_Status__c + '  Is_Visual_Inspection_Completed__c>> ' + inspObsr.Is_Visual_Inspection_Completed__c);
         if ((!inspObsr.isSyncedToAman__c || String.IsBlank(inspObsr.Integration_Status__c)) && inspObsr.Is_Visual_Inspection_Completed__c){
-            System.debug('In If Condition>>>>');
             AmanSyncWrapper AmanSyncWrp = New AmanSyncWrapper();
             AmanSyncWrp.receiptNum = inspObsr.AMAN_Receipt_No__c;
             AmanSyncWrp.inspectorNumber = inspObsr.Visual_Inspector_Id__c;
@@ -578,6 +579,7 @@ respWrp.receiptWrp.ReceiptDetails.Location.AR = bookingList[0]?.ET_Location__r?.
     }
     
     private static ContentVersion createContentVersion(String base64, String filename){
+        
         ContentVersion cv = new ContentVersion();
         cv.VersionData = EncodingUtil.base64Decode(base64);
         cv.Title = filename;
@@ -671,8 +673,7 @@ respWrp.receiptWrp.ReceiptDetails.Location.AR = bookingList[0]?.ET_Location__r?.
     }
     
     @auraEnabled
-    public static PrintWrapper getPrintResult(string recpNo, string inspNo, Id recordId){
-        System.debug('recpNo >>> ' + recpNo);
+    public static string getPrintResult(string recpNo, string inspNo, Id recordId){ //method is to get the print result from AMAN and save in CRM
         PrintWrapper printWrp = New PrintWrapper();
         ET_Oracle_REST_Endpoints__mdt connection = ET_REST_Authorize_Helper.getSOAPEndpointFromMetadata('amanReceiptPrint');
         Blob beforeblob = Blob.valueOf(connection.Username__c + ':' + connection.Password__c);
@@ -689,19 +690,17 @@ respWrp.receiptWrp.ReceiptDetails.Location.AR = bookingList[0]?.ET_Location__r?.
         request.setHeader('Authorization', 'Basic ' + paramvalue);
         Http http = new Http();
         HttpResponse response = http.send(request);
-        system.debug('response Body >>> ' + response.getBody());
         if (response.getStatusCode() == 200){
             printWrp = (PrintWrapper)JSON.deserialize(response.getBody(), PrintWrapper.class);
-            if (printWrp.Status == 'S'){
-                
+            if (printWrp.Status == 'S' || printWrp.Status == 'E'){
                 updatePrintStatus(recordId, printWrp.Status, printWrp.Message);                
             }
         }
-        return printWrp;
+        return printWrp.Status;
     }
     
     // Method to update the record with the status and message
-    private static void updatePrintStatus(Id recordId, String status, String message) {
+    public static void updatePrintStatus(Id recordId, String status, String message) {
         // Example: Let's assume we're updating a custom object called "MyObject__c"
         ETI_Inspection_Observation__c obs = [SELECT Id, Print_Status__c, Print_Message__c FROM ETI_Inspection_Observation__c WHERE Id = :recordId LIMIT 1];
         

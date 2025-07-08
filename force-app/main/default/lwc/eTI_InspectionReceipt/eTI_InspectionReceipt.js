@@ -61,6 +61,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
    @track userProfile = '';
    @track error = '';
    @track isApprovalSubmit = false;
+   @track disableSubmit = false;
    @track showApproval = false;
    @track showPicklist = true;
    @track fileAppend = '';
@@ -108,11 +109,13 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
 
               if(this.userRole == 'Vehicle Supervisor Partner User')
                {
+                  this.showSubmit = false;
                   this.fileAppend = '_sup';
                }
 
                if(this.userRole == 'Vehicle Inspector Partner User')
                   {
+                     this.showSubmit = true;
                      this.fileAppend = '_insp';
                   }
           })
@@ -223,6 +226,13 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
                   else
                      this.testResult = 'Pass';
                }
+               if(this.responseWrapper.isSyncedToAman__c == false)
+               {
+                  this.disableSubmit = false;
+               }
+               else{
+                  this.disableSubmit = true;
+               }
                //New logic of approval to hide and show
 
                //if (this.responseWrapper.inspObsr.Is_Break_Inspection_Completed__c == false && this.responseWrapper.inspObsr.Is_Visual_Inspection_Completed__c == false) {
@@ -330,7 +340,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
             
          }
       if (!inspObsr.Remarks__c) inspObsr.Remarks__c = '';
-      if (!inspObsr.Remarks__c) inspObsr.Remarks_by_Supervisor__c = '';
+      if (!inspObsr.Remarks_by_Supervisor__c) inspObsr.Remarks_by_Supervisor__c = '';
       if (!inspObsr.Steering_Type__c) inspObsr.Steering_Type__c = '';
       if (!inspObsr.Gear_Type__c) inspObsr.Gear_Type__c = '';
       if (!inspObsr.No_Of_Seats__c) inspObsr.No_Of_Seats__c = null;
@@ -361,12 +371,9 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       {
          inspObsr.Actual_Approver__c = '';
          this.showAfterApproval = false;
-         this.showSubmit = true;
       }      
       else{
             this.showAfterApproval = true;
-            this.showSubmit = false;
-            
       }
       if (!inspObsr.Approver_Finance_ID__c) inspObsr.Approver_Finance_ID__c = '';
       if (!inspObsr.Approver_Name_and_ID__c)
@@ -387,6 +394,27 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       {
          this.showPrintBtn = true;
       }
+      if(inspObsr.Submit_for_Approval__c == true && inspObsr.Approved__c == false && inspObsr.Rejected__c == false)
+         {
+            this.isApprovalSubmit = true;
+            this.disableSubmit = true;
+            if(this.userRole == 'Vehicle Inspector Partner User')
+            {
+               this.disableCodeSelect = true;
+            }
+            else
+            {
+               this.disableCodeSelect = false;
+            }
+            console.log('Ater If>>>>>>>', this.userRole, 'CodeDisable>>>>>>', this.disableCodeSelect);
+         }
+         if(inspObsr.isSyncedToAman__c == false)
+            {
+               this.disableSubmit = false;
+            }
+            else{
+               this.disableSubmit = true;
+            }
       this.responseWrapper.inspObsr = inspObsr;
       console.log('inspObsr: '+JSON.stringify(this.responseWrapper.inspObsr));
    }
@@ -414,6 +442,9 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          {
             this.responseWrapper.inspObsr.Actual_Approver__c = USER_ID;
             this.responseWrapper.inspObsr.Rejected__c = false;
+            if(this.userRole == 'Vehicle Inspector Partner User')
+               this.isApprovalSubmit = false;
+               this.disableSubmit = false;
          }
             
 
@@ -530,17 +561,16 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          
       }).then((response) => {
          console.log('response without Parse Print>>>>>>>> ', response);
-         console.log('response Print>>>>>>>> ' + JSON.stringify(JSON.parse(response)));
+         //console.log('response Print>>>>>>>> ' + JSON.stringify(JSON.parse(response)));
          this.showSpinner = false;
-         if (JSON.parse(response) != null && JSON.parse(response) != '') {
-            this.responseWrapper.inspObsr = JSON.parse(response);
-            refreshApex(this.responseWrapper.inspObsr);
+         if (response == 'S') {
+           
             this.dispatchEvent(
                showToastNotification('Success', 'Receipt Send to Aman for Print', 'success', 'pester')
             );
-         } else {
+         } else if(response == 'E') {
             this.dispatchEvent(
-               showToastNotification('Success', 'Receipt Send to Aman for Print', 'success', 'pester')
+               showToastNotification('Error', 'Hardware Result Required', 'error', 'pester')
             );
          }
       }).catch((error) => {
@@ -550,10 +580,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
             showToastNotification('Error', error.body.message, 'error', 'sticky')
          );
       })
-
-      this.dispatchEvent(
-         showToastNotification('Success', 'Print Success', 'success', 'pester')
-      );
    }
 
    openfileUpload(event) {
@@ -688,7 +714,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       var inspObsr = this.responseWrapper.inspObsr;
       if (isEmptyString(inspObsr.Remarks_by_Supervisor__c) && this.userRole == 'Vehicle Supervisor Partner User') {
          this.dispatchEvent(
-            showToastNotification('Warning!', 'Please add remarks before saving', 'warning', 'sticky')
+            showToastNotification('Error!', 'Please add remarks before saving', 'error', 'sticky')
          );
       }
 
@@ -733,6 +759,15 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
                if(this.responseWrapper.inspObsr.Submit_for_Approval__c == true && this.responseWrapper.inspObsr.Approved__c == false && this.responseWrapper.inspObsr.Rejected__c == false)
                {
                   this.isApprovalSubmit = true;
+                  this.disableSubmit = true;
+                  if(this.userRole = 'Vehicle Inspector Partner User')
+                  {
+                     this.disableCodeSelect = true;
+                  }
+                  else
+                  {
+                     this.disableCodeSelect = false;
+                  }
                }
                console.log('Approve>>> ', this.responseWrapper.inspObsr.Approved__c , 'Reject>>>>>>>', this.responseWrapper.inspObsr.Rejected__c); 
                if(this.responseWrapper.inspObsr.Approved__c == true || this.responseWrapper.inspObsr.Rejected__c == true)
@@ -794,18 +829,48 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          //console.log('allCodesBreak:', allCodesBreak);
          //console.log('allCodesVisual:', allCodesVisual);
          //console.groupEnd();
-         if(inspObsr.Break_Inspection_Draft__c == true)
-            inspObsr.Is_Break_Inspection_Completed__c = true;
-         if(inspObsr.Visual_Inspection_Draft__c == true)
+         if(inspObsr.Submit_for_Approval__c == false)
          {
-            inspObsr.Is_Visual_Inspection_Completed__c = true;
+            if(inspObsr.Break_Inspection_Draft__c == true)
+               inspObsr.Is_Break_Inspection_Completed__c = true;
+            if(inspObsr.Visual_Inspection_Draft__c == true)
+            {
+               inspObsr.Is_Visual_Inspection_Completed__c = true;
+            }
+            else
+            {
+               this.dispatchEvent(
+                  showToastNotification('Error', 'Visual Inspection is not completed', 'error', 'sticky')
+               );
+            }
          }
-         else
+         
+         if(inspObsr.Submit_for_Approval__c == true)
          {
-            this.dispatchEvent(
-               showToastNotification('Error', 'Visual Inspection is not completed', 'error', 'sticky')
-            );
+            if(inspObsr.Approved__c == true)
+            {
+               if(inspObsr.Break_Inspection_Draft__c == true)
+                  inspObsr.Is_Break_Inspection_Completed__c = true;
+               if(inspObsr.Visual_Inspection_Draft__c == true)
+               {
+                  inspObsr.Is_Visual_Inspection_Completed__c = true;
+               }
+               else
+               {
+                  this.dispatchEvent(
+                     showToastNotification('Error', 'Visual Inspection is not completed', 'error', 'sticky')
+                  );
+               }
+            }
+            else{
+               this.dispatchEvent(
+                  showToastNotification('Error', 'Inspection is under approval, after approval you can submit to AMAN', 'error', 'sticky')
+               );
+            }
+
+
          }
+        
             
          console.log('VIsual>>>>>>>', inspObsr.Is_Visual_Inspection_Completed__c);
          console.log('Break>>>>>>>', inspObsr.Is_Break_Inspection_Completed__c);
@@ -822,6 +887,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
                this.dispatchEvent(
                   showToastNotification('Success', 'Submitted in Aman Successfully', 'success', 'pester')
                );
+               this.showPrintBtn = true;
             } else {
                this.dispatchEvent(
                   showToastNotification('Error', 'Issue while submitting in Aman. Pleae contact admin', 'error', 'sticky')

@@ -275,14 +275,10 @@
                       <td style="padding:0 20px; text-align:center; font-size:14px;">
                         <u style="line-height:14px;">The center will not be responsible for any
                           loss of the items or any
-                          technical defects during the inspection. The above mentioned amount
-                          is collected by Emirates
-                          Transport on behalf of Integrated Transport Center.</u>
+                          technical defects during the inspection.</u>
                         <br />
                         <u>.المركز غير مسؤول عن فقدان الأغراض القيمة أو أية أعطال قد تحدث في
-                          المركبات داخل مسارات الفحص
-                          الفني. يتم تحصيل المبلغ أعلاه من قبل مواصلات الإمارات بالنيابة عن
-                          مركز النقل المتكامل</u>
+                          </u>
                       </td>
                     </tr>
                   </table>
@@ -309,6 +305,15 @@
                               <td width="200">Plate No / لوحة لا</td>
                               <td width="250" style="text-align:center;">
                                 {receiptDetails.Vehicle_Details.Plate_No}</td>
+                              <td width="300">
+                                <lightning-input variant="label-hidden" type="text" label=""
+                                  disabled="true"></lightning-input>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="200">KM Reading / الكيلومتر الفحص</td>
+                              <td width="250" style="text-align:center;">
+                                {receiptDetails.Vehicle_Details.KM_Reading}</td>
                               <td width="300">
                                 <lightning-input variant="label-hidden" type="text" label=""
                                   disabled="true"></lightning-input>
@@ -671,7 +676,7 @@
                             <template if:false={responseWrapper.inspObsr.Approved__c}>
                               <div class="enterCodeBtn">
                                 <lightning-button name="enterCodesBreak" label="Select Codes / حدد الرموز"
-                                  value="inspTabBreak" onclick={openCodesModal} variant="brand"
+                                  value="inspTabBreak" disabled={disableCodeSelect} onclick={openCodesModal} variant="brand"
                                   class="slds-m-around_small">
                                 </lightning-button>
                               </div>
@@ -730,7 +735,7 @@
                             <template if:false={responseWrapper.inspObsr.Approved__c}>
                               <div class="enterCodeBtn">
                                 <lightning-button name="enterCodesVisual" label="Select Codes / حدد الرموز"
-                                  value="inspTabVisual"  onclick={openCodesModal} variant="brand"
+                                  value="inspTabVisual" disabled={disableCodeSelect}  onclick={openCodesModal} variant="brand"
                                   class="slds-m-around_small">
                                 </lightning-button>
                               </div>
@@ -761,7 +766,6 @@
                     <lightning-tab label="Approval information" title="Approval information">
                       <div class="innterTabData">
                         <template if:false={showAfterApproval}>
-                          
                               <template if:false={isApprovalSubmit}>
                                 <template if:true={showPicklist}>
                                 <label>Submit for approval </label>
@@ -820,7 +824,11 @@
                                   <lightning-input type="checkbox"
                                     checked={responseWrapper.inspObsr.Rejected__c} label="Rejected" onchange={handlecheckBox} name="Rejected__c">
                                   </lightning-input>
-
+                                  <div class="remarks">
+                                    <label>Remarks by Inspector: </label>
+                                    <lightning-textarea type="text" disabled="true" value={responseWrapper.inspObsr.Remarks__c}  name="Remarks__c">
+                                    </lightning-textarea>
+                                  </div>
                                   <div class="remarks">
                                     <label>Remarks : </label>
                                     <lightning-textarea data-id="Remarks" required="true" variant="label-hidden" type="text" label=""
@@ -902,14 +910,14 @@
                       <!--</template>-->
                     </div>
                     <div class="slds-col">
-                      <!--<template if:false={isInspectionCompleted}>-->
+                      <template if:true={showSubmit}>
                         <div style="text-align: center; margin: .5rem 0; border-top: 1px solid #000; padding-top: 1rem;">
                           <lightning-button data-id="Vehicle_Info" style="text-align: center; margin: .5rem 0;"
-                            variant="brand" disabled={disableCodeSelect} label="Submit / يُقدِّم" title="Submit / يُقدِّم" onclick={openSubmitModal}
+                            variant="brand" disabled={disableSubmit} label="Submit / يُقدِّم" title="Submit / يُقدِّم" onclick={openSubmitModal}
                             class="slds-m-left_x-small">
                           </lightning-button>
                         </div>
-                      <!--</template>-->
+                      </template>
                     </div>
                   </div>
                   
