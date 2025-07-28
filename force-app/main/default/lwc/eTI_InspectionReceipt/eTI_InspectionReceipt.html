@@ -67,6 +67,28 @@
                             <lightning-button variant="brand" label="Search / يبحث" title="Search / يبحث"
                               onclick={fetchReceiptData} class="slds-m-left_x-small"></lightning-button>
                           </td>
+                           <td style="padding:2px;">
+                              <lightning-combobox
+                                name="amanLocation"
+                                label="Select AMAN Location"
+                                placeholder="Select a location"
+                                options={activeLocations}
+                                value={selectedActiveLocation}
+                                onchange={handleLocationChange}>
+                             </lightning-combobox>
+                          </td>
+                           <td style="padding:2px;">
+                              <template if:true={pendingReceipts.length}>
+                                <lightning-combobox
+                                    name="pendingReceipts"
+                                    label="Select Pending Receipt"
+                                    placeholder="Select a receipt"
+                                    options={pendingReceipts}
+                                    value={searchInput}
+                                    onchange={handleReceiptChange}>
+                                </lightning-combobox>
+                            </template>
+                          </td>
                         </tr>
                       </table>
                     </td>
@@ -688,14 +710,23 @@
                                 </div>
                                 <lightning-layout vertical-align="stretch" multiple-rows="true"
                                   class="x-small inspectionCode">
-                                  <template for:each={allCodesBreak} for:item="test">
-                                    <lightning-layout-item key={test.code} flexibility="auto" padding="around-small"
+                                  <template for:each={allCodesBreak} for:item="codeItem">
+                                    <!--<lightning-layout-item key={test.code} flexibility="auto" padding="around-small"
                                       class="custom-box">
                                       <lightning-input variant="label-hidden" class={test.defect} key={test.code}
                                         type="text" label="" title={test.record.Test_Type_Name_En__c} value={test.code}
                                         disabled="true">
                                       </lightning-input>
-                                    </lightning-layout-item>
+                                    </lightning-layout-item>-->
+                                    <button
+                                      key={codeItem.code}
+                                      data-code={codeItem.code}
+                                      value={codeItem.inspType}
+                                      class={codeItem.defect}
+                                      title={codeItem.record.Test_Type_Name_En__c}
+                                      onclick={handleCodeUpdate}>
+                                      {codeItem.code}
+                                    </button>
                                   </template>
                                 </lightning-layout>
                               </template>
@@ -747,14 +778,23 @@
                                 </div>
                                 <lightning-layout vertical-align="stretch" multiple-rows="true"
                                   class="x-small inspectionCode">
-                                  <template for:each={allCodesVisual} for:item="test">
-                                    <lightning-layout-item key={test.code} flexibility="auto" padding="around-small"
+                                  <template for:each={allCodesVisual} for:item="codeItem">
+                                    <!--<lightning-layout-item key={test.code} flexibility="auto" padding="around-small"
                                       class="custom-box">
                                       <lightning-input variant="label-hidden" class={test.defect} key={test.code}
                                         type="text" label="" title={test.record.Test_Type_Name_En__c} value={test.code}
                                         disabled="true">
                                       </lightning-input>
-                                    </lightning-layout-item>
+                                    </lightning-layout-item>-->
+                                    <button
+                                      key={codeItem.code}
+                                      data-code={codeItem.code}
+                                      value={codeItem.inspType}
+                                      class={codeItem.defect}
+                                      title={codeItem.record.Test_Type_Name_En__c}
+                                      onclick={handleCodeUpdate}>
+                                      {codeItem.code}
+                                    </button>
                                   </template>
                                 </lightning-layout>
                               </template>
@@ -792,7 +832,7 @@
                                   <template if:false={isInspectionCompleted}>
                                     <template if:false={uploadDisabled}>
                                       <div class="uploadfile_div">
-                                        <lightning-input type="file" required="true" accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf"
+                                        <lightning-input type="file" required="true" accept=".xlsx, .xls, .csv, .png, .jpg, .jpeg, .doc, .docx, .pdf"
                                           label="Attachment" onchange={openfileUpload}>
                                         </lightning-input>
                                       </div>
@@ -971,6 +1011,29 @@
               <div class="slds-backdrop slds-backdrop_open"></div>
           </template>
           <!-- Submit modal ends here -->
+           <!-- Edit modal popup -->
+          <template if:true={isEditCodeModalOpen}>
+            <section role="dialog" aria-modal="true" class="slds-modal slds-fade-in-open">
+              <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                  <h2>Edit Code: {editCode.code} {editCode.record.Test_Type_Name_En__c} {editCode.record.Test_Type_Name_Ar__c}
+                  </h2>
+                </header>
+                <div class="slds-modal__content">
+                  <lightning-combobox name="severity" label="Severity" options={severityOptions} value={editCode.defect}
+                    onchange={handleCodeSeverityChange}>
+                  </lightning-combobox>
+                  <lightning-textarea name="remarks" label="Remarks" value={editCode.remarks} onchange={handleCodeRemarksChange}>
+                  </lightning-textarea>
+                </div>
+                <footer class="slds-modal__footer">
+                  <lightning-button label="Cancel" onclick={closeCodeEditModal}></lightning-button>
+                  <lightning-button variant="brand" label="Save" onclick={saveCodeEdit}></lightning-button>
+                </footer>
+              </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+          </template>
           </table>
         </td>
       </tr>

@@ -24,7 +24,55 @@ public without sharing class ETI_InspectionReceiptCtrl{
         system.debug('userInfo>>>>>>'+ userInfo);
         return userInfo;
     }
-    
+
+    @AuraEnabled(cacheable=true)
+    public static List<ETI_Aman_Lookup__c> getActiveAmanLocations() {
+        return [
+            SELECT Id, Name 
+            FROM ETI_Aman_Lookup__c 
+            WHERE IsActive__c = true AND ETI_LookupType__c = 'AMAN_LOCATION'
+            ORDER BY Name
+        ];
+    }
+
+    @AuraEnabled
+    public static List<String> getPendingReceipts(String locName) {
+        System.debug('locName >>> ' + locName);
+        List<String> pendingReceipts = new List<String>();
+        
+        ET_Oracle_REST_Endpoints__mdt connection = ET_REST_Authorize_Helper.getSOAPEndpointFromMetadata('amanPendingReceipts');
+        Blob beforeblob = Blob.valueOf(connection.Username__c + ':' + connection.Password__c);
+        String paramvalue = EncodingUtil.base64Encode(beforeblob);
+        
+        HttpRequest request = new HttpRequest();
+        if (ET_REST_Authorize_Helper.runningInASandbox()) {
+            request.setEndpoint(connection.Dev_Endpoint__c + '?locName=' + locName);
+        } else {
+            request.setEndpoint(connection.LiveEndpoint_c__c + '?locName=' + locName);
+        }
+        request.setMethod('GET');
+        request.setTimeout(120000);
+        request.setHeader('Content-Type', 'application/json');
+        request.setHeader('Authorization', 'Basic ' + paramvalue);
+        
+        Http http = new Http();
+        HttpResponse response = http.send(request);
+        System.debug('response Body >>> ' + response.getBody());
+        
+        if (response.getStatusCode() == 200) {
+            Map<String, Object> jsonResponse = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+            if (jsonResponse.containsKey('receipts')) {
+                List<Object> receiptsObj = (List<Object>) jsonResponse.get('receipts');
+                for (Object obj : receiptsObj) {
+                    pendingReceipts.add((String) obj);
+                }
+            }
+            System.debug('pendingReceipts size >>> ' + pendingReceipts.size());
+        }
+        
+        return pendingReceipts;
+    }
+
     @auraEnabled
     public static String searchInspectionReceipt(String searchStr, String inspObsrFields){
         responseWrapper respWrp = New responseWrapper();
@@ -410,12 +458,13 @@ respWrp.receiptWrp.ReceiptDetails.Location.AR = bookingList[0]?.ET_Location__r?.
         }
     }
     
-    @auraEnabled
+    /*@auraEnabled
     public static void saveInspectionCodes(ETI_Inspection_Observation__c inspObsr, List<inspectionCode> allCodesBreak, List<inspectionCode> allCodesVisual){
+        System.debug('allCodesBreak: ' + allCodesBreak);
         List<ETI_Inspection_Codes__c> InspCodes = New List<ETI_Inspection_Codes__c>();
         System.debug('Break count: ' + inspObsr.Break_Inspection_Count__c);
         System.debug('Visual count: ' + inspObsr.Visual_Inspection_Count__c);
-        if(inspObsr.Break_Inspection_Count__c == 0 || inspObsr.Break_Inspection_Count__c == null){
+        //if(inspObsr.Break_Inspection_Count__c == 0 || inspObsr.Break_Inspection_Count__c == null){
             if(allCodesBreak.Size() > 0){
                 for (inspectionCode item : allCodesBreak){
                     ETI_Inspection_Codes__c InspCode = New ETI_Inspection_Codes__c();
@@ -427,7 +476,7 @@ respWrp.receiptWrp.ReceiptDetails.Location.AR = bookingList[0]?.ET_Location__r?.
                     InspCodes.add(InspCode);
                 }
             }
-        }
+        //}
         if(inspObsr.Visual_Inspection_Count__c == 0 || inspObsr.Visual_Inspection_Count__c == null){
             if(allCodesVisual.Size() > 0){
                 for (inspectionCode item : allCodesVisual){
@@ -443,6 +492,120 @@ respWrp.receiptWrp.ReceiptDetails.Location.AR = bookingList[0]?.ET_Location__r?.
         }
         if (InspCodes.Size() > 0)
             Insert InspCodes;
+    }*/
+
+    @AuraEnabled
+    public static void saveInspectionCodes(
+        ETI_Inspection_Observation__c inspObsr,
+        List<inspectionCode> allCodesBreak,
+        List<inspectionCode> allCodesVisual
+    ) {
+        List<ETI_Inspection_Codes__c> codesToInsert = new List<ETI_Inspection_Codes__c>();
+        List<ETI_Inspection_Codes__c> codesToUpdate = new List<ETI_Inspection_Codes__c>();
+        List<ETI_Inspection_Codes__c> codesToDelete = new List<ETI_Inspection_Codes__c>();
+
+        Map<String, inspectionCode> breakCodeMap = new Map<String, inspectionCode>();
+        if (allCodesBreak != null && allCodesBreak.size() > 0) {
+            for (inspectionCode item : allCodesBreak) {
+                if (item != null && String.isNotBlank(item.code)) {
+                    breakCodeMap.put('Break Inspection::' + item.code, item);
+                }
+            }
+        }
+
+        Map<String, inspectionCode> visualCodeMap = new Map<String, inspectionCode>();
+        if (allCodesVisual != null && allCodesVisual.size() > 0) {
+            for (inspectionCode item : allCodesVisual) {
+                if (item != null && String.isNotBlank(item.code)) {
+                    visualCodeMap.put('Visual Inspection::' + item.code, item);
+                }
+            }
+        }
+
+        Map<String, ETI_Inspection_Codes__c> existingCodeMap = new Map<String, ETI_Inspection_Codes__c>();
+        if (inspObsr != null && String.isNotBlank(inspObsr.Id)) {
+            List<ETI_Inspection_Codes__c> existingCodes = [
+                SELECT Id, Code__c, Inspection_Type__c, Code_Type__c, Remarks__c
+                FROM ETI_Inspection_Codes__c
+                WHERE Inspection_Observation__c = :inspObsr.Id
+            ];
+            if (existingCodes != null && existingCodes.size() > 0) {
+                for (ETI_Inspection_Codes__c code : existingCodes) {
+                    if (code != null && String.isNotBlank(code.Code__c) && String.isNotBlank(code.Inspection_Type__c)) {
+                        existingCodeMap.put(code.Inspection_Type__c + '::' + code.Code__c, code);
+                    }
+                }
+            }
+
+            // Deletion logic
+            Set<String> currentKeys = new Set<String>();
+            if (breakCodeMap != null && breakCodeMap.size() > 0) currentKeys.addAll(breakCodeMap.keySet());
+            if (visualCodeMap != null && visualCodeMap.size() > 0) currentKeys.addAll(visualCodeMap.keySet());
+
+            if (existingCodeMap != null && existingCodeMap.size() > 0) {
+                for (String existingKey : existingCodeMap.keySet()) {
+                    if (!currentKeys.contains(existingKey)) {
+                        codesToDelete.add(existingCodeMap.get(existingKey));
+                    }
+                }
+            }
+        }
+
+        // Inserts and updates (break)
+        if (breakCodeMap != null && breakCodeMap.keySet().size() > 0) {
+            for (String key : breakCodeMap.keySet()) {
+                inspectionCode item = breakCodeMap.get(key);
+                if (existingCodeMap.containsKey(key)) {
+                    ETI_Inspection_Codes__c existing = existingCodeMap.get(key);
+                    Boolean isChanged =
+                        existing.Code_Type__c != item.defect ||
+                        existing.Remarks__c != item.remarks;
+                    if (isChanged) {
+                        existing.Code_Type__c = item.defect;
+                        existing.Remarks__c = item.remarks;
+                        codesToUpdate.add(existing);
+                    }
+                } else {
+                    codesToInsert.add(new ETI_Inspection_Codes__c(
+                        Inspection_Observation__c = inspObsr.Id,
+                        Inspection_Type__c = item.inspType, //'Break Inspection',
+                        Code__c = item.code,
+                        Code_Type__c = item.defect,
+                        Remarks__c = item.remarks
+                    ));
+                }
+            }
+        }
+
+        // Inserts and updates (visual)
+        if (visualCodeMap != null && visualCodeMap.keySet().size() > 0) {
+            for (String key : visualCodeMap.keySet()) {
+                inspectionCode item = visualCodeMap.get(key);
+                if (existingCodeMap.containsKey(key)) {
+                    ETI_Inspection_Codes__c existing = existingCodeMap.get(key);
+                    Boolean isChanged =
+                        existing.Code_Type__c != item.defect ||
+                        existing.Remarks__c != item.remarks;
+                    if (isChanged) {
+                        existing.Code_Type__c = item.defect;
+                        existing.Remarks__c = item.remarks;
+                        codesToUpdate.add(existing);
+                    }
+                } else {
+                    codesToInsert.add(new ETI_Inspection_Codes__c(
+                        Inspection_Observation__c = inspObsr.Id,
+                        Inspection_Type__c = item.inspType, //'Visual Inspection',
+                        Code__c = item.code,
+                        Code_Type__c = item.defect,
+                        Remarks__c = item.remarks
+                    ));
+                }
+            }
+        }
+
+        if (codesToInsert != null && codesToInsert.size() > 0) insert codesToInsert;
+        if (codesToUpdate != null && codesToUpdate.size() > 0) update codesToUpdate;
+        if (codesToDelete != null && codesToDelete.size() > 0) delete codesToDelete;
     }
     
     @auraEnabled

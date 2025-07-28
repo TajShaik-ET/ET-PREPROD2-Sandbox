@@ -13,6 +13,8 @@ import getRelatedFilesByRecordId from '@salesforce/apex/ETI_InspectionReceiptCtr
 import uploadFile from '@salesforce/apex/ETI_InspectionReceiptCtrl.uploadFile';
 import deleteFile from '@salesforce/apex/ETI_InspectionReceiptCtrl.deleteFile';
 import getRoleAndProfile from '@salesforce/apex/ETI_InspectionReceiptCtrl.getRoleAndProfile';
+import getActiveAmanLocations from '@salesforce/apex/ETI_InspectionReceiptCtrl.getActiveAmanLocations';
+import getPendingReceipts from '@salesforce/apex/ETI_InspectionReceiptCtrl.getPendingReceipts';
 import { refreshApex } from '@salesforce/apex';
 import { getRecord } from 'lightning/uiRecordApi';
 import USER_ID from '@salesforce/user/Id';
@@ -67,6 +69,136 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
    @track fileAppend = '';
    @track inspObsrFields = 'Id,Aman_Receipt__c,AMAN_Receipt_No__c,Break_Major_Count__c,Visual_Major_Count__c,Vehicle_Make__c,Vehicle_Model__c,Vehicle_Color__c,Break_Inspection_Draft__c,Visual_Inspection_Draft__c,Is_Break_Inspection_Completed__c,Is_Visual_Inspection_Completed__c,Break_Inspection_Count__c,Visual_Inspection_Count__c,Remarks__c,Remarks_by_Supervisor__c,Steering_Type__c,Gear_Type__c,No_Of_Tires__c,No_Of_Seats__c,No_Of_Doors__c,Weight_Loaded__c,Weight_Unloaded__c,Horse_Power__c,No_Of_Cylinders__c,Fuel_Type__c,Engine_No__c,Chassis_No__c,Model_Year__c,Country__c,Vehicle_Type__c,Vehicle_Kind__c,No_Of_Axles__c,Break_Inspector_Name__c,Visual_Inspector_Name__c,Break_Inspector_Id__c,Visual_Inspector_Id__c,Lane_Number__c,Submit_for_Approval__c,Actual_Approver__c,Actual_Approver_Name__c,Rejected__c,Approved__c,Approver_Name_and_ID__c,Approver_Finance_ID__c,Email_Sent_to_Supervisor__c,Email_Sent_to_Inspectors__c,isSyncedToAman__c,Integration_Status__c';
 
+   @track activeLocations = [];
+   @track selectedActiveLocation = '';
+   @track pendingReceipts= [];
+   //@track selectedPendingReceipt;
+   @track isEditCodeModalOpen = false;
+   @track editCode = {};
+
+   get severityOptions() {
+      return [
+         { label: 'Qualified', value: 'Qualified' },
+         { label: 'Minor Defect', value: 'Minor' },
+         { label: 'Major Defect', value: 'Major' }
+      ];
+   }
+
+   handleCodeUpdate(event) {
+      const code = event.target.dataset.code;
+      const inspType = event.target.value;
+      console.log('handleCodeUpdate code: ' + code + ', inspType: ' + inspType);
+      var selected = {};
+      if (inspType === 'Break Inspection') {
+         for (var key in this.allCodesBreak) {
+            if (this.allCodesBreak[key].code === code) {
+               selected = this.allCodesBreak[key];
+               console.log('selected Break: ' + JSON.stringify(selected));
+               break;
+            }
+         }
+      }
+      if (inspType === 'Visual Inspection') {
+         for (var key in this.allCodesVisual) {
+            if (this.allCodesVisual[key].code === code) {
+               selected = this.allCodesVisual[key];
+               console.log('selected Visual: ' + JSON.stringify(selected));
+               break;
+            }
+         }
+      }
+      if (selected) {
+         // Clone object for editing
+         this.editCode = { ...selected, remarks: selected.remarks || '' };
+         this.isEditCodeModalOpen = true;
+      }
+   }
+
+   handleCodeSeverityChange(event) {
+      this.editCode.defect = event.detail.value;
+   }
+
+   handleCodeRemarksChange(event) {
+      this.editCode.remarks = event.detail.value;
+   }
+
+   closeCodeEditModal() {
+      this.isEditCodeModalOpen = false;
+      this.editCode = {};
+   }
+
+   saveCodeEdit() {
+      // Find index and update code in allCodes
+      console.log('saveEdit editCode inspType: ' + this.editCode.inspType);
+      const inspType = this.editCode.inspType;
+      if (inspType === 'Break Inspection') {
+         const idx = this.allCodesBreak.findIndex(c => c.code === this.editCode.code);
+         if (idx > -1) {
+            if (this.editCode.defect === 'Qualified') {
+               // Remove code from list if qualified
+               this.allCodesBreak.splice(idx, 1);
+            } else {
+               this.allCodesBreak[idx] = { ...this.editCode };
+            }
+         }
+         this.allCodesBreak = [...this.allCodesBreak]; // Trigger reactivity
+         console.log('saveCodeEdit allCodesBreak: ' + JSON.stringify(this.allCodesBreak));
+         //console.log('saveCodeEdit inspCodesBreak: ' + JSON.stringify(this.inspCodesBreak));
+      }
+      if (inspType === 'Visual Inspection') {
+         const idx = this.allCodesVisual.findIndex(c => c.code === this.editCode.code);
+         if (idx > -1) {
+            if (this.editCode.defect === 'Qualified') {
+               // Remove code from list if qualified
+               this.allCodesVisual.splice(idx, 1);
+            } else {
+               this.allCodesVisual[idx] = { ...this.editCode };
+            }
+         }
+         this.allCodesVisual = [...this.allCodesVisual]; // Trigger reactivity
+         console.log('saveCodeEdit allCodesVisual: ' + JSON.stringify(this.allCodesVisual));
+         //console.log('saveCodeEdit inspCodesVisual: ' + JSON.stringify(this.inspCodesVisual));
+      }
+      this.closeCodeEditModal();
+   }
+
+   @wire(getActiveAmanLocations)
+    wiredLocations({ error, data }) {
+        if (data) {
+            this.activeLocations = data.map(loc => {
+                return { label: loc.Name, value: loc.Name };
+            });
+            console.log('activeLocations : ' + JSON.stringify(this.activeLocations ));
+        } else if (error) {
+            // handle error as needed
+            this.activeLocations = [];
+            console.error('Error fetching locations:', error);
+        }
+    }
+
+    handleLocationChange(event) {
+        this.selectedActiveLocation = event.detail.value;
+        this.searchInput = null; //selectedPendingReceipt
+        this.pendingReceipts = [];
+
+        if (this.selectedActiveLocation) {
+            getPendingReceipts({ locName: this.selectedActiveLocation })
+                .then(result => {
+                    this.pendingReceipts = result.map(r => ({ label: r, value: r }));
+                })
+                .catch(error => {
+                    console.error('Error fetching pending receipts:', error);
+                    this.pendingReceipts = [];
+                });
+        }
+    }
+
+    handleReceiptChange(event) {
+        //this.selectedPendingReceipt = event.detail.value;
+        this.searchInput = event.detail.value;
+        // Handle receipt selection logic here
+    }
+   
    @wire(getRecord, {
       recordId: USER_ID,
       fields: [NAME_FIELD, EMPLOYEENUMBER_FIELD]
@@ -110,13 +242,13 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
               if(this.userRole == 'Vehicle Supervisor Partner User')
                {
                   this.showSubmit = false;
-                  this.fileAppend = '_sup';
+                  this.fileAppend = 'Sup_';
                }
 
                if(this.userRole == 'Vehicle Inspector Partner User')
                   {
                      this.showSubmit = true;
-                     this.fileAppend = '_insp';
+                     this.fileAppend = 'Insp_';
                   }
           })
           .catch((error) => {
@@ -459,10 +591,206 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
    }
    
 
-   openCodesModal(event) {
+   /*openCodesModal(event) {
       //console.log('Open Popup');
       this.isCodesModalOpen = true;
       this.tabName = event.target.value;
+      console.log('tabName: ' + this.tabName);
+      //this.allCodesBreak = [...this.allCodesBreak]; // Trigger reactivity
+      console.log('allCodesBreak Array --> ', JSON.stringify(this.inspCodesBreak));
+
+      // Deep clone inspCodesBreak to trigger reactivity properly
+      let updatedInspCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+
+      this.allCodesBreak.forEach(codeObj => {
+         const typeKey = codeObj.record.Type__c;
+         const code = codeObj.code;
+
+         // Find the section with matching key
+         const section = updatedInspCodes.find(sec => sec.key === typeKey);
+         if (section) {
+            // Find the detail matching the code
+            const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === code);
+            if (detail) {
+               if (codeObj.defect === 'Major') {
+                  detail.selectedOption = 'Major Defect';
+               } else if (codeObj.defect === 'Minor') {
+                  detail.selectedOption = 'Minor Defect';
+               } else {
+                  detail.selectedOption = 'Qualified';
+               }
+               detail.remarks = codeObj.remarks || '';
+            }
+         }
+      });
+
+      this.inspCodesBreak = updatedInspCodes;
+      this.inspCodesBreak.forEach(section => {
+         let defectCount = 0;
+         section.inspCodeDetails.forEach(detail => {
+            if (detail.selectedOption !== 'Qualified') {
+               defectCount++;
+            }
+         });
+         section.defectCount = defectCount;
+         section.label = `${section.key} (${defectCount}/${section.inspCodeDetails.length})`;
+      });
+   }*/
+
+   /*openCodesModal(event) {
+      this.isCodesModalOpen = true;
+      this.tabName = event.target.value;
+      console.log('tabName: ' + this.tabName);
+
+      // Determine code array and inspection code block based on tab
+      let allCodes = [];
+      let inspCodes = [];
+
+      if (this.tabName === 'inspTabBreak') {
+         allCodes = this.allCodesBreak;
+         inspCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+         console.log('allCodesBreak Array --> ', JSON.stringify(this.allCodesBreak));
+         console.log('inspCodesBreak Array --> ', JSON.stringify(this.inspCodesBreak));
+      } else if (this.tabName === 'inspTabVisual') {
+         allCodes = this.allCodesVisual;
+         inspCodes = JSON.parse(JSON.stringify(this.inspCodesVisual));
+      } else {
+         console.warn('Unsupported tabName:', this.tabName);
+         return;
+      }
+
+      allCodes.forEach(codeObj => {
+         const typeKey = codeObj.record.Type__c;
+         const code = codeObj.code;
+
+         const section = inspCodes.find(sec => sec.key === typeKey);
+         if (section) {
+            const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === code);
+            if (detail) {
+               if (codeObj.defect === 'Major') {
+                  detail.selectedOption = 'Major Defect';
+               } else if (codeObj.defect === 'Minor') {
+                  detail.selectedOption = 'Minor Defect';
+               } else {
+                  detail.selectedOption = 'Qualified';
+               }
+               detail.remarks = codeObj.remarks || '';
+            }
+         }
+      });
+
+      inspCodes.forEach(section => {
+         let defectCount = 0;
+         section.inspCodeDetails.forEach(detail => {
+            if (detail.selectedOption !== 'Qualified') {
+               defectCount++;
+            }
+         });
+         section.defectCount = defectCount;
+         section.label = `${section.key} (${defectCount}/${section.inspCodeDetails.length})`;
+      });
+
+      // Assign updated structure back
+      if (this.tabName === 'inspTabBreak') {
+         this.inspCodesBreak = inspCodes;
+      } else if (this.tabName === 'inspTabVisual') {
+         this.inspCodesVisual = inspCodes;
+      }
+   }*/
+
+   openCodesModal(event) {
+      this.isCodesModalOpen = true;
+      this.tabName = event.target.value;
+      console.log('tabName: ' + this.tabName);
+
+      let allCodes = [];
+      let inspCodes = [];
+
+      let isBreak = false;
+      let isVisual = false;
+
+      if (this.tabName === 'inspTabBreak') {
+         allCodes = this.allCodesBreak;
+         inspCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+         isBreak = true;
+         console.log('allCodesBreak Array --> ', JSON.stringify(allCodes));
+         console.log('inspCodesBreak Array --> ', JSON.stringify(inspCodes));
+      } else if (this.tabName === 'inspTabVisual') {
+         allCodes = this.allCodesVisual;
+         inspCodes = JSON.parse(JSON.stringify(this.inspCodesVisual));
+         isVisual = true;
+      } else {
+         console.warn('Unsupported tabName:', this.tabName);
+         return;
+      }
+
+      // Rebuild defectsMap and defectsArray
+      let defectsMap;
+      let defectsArray;
+
+      /*if (this.tabName === 'inspTabBreak') {
+         defectsMap = this.defectsMapBreak;
+         defectsArray = JSON.parse(JSON.stringify(this.defectsArrayBreak));
+      } else if (this.tabName === 'inspTabVisual') {
+         defectsMap = this.defectsMapVisual;
+         defectsArray = JSON.parse(JSON.stringify(this.defectsArrayVisual));
+      } else {*/
+         defectsMap = new Map();
+         defectsArray = [];
+      //}
+
+      allCodes.forEach(codeObj => {
+         const typeKey = codeObj.record.Type__c;
+         const code = codeObj.code;
+
+         const section = inspCodes.find(sec => sec.key === typeKey);
+         if (section) {
+            const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === code);
+            if (detail) {
+               // Set selectedOption
+               if (codeObj.defect === 'Major') {
+                  detail.selectedOption = 'Major Defect';
+               } else if (codeObj.defect === 'Minor') {
+                  detail.selectedOption = 'Minor Defect';
+               } else {
+                  detail.selectedOption = 'Qualified';
+               }
+
+               // Set remarks
+               detail.remarks = codeObj.remarks || '';
+
+               // Track defects
+               if (detail.selectedOption !== 'Qualified') {
+                  defectsArray.push(code);
+                  if (!defectsMap.has(typeKey)) {
+                     defectsMap.set(typeKey, 1);
+                  } else {
+                     defectsMap.set(typeKey, defectsMap.get(typeKey) + 1);
+                  }
+               }
+            }
+         }
+      });
+
+      // Update section labels
+      inspCodes.forEach(section => {
+         const count = defectsMap.get(section.key) || 0;
+         section.defectCount = count;
+         section.label = `${section.key} (${count}/${section.inspCodeDetails.length})`;
+      });
+
+      // Save based on tab
+      if (this.tabName === 'inspTabBreak') {
+         this.inspCodesBreak = inspCodes;
+         this.defectsMapBreak = defectsMap;
+         this.defectsArrayBreak = defectsArray;
+      } else if (this.tabName === 'inspTabVisual') {
+         this.inspCodesVisual = inspCodes;
+         this.defectsMapVisual = defectsMap;
+         this.defectsArrayVisual = defectsArray;
+      }
+      console.log('Updated defectsMap:', defectsMap);
+      console.log('Updated defectsArray:', defectsArray);
    }
 
    getSelectedCodes(event) {
@@ -474,7 +802,8 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          this.defectsArrayBreak = event.detail.defectsArray;
          this.activeSectionsBreak = event.detail.activeSections;
       }
-      //console.log('allCodesBreak Array --> ', this.allCodesBreak);
+      console.log('inspCodesBreak Array --> ', this.inspCodesBreak);
+      console.log('allCodesBreak Array --> ', this.allCodesBreak);
       let sortedAllCodesBreak = [...this.allCodesBreak].sort((a,b) => parseInt(a.code, 10) - parseInt(b.code, 10));      
       this.allCodesBreak = sortedAllCodesBreak;      
       //console.log('allCodesBreak: ', JSON.parse(JSON.stringify(this.allCodesBreak)))
@@ -528,7 +857,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
    }
 
    get isBreakInsp() {
-      //console.log('disableSave');
+      console.log('isBreakInsp tabName: '+this.tabName);
       if (this.tabName == 'inspTabBreak')
          return true;
       else
@@ -582,7 +911,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       })
    }
 
-   openfileUpload(event) {
+   /*openfileUpload(event) {
       const file = event.target.files[0];
       if (!file) {
          this.dispatchEvent(
@@ -601,6 +930,66 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          //console.log('fileData: '+JSON.stringify(this.fileData));
          this.handleUpload();
       }
+      reader.readAsDataURL(file);
+   }*/
+
+   openfileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) {
+         this.dispatchEvent(showToastNotification('warning', 'Please select a file', '', 'pester'));
+         return;
+      }
+
+      const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+
+      if (file.size > MAX_FILE_SIZE) {
+         this.dispatchEvent(showToastNotification('error', 'File size exceeds 4 MB limit. Please select a smaller file.', '', 'pester'));
+         return;
+      }
+
+      // Compress images before upload; non-images upload directly
+      if (file.type.startsWith('image/')) {
+         this.compressAndUploadImage(file);
+      } else {
+         this.readFileAndUpload(file);
+      }
+   }
+
+   compressAndUploadImage(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+         const img = new Image();
+         img.onload = () => {
+            const maxWidth = 1024;
+            const scaleSize = maxWidth / img.width;
+            const canvas = document.createElement('canvas');
+            canvas.width = maxWidth;
+            canvas.height = img.height * scaleSize;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob((blob) => {
+               const compressedFile = new File([blob], file.name, { type: 'image/jpeg' });
+               this.readFileAndUpload(compressedFile);
+            }, 'image/jpeg', 0.5);
+         };
+         img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+   }
+
+   readFileAndUpload(file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+         const base64 = reader.result.split(',')[1];
+         this.fileData = {
+            'filename': this.fileAppend +file.name,
+            'base64': base64,
+            'recordId': this.responseWrapper.inspObsr.Id
+         };
+         this.handleUpload();
+      };
       reader.readAsDataURL(file);
    }
 
@@ -737,7 +1126,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          delete inspObsr.Inspection_Codes__r; //save issue with child
          var allCodesBreak = this.allCodesBreak;
          var allCodesVisual = this.allCodesVisual;
-         //console.log('allCodesBreak:', allCodesBreak);
+         console.log('allCodesBreak:', allCodesBreak);
          //console.log('allCodesVisual:', allCodesVisual);
          //console.groupEnd();
          if (!inspObsr.Break_Inspection_Draft__c && allCodesBreak.length > 0)
