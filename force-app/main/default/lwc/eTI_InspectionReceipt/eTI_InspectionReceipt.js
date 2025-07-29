@@ -61,6 +61,8 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
    userId = USER_ID; // Automatically gets the current userId
    @track userRole;
    @track userProfile = '';
+   @track disableCodeSelect = false;
+   @track approvalCheck = false;
    @track error = '';
    @track isApprovalSubmit = false;
    @track disableSubmit = false;
@@ -114,10 +116,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       }
    }
 
-   /*handleCodeSeverityChange(event) {
-      this.editCode.defect = event.detail.value;
-   }*/
-
    handleSeverityChange(event) {
       this.editCode.defect = event.detail.value;
       var secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));;
@@ -130,67 +128,23 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          }
       }
       console.log('codes - ', codes);
-      //var defectsMapBreak = this.defectsMapBreak;
-      //var defectsArrayBreak = JSON.parse(JSON.stringify(this.defectsArrayBreak));
       for (var key2 in codes) {
          if (codes[key2].recordVDT.Id__c == event.target.dataset.id) {
             if (event.detail.value == 'Major' || event.detail.value == 'Minor') {
-               /*if (!defectsArrayBreak.includes(event.target.dataset.id)) {
-                  defectsArrayBreak.push(event.target.dataset.id);
-                  if (!defectsMapBreak.has(codes[key2].recordVDT.Type__c)) {
-                     defectsMapBreak.set(codes[key2].recordVDT.Type__c, 1);
-                  } else {
-                     defectsMapBreak.set(codes[key2].recordVDT.Type__c, defectsMapBreak.get(codes[key2].recordVDT.Type__c) + 1);
-                  }
-               }*/
-              codes[key2].selectedOption = event.detail.value+' Defect'; 
+               codes[key2].selectedOption = event.detail.value + ' Defect';
             } else if (event.detail.value == 'Qualified') {
-               /*if (defectsArrayBreak.includes(event.target.dataset.id)) {
-                  if (defectsMapBreak.has(codes[key2].recordVDT.Type__c)) {
-                     const index = defectsArrayBreak.indexOf(event.target.dataset.id);
-                     if (index > -1)
-                        defectsArrayBreak.splice(index, 1);
-                     if (defectsMapBreak.get(codes[key2].recordVDT.Type__c) - 1 >= 0)
-                        defectsMapBreak.set(codes[key2].recordVDT.Type__c, defectsMapBreak.get(codes[key2].recordVDT.Type__c) - 1);
-                  }
-               }*/
-              codes[key2].selectedOption = event.detail.value; 
+               codes[key2].selectedOption = event.detail.value;
             }
-            //codes[key2].selectedOption = event.detail.value; //'test'; //event.detail.value;
             this.handleCodesSeverity(JSON.parse(JSON.stringify(this.allCodesBreak)), event.target.dataset.id, event.detail.value, codes[key2].recordVDT, this.editCode.inspType);
-            //this.isCodesUpdated = true;
             break;
          }
       }
-      /*this.defectsMapBreak = defectsMapBreak;
-      this.defectsArrayBreak = defectsArrayBreak;
-      console.log('defectsMapBreak : ', this.defectsMapBreak);
-      console.log('defectsArrayBreak : ', this.defectsArrayBreak);
-      for (var key3 in secCodes) {
-         if (defectsMapBreak.has(secCodes[key3].key)) {
-            secCodes[key3].defectCount = defectsMapBreak.get(secCodes[key3].key);
-            secCodes[key3].label = secCodes[key3].key + ' (' + secCodes[key3].defectCount + '/' + secCodes[key3].inspCodeDetails.length + ')';
-         }
-      }*/
       this.inspCodesBreak = secCodes;
-      //console.log('inspCodesBreak : ', this.inspCodesBreak);
-      //console.log('udpated inspCodesBreak : ',this.inspCodesBreak);
-      /*this.dispatchEvent(new CustomEvent('codeschange', {
-         detail: {
-            tabName: this.tabName,
-            inspCodes: this.inspCodes,
-            allCodes: this.allCodes,
-            defectsMap: this.defectsMap,
-            defectsArray: this.defectsArray,
-            activeSections: this.activeSections
-         }
-      }));*/
    }
 
    handleCodesSeverity(allCodes, datasetId, value, record, inspType) {
-      console.log(datasetId + ' :removeElement: ' + value+ ' inspType: '+inspType);
+      console.log(datasetId + ' :removeElement: ' + value + ' inspType: ' + inspType);
       console.log('allCodes : ' + JSON.stringify(allCodes));
-      
       if (value == 'Major')
          allCodes.push({
             code: datasetId,
@@ -227,10 +181,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       console.log('allCodes : ', this.allCodesBreak);
    }
 
-   handleCodeRemarksChange(event) {
-      this.editCode.remarks = event.detail.value;
-   }
-
    handleInputChange(event) {
       this.editCode.remarks = event.detail.value;
       console.log('handleInputChange inspCodesBreak Array --> ', JSON.stringify(this.inspCodesBreak));
@@ -254,17 +204,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       }
       this.inspCodesBreak = secCodes;
       this.handleCodesInput(JSON.parse(JSON.stringify(this.allCodesBreak)), event.target.dataset.id, event.detail.value);
-      /*const allCodes = [...this.allCodes];
-      this.dispatchEvent(new CustomEvent('codeschange', {
-         detail: {
-            tabName: this.tabName,
-            inspCodes: this.inspCodes,
-            allCodes: allCodes,
-            defectsMap: this.defectsMap,
-            defectsArray: this.defectsArray,
-            activeSections: this.activeSections
-         }
-      }));*/
    }
 
    handleCodesInput(allCodes, datasetId, value) {
@@ -284,41 +223,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
    closeCodeEditModal() {
       this.isEditCodeModalOpen = false;
       this.editCode = {};
-   }
-
-   saveCodeEdit() {
-      // Find index and update code in allCodes
-      console.log('saveEdit editCode inspType: ' + this.editCode.inspType);
-      /*const inspType = this.editCode.inspType;
-      if (inspType === 'Break Inspection') {
-         const idx = this.allCodesBreak.findIndex(c => c.code === this.editCode.code);
-         if (idx > -1) {
-            if (this.editCode.defect === 'Qualified') {
-               // Remove code from list if qualified
-               this.allCodesBreak.splice(idx, 1);
-            } else {
-               this.allCodesBreak[idx] = { ...this.editCode };
-            }
-         }
-         this.allCodesBreak = [...this.allCodesBreak]; // Trigger reactivity
-         console.log('saveCodeEdit allCodesBreak: ' + JSON.stringify(this.allCodesBreak));
-         //console.log('saveCodeEdit inspCodesBreak: ' + JSON.stringify(this.inspCodesBreak));
-      }
-      if (inspType === 'Visual Inspection') {
-         const idx = this.allCodesVisual.findIndex(c => c.code === this.editCode.code);
-         if (idx > -1) {
-            if (this.editCode.defect === 'Qualified') {
-               // Remove code from list if qualified
-               this.allCodesVisual.splice(idx, 1);
-            } else {
-               this.allCodesVisual[idx] = { ...this.editCode };
-            }
-         }
-         this.allCodesVisual = [...this.allCodesVisual]; // Trigger reactivity
-         console.log('saveCodeEdit allCodesVisual: ' + JSON.stringify(this.allCodesVisual));
-         //console.log('saveCodeEdit inspCodesVisual: ' + JSON.stringify(this.inspCodesVisual));
-      }*/
-      this.closeCodeEditModal();
    }
 
    @wire(getActiveAmanLocations)
@@ -376,7 +280,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          console.log('inspectorDetail: ' + JSON.stringify(this.inspectorDetail));
       }
    }
-
    
     @wire(getPicklistValues)
     wiredPicklist({ error, data }) {
@@ -435,8 +338,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
 
    connectedCallback() {
       this.fetchRoleAndProfile();
-      
-      
       var today = new Date();
       this.todayDate = today;
       //console.log(today);
@@ -462,7 +363,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          { label: 'OI', value: 'OI' }
       ];
    }
-   @track disableCodeSelect = false;
+   
    fetchReceiptData() {
       this.inspCodesBreak = [];
       this.inspCodesVisual = [];
@@ -537,9 +438,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
                   this.showApproval = true;
                   
                }
-
-
-
                //console.log('responseWrapper.receiptWrp: ' + JSON.stringify(this.responseWrapper.receiptWrp));
                if (this.responseWrapper.receiptWrp != null && this.responseWrapper.receiptWrp != '') {
                   this.receiptDetails = this.responseWrapper.receiptWrp.ReceiptDetails;
@@ -647,17 +545,12 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       if (!inspObsr.Vehicle_Model__c) inspObsr.Vehicle_Model__c = '';
       if (!inspObsr.Break_Inspection_Draft__c) inspObsr.Break_Inspection_Draft__c = false;
       if (!inspObsr.Visual_Inspection_Draft__c) inspObsr.Visual_Inspection_Draft__c = false;
-      if (!inspObsr.Is_Break_Inspection_Completed__c)
-         { 
-            inspObsr.Is_Break_Inspection_Completed__c = false;
-             
-
-         }
-      if (!inspObsr.Is_Visual_Inspection_Completed__c) 
-         {
-            inspObsr.Is_Visual_Inspection_Completed__c = false;
-            
-         }
+      if (!inspObsr.Is_Break_Inspection_Completed__c) {
+         inspObsr.Is_Break_Inspection_Completed__c = false;
+      }
+      if (!inspObsr.Is_Visual_Inspection_Completed__c) {
+         inspObsr.Is_Visual_Inspection_Completed__c = false;
+      }
       if (!inspObsr.Remarks__c) inspObsr.Remarks__c = '';
       if (!inspObsr.Remarks_by_Supervisor__c) inspObsr.Remarks_by_Supervisor__c = '';
       if (!inspObsr.Steering_Type__c) inspObsr.Steering_Type__c = '';
@@ -686,56 +579,46 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       if (!inspObsr.Email_Sent_to_Supervisor__c) inspObsr.Email_Sent_to_Supervisor__c = false;
       if (!inspObsr.Email_Sent_to_Inspectors__c) inspObsr.Email_Sent_to_Inspectors__c = false;
       if (!inspObsr.Actual_Approver_Name__c) inspObsr.Actual_Approver_Name__c = '';
-      if (!inspObsr.Actual_Approver__c)
-      {
+      if (!inspObsr.Actual_Approver__c) {
          inspObsr.Actual_Approver__c = '';
          this.showAfterApproval = false;
-      }      
-      else{
-            this.showAfterApproval = true;
+      }
+      else {
+         this.showAfterApproval = true;
       }
       if (!inspObsr.Approver_Finance_ID__c) inspObsr.Approver_Finance_ID__c = '';
-      if (!inspObsr.Approver_Name_and_ID__c)
-      {
+      if (!inspObsr.Approver_Name_and_ID__c) {
          inspObsr.Approver_Name_and_ID__c = '';
          this.showPicklist = true;
-
       }
-      else
-      {
+      else {
          this.showPicklist = false;
-      } 
-      if (!inspObsr.Submit_for_Approval__c)
-      {
+      }
+      if (!inspObsr.Submit_for_Approval__c) {
          inspObsr.Submit_for_Approval__c = false;
       }
-      if(inspObsr.Integration_Status__c == 'Success')
-      {
+      if (inspObsr.Integration_Status__c == 'Success') {
          this.showPrintBtn = true;
       }
-      if(inspObsr.Submit_for_Approval__c == true && inspObsr.Approved__c == false && inspObsr.Rejected__c == false)
-         {
-            this.isApprovalSubmit = true;
-            this.disableSubmit = true;
-            if(this.userRole == 'Vehicle Inspector Partner User')
-            {
-               this.disableCodeSelect = true;
-            }
-            else
-            {
-               this.disableCodeSelect = false;
-            }
-            console.log('Ater If>>>>>>>', this.userRole, 'CodeDisable>>>>>>', this.disableCodeSelect);
+      if (inspObsr.Submit_for_Approval__c == true && inspObsr.Approved__c == false && inspObsr.Rejected__c == false) {
+         this.isApprovalSubmit = true;
+         this.disableSubmit = true;
+         if (this.userRole == 'Vehicle Inspector Partner User') {
+            this.disableCodeSelect = true;
          }
-         if(inspObsr.isSyncedToAman__c == false)
-            {
-               this.disableSubmit = false;
-            }
-            else{
-               this.disableSubmit = true;
-            }
+         else {
+            this.disableCodeSelect = false;
+         }
+         console.log('Ater If>>>>>>>', this.userRole, 'CodeDisable>>>>>>', this.disableCodeSelect);
+      }
+      if (inspObsr.isSyncedToAman__c == false) {
+         this.disableSubmit = false;
+      }
+      else {
+         this.disableSubmit = true;
+      }
       this.responseWrapper.inspObsr = inspObsr;
-      console.log('inspObsr: '+JSON.stringify(this.responseWrapper.inspObsr));
+      console.log('inspObsr: ' + JSON.stringify(this.responseWrapper.inspObsr));
    }
 
    handleFieldChange(event) {
@@ -744,146 +627,31 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       console.log('Field>>>>>>', fieldAPI , ' Value>>>>>>' , fieldValue);
       this.responseWrapper.inspObsr[fieldAPI] = fieldValue;
    }
-
-   @track approvalCheck = false;
-   handlecheckBox(event)
-   {
-      console.log(' CheckboxValue>>>>>>' , event.target.checked);
-      console.log(' Checkbox name>>>>>>' , event.target.name);
-      console.log(' User Id>>>>>>' , USER_ID);
-      
-      var fieldAPI = event.target.name;
-      this.responseWrapper.inspObsr[fieldAPI] =  event.target.checked;
-         if(event.target.name == 'Submit_for_Approval__c')
-            this.approvalCheck = event.target.checked;      
-         
-         if(event.target.name == 'Approved__c')
-         {
-            this.responseWrapper.inspObsr.Actual_Approver__c = USER_ID;
-            this.responseWrapper.inspObsr.Rejected__c = false;
-            if(this.userRole == 'Vehicle Inspector Partner User')
-               this.isApprovalSubmit = false;
-               this.disableSubmit = false;
-         }
-            
-
-         if(event.target.name == 'Rejected__c' && event.target.checked == true)
-         {
-            this.responseWrapper.inspObsr.Approved__c = false;
-            this.responseWrapper.inspObsr.Submit_for_Approval__c = false;
-            this.responseWrapper.inspObsr.Email_Sent_to_Supervisor__c = false;
-            this.responseWrapper.inspObsr.Approver_Name_and_ID__c = '';
-            this.responseWrapper.inspObsr.Approver_Finance_ID__c = '';
-         }
-   }
    
+   handlecheckBox(event) {
+      console.log(' CheckboxValue>>>>>>', event.target.checked);
+      console.log(' Checkbox name>>>>>>', event.target.name);
+      console.log(' User Id>>>>>>', USER_ID);
+      var fieldAPI = event.target.name;
+      this.responseWrapper.inspObsr[fieldAPI] = event.target.checked;
+      if (event.target.name == 'Submit_for_Approval__c')
+         this.approvalCheck = event.target.checked;
 
-   /*openCodesModal(event) {
-      //console.log('Open Popup');
-      this.isCodesModalOpen = true;
-      this.tabName = event.target.value;
-      console.log('tabName: ' + this.tabName);
-      //this.allCodesBreak = [...this.allCodesBreak]; // Trigger reactivity
-      console.log('allCodesBreak Array --> ', JSON.stringify(this.inspCodesBreak));
-
-      // Deep clone inspCodesBreak to trigger reactivity properly
-      let updatedInspCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
-
-      this.allCodesBreak.forEach(codeObj => {
-         const typeKey = codeObj.record.Type__c;
-         const code = codeObj.code;
-
-         // Find the section with matching key
-         const section = updatedInspCodes.find(sec => sec.key === typeKey);
-         if (section) {
-            // Find the detail matching the code
-            const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === code);
-            if (detail) {
-               if (codeObj.defect === 'Major') {
-                  detail.selectedOption = 'Major Defect';
-               } else if (codeObj.defect === 'Minor') {
-                  detail.selectedOption = 'Minor Defect';
-               } else {
-                  detail.selectedOption = 'Qualified';
-               }
-               detail.remarks = codeObj.remarks || '';
-            }
-         }
-      });
-
-      this.inspCodesBreak = updatedInspCodes;
-      this.inspCodesBreak.forEach(section => {
-         let defectCount = 0;
-         section.inspCodeDetails.forEach(detail => {
-            if (detail.selectedOption !== 'Qualified') {
-               defectCount++;
-            }
-         });
-         section.defectCount = defectCount;
-         section.label = `${section.key} (${defectCount}/${section.inspCodeDetails.length})`;
-      });
-   }*/
-
-   /*openCodesModal(event) {
-      this.isCodesModalOpen = true;
-      this.tabName = event.target.value;
-      console.log('tabName: ' + this.tabName);
-
-      // Determine code array and inspection code block based on tab
-      let allCodes = [];
-      let inspCodes = [];
-
-      if (this.tabName === 'inspTabBreak') {
-         allCodes = this.allCodesBreak;
-         inspCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
-         console.log('allCodesBreak Array --> ', JSON.stringify(this.allCodesBreak));
-         console.log('inspCodesBreak Array --> ', JSON.stringify(this.inspCodesBreak));
-      } else if (this.tabName === 'inspTabVisual') {
-         allCodes = this.allCodesVisual;
-         inspCodes = JSON.parse(JSON.stringify(this.inspCodesVisual));
-      } else {
-         console.warn('Unsupported tabName:', this.tabName);
-         return;
+      if (event.target.name == 'Approved__c') {
+         this.responseWrapper.inspObsr.Actual_Approver__c = USER_ID;
+         this.responseWrapper.inspObsr.Rejected__c = false;
+         if (this.userRole == 'Vehicle Inspector Partner User')
+            this.isApprovalSubmit = false;
+         this.disableSubmit = false;
       }
-
-      allCodes.forEach(codeObj => {
-         const typeKey = codeObj.record.Type__c;
-         const code = codeObj.code;
-
-         const section = inspCodes.find(sec => sec.key === typeKey);
-         if (section) {
-            const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === code);
-            if (detail) {
-               if (codeObj.defect === 'Major') {
-                  detail.selectedOption = 'Major Defect';
-               } else if (codeObj.defect === 'Minor') {
-                  detail.selectedOption = 'Minor Defect';
-               } else {
-                  detail.selectedOption = 'Qualified';
-               }
-               detail.remarks = codeObj.remarks || '';
-            }
-         }
-      });
-
-      inspCodes.forEach(section => {
-         let defectCount = 0;
-         section.inspCodeDetails.forEach(detail => {
-            if (detail.selectedOption !== 'Qualified') {
-               defectCount++;
-            }
-         });
-         section.defectCount = defectCount;
-         section.label = `${section.key} (${defectCount}/${section.inspCodeDetails.length})`;
-      });
-
-      // Assign updated structure back
-      if (this.tabName === 'inspTabBreak') {
-         this.inspCodesBreak = inspCodes;
-      } else if (this.tabName === 'inspTabVisual') {
-         this.inspCodesVisual = inspCodes;
+      if (event.target.name == 'Rejected__c' && event.target.checked == true) {
+         this.responseWrapper.inspObsr.Approved__c = false;
+         this.responseWrapper.inspObsr.Submit_for_Approval__c = false;
+         this.responseWrapper.inspObsr.Email_Sent_to_Supervisor__c = false;
+         this.responseWrapper.inspObsr.Approver_Name_and_ID__c = '';
+         this.responseWrapper.inspObsr.Approver_Finance_ID__c = '';
       }
-   }*/
+   }
 
    openCodesModal(event) {
       this.isCodesModalOpen = true;
@@ -891,10 +659,9 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       console.log('tabName: ' + this.tabName);
 
       //new code
-      console.log('openCodesModal inspCodesBreak : ' , JSON.stringify(this.inspCodesBreak));
+      console.log('openCodesModal inspCodesBreak : ', JSON.stringify(this.inspCodesBreak));
       var secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
-
-      var defectsMapBreak =  new Map(); //this.defectsMapBreak;
+      var defectsMapBreak = new Map(); //this.defectsMapBreak;
       var defectsArrayBreak = []; //JSON.parse(JSON.stringify(this.defectsArrayBreak));
       for (var key1 in secCodes) {
          let codes = secCodes[key1].inspCodeDetails;
@@ -925,95 +692,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       }
       this.inspCodesBreak = secCodes;
       //end
-
-      /*let allCodes = [];
-      let inspCodes = [];
-
-      let isBreak = false;
-      let isVisual = false;
-
-      if (this.tabName === 'inspTabBreak') {
-         allCodes = this.allCodesBreak;
-         inspCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
-         isBreak = true;
-         console.log('allCodesBreak Array --> ', JSON.stringify(allCodes));
-         console.log('inspCodesBreak Array --> ', JSON.stringify(inspCodes));
-      } else if (this.tabName === 'inspTabVisual') {
-         allCodes = this.allCodesVisual;
-         inspCodes = JSON.parse(JSON.stringify(this.inspCodesVisual));
-         isVisual = true;
-      } else {
-         console.warn('Unsupported tabName:', this.tabName);
-         return;
-      }
-
-      // Rebuild defectsMap and defectsArray
-      let defectsMap;
-      let defectsArray;
-      //remove
-      if (this.tabName === 'inspTabBreak') {
-         defectsMap = this.defectsMapBreak;
-         defectsArray = JSON.parse(JSON.stringify(this.defectsArrayBreak));
-      } else if (this.tabName === 'inspTabVisual') {
-         defectsMap = this.defectsMapVisual;
-         defectsArray = JSON.parse(JSON.stringify(this.defectsArrayVisual));
-      } else { //remove
-         defectsMap = new Map();
-         defectsArray = [];
-      } //remove
-
-      allCodes.forEach(codeObj => {
-         const typeKey = codeObj.record.Type__c;
-         const code = codeObj.code;
-
-         const section = inspCodes.find(sec => sec.key === typeKey);
-         if (section) {
-            const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === code);
-            if (detail) {
-               // Set selectedOption
-               if (codeObj.defect === 'Major') {
-                  detail.selectedOption = 'Major Defect';
-               } else if (codeObj.defect === 'Minor') {
-                  detail.selectedOption = 'Minor Defect';
-               } else {
-                  detail.selectedOption = 'Qualified';
-               }
-
-               // Set remarks
-               detail.remarks = codeObj.remarks || '';
-
-               // Track defects
-               if (detail.selectedOption !== 'Qualified') {
-                  defectsArray.push(code);
-                  if (!defectsMap.has(typeKey)) {
-                     defectsMap.set(typeKey, 1);
-                  } else {
-                     defectsMap.set(typeKey, defectsMap.get(typeKey) + 1);
-                  }
-               }
-            }
-         }
-      });
-
-      // Update section labels
-      inspCodes.forEach(section => {
-         const count = defectsMap.get(section.key) || 0;
-         section.defectCount = count;
-         section.label = `${section.key} (${count}/${section.inspCodeDetails.length})`;
-      });
-
-      // Save based on tab
-      if (this.tabName === 'inspTabBreak') {
-         this.inspCodesBreak = inspCodes;
-         this.defectsMapBreak = defectsMap;
-         this.defectsArrayBreak = defectsArray;
-      } else if (this.tabName === 'inspTabVisual') {
-         this.inspCodesVisual = inspCodes;
-         this.defectsMapVisual = defectsMap;
-         this.defectsArrayVisual = defectsArray;
-      }
-      console.log('Updated defectsMap:', defectsMap);
-      console.log('Updated defectsArray:', defectsArray);*/
    }
 
    getSelectedCodes(event) {
@@ -1103,24 +781,23 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       }
    }
 
-   showPrintMsg()
-   {
+   showPrintMsg() {
       console.log('recpNo>>>>>>>' + this.responseWrapper.inspObsr.AMAN_Receipt_No__c + 'inspNo>>>' + this.inspectorDetail[0].empNum);
       getPrintResult({
          recpNo: this.responseWrapper.inspObsr.AMAN_Receipt_No__c,
          inspNo: this.inspectorDetail[0].empNum,//this.inspObsrFields,
          recordId: this.responseWrapper.inspObsr.Id
-         
+
       }).then((response) => {
          console.log('response without Parse Print>>>>>>>> ', response);
          //console.log('response Print>>>>>>>> ' + JSON.stringify(JSON.parse(response)));
          this.showSpinner = false;
          if (response == 'S') {
-           
+
             this.dispatchEvent(
                showToastNotification('Success', 'Receipt Send to Aman for Print', 'success', 'pester')
             );
-         } else if(response == 'E') {
+         } else if (response == 'E') {
             this.dispatchEvent(
                showToastNotification('Error', 'Hardware Result Required', 'error', 'pester')
             );
@@ -1133,28 +810,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          );
       })
    }
-
-   /*openfileUpload(event) {
-      const file = event.target.files[0];
-      if (!file) {
-         this.dispatchEvent(
-            showToastNotification('warning', 'Please select a file', '', 'pester')
-         );
-         return;
-      }
-      var reader = new FileReader();
-      reader.onload = () => {
-         var base64 = reader.result.split(',')[1];
-         this.fileData = {
-            'filename': file.name + this.fileAppend,
-            'base64': base64,
-            'recordId': this.responseWrapper.inspObsr.Id
-         }
-         //console.log('fileData: '+JSON.stringify(this.fileData));
-         this.handleUpload();
-      }
-      reader.readAsDataURL(file);
-   }*/
 
    openfileUpload(event) {
       const file = event.target.files[0];
@@ -1333,12 +988,12 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       if (isEmptyString(inspObsr.Lane_Number__c)) {
          this.dispatchEvent(
             showToastNotification('Information!', 'Please select Lane Number in Vehicle Information Tab', 'info', 'sticky')
-         ); 
-      } else if(this.filesList.length === 0 && this.userRole != 'Vehicle Supervisor Partner User'){
-          this.dispatchEvent(
-             showToastNotification('Error!', 'Please upload file before saving the record', 'error', 'sticky')
-          );
-      }else {
+         );
+      } else if (this.filesList.length === 0 && this.userRole != 'Vehicle Supervisor Partner User') {
+         this.dispatchEvent(
+            showToastNotification('Error!', 'Please upload file before saving the record', 'error', 'sticky')
+         );
+      } else {
          this.showSpinner = true;
          //console.groupCollapsed();
          //console.group();
@@ -1368,31 +1023,27 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
                this.responseWrapper.inspObsr = JSON.parse(response);
                refreshApex(this.responseWrapper.inspObsr);
                this.isSaveCompleted = false;
-               if(this.responseWrapper.inspObsr.Submit_for_Approval__c == true && this.responseWrapper.inspObsr.Approved__c == false && this.responseWrapper.inspObsr.Rejected__c == false)
-               {
+               if (this.responseWrapper.inspObsr.Submit_for_Approval__c == true && this.responseWrapper.inspObsr.Approved__c == false && this.responseWrapper.inspObsr.Rejected__c == false) {
                   this.isApprovalSubmit = true;
                   this.disableSubmit = true;
-                  if(this.userRole = 'Vehicle Inspector Partner User')
-                  {
+                  if (this.userRole = 'Vehicle Inspector Partner User') {
                      this.disableCodeSelect = true;
                   }
-                  else
-                  {
+                  else {
                      this.disableCodeSelect = false;
                   }
                }
-               console.log('Approve>>> ', this.responseWrapper.inspObsr.Approved__c , 'Reject>>>>>>>', this.responseWrapper.inspObsr.Rejected__c); 
-               if(this.responseWrapper.inspObsr.Approved__c == true || this.responseWrapper.inspObsr.Rejected__c == true)
-               {
-                 
+               console.log('Approve>>> ', this.responseWrapper.inspObsr.Approved__c, 'Reject>>>>>>>', this.responseWrapper.inspObsr.Rejected__c);
+               if (this.responseWrapper.inspObsr.Approved__c == true || this.responseWrapper.inspObsr.Rejected__c == true) {
+
                   this.showAfterApproval = true;
-                     //this.showApproval = false;
-                     console.log('In if showAfterApproval>>>', this.showAfterApproval);   
+                  //this.showApproval = false;
+                  console.log('In if showAfterApproval>>>', this.showAfterApproval);
                }
                this.dispatchEvent(
                   showToastNotification('Success', 'Saved succussfully', 'success', 'pester')
                );
-               
+
             } else {
                this.dispatchEvent(
                   showToastNotification('Error', 'Issue while saving. Pleae contact admin', 'error', 'sticky')
@@ -1407,19 +1058,23 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          })
       }
    }
+
    // To open modal on click of Submit button
    openSubmitModal(){
       this.isSubmitModalOpen = true;
    }
+
    // To close the Modal on click of No option in the modal & after calling Aman system
    closeSubmitModal(){
       this.isSubmitModalOpen = false;
    }
+
    // This function will be called on Click of Submit button
    handleConfirmSubmit(){
       this.integrateAman();
       this.closeSubmitModal();
    }
+
    integrateAman() {
       //debugger;
       var inspObsr = this.responseWrapper.inspObsr;
@@ -1441,55 +1096,45 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          //console.log('allCodesBreak:', allCodesBreak);
          //console.log('allCodesVisual:', allCodesVisual);
          //console.groupEnd();
-         if(inspObsr.Submit_for_Approval__c == false)
-         {
-            if(inspObsr.Break_Inspection_Draft__c == true)
+         if (inspObsr.Submit_for_Approval__c == false) {
+            if (inspObsr.Break_Inspection_Draft__c == true)
                inspObsr.Is_Break_Inspection_Completed__c = true;
-            if(inspObsr.Visual_Inspection_Draft__c == true)
-            {
+            if (inspObsr.Visual_Inspection_Draft__c == true) {
                inspObsr.Is_Visual_Inspection_Completed__c = true;
             }
-            else
-            {
+            else {
                this.dispatchEvent(
                   showToastNotification('Error', 'Visual Inspection is not completed', 'error', 'sticky')
                );
             }
          }
-         
-         if(inspObsr.Submit_for_Approval__c == true)
-         {
-            if(inspObsr.Approved__c == true)
-            {
-               if(inspObsr.Break_Inspection_Draft__c == true)
+
+         if (inspObsr.Submit_for_Approval__c == true) {
+            if (inspObsr.Approved__c == true) {
+               if (inspObsr.Break_Inspection_Draft__c == true)
                   inspObsr.Is_Break_Inspection_Completed__c = true;
-               if(inspObsr.Visual_Inspection_Draft__c == true)
-               {
+               if (inspObsr.Visual_Inspection_Draft__c == true) {
                   inspObsr.Is_Visual_Inspection_Completed__c = true;
                }
-               else
-               {
+               else {
                   this.dispatchEvent(
                      showToastNotification('Error', 'Visual Inspection is not completed', 'error', 'sticky')
                   );
                }
             }
-            else{
+            else {
                this.dispatchEvent(
                   showToastNotification('Error', 'Inspection is under approval, after approval you can submit to AMAN', 'error', 'sticky')
                );
             }
-
-
          }
-        
-            
+
          console.log('VIsual>>>>>>>', inspObsr.Is_Visual_Inspection_Completed__c);
          console.log('Break>>>>>>>', inspObsr.Is_Break_Inspection_Completed__c);
          integrateReceipt({
             inspObsr: inspObsr,
             inspObsrFields: this.inspObsrFields,
-            
+
          }).then((response) => {
             console.log('response final>>>>>>>> ' + JSON.stringify(JSON.parse(response)));
             this.showSpinner = false;
