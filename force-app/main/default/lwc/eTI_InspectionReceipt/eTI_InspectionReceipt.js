@@ -114,12 +114,171 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       }
    }
 
-   handleCodeSeverityChange(event) {
+   /*handleCodeSeverityChange(event) {
       this.editCode.defect = event.detail.value;
+   }*/
+
+   handleSeverityChange(event) {
+      this.editCode.defect = event.detail.value;
+      var secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));;
+      //console.log('target name : ' + event.target.name);
+      var codes = [];
+      for (var key1 in secCodes) {
+         if (secCodes[key1].key == event.target.name) {
+            codes = secCodes[key1].inspCodeDetails;
+            break;
+         }
+      }
+      console.log('codes - ', codes);
+      //var defectsMapBreak = this.defectsMapBreak;
+      //var defectsArrayBreak = JSON.parse(JSON.stringify(this.defectsArrayBreak));
+      for (var key2 in codes) {
+         if (codes[key2].recordVDT.Id__c == event.target.dataset.id) {
+            if (event.detail.value == 'Major' || event.detail.value == 'Minor') {
+               /*if (!defectsArrayBreak.includes(event.target.dataset.id)) {
+                  defectsArrayBreak.push(event.target.dataset.id);
+                  if (!defectsMapBreak.has(codes[key2].recordVDT.Type__c)) {
+                     defectsMapBreak.set(codes[key2].recordVDT.Type__c, 1);
+                  } else {
+                     defectsMapBreak.set(codes[key2].recordVDT.Type__c, defectsMapBreak.get(codes[key2].recordVDT.Type__c) + 1);
+                  }
+               }*/
+              codes[key2].selectedOption = event.detail.value+' Defect'; 
+            } else if (event.detail.value == 'Qualified') {
+               /*if (defectsArrayBreak.includes(event.target.dataset.id)) {
+                  if (defectsMapBreak.has(codes[key2].recordVDT.Type__c)) {
+                     const index = defectsArrayBreak.indexOf(event.target.dataset.id);
+                     if (index > -1)
+                        defectsArrayBreak.splice(index, 1);
+                     if (defectsMapBreak.get(codes[key2].recordVDT.Type__c) - 1 >= 0)
+                        defectsMapBreak.set(codes[key2].recordVDT.Type__c, defectsMapBreak.get(codes[key2].recordVDT.Type__c) - 1);
+                  }
+               }*/
+              codes[key2].selectedOption = event.detail.value; 
+            }
+            //codes[key2].selectedOption = event.detail.value; //'test'; //event.detail.value;
+            this.handleCodesSeverity(JSON.parse(JSON.stringify(this.allCodesBreak)), event.target.dataset.id, event.detail.value, codes[key2].recordVDT, this.editCode.inspType);
+            //this.isCodesUpdated = true;
+            break;
+         }
+      }
+      /*this.defectsMapBreak = defectsMapBreak;
+      this.defectsArrayBreak = defectsArrayBreak;
+      console.log('defectsMapBreak : ', this.defectsMapBreak);
+      console.log('defectsArrayBreak : ', this.defectsArrayBreak);
+      for (var key3 in secCodes) {
+         if (defectsMapBreak.has(secCodes[key3].key)) {
+            secCodes[key3].defectCount = defectsMapBreak.get(secCodes[key3].key);
+            secCodes[key3].label = secCodes[key3].key + ' (' + secCodes[key3].defectCount + '/' + secCodes[key3].inspCodeDetails.length + ')';
+         }
+      }*/
+      this.inspCodesBreak = secCodes;
+      //console.log('inspCodesBreak : ', this.inspCodesBreak);
+      //console.log('udpated inspCodesBreak : ',this.inspCodesBreak);
+      /*this.dispatchEvent(new CustomEvent('codeschange', {
+         detail: {
+            tabName: this.tabName,
+            inspCodes: this.inspCodes,
+            allCodes: this.allCodes,
+            defectsMap: this.defectsMap,
+            defectsArray: this.defectsArray,
+            activeSections: this.activeSections
+         }
+      }));*/
+   }
+
+   handleCodesSeverity(allCodes, datasetId, value, record, inspType) {
+      console.log(datasetId + ' :removeElement: ' + value+ ' inspType: '+inspType);
+      console.log('allCodes : ' + JSON.stringify(allCodes));
+      
+      if (value == 'Major')
+         allCodes.push({
+            code: datasetId,
+            defect: 'Major',
+            inspType: inspType,
+            record: record
+         });
+      if (value == 'Minor')
+         allCodes.push({
+            code: datasetId,
+            defect: 'Minor',
+            inspType: inspType,
+            record: record
+         });
+      for (var key in allCodes) {
+         if (value == 'Major') {
+            if (allCodes[key].code == datasetId && allCodes[key].defect == 'Minor') {
+               if (key != -1)
+                  allCodes.splice(key, 1);
+            }
+         } else if (value == 'Minor') {
+            if (allCodes[key].code == datasetId && allCodes[key].defect == 'Major') {
+               if (key != -1)
+                  allCodes.splice(key, 1);
+            }
+         } else if (value == 'Qualified') {
+            if (allCodes[key].code == datasetId && (allCodes[key].defect == 'Major' || allCodes[key].defect == 'Minor')) {
+               if (key != -1)
+                  allCodes.splice(key, 1);
+            }
+         }
+      }
+      this.allCodesBreak = allCodes;
+      console.log('allCodes : ', this.allCodesBreak);
    }
 
    handleCodeRemarksChange(event) {
       this.editCode.remarks = event.detail.value;
+   }
+
+   handleInputChange(event) {
+      this.editCode.remarks = event.detail.value;
+      console.log('handleInputChange inspCodesBreak Array --> ', JSON.stringify(this.inspCodesBreak));
+      var secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));;
+      //console.log('target name : ' + event.target.name);
+      var codes = [];
+      //console.log('secCodes - ', secCodes);
+      for (var key1 in secCodes) {
+         if (secCodes[key1].key == event.target.name) {
+            codes = secCodes[key1].inspCodeDetails;
+            break;
+         }
+      }
+      //console.log('codes - ', codes);
+      for (var key2 in codes) {
+         if (codes[key2].recordVDT.Id__c == event.target.dataset.id) {
+            codes[key2].remarks = event.detail.value; //'test'; //event.detail.value;
+            //this.isCodesUpdated = true;
+            break;
+         }
+      }
+      this.inspCodesBreak = secCodes;
+      this.handleCodesInput(JSON.parse(JSON.stringify(this.allCodesBreak)), event.target.dataset.id, event.detail.value);
+      /*const allCodes = [...this.allCodes];
+      this.dispatchEvent(new CustomEvent('codeschange', {
+         detail: {
+            tabName: this.tabName,
+            inspCodes: this.inspCodes,
+            allCodes: allCodes,
+            defectsMap: this.defectsMap,
+            defectsArray: this.defectsArray,
+            activeSections: this.activeSections
+         }
+      }));*/
+   }
+
+   handleCodesInput(allCodes, datasetId, value) {
+      //console.log('allCodes : '+JSON.stringify(allCodes));
+      console.log(datasetId + ' removeElement ' + value);
+      if (value != 'Major' && value != 'Minor') {
+         for (var key in allCodes) {
+            if (allCodes[key].code == datasetId) {
+               allCodes[key].remarks = value;
+            }
+         }
+         this.allCodesBreak = allCodes;
+         //console.log('allCodes : ',this.allCodes);
+      }
    }
 
    closeCodeEditModal() {
@@ -130,7 +289,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
    saveCodeEdit() {
       // Find index and update code in allCodes
       console.log('saveEdit editCode inspType: ' + this.editCode.inspType);
-      const inspType = this.editCode.inspType;
+      /*const inspType = this.editCode.inspType;
       if (inspType === 'Break Inspection') {
          const idx = this.allCodesBreak.findIndex(c => c.code === this.editCode.code);
          if (idx > -1) {
@@ -158,7 +317,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          this.allCodesVisual = [...this.allCodesVisual]; // Trigger reactivity
          console.log('saveCodeEdit allCodesVisual: ' + JSON.stringify(this.allCodesVisual));
          //console.log('saveCodeEdit inspCodesVisual: ' + JSON.stringify(this.inspCodesVisual));
-      }
+      }*/
       this.closeCodeEditModal();
    }
 
@@ -335,8 +494,11 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          //console.dir(response); 
          if (JSON.parse(response) != null && JSON.parse(response) != '') {
             this.responseWrapper = JSON.parse(response);
+            console.log('response responseWrapper:', this.responseWrapper);
             console.log('response inspRecpt:', this.responseWrapper.inspRecpt);
             console.log('response inspObsr:', this.responseWrapper.inspObsr);
+            console.log('response receiptWrp:', this.responseWrapper.receiptWrp);
+            console.log('response inspCodesNewBreak:', this.responseWrapper.inspCodesNewBreak);
             if (this.responseWrapper.isSuccess) {
                this.fetchFiles(); //retrieve files
                if (!this.responseWrapper.inspObsr.Is_Break_Inspection_Completed__c || !this.responseWrapper.inspObsr.Is_Visual_Inspection_Completed__c)
@@ -424,6 +586,31 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
                      });
                   }
                   //console.log('codesOld: ', this.oldCodes);
+                  //new code
+                  let inspCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+                  this.allCodesBreak.forEach(codeObj => {
+                     const typeKey = codeObj.record.Type__c;
+                     const code = codeObj.code;
+
+                     const section = inspCodes.find(sec => sec.key === typeKey);
+                     if (section) {
+                        const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === code);
+                        if (detail) {
+                           // Set selectedOption
+                           if (codeObj.defect === 'Major') {
+                              detail.selectedOption = 'Major Defect';
+                           } else if (codeObj.defect === 'Minor') {
+                              detail.selectedOption = 'Minor Defect';
+                           } else {
+                              detail.selectedOption = 'Qualified';
+                           }
+                           // Set remarks
+                           detail.remarks = codeObj.remarks || '';
+                        }
+                     }
+                  });
+                  this.inspCodesBreak = inspCodes;
+                  //end
                   this.dispatchEvent(
                      showToastNotification('Success', this.responseWrapper.message, 'success', 'pester')
                   );
@@ -703,7 +890,43 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       this.tabName = event.target.value;
       console.log('tabName: ' + this.tabName);
 
-      let allCodes = [];
+      //new code
+      console.log('openCodesModal inspCodesBreak : ' , JSON.stringify(this.inspCodesBreak));
+      var secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+
+      var defectsMapBreak =  new Map(); //this.defectsMapBreak;
+      var defectsArrayBreak = []; //JSON.parse(JSON.stringify(this.defectsArrayBreak));
+      for (var key1 in secCodes) {
+         let codes = secCodes[key1].inspCodeDetails;
+         console.log('openCodesModal codes : ', codes);
+         for (var key2 in codes) {
+            if (codes[key2].selectedOption == 'Major Defect' || codes[key2].selectedOption == 'Minor Defect') {
+               if (!defectsArrayBreak.includes(codes[key2].recordVDT.Id__c)) {
+                  defectsArrayBreak.push(codes[key2].recordVDT.Id__c);
+                  if (!defectsMapBreak.has(codes[key2].recordVDT.Type__c)) {
+                     defectsMapBreak.set(codes[key2].recordVDT.Type__c, 1);
+                  } else {
+                     defectsMapBreak.set(codes[key2].recordVDT.Type__c, defectsMapBreak.get(codes[key2].recordVDT.Type__c) + 1);
+                  }
+               }
+            }
+            //break;
+         }
+      }
+      this.defectsMapBreak = defectsMapBreak;
+      this.defectsArrayBreak = defectsArrayBreak;
+      console.log('defectsMapBreak : ', this.defectsMapBreak);
+      console.log('defectsArrayBreak : ', this.defectsArrayBreak);
+      for (var key3 in secCodes) {
+         if (defectsMapBreak.has(secCodes[key3].key)) {
+            secCodes[key3].defectCount = defectsMapBreak.get(secCodes[key3].key);
+            secCodes[key3].label = secCodes[key3].key + ' (' + secCodes[key3].defectCount + '/' + secCodes[key3].inspCodeDetails.length + ')';
+         }
+      }
+      this.inspCodesBreak = secCodes;
+      //end
+
+      /*let allCodes = [];
       let inspCodes = [];
 
       let isBreak = false;
@@ -727,17 +950,17 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       // Rebuild defectsMap and defectsArray
       let defectsMap;
       let defectsArray;
-
-      /*if (this.tabName === 'inspTabBreak') {
+      //remove
+      if (this.tabName === 'inspTabBreak') {
          defectsMap = this.defectsMapBreak;
          defectsArray = JSON.parse(JSON.stringify(this.defectsArrayBreak));
       } else if (this.tabName === 'inspTabVisual') {
          defectsMap = this.defectsMapVisual;
          defectsArray = JSON.parse(JSON.stringify(this.defectsArrayVisual));
-      } else {*/
+      } else { //remove
          defectsMap = new Map();
          defectsArray = [];
-      //}
+      } //remove
 
       allCodes.forEach(codeObj => {
          const typeKey = codeObj.record.Type__c;
@@ -790,7 +1013,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          this.defectsArrayVisual = defectsArray;
       }
       console.log('Updated defectsMap:', defectsMap);
-      console.log('Updated defectsArray:', defectsArray);
+      console.log('Updated defectsArray:', defectsArray);*/
    }
 
    getSelectedCodes(event) {

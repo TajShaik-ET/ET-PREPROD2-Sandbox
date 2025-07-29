@@ -1020,11 +1020,13 @@
                   </h2>
                 </header>
                 <div class="slds-modal__content">
-                  <lightning-combobox name="severity" label="Severity" options={severityOptions} value={editCode.defect}
-                    onchange={handleCodeSeverityChange}>
+                  <lightning-combobox data-id={editCode.record.Id__c} name={editCode.record.Type__c} label="" placeholder="Select Severity" options={severityOptions} value={editCode.defect}
+                    onchange={handleSeverityChange}>
                   </lightning-combobox>
-                  <lightning-textarea name="remarks" label="Remarks" value={editCode.remarks} onchange={handleCodeRemarksChange}>
-                  </lightning-textarea>
+                  <lightning-input data-id={editCode.record.Id__c} name={editCode.record.Type__c} variant="label-hidden"
+                   type="text" label="" placeholder="Please add your remarks"
+                   value={editCode.remarks} onchange={handleInputChange}>
+                  </lightning-input>
                 </div>
                 <footer class="slds-modal__footer">
                   <lightning-button label="Cancel" onclick={closeCodeEditModal}></lightning-button>
