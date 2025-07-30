@@ -97,7 +97,7 @@ export default class ETI_InspectionReceiptCodes extends LightningElement {
          return false;
    }
 
-   handleInputChange(event) {
+   /*handleInputChange(event) {
       console.log('inspCodes Array --> ', JSON.stringify(this.inspCodes));
       var secCodes = JSON.parse(JSON.stringify(this.inspCodes));;
       //console.log('target name : ' + event.target.name);
@@ -130,9 +130,82 @@ export default class ETI_InspectionReceiptCodes extends LightningElement {
             activeSections: this.activeSections
          }
       }));
+   }*/
+
+   handleInputChange(event) {
+      const datasetId = event.target.dataset.id;
+      const sectionKey = event.target.name;
+      const remarksValue = event.detail.value;
+      console.log(
+         '[handleInputChange]',
+         'tabName:', this.tabName,
+         '| datasetId:', datasetId,
+         '| sectionKey:', sectionKey,
+         '| remarksValue:', remarksValue
+      );
+
+      // Clone current state
+      let secCodes = JSON.parse(JSON.stringify(this.inspCodes));
+      let allCodes = JSON.parse(JSON.stringify(this.allCodes));
+
+      // Update remarks in matching section/detail
+      const section = secCodes.find(sec => sec.key === sectionKey);
+      if (section) {
+         const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === datasetId);
+         if (detail) {
+            detail.remarks = remarksValue || '';
+            this.isCodesUpdated = true;
+         }
+      }
+
+      // Update local state
+      this.inspCodes = secCodes;
+      console.log('handleInputChange Updated inspCodes:', this.inspCodes);
+
+      // Update entry in allCodes
+      this.handleCodesInput(allCodes, datasetId, remarksValue);
+
+      // Dispatch updated values to parent
+      this.dispatchEvent(new CustomEvent('codeschange', {
+         detail: {
+            tabName: this.tabName,              // parent uses this to determine inspType
+            inspCodes: this.inspCodes,
+            allCodes: allCodes,
+            defectsMap: this.defectsMap,
+            defectsArray: this.defectsArray,
+            activeSections: this.activeSections
+         }
+      }));
    }
 
-   handleSeverityChange(event) {
+   /*handleCodesInput(allCodes, datasetId, value) {
+      //console.log('allCodes : '+JSON.stringify(allCodes));
+      //console.log(datasetId + ' removeElement ' + value);
+      if (value != 'Major Defect' && value != 'Minor Defect') {
+         for (var key in allCodes) {
+            if (allCodes[key].code == datasetId) {
+               allCodes[key].remarks = value;
+            }
+         }
+         this.allCodes = allCodes;
+         //console.log('allCodes : ',this.allCodes);
+      }
+   }*/
+
+   handleCodesInput(allCodes, datasetId, value) {
+      // Only update remarks if not a severity type
+      if (value !== 'Major Defect' && value !== 'Minor Defect') {
+         allCodes.forEach(entry => {
+            if (entry.code === datasetId) {
+               entry.remarks = value;
+            }
+         });
+         this.allCodes = allCodes;
+         console.log('handleCodesInput Updated allCodes:', this.allCodes);
+      }
+   }
+
+   /*handleSeverityChange(event) {
       var secCodes = JSON.parse(JSON.stringify(this.inspCodes));;
       //console.log('target name : ' + event.target.name);
       var codes = [];
@@ -196,23 +269,93 @@ export default class ETI_InspectionReceiptCodes extends LightningElement {
             activeSections: this.activeSections
          }
       }));
-   }
+   }*/
+   
+   handleSeverityChange(event) {
+      const datasetId = event.target.dataset.id;
+      const sectionKey = event.target.name;
+      const selectedValue = event.detail.value;
 
-   handleCodesInput(allCodes, datasetId, value) {
-      //console.log('allCodes : '+JSON.stringify(allCodes));
-      //console.log(datasetId + ' removeElement ' + value);
-      if (value != 'Major Defect' && value != 'Minor Defect') {
-         for (var key in allCodes) {
-            if (allCodes[key].code == datasetId) {
-               allCodes[key].remarks = value;
+      console.log(
+         '[handleSeverityChange]',
+         'tabName:', this.tabName,
+         '| datasetId:', datasetId,
+         '| sectionKey:', sectionKey,
+         '| selectedValue:', selectedValue
+      );
+
+      let secCodes = JSON.parse(JSON.stringify(this.inspCodes));
+      let allCodes = JSON.parse(JSON.stringify(this.allCodes));
+      let defectsMap = this.defectsMap;
+      let defectsArray = JSON.parse(JSON.stringify(this.defectsArray));
+
+      // Update selectedOption in matching section/detail
+      const section = secCodes.find(sec => sec.key === sectionKey);
+      console.log('handleSeverityChange section:', section);
+      if (section) {
+         const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === datasetId);
+         console.log('handleSeverityChange detail:', detail);
+         if (detail) {
+            detail.selectedOption = selectedValue;
+            this.isCodesUpdated = true;
+
+            const typeKey = detail.recordVDT.Type__c;
+
+            if (selectedValue === 'Major Defect' || selectedValue === 'Minor Defect') {
+               if (!defectsArray.includes(datasetId)) {
+                  defectsArray.push(datasetId);
+                  defectsMap.set(typeKey, (defectsMap.get(typeKey) || 0) + 1);
+               }
+            } else if (selectedValue === 'Qualified') {
+               const index = defectsArray.indexOf(datasetId);
+               if (index > -1) {
+                  defectsArray.splice(index, 1);
+                  if (defectsMap.has(typeKey)) {
+                     const newCount = defectsMap.get(typeKey) - 1;
+                     defectsMap.set(typeKey, Math.max(newCount, 0));
+                  }
+               }
             }
+
+            this.handleCodesSeverity(allCodes, datasetId, selectedValue, detail.recordVDT);
          }
-         this.allCodes = allCodes;
-         //console.log('allCodes : ',this.allCodes);
       }
+
+      // Recalculate defectCount and label per section
+      secCodes.forEach(section => {
+         const count = defectsMap.get(section.key) || 0;
+         section.defectCount = count;
+         section.label = `${section.key} (${count}/${section.inspCodeDetails.length})`;
+      });
+
+      // Set updated state
+      this.inspCodes = secCodes;
+      this.defectsMap = defectsMap;
+      this.defectsArray = defectsArray;
+
+      console.log(
+         '[handleSeverityChange Updated]',
+         'tabName:', this.tabName,
+         '| inspCodes:', this.inspCodes,
+         '| defectsMap:', this.defectsMap,
+         '| defectsArray:', this.defectsArray
+      );
+
+      // Dispatch changes to parent
+      this.dispatchEvent(new CustomEvent('codeschange', {
+         detail: {
+            tabName: this.tabName,
+            inspCodes: this.inspCodes,
+            allCodes: this.allCodes,
+            defectsMap: this.defectsMap,
+            defectsArray: this.defectsArray,
+            activeSections: this.activeSections
+         }
+      }));
    }
 
-   handleCodesSeverity(allCodes, datasetId, value, record) {
+
+   /*handleCodesSeverity(allCodes, datasetId, value, record) {
       console.log('tabName: ' + this.tabName);
       console.log('allCodes : ' + JSON.stringify(allCodes));
       console.log(datasetId + ' removeElement ' + value);
@@ -259,6 +402,59 @@ export default class ETI_InspectionReceiptCodes extends LightningElement {
       }
       this.allCodes = allCodes;
       console.log('allCodes : ', this.allCodes);
+   }*/
+
+   handleCodesSeverity(allCodes, datasetId, value, record) {
+      console.log(
+         '[handleCodesSeverity]',
+         'tabName:', this.tabName,
+         '| datasetId:', datasetId,
+         '| value:', value,
+         '| record:', record,
+         '| Initial allCodes:', allCodes
+      );
+
+      let inspTypeTab = '';
+      switch (this.tabName) {
+         case 'inspTabBreak':
+            inspTypeTab = 'Break Inspection';
+            break;
+         case 'inspTabVisual':
+            inspTypeTab = 'Visual Inspection';
+            break;
+         default:
+            console.warn('Unsupported tabName:', this.tabName);
+            return;
+      }
+
+      // Push new entry if value is Major or Minor
+      if (value === 'Major Defect' || value === 'Minor Defect') {
+         const defectType = value === 'Major Defect' ? 'Major' : 'Minor';
+         allCodes.push({
+            code: datasetId,
+            defect: defectType,
+            inspType: inspTypeTab,
+            record: record
+         });
+      }
+
+      // Clean up conflicting or obsolete entries
+      for (let i = allCodes.length - 1; i >= 0; i--) {
+         const entry = allCodes[i];
+         if (entry.code === datasetId && entry.inspType === inspTypeTab) {
+            const isConflict =
+               (value === 'Major Defect' && entry.defect === 'Minor') ||
+               (value === 'Minor Defect' && entry.defect === 'Major') ||
+               (value === 'Qualified' && (entry.defect === 'Major' || entry.defect === 'Minor'));
+
+            if (isConflict) {
+               allCodes.splice(i, 1);
+            }
+         }
+      }
+
+      this.allCodes = allCodes;
+      console.log('handleCodesSeverity Updated allCodes:', this.allCodes);
    }
 
 }

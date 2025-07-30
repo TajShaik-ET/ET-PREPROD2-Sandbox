@@ -89,8 +89,12 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
    handleCodeUpdate(event) {
       const code = event.target.dataset.code;
       const inspType = event.target.value;
-      console.log('handleCodeUpdate code: ' + code + ', inspType: ' + inspType);
-      var selected = {};
+      console.log(
+         '[handleCodeUpdate]',
+         'code:', code,
+         '| inspType:', inspType
+      );
+      /*var selected = {};
       if (inspType === 'Break Inspection') {
          for (var key in this.allCodesBreak) {
             if (this.allCodesBreak[key].code === code) {
@@ -113,116 +117,329 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
          // Clone object for editing
          this.editCode = { ...selected, remarks: selected.remarks || '' };
          this.isEditCodeModalOpen = true;
+      }*/
+
+      //New code
+      let selected = null;
+      let allCodes = [];
+
+      if (inspType === 'Break Inspection') {
+         allCodes = this.allCodesBreak;
+      } else if (inspType === 'Visual Inspection') {
+         allCodes = this.allCodesVisual;
+      } else {
+         console.warn('Unsupported inspType:', inspType);
+         return;
       }
+
+      selected = allCodes.find(c => c.code === code);
+
+      if (selected) {
+         console.log('handleCodeUpdate Selected Code:', selected);
+         // Clone object for editing
+         this.editCode = {
+            ...selected,
+            remarks: selected.remarks || ''
+         };
+         this.isEditCodeModalOpen = true;
+      }
+      //end code
    }
 
    handleSeverityChange(event) {
       this.editCode.defect = event.detail.value;
-      var secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));;
-      //console.log('target name : ' + event.target.name);
-      var codes = [];
-      for (var key1 in secCodes) {
-         if (secCodes[key1].key == event.target.name) {
-            codes = secCodes[key1].inspCodeDetails;
-            break;
-         }
-      }
-      console.log('codes - ', codes);
-      for (var key2 in codes) {
-         if (codes[key2].recordVDT.Id__c == event.target.dataset.id) {
-            if (event.detail.value == 'Major' || event.detail.value == 'Minor') {
-               codes[key2].selectedOption = event.detail.value + ' Defect';
-            } else if (event.detail.value == 'Qualified') {
-               codes[key2].selectedOption = event.detail.value;
+      /*if (this.editCode.inspType == 'Break Inspection') {
+         var secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));;
+         //console.log('target name : ' + event.target.name);
+         var codes = [];
+         for (var key1 in secCodes) {
+            if (secCodes[key1].key == event.target.name) {
+               codes = secCodes[key1].inspCodeDetails;
+               break;
             }
-            this.handleCodesSeverity(JSON.parse(JSON.stringify(this.allCodesBreak)), event.target.dataset.id, event.detail.value, codes[key2].recordVDT, this.editCode.inspType);
-            break;
+         }
+         console.log('codes - ', codes);
+         for (var key2 in codes) {
+            if (codes[key2].recordVDT.Id__c == event.target.dataset.id) {
+               if (event.detail.value == 'Major' || event.detail.value == 'Minor') {
+                  codes[key2].selectedOption = event.detail.value + ' Defect';
+               } else if (event.detail.value == 'Qualified') {
+                  codes[key2].selectedOption = event.detail.value;
+               }
+               this.handleCodesSeverity(JSON.parse(JSON.stringify(this.allCodesBreak)), event.target.dataset.id, event.detail.value, codes[key2].recordVDT, this.editCode.inspType);
+               break;
+            }
+         }
+         this.inspCodesBreak = secCodes;
+      }*/
+
+      //New code
+      const inspType = this.editCode.inspType;
+      const datasetId = event.target.dataset.id;
+      const sectionKey = event.target.name;
+      const selectedValue = event.detail.value;
+      console.log(
+         '[handleSeverityChange]',
+         'inspType:', inspType,
+         '| datasetId:', datasetId,
+         '| sectionKey:', sectionKey,
+         '| selectedValue:', selectedValue
+      );
+
+      let secCodes = [];
+      let allCodes = [];
+
+      // Dynamically assign based on inspection type
+      if (inspType === 'Break Inspection') {
+         secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+         allCodes = JSON.parse(JSON.stringify(this.allCodesBreak));
+      } else if (inspType === 'Visual Inspection') {
+         secCodes = JSON.parse(JSON.stringify(this.inspCodesVisual));
+         allCodes = JSON.parse(JSON.stringify(this.allCodesVisual));
+      } else {
+         console.warn('Unsupported inspection type:', inspType);
+         return;
+      }
+
+      // Find and update the relevant code
+      const section = secCodes.find(sec => sec.key === sectionKey);
+      console.log('handleSeverityChange section', section);
+      if (section) {
+         const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === datasetId);
+         console.log('handleSeverityChange detail', detail);
+         if (detail) {
+            detail.selectedOption = (selectedValue === 'Major' || selectedValue === 'Minor')
+               ? selectedValue + ' Defect'
+               : 'Qualified';
+            this.handleCodesSeverity(allCodes, datasetId, selectedValue, detail.recordVDT, inspType);
          }
       }
-      this.inspCodesBreak = secCodes;
+
+      // Save back to correct variable
+      if (inspType === 'Break Inspection') {
+         this.inspCodesBreak = secCodes;
+         console.log('handleSeverityChange Updated inspCodesBreak:', this.inspCodesBreak);
+      } else if (inspType === 'Visual Inspection') {
+         this.inspCodesVisual = secCodes;
+         console.log('handleSeverityChange Updated inspCodesVisual:', this.inspCodesVisual);
+      }
+      //End code
    }
 
    handleCodesSeverity(allCodes, datasetId, value, record, inspType) {
-      console.log(datasetId + ' :removeElement: ' + value + ' inspType: ' + inspType);
-      console.log('allCodes : ' + JSON.stringify(allCodes));
-      if (value == 'Major')
+      console.log(
+         '[handleCodesSeverity]',
+         'inspType:', inspType,
+         '| datasetId:', datasetId,
+         '| value:', value,
+         '| record:', record,
+         '| Initial allCodes:', allCodes
+      );
+      /*if (inspType === 'Break Inspection') {
+         if (value == 'Major')
+            allCodes.push({
+               code: datasetId,
+               defect: 'Major',
+               inspType: inspType,
+               record: record
+            });
+         if (value == 'Minor')
+            allCodes.push({
+               code: datasetId,
+               defect: 'Minor',
+               inspType: inspType,
+               record: record
+            });
+         for (var key in allCodes) {
+            if (value == 'Major') {
+               if (allCodes[key].code == datasetId && allCodes[key].defect == 'Minor') {
+                  if (key != -1)
+                     allCodes.splice(key, 1);
+               }
+            } else if (value == 'Minor') {
+               if (allCodes[key].code == datasetId && allCodes[key].defect == 'Major') {
+                  if (key != -1)
+                     allCodes.splice(key, 1);
+               }
+            } else if (value == 'Qualified') {
+               if (allCodes[key].code == datasetId && (allCodes[key].defect == 'Major' || allCodes[key].defect == 'Minor')) {
+                  if (key != -1)
+                     allCodes.splice(key, 1);
+               }
+            }
+         }
+         this.allCodesBreak = allCodes;
+         console.log('allCodes : ', this.allCodesBreak);
+      }*/
+
+      //new code
+      // Add new code if Major or Minor
+      if (value === 'Major' || value === 'Minor') {
          allCodes.push({
             code: datasetId,
-            defect: 'Major',
+            defect: value,
             inspType: inspType,
             record: record
          });
-      if (value == 'Minor')
-         allCodes.push({
-            code: datasetId,
-            defect: 'Minor',
-            inspType: inspType,
-            record: record
-         });
-      for (var key in allCodes) {
-         if (value == 'Major') {
-            if (allCodes[key].code == datasetId && allCodes[key].defect == 'Minor') {
-               if (key != -1)
-                  allCodes.splice(key, 1);
-            }
-         } else if (value == 'Minor') {
-            if (allCodes[key].code == datasetId && allCodes[key].defect == 'Major') {
-               if (key != -1)
-                  allCodes.splice(key, 1);
-            }
-         } else if (value == 'Qualified') {
-            if (allCodes[key].code == datasetId && (allCodes[key].defect == 'Major' || allCodes[key].defect == 'Minor')) {
-               if (key != -1)
-                  allCodes.splice(key, 1);
+      }
+
+      // Clean up conflicting or obsolete entries
+      for (let i = allCodes.length - 1; i >= 0; i--) {
+         const entry = allCodes[i];
+         if (entry.code === datasetId && entry.inspType === inspType) {
+            const isConflict =
+               (value === 'Major' && entry.defect === 'Minor') ||
+               (value === 'Minor' && entry.defect === 'Major') ||
+               (value === 'Qualified' && (entry.defect === 'Major' || entry.defect === 'Minor'));
+
+            if (isConflict) {
+               allCodes.splice(i, 1);
             }
          }
       }
-      this.allCodesBreak = allCodes;
-      console.log('allCodes : ', this.allCodesBreak);
+
+      // Assign to the correct scoped array
+      if (inspType === 'Break Inspection') {
+         this.allCodesBreak = allCodes;
+         console.log('handleCodesSeverity Updated allCodesBreak:', this.allCodesBreak);
+      } else if (inspType === 'Visual Inspection') {
+         this.allCodesVisual = allCodes;
+         console.log('handleCodesSeverity Updated allCodesVisual:', this.allCodesVisual);
+      }
+      //end code
    }
 
    handleInputChange(event) {
       this.editCode.remarks = event.detail.value;
-      console.log('handleInputChange inspCodesBreak Array --> ', JSON.stringify(this.inspCodesBreak));
-      var secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));;
-      //console.log('target name : ' + event.target.name);
-      var codes = [];
-      //console.log('secCodes - ', secCodes);
-      for (var key1 in secCodes) {
-         if (secCodes[key1].key == event.target.name) {
-            codes = secCodes[key1].inspCodeDetails;
-            break;
-         }
-      }
-      //console.log('codes - ', codes);
-      for (var key2 in codes) {
-         if (codes[key2].recordVDT.Id__c == event.target.dataset.id) {
-            codes[key2].remarks = event.detail.value; //'test'; //event.detail.value;
-            //this.isCodesUpdated = true;
-            break;
-         }
-      }
-      this.inspCodesBreak = secCodes;
-      this.handleCodesInput(JSON.parse(JSON.stringify(this.allCodesBreak)), event.target.dataset.id, event.detail.value);
-   }
-
-   handleCodesInput(allCodes, datasetId, value) {
-      //console.log('allCodes : '+JSON.stringify(allCodes));
-      console.log(datasetId + ' removeElement ' + value);
-      if (value != 'Major' && value != 'Minor') {
-         for (var key in allCodes) {
-            if (allCodes[key].code == datasetId) {
-               allCodes[key].remarks = value;
+      /*if (this.editCode.inspType === 'Break Inspection') {
+         console.log('handleInputChange inspCodesBreak Array --> ', this.inspCodesBreak);
+         var secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+         //console.log('target name : ' + event.target.name);
+         var codes = [];
+         //console.log('secCodes - ', secCodes);
+         for (var key1 in secCodes) {
+            if (secCodes[key1].key == event.target.name) {
+               codes = secCodes[key1].inspCodeDetails;
+               break;
             }
          }
-         this.allCodesBreak = allCodes;
-         //console.log('allCodes : ',this.allCodes);
+         //console.log('codes - ', codes);
+         for (var key2 in codes) {
+            if (codes[key2].recordVDT.Id__c == event.target.dataset.id) {
+               codes[key2].remarks = event.detail.value; //'test'; //event.detail.value;
+               //this.isCodesUpdated = true;
+               break;
+            }
+         }
+         this.inspCodesBreak = secCodes;
+         this.handleCodesInput(JSON.parse(JSON.stringify(this.allCodesBreak)), event.target.dataset.id, event.detail.value, this.editCode.inspType);
+      }*/
+
+      //new code
+      const inspType = this.editCode.inspType;
+      const datasetId = event.target.dataset.id;
+      const sectionKey = event.target.name;
+      const remarksValue = event.detail.value;
+      console.log(
+         '[handleInputChange]',
+         'inspType:', inspType,
+         '| datasetId:', datasetId,
+         '| sectionKey:', sectionKey,
+         '| remarksValue:', remarksValue
+      );
+
+      let secCodes = [];
+      let allCodes = [];
+
+      if (inspType === 'Break Inspection') {
+         console.log('handleInputChange inspCodesBreak Array --> ', this.inspCodesBreak);
+         secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+         allCodes = JSON.parse(JSON.stringify(this.allCodesBreak));
+      } else if (inspType === 'Visual Inspection') {
+         console.log('handleInputChange inspCodesVisual Array --> ', this.inspCodesVisual);
+         secCodes = JSON.parse(JSON.stringify(this.inspCodesVisual));
+         allCodes = JSON.parse(JSON.stringify(this.allCodesVisual));
+      } else {
+         console.warn('Unsupported inspection type:', inspType);
+         return;
       }
+
+      // Update remarks
+      const section = secCodes.find(sec => sec.key === sectionKey);
+      console.log('handleInputChange section', section);
+      if (section) {
+         const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === datasetId);
+         console.log('handleInputChange detail', detail);
+         if (detail) {
+            detail.remarks = remarksValue || '';
+         }
+      }
+
+      // Save updated structure
+      if (inspType === 'Break Inspection') {
+         this.inspCodesBreak = secCodes;
+         console.log('handleInputChange Updated inspCodesBreak:', this.inspCodesBreak);
+      } else if (inspType === 'Visual Inspection') {
+         this.inspCodesVisual = secCodes;
+         console.log('handleInputChange Updated inspCodesVisual:', this.inspCodesVisual);
+      }
+
+      // Update corresponding code entry in allCodes
+      this.handleCodesInput(allCodes, datasetId, remarksValue, inspType);
+      //end code
+   }
+
+   handleCodesInput(allCodes, datasetId, value, inspType) {
+      console.log(
+         '[handleCodesInput]',
+         'inspType:', inspType,
+         '| datasetId:', datasetId,
+         '| value:', value,
+         '| allCodes:', allCodes
+      );
+      /*if (inspType === 'Break Inspection') {
+         if (value != 'Major' && value != 'Minor') {
+            for (var key in allCodes) {
+               if (allCodes[key].code == datasetId) {
+                  allCodes[key].remarks = value;
+               }
+            }
+            this.allCodesBreak = allCodes;
+            //console.log('allCodes : ',this.allCodes);
+         }
+      }*/
+      //new code
+      // Only update remarks if value is not a severity option
+      if (value !== 'Major' && value !== 'Minor') {
+         for (let i = 0; i < allCodes.length; i++) {
+            if (allCodes[i].code === datasetId && allCodes[i].inspType === inspType) {
+               allCodes[i].remarks = value;
+            }
+         }
+      }
+
+      // Update the appropriate scoped array
+      if (inspType === 'Break Inspection') {
+         this.allCodesBreak = allCodes;
+         console.log('handleCodesInput Updated allCodesBreak:', this.allCodesBreak);
+      } else if (inspType === 'Visual Inspection') {
+         this.allCodesVisual = allCodes;
+         console.log('handleCodesInput Updated allCodesVisual:', this.allCodesVisual);
+      }
+      //end code
    }
 
    closeCodeEditModal() {
       this.isEditCodeModalOpen = false;
       this.editCode = {};
+      this.sortAllCodes();
+   }
+
+   sortAllCodes() {
+      let sortedAllCodesBreak = [...this.allCodesBreak].sort((a, b) => parseInt(a.code, 10) - parseInt(b.code, 10));
+      this.allCodesBreak = sortedAllCodesBreak;
+      let sortedAllCodesVisual = [...this.allCodesVisual].sort((a, b) => parseInt(a.code, 10) - parseInt(b.code, 10));
+      this.allCodesVisual = sortedAllCodesVisual;
    }
 
    @wire(getActiveAmanLocations)
@@ -436,7 +653,6 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
                //}
                if (this.responseWrapper.inspObsr.Approver_Finance_ID__c == this.inspectorDetail[0].empNum) {
                   this.showApproval = true;
-                  
                }
                //console.log('responseWrapper.receiptWrp: ' + JSON.stringify(this.responseWrapper.receiptWrp));
                if (this.responseWrapper.receiptWrp != null && this.responseWrapper.receiptWrp != '') {
@@ -485,7 +701,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
                   }
                   //console.log('codesOld: ', this.oldCodes);
                   //new code
-                  let inspCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+                  /*let inspCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
                   this.allCodesBreak.forEach(codeObj => {
                      const typeKey = codeObj.record.Type__c;
                      const code = codeObj.code;
@@ -507,7 +723,10 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
                         }
                      }
                   });
-                  this.inspCodesBreak = inspCodes;
+                  this.inspCodesBreak = inspCodes;*/
+                  this.initInspCodes(JSON.parse(JSON.stringify(this.inspCodesBreak)), this.allCodesBreak, 'Break Inspection');
+                  this.initInspCodes(JSON.parse(JSON.stringify(this.inspCodesVisual)), this.allCodesVisual, 'Visual Inspection');
+                  this.sortAllCodes();
                   //end
                   this.dispatchEvent(
                      showToastNotification('Success', this.responseWrapper.message, 'success', 'pester')
@@ -536,6 +755,42 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
             showToastNotification('Error', error.body.message, 'error', 'sticky')
          );
       })
+   }
+   
+   initInspCodes(inspCodes, allCodes, insType) {
+      allCodes.forEach(codeObj => {
+         const typeKey = codeObj.record.Type__c;
+         const code = codeObj.code;
+
+         const section = inspCodes.find(sec => sec.key === typeKey);
+         if (section) {
+            const detail = section.inspCodeDetails.find(d => d.recordVDT.Id__c === code);
+            if (detail) {
+               // Set selectedOption
+               if (codeObj.defect === 'Major') {
+                  detail.selectedOption = 'Major Defect';
+               } else if (codeObj.defect === 'Minor') {
+                  detail.selectedOption = 'Minor Defect';
+               } else {
+                  detail.selectedOption = 'Qualified';
+               }
+
+               // Set remarks
+               detail.remarks = codeObj.remarks || '';
+            }
+         }
+      });
+
+      // Assign to the correct scoped variable
+      if (insType === 'Break Inspection') {
+         this.inspCodesBreak = inspCodes;
+         console.log('initInspCodes Updated inspCodesBreak:', this.inspCodesBreak);
+      } else if (insType === 'Visual Inspection') {
+         this.inspCodesVisual = inspCodes;
+         console.log('initInspCodes Updated inspCodesVisual:', this.inspCodesVisual);
+      } else {
+         console.warn('Unsupported insType in initInspCodes:', insType);
+      }
    }
 
    initInspObsrRec(inspObsr) {
@@ -653,7 +908,7 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       }
    }
 
-   openCodesModal(event) {
+   /*openCodesModal(event) {
       this.isCodesModalOpen = true;
       this.tabName = event.target.value;
       console.log('tabName: ' + this.tabName);
@@ -692,6 +947,67 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       }
       this.inspCodesBreak = secCodes;
       //end
+   }*/
+
+   openCodesModal(event) {
+      this.isCodesModalOpen = true;
+      this.tabName = event.target.value;
+      console.log('[openCodesModal] tabName:', this.tabName);
+
+      let secCodes = [];
+      let defectsMap = new Map();
+      let defectsArray = [];
+
+      // Determine the inspection type based on tabName
+      if (this.tabName === 'inspTabBreak') {
+         secCodes = JSON.parse(JSON.stringify(this.inspCodesBreak));
+      } else if (this.tabName === 'inspTabVisual') {
+         secCodes = JSON.parse(JSON.stringify(this.inspCodesVisual));
+      } else {
+         console.warn('[openCodesModal] Unsupported tabName:', this.tabName);
+         return;
+      }
+
+      // Build defectsArray and defectsMap
+      secCodes.forEach(section => {
+         section.inspCodeDetails.forEach(detail => {
+            const selected = detail.selectedOption;
+            const recordId = detail.recordVDT.Id__c;
+            const typeKey = detail.recordVDT.Type__c;
+
+            if (selected === 'Major Defect' || selected === 'Minor Defect') {
+               if (!defectsArray.includes(recordId)) {
+                  defectsArray.push(recordId);
+                  defectsMap.set(typeKey, (defectsMap.get(typeKey) || 0) + 1);
+               }
+            }
+         });
+      });
+
+      // Recalculate labels
+      secCodes.forEach(section => {
+         const count = defectsMap.get(section.key) || 0;
+         section.defectCount = count;
+         section.label = `${section.key} (${count}/${section.inspCodeDetails.length})`;
+      });
+
+      // Assign back to scoped variables
+      if (this.tabName === 'inspTabBreak') {
+         this.inspCodesBreak = secCodes;
+         this.defectsMapBreak = defectsMap;
+         this.defectsArrayBreak = defectsArray;
+      } else if (this.tabName === 'inspTabVisual') {
+         this.inspCodesVisual = secCodes;
+         this.defectsMapVisual = defectsMap;
+         this.defectsArrayVisual = defectsArray;
+      }
+
+      console.log(
+         '[openCodesModal] tabName:', this.tabName,
+         '| Updated secCodes:', secCodes,
+         '| defectsMap:', defectsMap,
+         '| defectsArray:', defectsArray
+      );
    }
 
    getSelectedCodes(event) {
@@ -699,25 +1015,38 @@ export default class ETI_InspectionReceipt extends NavigationMixin(LightningElem
       if (event.detail.tabName == 'inspTabBreak') {
          this.inspCodesBreak = event.detail.inspCodes;
          this.allCodesBreak = event.detail.allCodes;
-         this.adefectsMapBreak = event.detail.defectsMap;
+         this.defectsMapBreak = event.detail.defectsMap;
          this.defectsArrayBreak = event.detail.defectsArray;
          this.activeSectionsBreak = event.detail.activeSections;
+         console.log(
+            '[getSelectedCodes]',
+            'inspCodesBreak:', this.inspCodesBreak,
+            '| allCodesBreak:', this.allCodesBreak,
+            '| defectsMapBreak:', this.defectsMapBreak,
+            '| defectsArrayBreak:', this.defectsArrayBreak,
+            '| activeSectionsBreak:', this.activeSectionsBreak
+         );
       }
-      console.log('inspCodesBreak Array --> ', this.inspCodesBreak);
-      console.log('allCodesBreak Array --> ', this.allCodesBreak);
-      let sortedAllCodesBreak = [...this.allCodesBreak].sort((a,b) => parseInt(a.code, 10) - parseInt(b.code, 10));      
-      this.allCodesBreak = sortedAllCodesBreak;      
-      //console.log('allCodesBreak: ', JSON.parse(JSON.stringify(this.allCodesBreak)))
-     if (event.detail.tabName == 'inspTabVisual') {
+      //let sortedAllCodesBreak = [...this.allCodesBreak].sort((a,b) => parseInt(a.code, 10) - parseInt(b.code, 10));      
+      //this.allCodesBreak = sortedAllCodesBreak;      
+      if (event.detail.tabName == 'inspTabVisual') {
          this.inspCodesVisual = event.detail.inspCodes;
          this.allCodesVisual = event.detail.allCodes;
          this.defectsMapVisual = event.detail.defectsMap;
          this.defectsArrayVisual = event.detail.defectsArray;
          this.activeSectionsVisual = event.detail.activeSections;
+         console.log(
+            '[getSelectedCodes]',
+            'inspCodesVisual:', this.inspCodesVisual,
+            '| allCodesVisual:', this.allCodesVisual,
+            '| defectsMapVisual:', this.defectsMapVisual,
+            '| defectsArrayVisual:', this.defectsArrayVisual,
+            '| activeSectionsVisual:', this.activeSectionsVisual
+         );
       }
-      console.log('allCodesVisual: ', this.allCodesVisual);
-      let sortedAllCodesVisual = [...this.allCodesVisual].sort((a,b) => parseInt(a.code, 10) - parseInt(b.code, 10));      
-      this.allCodesVisual = sortedAllCodesVisual;     
+      //let sortedAllCodesVisual = [...this.allCodesVisual].sort((a,b) => parseInt(a.code, 10) - parseInt(b.code, 10));      
+      //this.allCodesVisual = sortedAllCodesVisual;   
+      this.sortAllCodes();  
 
       var testResultBreak = true;
       var testResultVisual = true;
